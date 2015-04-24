@@ -57,12 +57,164 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="default.aspx" />
+    <Content Include="dist\components\accordion.css" />
+    <Content Include="dist\components\accordion.js" />
+    <Content Include="dist\components\accordion.min.css" />
+    <Content Include="dist\components\accordion.min.js" />
+    <Content Include="dist\components\ad.css" />
+    <Content Include="dist\components\ad.min.css" />
+    <Content Include="dist\components\api.js" />
+    <Content Include="dist\components\api.min.js" />
+    <Content Include="dist\components\breadcrumb.css" />
+    <Content Include="dist\components\breadcrumb.min.css" />
+    <Content Include="dist\components\button.css" />
+    <Content Include="dist\components\button.min.css" />
+    <Content Include="dist\components\card.css" />
+    <Content Include="dist\components\card.min.css" />
+    <Content Include="dist\components\checkbox.css" />
+    <Content Include="dist\components\checkbox.js" />
+    <Content Include="dist\components\checkbox.min.css" />
+    <Content Include="dist\components\checkbox.min.js" />
+    <Content Include="dist\components\comment.css" />
+    <Content Include="dist\components\comment.min.css" />
+    <Content Include="dist\components\dimmer.css" />
+    <Content Include="dist\components\dimmer.js" />
+    <Content Include="dist\components\dimmer.min.css" />
+    <Content Include="dist\components\dimmer.min.js" />
+    <Content Include="dist\components\divider.css" />
+    <Content Include="dist\components\divider.min.css" />
+    <Content Include="dist\components\dropdown.css" />
+    <Content Include="dist\components\dropdown.js" />
+    <Content Include="dist\components\dropdown.min.css" />
+    <Content Include="dist\components\dropdown.min.js" />
+    <Content Include="dist\components\feed.css" />
+    <Content Include="dist\components\feed.min.css" />
+    <Content Include="dist\components\flag.css" />
+    <Content Include="dist\components\flag.min.css" />
+    <Content Include="dist\components\form.css" />
+    <Content Include="dist\components\form.js" />
+    <Content Include="dist\components\form.min.css" />
+    <Content Include="dist\components\form.min.js" />
+    <Content Include="dist\components\grid.css" />
+    <Content Include="dist\components\grid.min.css" />
+    <Content Include="dist\components\header.css" />
+    <Content Include="dist\components\header.min.css" />
+    <Content Include="dist\components\icon.css" />
+    <Content Include="dist\components\icon.min.css" />
+    <Content Include="dist\components\image.css" />
+    <Content Include="dist\components\image.min.css" />
+    <Content Include="dist\components\input.css" />
+    <Content Include="dist\components\input.min.css" />
+    <Content Include="dist\components\item.css" />
+    <Content Include="dist\components\item.min.css" />
+    <Content Include="dist\components\label.css" />
+    <Content Include="dist\components\label.min.css" />
+    <Content Include="dist\components\list.css" />
+    <Content Include="dist\components\list.min.css" />
+    <Content Include="dist\components\loader.css" />
+    <Content Include="dist\components\loader.min.css" />
+    <Content Include="dist\components\menu.css" />
+    <Content Include="dist\components\menu.min.css" />
+    <Content Include="dist\components\message.css" />
+    <Content Include="dist\components\message.min.css" />
+    <Content Include="dist\components\modal.css" />
+    <Content Include="dist\components\modal.js" />
+    <Content Include="dist\components\modal.min.css" />
+    <Content Include="dist\components\modal.min.js" />
+    <Content Include="dist\components\nag.css" />
+    <Content Include="dist\components\nag.js" />
+    <Content Include="dist\components\nag.min.css" />
+    <Content Include="dist\components\nag.min.js" />
+    <Content Include="dist\components\popup.css" />
+    <Content Include="dist\components\popup.js" />
+    <Content Include="dist\components\popup.min.css" />
+    <Content Include="dist\components\popup.min.js" />
+    <Content Include="dist\components\progress.css" />
+    <Content Include="dist\components\progress.js" />
+    <Content Include="dist\components\progress.min.css" />
+    <Content Include="dist\components\progress.min.js" />
+    <Content Include="dist\components\rail.css" />
+    <Content Include="dist\components\rail.min.css" />
+    <Content Include="dist\components\rating.css" />
+    <Content Include="dist\components\rating.js" />
+    <Content Include="dist\components\rating.min.css" />
+    <Content Include="dist\components\rating.min.js" />
+    <Content Include="dist\components\reset.css" />
+    <Content Include="dist\components\reset.min.css" />
+    <Content Include="dist\components\reveal.css" />
+    <Content Include="dist\components\reveal.min.css" />
+    <Content Include="dist\components\search.css" />
+    <Content Include="dist\components\search.js" />
+    <Content Include="dist\components\search.min.css" />
+    <Content Include="dist\components\search.min.js" />
+    <Content Include="dist\components\segment.css" />
+    <Content Include="dist\components\segment.min.css" />
+    <Content Include="dist\components\shape.css" />
+    <Content Include="dist\components\shape.js" />
+    <Content Include="dist\components\shape.min.css" />
+    <Content Include="dist\components\shape.min.js" />
+    <Content Include="dist\components\sidebar.css" />
+    <Content Include="dist\components\sidebar.js" />
+    <Content Include="dist\components\sidebar.min.css" />
+    <Content Include="dist\components\sidebar.min.js" />
+    <Content Include="dist\components\site.css" />
+    <Content Include="dist\components\site.js" />
+    <Content Include="dist\components\site.min.css" />
+    <Content Include="dist\components\site.min.js" />
+    <Content Include="dist\components\state.js" />
+    <Content Include="dist\components\state.min.js" />
+    <Content Include="dist\components\statistic.css" />
+    <Content Include="dist\components\statistic.min.css" />
+    <Content Include="dist\components\step.css" />
+    <Content Include="dist\components\step.min.css" />
+    <Content Include="dist\components\sticky.css" />
+    <Content Include="dist\components\sticky.js" />
+    <Content Include="dist\components\sticky.min.css" />
+    <Content Include="dist\components\sticky.min.js" />
+    <Content Include="dist\components\tab.css" />
+    <Content Include="dist\components\tab.js" />
+    <Content Include="dist\components\tab.min.css" />
+    <Content Include="dist\components\tab.min.js" />
+    <Content Include="dist\components\table.css" />
+    <Content Include="dist\components\table.min.css" />
+    <Content Include="dist\components\transition.css" />
+    <Content Include="dist\components\transition.js" />
+    <Content Include="dist\components\transition.min.css" />
+    <Content Include="dist\components\transition.min.js" />
+    <Content Include="dist\components\video.css" />
+    <Content Include="dist\components\video.js" />
+    <Content Include="dist\components\video.min.css" />
+    <Content Include="dist\components\video.min.js" />
+    <Content Include="dist\components\visibility.js" />
+    <Content Include="dist\components\visibility.min.js" />
+    <Content Include="dist\jquery.min.js" />
+    <Content Include="dist\semantic.min.css" />
+    <Content Include="dist\semantic.min.js" />
+    <Content Include="dist\themes\basic\assets\fonts\icons.svg" />
+    <Content Include="dist\themes\default\assets\fonts\icons.svg" />
+    <Content Include="dist\themes\default\assets\images\flags.png" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="dist\themes\basic\assets\fonts\icons.eot" />
+    <Content Include="dist\themes\basic\assets\fonts\icons.ttf" />
+    <Content Include="dist\themes\basic\assets\fonts\icons.woff" />
+    <Content Include="dist\themes\default\assets\fonts\icons.eot" />
+    <Content Include="dist\themes\default\assets\fonts\icons.otf" />
+    <Content Include="dist\themes\default\assets\fonts\icons.ttf" />
+    <Content Include="dist\themes\default\assets\fonts\icons.woff" />
+    <Content Include="dist\themes\default\assets\fonts\icons.woff2" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -83,7 +235,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>56703</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:55735/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
