@@ -4,9 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br">
 <head>
     <meta charset="utf-8" />
-    <link href="dist/semantic.min.css" rel="stylesheet" />
-    <script src="dist/jquery.min.js"></script>
-    <script src="dist/semantic.min.js"></script>
+    <link href="third_party/semantic/semantic.min.css" rel="stylesheet" />
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="third_party/semantic/semantic.min.js"></script>
     <title>SIAC: Sistema Interativo de Avaliação do Conhecimento</title>.
      
     <script>
@@ -17,7 +17,7 @@
     </script>
 </head>
 <body>
-    <form runat="server">
+    <form id="form1" runat="server">
         <article class="ui coupled first modal small">
             <i class="close icon"></i>
             <header class="header">Quem é você?</header>
@@ -66,14 +66,14 @@
                 </div>
             </section>
             <section class="actions">
-                <button class="ui button negative">Cancelar</button>
-                <button class="ui button positive">Acessar</button>
+                <button class="ui button secondary">Cancelar</button>
+                <a href="views/dashboard/" class="ui button primary icon labeled"><i class="icon sign in"></i>Acessar</a>
             </section>
         </article>
 
         <div class="ui page grid stackable">
             <div class="row"></div>
-            <div class="row centered">
+            <div class="row">
                 <header class="column">
                     <section class="ui large menu secondary pointing">
                         <div class="header item">
