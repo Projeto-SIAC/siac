@@ -6,28 +6,35 @@
 <head runat="server">
     <meta charset="utf-8" />
     <link href="../third_party/semantic/semantic.min.css" rel="stylesheet" />
-    <script src="../assets/js/jquery.min.js"></script>
-    <script src="../third_party/semantic/semantic.min.js"></script>
+    <link href="../assets/css/style.css" rel="stylesheet" />
+    <script src="<%=ResolveClientUrl("~/assets/js/jquery.min.js")%>"></script>
+    <script src="<%=ResolveClientUrl("~/third_party/semantic/semantic.min.js")%>"></script>
     <title>SIAC: Sistema Interativo de Avaliação do Conhecimento</title>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="ui page grid">
+        <div class="ui grid stackable">
             <div class="row">
-                <header class="column">
+                <header class="column" id="headerMenu">
                     <section class="ui large menu secondary pointing">
                         <div class="header item">
-                            <i class="icon coffee"></i>SIAC
+                            <h3 class="ui header">
+                                <div class="content">
+                                    <i class="icon coffee"></i>
+                                    SIAC
+                                    <small class="sub header"><small>Sistema Interativo de Avaliação do Conhecimento</small></small>
+                                </div>
+                            </h3>
                         </div>
                         <nav class="right menu">
-                            <div class="item">
+                            <div class="text item">
                                 <asp:Label ID="lblData" runat="server" Text=""></asp:Label>
                             </div>
                             <div class="item">
-                                <button class="ui button icon labeled primary">
-                                    <i class="icon sign out"></i>Sair
+                                <button class="ui button">
+                                    Sair
                                 </button>
                             </div>
                         </nav>
@@ -36,36 +43,38 @@
             </div>
             <div class="row">
                 <div class="four wide column">
-                    <div class="ui one column grid">
-                        <div class="column ui icon header">
-                            <h2><i class="user icon circular inverted"></i>
-                            <div class="content">
-                                João da Penha
+                    <div class="ui segment">
+                        <div class="ui one column grid">
+                            <div class="column ui icon header">
+                                <h2><i class="user icon circular inverted"></i>
+                                    <div class="content">
+                                        João da Penha
                                 <div class="sub header">Aluno</div>
-                            </div></h2>
-                        </div>                      
-                    </div>
+                                    </div>
+                                </h2>
+                            </div>
+                        </div>
                         <div class="ui vertical secondary pointing menu large fluid">
-                            <a class="active item">
-                                <i class="home icon"></i>Dashboard
-                            </a>
-                            <a class="item">
-                                <i class="time icon"></i>Histórico
-                            </a>
-                            <a class="item">
-                                <i class="file icon"></i>Av. Intitucional
-                            </a>
-                            <a class="item">
-                                <i class="user icon"></i>Perfil
-                            </a>
-                            <a class="item">
-                                <i class="sign out icon"></i>Sair
-                            </a>
-                        </div>  
+                            <asp:HyperLink ID="hlkDashboard" runat="server" NavigateUrl="~/pages/dashboard" CssClass="item"><i class="block layout icon"></i>Dashboard</asp:HyperLink>
+                            <asp:HyperLink ID="hlkHistorico" runat="server" CssClass="item"><i class="time icon"></i>Histórico</asp:HyperLink>
+                            <asp:HyperLink ID="hlkAvInstitucional" runat="server" CssClass="item"><i class="file icon"></i>Av. Institucional</asp:HyperLink>
+                            <asp:HyperLink ID="hlkPerfil" runat="server" CssClass="item"><i class="user icon"></i>Perfil</asp:HyperLink>
+                            <asp:HyperLink ID="hlkSair" runat="server" NavigateUrl="~/pages/sair" CssClass="item"><i class="power icon"></i>Sair</asp:HyperLink>
+                        </div>
+                    </div>
                 </div>
                 <div class="twelve wide column">
-                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-                    </asp:ContentPlaceHolder>
+                    <div class="ui segment">
+                        <div class="ui breadcrumb">
+                            <i class="icon home"></i>
+                            <i class="right chevron icon divider"></i>
+                            <a class="active section">Dashboard</a>
+                        </div>
+                    </div>
+                    <div class="ui segment">
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
                 </div>
             </div>
         </div>

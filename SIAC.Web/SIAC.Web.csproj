@@ -57,7 +57,10 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\css\style.css" />
     <Content Include="default.aspx" />
+    <Content Include="pages\default.aspx" />
+    <Content Include="pages\sair\default.aspx" />
     <Content Include="third_party\semantic\components\accordion.css" />
     <Content Include="third_party\semantic\components\accordion.js" />
     <Content Include="third_party\semantic\components\accordion.min.css" />
@@ -194,7 +197,7 @@
     <Content Include="third_party\semantic\themes\basic\assets\fonts\icons.svg" />
     <Content Include="third_party\semantic\themes\default\assets\fonts\icons.svg" />
     <Content Include="third_party\semantic\themes\default\assets\images\flags.png" />
-    <Content Include="views\dashboard\default.aspx" />
+    <Content Include="pages\dashboard\default.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +208,20 @@
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="pages\default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\sair\default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\sair\default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="templates\template.Master.cs">
       <DependentUpon>template.Master</DependentUpon>
@@ -213,11 +230,11 @@
     <Compile Include="templates\template.Master.designer.cs">
       <DependentUpon>template.Master</DependentUpon>
     </Compile>
-    <Compile Include="views\dashboard\default.aspx.cs">
+    <Compile Include="pages\dashboard\default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="views\dashboard\default.aspx.designer.cs">
+    <Compile Include="pages\dashboard\default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -239,7 +256,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="assets\css\" />
     <Folder Include="assets\img\" />
   </ItemGroup>
   <PropertyGroup>
