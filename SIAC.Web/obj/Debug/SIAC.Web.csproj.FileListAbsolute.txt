@@ -13,3 +13,8 @@ C:\Users\Felipe\Desktop\Workspace\SIAC\SIAC.Web\bin\SIAC.Web.pdb
 C:\Users\Felipe\Desktop\Workspace\SIAC\SIAC.Web\obj\Debug\SIAC.Web.csprojResolveAssemblyReference.cache
 C:\Users\Felipe\Desktop\Workspace\SIAC\SIAC.Web\obj\Debug\SIAC.Web.dll
 C:\Users\Felipe\Desktop\Workspace\SIAC\SIAC.Web\obj\Debug\SIAC.Web.pdb
+C:\Users\dev-two\Desktop\SIAC\SIAC.Web\bin\SIAC.Web.dll
+C:\Users\dev-two\Desktop\SIAC\SIAC.Web\bin\SIAC.Web.pdb
+C:\Users\dev-two\Desktop\SIAC\SIAC.Web\obj\Debug\SIAC.Web.csprojResolveAssemblyReference.cache
+C:\Users\dev-two\Desktop\SIAC\SIAC.Web\obj\Debug\SIAC.Web.dll
+C:\Users\dev-two\Desktop\SIAC\SIAC.Web\obj\Debug\SIAC.Web.pdb

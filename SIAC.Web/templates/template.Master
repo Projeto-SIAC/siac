@@ -15,25 +15,25 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="ui grid stackable">
+        <div class="ui page grid stackable">
             <div class="row">
                 <header class="column" id="headerMenu">
-                    <section class="ui large menu secondary pointing">
+                    <section class="ui menu secondary pointing">
                         <div class="header item">
                             <h3 class="ui header">
                                 <div class="content">
                                     <i class="icon coffee"></i>
                                     SIAC
-                                    <small class="sub header"><small>Sistema Interativo de Avaliação do Conhecimento</small></small>
+                                    <small class="sub header hidden-xs"><small>Sistema Interativo de Avaliação do Conhecimento</small></small>
                                 </div>
                             </h3>
                         </div>
                         <nav class="right menu">
-                            <div class="text item">
+                            <div class="text item hidden-xs">
                                 <asp:Label ID="lblData" runat="server" Text=""></asp:Label>
                             </div>
                             <div class="item">
-                                <button class="ui button">
+                                <button class="ui button primary">
                                     Sair
                                 </button>
                             </div>
@@ -42,29 +42,46 @@
                 </header>
             </div>
             <div class="row">
-                <div class="four wide column">
-                    <div class="ui segment">
+                <div class="three wide column">
+                    <div class="ui segment">                        
                         <div class="ui one column grid">
-                            <div class="column ui icon header">
-                                <h2><i class="user icon circular inverted"></i>
+                            <div class="column ui icon header hidden-xs">
+                                <h3>
+                                    <asp:Image ID="Image1" runat="server" ImageUrl="~/assets/img/layout/perfil_default.jpg" CssClass="ui circular image" />
                                     <div class="content">
                                         João da Penha
-                                <div class="sub header">Aluno</div>
+                                        <div class="sub header">Aluno</div>
                                     </div>
-                                </h2>
+                                </h3>
+                            </div>
+                            <div class="column visible-xs">
+                                <h3 class=" ui header">
+                                    <asp:Image ID="imgPerfil" runat="server" ImageUrl="~/assets/img/layout/perfil_default.jpg" CssClass="ui circular image" />
+                                    <div class="content">
+                                        João da Penha
+                                        <div class="sub header">Aluno</div>
+                                    </div>
+                                </h3>
                             </div>
                         </div>
-                        <div class="ui vertical secondary pointing menu large fluid">
-                            <asp:HyperLink ID="hlkDashboard" runat="server" NavigateUrl="~/pages/dashboard" CssClass="item"><i class="block layout icon"></i>Dashboard</asp:HyperLink>
-                            <asp:HyperLink ID="hlkHistorico" runat="server" CssClass="item"><i class="time icon"></i>Histórico</asp:HyperLink>
-                            <asp:HyperLink ID="hlkAvInstitucional" runat="server" CssClass="item"><i class="file icon"></i>Av. Institucional</asp:HyperLink>
-                            <asp:HyperLink ID="hlkPerfil" runat="server" CssClass="item"><i class="user icon"></i>Perfil</asp:HyperLink>
-                            <asp:HyperLink ID="hlkSair" runat="server" NavigateUrl="~/pages/sair" CssClass="item"><i class="power icon"></i>Sair</asp:HyperLink>
+                        <div class="ui vertical secondary menu fluid hidden-xs">
+                            <asp:HyperLink ID="hlkDashboard" runat="server" NavigateUrl="~/pages/dashboard" CssClass="item"><i class="block layout icon teal"></i>Dashboard</asp:HyperLink>
+                            <asp:HyperLink ID="hlkHistorico" runat="server" CssClass="item"><i class="pink time icon"></i>Histórico</asp:HyperLink>
+                            <asp:HyperLink ID="hlkAvInstitucional" runat="server" CssClass="item"><i class="green file icon"></i>Av. Institucional</asp:HyperLink>
+                            <asp:HyperLink ID="hlkPerfil" runat="server" CssClass="item"><i class="blue user icon"></i>Perfil</asp:HyperLink>
+                            <asp:HyperLink ID="hlkSair" runat="server" NavigateUrl="~/pages/sair" CssClass="item"><i class="red power icon"></i>Sair</asp:HyperLink>
+                        </div>
+                        <div class="ui labeled icon menu secondary fluid visible-xs">
+                            <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/pages/dashboard" CssClass="item"><i class="block layout icon teal"></i></asp:HyperLink>
+                            <asp:HyperLink ID="HyperLink2" runat="server" CssClass="item"><i class="pink time icon"></i></asp:HyperLink>
+                            <asp:HyperLink ID="HyperLink3" runat="server" CssClass="item"><i class="green file icon"></i></asp:HyperLink>
+                            <asp:HyperLink ID="HyperLink4" runat="server" CssClass="item"><i class="blue user icon"></i></asp:HyperLink>
+                            <asp:HyperLink ID="HyperLink5" runat="server" NavigateUrl="~/pages/sair" CssClass="item"><i class="red power icon"></i></asp:HyperLink>
                         </div>
                     </div>
                 </div>
-                <div class="twelve wide column">
-                    <div class="ui segment">
+                <div class="thirteen wide column">
+                    <div class=" hidden-xs ui segment">
                         <div class="ui breadcrumb">
                             <i class="icon home"></i>
                             <i class="right chevron icon divider"></i>
