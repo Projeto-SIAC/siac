@@ -24,21 +24,25 @@ namespace SIAC.Web.templates
             if (url.Contains("/dashboard"))
             {
                 hlkDashboard.CssClass += " active";
+                hlkDashboard2.CssClass += " active";
                 return;
             }
             else if (url.Contains("/historico"))
             {
                 hlkHistorico.CssClass += " active";
+                hlkHistorico2.CssClass += " active";
                 return;
             }
             else if (url.Contains("/perfil"))
             {
                 hlkPerfil.CssClass += " active";
+                hlkPerfil2.CssClass += " active";
                 return;
             }
             else if (url.Contains("/av-institucional"))
             {
                 hlkAvInstitucional.CssClass += " active";
+                hlkAvInstitucional2.CssClass += " active";
                 return;
             }
             

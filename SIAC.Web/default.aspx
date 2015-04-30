@@ -4,6 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="pt-br">
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="third_party/semantic/semantic.min.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet" />
     <script src="assets/js/jquery.min.js"></script>
@@ -81,7 +82,7 @@
                             <i class="icon coffee"></i>SIAC
                         </div>
                         <nav class="right menu">
-                            <div class="item">
+                            <div class="item hidden-xs">
                                 <asp:Label ID="lblData" runat="server" Text=""></asp:Label>
                             </div>
                             <div class="item">
