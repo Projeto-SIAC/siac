@@ -249,6 +249,7 @@
     <Content Include="third_party\semantic\themes\default\assets\fonts\icons.woff" />
     <Content Include="third_party\semantic\themes\default\assets\fonts\icons.woff2" />
     <Content Include="templates\template.Master" />
+    <None Include="Properties\PublishProfiles\Pontes.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
