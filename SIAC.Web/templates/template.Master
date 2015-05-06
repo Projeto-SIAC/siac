@@ -64,18 +64,18 @@
                             </div>
                         </div>
                         <div class="ui vertical secondary menu fluid hidden-xs">
-                            <asp:HyperLink ID="hlkDashboard" runat="server" NavigateUrl="~/pages/dashboard" CssClass="item"><i class="block layout icon teal"></i>Dashboard</asp:HyperLink>
-                            <asp:HyperLink ID="hlkHistorico" runat="server" CssClass="item"><i class="pink time icon"></i>Histórico</asp:HyperLink>
-                            <asp:HyperLink ID="hlkAvInstitucional" runat="server" CssClass="item"><i class="green file icon"></i>Av. Institucional</asp:HyperLink>
-                            <asp:HyperLink ID="hlkPerfil" runat="server" CssClass="item"><i class="purple user icon"></i>Perfil</asp:HyperLink>
-                            <asp:HyperLink ID="hlkSair" runat="server" NavigateUrl="~/pages/sair" CssClass="item"><i class="red power icon"></i>Sair</asp:HyperLink>
+                            <asp:HyperLink ID="hlkDashboard" runat="server" NavigateUrl="~/dashboard" CssClass="item"><i class="block layout icon teal"></i>Dashboard</asp:HyperLink>
+                            <asp:HyperLink ID="hlkHistorico" runat="server" NavigateUrl="~/historico" CssClass="item"><i class="pink time icon"></i>Histórico</asp:HyperLink>
+                            <asp:HyperLink ID="hlkAvInstitucional" runat="server" NavigateUrl="~/av-institucional" CssClass="item"><i class="green file icon"></i>Av. Institucional</asp:HyperLink>
+                            <asp:HyperLink ID="hlkPerfil" runat="server" NavigateUrl="~/perfil" CssClass="item"><i class="purple user icon"></i>Perfil</asp:HyperLink>
+                            <asp:HyperLink ID="hlkSair" runat="server" NavigateUrl="~/sair" CssClass="item"><i class="red power icon"></i>Sair</asp:HyperLink>
                         </div>
                         <div class="5 fluid ui icon buttons visible-xs">
-                            <asp:HyperLink ID="hlkDashboard2" runat="server" NavigateUrl="~/pages/dashboard" CssClass="ui button"><i class="block layout icon teal"></i></asp:HyperLink>
-                            <asp:HyperLink ID="hlkHistorico2" runat="server" CssClass="ui button"><i class="pink time icon"></i></asp:HyperLink>
-                            <asp:HyperLink ID="hlkAvInstitucional2" runat="server" CssClass="ui button"><i class="green file icon"></i></asp:HyperLink>
-                            <asp:HyperLink ID="hlkPerfil2" runat="server" CssClass="ui button"><i class="purple user icon"></i></asp:HyperLink>
-                            <asp:HyperLink ID="hlkSair2" runat="server" NavigateUrl="~/pages/sair" CssClass="ui button"><i class="red power icon"></i></asp:HyperLink>
+                            <asp:HyperLink ID="hlkDashboard2" runat="server" NavigateUrl="~/dashboard" CssClass="ui button"><i class="block layout icon teal"></i></asp:HyperLink>
+                            <asp:HyperLink ID="hlkHistorico2" runat="server" NavigateUrl="~/historico" CssClass="ui button"><i class="pink time icon"></i></asp:HyperLink>
+                            <asp:HyperLink ID="hlkAvInstitucional2" runat="server" NavigateUrl="~/av-institucional" CssClass="ui button"><i class="green file icon"></i></asp:HyperLink>
+                            <asp:HyperLink ID="hlkPerfil2" runat="server" NavigateUrl="~/perfil" CssClass="ui button"><i class="purple user icon"></i></asp:HyperLink>
+                            <asp:HyperLink ID="hlkSair2" runat="server" NavigateUrl="~/sair" CssClass="ui button"><i class="red power icon"></i></asp:HyperLink>
                         </div>
                     </div>
                 </div>
@@ -84,7 +84,9 @@
                         <div class="ui breadcrumb">
                             <i class="icon home"></i>
                             <i class="right chevron icon divider"></i>
-                            <a class="active section">Dashboard</a>
+                            <a class="active section">
+                                <asp:Label ID="lblPrimeiroNo" runat="server" Text=""></asp:Label>
+                            </a>
                         </div>
                     </div>
                     <div class="ui segment">

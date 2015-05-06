@@ -69,7 +69,7 @@
             </section>
             <section class="actions">
                 <button class="ui button">Cancelar</button>
-                <a class="ui button primary icon labeled" href="pages/"><i class="icon sign in"></i>Acessar</a>
+                <a class="ui button primary icon labeled" href="dashboard/"><i class="icon sign in"></i>Acessar</a>
             </section>
         </article>
 

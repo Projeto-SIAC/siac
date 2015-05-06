@@ -11,7 +11,7 @@ namespace SIAC.Web.pages
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Response.Redirect("dashboard/");
+            Response.Redirect("~/dashboard");
         }
     }
 }

@@ -60,7 +60,10 @@
     <Content Include="assets\css\style.css" />
     <Content Include="assets\img\layout\perfil_default.jpg" />
     <Content Include="default.aspx" />
+    <Content Include="pages\av-institucional\default.aspx" />
     <Content Include="pages\default.aspx" />
+    <Content Include="pages\historico\default.aspx" />
+    <Content Include="pages\perfil\default.aspx" />
     <Content Include="pages\sair\default.aspx" />
     <Content Include="third_party\semantic\components\accordion.css" />
     <Content Include="third_party\semantic\components\accordion.js" />
@@ -209,11 +212,32 @@
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="pages\av-institucional\default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\av-institucional\default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="pages\default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="pages\default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\historico\default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\historico\default.aspx.designer.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="pages\perfil\default.aspx.cs">
+      <DependentUpon>default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="pages\perfil\default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
     <Compile Include="pages\sair\default.aspx.cs">

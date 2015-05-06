@@ -11,3 +11,9 @@ C:\Users\dev-two\Desktop\Workspace\SIAC\SIAC.DAO\bin\Debug\EntityFramework.xml
 C:\Users\dev-two\Desktop\Workspace\SIAC\SIAC.DAO\obj\Debug\SIAC.DAO.csprojResolveAssemblyReference.cache
 C:\Users\dev-two\Desktop\Workspace\SIAC\SIAC.DAO\obj\Debug\SIAC.DAO.dll
 C:\Users\dev-two\Desktop\Workspace\SIAC\SIAC.DAO\obj\Debug\SIAC.DAO.pdb
+C:\Users\Felipe\Desktop\Workspace\SIAC\SIAC.DAO\bin\Debug\SIAC.DAO.dll
+C:\Users\Felipe\Desktop\Workspace\SIAC\SIAC.DAO\bin\Debug\SIAC.DAO.pdb
+C:\Users\Felipe\Desktop\Workspace\SIAC\SIAC.DAO\bin\Debug\EntityFramework.xml
+C:\Users\Felipe\Desktop\Workspace\SIAC\SIAC.DAO\obj\Debug\SIAC.DAO.csprojResolveAssemblyReference.cache
+C:\Users\Felipe\Desktop\Workspace\SIAC\SIAC.DAO\obj\Debug\SIAC.DAO.dll
+C:\Users\Felipe\Desktop\Workspace\SIAC\SIAC.DAO\obj\Debug\SIAC.DAO.pdb

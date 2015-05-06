@@ -21,31 +21,34 @@ namespace SIAC.Web.templates
 
         private void SetActiveItemMenu(string url)
         {
-            if (url.Contains("/dashboard"))
+            if (url.Contains("dashboard"))
             {
                 hlkDashboard.CssClass += " active";
                 hlkDashboard2.CssClass += " active";
+                lblPrimeiroNo.Text = "Dashboard";
                 return;
             }
-            else if (url.Contains("/historico"))
+            else if (url.Contains("historico"))
             {
                 hlkHistorico.CssClass += " active";
                 hlkHistorico2.CssClass += " active";
+                lblPrimeiroNo.Text = "Histórico";
                 return;
             }
-            else if (url.Contains("/perfil"))
+            else if (url.Contains("perfil"))
             {
                 hlkPerfil.CssClass += " active";
                 hlkPerfil2.CssClass += " active";
+                lblPrimeiroNo.Text = "Perfil";
                 return;
             }
-            else if (url.Contains("/av-institucional"))
+            else if (url.Contains("av-institucional"))
             {
                 hlkAvInstitucional.CssClass += " active";
                 hlkAvInstitucional2.CssClass += " active";
+                lblPrimeiroNo.Text = "Avaliação Institucional";
                 return;
-            }
-            
+            }            
         }
     }
 }
