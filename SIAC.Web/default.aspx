@@ -8,7 +8,7 @@
     <link href="third_party/semantic/semantic.min.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet" />
     <script src="assets/js/jquery.min.js"></script>
-    <script src="third_party/semantic/semantic.min.js"></script>
+    <script src="<%=ResolveClientUrl("third_party/semantic/semantic.min.js")%>"></script>
     <title>SIAC: Sistema Interativo de Avaliação do Conhecimento</title>.
      
     <script>
