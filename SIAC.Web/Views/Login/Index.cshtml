@@ -1,0 +1,393 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Interativo de Avaliação do Conhecimento - SIAC</title>
+    <link href="~/Resources/images/layout/logo-black.png" rel="shortcut icon" />
+    @Styles.Render("~/bundles/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style type="text/css">
+
+        .hidden.menu {
+            display: none;
+        }
+
+        .masthead.segment {
+            min-height: 700px;
+            padding: 1em 0em;
+        }
+
+        .masthead .logo.item img {
+            margin-right: 1em;
+        }
+
+        .masthead .ui.menu .ui.button {
+            margin-left: 0.5em;
+        }
+
+        .masthead h1.ui.header {
+            margin-top: 3em;
+            margin-bottom: 0em;
+            font-size: 4em;
+        }
+
+        .masthead h2 {
+            font-size: 1.7em;
+            font-weight: normal;
+        }
+
+        .ui.vertical.stripe {
+            padding: 8em 0em;
+        }
+
+            .ui.vertical.stripe h3 {
+                font-size: 2em;
+            }
+
+            .ui.vertical.stripe .button + h3,
+            .ui.vertical.stripe p + h3 {
+                margin-top: 3em;
+            }
+
+            .ui.vertical.stripe .floated.image {
+                clear: both;
+            }
+
+            .ui.vertical.stripe p {
+                font-size: 1.33em;
+            }
+
+            .ui.vertical.stripe .horizontal.divider {
+                margin: 3em 0em;
+            }
+
+        .quote.stripe.segment {
+            padding: 0em;
+        }
+
+            .quote.stripe.segment .grid .column {
+                padding-top: 5em;
+                padding-bottom: 5em;
+            }
+
+        .footer.segment {
+            padding: 5em 0em;
+        }
+
+        .secondary.text.menu .toc.item {
+            display: none;
+        }
+
+        .secondary.text.menu {
+            border: none !important;
+        }
+
+        @@media only screen and (max-width: 700px) {
+            .fixed.menu {
+                display: none !important;
+            }
+
+            .secondary.text.menu .item,
+            .secondary.text.menu .menu {
+                display: none;
+            }
+
+            .secondary.text.menu .toc.item {
+                display: block;
+            }
+
+            .masthead.segment {
+                min-height: 350px;
+            }
+
+            .masthead h1.ui.header {
+                font-size: 2em;
+                margin-top: 1.5em;
+            }
+
+            .masthead h2 {
+                margin-top: 0.5em;
+                font-size: 1.5em;
+            }
+        }
+
+        #myVideo {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-size: 100% 100%;
+            background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Images/Layout/background.jpg') !important;
+            background-image: -moz-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Images/Layout/background.jpg') !important;
+            background-image: -ms-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Images/Layout/background.jpg') !important;
+            background-image: -o-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Images/Layout/background.jpg') !important;
+            background-image: linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Images/Layout/background.jpg') !important;
+            background-position: center center;
+            background-size: cover;
+            object-fit: cover;
+            z-index: -3;
+        }
+
+        .masthead {
+            background: none!important;
+        }
+    </style>
+
+</head>
+<body class="pushable">
+    <div class="ui coupled first modal">
+        <i class="close icon"></i>
+        <div class="header">Você é...</div>
+        <div class="content">
+            <div class="ui four cards">
+                <a class="orange card">
+                    <div class="content">
+                        <h2 class="ui center aligned icon header">
+                            <i class="student icon"></i>
+
+                            Estudante
+                        </h2>
+                    </div>
+                </a>
+                <a class="green card">
+                    <div class="content">
+                        <h2 class="ui icon header">
+                            <i class="doctor icon"></i>
+                            Professor
+                        </h2>
+                    </div>
+                </a>
+                <a class="red card">
+                    <div class="content">
+                        <h2 class="ui icon header">
+                            <i class="user icon"></i>
+                            Colaborador
+                        </h2>
+                    </div>
+                </a>
+                <a class="purple card">
+                    <div class="content">
+                        <h2 class="ui icon header">
+                            <i class="spy icon"></i>
+                            Visitante
+                        </h2>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="ui coupled small second modal">
+        <i class="close icon"></i>
+        <div class="header">Quais as suas credencias?</div>
+        <div class="content">
+            <div class="ui form">
+                <form class="ui form">
+                    <div class="field required">
+                        <label>Matrícula</label>
+                        <div class="ui icon input">
+                            @Html.TextBox("TextBoxMatricula", null, new { placeholder = "Matrícula" })
+                            <i class="icon user"></i>
+                        </div>
+                    </div>
+                    <div class="field required">
+                        <label>Senha</label>
+                        <div class="ui icon input">
+                            @Html.Password("TextBoxSenha", null, new { placeholder = "Senha" })
+                            <i class="icon lock"></i>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui cancel button">Cancelar</div>
+            <div class="ui approve primary button">Entrar</div>
+        </div>
+    </div>
+    <div class="ui large top fixed menu transition hidden">
+        <div class="ui container">
+            <div class="item">
+                <img src="~/Resources/images/layout/logo-black.png" />
+            </div>
+            <div class="item">
+                <h2 class="ui header left aligned">
+                    <div class="content">
+                        SIAC
+                        <div class="sub header">Sistema Interativo de Avaliação do Conhecimento</div>
+                    </div>
+                </h2>
+            </div>
+            <div class="right menu">
+                <div class="item text">@DateTime.Today.ToLongDateString()</div>
+                <div class="item"><a class="ui button">Entrar</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="ui vertical inverted sidebar menu left">
+        <a class="item">Projeto</a>
+        <a class="item">Equipe</a>
+        <a class="item">Entrar</a>
+    </div>
+    <div class="pusher">
+        <div class="ui inverted vertical masthead center aligned segment">
+            <video id="myVideo" autoplay="autoplay" loop="loop" muted="muted">
+                <source src="~/Resources/videos/background.mp4" type="video/mp4" />
+            </video>
+            <div class="ui container">
+                <div class="ui large secondary inverted text menu">
+                    <a class="toc item">
+                        <i class="sidebar icon"></i>
+                    </a>
+                    <div class="item">
+                        <img src="~/Resources/images/layout/logo.png" />
+                    </div>
+                    <div class="item">
+                        <h2 class="ui header left aligned inverted">
+                            <div class="content">
+                                SIAC
+                                <div class="sub header">Sistema Interativo de Avaliação do Conhecimento</div>
+                            </div>
+                        </h2>
+                    </div>
+                    <div class="right item">
+                        <div class="item text">@DateTime.Today.ToLongDateString()</div>
+                        <a class="ui inverted button" onclick="$('.first.modal').modal('show')">Entrar</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui container">
+                <h1 class="ui inverted header">
+                    Novo conceito em avaliação
+                </h1>
+                <h2 style="margin-top:0">Feito por alunos para comunidade acadêmica</h2>
+                <div class="ui huge primary button">Ler mais <i class="right arrow icon"></i></div>
+            </div>
+
+        </div>
+        <div class="ui vertical stripe segment">
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                    <div class="eight wide column">
+                        <h3 class="ui header">We Help Companies and Companions</h3>
+                        <p>We can give your company superpowers to do things that they never thought possible. Let us delight your customers and empower your needs...through pure data analytics.</p>
+                        <h3 class="ui header">We Make Bananas That Can Dance</h3>
+                        <p>Yes that's right, you thought it was the stuff of dreams, but even bananas can be bioengineered.</p>
+                    </div>
+                    <div class="six wide right floated column">
+                        <img src="~/Resources/images/content/login/amostra.jpg" class="ui large bordered rounded image">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="center aligned column">
+                        <a class="ui huge button">Check Them Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui vertical stripe quote segment">
+            <div class="ui equal width stackable internally celled grid">
+                <div class="center aligned row">
+                    <div class="column">
+                        <h3>"What a Company"</h3>
+                        <p>That is what they all say about us</p>
+                    </div>
+                    <div class="column">
+                        <h3>"I shouldn't have gone with their competitor."</h3>
+                        <p>
+                            <img src="~/Resources/images/content/login/avatar.jpg" class="ui avatar image"> <b>Nan</b> Chief Fun Officer Acme Toys
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui vertical stripe segment">
+            <div class="ui text container">
+                <h3 class="ui header">Breaking The Grid, Grabs Your Attention</h3>
+                <p>Instead of focusing on content creation and hard work, we have learned how to master the art of doing nothing by providing massive amounts of whitespace and generic content that can seem massive, monolithic and worth your attention.</p>
+                <a class="ui large button">Read More</a>
+                <h4 class="ui horizontal header divider">
+                    <a href="#">Case Studies</a>
+                </h4>
+                <h3 class="ui header">Did We Tell You About Our Bananas?</h3>
+                <p>Yes I know you probably disregarded the earlier boasts as non-sequitor filler content, but its really true. It took years of gene splicing and combinatory DNA research, but our bananas can really dance.</p>
+                <a class="ui large button">I'm Still Quite Interested</a>
+            </div>
+        </div>
+        <div class="ui inverted vertical footer segment">
+            <div class="ui container">
+                <div class="ui stackable inverted divided equal height stackable grid">
+                    <div class="three wide column">
+                        <h4 class="ui inverted header">About</h4>
+                        <div class="ui inverted link list">
+                            <a href="#" class="item">Sitemap</a>
+                            <a href="#" class="item">Contact Us</a>
+                            <a href="#" class="item">Religious Ceremonies</a>
+                            <a href="#" class="item">Gazebo Plans</a>
+                        </div>
+                    </div>
+                    <div class="three wide column">
+                        <h4 class="ui inverted header">Services</h4>
+                        <div class="ui inverted link list">
+                            <a href="#" class="item">Banana Pre-Order</a>
+                            <a href="#" class="item">DNA FAQ</a>
+                            <a href="#" class="item">How To Access</a>
+                            <a href="#" class="item">Favorite X-Men</a>
+                        </div>
+                    </div>
+                    <div class="seven wide column">
+                        <h4 class="ui inverted header">Footer Header</h4>
+                        <p>Extra space for a call to action inside the footer that could help re-engage users.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/js")
+    <script>
+        $(document)
+          .ready(function () {
+
+              // fix menu when passed
+              $('.masthead')
+                .visibility({
+                    once: false,
+                    onBottomPassed: function () {
+                        $('.fixed.menu').transition('fade in');
+                    },
+                    onBottomPassedReverse: function () {
+                        $('.fixed.menu').transition('fade out');
+                    }
+                })
+              ;
+
+              // create sidebar and attach to menu open
+              $('.ui.sidebar')
+                .sidebar('attach events', '.toc.item')
+              ;
+
+              $('.coupled.modal')
+                  .modal({
+                      allowMultiple: false
+                  })
+              ;
+              // attach events to buttons
+              $('.second.modal')
+                .modal('attach events', '.first.modal .card')
+              ;
+
+          })
+        ;
+    </script>
+</body>
+</html>

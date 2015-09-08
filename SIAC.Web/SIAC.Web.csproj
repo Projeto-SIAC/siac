@@ -1,0 +1,330 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4B390E85-F5E9-4F34-8A2F-5B495D6B99A0}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SIAC.Web</RootNamespace>
+    <AssemblyName>SIAC.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\images\content\login\amostra.jpg" />
+    <Content Include="Resources\images\content\login\avatar.jpg" />
+    <Content Include="Resources\images\layout\background.jpg" />
+    <Content Include="Resources\images\layout\logo-black.png" />
+    <Content Include="Resources\images\layout\logo.png" />
+    <Content Include="Resources\components\accordion.css" />
+    <Content Include="Resources\components\accordion.js" />
+    <Content Include="Resources\components\accordion.min.css" />
+    <Content Include="Resources\components\accordion.min.js" />
+    <Content Include="Resources\components\ad.css" />
+    <Content Include="Resources\components\ad.min.css" />
+    <Content Include="Resources\components\api.js" />
+    <Content Include="Resources\components\api.min.js" />
+    <Content Include="Resources\components\breadcrumb.css" />
+    <Content Include="Resources\components\breadcrumb.min.css" />
+    <Content Include="Resources\components\button.css" />
+    <Content Include="Resources\components\button.min.css" />
+    <Content Include="Resources\components\card.css" />
+    <Content Include="Resources\components\card.min.css" />
+    <Content Include="Resources\components\checkbox.css" />
+    <Content Include="Resources\components\checkbox.js" />
+    <Content Include="Resources\components\checkbox.min.css" />
+    <Content Include="Resources\components\checkbox.min.js" />
+    <Content Include="Resources\components\comment.css" />
+    <Content Include="Resources\components\comment.min.css" />
+    <Content Include="Resources\components\container.css" />
+    <Content Include="Resources\components\container.min.css" />
+    <Content Include="Resources\components\dimmer.css" />
+    <Content Include="Resources\components\dimmer.js" />
+    <Content Include="Resources\components\dimmer.min.css" />
+    <Content Include="Resources\components\dimmer.min.js" />
+    <Content Include="Resources\components\divider.css" />
+    <Content Include="Resources\components\divider.min.css" />
+    <Content Include="Resources\components\dropdown.css" />
+    <Content Include="Resources\components\dropdown.js" />
+    <Content Include="Resources\components\dropdown.min.css" />
+    <Content Include="Resources\components\dropdown.min.js" />
+    <Content Include="Resources\components\embed.css" />
+    <Content Include="Resources\components\embed.js" />
+    <Content Include="Resources\components\embed.min.css" />
+    <Content Include="Resources\components\embed.min.js" />
+    <Content Include="Resources\components\feed.css" />
+    <Content Include="Resources\components\feed.min.css" />
+    <Content Include="Resources\components\flag.css" />
+    <Content Include="Resources\components\flag.min.css" />
+    <Content Include="Resources\components\form.css" />
+    <Content Include="Resources\components\form.js" />
+    <Content Include="Resources\components\form.min.css" />
+    <Content Include="Resources\components\form.min.js" />
+    <Content Include="Resources\components\grid.css" />
+    <Content Include="Resources\components\grid.min.css" />
+    <Content Include="Resources\components\header.css" />
+    <Content Include="Resources\components\header.min.css" />
+    <Content Include="Resources\components\icon.css" />
+    <Content Include="Resources\components\icon.min.css" />
+    <Content Include="Resources\components\image.css" />
+    <Content Include="Resources\components\image.min.css" />
+    <Content Include="Resources\components\input.css" />
+    <Content Include="Resources\components\input.min.css" />
+    <Content Include="Resources\components\item.css" />
+    <Content Include="Resources\components\item.min.css" />
+    <Content Include="Resources\components\label.css" />
+    <Content Include="Resources\components\label.min.css" />
+    <Content Include="Resources\components\list.css" />
+    <Content Include="Resources\components\list.min.css" />
+    <Content Include="Resources\components\loader.css" />
+    <Content Include="Resources\components\loader.min.css" />
+    <Content Include="Resources\components\menu.css" />
+    <Content Include="Resources\components\menu.min.css" />
+    <Content Include="Resources\components\message.css" />
+    <Content Include="Resources\components\message.min.css" />
+    <Content Include="Resources\components\modal.css" />
+    <Content Include="Resources\components\modal.js" />
+    <Content Include="Resources\components\modal.min.css" />
+    <Content Include="Resources\components\modal.min.js" />
+    <Content Include="Resources\components\nag.css" />
+    <Content Include="Resources\components\nag.js" />
+    <Content Include="Resources\components\nag.min.css" />
+    <Content Include="Resources\components\nag.min.js" />
+    <Content Include="Resources\components\popup.css" />
+    <Content Include="Resources\components\popup.js" />
+    <Content Include="Resources\components\popup.min.css" />
+    <Content Include="Resources\components\popup.min.js" />
+    <Content Include="Resources\components\progress.css" />
+    <Content Include="Resources\components\progress.js" />
+    <Content Include="Resources\components\progress.min.css" />
+    <Content Include="Resources\components\progress.min.js" />
+    <Content Include="Resources\components\rail.css" />
+    <Content Include="Resources\components\rail.min.css" />
+    <Content Include="Resources\components\rating.css" />
+    <Content Include="Resources\components\rating.js" />
+    <Content Include="Resources\components\rating.min.css" />
+    <Content Include="Resources\components\rating.min.js" />
+    <Content Include="Resources\components\reset.css" />
+    <Content Include="Resources\components\reset.min.css" />
+    <Content Include="Resources\components\reveal.css" />
+    <Content Include="Resources\components\reveal.min.css" />
+    <Content Include="Resources\components\search.css" />
+    <Content Include="Resources\components\search.js" />
+    <Content Include="Resources\components\search.min.css" />
+    <Content Include="Resources\components\search.min.js" />
+    <Content Include="Resources\components\segment.css" />
+    <Content Include="Resources\components\segment.min.css" />
+    <Content Include="Resources\components\shape.css" />
+    <Content Include="Resources\components\shape.js" />
+    <Content Include="Resources\components\shape.min.css" />
+    <Content Include="Resources\components\shape.min.js" />
+    <Content Include="Resources\components\sidebar.css" />
+    <Content Include="Resources\components\sidebar.js" />
+    <Content Include="Resources\components\sidebar.min.css" />
+    <Content Include="Resources\components\sidebar.min.js" />
+    <Content Include="Resources\components\site.css" />
+    <Content Include="Resources\components\site.js" />
+    <Content Include="Resources\components\site.min.css" />
+    <Content Include="Resources\components\site.min.js" />
+    <Content Include="Resources\components\state.js" />
+    <Content Include="Resources\components\state.min.js" />
+    <Content Include="Resources\components\statistic.css" />
+    <Content Include="Resources\components\statistic.min.css" />
+    <Content Include="Resources\components\step.css" />
+    <Content Include="Resources\components\step.min.css" />
+    <Content Include="Resources\components\sticky.css" />
+    <Content Include="Resources\components\sticky.js" />
+    <Content Include="Resources\components\sticky.min.css" />
+    <Content Include="Resources\components\sticky.min.js" />
+    <Content Include="Resources\components\tab.css" />
+    <Content Include="Resources\components\tab.js" />
+    <Content Include="Resources\components\tab.min.css" />
+    <Content Include="Resources\components\tab.min.js" />
+    <Content Include="Resources\components\table.css" />
+    <Content Include="Resources\components\table.min.css" />
+    <Content Include="Resources\components\transition.css" />
+    <Content Include="Resources\components\transition.js" />
+    <Content Include="Resources\components\transition.min.css" />
+    <Content Include="Resources\components\transition.min.js" />
+    <Content Include="Resources\components\visibility.js" />
+    <Content Include="Resources\components\visibility.min.js" />
+    <Content Include="Resources\jquery.min.js" />
+    <Content Include="Resources\modernizr.js" />
+    <Content Include="Resources\semantic.min.css" />
+    <Content Include="Resources\semantic.min.js" />
+    <Content Include="Resources\themes\basic\assets\fonts\icons.svg" />
+    <Content Include="Resources\themes\default\assets\fonts\icons.svg" />
+    <Content Include="Resources\themes\default\assets\images\flags.png" />
+    <Content Include="Global.asax" />
+    <Content Include="Resources\videos\background.mp4" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\web.config" />
+    <Content Include="packages.config" />
+    <Content Include="Resources\themes\basic\assets\fonts\icons.eot" />
+    <Content Include="Resources\themes\basic\assets\fonts\icons.ttf" />
+    <Content Include="Resources\themes\basic\assets\fonts\icons.woff" />
+    <Content Include="Resources\themes\default\assets\fonts\icons.eot" />
+    <Content Include="Resources\themes\default\assets\fonts\icons.ttf" />
+    <Content Include="Resources\themes\default\assets\fonts\icons.woff" />
+    <Content Include="Resources\themes\default\assets\fonts\icons.woff2" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>61759</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:61759/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
