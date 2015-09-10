@@ -18,7 +18,7 @@ namespace SIAC.Web.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            ViewBag.Acao = "show";
+            ViewBag.Acao = "$('.first.modal').modal('show')";
             return View("Index");
         }
 
@@ -27,9 +27,10 @@ namespace SIAC.Web.Controllers
         public ActionResult Login(FormCollection formCollection)
         {
             bool valido = false;
-
+            ViewBag.Lista = new List<string>();
             if (formCollection.HasKeys())
             {
+                var categoria = int.Parse(formCollection["DropDownCategoria"].ToString());
                 if (!String.IsNullOrWhiteSpace(formCollection["TextBoxMatricula"]) && formCollection["TextBoxMatricula"].ToString() == "postero")
                 {
                     if (!String.IsNullOrWhiteSpace(formCollection["TextBoxSenha"]) && formCollection["TextBoxSenha"].ToString() == "2699")
@@ -42,7 +43,11 @@ namespace SIAC.Web.Controllers
             if (valido)
                 return RedirectToAction("Index", "Dashboard");
             else
-                return RedirectToAction("Index");
+            {
+                ViewBag.Acao = "$('.second.modal').modal('show')";
+                ViewBag.Erro = "error";
+                return View("Index");
+            }
         }
     }
 }
