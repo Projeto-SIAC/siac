@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = null;
 }
 
@@ -152,7 +151,6 @@
                     <div class="content">
                         <h2 class="ui center aligned icon header">
                             <i class="student icon"></i>
-
                             Estudante
                         </h2>
                     </div>
@@ -184,32 +182,32 @@
             </div>
         </div>
     </div>
-    <div class="ui coupled small second modal">
+    <form action="~/Acesso/Login" method="post" class="ui coupled small second modal">
         <i class="close icon"></i>
         <div class="header">Quais as suas credencias?</div>
         <div class="content">
-            <form class="ui form">
+            <div class="ui form">
                 <div class="field required">
                     <label>Matrícula</label>
                     <div class="ui icon input">
-                        @Html.TextBox("TextBoxMatricula", null, new { placeholder = "Matrícula" })
+                        @Html.TextBox("TextBoxMatricula", null, new { placeholder = "Matrícula", required = "required" })
                         <i class="icon user"></i>
                     </div>
                 </div>
                 <div class="field required">
                     <label>Senha</label>
                     <div class="ui icon input">
-                        @Html.Password("TextBoxSenha", null, new { placeholder = "Senha" })
+                        @Html.Password("TextBoxSenha", null, new { placeholder = "Senha", required = "required" })
                         <i class="icon lock"></i>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
         <div class="actions">
-            <div class="ui cancel button">Cancelar</div>
-            <div class="ui approve primary button">Entrar</div>
+            <input type="reset" value="Cancelar" class="ui cancel button"/>
+            <input type="submit" value="Entrar" class="ui primary button"/>
         </div>
-    </div>
+    </form>
     <div class="ui large top fixed menu transition hidden">
         <div class="ui container">
             <div class="item">
@@ -268,10 +266,9 @@
             </div>
 
             <div class="ui container">
-                <h1 class="ui inverted header">
-                    Novo conceito em avaliação
+                <h1 class="ui inverted header">Novo conceito em avaliação
                 </h1>
-                <h2 style="margin-top:0">Feito por alunos para comunidade acadêmica</h2>
+                <h2 style="margin-top: 0">Feito por alunos para comunidade acadêmica</h2>
                 <div class="ui huge primary button">Ler mais <i class="right arrow icon"></i></div>
             </div>
 
@@ -306,7 +303,8 @@
                     <div class="column">
                         <h3>"I shouldn't have gone with their competitor."</h3>
                         <p>
-                            <img src="~/Resources/images/content/login/avatar.jpg" class="ui avatar image"> <b>Nan</b> Chief Fun Officer Acme Toys
+                            <img src="~/Resources/images/content/login/avatar.jpg" class="ui avatar image">
+                            <b>Nan</b> Chief Fun Officer Acme Toys
                         </p>
                     </div>
                 </div>
@@ -376,6 +374,12 @@
               $('.ui.sidebar')
                 .sidebar('attach events', '.toc.item')
               ;
+               
+
+              //$('.second.modal').modal({
+              //    close: '.close'
+              //})
+
 
               $('.coupled.modal')
                   .modal({
@@ -384,7 +388,7 @@
               ;
               // attach events to buttons
               $('.second.modal')
-                .modal('attach events', '.first.modal .card')
+                .modal('attach events', '.first.modal .card')                
               ;
 
               $('.first.modal')
