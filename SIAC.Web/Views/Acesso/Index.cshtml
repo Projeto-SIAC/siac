@@ -141,7 +141,6 @@
             background: none !important;
         }
     </style>
-
 </head>
 <body class="pushable">
     <div class="ui coupled first modal">
@@ -189,24 +188,22 @@
         <i class="close icon"></i>
         <div class="header">Quais as suas credencias?</div>
         <div class="content">
-            <div class="ui form">
-                <form class="ui form">
-                    <div class="field required">
-                        <label>Matrícula</label>
-                        <div class="ui icon input">
-                            @Html.TextBox("TextBoxMatricula", null, new { placeholder = "Matrícula" })
-                            <i class="icon user"></i>
-                        </div>
+            <form class="ui form">
+                <div class="field required">
+                    <label>Matrícula</label>
+                    <div class="ui icon input">
+                        @Html.TextBox("TextBoxMatricula", null, new { placeholder = "Matrícula" })
+                        <i class="icon user"></i>
                     </div>
-                    <div class="field required">
-                        <label>Senha</label>
-                        <div class="ui icon input">
-                            @Html.Password("TextBoxSenha", null, new { placeholder = "Senha" })
-                            <i class="icon lock"></i>
-                        </div>
+                </div>
+                <div class="field required">
+                    <label>Senha</label>
+                    <div class="ui icon input">
+                        @Html.Password("TextBoxSenha", null, new { placeholder = "Senha" })
+                        <i class="icon lock"></i>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
         <div class="actions">
             <div class="ui cancel button">Cancelar</div>
@@ -227,7 +224,9 @@
                 </h2>
             </div>
             <div class="right menu">
-                <div class="item text">@DateTime.Today.ToLongDateString()</div>
+                <div class="item text">
+                    @DateTime.Today.ToString("D", new System.Globalization.CultureInfo("pt-BR"))
+                </div>
                 <div class="item"><a class="ui button">Entrar</a></div>
             </div>
         </div>
@@ -260,7 +259,9 @@
                         </h2>
                     </div>
                     <div class="right item">
-                        <div class="item text">@DateTime.Today.ToLongDateString()</div>
+                        <div class="item text">
+                            @DateTime.Today.ToString("D", new System.Globalization.CultureInfo("pt-BR"))
+                        </div>
                         <a class="ui inverted button" onclick="$('.first.modal').modal('show')">Entrar</a>
                     </div>
                 </div>
@@ -384,6 +385,10 @@
               // attach events to buttons
               $('.second.modal')
                 .modal('attach events', '.first.modal .card')
+              ;
+
+              $('.first.modal')
+                .modal('@ViewBag.Acao')
               ;
 
           })
