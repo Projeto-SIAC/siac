@@ -1,0 +1,1011 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="dbb4ddc0cff41b43319b64a50f01243a8c" Class="DataClassesSIACDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=b4ddc0cf-f41b-4331-9b64-a50f01243a8c.sqlserver.sequelizer.com;Initial Catalog=dbb4ddc0cff41b43319b64a50f01243a8c;User ID=ciwhsoztttvycomt" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="dbb4ddc0cff41b43319b64a50f01243a8cConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Alternativa" Member="Alternativas">
+    <Type Name="Alternativa">
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodQuestao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Enunciado" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Comentario" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="FlagGabarito" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Questao_Alternativa" Member="Questao" ThisKey="CodQuestao" OtherKey="CodQuestao" Type="Questao" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UsuarioOpiniao" Member="UsuarioOpiniaos">
+    <Type Name="UsuarioOpiniao">
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Matricula" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Opiniao" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="DtEnvio" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Usuario_UsuarioOpiniao" Member="Usuario" ThisKey="Matricula" OtherKey="Matricula" Type="Usuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Aluno" Member="Alunos">
+    <Type Name="Aluno">
+      <Column Name="CodAluno" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CodCurso" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MatrAluno" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="Aluno_TurmaDiscAluno" Member="TurmaDiscAlunos" ThisKey="CodAluno" OtherKey="CodAluno" Type="TurmaDiscAluno" />
+      <Association Name="Curso_Aluno" Member="Curso" ThisKey="CodCurso" OtherKey="CodCurso" Type="Curso" IsForeignKey="true" />
+      <Association Name="Usuario_Aluno" Member="Usuario" ThisKey="MatrAluno" OtherKey="Matricula" Type="Usuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Area" Member="Areas">
+    <Type Name="Area">
+      <Column Name="CodArea" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Area_PessoaFormacao" Member="PessoaFormacaos" ThisKey="CodArea" OtherKey="CodArea" Type="PessoaFormacao" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AvalAcademica" Member="AvalAcademicas">
+    <Type Name="AvalAcademica">
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTurno" Type="System.Char" DbType="Char(1) NOT NULL" CanBeNull="false" />
+      <Column Name="NumTurma" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Periodo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodCurso" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodSala" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodProfessor" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodDisciplina" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Valor" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="Avaliacao_AvalAcademica" Member="Avaliacao" ThisKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" OtherKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" Type="Avaliacao" IsForeignKey="true" />
+      <Association Name="Disciplina_AvalAcademica" Member="Disciplina" ThisKey="CodDisciplina" OtherKey="CodDisciplina" Type="Disciplina" IsForeignKey="true" />
+      <Association Name="Professor_AvalAcademica" Member="Professor" ThisKey="CodProfessor" OtherKey="CodProfessor" Type="Professor" IsForeignKey="true" />
+      <Association Name="Sala_AvalAcademica" Member="Sala" ThisKey="CodSala" OtherKey="CodSala" Type="Sala" IsForeignKey="true" />
+      <Association Name="Turma_AvalAcademica" Member="Turma" ThisKey="NumTurma,Periodo,CodCurso,CodTurno" OtherKey="NumTurma,Periodo,CodCurso,CodTurno" Type="Turma" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AvalAcadReposicao" Member="AvalAcadReposicaos">
+    <Type Name="AvalAcadReposicao">
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodProfessor" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodJustificacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodSala" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Valor" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="Avaliacao_AvalAcadReposicao" Member="Avaliacao" ThisKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" OtherKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" Type="Avaliacao" IsForeignKey="true" />
+      <Association Name="Justificacao_AvalAcadReposicao" Member="Justificacao" ThisKey="CodJustificacao,CodProfessor" OtherKey="CodJustificacao,CodProfessor" Type="Justificacao" IsForeignKey="true" />
+      <Association Name="Sala_AvalAcadReposicao" Member="Sala" ThisKey="CodSala" OtherKey="CodSala" Type="Sala" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AvalAuto" Member="AvalAutos">
+    <Type Name="AvalAuto">
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodDificuldade" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodPessoaFisica" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Avaliacao_AvalAuto" Member="Avaliacao" ThisKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" OtherKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" Type="Avaliacao" IsForeignKey="true" />
+      <Association Name="Dificuldade_AvalAuto" Member="Dificuldade" ThisKey="CodDificuldade" OtherKey="CodDificuldade" Type="Dificuldade" IsForeignKey="true" />
+      <Association Name="PessoaFisica_AvalAuto" Member="PessoaFisica" ThisKey="CodPessoaFisica" OtherKey="CodPessoa" Type="PessoaFisica" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AvalAvi" Member="AvalAvis">
+    <Type Name="AvalAvi">
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodColabCoordenador" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Titulo" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Objetivo" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="DtTermino" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="AvalAvi_AviPublico" Member="AviPublicos" ThisKey="NumIdentificador,CodTipoAvaliacao,Semestre,Ano" OtherKey="NumIdentificador,CodTipoAvaliacao,Semestre,Ano" Type="AviPublico" />
+      <Association Name="AvalAvi_AviQuestao" Member="AviQuestaos" ThisKey="NumIdentificador,CodTipoAvaliacao,Semestre,Ano" OtherKey="NumIdentificador,CodTipoAvaliacao,Semestre,Ano" Type="AviQuestao" />
+      <Association Name="Avaliacao_AvalAvi" Member="Avaliacao" ThisKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" OtherKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" Type="Avaliacao" IsForeignKey="true" />
+      <Association Name="Colaborador_AvalAvi" Member="Colaborador" ThisKey="CodColabCoordenador" OtherKey="CodColaborador" Type="Colaborador" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AvalCertificacao" Member="AvalCertificacaos">
+    <Type Name="AvalCertificacao">
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodSala" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodProfessor" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodDisciplina" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Valor" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="AvalCertificacao_AvalCertPessoa" Member="AvalCertPessoas" ThisKey="NumIdentificador,CodTipoAvaliacao,Semestre,Ano" OtherKey="NumIdentificador,CodTipoAvaliacao,Semestre,Ano" Type="AvalCertPessoa" />
+      <Association Name="Avaliacao_AvalCertificacao" Member="Avaliacao" ThisKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" OtherKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" Type="Avaliacao" IsForeignKey="true" />
+      <Association Name="Disciplina_AvalCertificacao" Member="Disciplina" ThisKey="CodDisciplina" OtherKey="CodDisciplina" Type="Disciplina" IsForeignKey="true" />
+      <Association Name="Professor_AvalCertificacao" Member="Professor" ThisKey="CodProfessor" OtherKey="CodProfessor" Type="Professor" IsForeignKey="true" />
+      <Association Name="Sala_AvalCertificacao" Member="Sala" ThisKey="CodSala" OtherKey="CodSala" Type="Sala" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AvalCertPessoa" Member="AvalCertPessoas">
+    <Type Name="AvalCertPessoa">
+      <Column Name="CodPessoaFisica" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="AvalCertificacao_AvalCertPessoa" Member="AvalCertificacao" ThisKey="NumIdentificador,CodTipoAvaliacao,Semestre,Ano" OtherKey="NumIdentificador,CodTipoAvaliacao,Semestre,Ano" Type="AvalCertificacao" IsForeignKey="true" />
+      <Association Name="PessoaFisica_AvalCertPessoa" Member="PessoaFisica" ThisKey="CodPessoaFisica" OtherKey="CodPessoa" Type="PessoaFisica" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Avaliacao" Member="Avaliacaos">
+    <Type Name="Avaliacao">
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DtCadastro" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="DtAplicacao" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Duracao" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FlagLiberada" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Avaliacao_AvalAcademica" Member="AvalAcademica" ThisKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" OtherKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" Type="AvalAcademica" Cardinality="One" />
+      <Association Name="Avaliacao_AvalAcadReposicao" Member="AvalAcadReposicaos" ThisKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" OtherKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" Type="AvalAcadReposicao" />
+      <Association Name="Avaliacao_AvalAuto" Member="AvalAuto" ThisKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" OtherKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" Type="AvalAuto" Cardinality="One" />
+      <Association Name="Avaliacao_AvalAvi" Member="AvalAvi" ThisKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" OtherKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" Type="AvalAvi" Cardinality="One" />
+      <Association Name="Avaliacao_AvalCertificacao" Member="AvalCertificacao" ThisKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" OtherKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" Type="AvalCertificacao" Cardinality="One" />
+      <Association Name="Avaliacao_AvaliacaoTema" Member="AvaliacaoTemas" ThisKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" OtherKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" Type="AvaliacaoTema" />
+      <Association Name="Avaliacao_AvalPessoaResultado" Member="AvalPessoaResultados" ThisKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" OtherKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" Type="AvalPessoaResultado" />
+      <Association Name="TipoAvaliacao_Avaliacao" Member="TipoAvaliacao" ThisKey="CodTipoAvaliacao" OtherKey="CodTipoAvaliacao" Type="TipoAvaliacao" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AvaliacaoTema" Member="AvaliacaoTemas">
+    <Type Name="AvaliacaoTema">
+      <Column Name="CodTema" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodDisciplina" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="AvaliacaoTema_AvalTemaQuestao" Member="AvalTemaQuestaos" ThisKey="CodTema,CodDisciplina,NumIdentificador,CodTipoAvaliacao,Semestre,Ano" OtherKey="CodTema,CodDisciplina,NumIdentificador,CodTipoAvaliacao,Semestre,Ano" Type="AvalTemaQuestao" />
+      <Association Name="Avaliacao_AvaliacaoTema" Member="Avaliacao" ThisKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" OtherKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" Type="Avaliacao" IsForeignKey="true" />
+      <Association Name="Tema_AvaliacaoTema" Member="Tema" ThisKey="CodDisciplina,CodTema" OtherKey="CodDisciplina,CodTema" Type="Tema" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AvalPessoaResultado" Member="AvalPessoaResultados">
+    <Type Name="AvalPessoaResultado">
+      <Column Name="CodPessoaFisica" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="HoraTermino" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="QteAcertoObj" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Nota" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="AvalPessoaResultado_Justificacao" Member="Justificacaos" ThisKey="CodPessoaFisica,NumIdentificador,CodTipoAvaliacao,Semestre,Ano" OtherKey="CodPessoaFisica,NumIdentificador,CodTipoAvaliacao,Semestre,Ano" Type="Justificacao" />
+      <Association Name="Avaliacao_AvalPessoaResultado" Member="Avaliacao" ThisKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" OtherKey="CodTipoAvaliacao,Ano,Semestre,NumIdentificador" Type="Avaliacao" IsForeignKey="true" />
+      <Association Name="PessoaFisica_AvalPessoaResultado" Member="PessoaFisica" ThisKey="CodPessoaFisica" OtherKey="CodPessoa" Type="PessoaFisica" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AvalQuesPessoaResposta" Member="AvalQuesPessoaRespostas">
+    <Type Name="AvalQuesPessoaResposta">
+      <Column Name="CodPessoaFisica" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTema" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodDisciplina" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodQuestao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RespAlternativa" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RespDiscursiva" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="RespComentario" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="RespNota" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="AvalTemaQuestao_AvalQuesPessoaResposta" Member="AvalTemaQuestao" ThisKey="CodTema,CodDisciplina,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodQuestao" OtherKey="CodTema,CodDisciplina,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodQuestao" Type="AvalTemaQuestao" IsForeignKey="true" />
+      <Association Name="PessoaFisica_AvalQuesPessoaResposta" Member="PessoaFisica" ThisKey="CodPessoaFisica" OtherKey="CodPessoa" Type="PessoaFisica" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AvalTemaQuestao" Member="AvalTemaQuestaos">
+    <Type Name="AvalTemaQuestao">
+      <Column Name="CodTema" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodDisciplina" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodQuestao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="AvalTemaQuestao_AvalQuesPessoaResposta" Member="AvalQuesPessoaRespostas" ThisKey="CodTema,CodDisciplina,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodQuestao" OtherKey="CodTema,CodDisciplina,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodQuestao" Type="AvalQuesPessoaResposta" />
+      <Association Name="AvaliacaoTema_AvalTemaQuestao" Member="AvaliacaoTema" ThisKey="CodTema,CodDisciplina,NumIdentificador,CodTipoAvaliacao,Semestre,Ano" OtherKey="CodTema,CodDisciplina,NumIdentificador,CodTipoAvaliacao,Semestre,Ano" Type="AvaliacaoTema" IsForeignKey="true" />
+      <Association Name="QuestaoTema_AvalTemaQuestao" Member="QuestaoTema" ThisKey="CodQuestao,CodTema,CodDisciplina" OtherKey="CodQuestao,CodTema,CodDisciplina" Type="QuestaoTema" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AviCategoria" Member="AviCategorias">
+    <Type Name="AviCategoria">
+      <Column Name="CodAviCategoria" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Observacao" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Association Name="AviCategoria_AviQuestao" Member="AviQuestaos" ThisKey="CodAviCategoria" OtherKey="CodAviCategoria" Type="AviQuestao" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AviIndicador" Member="AviIndicadors">
+    <Type Name="AviIndicador">
+      <Column Name="CodAviIndicador" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Observacao" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Association Name="AviIndicador_AviQuestao" Member="AviQuestaos" ThisKey="CodAviIndicador" OtherKey="CodAviIndicador" Type="AviQuestao" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AviModulo" Member="AviModulos">
+    <Type Name="AviModulo">
+      <Column Name="CodAviModulo" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Objetivo" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Observacao" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Association Name="AviModulo_AviQuestao" Member="AviQuestaos" ThisKey="CodAviModulo" OtherKey="CodAviModulo" Type="AviQuestao" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AviPublico" Member="AviPublicos">
+    <Type Name="AviPublico">
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviTipoPublico" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="AviPublico_AviPublicoCampus" Member="AviPublicoCampus" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" Type="AviPublicoCampus" Cardinality="One" />
+      <Association Name="AviPublico_AviPublicoCurso" Member="AviPublicoCurso" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" Type="AviPublicoCurso" Cardinality="One" />
+      <Association Name="AviPublico_AviPublicoDiretoria" Member="AviPublicoDiretoria" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" Type="AviPublicoDiretoria" Cardinality="One" />
+      <Association Name="AviPublico_AviPublicoInstituicao" Member="AviPublicoInstituicao" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" Type="AviPublicoInstituicao" Cardinality="One" />
+      <Association Name="AviPublico_AviPublicoPessoa" Member="AviPublicoPessoa" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" Type="AviPublicoPessoa" Cardinality="One" />
+      <Association Name="AviPublico_AviPublicoProReitoria" Member="AviPublicoProReitoria" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" Type="AviPublicoProReitoria" Cardinality="One" />
+      <Association Name="AviPublico_AviPublicoReitoria" Member="AviPublicoReitoria" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" Type="AviPublicoReitoria" Cardinality="One" />
+      <Association Name="AviPublico_AviPublicoTurma" Member="AviPublicoTurma" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" Type="AviPublicoTurma" Cardinality="One" />
+      <Association Name="AvalAvi_AviPublico" Member="AvalAvi" ThisKey="NumIdentificador,CodTipoAvaliacao,Semestre,Ano" OtherKey="NumIdentificador,CodTipoAvaliacao,Semestre,Ano" Type="AvalAvi" IsForeignKey="true" />
+      <Association Name="AviTipoPublico_AviPublico" Member="AviTipoPublico" ThisKey="CodAviTipoPublico" OtherKey="CodAviTipoPublico" Type="AviTipoPublico" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AviPublicoCampus" Member="AviPublicoCampus">
+    <Type Name="AviPublicoCampus">
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviTipoPublico" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodCampus" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodInstituicao" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="AviPublico_AviPublicoCampus" Member="AviPublico" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" Type="AviPublico" IsForeignKey="true" />
+      <Association Name="Campus_AviPublicoCampus" Member="Campus" ThisKey="CodCampus,CodInstituicao" OtherKey="CodCampus,CodInstituicao" Type="Campus" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AviPublicoCurso" Member="AviPublicoCursos">
+    <Type Name="AviPublicoCurso">
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviTipoPublico" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodCurso" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="AviPublico_AviPublicoCurso" Member="AviPublico" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" Type="AviPublico" IsForeignKey="true" />
+      <Association Name="Curso_AviPublicoCurso" Member="Curso" ThisKey="CodCurso" OtherKey="CodCurso" Type="Curso" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AviPublicoDiretoria" Member="AviPublicoDiretorias">
+    <Type Name="AviPublicoDiretoria">
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviTipoPublico" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodDiretoria" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodCampus" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodInstituicao" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="AviPublico_AviPublicoDiretoria" Member="AviPublico" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" Type="AviPublico" IsForeignKey="true" />
+      <Association Name="Diretoria_AviPublicoDiretoria" Member="Diretoria" ThisKey="CodDiretoria,CodInstituicao,CodCampus" OtherKey="CodDiretoria,CodInstituicao,CodCampus" Type="Diretoria" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AviPublicoInstituicao" Member="AviPublicoInstituicaos">
+    <Type Name="AviPublicoInstituicao">
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviTipoPublico" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodInstituicao" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="AviPublico_AviPublicoInstituicao" Member="AviPublico" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" Type="AviPublico" IsForeignKey="true" />
+      <Association Name="Instituicao_AviPublicoInstituicao" Member="Instituicao" ThisKey="CodInstituicao" OtherKey="CodInstituicao" Type="Instituicao" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AviPublicoPessoa" Member="AviPublicoPessoas">
+    <Type Name="AviPublicoPessoa">
+      <Column Name="CodAviTipoPublico" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodPessoaFisica" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="AviPublico_AviPublicoPessoa" Member="AviPublico" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" Type="AviPublico" IsForeignKey="true" />
+      <Association Name="PessoaFisica_AviPublicoPessoa" Member="PessoaFisica" ThisKey="CodPessoaFisica" OtherKey="CodPessoa" Type="PessoaFisica" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AviPublicoProReitoria" Member="AviPublicoProReitorias">
+    <Type Name="AviPublicoProReitoria">
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviTipoPublico" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodProReitoria" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodInstituicao" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="AviPublico_AviPublicoProReitoria" Member="AviPublico" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" Type="AviPublico" IsForeignKey="true" />
+      <Association Name="ProReitoria_AviPublicoProReitoria" Member="ProReitoria" ThisKey="CodProReitoria,CodInstituicao" OtherKey="CodProReitoria,CodInstituicao" Type="ProReitoria" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AviPublicoReitoria" Member="AviPublicoReitorias">
+    <Type Name="AviPublicoReitoria">
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviTipoPublico" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodReitoria" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodInstituicao" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="AviPublico_AviPublicoReitoria" Member="AviPublico" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" Type="AviPublico" IsForeignKey="true" />
+      <Association Name="Reitoria_AviPublicoReitoria" Member="Reitoria" ThisKey="CodReitoria,CodInstituicao" OtherKey="CodReitoria,CodInstituicao" Type="Reitoria" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AviPublicoTurma" Member="AviPublicoTurmas">
+    <Type Name="AviPublicoTurma">
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviTipoPublico" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTurno" Type="System.Char" DbType="Char(1) NOT NULL" CanBeNull="false" />
+      <Column Name="NumTurma" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Periodo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodCurso" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="AviPublico_AviPublicoTurma" Member="AviPublico" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviTipoPublico" Type="AviPublico" IsForeignKey="true" />
+      <Association Name="Turma_AviPublicoTurma" Member="Turma" ThisKey="NumTurma,Periodo,CodCurso,CodTurno" OtherKey="NumTurma,Periodo,CodCurso,CodTurno" Type="Turma" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AviQuestao" Member="AviQuestaos">
+    <Type Name="AviQuestao">
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviIndicador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviCategoria" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviModulo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Enunciado" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Observacao" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="FlagDiscursiva" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="AviQuestao_AviQuestaoAlternativa" Member="AviQuestaoAlternativas" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviIndicador,CodAviCategoria,CodAviModulo" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviIndicador,CodAviCategoria,CodAviModulo" Type="AviQuestaoAlternativa" />
+      <Association Name="AviQuestao_AviQuestaoPessoaResposta" Member="AviQuestaoPessoaRespostas" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviIndicador,CodAviCategoria,CodAviModulo" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviIndicador,CodAviCategoria,CodAviModulo" Type="AviQuestaoPessoaResposta" />
+      <Association Name="AviModulo_AviQuestao" Member="AviModulo" ThisKey="CodAviModulo" OtherKey="CodAviModulo" Type="AviModulo" IsForeignKey="true" />
+      <Association Name="AviCategoria_AviQuestao" Member="AviCategoria" ThisKey="CodAviCategoria" OtherKey="CodAviCategoria" Type="AviCategoria" IsForeignKey="true" />
+      <Association Name="AviIndicador_AviQuestao" Member="AviIndicador" ThisKey="CodAviIndicador" OtherKey="CodAviIndicador" Type="AviIndicador" IsForeignKey="true" />
+      <Association Name="AvalAvi_AviQuestao" Member="AvalAvi" ThisKey="NumIdentificador,CodTipoAvaliacao,Semestre,Ano" OtherKey="NumIdentificador,CodTipoAvaliacao,Semestre,Ano" Type="AvalAvi" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AviQuestaoAlternativa" Member="AviQuestaoAlternativas">
+    <Type Name="AviQuestaoAlternativa">
+      <Column Name="CodAlternativa" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviIndicador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviCategoria" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviModulo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Enunciado" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="AviQuestao_AviQuestaoAlternativa" Member="AviQuestao" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviIndicador,CodAviCategoria,CodAviModulo" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviIndicador,CodAviCategoria,CodAviModulo" Type="AviQuestao" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AviQuestaoPessoaResposta" Member="AviQuestaoPessoaRespostas">
+    <Type Name="AviQuestaoPessoaResposta">
+      <Column Name="CodPessoaFisica" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviIndicador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviCategoria" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAviModulo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodRespostaOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RespAlternativa" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RespDiscursiva" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="RespData" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="AviQuestao_AviQuestaoPessoaResposta" Member="AviQuestao" ThisKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviIndicador,CodAviCategoria,CodAviModulo" OtherKey="CodOrdem,NumIdentificador,CodTipoAvaliacao,Ano,Semestre,CodAviIndicador,CodAviCategoria,CodAviModulo" Type="AviQuestao" IsForeignKey="true" />
+      <Association Name="PessoaFisica_AviQuestaoPessoaResposta" Member="PessoaFisica" ThisKey="CodPessoaFisica" OtherKey="CodPessoa" Type="PessoaFisica" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.AviTipoPublico" Member="AviTipoPublicos">
+    <Type Name="AviTipoPublico">
+      <Column Name="CodAviTipoPublico" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(35) NOT NULL" CanBeNull="false" />
+      <Association Name="AviTipoPublico_AviPublico" Member="AviPublicos" ThisKey="CodAviTipoPublico" OtherKey="CodAviTipoPublico" Type="AviPublico" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Bairro" Member="Bairros">
+    <Type Name="Bairro">
+      <Column Name="CodBairro" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodEstado" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodPais" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodMunicipio" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Bairro_Endereco" Member="Enderecos" ThisKey="CodBairro,CodEstado,CodPais,CodMunicipio" OtherKey="CodBairro,CodEstado,CodPais,CodMunicipio" Type="Endereco" />
+      <Association Name="Municipio_Bairro" Member="Municipio" ThisKey="CodPais,CodEstado,CodMunicipio" OtherKey="CodPais,CodEstado,CodMunicipio" Type="Municipio" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Campus" Member="Campus">
+    <Type Name="Campus">
+      <Column Name="CodCampus" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CodInstituicao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodColaboradorDiretor" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodPessoaJuridica" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Sigla" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Association Name="Campus_AviPublicoCampus" Member="AviPublicoCampus" ThisKey="CodCampus,CodInstituicao" OtherKey="CodCampus,CodInstituicao" Type="AviPublicoCampus" />
+      <Association Name="Campus_Diretoria" Member="Diretorias" ThisKey="CodCampus,CodInstituicao" OtherKey="CodCampus,CodInstituicao" Type="Diretoria" />
+      <Association Name="Campus_Sala" Member="Salas" ThisKey="CodCampus,CodInstituicao" OtherKey="CodCampus,CodInstituicao" Type="Sala" />
+      <Association Name="Colaborador_Campus" Member="Colaborador" ThisKey="CodColaboradorDiretor" OtherKey="CodColaborador" Type="Colaborador" IsForeignKey="true" />
+      <Association Name="Instituicao_Campus" Member="Instituicao" ThisKey="CodInstituicao" OtherKey="CodInstituicao" Type="Instituicao" IsForeignKey="true" />
+      <Association Name="PessoaJuridica_Campus" Member="PessoaJuridica" ThisKey="CodPessoaJuridica" OtherKey="CodPessoa" Type="PessoaJuridica" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Categoria" Member="Categorias">
+    <Type Name="Categoria">
+      <Column Name="CodCategoria" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(40) NOT NULL" CanBeNull="false" />
+      <Association Name="Categoria_PessoaCategoria" Member="PessoaCategorias" ThisKey="CodCategoria" OtherKey="CodCategoria" Type="PessoaCategoria" />
+      <Association Name="Categoria_Usuario" Member="Usuarios" ThisKey="CodCategoria" OtherKey="CodCategoria" Type="Usuario" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Colaborador" Member="Colaboradors">
+    <Type Name="Colaborador">
+      <Column Name="CodColaborador" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MatrColaborador" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="Colaborador_AvalAvi" Member="AvalAvis" ThisKey="CodColaborador" OtherKey="CodColabCoordenador" Type="AvalAvi" />
+      <Association Name="Colaborador_Campus" Member="Campus" ThisKey="CodColaborador" OtherKey="CodColaboradorDiretor" Type="Campus" />
+      <Association Name="Colaborador_Curso" Member="Cursos" ThisKey="CodColaborador" OtherKey="CodColabCoordenador" Type="Curso" />
+      <Association Name="Colaborador_Diretoria" Member="Diretorias" ThisKey="CodColaborador" OtherKey="CodColaboradorDiretor" Type="Diretoria" />
+      <Association Name="Colaborador_ProReitoria" Member="ProReitorias" ThisKey="CodColaborador" OtherKey="CodColaboradorProReitor" Type="ProReitoria" />
+      <Association Name="Colaborador_Reitoria" Member="Reitorias" ThisKey="CodColaborador" OtherKey="CodColaboradorReitor" Type="Reitoria" />
+      <Association Name="Usuario_Colaborador" Member="Usuario" ThisKey="MatrColaborador" OtherKey="Matricula" Type="Usuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Curso" Member="Cursos">
+    <Type Name="Curso">
+      <Column Name="CodCurso" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodNivelEnsino" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodDiretoria" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodCampus" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodInstituicao" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodColabCoordenador" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Sigla" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Association Name="Curso_Aluno" Member="Alunos" ThisKey="CodCurso" OtherKey="CodCurso" Type="Aluno" />
+      <Association Name="Curso_AviPublicoCurso" Member="AviPublicoCursos" ThisKey="CodCurso" OtherKey="CodCurso" Type="AviPublicoCurso" />
+      <Association Name="Curso_MatrizCurricular" Member="MatrizCurriculars" ThisKey="CodCurso" OtherKey="CodCurso" Type="MatrizCurricular" />
+      <Association Name="Curso_Turma" Member="Turmas" ThisKey="CodCurso" OtherKey="CodCurso" Type="Turma" />
+      <Association Name="Colaborador_Curso" Member="Colaborador" ThisKey="CodColabCoordenador" OtherKey="CodColaborador" Type="Colaborador" IsForeignKey="true" />
+      <Association Name="Diretoria_Curso" Member="Diretoria" ThisKey="CodDiretoria,CodInstituicao,CodCampus" OtherKey="CodDiretoria,CodInstituicao,CodCampus" Type="Diretoria" IsForeignKey="true" />
+      <Association Name="NivelEnsino_Curso" Member="NivelEnsino" ThisKey="CodNivelEnsino" OtherKey="CodNivelEnsino" Type="NivelEnsino" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DiaSemana" Member="DiaSemanas">
+    <Type Name="DiaSemana">
+      <Column Name="CodDia" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Association Name="DiaSemana_TurmaDiscProfHorario" Member="TurmaDiscProfHorarios" ThisKey="CodDia" OtherKey="CodDia" Type="TurmaDiscProfHorario" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Dificuldade" Member="Dificuldades">
+    <Type Name="Dificuldade">
+      <Column Name="CodDificuldade" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Comentario" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Association Name="Dificuldade_AvalAuto" Member="AvalAutos" ThisKey="CodDificuldade" OtherKey="CodDificuldade" Type="AvalAuto" />
+      <Association Name="Dificuldade_Questao" Member="Questaos" ThisKey="CodDificuldade" OtherKey="CodDificuldade" Type="Questao" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Diretoria" Member="Diretorias">
+    <Type Name="Diretoria">
+      <Column Name="CodDiretoria" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CodInstituicao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodCampus" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodPessoaJuridica" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodColaboradorDiretor" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Sigla" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Association Name="Diretoria_AviPublicoDiretoria" Member="AviPublicoDiretorias" ThisKey="CodDiretoria,CodInstituicao,CodCampus" OtherKey="CodDiretoria,CodInstituicao,CodCampus" Type="AviPublicoDiretoria" />
+      <Association Name="Diretoria_Curso" Member="Cursos" ThisKey="CodDiretoria,CodInstituicao,CodCampus" OtherKey="CodDiretoria,CodInstituicao,CodCampus" Type="Curso" />
+      <Association Name="Campus_Diretoria" Member="Campus" ThisKey="CodCampus,CodInstituicao" OtherKey="CodCampus,CodInstituicao" Type="Campus" IsForeignKey="true" />
+      <Association Name="Colaborador_Diretoria" Member="Colaborador" ThisKey="CodColaboradorDiretor" OtherKey="CodColaborador" Type="Colaborador" IsForeignKey="true" />
+      <Association Name="PessoaJuridica_Diretoria" Member="PessoaJuridica" ThisKey="CodPessoaJuridica" OtherKey="CodPessoa" Type="PessoaJuridica" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Disciplina" Member="Disciplinas">
+    <Type Name="Disciplina">
+      <Column Name="CodDisciplina" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Sigla" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="FlagEletivaOptativa" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="FlagFlexivel" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="CodDiscIFRN" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Disciplina_AvalAcademica" Member="AvalAcademicas" ThisKey="CodDisciplina" OtherKey="CodDisciplina" Type="AvalAcademica" />
+      <Association Name="Disciplina_AvalCertificacao" Member="AvalCertificacaos" ThisKey="CodDisciplina" OtherKey="CodDisciplina" Type="AvalCertificacao" />
+      <Association Name="Disciplina_MatrizCurricularDisciplina" Member="MatrizCurricularDisciplinas" ThisKey="CodDisciplina" OtherKey="CodDisciplina" Type="MatrizCurricularDisciplina" />
+      <Association Name="Disciplina_Tema" Member="Temas" ThisKey="CodDisciplina" OtherKey="CodDisciplina" Type="Tema" />
+      <Association Name="Disciplina_TurmaDiscAluno" Member="TurmaDiscAlunos" ThisKey="CodDisciplina" OtherKey="CodDisciplina" Type="TurmaDiscAluno" />
+      <Association Name="Disciplina_TurmaDiscProfHorario" Member="TurmaDiscProfHorarios" ThisKey="CodDisciplina" OtherKey="CodDisciplina" Type="TurmaDiscProfHorario" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Email" Member="Emails">
+    <Type Name="Email">
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodPessoa" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoContato" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Member="Email1" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Pessoa_Email" Member="Pessoa" ThisKey="CodPessoa" OtherKey="CodPessoa" Type="Pessoa" IsForeignKey="true" />
+      <Association Name="TipoContato_Email" Member="TipoContato" ThisKey="CodTipoContato" OtherKey="CodTipoContato" Type="TipoContato" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Endereco" Member="Enderecos">
+    <Type Name="Endereco">
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodPessoa" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodMunicipio" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodBairro" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodPais" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodEstado" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Logradouro" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Numero" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Complemento" Type="System.String" DbType="VarChar(140)" CanBeNull="true" />
+      <Column Name="Cep" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Bairro_Endereco" Member="Bairro" ThisKey="CodBairro,CodEstado,CodPais,CodMunicipio" OtherKey="CodBairro,CodEstado,CodPais,CodMunicipio" Type="Bairro" IsForeignKey="true" />
+      <Association Name="Pessoa_Endereco" Member="Pessoa" ThisKey="CodPessoa" OtherKey="CodPessoa" Type="Pessoa" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Estado" Member="Estados">
+    <Type Name="Estado">
+      <Column Name="CodEstado" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodPais" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Sigla" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Association Name="Estado_Municipio" Member="Municipios" ThisKey="CodPais,CodEstado" OtherKey="CodPais,CodEstado" Type="Municipio" />
+      <Association Name="Pai_Estado" Member="Pai" ThisKey="CodPais" OtherKey="CodPais" Type="Pai" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Horario" Member="Horarios">
+    <Type Name="Horario">
+      <Column Name="CodGrupo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodHorario" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTurno" Type="System.Char" DbType="Char(1) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="HoraInicio" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="HoraTermino" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Horario_TurmaDiscProfHorario" Member="TurmaDiscProfHorarios" ThisKey="CodGrupo,CodHorario,CodTurno" OtherKey="CodGrupo,CodHorario,CodTurno" Type="TurmaDiscProfHorario" />
+      <Association Name="Turno_Horario" Member="Turno" ThisKey="CodTurno" OtherKey="CodTurno" Type="Turno" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Instituicao" Member="Instituicaos">
+    <Type Name="Instituicao">
+      <Column Name="CodInstituicao" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CodPessoaJuridica" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Sigla" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Association Name="Instituicao_AviPublicoInstituicao" Member="AviPublicoInstituicaos" ThisKey="CodInstituicao" OtherKey="CodInstituicao" Type="AviPublicoInstituicao" />
+      <Association Name="Instituicao_Campus" Member="Campus" ThisKey="CodInstituicao" OtherKey="CodInstituicao" Type="Campus" />
+      <Association Name="Instituicao_ProReitoria" Member="ProReitorias" ThisKey="CodInstituicao" OtherKey="CodInstituicao" Type="ProReitoria" />
+      <Association Name="Instituicao_Reitoria" Member="Reitorias" ThisKey="CodInstituicao" OtherKey="CodInstituicao" Type="Reitoria" />
+      <Association Name="PessoaJuridica_Instituicao" Member="PessoaJuridica" ThisKey="CodPessoaJuridica" OtherKey="CodPessoa" Type="PessoaJuridica" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Justificacao" Member="Justificacaos">
+    <Type Name="Justificacao">
+      <Column Name="CodJustificacao" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CodProfessor" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Semestre" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodPessoaFisica" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DtCadastro" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="DtConfirmacao" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Descricao" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="Justificacao_AvalAcadReposicao" Member="AvalAcadReposicaos" ThisKey="CodJustificacao,CodProfessor" OtherKey="CodJustificacao,CodProfessor" Type="AvalAcadReposicao" />
+      <Association Name="AvalPessoaResultado_Justificacao" Member="AvalPessoaResultado" ThisKey="CodPessoaFisica,NumIdentificador,CodTipoAvaliacao,Semestre,Ano" OtherKey="CodPessoaFisica,NumIdentificador,CodTipoAvaliacao,Semestre,Ano" Type="AvalPessoaResultado" IsForeignKey="true" />
+      <Association Name="Professor_Justificacao" Member="Professor" ThisKey="CodProfessor" OtherKey="CodProfessor" Type="Professor" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MatrizCurricular" Member="MatrizCurriculars">
+    <Type Name="MatrizCurricular">
+      <Column Name="CodMatriz" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodCurso" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CargaHoraria" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="MatrizCurricular_MatrizCurricularDisciplina" Member="MatrizCurricularDisciplinas" ThisKey="CodMatriz,CodCurso" OtherKey="CodMatriz,CodCurso" Type="MatrizCurricularDisciplina" />
+      <Association Name="Curso_MatrizCurricular" Member="Curso" ThisKey="CodCurso" OtherKey="CodCurso" Type="Curso" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MatrizCurricularDisciplina" Member="MatrizCurricularDisciplinas">
+    <Type Name="MatrizCurricularDisciplina">
+      <Column Name="CodCurso" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodMatriz" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodDisciplina" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Periodo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DiscCargaHoraria" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Disciplina_MatrizCurricularDisciplina" Member="Disciplina" ThisKey="CodDisciplina" OtherKey="CodDisciplina" Type="Disciplina" IsForeignKey="true" />
+      <Association Name="MatrizCurricular_MatrizCurricularDisciplina" Member="MatrizCurricular" ThisKey="CodMatriz,CodCurso" OtherKey="CodMatriz,CodCurso" Type="MatrizCurricular" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Municipio" Member="Municipios">
+    <Type Name="Municipio">
+      <Column Name="CodMunicipio" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodPais" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodEstado" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Municipio_Bairro" Member="Bairros" ThisKey="CodPais,CodEstado,CodMunicipio" OtherKey="CodPais,CodEstado,CodMunicipio" Type="Bairro" />
+      <Association Name="Estado_Municipio" Member="Estado" ThisKey="CodPais,CodEstado" OtherKey="CodPais,CodEstado" Type="Estado" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NivelEnsino" Member="NivelEnsinos">
+    <Type Name="NivelEnsino">
+      <Column Name="CodNivelEnsino" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Sigla" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Association Name="NivelEnsino_Curso" Member="Cursos" ThisKey="CodNivelEnsino" OtherKey="CodNivelEnsino" Type="Curso" />
+      <Association Name="NivelEnsino_PessoaFormacao" Member="PessoaFormacaos" ThisKey="CodNivelEnsino" OtherKey="CodNivelEnsino" Type="PessoaFormacao" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Ocupacao" Member="Ocupacaos">
+    <Type Name="Ocupacao">
+      <Column Name="CodOcupacao" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(40) NOT NULL" CanBeNull="false" />
+      <Association Name="Ocupacao_PessoaOcupacao" Member="PessoaOcupacaos" ThisKey="CodOcupacao" OtherKey="CodOcupacao" Type="PessoaOcupacao" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Pais" Member="Pais">
+    <Type Name="Pai">
+      <Column Name="CodPais" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Sigla" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Association Name="Pai_Estado" Member="Estados" ThisKey="CodPais" OtherKey="CodPais" Type="Estado" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Parametro" Member="Parametros">
+    <Type Name="Parametro">
+      <Column Name="TempoInatividade" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NumeracaoQuestao" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NumeracaoAlternativa" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="QteSemestres" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Pessoa" Member="Pessoas">
+    <Type Name="Pessoa">
+      <Column Name="CodPessoa" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TipoPessoa" Type="System.Char" DbType="Char(1)" CanBeNull="true" />
+      <Association Name="Pessoa_Email" Member="Emails" ThisKey="CodPessoa" OtherKey="CodPessoa" Type="Email" />
+      <Association Name="Pessoa_Endereco" Member="Enderecos" ThisKey="CodPessoa" OtherKey="CodPessoa" Type="Endereco" />
+      <Association Name="Pessoa_PessoaFisica" Member="PessoaFisica" ThisKey="CodPessoa" OtherKey="CodPessoa" Type="PessoaFisica" Cardinality="One" />
+      <Association Name="Pessoa_PessoaJuridica" Member="PessoaJuridica" ThisKey="CodPessoa" OtherKey="CodPessoa" Type="PessoaJuridica" Cardinality="One" />
+      <Association Name="Pessoa_Telefone" Member="Telefones" ThisKey="CodPessoa" OtherKey="CodPessoa" Type="Telefone" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PessoaCategoria" Member="PessoaCategorias">
+    <Type Name="PessoaCategoria">
+      <Column Name="CodPessoaFisica" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodCategoria" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Categoria_PessoaCategoria" Member="Categoria" ThisKey="CodCategoria" OtherKey="CodCategoria" Type="Categoria" IsForeignKey="true" />
+      <Association Name="PessoaFisica_PessoaCategoria" Member="PessoaFisica" ThisKey="CodPessoaFisica" OtherKey="CodPessoa" Type="PessoaFisica" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PessoaFisica" Member="PessoaFisicas">
+    <Type Name="PessoaFisica">
+      <Column Name="CodPessoa" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Nome" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="DtNascimento" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Cpf" Type="System.String" DbType="Char(11)" CanBeNull="true" />
+      <Column Name="Sexo" Type="System.Char" DbType="Char(1)" CanBeNull="true" />
+      <Association Name="PessoaFisica_AvalAuto" Member="AvalAutos" ThisKey="CodPessoa" OtherKey="CodPessoaFisica" Type="AvalAuto" />
+      <Association Name="PessoaFisica_AvalCertPessoa" Member="AvalCertPessoas" ThisKey="CodPessoa" OtherKey="CodPessoaFisica" Type="AvalCertPessoa" />
+      <Association Name="PessoaFisica_AvalPessoaResultado" Member="AvalPessoaResultados" ThisKey="CodPessoa" OtherKey="CodPessoaFisica" Type="AvalPessoaResultado" />
+      <Association Name="PessoaFisica_AvalQuesPessoaResposta" Member="AvalQuesPessoaRespostas" ThisKey="CodPessoa" OtherKey="CodPessoaFisica" Type="AvalQuesPessoaResposta" />
+      <Association Name="PessoaFisica_AviPublicoPessoa" Member="AviPublicoPessoas" ThisKey="CodPessoa" OtherKey="CodPessoaFisica" Type="AviPublicoPessoa" />
+      <Association Name="PessoaFisica_AviQuestaoPessoaResposta" Member="AviQuestaoPessoaRespostas" ThisKey="CodPessoa" OtherKey="CodPessoaFisica" Type="AviQuestaoPessoaResposta" />
+      <Association Name="PessoaFisica_PessoaCategoria" Member="PessoaCategorias" ThisKey="CodPessoa" OtherKey="CodPessoaFisica" Type="PessoaCategoria" />
+      <Association Name="PessoaFisica_PessoaFormacao" Member="PessoaFormacaos" ThisKey="CodPessoa" OtherKey="CodPessoaFisica" Type="PessoaFormacao" />
+      <Association Name="PessoaFisica_PessoaOcupacao" Member="PessoaOcupacaos" ThisKey="CodPessoa" OtherKey="CodPessoaFisica" Type="PessoaOcupacao" />
+      <Association Name="PessoaFisica_Usuario" Member="Usuarios" ThisKey="CodPessoa" OtherKey="CodPessoaFisica" Type="Usuario" />
+      <Association Name="Pessoa_PessoaFisica" Member="Pessoa" ThisKey="CodPessoa" OtherKey="CodPessoa" Type="Pessoa" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PessoaFormacao" Member="PessoaFormacaos">
+    <Type Name="PessoaFormacao">
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodPessoaFisica" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodArea" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodNivelEnsino" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Curso" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Ano" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Area_PessoaFormacao" Member="Area" ThisKey="CodArea" OtherKey="CodArea" Type="Area" IsForeignKey="true" />
+      <Association Name="NivelEnsino_PessoaFormacao" Member="NivelEnsino" ThisKey="CodNivelEnsino" OtherKey="CodNivelEnsino" Type="NivelEnsino" IsForeignKey="true" />
+      <Association Name="PessoaFisica_PessoaFormacao" Member="PessoaFisica" ThisKey="CodPessoaFisica" OtherKey="CodPessoa" Type="PessoaFisica" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PessoaJuridica" Member="PessoaJuridicas">
+    <Type Name="PessoaJuridica">
+      <Column Name="CodPessoa" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RazaoSocial" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="NomeFantasia" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Cnpj" Type="System.String" DbType="Char(15)" CanBeNull="true" />
+      <Column Name="Portal" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Association Name="PessoaJuridica_Campus" Member="Campus" ThisKey="CodPessoa" OtherKey="CodPessoaJuridica" Type="Campus" />
+      <Association Name="PessoaJuridica_Diretoria" Member="Diretorias" ThisKey="CodPessoa" OtherKey="CodPessoaJuridica" Type="Diretoria" />
+      <Association Name="PessoaJuridica_Instituicao" Member="Instituicaos" ThisKey="CodPessoa" OtherKey="CodPessoaJuridica" Type="Instituicao" />
+      <Association Name="PessoaJuridica_ProReitoria" Member="ProReitorias" ThisKey="CodPessoa" OtherKey="CodPessoaJuridica" Type="ProReitoria" />
+      <Association Name="PessoaJuridica_Reitoria" Member="Reitorias" ThisKey="CodPessoa" OtherKey="CodPessoaJuridica" Type="Reitoria" />
+      <Association Name="Pessoa_PessoaJuridica" Member="Pessoa" ThisKey="CodPessoa" OtherKey="CodPessoa" Type="Pessoa" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PessoaOcupacao" Member="PessoaOcupacaos">
+    <Type Name="PessoaOcupacao">
+      <Column Name="CodPessoaFisica" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodOcupacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Ocupacao_PessoaOcupacao" Member="Ocupacao" ThisKey="CodOcupacao" OtherKey="CodOcupacao" Type="Ocupacao" IsForeignKey="true" />
+      <Association Name="PessoaFisica_PessoaOcupacao" Member="PessoaFisica" ThisKey="CodPessoaFisica" OtherKey="CodPessoa" Type="PessoaFisica" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Professor" Member="Professors">
+    <Type Name="Professor">
+      <Column Name="CodProfessor" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MatrProfessor" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="Professor_AvalAcademica" Member="AvalAcademicas" ThisKey="CodProfessor" OtherKey="CodProfessor" Type="AvalAcademica" />
+      <Association Name="Professor_AvalCertificacao" Member="AvalCertificacaos" ThisKey="CodProfessor" OtherKey="CodProfessor" Type="AvalCertificacao" />
+      <Association Name="Professor_Justificacao" Member="Justificacaos" ThisKey="CodProfessor" OtherKey="CodProfessor" Type="Justificacao" />
+      <Association Name="Professor_Questao" Member="Questaos" ThisKey="CodProfessor" OtherKey="CodProfessor" Type="Questao" />
+      <Association Name="Professor_TurmaDiscProfHorario" Member="TurmaDiscProfHorarios" ThisKey="CodProfessor" OtherKey="CodProfessor" Type="TurmaDiscProfHorario" />
+      <Association Name="Usuario_Professor" Member="Usuario" ThisKey="MatrProfessor" OtherKey="Matricula" Type="Usuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProReitoria" Member="ProReitorias">
+    <Type Name="ProReitoria">
+      <Column Name="CodProReitoria" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CodInstituicao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodPessoaJuridica" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodColaboradorProReitor" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Sigla" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Association Name="ProReitoria_AviPublicoProReitoria" Member="AviPublicoProReitorias" ThisKey="CodProReitoria,CodInstituicao" OtherKey="CodProReitoria,CodInstituicao" Type="AviPublicoProReitoria" />
+      <Association Name="Colaborador_ProReitoria" Member="Colaborador" ThisKey="CodColaboradorProReitor" OtherKey="CodColaborador" Type="Colaborador" IsForeignKey="true" />
+      <Association Name="Instituicao_ProReitoria" Member="Instituicao" ThisKey="CodInstituicao" OtherKey="CodInstituicao" Type="Instituicao" IsForeignKey="true" />
+      <Association Name="PessoaJuridica_ProReitoria" Member="PessoaJuridica" ThisKey="CodPessoaJuridica" OtherKey="CodPessoa" Type="PessoaJuridica" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Questao" Member="Questaos">
+    <Type Name="Questao">
+      <Column Name="CodQuestao" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CodProfessor" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodDificuldade" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodTipoQuestao" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Enunciado" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Objetivo" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="Comentario" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="ChaveDeResposta" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="Questao_Alternativa" Member="Alternativas" ThisKey="CodQuestao" OtherKey="CodQuestao" Type="Alternativa" />
+      <Association Name="Questao_QuestaoAnexo" Member="QuestaoAnexos" ThisKey="CodQuestao" OtherKey="CodQuestao" Type="QuestaoAnexo" />
+      <Association Name="Questao_QuestaoTema" Member="QuestaoTemas" ThisKey="CodQuestao" OtherKey="CodQuestao" Type="QuestaoTema" />
+      <Association Name="Dificuldade_Questao" Member="Dificuldade" ThisKey="CodDificuldade" OtherKey="CodDificuldade" Type="Dificuldade" IsForeignKey="true" />
+      <Association Name="Professor_Questao" Member="Professor" ThisKey="CodProfessor" OtherKey="CodProfessor" Type="Professor" IsForeignKey="true" />
+      <Association Name="TipoQuestao_Questao" Member="TipoQuestao" ThisKey="CodTipoQuestao" OtherKey="CodTipoQuestao" Type="TipoQuestao" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.QuestaoAnexo" Member="QuestaoAnexos">
+    <Type Name="QuestaoAnexo">
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoAnexo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodQuestao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Anexo" Type="System.Data.Linq.Binary" DbType="Image NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Legenda" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="Fonte" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Association Name="Questao_QuestaoAnexo" Member="Questao" ThisKey="CodQuestao" OtherKey="CodQuestao" Type="Questao" IsForeignKey="true" />
+      <Association Name="TipoAnexo_QuestaoAnexo" Member="TipoAnexo" ThisKey="CodTipoAnexo" OtherKey="CodTipoAnexo" Type="TipoAnexo" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.QuestaoTema" Member="QuestaoTemas">
+    <Type Name="QuestaoTema">
+      <Column Name="CodQuestao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTema" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodDisciplina" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="QuestaoTema_AvalTemaQuestao" Member="AvalTemaQuestaos" ThisKey="CodQuestao,CodTema,CodDisciplina" OtherKey="CodQuestao,CodTema,CodDisciplina" Type="AvalTemaQuestao" />
+      <Association Name="Questao_QuestaoTema" Member="Questao" ThisKey="CodQuestao" OtherKey="CodQuestao" Type="Questao" IsForeignKey="true" />
+      <Association Name="Tema_QuestaoTema" Member="Tema" ThisKey="CodDisciplina,CodTema" OtherKey="CodDisciplina,CodTema" Type="Tema" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Reitoria" Member="Reitorias">
+    <Type Name="Reitoria">
+      <Column Name="CodReitoria" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CodInstituicao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodPessoaJuridica" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodColaboradorReitor" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Sigla" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Association Name="Reitoria_AviPublicoReitoria" Member="AviPublicoReitorias" ThisKey="CodReitoria,CodInstituicao" OtherKey="CodReitoria,CodInstituicao" Type="AviPublicoReitoria" />
+      <Association Name="Colaborador_Reitoria" Member="Colaborador" ThisKey="CodColaboradorReitor" OtherKey="CodColaborador" Type="Colaborador" IsForeignKey="true" />
+      <Association Name="Instituicao_Reitoria" Member="Instituicao" ThisKey="CodInstituicao" OtherKey="CodInstituicao" Type="Instituicao" IsForeignKey="true" />
+      <Association Name="PessoaJuridica_Reitoria" Member="PessoaJuridica" ThisKey="CodPessoaJuridica" OtherKey="CodPessoa" Type="PessoaJuridica" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Sala" Member="Salas">
+    <Type Name="Sala">
+      <Column Name="CodSala" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CodInstituicao" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodCampus" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Sigla" Type="System.String" DbType="VarChar(15)" CanBeNull="true" />
+      <Column Name="RefLocal" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Observacao" Type="System.String" DbType="VarChar(140)" CanBeNull="true" />
+      <Association Name="Sala_AvalAcademica" Member="AvalAcademicas" ThisKey="CodSala" OtherKey="CodSala" Type="AvalAcademica" />
+      <Association Name="Sala_AvalAcadReposicao" Member="AvalAcadReposicaos" ThisKey="CodSala" OtherKey="CodSala" Type="AvalAcadReposicao" />
+      <Association Name="Sala_AvalCertificacao" Member="AvalCertificacaos" ThisKey="CodSala" OtherKey="CodSala" Type="AvalCertificacao" />
+      <Association Name="Sala_TurmaDiscProfHorario" Member="TurmaDiscProfHorarios" ThisKey="CodSala" OtherKey="CodSala" Type="TurmaDiscProfHorario" />
+      <Association Name="Campus_Sala" Member="Campus" ThisKey="CodCampus,CodInstituicao" OtherKey="CodCampus,CodInstituicao" Type="Campus" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Telefone" Member="Telefones">
+    <Type Name="Telefone">
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodPessoa" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTipoContato" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodDDI" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CodDDD" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Numero" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Association Name="Pessoa_Telefone" Member="Pessoa" ThisKey="CodPessoa" OtherKey="CodPessoa" Type="Pessoa" IsForeignKey="true" />
+      <Association Name="TipoContato_Telefone" Member="TipoContato" ThisKey="CodTipoContato" OtherKey="CodTipoContato" Type="TipoContato" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Tema" Member="Temas">
+    <Type Name="Tema">
+      <Column Name="CodTema" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodDisciplina" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Comentario" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Association Name="Tema_AvaliacaoTema" Member="AvaliacaoTemas" ThisKey="CodDisciplina,CodTema" OtherKey="CodDisciplina,CodTema" Type="AvaliacaoTema" />
+      <Association Name="Tema_QuestaoTema" Member="QuestaoTemas" ThisKey="CodDisciplina,CodTema" OtherKey="CodDisciplina,CodTema" Type="QuestaoTema" />
+      <Association Name="Disciplina_Tema" Member="Disciplina" ThisKey="CodDisciplina" OtherKey="CodDisciplina" Type="Disciplina" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TipoAnexo" Member="TipoAnexos">
+    <Type Name="TipoAnexo">
+      <Column Name="CodTipoAnexo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Association Name="TipoAnexo_QuestaoAnexo" Member="QuestaoAnexos" ThisKey="CodTipoAnexo" OtherKey="CodTipoAnexo" Type="QuestaoAnexo" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TipoAvaliacao" Member="TipoAvaliacaos">
+    <Type Name="TipoAvaliacao">
+      <Column Name="CodTipoAvaliacao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Sigla" Type="System.String" DbType="VarChar(4)" CanBeNull="true" />
+      <Association Name="TipoAvaliacao_Avaliacao" Member="Avaliacaos" ThisKey="CodTipoAvaliacao" OtherKey="CodTipoAvaliacao" Type="Avaliacao" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TipoContato" Member="TipoContatos">
+    <Type Name="TipoContato">
+      <Column Name="CodTipoContato" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="TipoContato_Email" Member="Emails" ThisKey="CodTipoContato" OtherKey="CodTipoContato" Type="Email" />
+      <Association Name="TipoContato_Telefone" Member="Telefones" ThisKey="CodTipoContato" OtherKey="CodTipoContato" Type="Telefone" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TipoQuestao" Member="TipoQuestaos">
+    <Type Name="TipoQuestao">
+      <Column Name="CodTipoQuestao" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="Sigla" Type="System.String" DbType="VarChar(4)" CanBeNull="true" />
+      <Association Name="TipoQuestao_Questao" Member="Questaos" ThisKey="CodTipoQuestao" OtherKey="CodTipoQuestao" Type="Questao" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Turma" Member="Turmas">
+    <Type Name="Turma">
+      <Column Name="NumTurma" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Periodo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodCurso" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTurno" Type="System.Char" DbType="Char(1) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Nome" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Association Name="Turma_AvalAcademica" Member="AvalAcademicas" ThisKey="NumTurma,Periodo,CodCurso,CodTurno" OtherKey="NumTurma,Periodo,CodCurso,CodTurno" Type="AvalAcademica" />
+      <Association Name="Turma_AviPublicoTurma" Member="AviPublicoTurmas" ThisKey="NumTurma,Periodo,CodCurso,CodTurno" OtherKey="NumTurma,Periodo,CodCurso,CodTurno" Type="AviPublicoTurma" />
+      <Association Name="Turma_TurmaDiscAluno" Member="TurmaDiscAlunos" ThisKey="NumTurma,Periodo,CodCurso,CodTurno" OtherKey="CodCurso,Periodo,NumTurma,CodTurno" Type="TurmaDiscAluno" />
+      <Association Name="Turma_TurmaDiscProfHorario" Member="TurmaDiscProfHorarios" ThisKey="NumTurma,Periodo,CodCurso,CodTurno" OtherKey="NumTurma,Periodo,CodCurso,CodTurno" Type="TurmaDiscProfHorario" />
+      <Association Name="Curso_Turma" Member="Curso" ThisKey="CodCurso" OtherKey="CodCurso" Type="Curso" IsForeignKey="true" />
+      <Association Name="Turno_Turma" Member="Turno" ThisKey="CodTurno" OtherKey="CodTurno" Type="Turno" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TurmaDiscAluno" Member="TurmaDiscAlunos">
+    <Type Name="TurmaDiscAluno">
+      <Column Name="AnoLetivo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SemestreLetivo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodDisciplina" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodCurso" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodAluno" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Periodo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumTurma" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTurno" Type="System.Char" DbType="Char(1) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="Aluno_TurmaDiscAluno" Member="Aluno" ThisKey="CodAluno" OtherKey="CodAluno" Type="Aluno" IsForeignKey="true" />
+      <Association Name="Disciplina_TurmaDiscAluno" Member="Disciplina" ThisKey="CodDisciplina" OtherKey="CodDisciplina" Type="Disciplina" IsForeignKey="true" />
+      <Association Name="Turma_TurmaDiscAluno" Member="Turma" ThisKey="CodCurso,Periodo,NumTurma,CodTurno" OtherKey="NumTurma,Periodo,CodCurso,CodTurno" Type="Turma" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TurmaDiscProfHorario" Member="TurmaDiscProfHorarios">
+    <Type Name="TurmaDiscProfHorario">
+      <Column Name="AnoLetivo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SemestreLetivo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodDisciplina" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodProfessor" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodDia" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodTurno" Type="System.Char" DbType="Char(1) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodHorario" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodGrupo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodCurso" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Periodo" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NumTurma" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodSala" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Disciplina_TurmaDiscProfHorario" Member="Disciplina" ThisKey="CodDisciplina" OtherKey="CodDisciplina" Type="Disciplina" IsForeignKey="true" />
+      <Association Name="DiaSemana_TurmaDiscProfHorario" Member="DiaSemana" ThisKey="CodDia" OtherKey="CodDia" Type="DiaSemana" IsForeignKey="true" />
+      <Association Name="Professor_TurmaDiscProfHorario" Member="Professor" ThisKey="CodProfessor" OtherKey="CodProfessor" Type="Professor" IsForeignKey="true" />
+      <Association Name="Sala_TurmaDiscProfHorario" Member="Sala" ThisKey="CodSala" OtherKey="CodSala" Type="Sala" IsForeignKey="true" />
+      <Association Name="Turma_TurmaDiscProfHorario" Member="Turma" ThisKey="NumTurma,Periodo,CodCurso,CodTurno" OtherKey="NumTurma,Periodo,CodCurso,CodTurno" Type="Turma" IsForeignKey="true" />
+      <Association Name="Horario_TurmaDiscProfHorario" Member="Horario" ThisKey="CodGrupo,CodHorario,CodTurno" OtherKey="CodGrupo,CodHorario,CodTurno" Type="Horario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Turno" Member="Turnos">
+    <Type Name="Turno">
+      <Column Name="CodTurno" Type="System.Char" DbType="Char(1) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descricao" Type="System.String" DbType="VarChar(15) NOT NULL" CanBeNull="false" />
+      <Association Name="Turno_Horario" Member="Horarios" ThisKey="CodTurno" OtherKey="CodTurno" Type="Horario" />
+      <Association Name="Turno_Turma" Member="Turmas" ThisKey="CodTurno" OtherKey="CodTurno" Type="Turma" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Usuario" Member="Usuarios">
+    <Type Name="Usuario">
+      <Column Name="Matricula" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodPessoaFisica" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CodCategoria" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Senha" Type="System.String" DbType="Char(64) NOT NULL" CanBeNull="false" />
+      <Column Name="DtCadastro" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Usuario_UsuarioOpiniao" Member="UsuarioOpiniaos" ThisKey="Matricula" OtherKey="Matricula" Type="UsuarioOpiniao" />
+      <Association Name="Usuario_Aluno" Member="Alunos" ThisKey="Matricula" OtherKey="MatrAluno" Type="Aluno" />
+      <Association Name="Usuario_Colaborador" Member="Colaboradors" ThisKey="Matricula" OtherKey="MatrColaborador" Type="Colaborador" />
+      <Association Name="Usuario_Professor" Member="Professors" ThisKey="Matricula" OtherKey="MatrProfessor" Type="Professor" />
+      <Association Name="Usuario_UsuarioAcesso" Member="UsuarioAcessos" ThisKey="Matricula" OtherKey="Matricula" Type="UsuarioAcesso" />
+      <Association Name="Usuario_Visitante" Member="Visitantes" ThisKey="Matricula" OtherKey="MatrVisitante" Type="Visitante" />
+      <Association Name="Categoria_Usuario" Member="Categoria" ThisKey="CodCategoria" OtherKey="CodCategoria" Type="Categoria" IsForeignKey="true" />
+      <Association Name="PessoaFisica_Usuario" Member="PessoaFisica" ThisKey="CodPessoaFisica" OtherKey="CodPessoa" Type="PessoaFisica" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UsuarioAcesso" Member="UsuarioAcessos">
+    <Type Name="UsuarioAcesso">
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Matricula" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DtAcesso" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="IpAcesso" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="UsuarioAcesso_UsuarioAcessoPagina" Member="UsuarioAcessoPaginas" ThisKey="CodOrdem,Matricula" OtherKey="CodOrdem,Matricula" Type="UsuarioAcessoPagina" />
+      <Association Name="Usuario_UsuarioAcesso" Member="Usuario" ThisKey="Matricula" OtherKey="Matricula" Type="Usuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UsuarioAcessoPagina" Member="UsuarioAcessoPaginas">
+    <Type Name="UsuarioAcessoPagina">
+      <Column Name="NumIdentificador" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Matricula" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CodOrdem" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Titulo" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DtAbertura" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PaginaReferencia" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Association Name="UsuarioAcesso_UsuarioAcessoPagina" Member="UsuarioAcesso" ThisKey="CodOrdem,Matricula" OtherKey="CodOrdem,Matricula" Type="UsuarioAcesso" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Visitante" Member="Visitantes">
+    <Type Name="Visitante">
+      <Column Name="CodVisitante" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MatrVisitante" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="DtValidade" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Usuario_Visitante" Member="Usuario" ThisKey="MatrVisitante" OtherKey="Matricula" Type="Usuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
