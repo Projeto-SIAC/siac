@@ -142,82 +142,32 @@
     </style>
 </head>
 <body class="pushable">
-    <div class="ui coupled first modal">
+    <form action="~/Acesso/Entrar" method="post" class="ui small modal">
         <i class="close icon"></i>
-        <div class="header">Você é...</div>
-        <div class="content">
-            <div class="ui four cards">
-                <a href="javascript:selecionarCategoria(1)" class="orange card">
-                    <div class="content">
-                        <h2 class="ui center aligned icon header">
-                            <i class="student icon"></i>
-                            Estudante
-                        </h2>
-                    </div>
-                </a>
-                <a href="javascript:selecionarCategoria(2)" class="green card">
-                    <div class="content">
-                        <h2 class="ui icon header">
-                            <i class="doctor icon"></i>
-                            Professor
-                        </h2>
-                    </div>
-                </a>
-                <a href="javascript:selecionarCategoria(3)" class="red card">
-                    <div class="content">
-                        <h2 class="ui icon header">
-                            <i class="user icon"></i>
-                            Colaborador
-                        </h2>
-                    </div>
-                </a>
-                <a href="javascript:selecionarCategoria(4)" class="purple card">
-                    <div class="content">
-                        <h2 class="ui icon header">
-                            <i class="spy icon"></i>
-                            Visitante
-                        </h2>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-    <form action="~/Acesso/Entrar" method="post" class="ui coupled small second modal">
-        <i class="close icon"></i>
-        <div class="header">Quais as suas credencias?</div>
+        <div class="header">Quais as suas credenciais?</div>
         <div class="content">
             <div class="ui form @ViewBag.Erro">
                 <div class="ui message error">
                     <div class="header">Credenciais inválidas</div>
                     <p>Note que ambos os campos diferenciam maiúsculas e minúsculas.</p>
                 </div>
-                <div class="field" hidden>
-                    <label for="DropDownCategoria">Categoria</label>
-                    <select name="DropDownCategoria" class="ui dropdown categoria">
-                        <option value="1">Estudante</option>
-                        <option value="2">Professor</option>
-                        <option value="3">Colaborador</option>
-                        <option value="4">Visitante</option>
-                    </select>
+                <div class="field required">
+                    <label for="TextBoxMatricula">Matrícula</label>
+                    <div class="ui icon input">
+                        @Html.TextBox("TextBoxMatricula", (string)ViewBag.TextBoxMatricula, new { placeholder = "Matrícula", required = "required", autofocus = "autofocus" })
+                        <i class="icon user"></i>
+                    </div>
                 </div>
-            <div class="field required">
-                <label for="TextBoxMatricula">Matrícula</label>
-                <div class="ui icon input">
-                    @Html.TextBox("TextBoxMatricula", (string)ViewBag.TextBoxMatricula, new { placeholder = "Matrícula", required = "required", autofocus = "autofocus" })
-                    <i class="icon user"></i>
-                </div>
-            </div>
-            <div class="field required">
-                <label for="TextBoxSenha">Senha</label>
-                <div class="ui icon input">
-                    @Html.Password("TextBoxSenha", null, new { placeholder = "Senha", required = "required" })
-                    <i class="icon lock"></i>
+                <div class="field required">
+                    <label for="TextBoxSenha">Senha</label>
+                    <div class="ui icon input">
+                        @Html.Password("TextBoxSenha", null, new { placeholder = "Senha", required = "required" })
+                        <i class="icon lock"></i>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
         <div class="actions">
-            <a href="javascript:$('.first.modal').modal('show')" class="ui button" style="float:left">Voltar</a>
             <input type="reset" value="Cancelar" class="ui cancel button" onclick="$('.form').removeClass('error')" />
             <input type="submit" value="Entrar" class="ui primary button" onclick="if ($('.form input:required:invalid').length == 0) { $('.ui.form').addClass('loading') }" />
         </div>
@@ -239,7 +189,7 @@
                 <div class="item text">
                     @DateTime.Today.ToString("D", new System.Globalization.CultureInfo("pt-BR"))
                 </div>
-                <div class="item"><a class="ui button" onclick="$('.first.modal').modal('show')">Entrar</a></div>
+                <div class="item"><a class="ui button" onclick="$('.modal').modal('show')">Entrar</a></div>
             </div>
         </div>
     </div>
@@ -274,7 +224,7 @@
                         <div class="item text">
                             @DateTime.Today.ToString("D", new System.Globalization.CultureInfo("pt-BR"))
                         </div>
-                        <a class="ui inverted button" onclick="$('.first.modal').modal('show')">Entrar</a>
+                        <a class="ui inverted button" onclick="$('.modal').modal('show')">Entrar</a>
                     </div>
                 </div>
             </div>
@@ -395,29 +345,9 @@
                 .sidebar('attach events', '.toc.item')
               ;
 
-
-              //$('.second.modal').modal({
-              //    close: '.close'
-              //})
-
-
-              $('.coupled.modal')
-                  .modal({
-                      allowMultiple: false
-                  })
-              ;
-              // attach events to buttons
-              $('.second.modal')
-                .modal('attach events', '.first.modal .card')
-              ;
-
-
-
               @Html.Raw(ViewBag.Acao)
-
-              selecionarCategoria(@ViewBag.DropDownCategoria);
           })
-        ;     
+        ;
     </script>
 </body>
 </html>

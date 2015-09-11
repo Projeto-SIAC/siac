@@ -27,7 +27,7 @@ namespace SIAC.Web.Controllers
             {
                 return RedirectToAction("Index", "Dashboard");
             }
-            ViewBag.Acao = "$('.first.modal').modal('show')";
+            ViewBag.Acao = "$('.modal').modal('show')";
             return View("Index");
         }
 
@@ -39,10 +39,6 @@ namespace SIAC.Web.Controllers
 
             if (formCollection.HasKeys())
             {
-                int categoria = 0;
-                int.TryParse(formCollection["DropDownCategoria"].ToString(), out categoria);
-                ViewBag.DropDownCategoria = categoria.ToString();
-
                 if (!String.IsNullOrWhiteSpace(formCollection["TextBoxMatricula"]) && !String.IsNullOrWhiteSpace(formCollection["TextBoxSenha"]))
                 {
                     string matricula = formCollection["TextBoxMatricula"].ToString();
@@ -68,7 +64,7 @@ namespace SIAC.Web.Controllers
             }
             else
             {
-                ViewBag.Acao = "$('.second.modal').modal('show')";
+                ViewBag.Acao = "$('.modal').modal('show')";
                 ViewBag.Erro = "error";
                 return View("Index");
             }
