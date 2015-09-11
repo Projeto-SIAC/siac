@@ -18,6 +18,10 @@
         .breadcrumb .section {
             text-transform: capitalize;
         }
+
+        .ui.segment {
+            border-radius: 0;
+        }
     </style>
 </head>
 <body>
@@ -29,7 +33,7 @@
                 <h2 class="ui header left aligned">
                     <div class="content">
                         SIAC
-                        <div class="sub header">Sistema Interativo de Avaliação do Conhecimento</div>
+                        <div class="sub header">Sistema Interativo de Avaliação de Conhecimento</div>
                     </div>
                 </h2>
             </div>
@@ -40,7 +44,37 @@
                 <div class="item">@Html.ActionLink("Sair", "Sair", "Acesso", null, new { @class = "ui button" } )</div>
         </div>
     </div>
+    
+
     <div class="ui grid" style="margin: auto 1em">
+        <div class="sixteen wide column" style="padding-top: 0; padding-bottom: 0">
+                <div class="ui breadcrumb">
+                    @{
+                        string url = Request.Url.ToString();
+                        url = !(url.IndexOf('?') < 0) ? url.Remove(url.IndexOf('?')) : url;
+                        url = url.Substring(url.IndexOf("//") + 2);
+                        string[] strs = url.Split('/');
+                        for (int i = 0; i < strs.Length - 1; i++)
+                        {
+                            if (i == 0)
+                            {
+                                <a href="~/" class="section"><i class="icon home"></i></a>
+                                <i class="right angle icon divider"></i>
+                                continue;
+                            }
+                            string action = String.Empty;
+                            for (int j = 1; j <= i; j++)
+                            {
+                                action += "/";
+                                action += strs[j];
+                            }
+                            <a href="@action" class="section">@strs[i]</a>
+                            <i class="right angle icon divider"></i>
+                        }
+                    }
+                    <div class="active section">@ViewBag.Title</div>
+                </div>
+        </div>
         <div class="three wide column">
             <div class="ui segment">
                 <div class="ui header">
@@ -59,7 +93,7 @@
                     <a href="~/Historico" class="item">
                         Histórico
                     </a>
-                    <a href="~/AvInstituicional" class="item">
+                    <a href="~/AVI" class="item">
                         Av. Instituicional
                     </a>
                     <a href="~/Perfil" class="item">
@@ -71,28 +105,8 @@
                 </div>
             </div>
         </div>
-        <div class="thirteen wide column">
-            <div class="ui segment">
-                <div class="ui breadcrumb">
-                    @{
-                        string url = Request.Url.ToString();
-                        url = url.Substring(url.IndexOf("//")+2);
-                        string[] strs = url.Split('/');
-                        for (int i = 0; i < strs.Length - 1; i++)
-                        {
-                            if (i == 0)
-                            {
-                                <a href="~/" class="section"><i class="icon home"></i></a>
-                                <i class="right angle icon divider"></i>
-                                continue;
-                            }
-                            <a href="~/@strs[i]" class="section">@strs[i]</a>
-                            <i class="right angle icon divider"></i>
-                        }
-                    }
-                    <div class="active section">@ViewBag.Title</div>
-                </div>
-            </div>
+        <div class="thirteen wide column"  style="height:100%">
+            
             <div class="ui segment">
                 @RenderBody()
             </div>

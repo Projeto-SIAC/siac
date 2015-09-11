@@ -260,6 +260,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\AcessoController.cs" />
+    <Compile Include="Controllers\ErroController.cs" />
+    <Compile Include="Controllers\QuestaoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -302,7 +304,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Dashboard\Hello.cshtml" />
+    <Content Include="Views\Questao\Index.cshtml" />
+    <Content Include="Views\Questao\Cadastrar.cshtml" />
+    <Content Include="Views\Erro\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
