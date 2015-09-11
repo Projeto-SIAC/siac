@@ -6,9 +6,8 @@ using System.Web.Mvc;
 
 namespace SIAC.Web.Controllers
 {
-    public class DashboardController : Controller
+    public class QuestaoController : Controller
     {
-
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (Session["Autenticado"] == null)
@@ -26,11 +25,17 @@ namespace SIAC.Web.Controllers
             base.OnActionExecuting(filterContext);
         }
 
-        // GET: Dashboard
+        // GET: Questao
         public ActionResult Index()
         {
-            return View();            
+            return View();
         }
-       
+
+
+        // GET: Questao/Cadastrar
+        public ActionResult Cadastrar()
+        {
+            return View();
+        }
     }
 }
