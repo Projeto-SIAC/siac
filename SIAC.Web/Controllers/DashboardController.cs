@@ -31,5 +31,11 @@ namespace SIAC.Web.Controllers
         {
             return View();            
         }
+
+        // GET: Dashboard/Hello
+        public ActionResult Hello()
+        {
+            return View();
+        }
     }
 }
