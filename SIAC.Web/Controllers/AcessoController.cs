@@ -45,37 +45,19 @@ namespace SIAC.Web.Controllers
 
                 if (!String.IsNullOrWhiteSpace(formCollection["TextBoxMatricula"]) && !String.IsNullOrWhiteSpace(formCollection["TextBoxSenha"]))
                 {
-                    var strMatricula = formCollection["TextBoxMatricula"].ToString();
-                    ViewBag.TextBoxMatricula = strMatricula;
-                    DataClassesSIACDataContext dc = new DataClassesSIACDataContext();
-                    var usuario = dc.Usuarios.FirstOrDefault(u => u.Matricula == strMatricula);
+                    string matricula = formCollection["TextBoxMatricula"].ToString();
+                    string senha = formCollection["TextBoxSenha"].ToString();
+
+                    ViewBag.TextBoxMatricula = matricula;
+
+                    Usuario usuario = Usuario.Autenticar(matricula, senha);
+
                     if (usuario != null)
                     {
-                        if (usuario.CodCategoria == categoria)
-                        {
-                            var strSenha = Properties.Settings.Default.Salt + formCollection["TextBoxSenha"].ToString();
-
-                            System.Security.Cryptography.SHA256 sha = new System.Security.Cryptography.SHA256CryptoServiceProvider();
-                            System.Text.StringBuilder sb = new System.Text.StringBuilder();
-
-                            sha.ComputeHash(System.Text.ASCIIEncoding.ASCII.GetBytes(strSenha));
-                            byte[] result = sha.Hash;
-
-                            for (int i = 0; i < result.Length; i++)
-                            {
-                                sb.Append(result[i].ToString("x2"));
-                            }
-
-                            strSenha = sb.ToString();
-
-                            if (usuario.Senha == strSenha)
-                            {
-                                valido = true;
-                                Session["Autenticado"] = true;
-                                Session["UsuarioNome"] = usuario.PessoaFisica.Nome;
-                                Session["UsuarioCategoria"] = usuario.Categoria.Descricao;
-                            }
-                        }
+                        valido = true;
+                        Session["Autenticado"] = true;
+                        Session["UsuarioNome"] = usuario.PessoaFisica.Nome;
+                        Session["UsuarioCategoria"] = usuario.Categoria.Descricao;
                     }
                 }
             }
