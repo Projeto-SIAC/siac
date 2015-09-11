@@ -9,9 +9,91 @@
     @Styles.Render("~/bundles/css")
     @RenderSection("styles", required: false)
     @Scripts.Render("~/bundles/modernizr")
+    <style>
+        .vertical.menu .item {
+            padding-top: 1.2em!important;
+            padding-bottom: 1.2em!important;
+        }
+    </style>
 </head>
 <body>
-    @RenderBody()
+    <div class="ui menu" style="border-radius:0">
+            <div class="item">
+                <img src="~/Resources/images/layout/logo-black.png" />
+            </div>
+            <div class="item">
+                <h2 class="ui header left aligned">
+                    <div class="content">
+                        SIAC
+                        <div class="sub header">Sistema Interativo de Avaliação do Conhecimento</div>
+                    </div>
+                </h2>
+            </div>
+            <div class="right menu">
+                <div class="item text">
+                    @DateTime.Today.ToString("D", new System.Globalization.CultureInfo("pt-BR"))
+                </div>
+                <div class="item">@Html.ActionLink("Sair", "Sair", "Acesso", null, new { @class = "ui button" } )</div>
+        </div>
+    </div>
+    <div class="ui grid" style="margin: auto 1em">
+        <div class="three wide column">
+            <div class="ui segment">
+                <div class="ui header">
+                    <i class="icon user"></i>
+                    <div class="content">
+                        @Session["UsuarioNome"]
+                        <div class="sub header">
+                            @Session["UsuarioCategoria"]
+                        </div>
+                    </div>
+                </div>
+                <div class="ui vertical fluid secondary menu" style="margin: auto 0">
+                    <a href="~/Dashboard" class="active teal item">
+                        Dashboard
+                    </a>
+                    <a href="~/Historico" class="item">
+                        Histórico
+                    </a>
+                    <a href="~/AvInstituicional" class="item">
+                        Av. Instituicional
+                    </a>
+                    <a href="~/Perfil" class="item">
+                        Perfil
+                    </a>
+                    <a  href="~/Acesso/Sair" class="item">
+                        Sair
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="thirteen wide column">
+            <div class="ui segment">
+                <div class="ui breadcrumb">
+                    @{
+                        string url = Request.Url.ToString();
+                        url = url.Substring(url.IndexOf("//")+2);
+                        string[] strs = url.Split('/');
+                        for (int i = 0; i < strs.Length - 1; i++)
+                        {
+                            if (i == 0)
+                            {
+                                <a href="~/" class="section"><i class="icon home"></i></a>
+                                <i class="right angle icon divider"></i>
+                                continue;
+                            }
+                            <a href="~/@strs[i]" class="section">@strs[i]</a>
+                            <i class="right angle icon divider"></i>
+                        }
+                    }
+                    <div class="active section">@ViewBag.Title</div>
+                </div>
+            </div>
+            <div class="ui segment">
+                @RenderBody()
+            </div>
+        </div>        
+    </div>
     @Scripts.Render("~/bundles/js")
     @RenderSection("scripts", required: false)
 </body>

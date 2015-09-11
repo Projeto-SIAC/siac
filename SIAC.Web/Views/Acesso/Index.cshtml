@@ -203,7 +203,7 @@
             <div class="field required">
                 <label for="TextBoxMatricula">Matrícula</label>
                 <div class="ui icon input">
-                    @Html.TextBox("TextBoxMatricula", null, new { placeholder = "Matrícula", required = "required", autofocus = "autofocus" })
+                    @Html.TextBox("TextBoxMatricula", (string)ViewBag.TextBoxMatricula, new { placeholder = "Matrícula", required = "required", autofocus = "autofocus" })
                     <i class="icon user"></i>
                 </div>
             </div>
@@ -218,8 +218,8 @@
         </div>
         <div class="actions">
             <a href="javascript:$('.first.modal').modal('show')" class="ui button" style="float:left">Voltar</a>
-            <input type="reset" value="Cancelar" class="ui cancel button" />
-            <input type="submit" value="Entrar" class="ui primary button" onclick="$('.ui.form').addClass('loading')" />
+            <input type="reset" value="Cancelar" class="ui cancel button" onclick="$('.form').removeClass('error')" />
+            <input type="submit" value="Entrar" class="ui primary button" onclick="if ($('.form input:required:invalid').length == 0) { $('.ui.form').addClass('loading') }" />
         </div>
     </form>
     <div class="ui large top fixed menu transition hidden">
@@ -239,7 +239,7 @@
                 <div class="item text">
                     @DateTime.Today.ToString("D", new System.Globalization.CultureInfo("pt-BR"))
                 </div>
-                <div class="item"><a class="ui button">Entrar</a></div>
+                <div class="item"><a class="ui button" onclick="$('.first.modal').modal('show')">Entrar</a></div>
             </div>
         </div>
     </div>
@@ -369,6 +369,11 @@
     </div>
     @Scripts.Render("~/bundles/js")
     <script>
+        // select Categoria
+        function selecionarCategoria(v) {
+            $('.dropdown.categoria option[value="' + v + '"]').prop('selected', true)
+        }
+
         $(document)
           .ready(function () {
 
@@ -406,17 +411,13 @@
                 .modal('attach events', '.first.modal .card')
               ;
 
-              
+
 
               @Html.Raw(ViewBag.Acao)
 
+              selecionarCategoria(@ViewBag.DropDownCategoria);
           })
-        ;
-
-        // select Categoria
-        function selecionarCategoria(v) {
-            $('.dropdown.categoria option[value="'+v+'"]').prop('selected', true)
-        }
+        ;     
     </script>
 </body>
 </html>

@@ -41,10 +41,12 @@ namespace SIAC.Web.Controllers
             {
                 int categoria = 0;
                 int.TryParse(formCollection["DropDownCategoria"].ToString(), out categoria);
+                ViewBag.DropDownCategoria = categoria.ToString();
 
                 if (!String.IsNullOrWhiteSpace(formCollection["TextBoxMatricula"]) && !String.IsNullOrWhiteSpace(formCollection["TextBoxSenha"]))
                 {
                     var strMatricula = formCollection["TextBoxMatricula"].ToString();
+                    ViewBag.TextBoxMatricula = strMatricula;
                     DataClassesSIACDataContext dc = new DataClassesSIACDataContext();
                     var usuario = dc.Usuarios.FirstOrDefault(u => u.Matricula == strMatricula);
                     if (usuario != null)
