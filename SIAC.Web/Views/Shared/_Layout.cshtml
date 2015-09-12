@@ -22,6 +22,21 @@
         .ui.segment {
             border-radius: 0;
         }
+        
+        @@media only screen and (max-width: 700px) {
+            .vertical.menu {
+                display: inline-flex;            
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: row;
+                -webkit-flex-direction: row;
+                -ms-flex-direction: row;
+                flex-direction: row;
+            }
+            
+            .vertical.menu .item .content {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -46,7 +61,7 @@
     </div>
     
 
-    <div class="ui grid" style="margin: auto 1em">
+    <div class="ui stackable grid" style="margin: auto 1em">
         <div class="sixteen wide column" style="padding-top: 0; padding-bottom: 0">
                 <div class="ui breadcrumb">
                     @{
@@ -88,19 +103,19 @@
                 </div>
                 <div class="ui vertical fluid secondary menu" style="margin: auto 0">
                     <a href="~/Dashboard" class="active teal item">
-                        Dashboard
+                        <i class="block layout icon"></i><span class="content">Dashboard</span>
                     </a>
                     <a href="~/Historico" class="item">
-                        Histórico
+                        <i class="time icon"></i><span class="content">Histórico</span>
                     </a>
                     <a href="~/AVI" class="item">
-                        Av. Instituicional
+                        <i class="file icon"><span class="content">Av. Instituicional</span>
                     </a>
                     <a href="~/Perfil" class="item">
-                        Perfil
+                        <i class="user icon"><span class="content">Perfil</span>
                     </a>
                     <a  href="~/Acesso/Sair" class="item">
-                        Sair
+                        <i class="power icon"><span class="content">Sair</span>
                     </a>
                 </div>
             </div>
