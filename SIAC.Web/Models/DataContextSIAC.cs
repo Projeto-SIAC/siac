@@ -9,6 +9,8 @@ namespace SIAC.Web.Helpers
     public class DataContextSIAC
     {
         private static DataClassesSIACDataContext contexto;
+        
+        private DataContextSIAC() {}
 
         public static DataClassesSIACDataContext GetInstance()
         {

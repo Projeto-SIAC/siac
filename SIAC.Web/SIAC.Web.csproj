@@ -266,6 +266,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Criptografia.cs" />
+    <Compile Include="Helpers\TimeLog.cs" />
     <Compile Include="Models\DataContextSIAC.cs" />
     <Compile Include="Models\DataClassesSIAC.designer.cs">
       <AutoGen>True</AutoGen>
