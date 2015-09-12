@@ -6,10 +6,25 @@
 
 @section Scripts {    
     <script>
+        $('.ui.checkbox').checkbox();
         $('.ui.accordion').accordion();
         $('.ui.dropdown').dropdown();
         $('.tabular.menu .item').tab();
         $('.ui.modal').modal('show');
+        
+        function mostrarCamposPorTipo() {
+            var tipo = $('#ddlTipo :selected').val();
+            $('.questao').hide();
+            if (tipo == 1) {
+                $('.questao.objetiva').show();
+                $('.segment.questao.objetiva').attr('style', '');
+            }
+            else if (tipo == 2) {
+                $('.questao.discursiva').show();
+            }
+        }
+
+        mostrarCamposPorTipo();
     </script>
 } 
 
@@ -32,7 +47,7 @@
     <div class="ui top attached tabular menu">
         <div class="active item" data-tab="tab-name">Gerais</div>
         <div class="item" data-tab="tab-name2">Detalhes</div>
-        <div class="item" data-tab="tab-name3">Alternativas</div>
+        <div class="item questao objetiva" data-tab="tab-name3">Alternativas</div>
     </div>
     <div class="ui bottom attached active tab segment" data-tab="tab-name">
         <div class="field">
@@ -46,10 +61,13 @@
         </div>
         <div class="field">
             <label>Tema</label>
-            <select multiple class="ui multiple dropdown">
-                <option>Matemática</option>
-                <option>Língua Portuguesa</option>
-                <option>Biologia</option>
+            <select multiple class="ui multiple search dropdown">
+                <option value="">Tema</option>
+                <option value="1">Orações Coordenadas</option>
+                <option value="2">Orações Subordinadas</option>
+                <option value="3">Crase</option>
+                <option value="4">Pretérito Perfeito</option>
+                <option value="5">Presente Perfeito</option>
             </select>
         </div>
         <div class="field">
@@ -65,7 +83,7 @@
         </div>
         <div class="field">
             <label>Tipo</label>
-            <select class="ui search dropdown">
+            <select id="ddlTipo" onchange="mostrarCamposPorTipo()" class="ui search dropdown">
                 <option value="">Tipo</option>
                 <option value="1">Objetiva</option>
                 <option value="2">Discursiva</option>
@@ -81,16 +99,16 @@
             <label>Objetivo</label>
             <textarea rows="2"></textarea>
         </div>
-        <div class="field">
+        <div class="field questao discursiva">
             <label>Chave de Resposta</label>
             <textarea rows="2"></textarea>
         </div>
-        <div class="field">
+        <div class="field questao discursiva">
             <label>Comentário</label>
             <textarea rows="2"></textarea>
         </div>
     </div>
-    <div class="ui bottom attached tab segment" data-tab="tab-name3">
+    <div class="ui bottom attached tab segment questao objetiva" data-tab="tab-name3">
         <div class="ui fluid accordion">
             <div class="active title">
                 <i class="dropdown icon"></i>
@@ -105,7 +123,7 @@
                     <label>Comentário</label>
                     <textarea rows="2"></textarea>
                 </div>
-                <div class="ui checkbox">
+                <div class="ui toggle checkbox">
                     <input type="checkbox" tabindex="0" class="hidden">
                     <label>Correta</label>
                 </div>
@@ -123,7 +141,7 @@
                     <label>Comentário</label>
                     <textarea rows="2"></textarea>
                 </div>
-                <div class="ui checkbox">
+                <div class="ui toggle checkbox">
                     <input type="checkbox" tabindex="0" class="hidden">
                     <label>Correta</label>
                 </div>
@@ -141,7 +159,7 @@
                     <label>Comentário</label>
                     <textarea rows="2"></textarea>
                 </div>
-                <div class="ui checkbox">
+                <div class="ui toggle checkbox">
                     <input type="checkbox" tabindex="0" class="hidden">
                     <label>Correta</label>
                 </div>
@@ -159,7 +177,7 @@
                     <label>Comentário</label>
                     <textarea rows="2"></textarea>
                 </div>
-                <div class="ui checkbox">
+                <div class="ui toggle checkbox">
                     <input type="checkbox" tabindex="0" class="hidden">
                     <label>Correta</label>
                 </div>
@@ -177,7 +195,7 @@
                     <label>Comentário</label>
                     <textarea rows="2"></textarea>
                 </div>
-                <div class="ui checkbox">
+                <div class="ui toggle checkbox">
                     <input type="checkbox" tabindex="0" class="hidden">
                     <label>Correta</label>
                 </div>
