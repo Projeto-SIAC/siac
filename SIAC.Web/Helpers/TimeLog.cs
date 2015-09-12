@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,14 +10,18 @@ namespace SIAC.Web.Helpers
     {
         private static DateTime tempo;
 
-        public static void Iniciar()
+        private static string teste;
+
+        public static void Iniciar(string strTeste = "")
         {
+            teste = strTeste;
             tempo = DateTime.Now;
         }
 
-        public static double Parar()
+        public static void Parar()
         {
-            return (DateTime.Now - tempo).TotalSeconds;
+            var total = (DateTime.Now - tempo).TotalSeconds;
+            Debug.WriteLine("TimeLog: {0} segundos para realizar {1}", total.ToString(), teste);
         }
     }
 }

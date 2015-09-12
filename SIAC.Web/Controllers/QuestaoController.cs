@@ -22,6 +22,10 @@ namespace SIAC.Web.Controllers
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
+            else if ((int)Session["UsuarioCategoriaCodigo"] != 2)
+            {
+                filterContext.Result = RedirectToAction("Entrar", "Acesso");
+            }
             base.OnActionExecuting(filterContext);
         }
 
@@ -30,8 +34,7 @@ namespace SIAC.Web.Controllers
         {
             return View();
         }
-
-
+        
         // GET: Questao/Cadastrar
         public ActionResult Cadastrar()
         {

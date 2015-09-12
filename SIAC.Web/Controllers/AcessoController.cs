@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SIAC.Web.Models;
+using System.Threading.Tasks;
 
 namespace SIAC.Web.Controllers
 {
@@ -12,7 +13,7 @@ namespace SIAC.Web.Controllers
         // GET: Acesso
         public ActionResult Index()
         {
-            if (Session["Autenticado"] != null && !String.IsNullOrEmpty(Session["Autenticado"].ToString()))
+            if (Session["Autenticado"] != null && (bool)Session["Autenticado"])
             {
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -23,7 +24,7 @@ namespace SIAC.Web.Controllers
         [HttpGet]
         public ActionResult Entrar()
         {
-            if (Session["Autenticado"] != null && !String.IsNullOrEmpty(Session["Autenticado"].ToString()))
+            if (Session["Autenticado"] != null && (bool)Session["Autenticado"])
             {
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -35,6 +36,11 @@ namespace SIAC.Web.Controllers
         [HttpPost]
         public ActionResult Entrar(FormCollection formCollection)
         {
+            if (Session["Autenticado"] != null && (bool)Session["Autenticado"])
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
+
             bool valido = false;
 
             if (formCollection.HasKeys())
@@ -52,7 +58,9 @@ namespace SIAC.Web.Controllers
                     {
                         valido = true;
                         Session["Autenticado"] = true;
+                        Session["UsuarioMatricula"] = usuario.Matricula;
                         Session["UsuarioNome"] = usuario.PessoaFisica.Nome;
+                        Session["UsuarioCategoriaCodigo"] = usuario.CodCategoria;
                         Session["UsuarioCategoria"] = usuario.Categoria.Descricao;
                     }
                 }

@@ -16,7 +16,7 @@ namespace SIAC.Web.Models
 
             if (usuario != null)
             {
-                string strSenha = Criptografia.Criptografar(senha);
+                string strSenha = Criptografia.RetornarHash(senha);
 
                 if (usuario.Senha == strSenha)
                 {

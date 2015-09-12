@@ -7,7 +7,7 @@ namespace SIAC.Web.Helpers
 {
     public class Criptografia
     {
-        public static string Criptografar(string senha)
+        public static string RetornarHash(string senha)
         {
             string strSenha = Properties.Settings.Default.Salt + senha;
 

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using SIAC.Web.Models;
 
-namespace SIAC.Web.Helpers
+namespace SIAC.Web.Models
 { 
     public class DataContextSIAC
     {
@@ -19,6 +18,20 @@ namespace SIAC.Web.Helpers
                 contexto = new DataClassesSIACDataContext();
             }   
             return contexto;
+        }
+
+        public static int Iniciar()
+        {
+            contexto = GetInstance();
+            var l = contexto.Usuarios.ToList();
+            if (l != null)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }
