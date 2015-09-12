@@ -25,20 +25,30 @@
         
         @@media only screen and (max-width: 700px) {
             .vertical.menu {
-                display: inline-flex;            
-                -webkit-box-orient: horizontal;
-                -webkit-box-direction: row;
-                -webkit-flex-direction: row;
-                -ms-flex-direction: row;
-                flex-direction: row;
+                -webkit-box-orient: horizontal!important;
+                -webkit-box-direction: row!important;
+                -webkit-flex-direction: row!important;
+                -ms-flex-direction: row!important;
+                flex-direction: row!important;
+            }
+            
+            .vertical.menu .item {
+                display: inline-flex!important;
+                height: auto!important;
+                text-align: center!important;
+            }
+            
+            
+            .vertical.menu .item .icon {
+                margin: 0!important;
             }
             
             .vertical.menu .item .content {
-                display: none;
+                display: none!important;
             }
             
             .menu .item.text {
-                display: none;
+                display: none!important;
             }
         }
     </style>
