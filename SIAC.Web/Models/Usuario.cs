@@ -12,7 +12,7 @@ namespace SIAC.Web.Models
         {
             DataClassesSIACDataContext contexto = DataContextSIAC.GetInstance();
 
-            Usuario usuario = contexto.Usuarios.SingleOrDefault(u => u.Matricula == matricula);
+            Usuario usuario = contexto.Usuario.SingleOrDefault(u => u.Matricula == matricula);
 
             if (usuario != null)
             {

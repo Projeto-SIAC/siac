@@ -45,10 +45,10 @@ namespace SIAC.Web.Controllers
 
             if (formCollection.HasKeys())
             {
-                if (!String.IsNullOrWhiteSpace(formCollection["TextBoxMatricula"]) && !String.IsNullOrWhiteSpace(formCollection["TextBoxSenha"]))
+                if (!String.IsNullOrWhiteSpace(formCollection["txtMatricula"]) && !String.IsNullOrWhiteSpace(formCollection["txtSenha"]))
                 {
-                    string matricula = formCollection["TextBoxMatricula"].ToString();
-                    string senha = formCollection["TextBoxSenha"].ToString();
+                    string matricula = formCollection["txtMatricula"].ToString();
+                    string senha = formCollection["txtSenha"].ToString();
 
                     ViewBag.TextBoxMatricula = matricula;
 

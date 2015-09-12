@@ -299,7 +299,7 @@ namespace SIAC.Web.Models
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<Alternativa> Alternativas
+		public System.Data.Linq.Table<Alternativa> Alternativa
 		{
 			get
 			{
@@ -307,7 +307,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<UsuarioOpiniao> UsuarioOpiniaos
+		public System.Data.Linq.Table<UsuarioOpiniao> UsuarioOpiniao
 		{
 			get
 			{
@@ -315,7 +315,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Aluno> Alunos
+		public System.Data.Linq.Table<Aluno> Aluno
 		{
 			get
 			{
@@ -323,7 +323,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Area> Areas
+		public System.Data.Linq.Table<Area> Area
 		{
 			get
 			{
@@ -331,7 +331,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AvalAcademica> AvalAcademicas
+		public System.Data.Linq.Table<AvalAcademica> AvalAcademica
 		{
 			get
 			{
@@ -339,7 +339,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AvalAcadReposicao> AvalAcadReposicaos
+		public System.Data.Linq.Table<AvalAcadReposicao> AvalAcadReposicao
 		{
 			get
 			{
@@ -347,7 +347,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AvalAuto> AvalAutos
+		public System.Data.Linq.Table<AvalAuto> AvalAuto
 		{
 			get
 			{
@@ -355,7 +355,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AvalAvi> AvalAvis
+		public System.Data.Linq.Table<AvalAvi> AvalAvi
 		{
 			get
 			{
@@ -363,7 +363,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AvalCertificacao> AvalCertificacaos
+		public System.Data.Linq.Table<AvalCertificacao> AvalCertificacao
 		{
 			get
 			{
@@ -371,7 +371,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AvalCertPessoa> AvalCertPessoas
+		public System.Data.Linq.Table<AvalCertPessoa> AvalCertPessoa
 		{
 			get
 			{
@@ -379,7 +379,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Avaliacao> Avaliacaos
+		public System.Data.Linq.Table<Avaliacao> Avaliacao
 		{
 			get
 			{
@@ -387,7 +387,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AvaliacaoTema> AvaliacaoTemas
+		public System.Data.Linq.Table<AvaliacaoTema> AvaliacaoTema
 		{
 			get
 			{
@@ -395,7 +395,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AvalPessoaResultado> AvalPessoaResultados
+		public System.Data.Linq.Table<AvalPessoaResultado> AvalPessoaResultado
 		{
 			get
 			{
@@ -403,7 +403,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AvalQuesPessoaResposta> AvalQuesPessoaRespostas
+		public System.Data.Linq.Table<AvalQuesPessoaResposta> AvalQuesPessoaResposta
 		{
 			get
 			{
@@ -411,7 +411,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AvalTemaQuestao> AvalTemaQuestaos
+		public System.Data.Linq.Table<AvalTemaQuestao> AvalTemaQuestao
 		{
 			get
 			{
@@ -419,7 +419,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviCategoria> AviCategorias
+		public System.Data.Linq.Table<AviCategoria> AviCategoria
 		{
 			get
 			{
@@ -427,7 +427,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviIndicador> AviIndicadors
+		public System.Data.Linq.Table<AviIndicador> AviIndicador
 		{
 			get
 			{
@@ -435,7 +435,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviModulo> AviModulos
+		public System.Data.Linq.Table<AviModulo> AviModulo
 		{
 			get
 			{
@@ -443,7 +443,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviPublico> AviPublicos
+		public System.Data.Linq.Table<AviPublico> AviPublico
 		{
 			get
 			{
@@ -451,7 +451,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviPublicoCampus> AviPublicoCampus
+		public System.Data.Linq.Table<AviPublicoCampus> AviPublicoCampu
 		{
 			get
 			{
@@ -459,7 +459,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviPublicoCurso> AviPublicoCursos
+		public System.Data.Linq.Table<AviPublicoCurso> AviPublicoCurso
 		{
 			get
 			{
@@ -467,7 +467,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviPublicoDiretoria> AviPublicoDiretorias
+		public System.Data.Linq.Table<AviPublicoDiretoria> AviPublicoDiretoria
 		{
 			get
 			{
@@ -475,7 +475,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviPublicoInstituicao> AviPublicoInstituicaos
+		public System.Data.Linq.Table<AviPublicoInstituicao> AviPublicoInstituicao
 		{
 			get
 			{
@@ -483,7 +483,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviPublicoPessoa> AviPublicoPessoas
+		public System.Data.Linq.Table<AviPublicoPessoa> AviPublicoPessoa
 		{
 			get
 			{
@@ -491,7 +491,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviPublicoProReitoria> AviPublicoProReitorias
+		public System.Data.Linq.Table<AviPublicoProReitoria> AviPublicoProReitoria
 		{
 			get
 			{
@@ -499,7 +499,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviPublicoReitoria> AviPublicoReitorias
+		public System.Data.Linq.Table<AviPublicoReitoria> AviPublicoReitoria
 		{
 			get
 			{
@@ -507,7 +507,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviPublicoTurma> AviPublicoTurmas
+		public System.Data.Linq.Table<AviPublicoTurma> AviPublicoTurma
 		{
 			get
 			{
@@ -515,7 +515,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviQuestao> AviQuestaos
+		public System.Data.Linq.Table<AviQuestao> AviQuestao
 		{
 			get
 			{
@@ -523,7 +523,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviQuestaoAlternativa> AviQuestaoAlternativas
+		public System.Data.Linq.Table<AviQuestaoAlternativa> AviQuestaoAlternativa
 		{
 			get
 			{
@@ -531,7 +531,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviQuestaoPessoaResposta> AviQuestaoPessoaRespostas
+		public System.Data.Linq.Table<AviQuestaoPessoaResposta> AviQuestaoPessoaResposta
 		{
 			get
 			{
@@ -539,7 +539,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviTipoPublico> AviTipoPublicos
+		public System.Data.Linq.Table<AviTipoPublico> AviTipoPublico
 		{
 			get
 			{
@@ -547,7 +547,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Bairro> Bairros
+		public System.Data.Linq.Table<Bairro> Bairro
 		{
 			get
 			{
@@ -563,7 +563,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Categoria> Categorias
+		public System.Data.Linq.Table<Categoria> Categoria
 		{
 			get
 			{
@@ -571,7 +571,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Colaborador> Colaboradors
+		public System.Data.Linq.Table<Colaborador> Colaborador
 		{
 			get
 			{
@@ -579,7 +579,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Curso> Cursos
+		public System.Data.Linq.Table<Curso> Curso
 		{
 			get
 			{
@@ -587,7 +587,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<DiaSemana> DiaSemanas
+		public System.Data.Linq.Table<DiaSemana> DiaSemana
 		{
 			get
 			{
@@ -595,7 +595,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Dificuldade> Dificuldades
+		public System.Data.Linq.Table<Dificuldade> Dificuldade
 		{
 			get
 			{
@@ -603,7 +603,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Diretoria> Diretorias
+		public System.Data.Linq.Table<Diretoria> Diretoria
 		{
 			get
 			{
@@ -611,7 +611,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Disciplina> Disciplinas
+		public System.Data.Linq.Table<Disciplina> Disciplina
 		{
 			get
 			{
@@ -619,7 +619,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Email> Emails
+		public System.Data.Linq.Table<Email> Email
 		{
 			get
 			{
@@ -627,7 +627,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Endereco> Enderecos
+		public System.Data.Linq.Table<Endereco> Endereco
 		{
 			get
 			{
@@ -635,7 +635,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Estado> Estados
+		public System.Data.Linq.Table<Estado> Estado
 		{
 			get
 			{
@@ -643,7 +643,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Horario> Horarios
+		public System.Data.Linq.Table<Horario> Horario
 		{
 			get
 			{
@@ -651,7 +651,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Instituicao> Instituicaos
+		public System.Data.Linq.Table<Instituicao> Instituicao
 		{
 			get
 			{
@@ -659,7 +659,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Justificacao> Justificacaos
+		public System.Data.Linq.Table<Justificacao> Justificacao
 		{
 			get
 			{
@@ -667,7 +667,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<MatrizCurricular> MatrizCurriculars
+		public System.Data.Linq.Table<MatrizCurricular> MatrizCurricular
 		{
 			get
 			{
@@ -675,7 +675,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<MatrizCurricularDisciplina> MatrizCurricularDisciplinas
+		public System.Data.Linq.Table<MatrizCurricularDisciplina> MatrizCurricularDisciplina
 		{
 			get
 			{
@@ -683,7 +683,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Municipio> Municipios
+		public System.Data.Linq.Table<Municipio> Municipio
 		{
 			get
 			{
@@ -691,7 +691,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<NivelEnsino> NivelEnsinos
+		public System.Data.Linq.Table<NivelEnsino> NivelEnsino
 		{
 			get
 			{
@@ -699,7 +699,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Ocupacao> Ocupacaos
+		public System.Data.Linq.Table<Ocupacao> Ocupacao
 		{
 			get
 			{
@@ -715,7 +715,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Parametro> Parametros
+		public System.Data.Linq.Table<Parametro> Parametro
 		{
 			get
 			{
@@ -723,7 +723,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Pessoa> Pessoas
+		public System.Data.Linq.Table<Pessoa> Pessoa
 		{
 			get
 			{
@@ -731,7 +731,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<PessoaCategoria> PessoaCategorias
+		public System.Data.Linq.Table<PessoaCategoria> PessoaCategoria
 		{
 			get
 			{
@@ -739,7 +739,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<PessoaFisica> PessoaFisicas
+		public System.Data.Linq.Table<PessoaFisica> PessoaFisica
 		{
 			get
 			{
@@ -747,7 +747,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<PessoaFormacao> PessoaFormacaos
+		public System.Data.Linq.Table<PessoaFormacao> PessoaFormacao
 		{
 			get
 			{
@@ -755,7 +755,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<PessoaJuridica> PessoaJuridicas
+		public System.Data.Linq.Table<PessoaJuridica> PessoaJuridica
 		{
 			get
 			{
@@ -763,7 +763,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<PessoaOcupacao> PessoaOcupacaos
+		public System.Data.Linq.Table<PessoaOcupacao> PessoaOcupacao
 		{
 			get
 			{
@@ -771,7 +771,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Professor> Professors
+		public System.Data.Linq.Table<Professor> Professor
 		{
 			get
 			{
@@ -779,7 +779,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<ProReitoria> ProReitorias
+		public System.Data.Linq.Table<ProReitoria> ProReitoria
 		{
 			get
 			{
@@ -787,7 +787,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Questao> Questaos
+		public System.Data.Linq.Table<Questao> Questao
 		{
 			get
 			{
@@ -795,7 +795,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<QuestaoAnexo> QuestaoAnexos
+		public System.Data.Linq.Table<QuestaoAnexo> QuestaoAnexo
 		{
 			get
 			{
@@ -803,7 +803,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<QuestaoTema> QuestaoTemas
+		public System.Data.Linq.Table<QuestaoTema> QuestaoTema
 		{
 			get
 			{
@@ -811,7 +811,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Reitoria> Reitorias
+		public System.Data.Linq.Table<Reitoria> Reitoria
 		{
 			get
 			{
@@ -819,7 +819,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Sala> Salas
+		public System.Data.Linq.Table<Sala> Sala
 		{
 			get
 			{
@@ -827,7 +827,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Telefone> Telefones
+		public System.Data.Linq.Table<Telefone> Telefone
 		{
 			get
 			{
@@ -835,7 +835,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Tema> Temas
+		public System.Data.Linq.Table<Tema> Tema
 		{
 			get
 			{
@@ -843,7 +843,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<TipoAnexo> TipoAnexos
+		public System.Data.Linq.Table<TipoAnexo> TipoAnexo
 		{
 			get
 			{
@@ -851,7 +851,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<TipoAvaliacao> TipoAvaliacaos
+		public System.Data.Linq.Table<TipoAvaliacao> TipoAvaliacao
 		{
 			get
 			{
@@ -859,7 +859,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<TipoContato> TipoContatos
+		public System.Data.Linq.Table<TipoContato> TipoContato
 		{
 			get
 			{
@@ -867,7 +867,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<TipoQuestao> TipoQuestaos
+		public System.Data.Linq.Table<TipoQuestao> TipoQuestao
 		{
 			get
 			{
@@ -875,7 +875,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Turma> Turmas
+		public System.Data.Linq.Table<Turma> Turma
 		{
 			get
 			{
@@ -883,7 +883,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<TurmaDiscAluno> TurmaDiscAlunos
+		public System.Data.Linq.Table<TurmaDiscAluno> TurmaDiscAluno
 		{
 			get
 			{
@@ -891,7 +891,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<TurmaDiscProfHorario> TurmaDiscProfHorarios
+		public System.Data.Linq.Table<TurmaDiscProfHorario> TurmaDiscProfHorario
 		{
 			get
 			{
@@ -899,7 +899,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Turno> Turnos
+		public System.Data.Linq.Table<Turno> Turno
 		{
 			get
 			{
@@ -907,7 +907,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Usuario> Usuarios
+		public System.Data.Linq.Table<Usuario> Usuario
 		{
 			get
 			{
@@ -915,7 +915,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<UsuarioAcesso> UsuarioAcessos
+		public System.Data.Linq.Table<UsuarioAcesso> UsuarioAcesso
 		{
 			get
 			{
@@ -923,7 +923,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<UsuarioAcessoPagina> UsuarioAcessoPaginas
+		public System.Data.Linq.Table<UsuarioAcessoPagina> UsuarioAcessoPagina
 		{
 			get
 			{
@@ -931,7 +931,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<Visitante> Visitantes
+		public System.Data.Linq.Table<Visitante> Visitante
 		{
 			get
 			{
