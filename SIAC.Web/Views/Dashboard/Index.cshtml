@@ -3,4 +3,96 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section Styles {
+    <style>
+        .dashmenu > div {
+            padding: 1.5em 0.5em;
+        }
+    </style>
+}
+
 <h2>@ViewBag.Title</h2>
+
+<div class="ui stackable grid">
+    <div class="stackable doubling four columns centered row dashmenu">
+        <div class="column aligned center">
+            <a href="#">
+                <div class="ui icon header">
+                    <i class="file outline icon"></i>
+                        Realizar Autoavaliação
+                </div>
+            </a>
+        </div>
+        @if ((int)Session["UsuarioCategoriaCodigo"] == 2)
+        {
+            <div class="column aligned center">
+                <a href="/Dashboard/Questao/Cadastrar">
+                    <div class="ui icon header">
+                        <i class="file icon"></i>
+                        Agendar Avaliação Acadêmica
+                    </div>
+                </a>
+            </div>
+        }
+        @if ((int)Session["UsuarioCategoriaCodigo"] == 2 || (int)Session["UsuarioCategoriaCodigo"] == 3)
+        {
+            <div class="column aligned center">
+                <a href="/Dashboard/Questao/Cadastrar">
+                    <div class="ui icon header">
+                        <i class="file text icon"></i>
+                        Agendar Avaliação de Certificação
+                    </div>
+                </a>
+            </div>
+        }
+        @if ((int)Session["UsuarioCategoriaCodigo"] == 2)
+        {
+            <div class="column aligned center">
+                <a href="/Dashboard/Questao/Cadastrar">
+                    <div class="ui icon header">
+                        <i class="add circle icon"></i>
+                        Cadastrar Questão
+                    </div>
+                </a>
+            </div>
+        }
+        @if ((int)Session["UsuarioCategoriaCodigo"] == 1)
+        {
+            <div class="column aligned center">
+                <a href="/Dashboard/Questao/Cadastrar">
+                    <div class="ui icon header">
+                        <i class="calendar icon"></i>
+                        Avaliações Agendadas
+                    </div>
+                </a>
+            </div>
+        }
+        @if ((int)Session["UsuarioCategoriaCodigo"] == 1 || (int)Session["UsuarioCategoriaCodigo"] == 2 || (int)Session["UsuarioCategoriaCodigo"] == 3)
+        {
+            <div class="column aligned center">
+                <a href="/Dashboard/Questao/Cadastrar">
+                    <div class="ui icon header">
+                        <i class="folder icon"></i>
+                        Autoavaliações Salvas
+                    </div>
+                </a>
+            </div>
+        }
+        <div class="column aligned center">
+            <a href="#">
+                <div class="ui icon header">
+                    <i class="user icon"></i>
+                    Ver Perfil
+                </div>
+            </a>
+        </div>
+        <div class="column aligned center">
+            <a href="#">
+                <div class="ui icon header">
+                    <i class="wait icon"></i>
+                        Ver Histórico
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
