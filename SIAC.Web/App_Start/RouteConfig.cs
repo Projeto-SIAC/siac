@@ -38,6 +38,13 @@ namespace SIAC.Web
                 defaults: new { controller = "Acesso", action = "Index" },
                 constraints: new { controller = @"^(Dashboard|Acesso|Erro)$" }
             );
+
+            routes.MapRoute(
+                name: "RecuperarTemasPorCodDisciplina",
+                url: "Questao/RecuperarTemasPorCodDisciplina/",
+                defaults: new { controller = "Questao", action = "RecuperarTemasPorCodDisciplina" },
+                namespaces: new[] { "SIAC.Web.Controllers" }
+            );
         }
     }
 }

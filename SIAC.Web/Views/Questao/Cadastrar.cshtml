@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Cadastrar Questão";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -11,6 +10,30 @@
         $('.ui.dropdown').dropdown();
         $('.tabular.menu .item').tab();
         $('.ui.modal').modal('show');
+
+        function recuperarTemasPorCodDisciplina() {
+            var selecionado = $('#ddlDisciplina :selected').val();
+            var ddlTema = $('#ddlTema');
+            ddlTema.parent().addClass('loading');
+            $.ajax({
+                cache: false,
+                type: 'GET',
+                url: '@(Url.RouteUrl("RecuperarTemasPorCodDisciplina"))',
+                data: { "codDisciplina": selecionado },
+                success: function (data) {
+                    ddlTema.html('');
+                    ddlTema.parent().find('.label').remove();
+                    $.each(data, function (id, option) {
+                        ddlTema.append($('<option></option>').val(option.CodTema).html(option.Descricao));
+                    });
+                    ddlTema.parent().removeClass('loading');
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Falha ao recuperar temas.');
+                    ddlTema.parent().removeClass('loading');
+                }
+            });
+        }
         
         function mostrarCamposPorTipo() {
             var tipo = $('#ddlTipo :selected').val();
@@ -24,7 +47,103 @@
             }
         }
 
+        function removerAlternativa(button) {
+            var i = $('.ui.accordion .title').length;
+            if (i > 2) {
+                var content = $(button).parent().parent();
+                var title = $(content).prev();
+                title.remove();
+                content.remove();
+                renomearAlternativas();
+            }
+            $('#txtQtdAlternativas').val($('.ui.accordion .title').length);
+        }
+
+        function adicionarAlternativa() {
+            var i = $('.ui.accordion .title').length + 1;
+            $('.ui.accordion').append('<div class="title"><i class="dropdown icon"></i>Alternativa ' + i + '</div><div class="content"><div class="field required"><label for="txtAlternativaEnunciado' + i + '">Enunciado</label><textarea id="txtAlternativaEnunciado' + i + '" name="txtAlternativaEnunciado' + i + '" rows="2"></textarea></div><div class="field"><label for="txtAlternativaComentario' + i + '">Comentário</label><textarea name="txtAlternativaComentario' + i + '" rows="2"></textarea></div><div class="ui toggle checkbox"><input id="chkAlternativaCorreta' + i + '" name="chkAlternativaCorreta' + i + '" type="checkbox" tabindex="0" class="hidden"><label for="chkAlternativaCorreta' + i + '">Correta</label></div><div class="field"><div onclick="removerAlternativa(this)" class="ui button">Remover</div></div></div>');
+            $('#txtQtdAlternativas').val($('.ui.accordion .title').length);
+            $('.ui.checkbox').checkbox();
+        }
+
+        function renomearAlternativas() {
+            var list = $('.ui.accordion .title');
+            for (var i = 0; i < list.length; i++) {
+                list.eq(i).html('<i class="dropdown icon"></i>Alternativa ' + (i + 1));
+            }
+        }
+
         mostrarCamposPorTipo();
+        for (var i = 0; i < 5; i++) {
+            adicionarAlternativa();
+        }
+
+        function enviarForm() {
+            $('.ui.error.message .list').html('');
+            var validado = false;
+            if ($('#ddlDisciplina').val() != '') {
+                if ($('#ddlTema :selected').length > 0) {
+                    if ($('#ddlDificuldade').val() != '') {
+                        if ($('#ddlTipo').val() != '') {
+                            var tipo = $('#ddlTipo').val();
+                            if ($('#txtEnunciado').val() != '') {
+                                if (tipo == 1) {
+                                    var qteAlternativas = $('#txtQtdAlternativas').val();
+                                    var ok = true;
+                                    for (var i = 0; i < qteAlternativas; i++) {
+                                        if ($('#txtAlternativaEnunciado'+(i+1)).val() == '') {
+                                            ok = false;
+                                        }
+                                    }
+                                    if (ok) {
+                                        ok = false;
+                                        for (var i = 0; i < qteAlternativas; i++) {
+                                            if ($('#chkAlternativaCorreta' + (i+1)).is(':checked')) {
+                                                ok = true;
+                                            }
+                                        }
+                                        if (ok) {
+                                            validado = true;
+                                        }
+                                        else {
+                                            $('.ui.error.message .list').append('<li>É necessário selecionar pelo menos umas das alternativas como correta</li>')
+                                        }
+                                    }
+                                    else {
+                                        $('.ui.error.message .list').append('<li>É necessário preencher os enunciados de todas as alternativas</li>')
+                                    }
+                                }
+                                else if (tipo == 2) {
+                                    if ($('#txtChaveDeResposta').val() != '') {
+                                        validado = true;
+                                    }
+                                    else {
+                                        $('.ui.error.message .list').append('<li>É necessário preencher a chave de resposta</li>')
+                                    }
+                                }
+                            }
+                            else {
+                                $('.ui.error.message .list').append('<li>É necessário preencher o enunciado</li>')
+                            }
+                        }
+                        else {
+                            $('.ui.error.message .list').append('<li>É necessário selecionar um tipo</li>')
+                        }
+                    }
+                    else {
+                        $('.ui.error.message .list').append('<li>É necessário selecionar uma dificuldade</li>')
+                    }
+                }
+                else {
+                    $('.ui.error.message .list').append('<li>É necessário selecionar pelo menos um tema</li>')
+                }
+            }
+            else {
+                $('.ui.error.message .list').append('<li>É necessário selecionar uma disciplina</li>')
+            }
+            if (validado) $('#frmQuestao').submit();
+            else $('#frmQuestao').addClass('error');
+        }
     </script>
 } 
 
@@ -43,164 +162,84 @@
 
 <h2>@ViewBag.Title</h2>
 
-<form method="post" class="ui form">
+<form id="frmQuestao" action="/Dashboard/Questao/Confirmar" method="post" class="ui form">
+    <div class="ui error message">
+        <div class="header">Algo de muito errado não está certo</div>
+        <ul class="list">
+        </ul>
+    </div>
     <div class="ui top attached tabular menu">
         <div class="active item" data-tab="tab-name">Gerais</div>
         <div class="item" data-tab="tab-name2">Detalhes</div>
         <div class="item questao objetiva" data-tab="tab-name3">Alternativas</div>
-    </div>
+    </div>    
+    @* Gerais da Questão *@
     <div class="ui bottom attached active tab segment" data-tab="tab-name">
-        <div class="field">
+        <div class="field required">
             <label>Disciplina</label>
-            <select class="ui search dropdown">
+            <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" onchange="recuperarTemasPorCodDisciplina()" required>
                 <option value="">Disciplina</option>
-                <option value="1">Matemática</option>
-                <option value="2">Língua Portuguesa</option>
-                <option value="3">Biologia</option>
+                @foreach (var obj in ViewBag.Disciplinas)
+                {
+                    <option value="@obj.CodDisciplina">@obj.Descricao</option>
+                }
             </select>            
         </div>
-        <div class="field">
+        <div class="field required">
             <label>Tema</label>
-            <select multiple class="ui multiple search dropdown">
-                <option value="">Tema</option>
-                <option value="1">Orações Coordenadas</option>
-                <option value="2">Orações Subordinadas</option>
-                <option value="3">Crase</option>
-                <option value="4">Pretérito Perfeito</option>
-                <option value="5">Presente Perfeito</option>
+            <select id="ddlTema" name="ddlTema" multiple class="ui multiple search dropdown" required>
+                <option value="">Tema</option>                
             </select>
         </div>
-        <div class="field">
+        <div class="field required">
             <label>Dificuldade</label>
-            <select class="ui search dropdown">
+            <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown" required>
                 <option value="">Dificuldade</option>
-                <option value="1">Muito fácil</option>
-                <option value="2">Fácil</option>
-                <option value="3">Regular</option>
-                <option value="4">Difícil</option>
-                <option value="5">Muito difícil</option>
+                @foreach (var obj in ViewBag.Dificuldades)
+                {
+                    <option value="@obj.CodDificuldade" title="@obj.Comentario">@obj.Descricao</option>
+                }
             </select>
         </div>
-        <div class="field">
+        <div class="field required">
             <label>Tipo</label>
-            <select id="ddlTipo" onchange="mostrarCamposPorTipo()" class="ui search dropdown">
+            <select id="ddlTipo" name="ddlTipo" onchange="mostrarCamposPorTipo()" class="ui search dropdown" required>
                 <option value="">Tipo</option>
-                <option value="1">Objetiva</option>
-                <option value="2">Discursiva</option>
+                @foreach (var obj in ViewBag.Tipos)
+                {
+                    <option value="@obj.CodTipoQuestao">@obj.Descricao</option>
+                }
             </select>
         </div>
     </div>
+    @* Detalhes da Questão *@
     <div class="ui bottom attached tab segment" data-tab="tab-name2">
-        <div class="field">
-            <label>Enunciado</label>
-            <textarea rows="2"></textarea>
+        <div class="field required">
+            <label for="txtEnunciado">Enunciado</label>
+            <textarea id="txtEnunciado" name="txtEnunciado" rows="2" required></textarea>
         </div>
         <div class="field">
-            <label>Objetivo</label>
-            <textarea rows="2"></textarea>
+            <label for="txtObjetivo">Objetivo</label>
+            <textarea name="txtObjetivo" rows="2"></textarea>
+        </div>
+        <div class="field required questao discursiva">
+            <label for="txtChaveDeResposta">Chave de Resposta</label>
+            <textarea id="txtChaveDeResposta" name="txtChaveDeResposta" rows="2"></textarea>
         </div>
         <div class="field questao discursiva">
-            <label>Chave de Resposta</label>
-            <textarea rows="2"></textarea>
+            <label for="txtComentario">Comentário</label>
+            <textarea name="txtComentario" rows="2"></textarea>
         </div>
-        <div class="field questao discursiva">
-            <label>Comentário</label>
-            <textarea rows="2"></textarea>
-        </div>
-    </div>
+    </div>    
+    @* Alternativas da Questão *@
     <div class="ui bottom attached tab segment questao objetiva" data-tab="tab-name3">
+        <input id="txtQtdAlternativas" name="txtQtdAlternativas" type="number" hidden />
+        <div class="ui button" onclick="adicionarAlternativa()">Adicionar</div>
         <div class="ui fluid accordion">
-            <div class="active title">
-                <i class="dropdown icon"></i>
-                Alternativa 1
-            </div>
-            <div class="active content">
-                <div class="field">
-                    <label>Enunciado</label>
-                    <textarea rows="2"></textarea>
-                </div>
-                <div class="field">
-                    <label>Comentário</label>
-                    <textarea rows="2"></textarea>
-                </div>
-                <div class="ui toggle checkbox">
-                    <input type="checkbox" tabindex="0" class="hidden">
-                    <label>Correta</label>
-                </div>
-            </div>
-            <div class="title">
-                <i class="dropdown icon"></i>
-                Alternativa 2
-            </div>
-            <div class="content">
-                <div class="field">
-                    <label>Enunciado</label>
-                    <textarea rows="2"></textarea>
-                </div>
-                <div class="field">
-                    <label>Comentário</label>
-                    <textarea rows="2"></textarea>
-                </div>
-                <div class="ui toggle checkbox">
-                    <input type="checkbox" tabindex="0" class="hidden">
-                    <label>Correta</label>
-                </div>
-            </div>
-            <div class="title">
-                <i class="dropdown icon"></i>
-                Alternativa 3
-            </div>
-            <div class="content">
-                <div class="field">
-                    <label>Enunciado</label>
-                    <textarea rows="2"></textarea>
-                </div>
-                <div class="field">
-                    <label>Comentário</label>
-                    <textarea rows="2"></textarea>
-                </div>
-                <div class="ui toggle checkbox">
-                    <input type="checkbox" tabindex="0" class="hidden">
-                    <label>Correta</label>
-                </div>
-            </div>
-            <div class="title">
-                <i class="dropdown icon"></i>
-                Alternativa 4
-            </div>
-            <div class="content">
-                <div class="field">
-                    <label>Enunciado</label>
-                    <textarea rows="2"></textarea>
-                </div>
-                <div class="field">
-                    <label>Comentário</label>
-                    <textarea rows="2"></textarea>
-                </div>
-                <div class="ui toggle checkbox">
-                    <input type="checkbox" tabindex="0" class="hidden">
-                    <label>Correta</label>
-                </div>
-            </div>
-            <div class="title">
-                <i class="dropdown icon"></i>
-                Alternativa 5
-            </div>
-            <div class="content">
-                <div class="field">
-                    <label>Enunciado</label>
-                    <textarea rows="2"></textarea>
-                </div>
-                <div class="field">
-                    <label>Comentário</label>
-                    <textarea rows="2"></textarea>
-                </div>
-                <div class="ui toggle checkbox">
-                    <input type="checkbox" tabindex="0" class="hidden">
-                    <label>Correta</label>
-                </div>
-            </div>
         </div>
     </div>
+    <br />
+    <a href="/Dashboard/Questao" class="ui button">Cancelar</a>
+    <div class="ui button" onclick="enviarForm()">Prosseguir</div>
 </form>
 

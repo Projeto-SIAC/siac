@@ -308,6 +308,7 @@
     <Content Include="Views\Questao\Index.cshtml" />
     <Content Include="Views\Questao\Cadastrar.cshtml" />
     <Content Include="Views\Erro\Index.cshtml" />
+    <Content Include="Views\Questao\Confirmar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Confirmar Questão";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<table class="ui table">
+    <thead>
+        <tr>
+            <th>Chave</th>
+            <th>Valor</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var key in ViewBag.FormCollection.AllKeys)
+        {
+            <tr>
+                <td>@key</td>
+                <td>@ViewBag.FormCollection[key]</td>
+        </tr>
+        }
+    </tbody>
+</table>
+

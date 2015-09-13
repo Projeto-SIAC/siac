@@ -451,7 +451,7 @@ namespace SIAC.Web.Models
 			}
 		}
 		
-		public System.Data.Linq.Table<AviPublicoCampus> AviPublicoCampu
+		public System.Data.Linq.Table<AviPublicoCampus> AviPublicoCampus
 		{
 			get
 			{
