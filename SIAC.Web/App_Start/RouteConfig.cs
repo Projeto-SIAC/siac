@@ -46,6 +46,12 @@ namespace SIAC.Web
                 namespaces: new[] { "SIAC.Web.Controllers" }
             );
             
+            routes.MapRoute(
+                name: "LeroLero",
+                url: "LeroLero",
+                defaults: new { controller = "LeroLero", action = "Index" },
+                namespaces: new[] { "SIAC.Web.Controllers" }
+            );
         }
     }
 }
