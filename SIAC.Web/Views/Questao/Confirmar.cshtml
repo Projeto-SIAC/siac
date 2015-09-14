@@ -4,22 +4,56 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model SIAC.Web.Models.Questao
+
 <h2>@ViewBag.Title</h2>
-<table class="ui table">
-    <thead>
-        <tr>
-            <th>Chave</th>
-            <th>Valor</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var key in ViewBag.FormCollection.AllKeys)
+<div class="ui segment">
+    <div class="ui labels">
+        <div class="ui label">
+            Disciplina
+            <div class="detail">
+                @Model.QuestaoTemas[0].Tema.Disciplina.Descricao
+            </div>
+        </div>
+        <div class="ui label" title="@Model.Dificuldade.Comentario">
+            Dificuldade
+            <div class="detail">
+                @Model.Dificuldade.Descricao
+            </div>
+        </div>
+        @foreach (var questaoTema in Model.QuestaoTemas)
         {
-            <tr>
-                <td>@key</td>
-                <td>@ViewBag.FormCollection[key]</td>
-        </tr>
+            <div class="ui tag label" title="@questaoTema.Tema.Comentario">@questaoTema.Tema.Descricao</div>
         }
-    </tbody>
-</table>
+    </div>
+    <div class="ui dividing header">
+        <p title="@Model.Objetivo">@Model.Enunciado</p>
+    </div>
+    @if (Model.CodTipoQuestao == 1)
+    {
+        <div class="ui very relaxed list">
+            @foreach (var alternativa in Model.Alternativas)
+            {
+            <div class="item">
+                <div class="middle aligned content" title="@alternativa.Comentario">
+                    <b>@(alternativa.CodOrdem + 1)</b>) @alternativa.Enunciado
+                    @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
+                    {
+                        <a class="ui green label">Correta</a>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div>
+            <p title="@Model.Comentario"><i>@Model.ChaveDeResposta</i> <a class="ui green label">Chave de Resposta</a></p>
+        </div>
+    }
+</div>
+<div class="ui button">Cancelar</div>
+<div class="ui button">Confirmar</div>
+
 
