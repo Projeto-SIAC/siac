@@ -19,13 +19,14 @@ namespace SIAC.Web.Helpers
         public string Paragrafo()
         {
             string p = String.Empty;
-
-            string html = wc.DownloadString("http://www.lerolero.com/");
-
-            p = TextBetween(html, "id=\"frase_aqui\">", "</blockquote>");
-
-            p = p.Trim();
-
+            try {
+                        string html = wc.DownloadString("http://www.lerolero.com/");
+                        p = TextBetween(html, "id=\"frase_aqui\">", "</blockquote>");
+                        p = p.Trim();
+            } 
+            catch (Exception ex) {
+                        p=ex.Message;             
+            }
             return p;
         }
 
