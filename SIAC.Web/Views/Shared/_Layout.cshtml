@@ -55,7 +55,7 @@
 </head>
 <body>
 
-    <div class="ui button" style="position: fixed; margin-right:5em; margin-bottom:5em; z-index: 1003">LeroLero</div>
+    <div class="ui button" onclick="leroLero()" style="position: fixed; right:.5em; bottom:.5em; z-index: 1003">LeroLero</div>
 
     <div class="ui menu" style="border-radius:0">
             <a href="~/" class="item">
@@ -151,8 +151,7 @@
             $.ajax({
                 cache: false,
                 type: 'GET',
-                url: '@(Url.RouteUrl("RecuperarTemasPorCodDisciplina"))',
-                data: { "codDisciplina": selecionado },
+                url: '/LeroLero/Index',
                 success: function (data) {
                         alert(data);
                 },
