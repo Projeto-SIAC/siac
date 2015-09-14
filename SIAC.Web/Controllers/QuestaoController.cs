@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SIAC.Web.Models;
 
 namespace SIAC.Web.Controllers
 {
@@ -38,40 +39,41 @@ namespace SIAC.Web.Controllers
         // GET: Questao/Cadastrar
         public ActionResult Cadastrar()
         {
-            var dc = Models.DataContextSIAC.GetInstance();
-            ViewBag.Disciplinas = dc.Disciplina.OrderBy(d=>d.Descricao).ToList(); // futuramente: retornar apenas disciplinas do professor
-            ViewBag.Tipos = dc.TipoQuestao.OrderBy(d => d.Descricao).ToList();
-            ViewBag.Dificuldades = dc.Dificuldade.ToList();
+            var dc = DataContextSIAC.GetInstance();
+            ViewBag.Disciplinas = Disciplina.ListarOrdenadamente(); // futuramente: retornar apenas disciplinas do professor
+            ViewBag.Tipos = TipoQuestao.ListarOrdenadamente();
+            ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
             return View();
         }
 
         // POST: Questao/Confirmar
+        [HttpPost]
         public ActionResult Confirmar(FormCollection formCollection)
         {
-            var dc = Models.DataContextSIAC.GetInstance();
-            Models.Questao questao = new Models.Questao();
-
-            questao.Professor = dc.Professor.Single(p => p.MatrProfessor == (string)Session["UsuarioMatricula"]);
+            var dc = DataContextSIAC.GetInstance();
+            Questao questao = new Questao();
+            
+            questao.Professor = Professor.ListarPorMatricula(Session["UsuarioMatricula"].ToString());
             questao.CodProfessor = questao.Professor.CodProfessor;
 
             // Gerais
             questao.CodDificuldade = int.Parse(formCollection["ddlDificuldade"]);
-            questao.Dificuldade = dc.Dificuldade.Single(d => d.CodDificuldade == questao.CodDificuldade);
+            questao.Dificuldade = Dificuldade.ListarPorCodigo(questao.CodDificuldade);
             questao.CodTipoQuestao = int.Parse(formCollection["ddlTipo"]);
-            questao.TipoQuestao = dc.TipoQuestao.Single(t => t.CodTipoQuestao == questao.CodTipoQuestao);
+            questao.TipoQuestao = TipoQuestao.ListarPorCodigo(questao.CodTipoQuestao);
+
             var codDisciplina = int.Parse(formCollection["ddlDisciplina"]);
             var codTemas = formCollection["ddlTema"].Split(',');
             foreach (var strCod in codTemas)
             {
                 var codTema = int.Parse(strCod);
-                questao.QuestaoTemas.Add(new Models.QuestaoTema {
+                questao.QuestaoTemas.Add(new QuestaoTema {
                     CodDisciplina = codDisciplina,
                     CodTema = codTema,
-                    Tema = dc.Tema.Single(t=>t.CodTema == codTema && t.CodDisciplina == codDisciplina)                    
+                    Tema = Tema.ListarPorCodigo(codDisciplina, codTema)
                 });
             }
-
-
+            
             // Detalhes
             questao.Enunciado = formCollection["txtEnunciado"];
             questao.Objetivo = !String.IsNullOrEmpty(formCollection["txtObjetivo"]) ? formCollection["txtObjetivo"] : null;
@@ -89,7 +91,7 @@ namespace SIAC.Web.Controllers
                 var qteAlternativas = int.Parse(formCollection["txtQtdAlternativas"]);
                 for (int i = 0; i < qteAlternativas; i++)
                 {
-                    questao.Alternativas.Add(new Models.Alternativa {
+                    questao.Alternativas.Add(new Alternativa {
                         CodOrdem = i,
                         Enunciado = formCollection["txtAlternativaEnunciado" + (i + 1)],
                         Comentario = !String.IsNullOrEmpty(formCollection["txtAlternativaComentario" + (i + 1)]) ? formCollection["txtAlternativaComentario" + (i + 1)] : null,
@@ -103,6 +105,27 @@ namespace SIAC.Web.Controllers
             return View(questao);
         }
 
+        //GET:Dashboard/Questão/Confirmar
+        [HttpGet]
+        public ActionResult Confirmar()
+        {
+            if (TempData.Keys.Count > 0)
+            {
+                if (TempData["Questao"] != null)
+                {
+                    Questao temp = TempData["Questao"] as Questao;
+
+                    Questao.Inserir(temp);
+
+                    TempData.Clear();
+
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult RecuperarTemasPorCodDisciplina(string codDisciplina)
         {
@@ -111,8 +134,8 @@ namespace SIAC.Web.Controllers
                 int cod = 0;
                 if (int.TryParse(codDisciplina, out cod))
                 {
-                    var dc = Models.DataContextSIAC.GetInstance();
-                    var temas = dc.Tema.Where(t => t.CodDisciplina == cod).ToList();
+                    var dc = DataContextSIAC.GetInstance();
+                    var temas = Tema.ListarPorDisciplina(cod);
                     var result = from t in temas select new { CodTema = t.CodTema, Descricao = t.Descricao };
                     return Json(result.ToList(), JsonRequestBehavior.AllowGet);
                 }
