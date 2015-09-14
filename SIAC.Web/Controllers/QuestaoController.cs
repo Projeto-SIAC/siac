@@ -33,7 +33,8 @@ namespace SIAC.Web.Controllers
         // GET: Questao
         public ActionResult Index()
         {
-            return View();
+            List<Questao> model =  Questao.ListarPorProfessor(Session["UsuarioMatricula"].ToString());
+            return View(model);
         }
         
         // GET: Questao/Cadastrar

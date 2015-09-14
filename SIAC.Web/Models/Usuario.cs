@@ -24,8 +24,6 @@ namespace SIAC.Web.Models
                 }
             }
 
-            else return null;
-
             return null;
         }
     }
