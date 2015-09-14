@@ -9,7 +9,7 @@
         $('.ui.accordion').accordion();
         $('.ui.dropdown').dropdown();
         $('.tabular.menu .item').tab();
-        $('.ui.modal').modal('show');
+        $('.ui.termo.modal').modal('setting', 'closable', false).modal('show');
 
         function recuperarTemasPorCodDisciplina() {
             var selecionado = $('#ddlDisciplina :selected').val();
@@ -50,7 +50,7 @@
         function removerAlternativa(button) {
             var i = $('.ui.accordion .title').length;
             if (i > 2) {
-                var content = $(button).parent().parent();
+                var content = $(button).parent().parent().parent().parent();
                 var title = $(content).prev();
                 title.remove();
                 content.remove();
@@ -61,9 +61,10 @@
 
         function adicionarAlternativa() {
             var i = $('.ui.accordion .title').length + 1;
-            $('.ui.accordion').append('<div class="title"><i class="dropdown icon"></i>Alternativa ' + i + '</div><div class="content"><div class="field required"><label for="txtAlternativaEnunciado' + i + '">Enunciado</label><textarea id="txtAlternativaEnunciado' + i + '" name="txtAlternativaEnunciado' + i + '" rows="2"></textarea></div><div class="field"><label for="txtAlternativaComentario' + i + '">Comentário</label><textarea name="txtAlternativaComentario' + i + '" rows="2"></textarea></div><div class="ui toggle checkbox"><input id="chkAlternativaCorreta' + i + '" name="chkAlternativaCorreta' + i + '" type="checkbox" tabindex="0" class="hidden"><label for="chkAlternativaCorreta' + i + '">Correta</label></div><div class="field"><div onclick="removerAlternativa(this)" class="ui button">Remover</div></div></div>');
+            $('.ui.accordion').append('<div class="title"><i class="dropdown icon"></i>Alternativa ' + i + '</div><div class="content ui segment"><div class="field required"><label for="txtAlternativaEnunciado' + i + '">Enunciado</label><textarea id="txtAlternativaEnunciado' + i + '" name="txtAlternativaEnunciado' + i + '" rows="2"></textarea></div><div class="field"><label for="txtAlternativaComentario' + i + '">Comentário</label><textarea name="txtAlternativaComentario' + i + '" rows="2"></textarea></div><div class="field"><div class="ui toggle checkbox"><input id="chkAlternativaCorreta' + i + '" name="chkAlternativaCorreta' + i + '" type="checkbox" tabindex="0" class="hidden"><label for="chkAlternativaCorreta' + i + '">Correta</label></div></div><div class="field"><div class="ui button">Remover</div><div class="ui special popup"><div class="header">Tem certeza?</div><div class="content"><p>Essa ação não poderá ser desfeita.</p><div class="ui right aligned button tiny" onclick="removerAlternativa(this)">Sim, remover</div></div></div></div></div>');
             $('#txtQtdAlternativas').val($('.ui.accordion .title').length);
             $('.ui.checkbox').checkbox();
+            $('.ui.accordion .button').popup({ inline: true, on: 'click', position: 'right center' });
         }
 
         function renomearAlternativas() {
@@ -141,15 +142,16 @@
             else {
                 $('.ui.error.message .list').append('<li>É necessário selecionar uma disciplina</li>')
             }
-            if (validado) $('#frmQuestao').submit();
+            if (validado) $('#frmQuestao').addClass('loading').submit();
             else $('#frmQuestao').addClass('error');
         }
     </script>
 } 
 
-<div class="ui modal">
+<div class="ui termo modal">
     <div class="header">Você está ciente de...</div>
     <div class="content">
+        @* Futuramente, deverá vim do banco de dados *@
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ornare ornare posuere. Aenean viverra metus vel arcu venenatis eleifend. Nunc arcu magna, placerat quis leo non, venenatis posuere dui. Nam id cursus massa, a luctus odio. Duis elementum euismod eleifend. Nulla nec lectus ut quam pellentesque dictum id in massa. Nulla in elit id justo scelerisque ornare sed at erat. Duis risus libero, volutpat vitae rutrum eu, rutrum nec nibh. Fusce commodo dapibus mattis.</p>
         <p>Nam dictum tempus magna, at lacinia neque posuere at. Maecenas dictum nulla ac neque efficitur, at sagittis turpis ornare. Mauris lobortis lorem vel fermentum volutpat. Pellentesque rutrum nibh vel erat blandit congue. Mauris euismod porta ligula nec eleifend. Nunc tempor mauris arcu, ut venenatis enim aliquet eu. Integer porta nisl id dapibus sagittis. Nam laoreet at quam feugiat efficitur. Donec eu lectus eget sem iaculis dapibus. Nullam non dui faucibus, gravida enim non, luctus nisl. Duis convallis risus eget purus suscipit sollicitudin. Curabitur non est nec quam ornare lobortis nec ut nibh.</p>
         <p>Vestibulum placerat auctor aliquam. Aliquam eros turpis, sodales in ornare ac, dapibus sed orci. Ut vitae rhoncus purus, sit amet faucibus est. Integer interdum lorem non tortor commodo, vel laoreet augue euismod. Donec condimentum sollicitudin suscipit. In fringilla nunc nec velit luctus, eget eleifend nisl pellentesque. Pellentesque consequat congue sagittis. Sed vestibulum quis ipsum id rhoncus. Praesent pulvinar, ipsum quis sagittis molestie, erat leo ultricies velit, ut aliquam nulla odio malesuada purus. Donec et venenatis risus. Phasellus velit libero, hendrerit ultrices maximus eget, semper ut tortor.</p>
@@ -164,7 +166,7 @@
 
 <form id="frmQuestao" action="/Dashboard/Questao/Confirmar" method="post" class="ui form">
     <div class="ui error message">
-        <div class="header">Algo de muito errado não está certo</div>
+        <div class="header">Verifique</div>
         <ul class="list">
         </ul>
     </div>
