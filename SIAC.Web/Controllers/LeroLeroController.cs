@@ -9,6 +9,7 @@ namespace SIAC.Web.Controllers
     public class LeroLeroController : Controller
     {
         // GET: LeroLero
+        [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Index()
         {
             Helpers.LeroLero obj = new Helpers.LeroLero();
