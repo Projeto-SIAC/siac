@@ -3,4 +3,22 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model List<SIAC.Web.Models.Questao>
+
 <h2>@ViewBag.Title</h2>
+
+<div class="ui very relaxed items">
+@foreach (SIAC.Web.Models.Questao questao in Model)
+{
+    <div class="item">
+        <div class="content">
+            <a class="header">@(questao.Enunciado.Length > 140 ? questao.Enunciado.Substring(0, 140) + "..." : questao.Enunciado)</a>
+            <div class="meta ui labels">
+                <span class="ui label">@questao.QuestaoTemas[0].Tema.Disciplina.Descricao</span>
+                <span class="ui label">@questao.Dificuldade.Descricao</span>
+                <span class="ui label">@questao.TipoQuestao.Descricao</span>
+            </div>
+        </div>
+    </div>
+}
+</div>

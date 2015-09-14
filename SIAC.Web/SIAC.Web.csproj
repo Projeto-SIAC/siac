@@ -261,11 +261,13 @@
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\AcessoController.cs" />
     <Compile Include="Controllers\ErroController.cs" />
+    <Compile Include="Controllers\LeroLeroController.cs" />
     <Compile Include="Controllers\QuestaoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Criptografia.cs" />
+    <Compile Include="Helpers\LeroLero.cs" />
     <Compile Include="Helpers\TimeLog.cs" />
     <Compile Include="Models\DataContextSIAC.cs" />
     <Compile Include="Models\DataClassesSIAC.designer.cs">
@@ -324,6 +326,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\LeroLero\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
