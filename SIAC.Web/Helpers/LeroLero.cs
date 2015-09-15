@@ -20,12 +20,12 @@ namespace SIAC.Web.Helpers
         {
             string p = String.Empty;
             try {
-                        string html = wc.DownloadString("http://www.lerolero.com/");
-                        p = TextBetween(html, "id=\"frase_aqui\">", "</blockquote>");
-                        p = p.Trim();
+                    string html = wc.DownloadString("http://www.lerolero.com/");
+                    p = TextBetween(html, "id=\"frase_aqui\">", "</blockquote>");
+                    p = p.Trim();
             } 
             catch (Exception ex) {
-                        p=ex.Message;             
+                    p=ex.Message;             
             }
             return p;
         }
