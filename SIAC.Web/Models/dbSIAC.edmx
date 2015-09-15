@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="dbSIACModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="dbSIACModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Alternativa">
           <Key>
             <PropertyRef Name="CodOrdem" />
@@ -703,14 +703,16 @@
           <Property Name="Descricao" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Sigla" Type="varchar" MaxLength="5" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'dbb4ddc0cff41b43319b64a50f01243a8c.dbo.Parametro' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="Parametro">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TempoInatividade" Type="int" />
           <Property Name="NumeracaoQuestao" Type="int" />
           <Property Name="NumeracaoAlternativa" Type="int" />
           <Property Name="QteSemestres" Type="int" />
-        </EntityType>-->
+        </EntityType>
         <EntityType Name="Pessoa">
           <Key>
             <PropertyRef Name="CodPessoa" />
@@ -2825,6 +2827,7 @@ warning 6013: The table/view 'dbb4ddc0cff41b43319b64a50f01243a8c.dbo.Parametro' 
           <EntitySet Name="NivelEnsino" EntityType="Self.NivelEnsino" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ocupacao" EntityType="Self.Ocupacao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pais" EntityType="Self.Pais" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Parametro" EntityType="Self.Parametro" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Pessoa" EntityType="Self.Pessoa" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PessoaCategoria" EntityType="Self.PessoaCategoria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PessoaFisica" EntityType="Self.PessoaFisica" Schema="dbo" store:Type="Tables" />
@@ -3350,8 +3353,7 @@ warning 6013: The table/view 'dbb4ddc0cff41b43319b64a50f01243a8c.dbo.Parametro' 
             <End Role="Visitante" EntitySet="Visitante" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="dbSIACModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -6366,7 +6368,18 @@ warning 6013: The table/view 'dbb4ddc0cff41b43319b64a50f01243a8c.dbo.Parametro' 
             <End Role="Ocupacao" EntitySet="Ocupacao" />
             <End Role="PessoaFisica" EntitySet="PessoaFisica" />
           </AssociationSet>
+          <EntitySet Name="Parametro" EntityType="dbSIACModel.Parametro" />
         </EntityContainer>
+        <EntityType Name="Parametro">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TempoInatividade" Type="Int32" />
+          <Property Name="NumeracaoQuestao" Type="Int32" />
+          <Property Name="NumeracaoAlternativa" Type="Int32" />
+          <Property Name="QteSemestres" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7283,6 +7296,17 @@ warning 6013: The table/view 'dbb4ddc0cff41b43319b64a50f01243a8c.dbo.Parametro' 
               <ScalarProperty Name="CodPessoa" ColumnName="CodPessoaFisica" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Parametro">
+            <EntityTypeMapping TypeName="dbSIACModel.Parametro">
+              <MappingFragment StoreEntitySet="Parametro">
+                <ScalarProperty Name="QteSemestres" ColumnName="QteSemestres" />
+                <ScalarProperty Name="NumeracaoAlternativa" ColumnName="NumeracaoAlternativa" />
+                <ScalarProperty Name="NumeracaoQuestao" ColumnName="NumeracaoQuestao" />
+                <ScalarProperty Name="TempoInatividade" ColumnName="TempoInatividade" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -93,5 +93,6 @@ namespace SIAC.Web.Models
         public virtual DbSet<UsuarioAcessoPagina> UsuarioAcessoPagina { get; set; }
         public virtual DbSet<UsuarioOpiniao> UsuarioOpiniao { get; set; }
         public virtual DbSet<Visitante> Visitante { get; set; }
+        public virtual DbSet<Parametro> Parametro { get; set; }
     }
 }
