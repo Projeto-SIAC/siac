@@ -54,9 +54,6 @@
     </style>
 </head>
 <body>
-
-    <div class="ui lero button" data-variation="inverted" data-content="Copiado!" onclick="leroLero()" style="position: fixed; right:.5em; bottom:.5em; z-index: 1003">LeroLero</div>
-
     <div class="ui menu" style="border-radius:0">
             <a href="~/" class="item">
                 <img src="~/Resources/images/layout/logo-black.png" />
@@ -144,10 +141,16 @@
             </div>
         </div>        
     </div>
+    <div class="ui lero icon button" onmouseover="selecionarFocado()" onclick="leroLero()" style="position: fixed; right:.5em; bottom:.5em; z-index: 1003"><i class="icon write"></i></div>
     @Scripts.Render("~/bundles/js")
     @RenderSection("scripts", required: false)
-    <script>
+    <script>     
+        var focado;
         
+        function selecionarFocado() {
+            focado = $(':focus');
+        }
+           
         function leroLero() {
             
             $('.lero').addClass('loading');
@@ -156,19 +159,14 @@
                 type: 'GET',
                 url: '@(Url.RouteUrl("LeroLero"))',
                 success: function (data) {
-                    //if (window.clipboardData) {
-                    //    window.clipboardData.setData('text', data);
-                    //}
-                    var tmp = $('<input>'); $('body').append(tmp); tmp.val(data).select(); document.execCommand('copy'); tmp.remove();
+                    focado.val(data);
                     $('.lero').removeClass('loading');
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    alert('Falha.');
                     $('.lero').removeClass('loading');
                 }
             });
         }
-        $('.lero').popup({ inline: true, on: 'click', position: 'top center' });
     </script>
 </body>
 </html>

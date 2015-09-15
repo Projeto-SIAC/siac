@@ -268,6 +268,7 @@
     </Compile>
     <Compile Include="Helpers\Criptografia.cs" />
     <Compile Include="Helpers\LeroLero.cs" />
+    <Compile Include="Helpers\StringExtensao.cs" />
     <Compile Include="Helpers\TimeLog.cs" />
     <Compile Include="Models\DataContextSIAC.cs" />
     <Compile Include="Models\DataClassesSIAC.designer.cs">
