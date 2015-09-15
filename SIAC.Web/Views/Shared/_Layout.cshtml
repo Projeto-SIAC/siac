@@ -156,9 +156,10 @@
                 type: 'GET',
                 url: '@(Url.RouteUrl("LeroLero"))',
                 success: function (data) {
-                    if (window.clipboardData) {
-                        window.clipboardData.setData('text', data);
-                    }
+                    //if (window.clipboardData) {
+                    //    window.clipboardData.setData('text', data);
+                    //}
+                    var tmp = $('<input>'); $('body').append(tmp); tmp.val(data).select(); document.execCommand('copy'); tmp.remove();
                     $('.lero').removeClass('loading');
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
