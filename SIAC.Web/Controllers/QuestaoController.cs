@@ -68,7 +68,7 @@ namespace SIAC.Web.Controllers
             foreach (var strCod in codTemas)
             {
                 var codTema = int.Parse(strCod);
-                questao.QuestaoTemas.Add(new QuestaoTema {
+                questao.QuestaoTema.Add(new QuestaoTema {
                     CodDisciplina = codDisciplina,
                     CodTema = codTema,
                     Tema = Tema.ListarPorCodigo(codDisciplina, codTema)
@@ -92,7 +92,7 @@ namespace SIAC.Web.Controllers
                 var qteAlternativas = int.Parse(formCollection["txtQtdAlternativas"]);
                 for (int i = 0; i < qteAlternativas; i++)
                 {
-                    questao.Alternativas.Add(new Alternativa {
+                    questao.Alternativa.Add(new Alternativa {
                         CodOrdem = i,
                         Enunciado = formCollection["txtAlternativaEnunciado" + (i + 1)],
                         Comentario = !String.IsNullOrEmpty(formCollection["txtAlternativaComentario" + (i + 1)]) ? formCollection["txtAlternativaComentario" + (i + 1)] : null,

@@ -26,7 +26,7 @@
         <div class="ui label">
             Disciplina
             <div class="detail">
-                @Model.QuestaoTemas[0].Tema.Disciplina.Descricao
+                @Model.QuestaoTema.ElementAt(0).Tema.Disciplina.Descricao
             </div>
         </div>
         <div class="ui label" data-html="@( !String.IsNullOrEmpty(Model.Dificuldade.Comentario) ? "<b>Comentário</b>: "+Model.Dificuldade.Comentario : "" )">
@@ -35,7 +35,7 @@
                 @Model.Dificuldade.Descricao
             </div>
         </div>
-        @foreach (var questaoTema in Model.QuestaoTemas)
+        @foreach (var questaoTema in Model.QuestaoTema)
         {
             <div class="ui tag label" data-html="@( !String.IsNullOrEmpty(questaoTema.Tema.Comentario) ? "<b>Comentário</b>: "+questaoTema.Tema.Comentario : "" )">@questaoTema.Tema.Descricao</div>
         }
@@ -46,7 +46,7 @@
     @if (Model.CodTipoQuestao == 1)
     {
         <div class="ui very relaxed list">
-            @foreach (var alternativa in Model.Alternativas)
+            @foreach (var alternativa in Model.Alternativa)
             {
                 <div class="item">
                     <div class="middle aligned content" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario)?"<b>Comentário</b>: " + alternativa.Comentario : "")">

@@ -7,15 +7,15 @@ namespace SIAC.Web.Models
 { 
     public class DataContextSIAC
     {
-        private static DataClassesSIACDataContext contexto;
+        private static dbSIACEntities contexto;
         
         private DataContextSIAC() {}
 
-        public static DataClassesSIACDataContext GetInstance()
+        public static dbSIACEntities GetInstance()
         {
             if (contexto == null)
             {
-                contexto = new DataClassesSIACDataContext();
+                contexto = new dbSIACEntities();
             }   
             return contexto;
         }

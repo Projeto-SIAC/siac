@@ -48,6 +48,14 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -58,6 +66,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -107,6 +117,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Models\dbSIAC.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>dbSIAC.edmx</DependentUpon>
+      <LastGenOutput>dbSIAC.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\dbSIAC.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>dbSIAC.edmx</DependentUpon>
+      <LastGenOutput>dbSIAC.cs</LastGenOutput>
+    </Content>
     <Content Include="Resources\images\content\login\amostra.jpg" />
     <Content Include="Resources\images\content\login\avatar.jpg" />
     <Content Include="Resources\images\layout\background.jpg" />
@@ -270,19 +290,233 @@
     <Compile Include="Helpers\LeroLero.cs" />
     <Compile Include="Helpers\StringExtensao.cs" />
     <Compile Include="Helpers\TimeLog.cs" />
+    <Compile Include="Models\Alternativa.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Aluno.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Area.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AvalAcademica.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AvalAcadReposicao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AvalAuto.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AvalAvi.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AvalCertificacao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Avaliacao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AvaliacaoTema.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AvalPessoaResultado.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AvalQuesPessoaResposta.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AvalTemaQuestao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AviCategoria.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AviIndicador.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AviModulo.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AviPublico.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AviQuestao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AviQuestaoAlternativa.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AviQuestaoPessoaResposta.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AviTipoPublico.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Bairro.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Campus.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Categoria.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Colaborador.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Curso.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DataContextSIAC.cs" />
-    <Compile Include="Models\DataClassesSIAC.designer.cs">
+    <Compile Include="Models\dbSIAC.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataClassesSIAC.dbml</DependentUpon>
+      <DependentUpon>dbSIAC.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Dificuldade.cs" />
-    <Compile Include="Models\Disciplina.cs" />
-    <Compile Include="Models\Professor.cs" />
-    <Compile Include="Models\Questao.cs" />
-    <Compile Include="Models\Tema.cs" />
-    <Compile Include="Models\TipoQuestao.cs" />
-    <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\dbSIAC.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\dbSIAC.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbSIAC.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DiaSemana.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Dificuldade.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Diretoria.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Disciplina.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Email.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Endereco.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Estado.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Horario.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Instituicao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Justificacao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MatrizCurricular.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MatrizCurricularDisciplina.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Municipio.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NivelEnsino.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Ocupacao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Pais.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\pDificuldade.cs" />
+    <Compile Include="Models\pDisciplina.cs" />
+    <Compile Include="Models\pProfessor.cs" />
+    <Compile Include="Models\pQuestao.cs" />
+    <Compile Include="Models\pTema.cs" />
+    <Compile Include="Models\pTipoQuestao.cs" />
+    <Compile Include="Models\pUsuario.cs" />
+    <Compile Include="Models\Pessoa.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PessoaFisica.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PessoaFormacao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PessoaJuridica.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Professor.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ProReitoria.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Questao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\QuestaoAnexo.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\QuestaoTema.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Reitoria.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Sala.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Telefone.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Tema.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TipoAnexo.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TipoAvaliacao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TipoContato.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TipoQuestao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Turma.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TurmaDiscAluno.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TurmaDiscProfHorario.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Turno.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Usuario.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UsuarioAcesso.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UsuarioAcessoPagina.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UsuarioOpiniao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Visitante.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -304,10 +538,12 @@
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Acesso\Index.cshtml" />
     <Content Include="Resources\videos\background.webm" />
-    <Content Include="Models\DataClassesSIAC.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>DataClassesSIAC.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
+    <EntityDeploy Include="Models\dbSIAC.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>dbSIAC.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\dbSIAC.edmx.diagram">
+      <DependentUpon>dbSIAC.edmx</DependentUpon>
     </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -331,11 +567,7 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Models\DataClassesSIAC.dbml.layout">
-      <DependentUpon>DataClassesSIAC.dbml</DependentUpon>
-    </None>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

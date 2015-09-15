@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="876c1782860a4ee9b2d2897d3e6a6fad" Name="Diagram1">
+        <EntityTypeShape EntityType="dbSIACModel.Alternativa" Width="1.5" PointX="21" PointY="47.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Aluno" Width="1.5" PointX="18.5" PointY="42.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Area" Width="1.5" PointX="6" PointY="51.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvalAcademica" Width="1.5" PointX="35.25" PointY="48.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvalAcadReposicao" Width="1.5" PointX="18" PointY="38.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvalAuto" Width="1.5" PointX="5.25" PointY="42.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvalAvi" Width="1.5" PointX="15.75" PointY="36.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvalCertificacao" Width="1.5" PointX="30.75" PointY="48.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Avaliacao" Width="1.5" PointX="13.5" PointY="34" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvaliacaoTema" Width="1.5" PointX="23" PointY="28.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvalPessoaResultado" Width="1.5" PointX="8.25" PointY="42.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvalQuesPessoaResposta" Width="1.5" PointX="5.25" PointY="38.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvalTemaQuestao" Width="1.5" PointX="25.25" PointY="42" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AviCategoria" Width="1.5" PointX="15.75" PointY="29.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AviIndicador" Width="1.5" PointX="15.75" PointY="31.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AviModulo" Width="1.5" PointX="15.75" PointY="26.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AviPublico" Width="1.5" PointX="21" PointY="50.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AviQuestao" Width="1.5" PointX="18" PointY="32.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AviQuestaoAlternativa" Width="1.5" PointX="20.25" PointY="33.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AviQuestaoPessoaResposta" Width="1.5" PointX="8.25" PointY="37" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AviTipoPublico" Width="1.5" PointX="18.75" PointY="51.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Bairro" Width="1.5" PointX="3.75" PointY="54.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Campus" Width="1.5" PointX="23.25" PointY="51" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Categoria" Width="1.5" PointX="0.75" PointY="41.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Colaborador" Width="1.5" PointX="13.5" PointY="39.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Curso" Width="1.5" PointX="30.75" PointY="42.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.DiaSemana" Width="1.5" PointX="36" PointY="54.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Dificuldade" Width="1.5" PointX="16.5" PointY="50.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Diretoria" Width="1.5" PointX="28.5" PointY="49" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Disciplina" Width="1.5" PointX="18.5" PointY="28.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Email" Width="1.5" PointX="3" PointY="46.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Endereco" Width="1.5" PointX="6" PointY="46.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Estado" Width="1.5" PointX="1.5" PointY="62.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Horario" Width="1.5" PointX="36" PointY="56.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Instituicao" Width="1.5" PointX="5.25" PointY="58.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Justificacao" Width="1.5" PointX="15.75" PointY="41.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.MatrizCurricular" Width="1.5" PointX="33" PointY="43.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.MatrizCurricularDisciplina" Width="1.5" PointX="35.25" PointY="43.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Municipio" Width="1.5" PointX="1.5" PointY="54.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.NivelEnsino" Width="1.5" PointX="28.5" PointY="43.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Ocupacao" Width="1.5" PointX="0.75" PointY="44.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Pais" Width="1.5" PointX="1.5" PointY="66.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Pessoa" Width="1.5" PointX="0.75" PointY="46.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.PessoaFisica" Width="1.5" PointX="3" PointY="41.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.PessoaFormacao" Width="1.5" PointX="8.25" PointY="46.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.PessoaJuridica" Width="1.5" PointX="3" PointY="58.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Professor" Width="1.5" PointX="13.5" PointY="43.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.ProReitoria" Width="1.5" PointX="26.25" PointY="50.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Questao" Width="1.5" PointX="18.75" PointY="46.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.QuestaoAnexo" Width="1.5" PointX="24" PointY="47.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.QuestaoTema" Width="1.5" PointX="23" PointY="43.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Reitoria" Width="1.5" PointX="26.25" PointY="46.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Sala" Width="1.5" PointX="25.5" PointY="54.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Telefone" Width="1.5" PointX="3" PointY="50.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Tema" Width="1.5" PointX="20.75" PointY="28.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.TipoAnexo" Width="1.5" PointX="21.75" PointY="39.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.TipoAvaliacao" Width="1.5" PointX="11.25" PointY="35.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.TipoContato" Width="1.5" PointX="0.75" PointY="50.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.TipoQuestao" Width="1.5" PointX="16.5" PointY="52.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Turma" Width="1.5" PointX="33" PointY="47.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.TurmaDiscAluno" Width="1.5" PointX="20.75" PointY="42.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.TurmaDiscProfHorario" Width="1.5" PointX="38.25" PointY="48.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Turno" Width="1.5" PointX="30.75" PointY="53" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Usuario" Width="1.5" PointX="11.25" PointY="42.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.UsuarioAcesso" Width="1.5" PointX="13.5" PointY="46.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.UsuarioAcessoPagina" Width="1.5" PointX="15.75" PointY="46.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.UsuarioOpiniao" Width="1.5" PointX="13.5" PointY="49.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Visitante" Width="1.5" PointX="13.5" PointY="52.375" IsExpanded="true" />
+        <AssociationConnector Association="dbSIACModel.FK__Alternati__CodQu__345EC57D" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Aluno__CodCurso__69C6B1F5" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Aluno__MatrAluno__6ABAD62E" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__TurmaDisc__CodAl__52AE4273" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__PessoaFor__CodAr__0880433F" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAcade__CodDi__5C37ACAD" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAcade__CodPr__5B438874" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAcade__CodSa__5E1FF51F" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAcademica__5A4F643B" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAcademica__5D2BD0E6" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAcadR__CodSa__725BF7F6" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAcadReposica__7073AF84" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAcadReposica__7167D3BD" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAuto__00DF2177" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAuto__CodDif__02C769E9" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAuto__CodPes__01D345B0" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAvi__4959E263" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAvi__CodCola__4A4E069C" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AviPublico__1D4655FB" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AviQuestao__7814D14C" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalCerti__CodDi__019E3B86" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalCerti__CodPr__00AA174D" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalCerti__CodSa__038683F8" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalCertificacao__02925FBF" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Avaliacao__CodTi__2739D489" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvaliacaoTema__5BAD9CC8" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalPessoaResult__6166761E" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvaliacaoTema__5CA1C101" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalTemaQuestao__4F12BBB9" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalPesso__CodPe__625A9A57" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Justificacao__6EC0713C" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalQuesP__CodPe__55BFB948" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalQuesPessoaRe__54CB950F" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalTemaQuestao__5006DFF2" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AviQuesta__CodAv__79FD19BE" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AviQuesta__CodAv__7AF13DF7" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AviQuesta__CodAv__7908F585" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AviPublic__CodAv__1E3A7A34" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AviQuestaoAltern__084B3915" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AviQuestaoPessoa__4183B671" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AviQuesta__CodPe__4277DAAA" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Bairro__28ED12D1" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Endereco__61316BF4" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Campus__CodColab__0F2D40CE" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Campus__CodInsti__10216507" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Campus__CodPesso__0E391C95" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Diretoria__1B9317B3" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Sala__39237A9A" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Usuario__CodCate__08B54D69" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Colaborad__MatrC__69FBBC1F" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Curso__CodColabC__5C6CB6D7" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Diretoria__CodCo__1D7B6025" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__ProReitor__CodCo__7B264821" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Reitoria__CodCol__16CE6296" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Curso__5A846E65" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Curso__CodNivelE__5B78929E" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__MatrizCur__CodCu__0D0FEE32" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Turma__CodCurso__178D7CA5" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__TurmaDisc__CodDi__65C116E7" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Questao__CodDifi__22401542" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Diretoria__CodPe__1C873BEC" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__MatrizCur__CodDi__12C8C788" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Tema__CodDiscipl__3587F3E0" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__TurmaDisc__CodDi__54968AE5" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__TurmaDisc__CodDi__64CCF2AE" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Email__CodPessoa__756D6ECB" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Email__CodTipoCo__74794A92" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Endereco__CodPes__6225902D" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Estado__CodPais__2BFE89A6" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Municipio__30C33EC3" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Horario__CodTurn__3A4CA8FD" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__TurmaDiscProfHor__66B53B20" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Instituic__CodPe__1AD3FDA4" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__ProReitor__CodIn__7C1A6C5A" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Reitoria__CodIns__14E61A24" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Justifica__CodPr__6FB49575" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__MatrizCurricular__11D4A34F" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__PessoaFor__CodNi__078C1F06" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__PessoaFis__CodPe__787EE5A0" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__PessoaJur__CodPe__0F624AF8" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Telefone__CodPes__41EDCAC5" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__PessoaFor__CodPe__09746778" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Usuario__CodPess__09A971A2" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__ProReitor__CodPe__7A3223E8" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Reitoria__CodPes__15DA3E5D" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Professor__MatrP__56E8E7AB" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Questao__CodProf__24285DB4" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__TurmaDisc__CodPr__62E4AA3C" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Questao__CodTipo__2334397B" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__QuestaoAn__CodQu__44952D46" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__QuestaoTe__CodQu__3EDC53F0" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__QuestaoAn__CodTi__43A1090D" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__QuestaoTema__3DE82FB7" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__TurmaDisc__CodSa__67A95F59" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Telefone__CodTip__40F9A68C" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Turma__CodTurno__1881A0DE" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__TurmaDiscAluno__53A266AC" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__TurmaDiscProfHor__63D8CE75" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__UsuarioAc__Matri__160F4887" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__UsuarioOp__Matri__208CD6FA" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__Visitante__MatrV__498EEC8D" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__UsuarioAcessoPag__2EA5EC27" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.AvalCertPessoa" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.AviPublicoCampus" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.AviPublicoCurso" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.AviPublicoDiretoria" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.AviPublicoInstituicao" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.AviPublicoPessoa" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.AviPublicoProReitoria" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.AviPublicoReitoria" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.AviPublicoTurma" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.PessoaCategoria" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.PessoaOcupacao" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
