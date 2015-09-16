@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-
+@using SIAC.Web.Models;
 <html class="no-js" lang="pt-br">
 <head>
     <meta charset="utf-8" />
@@ -70,7 +70,7 @@
                 <div class="item text">
                     @DateTime.Today.ToString("D", new System.Globalization.CultureInfo("pt-BR"))
                 </div>
-                <div class="item">@Html.ActionLink("Sair", "Sair", "Acesso", null, new { @class = "ui button" } )</div>
+                <div class="item">@Html.ActionLink("Sair", "Sair", "Acesso", null, new { @class = "ui button" })</div>
         </div>
     </div>
     
@@ -109,9 +109,9 @@
                 <div class="ui header">
                     <i class="icon user"></i>
                     <div class="content">
-                        @Session["UsuarioNome"]
+                        @Usuario.SNome
                         <div class="sub header">
-                            @Session["UsuarioCategoria"]
+                            @Usuario.SCategoria
                         </div>
                     </div>
                 </div>
@@ -128,6 +128,12 @@
                     <a href="~/Perfil" class="item">
                         <i class="user icon"></i><span class="content">Perfil</span>
                     </a>
+                    @if (Usuario.SCategoriaCodigo == 3)
+                    {
+                        <a href="~/PainelAdministrativo" class="item">
+                            <i class="setting icon"></i><span class="content">Painel Administrativo</span>
+                        </a>
+                    }
                     <a  href="~/Acesso/Sair" class="item">
                         <i class="power icon"></i><span class="content">Sair</span>
                     </a>

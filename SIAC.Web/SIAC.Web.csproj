@@ -282,6 +282,7 @@
     <Compile Include="Controllers\AcessoController.cs" />
     <Compile Include="Controllers\ErroController.cs" />
     <Compile Include="Controllers\LeroLeroController.cs" />
+    <Compile Include="Controllers\PainelAdministrativoController.cs" />
     <Compile Include="Controllers\QuestaoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -432,6 +433,10 @@
     <Compile Include="Models\Pais.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Parametro.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\pParametro.cs" />
     <Compile Include="Models\pDificuldade.cs" />
     <Compile Include="Models\pDisciplina.cs" />
     <Compile Include="Models\pProfessor.cs" />
@@ -554,6 +559,7 @@
     <Content Include="Views\Questao\Cadastrar.cshtml" />
     <Content Include="Views\Erro\Index.cshtml" />
     <Content Include="Views\Questao\Confirmar.cshtml" />
+    <Content Include="Views\PainelAdministrativo\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
