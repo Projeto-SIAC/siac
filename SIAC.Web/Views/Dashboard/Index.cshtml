@@ -3,6 +3,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@using SIAC.Web.Models
+
 @section Styles {
     <style>
         .dashmenu > div {
@@ -23,7 +25,7 @@
                 </div>
             </a>
         </div>
-        @if ((int)Session["UsuarioCategoriaCodigo"] == 2)
+        @if (Usuario.SCategoriaCodigo == 2)
         {
             <div class="column aligned center">
                 <a href="/Dashboard/Questao/Cadastrar">
@@ -34,7 +36,7 @@
                 </a>
             </div>
         }
-        @if ((int)Session["UsuarioCategoriaCodigo"] == 2 || (int)Session["UsuarioCategoriaCodigo"] == 3)
+        @if (Usuario.SCategoriaCodigo == 2 || Usuario.SCategoriaCodigo == 3)
         {
             <div class="column aligned center">
                 <a href="/Dashboard/Questao/Cadastrar">
@@ -45,7 +47,7 @@
                 </a>
             </div>
         }
-        @if ((int)Session["UsuarioCategoriaCodigo"] == 2)
+        @if (Usuario.SCategoriaCodigo == 2)
         {
             <div class="column aligned center">
                 <a href="/Dashboard/Questao/Cadastrar">
@@ -56,7 +58,7 @@
                 </a>
             </div>
         }
-        @if ((int)Session["UsuarioCategoriaCodigo"] == 1)
+        @if (Usuario.SCategoriaCodigo == 1)
         {
             <div class="column aligned center">
                 <a href="/Dashboard/Questao/Cadastrar">
@@ -67,7 +69,7 @@
                 </a>
             </div>
         }
-        @if ((int)Session["UsuarioCategoriaCodigo"] == 1 || (int)Session["UsuarioCategoriaCodigo"] == 2 || (int)Session["UsuarioCategoriaCodigo"] == 3)
+        @if (Usuario.SCategoriaCodigo == 1 || Usuario.SCategoriaCodigo == 2 || Usuario.SCategoriaCodigo == 3)
         {
             <div class="column aligned center">
                 <a href="/Dashboard/Questao/Cadastrar">

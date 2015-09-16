@@ -11,7 +11,7 @@ namespace SIAC.Web.Controllers
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (Session["Autenticado"] == null)
+            /*if (Session["Autenticado"] == null)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
@@ -19,11 +19,12 @@ namespace SIAC.Web.Controllers
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
-            else if (!(bool)Session["Autenticado"])
+            else*/
+            if (!Usuario.SAutenticado)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
-            else if ((int)Session["UsuarioCategoriaCodigo"] != 2)
+            else if (Usuario.SCategoriaCodigo != 2)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
@@ -33,7 +34,9 @@ namespace SIAC.Web.Controllers
         // GET: Questao
         public ActionResult Index()
         {
-            List<Questao> model =  Questao.ListarPorProfessor(Session["UsuarioMatricula"].ToString());
+            //List<Questao> model =  Questao.ListarPorProfessor(Session["UsuarioMatricula"].ToString());
+            List<Questao> model = Questao.ListarPorProfessor(Usuario.SMatricula);
+
             return View(model);
         }
         
@@ -53,8 +56,10 @@ namespace SIAC.Web.Controllers
         {
             var dc = DataContextSIAC.GetInstance();
             Questao questao = new Questao();
-            
-            questao.Professor = Professor.ListarPorMatricula(Session["UsuarioMatricula"].ToString());
+
+            //questao.Professor = Professor.ListarPorMatricula(UsuarioMatricula"].ToString());
+            questao.Professor = Professor.ListarPorMatricula(Usuario.SMatricula);
+
             questao.CodProfessor = questao.Professor.CodProfessor;
 
             // Gerais
