@@ -432,6 +432,9 @@
     <Compile Include="Models\Pais.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Parametro.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\pDificuldade.cs" />
     <Compile Include="Models\pDisciplina.cs" />
     <Compile Include="Models\pProfessor.cs" />
@@ -554,6 +557,7 @@
     <Content Include="Views\Questao\Cadastrar.cshtml" />
     <Content Include="Views\Erro\Index.cshtml" />
     <Content Include="Views\Questao\Confirmar.cshtml" />
+    <Content Include="Views\Questao\Detalhe.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

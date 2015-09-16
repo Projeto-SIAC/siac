@@ -44,6 +44,7 @@ namespace SIAC.Web.Controllers
             ViewBag.Disciplinas = Disciplina.ListarOrdenadamente(); // futuramente: retornar apenas disciplinas do professor
             ViewBag.Tipos = TipoQuestao.ListarOrdenadamente();
             ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
+            ViewBag.TiposAnexo = (from ta in DataContextSIAC.GetInstance().TipoAnexo orderby ta.Descricao select ta).ToList();
             return View();
         }
 
@@ -124,6 +125,23 @@ namespace SIAC.Web.Controllers
                 }
             }
 
+            return RedirectToAction("Index");
+        }
+
+        //GET: Dashboard/Questao/Detalhe/4
+        public ActionResult Detalhe(string codigo)
+        {
+            int codQuestao = 0;
+            int.TryParse(codigo, out codQuestao);
+            Questao model = null;
+            if (codQuestao > 0)
+            {
+                model = Questao.PesquisarPorCodigo(codQuestao);
+            }
+            if (model != null)
+            {
+                return View(model);
+            }            
             return RedirectToAction("Index");
         }
 

@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "Questão " + Model.CodQuestao;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model SIAC.Web.Models.Questao
+
+@section Scripts {
+
+    <script>
+        $('div,p')
+            .popup()
+        ;
+        $('.button')
+        .popup({
+            on: 'click'
+        })
+        ;
+    </script>
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="ui attached segment">
+    <div class="ui labels">
+        <div class="ui label">
+            Disciplina
+            <div class="detail">
+                @Model.QuestaoTema.ElementAt(0).Tema.Disciplina.Descricao
+            </div>
+        </div>
+        <div class="ui label" data-html="@( !String.IsNullOrEmpty(Model.Dificuldade.Comentario) ? "<b>Comentário</b>: "+Model.Dificuldade.Comentario : "" )">
+            Dificuldade
+            <div class="detail">
+                @Model.Dificuldade.Descricao
+            </div>
+        </div>
+        @foreach (var questaoTema in Model.QuestaoTema)
+        {
+            <div class="ui tag label" data-html="@( !String.IsNullOrEmpty(questaoTema.Tema.Comentario) ? "<b>Comentário</b>: "+questaoTema.Tema.Comentario : "" )">@questaoTema.Tema.Descricao</div>
+        }
+    </div>
+    <div class="ui dividing header">
+        <p data-html="@( !String.IsNullOrEmpty(Model.Objetivo) ? "<b>Objetivo</b>: " + Model.Objetivo : "")">@Model.Enunciado</p>
+    </div>
+    @if (Model.CodTipoQuestao == 1)
+    {
+        <div class="ui very relaxed list">
+            @foreach (var alternativa in Model.Alternativa)
+            {
+                <div class="item">
+                    <div class="middle aligned content" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario)?"<b>Comentário</b>: " + alternativa.Comentario : "")">
+                        <b>@(alternativa.CodOrdem + 1)</b>) @alternativa.Enunciado
+                        @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
+                    {
+                            <a class="ui green label">Correta</a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div>
+            <p data-html="@(!String.IsNullOrEmpty(Model.Comentario) ? "<b>Comentário</b>: "+ Model.Comentario : "")"><i>@Model.ChaveDeResposta</i> <a class="ui green label">Chave de Resposta</a></p>
+        </div>
+    }
+</div>
+<div class="ui secondary attached segment">
+    <div class="ui dividing header">
+        <p>Comentários</p>
+    </div>
+    @* Expor comentários dos usuários que já responderam essa questão *@
+</div>
+

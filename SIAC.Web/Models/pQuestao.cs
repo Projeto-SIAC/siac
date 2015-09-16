@@ -41,5 +41,10 @@ namespace SIAC.Web.Models
             return contexto.Questao.Where(q => q.CodProfessor == codProfessor).ToList();
         }
 
+        public static Questao PesquisarPorCodigo(int codigo)
+        {
+            return contexto.Questao.SingleOrDefault(q => q.CodQuestao == codigo);
+        }
+
     }
 }
