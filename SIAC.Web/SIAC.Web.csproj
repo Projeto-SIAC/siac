@@ -560,6 +560,7 @@
     <Content Include="Views\Erro\Index.cshtml" />
     <Content Include="Views\Questao\Confirmar.cshtml" />
     <Content Include="Views\PainelAdministrativo\Index.cshtml" />
+    <Content Include="Views\Questao\Detalhe.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
