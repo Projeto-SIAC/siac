@@ -72,16 +72,94 @@
 
         function adicionarAlternativa() {
             var i = $('.ui.alternativas.accordion .title').length + 1;
-            $('.ui.alternativas.accordion').append('<div class="title"><i class="dropdown icon"></i>Alternativa ' + i + '</div><div class="content ui segment"><div class="field required"><label for="txtAlternativaEnunciado' + i + '">Enunciado</label><textarea id="txtAlternativaEnunciado' + i + '" name="txtAlternativaEnunciado' + i + '" rows="2" placeholder="Enunciado..."></textarea></div><div class="field"><label for="txtAlternativaComentario' + i + '">Comentário</label><textarea name="txtAlternativaComentario' + i + '" rows="2" placeholder="Comentário..."></textarea></div><div class="field"><div class="ui toggle checkbox"><input id="chkAlternativaCorreta' + i + '" name="chkAlternativaCorreta' + i + '" type="checkbox" tabindex="0" class="hidden"><label for="chkAlternativaCorreta' + i + '">Correta</label></div></div><div class="field"><div class="ui button">Remover</div><div class="ui special popup"><div class="header">Tem certeza?</div><div class="content"><p>Essa ação não poderá ser desfeita.</p><div class="ui right aligned button tiny" onclick="removerAlternativa(this)">Sim, remover</div></div></div></div></div>');
+            $('.ui.alternativas.accordion').append('\
+                        <div class="title">\
+                            <input id="txtAlternativaIndex" value="'+i+'" hidden>\
+                            <i class="dropdown icon"></i>Alternativa ' + i + '\
+                        </div>\
+                        <div class="content ui segment">\
+                            <div class="field required">\
+                                <label for="txtAlternativaEnunciado' + i + '">Enunciado</label>\
+                                <textarea id="txtAlternativaEnunciado' + i + '" name="txtAlternativaEnunciado' + i + '" rows="2" placeholder="Enunciado..."></textarea>\
+                            </div>\
+                            <div class="field">\
+                                <label for="txtAlternativaComentario' + i + '">Comentário</label>\
+                                <textarea name="txtAlternativaComentario' + i + '" rows="2" placeholder="Comentário..."></textarea>\
+                            </div>\
+                            <div class="field">\
+                                <div class="ui toggle checkbox">\
+                                    <input id="chkAlternativaCorreta' + i + '" name="chkAlternativaCorreta' + i + '" type="checkbox" tabindex="0" class="hidden">\
+                                    <label for="chkAlternativaCorreta' + i + '">Correta</label>\
+                                </div>\
+                            </div>\
+                            <div class="field">\
+                                <div class="ui button">\
+                                    Remover\
+                                </div>\
+                                <div class="ui special popup">\
+                                    <div class="header">Tem certeza?</div>\
+                                    <div class="content"><p>Essa ação não poderá ser desfeita.</p>\
+                                    <div class="ui right aligned button tiny" onclick="removerAlternativa(this)">Sim, remover</div>\
+                                </div>\
+                            </div>\
+                        </div>\
+                    </div>');
             $('#txtQtdAlternativas').val($('.ui.accordion .title').length);
             $('.ui.checkbox').checkbox();
             $('.ui.alternativas.accordion .button').popup({ inline: true, on: 'click', position: 'right center' });
         }
 
         function renomearAlternativas() {
-            var list = $('.ui.accordion .title');
+            var list = $('.ui.alternativas.accordion .title');
+            var listContent = $('.ui.alternativas.accordion .content');
             for (var i = 0; i < list.length; i++) {
                 list.eq(i).html('<i class="dropdown icon"></i>Alternativa ' + (i + 1));
+                /* RENOMEAR LABELS, INPUTS e TEXTAREAS */
+                listContent.eq(i).find('label[for="txtAlternativaEnunciado').attr('for', 'txtAlternativaEnunciado' + (i + 1));
+                listContent.eq(i).find('label[for="txtAlternativaComentario').attr('for', 'txtAlternativaComentario' + (i + 1));
+                listContent.eq(i).find('label[for="chkAlternativaCorreta').attr('for', 'chkAlternativaCorreta' + (i + 1));
+                listContent.eq(i).find('textarea[name="txtAlternativaEnunciado').attr('name', 'txtAlternativaEnunciado' + (i + 1)).attr('id', 'txtAlternativaEnunciado' + (i + 1));
+                listContent.eq(i).find('textarea[name="txtAlternativaComentario').attr('name', 'txtAlternativaComentario' + (i + 1)).attr('id', 'txtAlternativaComentario' + (i + 1));
+                listContent.eq(i).find('input[name="chkAlternativaCorreta').attr('name', 'chkAlternativaCorreta' + (i + 1)).attr('id', 'chkAlternativaCorreta' + (i + 1));
+            }
+        }
+
+        function adicionarAnexo() {
+            var tipoAnexo = $('#ddlTiposAnexo').val();
+            var tipoAnexoDescricao = $('#ddlTiposAnexo :selected').text();
+            var i = $('.ui.anexos.accordion .title').length + 1;
+            if (anexoTipo == 1) {
+                $('.ui.anexos.accordion').append('\
+                        <div class="title">\
+                            <i class="dropdown icon"></i>Anexo ' + i + '\
+                        </div>\
+                        <div class="content ui segment">\
+                            <div class="field required">\
+                                <label for="txtAlternativaEnunciado' + i + '">Enunciado</label>\
+                                <textarea id="txtAlternativaEnunciado' + i + '" name="txtAlternativaEnunciado' + i + '" rows="2" placeholder="Enunciado..."></textarea>\
+                            </div>\
+                            <div class="field">\
+                                <label for="txtAlternativaComentario' + i + '">Comentário</label>\
+                                <textarea name="txtAlternativaComentario' + i + '" rows="2" placeholder="Comentário..."></textarea>\
+                            </div>\
+                            <div class="field">\
+                                <div class="ui toggle checkbox">\
+                                    <input id="chkAlternativaCorreta' + i + '" name="chkAlternativaCorreta' + i + '" type="checkbox" tabindex="0" class="hidden">\
+                                    <label for="chkAlternativaCorreta' + i + '">Correta</label>\
+                                </div>\
+                            </div>\
+                            <div class="field">\
+                                <div class="ui button">\
+                                    Remover\
+                                </div>\
+                                <div class="ui special popup">\
+                                    <div class="header">Tem certeza?</div>\
+                                    <div class="content"><p>Essa ação não poderá ser desfeita.</p>\
+                                    <div class="ui right aligned button tiny" onclick="removerAlternativa(this)">Sim, remover</div>\
+                                </div>\
+                            </div>\
+                        </div>\
+                    </div>');
             }
         }
 
@@ -235,7 +313,6 @@
             </div>
         </div>
     </div>
-
     @* Detalhes da Questão *@
     <div class="ui bottom attached tab segment" data-tab="tab-name2">
         <div class="field required">
@@ -268,7 +345,7 @@
         <div class="ui segment">
             <div class="field">
                 <label>Tipo do Anexo</label>
-                <select id="ddlTiposAnexo" name="ddlTiposAnexo" class="ui dropdown" required>
+                <select id="ddlTiposAnexo" name="ddlTiposAnexo" class="ui dropdown">
                     <option value="">Tipo do Anexo</option>
                     @foreach (var obj in ViewBag.TiposAnexo)
                     {
@@ -277,7 +354,7 @@
                 </select>
             </div>
             <div class="field">
-                <div class="ui button">Adicionar</div>
+                <div class="ui button" onclick="adicionarAnexo()">Adicionar</div>
             </div>
         </div>
         <div class="ui anexos fluid accordion">
