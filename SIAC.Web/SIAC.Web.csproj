@@ -432,6 +432,9 @@
     <Compile Include="Models\Pais.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Parametro.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\pDificuldade.cs" />
     <Compile Include="Models\pDisciplina.cs" />
     <Compile Include="Models\pProfessor.cs" />

@@ -12,7 +12,7 @@ namespace SIAC.Web.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            /*if (Session["Autenticado"] == null)
+            if (Session["Autenticado"] == null)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
@@ -20,8 +20,8 @@ namespace SIAC.Web.Controllers
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
-            else if (!(bool)Session["Autenticado"])*/
-            if (!Usuario.SAutenticado)
+            else if (!(bool)Session["Autenticado"])
+            //if (!Usuario.SAutenticado)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }

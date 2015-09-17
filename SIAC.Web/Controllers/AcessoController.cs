@@ -13,7 +13,9 @@ namespace SIAC.Web.Controllers
         // GET: Acesso
         public ActionResult Index()
         {
-            if(Usuario.SAutenticado)
+            //if(Usuario.SAutenticado)
+            if (Session["Autenticado"] != null && (bool)Session["Autenticado"])
+
             {
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -24,8 +26,8 @@ namespace SIAC.Web.Controllers
         [HttpGet]
         public ActionResult Entrar()
         {
-            //if (Session["Autenticado"] != null && (bool)Session["Autenticado"])
-            if (Usuario.SAutenticado)
+            if (Session["Autenticado"] != null && (bool)Session["Autenticado"])
+            //if (Usuario.SAutenticado)
             {
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -37,8 +39,8 @@ namespace SIAC.Web.Controllers
         [HttpPost]
         public ActionResult Entrar(FormCollection formCollection)
         {
-            //if (Session["Autenticado"] != null && (bool)Session["Autenticado"])
-            if (Usuario.SAutenticado)
+            if (Session["Autenticado"] != null && (bool)Session["Autenticado"])
+            //if (Usuario.SAutenticado)
 
             {
                 return RedirectToAction("Index", "Dashboard");
@@ -60,11 +62,11 @@ namespace SIAC.Web.Controllers
                     if (usuario != null)
                     {
                         valido = true;
-                        /*Session["Autenticado"] = true;
+                        Session["Autenticado"] = true;
                         Session["UsuarioMatricula"] = usuario.Matricula;
                         Session["UsuarioNome"] = usuario.PessoaFisica.Nome;
                         Session["UsuarioCategoriaCodigo"] = usuario.CodCategoria;
-                        Session["UsuarioCategoria"] = usuario.Categoria.Descricao;*/
+                        Session["UsuarioCategoria"] = usuario.Categoria.Descricao;
                     }
                 }
             }
@@ -85,7 +87,7 @@ namespace SIAC.Web.Controllers
         public ActionResult Sair()
         {
             Session.Clear();
-            Usuario.Sair();
+            //Usuario.Sair();
             return RedirectToAction("Index");
         }
     }

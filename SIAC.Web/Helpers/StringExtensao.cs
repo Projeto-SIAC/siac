@@ -15,11 +15,15 @@ namespace SIAC.Web
                 text = str.Substring(0, length);
                 string afterText = str.Substring(length);
 
-                afterText = afterText.Remove(afterText.IndexOf(' '));
+                if (afterText.IndexOf(' ') > -1)
+                {
+                    afterText = afterText.Remove(afterText.IndexOf(' '));
+
+                    afterText += "...";
+                }
 
                 text += afterText;
-
-                text += "...";
+                
             }
             else
             {
