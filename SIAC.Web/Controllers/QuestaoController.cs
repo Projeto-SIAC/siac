@@ -11,6 +11,7 @@ namespace SIAC.Web.Controllers
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            TempData["UrlReferrer"] = Request.Url.ToString();
             if (Session["Autenticado"] == null)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
@@ -83,14 +84,14 @@ namespace SIAC.Web.Controllers
             }
             
             // Detalhes
-            questao.Enunciado = formCollection["txtEnunciado"];
-            questao.Objetivo = !String.IsNullOrEmpty(formCollection["txtObjetivo"]) ? formCollection["txtObjetivo"] : null;
+            questao.Enunciado = formCollection["txtEnunciado"].RemoveSpaces();
+            questao.Objetivo = !String.IsNullOrEmpty(formCollection["txtObjetivo"]) ? formCollection["txtObjetivo"].RemoveSpaces() : null;
 
             // Discursiva
             if (questao.CodTipoQuestao == 2)
             {
-                questao.ChaveDeResposta = formCollection["txtChaveDeResposta"];
-                questao.Comentario = !String.IsNullOrEmpty(formCollection["txtComentario"]) ? formCollection["txtComentario"] : null;
+                questao.ChaveDeResposta = formCollection["txtChaveDeResposta"].RemoveSpaces();
+                questao.Comentario = !String.IsNullOrEmpty(formCollection["txtComentario"]) ? formCollection["txtComentario"].RemoveSpaces() : null;
             }
 
             // Objetiva
@@ -101,8 +102,8 @@ namespace SIAC.Web.Controllers
                 {
                     questao.Alternativa.Add(new Alternativa {
                         CodOrdem = i,
-                        Enunciado = formCollection["txtAlternativaEnunciado" + (i + 1)],
-                        Comentario = !String.IsNullOrEmpty(formCollection["txtAlternativaComentario" + (i + 1)]) ? formCollection["txtAlternativaComentario" + (i + 1)] : null,
+                        Enunciado = formCollection["txtAlternativaEnunciado" + (i + 1)].RemoveSpaces(),
+                        Comentario = !String.IsNullOrEmpty(formCollection["txtAlternativaComentario" + (i + 1)]) ? formCollection["txtAlternativaComentario" + (i + 1)].RemoveSpaces() : null,
                         FlagGabarito = !String.IsNullOrEmpty(formCollection["chkAlternativaCorreta" + (i + 1)]) ? true : false
                     });
                 }
