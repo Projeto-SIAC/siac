@@ -49,7 +49,7 @@ namespace SIAC.Web.Controllers
             ViewBag.Disciplinas = Disciplina.ListarOrdenadamente(); // futuramente: retornar apenas disciplinas do professor
             ViewBag.Tipos = TipoQuestao.ListarOrdenadamente();
             ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
-            ViewBag.TiposAnexo = (from ta in DataContextSIAC.GetInstance().TipoAnexo orderby ta.Descricao select ta).ToList();
+            ViewBag.TiposAnexo = TipoAnexo.ListarOrdenadamente();
             return View();
         }
 

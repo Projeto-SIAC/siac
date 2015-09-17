@@ -13,15 +13,27 @@ namespace SIAC.Web.Controllers
         {
             if(Session["Autenticado"] == null)
             {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
+                if (TempData["UrlReferrer"] != null)
+                {
+                    filterContext.Result = Redirect(TempData["UrlReferrer"].ToString());
+                }
+                else filterContext.Result = RedirectToAction("Index", "Dashboard");
             }
             else if(!(bool)Session["Autenticado"])
             {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
+                if (TempData["UrlReferrer"] != null)
+                {
+                    filterContext.Result = Redirect(TempData["UrlReferrer"].ToString());
+                }
+                else filterContext.Result = RedirectToAction("Index", "Dashboard");
             }
             else if((int)Session["UsuarioCategoriaCodigo"] != 3)
             {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
+                if (TempData["UrlReferrer"] != null)
+                {
+                    filterContext.Result = Redirect(TempData["UrlReferrer"].ToString());
+                }
+                else filterContext.Result = RedirectToAction("Index", "Dashboard");
             }
 
             base.OnActionExecuting(filterContext);

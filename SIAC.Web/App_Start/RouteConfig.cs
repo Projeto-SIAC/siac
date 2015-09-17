@@ -12,13 +12,7 @@ namespace SIAC.Web
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-            routes.MapRoute(
-                name: "Configuracoes",
-                url: "Configuracoes/{action}",
-                defaults: new { controller = "Configuracoes", action = "Index" }
-            );
-
+            
             routes.MapRoute(
                 name: "Questao",
                 url: "Dashboard/Questao/{codigo}",
@@ -49,7 +43,7 @@ namespace SIAC.Web
                 name: "Default",
                 url: "{controller}/{action}",
                 defaults: new { controller = "Acesso", action = "Index" },
-                constraints: new { controller = @"^(Dashboard|Acesso|Erro)$" }
+                constraints: new { controller = @"^(Dashboard|Acesso|Erro|Configuracoes)$" }
             );
 
             routes.MapRoute(
