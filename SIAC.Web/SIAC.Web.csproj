@@ -282,6 +282,7 @@
     <Compile Include="Controllers\AcessoController.cs" />
     <Compile Include="Controllers\ErroController.cs" />
     <Compile Include="Controllers\LeroLeroController.cs" />
+    <Compile Include="Controllers\ConfiguracoesController.cs" />
     <Compile Include="Controllers\QuestaoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -558,6 +559,7 @@
     <Content Include="Views\Erro\Index.cshtml" />
     <Content Include="Views\Questao\Confirmar.cshtml" />
     <Content Include="Views\Questao\Detalhe.cshtml" />
+    <Content Include="Views\Configuracoes\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

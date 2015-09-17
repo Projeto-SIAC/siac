@@ -14,6 +14,12 @@ namespace SIAC.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Configuracoes",
+                url: "Configuracoes/{action}",
+                defaults: new { controller = "Configuracoes", action = "Index" }
+            );
+
+            routes.MapRoute(
                 name: "Questao",
                 url: "Dashboard/Questao/{codigo}",
                 defaults: new { controller = "Questao", action = "Detalhe", codigo = UrlParameter.Optional },
