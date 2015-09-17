@@ -9,9 +9,9 @@ namespace SIAC.Web.Controllers
 {
     public class DashboardController : Controller
     {
-
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            TempData["UrlReferrer"] = Request.Url.ToString();
             if (Session["Autenticado"] == null)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
