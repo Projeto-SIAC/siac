@@ -4,5 +4,87 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model SIAC.Web.Models.Parametro
+
+@section Scripts
+{
+    <script>
+        $('.menu .item').tab();
+    </script>
+
+    @if (ViewBag.Atualizado != null)
+        {
+            if (ViewBag.Atualizado)
+            {
+                <script>$('.ui.basic.modal').modal('show');</script>
+                ViewBag.Atualizado = false;
+            }
+        }
+}
 <h2>@ViewBag.Title</h2>
+
+<form method="post" action="~/Configuracoes" class="ui form">
+
+    @* Modal de Conclusão *@
+    <div class="ui modal">
+        <div class="header">Parametros Atualizados com Sucesso!</div>
+        <div class="image content">
+            <div class="image">
+                <i class="checkmark icon green"></i>
+            </div>
+        </div>
+    </div>
+
+    @* Menu das Abas *@
+    <div class="ui top attached tabular menu">
+        <a class="active item" data-tab="tab-gerais">Gerais</a>
+        <a class="item" data-tab="tab-avaliacao">Avaliação</a>
+        <a class="item" data-tab="tab-termo">Termo de Responsabilidade</a>
+    </div>
+
+    @* Tab Geral *@
+    <div class="ui bottom attached active tab segment geral" data-tab="tab-gerais">
+
+        <div class="field required">
+            <label>Tempo de Inatividade (em Dias)</label>
+            <input type="text" value="@Model.TempoInatividade" name="txtTempoInatividade" placeholder="Tempo de Inatividade" required />
+        </div>
+        <div class="field required">
+            <label>Tipo de Numeração das Questões</label>
+            <select name="ddlNumeracaoQuestao" value="@Model.NumeracaoQuestao" required>
+                <option value="1" selected>Algarismos indo-arábicos</option>
+                <option value="2">Algarismos romanos</option>
+                <option value="3">Letras em caixa baixa</option>
+                <option value="4">Letras em caixa alta</option>
+            </select>
+        </div>
+        <div class="field required">
+            <label>Tipo de Numeração das Alternativas</label>
+            <select name="ddlNumeracaoAlternativa" value="@Model.NumeracaoAlternativa" required>
+                <option value="1">Algarismos indo-arábicos</option>
+                <option value="2">Algarismos romanos</option>
+                <option value="3" selected>Letras em caixa baixa</option>
+                <option value="4">Letras em caixa alta</option>
+            </select>
+        </div>
+        <div class="field required">
+            <label>Quantidade de Semestres</label>
+            <input name="txtQtdSemestre" type="number" value="@Model.QteSemestres" placeholder="Quantidade de Semestres" required />
+        </div>
+    </div>
+
+    <div class="ui bottom attached tab segment avaliacao" data-tab="tab-avaliacao">
+
+    </div>
+    @* Termo *@
+    <div class="ui bottom attached tab segment termo" data-tab="tab-termo">
+        <div class="field required">
+            <label>Termo</label>
+            <textarea rows="10" name="txtTermo" placeholder="Digite aqui o Termo de Responsabilidade..." required></textarea>
+        </div>
+    </div>
+    <br />
+    <input type="submit" class="ui button" value="Atualizar" />
+
+</form>
 

@@ -288,6 +288,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Criptografia.cs" />
+    <Compile Include="Helpers\IntExtensao.cs" />
     <Compile Include="Helpers\LeroLero.cs" />
     <Compile Include="Helpers\StringExtensao.cs" />
     <Compile Include="Helpers\TimeLog.cs" />
@@ -439,6 +440,7 @@
     </Compile>
     <Compile Include="Models\pDificuldade.cs" />
     <Compile Include="Models\pDisciplina.cs" />
+    <Compile Include="Models\pParametro.cs" />
     <Compile Include="Models\pProfessor.cs" />
     <Compile Include="Models\pQuestao.cs" />
     <Compile Include="Models\pTema.cs" />

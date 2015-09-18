@@ -45,7 +45,7 @@ namespace SIAC.Web.Controllers
         // GET: Questao/Cadastrar
         public ActionResult Cadastrar()
         {
-            var dc = DataContextSIAC.GetInstance();
+            //var dc = DataContextSIAC.GetInstance();
             ViewBag.Disciplinas = Disciplina.ListarOrdenadamente(); // futuramente: retornar apenas disciplinas do professor
             ViewBag.Tipos = TipoQuestao.ListarOrdenadamente();
             ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
@@ -57,7 +57,7 @@ namespace SIAC.Web.Controllers
         [HttpPost]
         public ActionResult Confirmar(FormCollection formCollection)
         {
-            var dc = DataContextSIAC.GetInstance();
+            //var dc = DataContextSIAC.GetInstance();
             Questao questao = new Questao();
 
             questao.Professor = Professor.ListarPorMatricula(Session["UsuarioMatricula"].ToString());
