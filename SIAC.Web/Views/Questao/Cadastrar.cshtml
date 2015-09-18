@@ -67,7 +67,7 @@
                 content.remove();
                 renomearAlternativas();
             }
-            $('#txtQtdAlternativas').val($('.ui.accordion .title').length);
+            $('#txtQtdAlternativas').val($('.ui.alternativas.accordion .title').length);
         }
 
         function adicionarAlternativa() {
@@ -104,9 +104,31 @@
                             </div>\
                         </div>\
                     </div>');
-            $('#txtQtdAlternativas').val($('.ui.accordion .title').length);
+            $('#txtQtdAlternativas').val($('.ui.alternativas.accordion .title').length);
             $('.ui.checkbox').checkbox();
             $('.ui.alternativas.accordion .button').popup({ inline: true, on: 'click', position: 'right center' });
+        }
+
+        function carregarImagem(file) {
+            var ind = $(file).parent().parent().parent().prev().find('#txtAnexoIndex').val();
+            var pre = $('#preImagem'+ind);
+            var arq = $('#fleAnexo'+ind)[0].files[0];
+            var reader = new FileReader();
+
+            if (arq.size < 1000000) {
+                reader.onloadend = function () {
+                    pre.attr('src', reader.result);
+                }
+
+                if (arq) {
+                    reader.readAsDataURL(arq);
+                } else {
+                    preview.attr('src', '');
+                }
+            }
+            else {
+                alert("Selecione um arquivo menor.");
+            }
         }
 
         function renomearAlternativas() {
@@ -114,7 +136,6 @@
             var listContent = $('.ui.alternativas.accordion .content.segment');
             for (var i = 0; i < list.length; i++) {
                 var j = list.eq(i).find('#txtAlternativaIndex').val();
-                alert(j);
                 list.eq(i).html('<input id="txtAlternativaIndex" value="' + (i + 1) + '" hidden /><i class="dropdown icon"></i>Alternativa ' + (i + 1));
                 /* RENOMEAR LABELS, INPUTS e TEXTAREAS */
                 listContent.eq(i).find('label[for="txtAlternativaEnunciado'+j+'"]').attr('for', 'txtAlternativaEnunciado' + (i + 1));
@@ -130,25 +151,26 @@
             var tipoAnexo = $('#ddlTiposAnexo').val();
             var tipoAnexoDescricao = $('#ddlTiposAnexo :selected').text();
             var i = $('.ui.anexos.accordion .title').length + 1;
-            if (anexoTipo == 1) {
+            if (tipoAnexo == 1) {
                 $('.ui.anexos.accordion').append('\
                         <div class="title">\
+                            <input id="txtAnexoIndex" value="'+ i + '" class="disabled" readonly hidden/>\
+                            <input name="txtAnexoTipo' + i + '" id="txtAnexoTipo' + i + '" value="' + tipoAnexo + '" hidden />\
                             <i class="dropdown icon"></i>Anexo ' + i + '\
+                            <span class="ui label" id="txtAnexoTipoDescricao">'+tipoAnexoDescricao+'</span>\
                         </div>\
                         <div class="content ui segment">\
                             <div class="field required">\
-                                <label for="txtAlternativaEnunciado' + i + '">Enunciado</label>\
-                                <textarea id="txtAlternativaEnunciado' + i + '" name="txtAlternativaEnunciado' + i + '" rows="2" placeholder="Enunciado..."></textarea>\
+                                <div class="ui card"><div class="image"><img name="preImagem' + i + '" id="preImagem' + i + '" alt="Previsualização" src="" /></div>\
+                                <input id="fleAnexo' + i + '" name="fleAnexo' + i + '"type="file" class="ui button" accept="image/*" onchange="carregarImagem(this)" /></div>\
+                            </div>\
+                            <div class="field required">\
+                                <label for="txtAnexoLegenda' + i + '">Legenda</label>\
+                                <textarea maxlength="250" id="txtAnexoLegenda' + i + '" name="txtAnexoLegenda' + i + '" rows="2" placeholder="Legenda..."></textarea>\
                             </div>\
                             <div class="field">\
-                                <label for="txtAlternativaComentario' + i + '">Comentário</label>\
-                                <textarea name="txtAlternativaComentario' + i + '" rows="2" placeholder="Comentário..."></textarea>\
-                            </div>\
-                            <div class="field">\
-                                <div class="ui toggle checkbox">\
-                                    <input id="chkAlternativaCorreta' + i + '" name="chkAlternativaCorreta' + i + '" type="checkbox" tabindex="0" class="hidden">\
-                                    <label for="chkAlternativaCorreta' + i + '">Correta</label>\
-                                </div>\
+                                <label for="txtAnexoFonte' + i + '">Fonte</label>\
+                                <input maxlength="250" type="text" name="txtAnexoFonte' + i + '" placeholder="Fonte..."></textarea>\
                             </div>\
                             <div class="field">\
                                 <div class="ui button">\
@@ -157,12 +179,40 @@
                                 <div class="ui special popup">\
                                     <div class="header">Tem certeza?</div>\
                                     <div class="content"><p>Essa ação não poderá ser desfeita.</p>\
-                                    <div class="ui right aligned button tiny" onclick="removerAlternativa(this)">Sim, remover</div>\
+                                    <div class="ui right aligned button tiny" onclick="removerAnexo(this)">Sim, remover</div>\
                                 </div>\
                             </div>\
                         </div>\
                     </div>');
             }
+            $('#txtQtdAnexos').val($('.ui.anexos.accordion .title').length);
+            $('.ui.anexos.accordion .button').popup({ inline: true, on: 'click', position: 'right center' });
+        }
+
+        function renomearAnexos() {
+            var list = $('.ui.anexos.accordion .title');
+            var listContent = $('.ui.anexos.accordion .content.segment');
+            for (var i = 0; i < list.length; i++) {
+                var j = list.eq(i).find('#txtAnexoIndex').val();
+                var tipoAnexo = list.eq(i).find('#txtAnexoTipo' + j).val();
+                var tipoAnexoDescricao = list.eq(i).find('#txtAnexoTipoDescricao').text();
+                list.eq(i).html('<input id="txtAnexoIndex" value="'+(i+1)+'" class="disabled" readonly hidden/><i class="dropdown icon"></i>Anexo ' + (i + 1) + '<input name="txtAnexoTipo' + (i + 1) + '" id="txtAnexoTipo' + (i + 1) + '" value="' + tipoAnexo + '" hidden /><span class="ui label" id="txtAnexoTipoDescricao">' + tipoAnexoDescricao + '</span>');
+                listContent.eq(i).find('label[for="txtAnexoLegenda' + j + '"]').attr('for', 'txtAlternativaEnunciado' + (i + 1));
+                listContent.eq(i).find('label[for="txtAnexoFonte' + j + '"]').attr('for', 'txtAlternativaComentario' + (i + 1));
+                listContent.eq(i).find('textarea[name="txtAnexoLegenda' + j + '"]').attr('name', 'txtAnexoLegenda' + (i + 1)).attr('id', 'txtAnexoLegenda' + (i + 1));
+                listContent.eq(i).find('input[name="txtAnexoFonte' + j + '"]').attr('name', 'txtAnexoFonte' + (i + 1)).attr('id', 'txtAnexoFonte' + (i + 1));
+                listContent.eq(i).find('input[name="fleAnexo' + j + '"]').attr('name', 'fleAnexo' + (i + 1)).attr('id', 'fleAnexo' + (i + 1));
+                listContent.eq(i).find('img[name="preImagem' + j + '"]').attr('name', 'preImagem' + (i + 1)).attr('id', 'preImagem' + (i + 1));
+            }
+        }
+        
+        function removerAnexo(button) {
+            var content = $(button).parent().parent().parent().parent();
+            var title = $(content).prev();
+            title.remove();
+            content.remove();
+            renomearAnexos();
+            $('#txtQtdAnexos').val($('.ui.anexos.accordion .title').length);
         }
 
         mostrarCamposPorTipo();
@@ -196,7 +246,23 @@
                                             }
                                         }
                                         if (ok) {
-                                            validado = true;
+                                            if ($('#chkAnexos').is(':checked')) {
+                                                var qteAnexos = $('#txtQtdAnexos').val();
+                                                for (var i = 0; i < qteAnexos; i++) {
+                                                    if ($('#fleAnexo' + (i+1))[0].files.length == 0) {
+                                                        ok = false;
+                                                    }
+                                                }
+                                                if (ok) {
+                                                    validado = true;
+                                                }
+                                                else {
+                                                    $('.ui.error.message .list').append('<li>É necessário selecionar os arquivos dos anexos</li>')
+                                                }
+                                            }
+                                            else {
+                                                validado = true;
+                                            }
                                         }
                                         else {
                                             $('.ui.error.message .list').append('<li>É necessário selecionar pelo menos umas das alternativas como correta</li>')
@@ -208,7 +274,24 @@
                                 }
                                 else if (tipo == 2) {
                                     if ($('#txtChaveDeResposta').val() != '') {
-                                        validado = true;
+                                        if ($('#chkAnexos').is(':checked')) {
+                                            var ok = true;
+                                            var qteAnexos = $('#txtQtdAnexos').val();
+                                            for (var i = 0; i < qteAnexos; i++) {
+                                                if ($('#fleAnexo' + (i+1))[0].files.length == 0) {
+                                                    ok = false;
+                                                }
+                                            }
+                                            if (ok) {
+                                                validado = true;
+                                            }
+                                            else {
+                                                $('.ui.error.message .list').append('<li>É necessário selecionar os arquivos dos anexos</li>')
+                                            }
+                                        }
+                                        else {
+                                            validado = true;
+                                        }
                                     }
                                     else {
                                         $('.ui.error.message .list').append('<li>É necessário preencher a chave de resposta</li>')
@@ -257,7 +340,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<form id="frmQuestao" action="/Dashboard/Questao/Confirmar" method="post" class="ui form">
+<form id="frmQuestao" action="/Dashboard/Questao/Confirmar" method="post" class="ui form" enctype="multipart/form-data">
     <div class="ui error message">
         <div class="header">Verifique</div>
         <ul class="list"></ul>
@@ -343,6 +426,7 @@
     </div>   
      @* Anexos da Questão *@
     <div class="ui bottom attached tab segment anexos" data-tab="tab-name4">
+        <input id="txtQtdAnexos" name="txtQtdAnexos" type="number" hidden />
         @* Anexos *@
         <div class="ui segment">
             <div class="field">

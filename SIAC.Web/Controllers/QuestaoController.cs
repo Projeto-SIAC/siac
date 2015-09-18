@@ -20,7 +20,7 @@ namespace SIAC.Web.Controllers
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
-            else if(!(bool)Session["Autenticado"])
+            else if (!(bool)Session["Autenticado"])
             //if (!Usuario.SAutenticado)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
@@ -36,12 +36,12 @@ namespace SIAC.Web.Controllers
         // GET: Questao
         public ActionResult Index()
         {
-            List<Questao> model =  Questao.ListarPorProfessor(Session["UsuarioMatricula"].ToString());
+            List<Questao> model = Questao.ListarPorProfessor(Session["UsuarioMatricula"].ToString());
             //List<Questao> model = Questao.ListarPorProfessor(Usuario.SMatricula);
 
             return View(model);
         }
-        
+
         // GET: Questao/Cadastrar
         public ActionResult Cadastrar()
         {
@@ -57,6 +57,8 @@ namespace SIAC.Web.Controllers
         [HttpPost]
         public ActionResult Confirmar(FormCollection formCollection)
         {
+            ViewBag.Form = formCollection;
+
             //var dc = DataContextSIAC.GetInstance();
             Questao questao = new Questao();
 
@@ -76,13 +78,14 @@ namespace SIAC.Web.Controllers
             foreach (var strCod in codTemas)
             {
                 var codTema = int.Parse(strCod);
-                questao.QuestaoTema.Add(new QuestaoTema {
+                questao.QuestaoTema.Add(new QuestaoTema
+                {
                     CodDisciplina = codDisciplina,
                     CodTema = codTema,
                     Tema = Tema.ListarPorCodigo(codDisciplina, codTema)
                 });
             }
-            
+
             // Detalhes
             questao.Enunciado = formCollection["txtEnunciado"].RemoveSpaces();
             questao.Objetivo = !String.IsNullOrEmpty(formCollection["txtObjetivo"]) ? formCollection["txtObjetivo"].RemoveSpaces() : null;
@@ -100,12 +103,38 @@ namespace SIAC.Web.Controllers
                 var qteAlternativas = int.Parse(formCollection["txtQtdAlternativas"]);
                 for (int i = 0; i < qteAlternativas; i++)
                 {
-                    questao.Alternativa.Add(new Alternativa {
+                    questao.Alternativa.Add(new Alternativa
+                    {
                         CodOrdem = i,
                         Enunciado = formCollection["txtAlternativaEnunciado" + (i + 1)].RemoveSpaces(),
                         Comentario = !String.IsNullOrEmpty(formCollection["txtAlternativaComentario" + (i + 1)]) ? formCollection["txtAlternativaComentario" + (i + 1)].RemoveSpaces() : null,
                         FlagGabarito = !String.IsNullOrEmpty(formCollection["chkAlternativaCorreta" + (i + 1)]) ? true : false
                     });
+                }
+            }
+
+            // Anexos
+            if (!String.IsNullOrEmpty(formCollection["chkAnexos"]) && !String.IsNullOrEmpty(formCollection["txtQtdAnexos"]))
+            {
+                var qteAnexos = int.Parse(formCollection["txtQtdAnexos"]);
+                for (int i = 0; i < qteAnexos; i++)
+                {
+                    var tipoAnexo = int.Parse(formCollection["txtAnexoTipo" + (i + 1)]);
+                    switch (tipoAnexo)
+                    {
+                        case 1:
+                            questao.QuestaoAnexo.Add(new QuestaoAnexo
+                            {
+                                CodOrdem = i,
+                                CodTipoAnexo = tipoAnexo,
+                                Legenda = formCollection["txtAnexoLegenda" + (i + 1)].RemoveSpaces(),
+                                Fonte = !String.IsNullOrEmpty(formCollection["txtAnexoFonte" + (i + 1)]) ? formCollection["txtAnexoFonte" + (i + 1)].RemoveSpaces() : null,
+                                Anexo = new System.IO.BinaryReader(Request.Files[i].InputStream).ReadBytes(Request.Files[i].ContentLength)
+                            });
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
 
@@ -148,7 +177,7 @@ namespace SIAC.Web.Controllers
             if (model != null)
             {
                 return View(model);
-            }            
+            }
             return RedirectToAction("Index");
         }
 

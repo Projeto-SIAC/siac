@@ -9,6 +9,9 @@
 @section Scripts {
 
     <script>
+        $('.ui.accordion')
+            .accordion()
+        ;
         $('div,p')
             .popup()
         ;
@@ -64,6 +67,37 @@
     {
         <div>
             <p data-html="@(!String.IsNullOrEmpty(Model.Comentario) ? "<b>Comentário</b>: "+ Model.Comentario : "")"><i>@Model.ChaveDeResposta</i> <a class="ui green label">Chave de Resposta</a></p>
+        </div>
+    }
+    @if (Model.QuestaoAnexo.Count > 0)
+    {
+        <div class="ui styled fluid accordion">
+            <div class="title"><i class="icon dropdown"></i>Anexos</div>
+            <div class="content">
+                @foreach (var anexo in Model.QuestaoAnexo)
+                {
+                    switch (anexo.CodTipoAnexo)
+                    {
+                        case 1:
+                            <div class="ui card">
+                                <div class="image">
+                                    <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo,0, anexo.Anexo.Length)" />
+                                </div>
+                                <div class="content">
+                                    <div class="description">
+                                        @anexo.Legenda
+                                    </div>
+                                </div>
+                                <div class="extra content">
+                                    @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte desconhecida")
+                                </div>
+                            </div>
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            </div>
         </div>
     }
 </div>
