@@ -10,6 +10,7 @@
 {
     <script>
         $('.menu .item').tab();
+        $('.ui.dropdown').dropdown();
     </script>
 
     @if (ViewBag.Atualizado != null)
@@ -46,25 +47,25 @@
     <div class="ui bottom attached active tab segment geral" data-tab="tab-gerais">
 
         <div class="field required">
-            <label>Tempo de Inatividade (em Dias)</label>
+            <label>Tempo de Inatividade (em dias)</label>
             <input type="text" value="@Model.TempoInatividade" name="txtTempoInatividade" placeholder="Tempo de Inatividade" required />
         </div>
         <div class="field required">
             <label>Tipo de Numeração das Questões</label>
-            <select name="ddlNumeracaoQuestao" value="@Model.NumeracaoQuestao" required>
-                <option value="1" selected>Algarismos indo-arábicos</option>
-                <option value="2">Algarismos romanos</option>
-                <option value="3">Letras em caixa baixa</option>
-                <option value="4">Letras em caixa alta</option>
+            <select name="ddlNumeracaoQuestao" class="ui dropdown" required>
+                <option value="1" @(@Model.NumeracaoQuestao == 1 ? "selected": "")>Algarismos indo-arábicos</option>
+                <option value="2" @(@Model.NumeracaoQuestao == 2 ? "selected": "")>Algarismos romanos</option>
+                <option value="3" @(@Model.NumeracaoQuestao == 3 ? "selected": "")>Letras em caixa baixa</option>
+                <option value="4" @(@Model.NumeracaoQuestao == 4 ? "selected": "")>Letras em caixa alta</option>
             </select>
         </div>
         <div class="field required">
             <label>Tipo de Numeração das Alternativas</label>
-            <select name="ddlNumeracaoAlternativa" value="@Model.NumeracaoAlternativa" required>
-                <option value="1">Algarismos indo-arábicos</option>
-                <option value="2">Algarismos romanos</option>
-                <option value="3" selected>Letras em caixa baixa</option>
-                <option value="4">Letras em caixa alta</option>
+            <select name="ddlNumeracaoAlternativa" class="ui dropdown" required>
+                <option value="1" @(@Model.NumeracaoAlternativa == 1 ? "selected": "")>Algarismos indo-arábicos</option>
+                <option value="2" @(@Model.NumeracaoAlternativa == 2 ? "selected": "")>Algarismos romanos</option>
+                <option value="3" @(@Model.NumeracaoAlternativa == 3 ? "selected": "")>Letras em caixa baixa</option>
+                <option value="4" @(@Model.NumeracaoAlternativa == 4 ? "selected": "")>Letras em caixa alta</option>
             </select>
         </div>
         <div class="field required">

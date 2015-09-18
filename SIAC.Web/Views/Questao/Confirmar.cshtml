@@ -50,7 +50,7 @@
             {
                 <div class="item">
                     <div class="middle aligned content" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario)?"<b>Comentário</b>: " + alternativa.Comentario : "")">
-                        <b>@(alternativa.CodOrdem + 1)</b>) @alternativa.Enunciado
+                        <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
                         @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
                     {
                             <a class="ui green label">Correta</a>

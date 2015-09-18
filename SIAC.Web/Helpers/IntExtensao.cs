@@ -8,10 +8,10 @@ namespace SIAC.Web
 {
     public static class IntExtensao
     {
-        public static string gerarIndiceAlternativa(this int i)
+        public static string GetIndiceAlternativa(this int i)
         {
             i++;
-            int tipo = DataContextSIAC.GetInstance().Parametro.ElementAt(0).NumeracaoAlternativa.Value;
+            int tipo = DataContextSIAC.GetInstance().Parametro.First().NumeracaoAlternativa.Value;
 
             switch (tipo)
             {
@@ -28,7 +28,7 @@ namespace SIAC.Web
             }
         }
 
-        public static string gerarIndiceQuestao(this int i)
+        public static string GetIndiceQuestao(this int i)
         {
             i++;
             int tipo = DataContextSIAC.GetInstance().Parametro.ElementAt(0).NumeracaoQuestao.Value;
@@ -52,26 +52,26 @@ namespace SIAC.Web
         {
             if ((number < 0) || (number > 3999)) return number.ToString();
             if (number < 1) return string.Empty;
-            if (number >= 1000) return "M" + gerarIndiceAlternativa(number - 1000);
-            if (number >= 900) return "CM" + gerarIndiceAlternativa(number - 900);
-            if (number >= 500) return "D" + gerarIndiceAlternativa(number - 500);
-            if (number >= 400) return "CD" + gerarIndiceAlternativa(number - 400);
-            if (number >= 100) return "C" + gerarIndiceAlternativa(number - 100);
-            if (number >= 90) return "XC" + gerarIndiceAlternativa(number - 90);
-            if (number >= 50) return "L" + gerarIndiceAlternativa(number - 50);
-            if (number >= 40) return "XL" + gerarIndiceAlternativa(number - 40);
-            if (number >= 10) return "X" + gerarIndiceAlternativa(number - 10);
-            if (number >= 9) return "IX" + gerarIndiceAlternativa(number - 9);
-            if (number >= 5) return "V" + gerarIndiceAlternativa(number - 5);
-            if (number >= 4) return "IV" + gerarIndiceAlternativa(number - 4);
-            if (number >= 1) return "I" + gerarIndiceAlternativa(number - 1);
+            if (number >= 1000) return "M" + paraRomano(number - 1000);
+            if (number >= 900) return "CM" + paraRomano(number - 900);
+            if (number >= 500) return "D" + paraRomano(number - 500);
+            if (number >= 400) return "CD" + paraRomano(number - 400);
+            if (number >= 100) return "C" + paraRomano(number - 100);
+            if (number >= 90) return "XC" + paraRomano(number - 90);
+            if (number >= 50) return "L" + paraRomano(number - 50);
+            if (number >= 40) return "XL" + paraRomano(number - 40);
+            if (number >= 10) return "X" + paraRomano(number - 10);
+            if (number >= 9) return "IX" + paraRomano(number - 9);
+            if (number >= 5) return "V" + paraRomano(number - 5);
+            if (number >= 4) return "IV" + paraRomano(number - 4);
+            if (number >= 1) return "I" + paraRomano(number - 1);
 
             return number.ToString();
         }
 
         public static string paraCaixaBaixa(int number)
         {
-            const string letters = "abcdefghijklmnopqrstuvwxyz";
+            const string letters = " abcdefghijklmnopqrstuvwxyz";
 
             string value = "";
 
