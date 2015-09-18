@@ -11,7 +11,7 @@ namespace SIAC.Web
         public static string GetIndiceAlternativa(this int i)
         {
             i++;
-            int tipo = DataContextSIAC.GetInstance().Parametro.First().NumeracaoAlternativa.Value;
+            int tipo = DataContextSIAC.GetInstance().Parametro.First().NumeracaoAlternativa;
 
             switch (tipo)
             {
@@ -31,7 +31,7 @@ namespace SIAC.Web
         public static string GetIndiceQuestao(this int i)
         {
             i++;
-            int tipo = DataContextSIAC.GetInstance().Parametro.ElementAt(0).NumeracaoQuestao.Value;
+            int tipo = DataContextSIAC.GetInstance().Parametro.ElementAt(0).NumeracaoQuestao;
 
             switch (tipo)
             {

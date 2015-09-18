@@ -15,9 +15,10 @@ namespace SIAC.Web.Models
     public partial class Parametro
     {
         public int Id { get; set; }
-        public Nullable<int> TempoInatividade { get; set; }
-        public Nullable<int> NumeracaoQuestao { get; set; }
-        public Nullable<int> NumeracaoAlternativa { get; set; }
-        public Nullable<int> QteSemestres { get; set; }
+        public int TempoInatividade { get; set; }
+        public int NumeracaoQuestao { get; set; }
+        public int NumeracaoAlternativa { get; set; }
+        public int QteSemestres { get; set; }
+        public string TermoResponsabilidade { get; set; }
     }
 }

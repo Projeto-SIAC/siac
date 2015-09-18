@@ -13,5 +13,10 @@ namespace SIAC.Web.Models
         {
             return contexto.Disciplina.OrderBy(d => d.Descricao).ToList();
         }
+
+        public static Disciplina ListarPorCodigo(int codDisciplina)
+        {
+            return contexto.Disciplina.FirstOrDefault(d => d.CodDisciplina == codDisciplina);
+        }
     }
 }

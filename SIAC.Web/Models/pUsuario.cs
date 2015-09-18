@@ -8,10 +8,10 @@ namespace SIAC.Web.Models
 {
     public partial class Usuario
     {
+        private static dbSIACEntities contexto = DataContextSIAC.GetInstance();
+
         public static Usuario Autenticar(string matricula, string senha)
         {
-            dbSIACEntities contexto = DataContextSIAC.GetInstance();
-
             Usuario usuario = contexto.Usuario.SingleOrDefault(u => u.Matricula == matricula);
 
             if (usuario != null)
@@ -26,5 +26,14 @@ namespace SIAC.Web.Models
 
             return null;
         }
+
+        public static int Inserir(Usuario usuario)
+        {
+            usuario.DtCadastro = DateTime.Now;
+            contexto.Usuario.Add(usuario);
+            contexto.SaveChanges();
+            return usuario.CodPessoaFisica;
+        }
+
     }
 }

@@ -438,9 +438,12 @@
     <Compile Include="Models\Parametro.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\pCategoria.cs" />
     <Compile Include="Models\pDificuldade.cs" />
     <Compile Include="Models\pDisciplina.cs" />
     <Compile Include="Models\pParametro.cs" />
+    <Compile Include="Models\pPessoa.cs" />
+    <Compile Include="Models\pPessoaFisica.cs" />
     <Compile Include="Models\pProfessor.cs" />
     <Compile Include="Models\pQuestao.cs" />
     <Compile Include="Models\pTema.cs" />

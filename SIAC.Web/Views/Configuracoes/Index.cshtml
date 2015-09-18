@@ -2,7 +2,11 @@
 @{
     ViewBag.Title = "Configurações";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewBag.Disciplinas = Disciplina.ListarOrdenadamente();
 }
+
+@using SIAC.Web.Models;
 
 @model SIAC.Web.Models.Parametro
 
@@ -11,36 +15,49 @@
     <script>
         $('.menu .item').tab();
         $('.ui.dropdown').dropdown();
+
+        function atualizarParametros() {
+            var form = $(':input');
+            $.ajax({
+                type: 'POST',
+                data: form,
+                url: "/Configuracoes",
+                success: function () {
+                    $('#btnAtualizar').addClass('green').text('Atualizado');
+                },
+                error: function () {
+                    $('.ui.modal').modal('show');
+                }
+            });
+            return false;
+        };
+
+        function parametroModificado() {
+            $('#btnAtualizar').removeClass('green').text('Atualizar');
+        }
+
     </script>
 
-    @if (ViewBag.Atualizado != null)
-        {
-            if (ViewBag.Atualizado)
-            {
-                <script>$('.ui.basic.modal').modal('show');</script>
-                ViewBag.Atualizado = false;
-            }
-        }
+    
 }
 <h2>@ViewBag.Title</h2>
 
-<form method="post" action="~/Configuracoes" class="ui form">
+<form id="#parametroForm" method="post" action="/Configuracoes/CadastrarProfessor" class="ui form">
 
     @* Modal de Conclusão *@
-    <div class="ui modal">
-        <div class="header">Parametros Atualizados com Sucesso!</div>
-        <div class="image content">
-            <div class="image">
-                <i class="checkmark icon green"></i>
-            </div>
+    <div class="ui basic modal">
+        <i class="close icon"></i>
+        <div class="ui icon header">
+            <i class="close red icon"></i>
+            Parametros atualizados com Erro!
         </div>
     </div>
 
     @* Menu das Abas *@
     <div class="ui top attached tabular menu">
         <a class="active item" data-tab="tab-gerais">Gerais</a>
-        <a class="item" data-tab="tab-avaliacao">Avaliação</a>
         <a class="item" data-tab="tab-termo">Termo de Responsabilidade</a>
+        <a class="item" data-tab="tab-professor">Cadastro de Professor</a>
     </div>
 
     @* Tab Geral *@
@@ -48,11 +65,11 @@
 
         <div class="field required">
             <label>Tempo de Inatividade (em dias)</label>
-            <input type="text" value="@Model.TempoInatividade" name="txtTempoInatividade" placeholder="Tempo de Inatividade" required />
+            <input type="number" value="@Model.TempoInatividade" name="txtTempoInatividade" placeholder="Tempo de Inatividade" required onchange="parametroModificado()" />
         </div>
         <div class="field required">
             <label>Tipo de Numeração das Questões</label>
-            <select name="ddlNumeracaoQuestao" class="ui dropdown" required>
+            <select name="ddlNumeracaoQuestao" class="ui dropdown" required onchange="parametroModificado()">
                 <option value="1" @(@Model.NumeracaoQuestao == 1 ? "selected": "")>Algarismos indo-arábicos</option>
                 <option value="2" @(@Model.NumeracaoQuestao == 2 ? "selected": "")>Algarismos romanos</option>
                 <option value="3" @(@Model.NumeracaoQuestao == 3 ? "selected": "")>Letras em caixa baixa</option>
@@ -61,7 +78,7 @@
         </div>
         <div class="field required">
             <label>Tipo de Numeração das Alternativas</label>
-            <select name="ddlNumeracaoAlternativa" class="ui dropdown" required>
+            <select name="ddlNumeracaoAlternativa" class="ui dropdown" required onchange="parametroModificado()">
                 <option value="1" @(@Model.NumeracaoAlternativa == 1 ? "selected": "")>Algarismos indo-arábicos</option>
                 <option value="2" @(@Model.NumeracaoAlternativa == 2 ? "selected": "")>Algarismos romanos</option>
                 <option value="3" @(@Model.NumeracaoAlternativa == 3 ? "selected": "")>Letras em caixa baixa</option>
@@ -70,22 +87,43 @@
         </div>
         <div class="field required">
             <label>Quantidade de Semestres</label>
-            <input name="txtQtdSemestre" type="number" value="@Model.QteSemestres" placeholder="Quantidade de Semestres" required />
+            <input name="txtQteSemestre" type="number" value="@Model.QteSemestres" placeholder="Quantidade de Semestres" required onchange="parametroModificado()" />
         </div>
-    </div>
-
-    <div class="ui bottom attached tab segment avaliacao" data-tab="tab-avaliacao">
-
     </div>
     @* Termo *@
     <div class="ui bottom attached tab segment termo" data-tab="tab-termo">
         <div class="field required">
             <label>Termo</label>
-            <textarea rows="10" name="txtTermo" placeholder="Digite aqui o Termo de Responsabilidade..." required></textarea>
+            <textarea rows="20" name="txtTermoResponsabilidade" placeholder="Digite aqui o Termo de Responsabilidade..." required onchange="parametroModificado()">@Model.TermoResponsabilidade</textarea>
         </div>
     </div>
+
+    @* Cadastro de Professor *@
+    <div class="ui bottom attached tab segment professor" data-tab="tab-professor">
+
+        <div class="field required">
+            <label>Nome</label>
+            <input type="text" name="txtProfessorNome" placeholder="Nome..." required/>
+        </div>
+        <div class="field required">
+            <label>Matrícula</label>
+            <input type="text" name="txtProfessorMatricula" placeholder="Matrícula..." required />
+        </div>
+        <div class="field required">
+            <label>Disciplinas</label>
+            <select name="ddlProfessorDisciplinas" class="ui fluid search dropdown" multiple="" required">
+                <option value="">Disciplinas...</option>
+                @foreach (var d in ViewBag.Disciplinas)
+                {
+                    <option value="@d.CodDisciplina">@d.Descricao</option>
+                }
+            </select>
+        </div>
+        <br />
+        <input type="submit" class="ui button" value="Cadastrar" />
+    </div>
     <br />
-    <input type="submit" class="ui button" value="Atualizar" />
+    <div id="btnAtualizar" onclick="atualizarParametros()" type="button" class="ui button">Atualizar</div>
 
 </form>
 

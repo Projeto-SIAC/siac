@@ -23,6 +23,7 @@ namespace SIAC.Web.Models
             this.Tema = new HashSet<Tema>();
             this.TurmaDiscAluno = new HashSet<TurmaDiscAluno>();
             this.TurmaDiscProfHorario = new HashSet<TurmaDiscProfHorario>();
+            this.Professor = new HashSet<Professor>();
         }
     
         public int CodDisciplina { get; set; }
@@ -44,5 +45,7 @@ namespace SIAC.Web.Models
         public virtual ICollection<TurmaDiscAluno> TurmaDiscAluno { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TurmaDiscProfHorario> TurmaDiscProfHorario { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Professor> Professor { get; set; }
     }
 }
