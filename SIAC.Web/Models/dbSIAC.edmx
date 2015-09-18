@@ -708,10 +708,11 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TempoInatividade" Type="int" />
-          <Property Name="NumeracaoQuestao" Type="int" />
-          <Property Name="NumeracaoAlternativa" Type="int" />
-          <Property Name="QteSemestres" Type="int" />
+          <Property Name="TempoInatividade" Type="int" Nullable="false" />
+          <Property Name="NumeracaoQuestao" Type="int" Nullable="false" />
+          <Property Name="NumeracaoAlternativa" Type="int" Nullable="false" />
+          <Property Name="QteSemestres" Type="int" Nullable="false" />
+          <Property Name="TermoResponsabilidade" Type="text" Nullable="false" />
         </EntityType>
         <EntityType Name="Pessoa">
           <Key>
@@ -776,6 +777,14 @@
           </Key>
           <Property Name="CodProfessor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MatrProfessor" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProfessorDisciplina">
+          <Key>
+            <PropertyRef Name="CodProfessor" />
+            <PropertyRef Name="CodDisciplina" />
+          </Key>
+          <Property Name="CodProfessor" Type="int" Nullable="false" />
+          <Property Name="CodDisciplina" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ProReitoria">
           <Key>
@@ -2775,6 +2784,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ProfessorDisciplina_Disciplina">
+          <End Role="Disciplina" Type="Self.Disciplina" Multiplicity="1" />
+          <End Role="ProfessorDisciplina" Type="Self.ProfessorDisciplina" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Disciplina">
+              <PropertyRef Name="CodDisciplina" />
+            </Principal>
+            <Dependent Role="ProfessorDisciplina">
+              <PropertyRef Name="CodDisciplina" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProfessorDisciplina_Professor">
+          <End Role="Professor" Type="Self.Professor" Multiplicity="1" />
+          <End Role="ProfessorDisciplina" Type="Self.ProfessorDisciplina" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Professor">
+              <PropertyRef Name="CodProfessor" />
+            </Principal>
+            <Dependent Role="ProfessorDisciplina">
+              <PropertyRef Name="CodProfessor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="dbSIACModelStoreContainer">
           <EntitySet Name="Alternativa" EntityType="Self.Alternativa" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Aluno" EntityType="Self.Aluno" Schema="dbo" store:Type="Tables" />
@@ -2835,6 +2868,7 @@
           <EntitySet Name="PessoaJuridica" EntityType="Self.PessoaJuridica" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PessoaOcupacao" EntityType="Self.PessoaOcupacao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Professor" EntityType="Self.Professor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProfessorDisciplina" EntityType="Self.ProfessorDisciplina" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProReitoria" EntityType="Self.ProReitoria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Questao" EntityType="Self.Questao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestaoAnexo" EntityType="Self.QuestaoAnexo" Schema="dbo" store:Type="Tables" />
@@ -3351,6 +3385,14 @@
           <AssociationSet Name="FK__Visitante__MatrV__498EEC8D" Association="Self.FK__Visitante__MatrV__498EEC8D">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Visitante" EntitySet="Visitante" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProfessorDisciplina_Disciplina" Association="Self.FK_ProfessorDisciplina_Disciplina">
+            <End Role="Disciplina" EntitySet="Disciplina" />
+            <End Role="ProfessorDisciplina" EntitySet="ProfessorDisciplina" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProfessorDisciplina_Professor" Association="Self.FK_ProfessorDisciplina_Professor">
+            <End Role="Professor" EntitySet="Professor" />
+            <End Role="ProfessorDisciplina" EntitySet="ProfessorDisciplina" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -3873,6 +3915,7 @@
           <NavigationProperty Name="Tema" Relationship="Self.FK__Tema__CodDiscipl__3587F3E0" FromRole="Disciplina" ToRole="Tema" />
           <NavigationProperty Name="TurmaDiscAluno" Relationship="Self.FK__TurmaDisc__CodDi__54968AE5" FromRole="Disciplina" ToRole="TurmaDiscAluno" />
           <NavigationProperty Name="TurmaDiscProfHorario" Relationship="Self.FK__TurmaDisc__CodDi__64CCF2AE" FromRole="Disciplina" ToRole="TurmaDiscProfHorario" />
+          <NavigationProperty Name="Professor" Relationship="dbSIACModel.ProfessorDisciplina" FromRole="Disciplina" ToRole="Professor" />
         </EntityType>
         <EntityType Name="Email">
           <Key>
@@ -4106,6 +4149,7 @@
           <NavigationProperty Name="Usuario" Relationship="Self.FK__Professor__MatrP__56E8E7AB" FromRole="Professor" ToRole="Usuario" />
           <NavigationProperty Name="Questao" Relationship="Self.FK__Questao__CodProf__24285DB4" FromRole="Professor" ToRole="Questao" />
           <NavigationProperty Name="TurmaDiscProfHorario" Relationship="Self.FK__TurmaDisc__CodPr__62E4AA3C" FromRole="Professor" ToRole="TurmaDiscProfHorario" />
+          <NavigationProperty Name="Disciplina" Relationship="dbSIACModel.ProfessorDisciplina" FromRole="Professor" ToRole="Disciplina" />
         </EntityType>
         <EntityType Name="ProReitoria">
           <Key>
@@ -6369,17 +6413,26 @@
             <End Role="PessoaFisica" EntitySet="PessoaFisica" />
           </AssociationSet>
           <EntitySet Name="Parametro" EntityType="dbSIACModel.Parametro" />
+          <AssociationSet Name="ProfessorDisciplina" Association="dbSIACModel.ProfessorDisciplina">
+            <End Role="Disciplina" EntitySet="Disciplina" />
+            <End Role="Professor" EntitySet="Professor" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Parametro">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TempoInatividade" Type="Int32" />
-          <Property Name="NumeracaoQuestao" Type="Int32" />
-          <Property Name="NumeracaoAlternativa" Type="Int32" />
-          <Property Name="QteSemestres" Type="Int32" />
+          <Property Name="TempoInatividade" Type="Int32" Nullable="false" />
+          <Property Name="NumeracaoQuestao" Type="Int32" Nullable="false" />
+          <Property Name="NumeracaoAlternativa" Type="Int32" Nullable="false" />
+          <Property Name="QteSemestres" Type="Int32" Nullable="false" />
+          <Property Name="TermoResponsabilidade" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
+        <Association Name="ProfessorDisciplina">
+          <End Type="dbSIACModel.Disciplina" Role="Disciplina" Multiplicity="*" />
+          <End Type="dbSIACModel.Professor" Role="Professor" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7299,6 +7352,7 @@
           <EntitySetMapping Name="Parametro">
             <EntityTypeMapping TypeName="dbSIACModel.Parametro">
               <MappingFragment StoreEntitySet="Parametro">
+                <ScalarProperty Name="TermoResponsabilidade" ColumnName="TermoResponsabilidade" />
                 <ScalarProperty Name="QteSemestres" ColumnName="QteSemestres" />
                 <ScalarProperty Name="NumeracaoAlternativa" ColumnName="NumeracaoAlternativa" />
                 <ScalarProperty Name="NumeracaoQuestao" ColumnName="NumeracaoQuestao" />
@@ -7307,6 +7361,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="ProfessorDisciplina" TypeName="dbSIACModel.ProfessorDisciplina" StoreEntitySet="ProfessorDisciplina">
+            <EndProperty Name="Professor">
+              <ScalarProperty Name="CodProfessor" ColumnName="CodProfessor" />
+            </EndProperty>
+            <EndProperty Name="Disciplina">
+              <ScalarProperty Name="CodDisciplina" ColumnName="CodDisciplina" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

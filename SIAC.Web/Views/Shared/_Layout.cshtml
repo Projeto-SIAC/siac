@@ -116,22 +116,22 @@
                     </div>
                 </div>
                 <div class="ui vertical fluid secondary menu" style="margin: auto 0">
-                    <a href="~/Dashboard" class="@(Request.Url.ToString().Contains("Dashboard")? "active" : "") item">
+                    <a href="~/Dashboard" class="@(Request.Url.ToString().Contains("Dashboard")? "active blue" : "") item">
                         <i class="block layout icon"></i><span class="content">Dashboard</span>
                     </a>
-                    <a href="~/Historico" class="@(Request.Url.ToString().Contains("Historico")? "active" : "") item">
+                    <a href="~/Historico" class="@(Request.Url.ToString().Contains("Historico")? "active blue" : "") item">
                         <i class="time icon"></i><span class="content">Histórico</span>
                     </a>
-                    <a href="~/AVI" class="@(Request.Url.ToString().Contains("AVI")? "active" : "") item">
+                    <a href="~/AVI" class="@(Request.Url.ToString().Contains("AVI")? "active blue" : "") item">
                         <i class="file text outline icon"></i><span class="content">Av. Instituicional</span>
                     </a>
-                    <a href="~/Perfil" class="@(Request.Url.ToString().Contains("Perfil")? "active" : "") item">
+                    <a href="~/Perfil" class="@(Request.Url.ToString().Contains("Perfil")? "active blue" : "") item">
                         <i class="user icon"></i><span class="content">Perfil</span>
                     </a>
 
                     @if ((int)Session["UsuarioCategoriaCodigo"] == 3)
                     {
-                        <a href="~/Configuracoes" class="@(Request.Url.ToString().Contains("Configuracoes")? "active" : "") item">
+                        <a href="~/Configuracoes" class="@(Request.Url.ToString().Contains("Configuracoes")? "active blue" : "") item">
                             <i class="setting icon"></i><span class="content">Configurações</span>
                         </a>
                     }

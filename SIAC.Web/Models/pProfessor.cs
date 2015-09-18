@@ -13,5 +13,16 @@ namespace SIAC.Web.Models
         {
             return contexto.Professor.SingleOrDefault(p => p.MatrProfessor == matricula);
         }
+
+        public static void Inserir(Professor professor)
+        {
+            contexto.Professor.Add(professor);
+            contexto.SaveChanges();
+        }
+
+        public static List<Disciplina> ObterDisciplinas(int codProfessor)
+        {
+            return contexto.Professor.Single(p=>p.CodProfessor == codProfessor).Disciplina.ToList();
+        }
     }
 }

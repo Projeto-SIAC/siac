@@ -22,6 +22,7 @@ namespace SIAC.Web.Models
             temp.NumeracaoQuestao = parametro.NumeracaoQuestao;
             temp.NumeracaoAlternativa = parametro.NumeracaoAlternativa;
             temp.QteSemestres = parametro.QteSemestres;
+            temp.TermoResponsabilidade = parametro.TermoResponsabilidade.Trim();
 
             contexto.SaveChanges();
         }
