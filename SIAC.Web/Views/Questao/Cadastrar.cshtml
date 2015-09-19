@@ -328,7 +328,7 @@
     <div class="header">Você está ciente de...</div>
     <div class="content">
         @{
-            var termo = ViewBag.Termo.Split('\n');
+            var termo = ViewBag.Termo.Split('\n', '\r');
             foreach (var str in termo)
             {
                 if (!String.IsNullOrWhiteSpace(str))

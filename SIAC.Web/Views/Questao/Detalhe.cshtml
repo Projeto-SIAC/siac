@@ -43,8 +43,17 @@
             <div class="ui tag label" data-html="@( !String.IsNullOrEmpty(questaoTema.Tema.Comentario) ? "<b>Comentário</b>: "+questaoTema.Tema.Comentario : "" )">@questaoTema.Tema.Descricao</div>
         }
     </div>
-    <div class="ui dividing header">
-        <p data-html="@( !String.IsNullOrEmpty(Model.Objetivo) ? "<b>Objetivo</b>: " + Model.Objetivo : "")">@Model.Enunciado</p>
+    <div class="ui dividing header" data-html="@( !String.IsNullOrEmpty(Model.Objetivo) ? "<b>Objetivo</b>: " + Model.Objetivo : "")">
+        @{
+            var enunciado = Model.Enunciado.Split('\n', '\r');
+            foreach (var strEnunciado in enunciado)
+            {
+                if (!String.IsNullOrWhiteSpace(strEnunciado))
+                {
+                    <p>@strEnunciado</p>
+                }
+            }
+        }
     </div>
     @if (Model.CodTipoQuestao == 1)
     {
@@ -52,10 +61,10 @@
             @foreach (var alternativa in Model.Alternativa)
             {
                 <div class="item">
-                    <div class="middle aligned content" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario)?"<b>Comentário</b>: " + alternativa.Comentario : "")">
+                    <div class="middle aligned content" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
                         <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
                         @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
-                    {
+                        {
                             <a class="ui green label">Correta</a>
                         }
                     </div>
@@ -65,12 +74,23 @@
     }
     else
     {
-        <div>
-            <p data-html="@(!String.IsNullOrEmpty(Model.Comentario) ? "<b>Comentário</b>: "+ Model.Comentario : "")"><i>@Model.ChaveDeResposta</i> <a class="ui green label">Chave de Resposta</a></p>
+        <div data-html="@(!String.IsNullOrEmpty(Model.Comentario) ? "<b>Comentário</b>: " + Model.Comentario : "")">
+            <a class="ui green ribbon label">Chave de Resposta</a>
+            @{
+                var chaveDeResposta = Model.ChaveDeResposta.Split('\n', '\r');
+                foreach (var strChaveDeResposta in chaveDeResposta)
+                {
+                    if (!String.IsNullOrWhiteSpace(strChaveDeResposta))
+                    {
+                        <p><i>@strChaveDeResposta</i></p>
+                    }
+                }
+            }
         </div>
     }
     @if (Model.QuestaoAnexo.Count > 0)
     {
+        <br />
         <div class="ui styled fluid accordion">
             <div class="title"><i class="icon dropdown"></i>Anexos</div>
             <div class="content">
@@ -89,7 +109,7 @@
                                     </div>
                                 </div>
                                 <div class="extra content">
-                                    @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte desconhecida")
+                                    @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte não informada")
                                 </div>
                             </div>
                             break;

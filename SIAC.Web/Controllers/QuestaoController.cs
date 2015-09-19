@@ -88,13 +88,13 @@ namespace SIAC.Web.Controllers
             }
 
             // Detalhes
-            questao.Enunciado = formCollection["txtEnunciado"].RemoveSpaces();
+            questao.Enunciado = formCollection["txtEnunciado"].Trim();
             questao.Objetivo = !String.IsNullOrEmpty(formCollection["txtObjetivo"]) ? formCollection["txtObjetivo"].RemoveSpaces() : null;
 
             // Discursiva
             if (questao.CodTipoQuestao == 2)
             {
-                questao.ChaveDeResposta = formCollection["txtChaveDeResposta"].RemoveSpaces();
+                questao.ChaveDeResposta = formCollection["txtChaveDeResposta"].Trim();
                 questao.Comentario = !String.IsNullOrEmpty(formCollection["txtComentario"]) ? formCollection["txtComentario"].RemoveSpaces() : null;
             }
 
