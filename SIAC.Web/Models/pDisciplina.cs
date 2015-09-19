@@ -18,5 +18,12 @@ namespace SIAC.Web.Models
         {
             return contexto.Disciplina.FirstOrDefault(d => d.CodDisciplina == codDisciplina);
         }
+
+        public static int Inserir(Disciplina disciplina)
+        {
+            contexto.Disciplina.Add(disciplina);
+            contexto.SaveChanges();
+            return disciplina.CodDisciplina;
+        }
     }
 }

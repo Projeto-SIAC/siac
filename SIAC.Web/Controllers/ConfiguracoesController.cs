@@ -76,7 +76,6 @@ namespace SIAC.Web.Controllers
         {
             if(formCollection.HasKeys())
             {
-
                 string ProfessorNome = formCollection["txtProfessorNome"];
                 string ProfessorMatricula = formCollection["txtProfessorMatricula"];
 
@@ -107,10 +106,40 @@ namespace SIAC.Web.Controllers
                 }
 
                 Professor.Inserir(professor);
-
             }
+            return RedirectToAction("Index");
+        }
 
+        //POST: Configuracoes/CadastrarDisciplina
+        [HttpPost]
+        public ActionResult CadastrarDisciplina(FormCollection formCollection)
+        {
+            if (formCollection.HasKeys())
+            {
+                string DisciplinaNome = formCollection["txtDisciplina"];
+                string DisciplinaSigla = formCollection["txtSigla"];
 
+                Disciplina disciplina = new Disciplina();
+                disciplina.Descricao = DisciplinaNome;
+                disciplina.Sigla = DisciplinaSigla;
+                disciplina.FlagEletivaOptativa = (formCollection["chkEletivaOptativa"] != null) ? true : false;
+                disciplina.FlagFlexivel = (formCollection["chkFlexivel"] != null) ? true : false;
+
+                int codDisciplina = Disciplina.Inserir(disciplina);
+
+                string[] temas = formCollection["txtTema"].Split(';');
+                int i = 1;
+                foreach (string item in temas)
+                {
+                    string tema = item.Trim();
+                    Tema t = new Tema();
+                    t.CodDisciplina = codDisciplina;
+                    t.CodTema = i;
+                    t.Descricao = tema;
+                    i++;
+                    Tema.Inserir(t);
+                }
+            }
             return RedirectToAction("Index");
         }
     }
