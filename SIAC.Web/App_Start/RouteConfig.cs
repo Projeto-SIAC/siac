@@ -14,17 +14,25 @@ namespace SIAC.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             
             routes.MapRoute(
-                name: "Questao",
-                url: "Dashboard/Questao/{codigo}",
+                name: "QuestaoDetalhe",
+                url: "Historico/Questao/{codigo}",
                 defaults: new { controller = "Questao", action = "Detalhe", codigo = UrlParameter.Optional },
                 constraints: new { controller = @"^(Questao)$", codigo = @"^[0-9]+$" }
+            );
+
+
+            routes.MapRoute(
+                name: "Questao",
+                url: "Historico/{controller}/{action}/{codigo}",
+                defaults: new { controller = "Historico", action = "Index", codigo = UrlParameter.Optional },
+                constraints: new { controller = @"^(Questao|Autoavaliacao)$" }
             );
 
             routes.MapRoute(
                 name: "Dashboard",
                 url: "Dashboard/{controller}/{action}/{codigo}",
                 defaults: new { controller = "Dashboard", action = "Index", codigo = UrlParameter.Optional },
-                constraints: new { controller = @"^(Questao)$" }
+                constraints: new { controller = @"^(Questao|Autoavaliacao)$" }
             );
 
             routes.MapRoute(
@@ -48,8 +56,8 @@ namespace SIAC.Web
 
             routes.MapRoute(
                 name: "RecuperarTemasPorCodDisciplina",
-                url: "Questao/RecuperarTemasPorCodDisciplina/",
-                defaults: new { controller = "Questao", action = "RecuperarTemasPorCodDisciplina" },
+                url: "Tema/RecuperarTemasPorCodDisciplina/",
+                defaults: new { controller = "Tema", action = "RecuperarTemasPorCodDisciplina" },
                 namespaces: new[] { "SIAC.Web.Controllers" }
             );
             

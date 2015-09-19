@@ -36,6 +36,10 @@ namespace SIAC.Web.Controllers
         // GET: Questao
         public ActionResult Index()
         {
+            if (Request.Url.ToString().ToLower().Contains("dashboard"))
+            {
+                return Redirect("~/Historico/Autoavaliacao");
+            }
             List<Questao> model = Questao.ListarPorProfessor(Session["UsuarioMatricula"].ToString());
             //List<Questao> model = Questao.ListarPorProfessor(Usuario.SMatricula);
 
@@ -58,8 +62,6 @@ namespace SIAC.Web.Controllers
         [HttpPost]
         public ActionResult Confirmar(FormCollection formCollection)
         {
-            ViewBag.Form = formCollection;
-
             //var dc = DataContextSIAC.GetInstance();
             Questao questao = new Questao();
 
@@ -180,23 +182,6 @@ namespace SIAC.Web.Controllers
                 return View(model);
             }
             return RedirectToAction("Index");
-        }
-
-        [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult RecuperarTemasPorCodDisciplina(string codDisciplina)
-        {
-            if (!String.IsNullOrEmpty(codDisciplina))
-            {
-                int cod = 0;
-                if (int.TryParse(codDisciplina, out cod))
-                {
-                    var dc = DataContextSIAC.GetInstance();
-                    var temas = Tema.ListarPorDisciplina(cod);
-                    var result = from t in temas select new { CodTema = t.CodTema, Descricao = t.Descricao };
-                    return Json(result.ToList(), JsonRequestBehavior.AllowGet);
-                }
-            }
-            return Json(null);
-        }
+        }        
     }
 }

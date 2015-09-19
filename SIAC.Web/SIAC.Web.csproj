@@ -278,12 +278,14 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AutoavaliacaoController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\AcessoController.cs" />
     <Compile Include="Controllers\ErroController.cs" />
     <Compile Include="Controllers\LeroLeroController.cs" />
     <Compile Include="Controllers\ConfiguracoesController.cs" />
     <Compile Include="Controllers\QuestaoController.cs" />
+    <Compile Include="Controllers\TemaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -566,6 +568,10 @@
     <Content Include="Views\Questao\Confirmar.cshtml" />
     <Content Include="Views\Questao\Detalhe.cshtml" />
     <Content Include="Views\Configuracoes\Index.cshtml" />
+    <Content Include="Views\Autoavaliacao\Gerar.cshtml" />
+    <Content Include="Views\Autoavaliacao\Index.cshtml" />
+    <Content Include="Views\Autoavaliacao\Realizar.cshtml" />
+    <Content Include="Views\Autoavaliacao\Confirmar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -576,6 +582,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\LeroLero\" />
+    <Folder Include="Views\Tema\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />

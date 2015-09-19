@@ -58,6 +58,17 @@
                 </a>
             </div>
         }
+        @if ((int)Session["UsuarioCategoriaCodigo"] == 2)
+        {
+            <div class="column aligned center">
+                <a href="/Historico/Questao">
+                    <div class="ui icon header">
+                        <i class="book icon"></i>
+                        Minhas Questões
+                    </div>
+                </a>
+            </div>
+        }
         @if ((int)Session["UsuarioCategoriaCodigo"] == 1)
         {
             <div class="column aligned center">
