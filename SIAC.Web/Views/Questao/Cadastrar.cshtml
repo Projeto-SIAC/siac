@@ -327,10 +327,16 @@
 <div class="ui termo modal">
     <div class="header">Você está ciente de...</div>
     <div class="content">
-        @* Futuramente, deverá vim do banco de dados *@
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ornare ornare posuere. Aenean viverra metus vel arcu venenatis eleifend. Nunc arcu magna, placerat quis leo non, venenatis posuere dui. Nam id cursus massa, a luctus odio. Duis elementum euismod eleifend. Nulla nec lectus ut quam pellentesque dictum id in massa. Nulla in elit id justo scelerisque ornare sed at erat. Duis risus libero, volutpat vitae rutrum eu, rutrum nec nibh. Fusce commodo dapibus mattis.</p>
-        <p>Nam dictum tempus magna, at lacinia neque posuere at. Maecenas dictum nulla ac neque efficitur, at sagittis turpis ornare. Mauris lobortis lorem vel fermentum volutpat. Pellentesque rutrum nibh vel erat blandit congue. Mauris euismod porta ligula nec eleifend. Nunc tempor mauris arcu, ut venenatis enim aliquet eu. Integer porta nisl id dapibus sagittis. Nam laoreet at quam feugiat efficitur. Donec eu lectus eget sem iaculis dapibus. Nullam non dui faucibus, gravida enim non, luctus nisl. Duis convallis risus eget purus suscipit sollicitudin. Curabitur non est nec quam ornare lobortis nec ut nibh.</p>
-        <p>Vestibulum placerat auctor aliquam. Aliquam eros turpis, sodales in ornare ac, dapibus sed orci. Ut vitae rhoncus purus, sit amet faucibus est. Integer interdum lorem non tortor commodo, vel laoreet augue euismod. Donec condimentum sollicitudin suscipit. In fringilla nunc nec velit luctus, eget eleifend nisl pellentesque. Pellentesque consequat congue sagittis. Sed vestibulum quis ipsum id rhoncus. Praesent pulvinar, ipsum quis sagittis molestie, erat leo ultricies velit, ut aliquam nulla odio malesuada purus. Donec et venenatis risus. Phasellus velit libero, hendrerit ultrices maximus eget, semper ut tortor.</p>
+        @{
+            var termo = ViewBag.Termo.Split('\n');
+            foreach (var str in termo)
+            {
+                if (!String.IsNullOrWhiteSpace(str))
+                {
+                    <p>@str</p>
+                }
+            }
+        }
     </div>
     <div class="actions">
         <a href="/Dashboard/Questao" class="ui cancel button">Cancelar</a>

@@ -22,7 +22,13 @@ namespace SIAC.Web.Models
 
         public static List<Disciplina> ObterDisciplinas(int codProfessor)
         {
-            return contexto.Professor.Single(p=>p.CodProfessor == codProfessor).Disciplina.ToList();
+            return contexto.Professor.Single(p=>p.CodProfessor == codProfessor).Disciplina.OrderBy(d => d.Descricao).ToList();
+        }
+
+
+        public static List<Disciplina> ObterDisciplinas(string matrProfessor)
+        {
+            return contexto.Professor.Single(p => p.MatrProfessor == matrProfessor).Disciplina.OrderBy(d=>d.Descricao).ToList();
         }
     }
 }

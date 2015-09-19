@@ -46,7 +46,8 @@ namespace SIAC.Web.Controllers
         public ActionResult Cadastrar()
         {
             //var dc = DataContextSIAC.GetInstance();
-            ViewBag.Disciplinas = Disciplina.ListarOrdenadamente(); // futuramente: retornar apenas disciplinas do professor
+            ViewBag.Termo = Parametro.Obter().TermoResponsabilidade;
+            ViewBag.Disciplinas = Professor.ObterDisciplinas(Session["UsuarioMatricula"].ToString());
             ViewBag.Tipos = TipoQuestao.ListarOrdenadamente();
             ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
             ViewBag.TiposAnexo = TipoAnexo.ListarOrdenadamente();
