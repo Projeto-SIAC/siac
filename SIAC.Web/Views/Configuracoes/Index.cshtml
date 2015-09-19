@@ -36,14 +36,21 @@
             $('#btnAtualizar').removeClass('green').text('Atualizar');
         }
 
+        function cadastrarProfessor() {
+            $('#professorForm').addClass('ui form loading');
+        }
+        function cadastrarDisciplina() {
+            $('#disciplinaForm').addClass('ui form loading');
+        }
+
     </script>
 
-    
+
 }
 <h2>@ViewBag.Title</h2>
 
-<form id="#parametroForm" method="post" action="/Configuracoes/CadastrarProfessor" class="ui form">
 
+<div class="ui form">
     @* Modal de Conclusão *@
     <div class="ui basic modal">
         <i class="close icon"></i>
@@ -58,6 +65,7 @@
         <a class="active item" data-tab="tab-gerais">Gerais</a>
         <a class="item" data-tab="tab-termo">Termo de Responsabilidade</a>
         <a class="item" data-tab="tab-professor">Cadastro de Professor</a>
+        <a class="item" data-tab="tab-disciplina">Cadastro de Disciplina</a>
     </div>
 
     @* Tab Geral *@
@@ -70,19 +78,19 @@
         <div class="field required">
             <label>Tipo de Numeração das Questões</label>
             <select name="ddlNumeracaoQuestao" class="ui dropdown" required onchange="parametroModificado()">
-                <option value="1" @(@Model.NumeracaoQuestao == 1 ? "selected": "")>Algarismos indo-arábicos</option>
-                <option value="2" @(@Model.NumeracaoQuestao == 2 ? "selected": "")>Algarismos romanos</option>
-                <option value="3" @(@Model.NumeracaoQuestao == 3 ? "selected": "")>Letras em caixa baixa</option>
-                <option value="4" @(@Model.NumeracaoQuestao == 4 ? "selected": "")>Letras em caixa alta</option>
+                <option value="1" @(@Model.NumeracaoQuestao == 1 ? "selected" : "")>Algarismos indo-arábicos</option>
+                <option value="2" @(@Model.NumeracaoQuestao == 2 ? "selected" : "")>Algarismos romanos</option>
+                <option value="3" @(@Model.NumeracaoQuestao == 3 ? "selected" : "")>Letras em caixa baixa</option>
+                <option value="4" @(@Model.NumeracaoQuestao == 4 ? "selected" : "")>Letras em caixa alta</option>
             </select>
         </div>
         <div class="field required">
             <label>Tipo de Numeração das Alternativas</label>
             <select name="ddlNumeracaoAlternativa" class="ui dropdown" required onchange="parametroModificado()">
-                <option value="1" @(@Model.NumeracaoAlternativa == 1 ? "selected": "")>Algarismos indo-arábicos</option>
-                <option value="2" @(@Model.NumeracaoAlternativa == 2 ? "selected": "")>Algarismos romanos</option>
-                <option value="3" @(@Model.NumeracaoAlternativa == 3 ? "selected": "")>Letras em caixa baixa</option>
-                <option value="4" @(@Model.NumeracaoAlternativa == 4 ? "selected": "")>Letras em caixa alta</option>
+                <option value="1" @(@Model.NumeracaoAlternativa == 1 ? "selected" : "")>Algarismos indo-arábicos</option>
+                <option value="2" @(@Model.NumeracaoAlternativa == 2 ? "selected" : "")>Algarismos romanos</option>
+                <option value="3" @(@Model.NumeracaoAlternativa == 3 ? "selected" : "")>Letras em caixa baixa</option>
+                <option value="4" @(@Model.NumeracaoAlternativa == 4 ? "selected" : "")>Letras em caixa alta</option>
             </select>
         </div>
         <div class="field required">
@@ -100,30 +108,61 @@
 
     @* Cadastro de Professor *@
     <div class="ui bottom attached tab segment professor" data-tab="tab-professor">
-
-        <div class="field required">
-            <label>Nome</label>
-            <input type="text" name="txtProfessorNome" placeholder="Nome..." required/>
-        </div>
-        <div class="field required">
-            <label>Matrícula</label>
-            <input type="text" name="txtProfessorMatricula" placeholder="Matrícula..." required />
-        </div>
-        <div class="field required">
-            <label>Disciplinas</label>
-            <select name="ddlProfessorDisciplinas" class="ui fluid search dropdown" multiple="" required">
-                <option value="">Disciplinas...</option>
-                @foreach (var d in ViewBag.Disciplinas)
-                {
-                    <option value="@d.CodDisciplina">@d.Descricao</option>
-                }
-            </select>
-        </div>
-        <br />
-        <input type="submit" class="ui button" value="Cadastrar" />
+        <form id="professorForm" method="post" action="/Configuracoes/CadastrarProfessor">
+            <div class="ui text loader">Inserindo</div>
+            <div class="field required">
+                <label>Nome</label>
+                <input type="text" name="txtProfessorNome" placeholder="Nome..." required />
+            </div>
+            <div class="field required">
+                <label>Matrícula</label>
+                <input type="text" name="txtProfessorMatricula" placeholder="Matrícula..." required />
+            </div>
+            <div class="field required">
+                <label>Disciplinas</label>
+                <select name="ddlProfessorDisciplinas" class="ui fluid search dropdown" multiple="" required">
+                    <option value="">Disciplinas...</option>
+                    @foreach (var d in ViewBag.Disciplinas)
+                    {
+                        <option value="@d.CodDisciplina">@d.Descricao</option>
+                    }
+                </select>
+            </div>
+            <br />
+            <input type="submit" onclick="cadastrarProfessor()" class="ui button" value="Cadastrar" />
+        </form>
     </div>
+
+    @* Cadastro de Disciplina *@
+    <div class="ui bottom attached tab segment disciplina" data-tab="tab-disciplina">
+        <form id="disciplinaForm" method="post" action="/Configuracoes/CadastrarDisciplina">
+            <div class="field required">
+                <label>Disciplina</label>
+                <input type="text" name="txtDisciplina" placeholder="Disciplina..." required />
+            </div>
+            <div class="field required">
+                <label>Sigla da Disciplina</label>
+                <input type="text" name="txtSigla" placeholder="Sigla..." required />
+            </div>
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="chkEletivaOptativa" />
+                <label><b>Eletiva / Optativa</b></label>
+                <br />
+            </div>
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="chkFlexivel" />
+                <label><b>Flexível</b></label>
+                <br />
+            </div>
+            <div class="field required">
+                <label>Temas (use ' ; ' para separar cada tema)</label>
+                <input type="text" name="txtTema" placeholder="Temas..." required />
+            </div>
+            <input type="submit" class="ui button" onclick="cadastrarDisciplina()" value="Cadastrar" />
+        </form>
+    </div>
+
     <br />
     <div id="btnAtualizar" onclick="atualizarParametros()" type="button" class="ui button">Atualizar</div>
 
-</form>
-
+</div>

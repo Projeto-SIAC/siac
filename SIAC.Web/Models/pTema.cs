@@ -18,5 +18,12 @@ namespace SIAC.Web.Models
         {
             return contexto.Tema.Where(t => t.CodDisciplina == CodDisciplina).ToList();
         }
+
+        public static int Inserir(Tema tema)
+        {
+            contexto.Tema.Add(tema);
+            contexto.SaveChanges();
+            return tema.CodTema;
+        }
     }
 }
