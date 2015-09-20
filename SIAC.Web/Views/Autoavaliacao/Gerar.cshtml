@@ -10,6 +10,7 @@
         $('.ui.accordion').accordion();
 
         function submitForm() {
+            $('form').addClass('loading');
             var validado = false;
             $('form .error.message .list').html('');
 
@@ -72,7 +73,7 @@
                 $('form').submit();
             }
             else {
-                $('form').addClass('error');
+                $('form').addClass('error').removeClass('loading');
                 $('html, body').animate({
                     scrollTop: $('form .error.message').offset().top
                 }, 100);
