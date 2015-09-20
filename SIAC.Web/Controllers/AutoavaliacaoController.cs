@@ -85,7 +85,7 @@ namespace SIAC.Web.Controllers
                 }
             }
             auto.Dificuldade = Dificuldade.ListarPorCodigo(dificuldades.Max());
-            auto.Avaliacao.DtCadastro = hoje;
+            auto.Avaliacao.DtCadastro = hoje;            
 
             /* Codigo para selecionar as questões */
 
@@ -95,7 +95,8 @@ namespace SIAC.Web.Controllers
         // GET: Autoavaliacao/Realizar
         public ActionResult Realizar()
         {
-            return View();
+            AvalAuto auto = new AvalAuto();
+            return View(auto);
         }
     }
 }
