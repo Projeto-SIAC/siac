@@ -25,5 +25,14 @@ namespace SIAC.Web.Models
             contexto.SaveChanges();
             return disciplina.CodDisciplina;
         }
+
+        public static List<Disciplina> ListarTemQuestoes()
+        {
+            return (from qt in contexto.QuestaoTema
+                    select qt.Tema.Disciplina).
+                    Distinct().
+                    OrderBy(d => d.Descricao).
+                    ToList();
+        }
     }
 }

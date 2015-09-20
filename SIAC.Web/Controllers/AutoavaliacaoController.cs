@@ -40,8 +40,7 @@ namespace SIAC.Web.Controllers
         // GET: Autoavaliacao/Gerar
         public ActionResult Gerar()
         {
-            ViewBag.Disciplinas = (from queTma in DataContextSIAC.GetInstance().QuestaoTema
-                                   select queTma.Tema.Disciplina).Distinct(); // disciplinas que tem questões
+            ViewBag.Disciplinas = Disciplina.ListarTemQuestoes();
             ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
             return View();
         }
@@ -61,14 +60,16 @@ namespace SIAC.Web.Controllers
             auto.Avaliacao.CodTipoAvaliacao = 1;
             auto.Avaliacao.Ano = hoje.Year;
             auto.Avaliacao.Semestre = hoje.Month > 6 ? 2 : 1;
-            var list = DataContextSIAC.GetInstance().Avaliacao
-                .Where(a => (a.CodTipoAvaliacao == auto.Avaliacao.CodTipoAvaliacao) && (a.Ano == auto.Avaliacao.Ano) && (a.Semestre == auto.Avaliacao.Semestre))
-                .ToList();
-            auto.Avaliacao.NumIdentificador = list.Count > 0 ? list.Max(a => a.NumIdentificador) + 1 : 1;
+            //var list = DataContextSIAC.GetInstance().Avaliacao
+            //  .Where(a => (a.CodTipoAvaliacao == auto.Avaliacao.CodTipoAvaliacao) && (a.Ano == auto.Avaliacao.Ano) && (a.Semestre == auto.Avaliacao.Semestre))
+            //  .ToList();
+            //auto.Avaliacao.NumIdentificador = list.Count > 0 ? list.Max(a => a.NumIdentificador) + 1 : 1;
+            auto.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(1);
 
             /* Pessoa */
             var strMatr = Session["UsuarioMatricula"].ToString();
-            auto.PessoaFisica = DataContextSIAC.GetInstance().Usuario.SingleOrDefault(u => u.Matricula == strMatr).PessoaFisica;
+            //auto.PessoaFisica = DataContextSIAC.GetInstance().Usuario.SingleOrDefault(u => u.Matricula == strMatr).PessoaFisica;
+            auto.CodPessoaFisica = Usuario.ObterPessoaFisica(strMatr);
 
             var disciplinas = formCollection["ddlDisciplinas"].Split(',');
             /* Dados */
@@ -88,6 +89,24 @@ namespace SIAC.Web.Controllers
             auto.Avaliacao.DtCadastro = hoje;
 
             /* Codigo para selecionar as questões */
+
+            int coddisciplina =int.Parse(disciplinas.ElementAt(0));
+            int dificuldade = int.Parse(formCollection["ddlDificuldade"+coddisciplina]);
+            int qteObj  = int.Parse(formCollection["txtQteObjetiva" + coddisciplina]);
+            int qteDis  = int.Parse(formCollection["txtQteDiscursiva" + coddisciplina]);
+            List <int> temasi = new List<int>();
+            foreach (var item in formCollection["ddlTemas" + coddisciplina].Split(','))
+            {
+                temasi.Add(int.Parse(item));
+            }
+            Helpers.TimeLog.Iniciar("Lista de Questões");
+            List<Questao> questoes = Questao.ListarPorDisciplina(coddisciplina, temasi, dificuldade, qteObj, qteDis);
+            Helpers.TimeLog.Parar();
+
+            /* TERÁ QUE MELHORAR A PERFORMANCE */
+
+            //ESSA PARTE EU NÃO SEI O QUE CÊ VAI FAZER DEPOIS
+            ViewBag.QuestoesDaAvaliacao = questoes;
 
             return View(auto);
         }

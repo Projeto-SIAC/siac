@@ -46,5 +46,51 @@ namespace SIAC.Web.Models
             return contexto.Questao.SingleOrDefault(q => q.CodQuestao == codigo);
         }
 
+        public static List<Questao> ListarPorTema(int codTema)
+        {
+            List<Questao> questoes = (from qt in contexto.QuestaoTema
+                                     where qt.CodTema == codTema
+                                     select qt.Questao).ToList();
+
+            return questoes;
+        }
+
+        public static List<Questao> ListarPorDisciplina(int codDisciplina, List<int> Temas, int dificulDisc, int qteObj, int qteDiscu)
+        {
+            List<Questao> questoes = new List<Questao>();
+            
+            int temaContador = 0;
+            int temaAtual = Temas.ElementAt(temaContador);
+
+            if (qteObj > 0)
+            {
+                List<Questao> q = (from qt in contexto.QuestaoTema
+                                   where qt.CodDisciplina == codDisciplina && qt.CodTema == temaAtual && qt.Questao.CodDificuldade <= dificulDisc && qt.Questao.CodTipoQuestao == 1
+                                   select qt.Questao).ToList();
+
+                for (int i = 0; i < qteObj; i++)
+                {
+                    questoes.Add(q.ElementAtOrDefault(i));
+                    temaContador = (Temas.Count >= temaContador) ? 0 : temaContador++;
+                    temaAtual = Temas.ElementAt(temaContador);
+                }
+            }
+            temaContador = 0;
+            if (qteDiscu > 0)
+            {
+                List<Questao> q = (from qt in contexto.QuestaoTema
+                                   where qt.CodDisciplina == codDisciplina && qt.CodTema == temaAtual && qt.Questao.CodDificuldade <= dificulDisc && qt.Questao.CodTipoQuestao == 2
+                                   select qt.Questao).ToList();
+
+                for (int i = 0; i < qteDiscu; i++)
+                {
+                    questoes.Add(q.ElementAtOrDefault(i));
+                    temaContador = (Temas.Count >= temaContador) ? 0 : temaContador++;
+                    temaAtual = Temas.ElementAt(temaContador);
+                }
+            }
+
+            return questoes;
+        }
     }
 }

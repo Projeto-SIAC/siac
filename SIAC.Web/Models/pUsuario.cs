@@ -35,5 +35,10 @@ namespace SIAC.Web.Models
             return usuario.CodPessoaFisica;
         }
 
+        public static int ObterPessoaFisica(string matricula)
+        {
+            return contexto.Usuario.FirstOrDefault(u => u.Matricula == matricula).CodPessoaFisica;
+        }
+
     }
 }
