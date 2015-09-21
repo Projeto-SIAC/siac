@@ -38,7 +38,7 @@ namespace SIAC.Web.Controllers
         {
             if (Request.Url.ToString().ToLower().Contains("dashboard"))
             {
-                return Redirect("~/Historico/Autoavaliacao");
+                return Redirect("~/Historico/Questao");
             }
             List<Questao> model = Questao.ListarPorProfessor(Session["UsuarioMatricula"].ToString());
             //List<Questao> model = Questao.ListarPorProfessor(Usuario.SMatricula);

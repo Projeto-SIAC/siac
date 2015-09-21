@@ -16,7 +16,7 @@ namespace SIAC.Web.Models
 
         public static List<Tema> ListarPorDisciplina(int CodDisciplina)
         {
-            return contexto.Tema.Where(t => t.CodDisciplina == CodDisciplina).ToList();
+            return contexto.Tema.Where(t => t.CodDisciplina == CodDisciplina).OrderBy(t => t.Descricao).ToList();
         }
 
         public static int Inserir(Tema tema)

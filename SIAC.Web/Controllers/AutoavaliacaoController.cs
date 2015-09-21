@@ -84,11 +84,27 @@ namespace SIAC.Web.Controllers
                         Tema = Tema.ListarPorCodigo(int.Parse(strDisc), int.Parse(strTema))
                     });
                 }
+
+                if (formCollection["ddlTipo"] == "3")
+                {
+                    int codDificuldade = int.Parse(formCollection["ddlDificuldade"+ strDisc]);
+                    int qteObjetiva = int.Parse(formCollection["txtQteObjetiva" + strDisc]);
+                    int qteDiscursiva = int.Parse(formCollection["txtQteDiscursiva" + strDisc]);
+                }
+                else if (formCollection["ddlTipo"] == "2")
+                {
+                    int codDificuldade = int.Parse(formCollection["ddlDificuldade" + strDisc]);
+                    int qteDiscursiva = int.Parse(formCollection["txtQteDiscursiva" + strDisc]);
+                }
+                else if (formCollection["ddlTipo"] == "1")
+                {
+                    int codDificuldade = int.Parse(formCollection["ddlDificuldade" + strDisc]);
+                    int qteObjetiva = int.Parse(formCollection["txtQteObjetiva" + strDisc]);
+                }
+
             }
             auto.Dificuldade = Dificuldade.ListarPorCodigo(dificuldades.Max());
-            auto.Avaliacao.DtCadastro = hoje;            
-
-            /* Codigo para selecionar as questões */
+            auto.Avaliacao.DtCadastro = hoje;
 
             int coddisciplina =int.Parse(disciplinas.ElementAt(0));
             int dificuldade = int.Parse(formCollection["ddlDificuldade"+coddisciplina]);
