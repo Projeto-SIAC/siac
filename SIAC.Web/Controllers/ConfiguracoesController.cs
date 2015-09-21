@@ -142,5 +142,27 @@ namespace SIAC.Web.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        //POST: Configuracoes/CadastrarTema
+        [HttpPost]
+        public ActionResult CadastrarTema(FormCollection formCollection)
+        {
+            if (formCollection.HasKeys())
+            {
+                int codDisciplina;
+                int.TryParse(formCollection["ddlTemaDisciplina"], out codDisciplina);
+                string descricao = formCollection["txtTemaDescricao"];
+
+                Tema tema = new Tema();
+                tema.Disciplina = Disciplina.ListarPorCodigo(codDisciplina);
+                tema.Descricao = descricao;
+                var codTemas = (from t in DataContextSIAC.GetInstance().Tema
+                                where t.CodDisciplina == codDisciplina
+                                select t.CodTema).ToList();
+                tema.CodTema = codTemas != null && codTemas.Count>0 ? codTemas.Max() + 1 : 1;
+                Tema.Inserir(tema);
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

@@ -66,6 +66,7 @@
         <a class="item" data-tab="tab-termo">Termo de Responsabilidade</a>
         <a class="item" data-tab="tab-professor">Cadastro de Professor</a>
         <a class="item" data-tab="tab-disciplina">Cadastro de Disciplina</a>
+        <a class="item" data-tab="tab-tema">Cadastro de Tema</a>
     </div>
 
     @* Tab Geral *@
@@ -159,6 +160,27 @@
                 <input type="text" name="txtTema" placeholder="Temas..." required />
             </div>
             <input type="submit" class="ui button" onclick="cadastrarDisciplina()" value="Cadastrar" />
+        </form>
+    </div>
+
+    @* Cadastro de Tema *@
+    <div class="ui bottom attached tab segment disciplina" data-tab="tab-tema">
+        <form id="temaForm" method="post" action="/Configuracoes/CadastrarTema">
+            <div class="field required">
+                <label>Disciplina</label>
+                <select name="ddlTemaDisciplina" class="ui fluid search dropdown" required>
+                    <option value="">Disciplina</option>
+                    @foreach (var d in ViewBag.Disciplinas)
+                    {
+                        <option value="@d.CodDisciplina">@d.Descricao</option>
+                    }
+                </select>
+            </div>
+            <div class="field required">
+                <label>Tema</label>
+                <input type="text" name="txtTemaDescricao" maxlength="100" placeholder="Tema" required/>
+            </div>
+            <input type="submit" class="ui button" onclick="$(this).parent().addClass('loading')" value="Cadastrar" />
         </form>
     </div>
 
