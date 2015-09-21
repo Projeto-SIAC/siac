@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Avaliação ";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    
 }
 
 <h2>@ViewBag.Title @Model.Avaliacao.TipoAvaliacao.Sigla.@Model.Avaliacao.Ano.@Model.Avaliacao.Semestre-@Model.Avaliacao.NumIdentificador.ToString("0000")</h2>
@@ -61,6 +62,25 @@
         }
     </tbody>
 </table>
+
+<div class="ui very relaxed items">
+    @foreach (SIAC.Web.Models.QuestaoTema questao in ViewBag.QuestoesDaAvaliacao)
+    {
+        if (questao != null)
+        {
+        <div class="item">
+            <div class="content">
+                <a href="/Historico/Questao/@questao.CodQuestao" class="header">@questao.Questao.Enunciado.ToShortString(140)</a>
+                <div class="meta ui labels">
+                    <span class="ui label">@questao.Tema.Disciplina.Descricao - @questao.Tema.Descricao</span>
+                    <span class="ui label">@questao.Questao.Dificuldade.Descricao - @questao.Questao.CodDificuldade</span>
+                    <span class="ui label">@questao.Questao.TipoQuestao.Descricao</span>
+                </div>
+            </div>
+        </div>
+        }
+    }
+</div>
 
 <div class="ui button">Voltar para Dashboard</div>
 <div class="ui button">Realizar agora</div>

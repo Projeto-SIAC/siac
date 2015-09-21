@@ -46,7 +46,7 @@ namespace SIAC.Web.Controllers
         {
             Parametro model = Parametro.Obter();
 
-            //ViewBag.Disciplinas = Disciplina.ListarOrdenadamente(); AINDA NÃO SEI PORQUE NÃO FUNCIONOU
+            ViewBag.Disciplinas = Disciplina.ListarOrdenadamente();
 
             return View(model);
         }
