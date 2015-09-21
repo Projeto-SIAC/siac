@@ -76,32 +76,50 @@ namespace SIAC.Web.Controllers
             List<int> dificuldades = new List<int>();
             foreach (var strDisc in disciplinas)
             {
-                dificuldades.Add(int.Parse(formCollection["ddlDificuldade"+strDisc]));
-                var temas = formCollection["ddlTemas" + strDisc].Split(',');
-                foreach (var strTema in temas)
-                {
-                    auto.Avaliacao.AvaliacaoTema.Add(new AvaliacaoTema {
-                        Tema = Tema.ListarPorCodigo(int.Parse(strDisc), int.Parse(strTema))
-                    });
-                }
+                /* Dificuldade */
+                int codDificuldade = int.Parse(formCollection["ddlDificuldade" + strDisc]);
+                dificuldades.Add(codDificuldade);
 
+                /* Quantidade */
+                int qteObjetiva = 0;
+                int qteDiscursiva = 0;
                 if (formCollection["ddlTipo"] == "3")
                 {
-                    int codDificuldade = int.Parse(formCollection["ddlDificuldade"+ strDisc]);
-                    int qteObjetiva = int.Parse(formCollection["txtQteObjetiva" + strDisc]);
-                    int qteDiscursiva = int.Parse(formCollection["txtQteDiscursiva" + strDisc]);
+                    qteObjetiva = int.Parse(formCollection["txtQteObjetiva" + strDisc]);
+                    qteDiscursiva = int.Parse(formCollection["txtQteDiscursiva" + strDisc]);
                 }
                 else if (formCollection["ddlTipo"] == "2")
                 {
-                    int codDificuldade = int.Parse(formCollection["ddlDificuldade" + strDisc]);
-                    int qteDiscursiva = int.Parse(formCollection["txtQteDiscursiva" + strDisc]);
+                    qteDiscursiva = int.Parse(formCollection["txtQteDiscursiva" + strDisc]);
                 }
                 else if (formCollection["ddlTipo"] == "1")
                 {
-                    int codDificuldade = int.Parse(formCollection["ddlDificuldade" + strDisc]);
-                    int qteObjetiva = int.Parse(formCollection["txtQteObjetiva" + strDisc]);
+                    qteObjetiva = int.Parse(formCollection["txtQteObjetiva" + strDisc]);
                 }
 
+                /* Temas */
+                var temasCod = new List<int>();
+                foreach (var strTema in formCollection["ddlTemas" + strDisc].Split(','))
+                {
+                    temasCod.Add(int.Parse(strTema));
+                    
+                }
+
+                /* Questões */
+                List<Questao> lstQuestoes = Questao.ListarPorDisciplina(int.Parse(strDisc), temasCod, codDificuldade, qteObjetiva, qteDiscursiva);
+                /* return QuestaoTema
+                foreach (var temaCod in temasCod)
+                {
+                    auto.Avaliacao.AvaliacaoTema.Add(new AvaliacaoTema
+                    {
+                        Tema = Tema.ListarPorCodigo(int.Parse(strDisc), temaCod),
+                    });
+
+                    foreach (var questaoTema in lstQuestoes.Select(q=>q.QuestaoTema.Where(qt=>qt.CodTema == temaCod)))
+                    {
+                        auto.Avaliacao.AvaliacaoTema.Add()
+                    }
+                }*/
             }
             auto.Dificuldade = Dificuldade.ListarPorCodigo(dificuldades.Max());
             auto.Avaliacao.DtCadastro = hoje;
@@ -127,8 +145,8 @@ namespace SIAC.Web.Controllers
             return View(auto);
         }
 
-        // GET: Autoavaliacao/Realizar
-        public ActionResult Realizar()
+        // GET: Autoavaliacao/Realizar/AUTO201520001
+        public ActionResult Realizar(string codigo)
         {
             AvalAuto auto = new AvalAuto();
             return View(auto);

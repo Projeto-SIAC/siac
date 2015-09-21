@@ -40,10 +40,26 @@ namespace SIAC.Web.Controllers
             {
                 return Redirect("~/Historico/Questao");
             }
-            List<Questao> model = Questao.ListarPorProfessor(Session["UsuarioMatricula"].ToString());
             //List<Questao> model = Questao.ListarPorProfessor(Usuario.SMatricula);
 
-            return View(model);
+            return View();
+        }
+
+        // GET: Questao/Minhas
+        public ActionResult Minhas()
+        {
+            var lstQuestoes = Questao.ListarPorProfessor(Session["UsuarioMatricula"].ToString());
+            var result = from q in lstQuestoes
+                         select new
+                         {
+                             CodQuestao = q.CodQuestao,
+                             Enunciado = q.Enunciado.ToShortString(140),
+                             Disciplina = q.QuestaoTema.First().Tema.Disciplina.Descricao,
+                             Temas = q.QuestaoTema.Select(qt => qt.Tema.Descricao).ToList(),
+                             TipoQuestao = q.TipoQuestao.Descricao,
+                             Dificuldade = q.Dificuldade.Descricao,
+                         };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Questao/Cadastrar

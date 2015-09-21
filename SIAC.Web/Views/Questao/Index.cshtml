@@ -1,24 +1,82 @@
-﻿@{
-    ViewBag.Title = "Minhas Questões";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿    @{
+        ViewBag.Title = "Minhas Questões";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 
-@model List<SIAC.Web.Models.Questao>
+    @section Scripts {
+        <script>
+            $('.ui.items').parent().addClass('loading');
+            var jsnQuestoes;
+            $.getJSON(
+                '/Historico/Questao/Minhas',
+                function (questoes) {
+                    jsnQuestoes = questoes;
+                    MinhasQuestoes();
+                }
+            );
 
-<h2>@ViewBag.Title</h2>
+            function MinhasQuestoes(pagina) {
+                $('.ui.items').parent().addClass('loading');
+                var qtePorPagina = 20;
+                var qtePaginacao = 7;
+                var length = jsnQuestoes.length;
+                if (pagina == null) {
+                    pagina = 1;
+                }
+                var count = pagina * qtePorPagina;
+                if (count > length) {
+                    count = length;
+                }
+                $('.ui.items').html('');
+                for (var i = ((qtePorPagina * pagina) - qtePorPagina) ; i < count; i++) {
+                    $('.ui.items').append('\
+                        <div class="item">\
+                            <div class="content">\
+                                <a href="/Historico/Questao/' + jsnQuestoes[i].CodQuestao + '" class="header">' + jsnQuestoes[i].Enunciado + '</a>\
+                                <div class="meta ui labels">\
+                                    <span class="ui label">' + jsnQuestoes[i].Disciplina + '</span>\
+                                    <span class="ui label">' + jsnQuestoes[i].Dificuldade + '</span>\
+                                    <span class="ui label">' + jsnQuestoes[i].TipoQuestao + '</span>\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+                }
+                $('.ui.pagination.menu').html('');
+                var i = pagina - 3;
+                for (i; i <= (Math.ceil(length / qtePorPagina)) - 3 && $('.ui.pagination.menu .item').length < 5; i++) {
+                    if (i < 1) {
+                        continue;
+                    }
+                    if (i == pagina) {
+                        $('.ui.pagination.menu').append('<a class="active item" onclick="MinhasQuestoes(' + i + ')">' + i + '</a>');
+                        continue;
+                    }                    
+                    $('.ui.pagination.menu').append('<a class="item" onclick="MinhasQuestoes(' + i + ')">' + i + '</a>');
+                }
+                if ($('.ui.pagination.menu .item').length < 5) {                    
+                    for (i; $('.ui.pagination.menu .item').length < 5 && i <= (Math.ceil(length / qtePorPagina)) ; i++) {
+                        if (i < 1) {
+                            continue;
+                        }
+                        if (i == pagina) {
+                            $('.ui.pagination.menu').append('<a class="active item" onclick="MinhasQuestoes(' + i + ')">' + i + '</a>');
+                            continue;
+                        }
+                        $('.ui.pagination.menu').append('<a class="item" onclick="MinhasQuestoes(' + i + ')">' + i + '</a>');
+                    }
+                    if (pagina == (Math.ceil(length / qtePorPagina))) {
+                        if (!((i - 5) < 1)) {
+                            $('.ui.pagination.menu').prepend('<a class="item" onclick="MinhasQuestoes(' + (i - 5) + ')">' + (i - 5) + '</a>');
+                        }
+                    }
+                }
+                $('.ui.items').parent().removeClass('loading');
+            }
+        </script>
+    }
 
-<div class="ui very relaxed items">
-@foreach (SIAC.Web.Models.Questao questao in Model)
-{
-    <div class="item">
-        <div class="content">
-            <a href="/Historico/Questao/@questao.CodQuestao" class="header">@questao.Enunciado.ToShortString(140)</a>
-            <div class="meta ui labels">
-                <span class="ui label">@questao.QuestaoTema.ElementAt(0).Tema.Disciplina.Descricao</span>
-                <span class="ui label">@questao.Dificuldade.Descricao</span>
-                <span class="ui label">@questao.TipoQuestao.Descricao</span>
-            </div>
-        </div>
-    </div>
-}
-</div>
+    <h2>@ViewBag.Title</h2>
+
+    <div class="ui very relaxed items"></div>
+    <div class="ui pagination menu"></div>
