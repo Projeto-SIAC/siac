@@ -54,6 +54,7 @@ namespace SIAC.Web.Controllers
                          {
                              CodQuestao = q.CodQuestao,
                              Enunciado = q.Enunciado.ToShortString(140),
+                             DtCadastro = q.DtCadastro.ToString(),
                              Disciplina = q.QuestaoTema.First().Tema.Disciplina.Descricao,
                              Temas = q.QuestaoTema.Select(qt => qt.Tema.Descricao).ToList(),
                              TipoQuestao = q.TipoQuestao.Descricao,
@@ -157,9 +158,11 @@ namespace SIAC.Web.Controllers
                 }
             }
 
-            TempData["Questao"] = questao;
+            //TempData["Questao"] = questao;
 
-            return View(questao);
+            Questao.Inserir(questao);
+
+            return RedirectToAction("Detalhe", new { codigo = questao.CodQuestao });
         }
 
         //GET:Dashboard/Questão/Confirmar

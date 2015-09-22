@@ -11,6 +11,7 @@ namespace SIAC.Web.Models
 
         public static void Inserir(Questao questao)
         {
+            questao.DtCadastro = DateTime.Now;
             contexto.Questao.Add(questao);
             contexto.SaveChanges();
         }

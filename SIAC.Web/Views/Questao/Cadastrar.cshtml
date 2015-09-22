@@ -84,7 +84,7 @@
                             </div>\
                             <div class="field">\
                                 <label for="txtAlternativaComentario' + i + '">Comentário</label>\
-                                <textarea name="txtAlternativaComentario' + i + '" rows="2" placeholder="Comentário..."></textarea>\
+                                <textarea id="txtAlternativaComentario' + i + '" name="txtAlternativaComentario' + i + '" rows="2" placeholder="Comentário..."></textarea>\
                             </div>\
                             <div class="field">\
                                 <div class="ui toggle checkbox">\
@@ -170,7 +170,7 @@
                             </div>\
                             <div class="field">\
                                 <label for="txtAnexoFonte' + i + '">Fonte</label>\
-                                <input maxlength="250" type="text" name="txtAnexoFonte' + i + '" placeholder="Fonte..."></textarea>\
+                                <input maxlength="250" type="text" id="txtAnexoFonte' + i + '" name="txtAnexoFonte' + i + '" placeholder="Fonte..."></textarea>\
                             </div>\
                             <div class="field">\
                                 <div class="ui button">\
@@ -317,10 +317,89 @@
             else {
                 $('.ui.error.message .list').append('<li>É necessário selecionar uma disciplina</li>')
             }
-            if (validado) $('#frmQuestao').addClass('loading').submit();
+            if (validado) Confirmar();
             else $('#frmQuestao').addClass('error');
         }
         $('.cancelar.button').popup({ on: 'click' });
+
+        $('.ui.confirmar.modal')
+          .modal({
+              onApprove: function () {
+                  $('#frmQuestao').addClass('loading').submit();
+              }
+          });
+
+        function Confirmar() {
+            $('#mdlDisciplina').text($('#ddlDisciplina :selected').text());
+            $('#mdlDificuldade').text($('#ddlDificuldade :selected').text());
+            var temas = $('#ddlTema :selected');
+            $('#mdlTagTemas').html('');
+            for (var i = 0; i < temas.length; i++) {
+                $('#mdlTagTemas').append('<div class="ui tag label">' + temas.eq(i).text() + '</div>');
+            }
+            $('#mdlEnunciado').text($('#txtEnunciado').val()).attr('data-html', '<b>Objetivo</b>: ' + $('#txtObjetivo').val());
+            var tipo = $('#ddlTipo').val();
+            if (tipo == 1) {
+                var qteAlternativas = $('#txtQtdAlternativas').val();
+                $('#mdlListAlternativas').html('');
+                for (var i = 0; i < qteAlternativas; i++) {
+                    if ($('#chkAlternativaCorreta' + (i + 1)).is(':checked')) {
+                        $('#mdlListAlternativas')
+                        .append('<div class="item">\
+                                    <div class="middle aligned content" data-html="<b>Comentário</b>: ' + $('#txtAlternativaComentario' + (i + 1)).val() + '">\
+                                        <b>' + (i + 1) + '</b>) ' + $('#txtAlternativaEnunciado' + (i + 1)).val() + '<a class="ui green label">Correta</a>\
+                                    </div>\
+                                </div>'
+                        );
+                        continue;
+                    }
+                    $('#mdlListAlternativas')
+                        .append('<div class="item">\
+                                    <div class="middle aligned content" data-html="<b>Comentário</b>: ' + $('#txtAlternativaComentario' + (i + 1)).val() + '">\
+                                        <b>' + (i + 1) + '</b>) ' + $('#txtAlternativaEnunciado' + (i + 1)).val() + '\
+                                    </div>\
+                                </div>'
+                        );
+                }
+                $('#mdlChaveDeResposta').attr('style', 'display:none');
+                $('#mdlListAlternativas').removeAttr('style');
+            }
+            else if (tipo == 2) {
+                $('#mdlChaveDeResposta').html('<i>' + $('#txtChaveDeResposta').val() + '</i><a class="ui green label">Chave de Resposta</a>').attr('data-html', '<b>Comentário</b>: ' + $('#txtComentario').val());
+                $('#mdlListAlternativas').attr('style', 'display:none');
+                $('#mdlChaveDeResposta').removeAttr('style');
+            }
+            if ($('#chkAnexos').is(':checked')) {
+                var qteAnexos = $('#txtQtdAnexos').val();
+                $('#mdlCardAnexos').html('');
+                for (var i = 0; i < qteAnexos; i++) {
+                    var tipoAnexo = $('#txtAnexoTipo' + (i + 1)).val();
+                    if (tipoAnexo == 1) {
+                        $('#mdlCardAnexos')
+                            .append('<div class="ui card">\
+                                        <div class="image">\
+                                            <img src="' + $('#preImagem' + (i + 1)).attr('src') + '" />\
+                                        </div>\
+                                        <div class="content">\
+                                            <div class="description">\
+                                                ' + $('#txtAnexoLegenda'+(i+1)).val() + '\
+                                            </div>\
+                                        </div>\
+                                        <div class="extra content">\
+                                            ' + $('#txtAnexoFonte' + (i + 1)).val() + '\
+                                        </div>\
+                                    </div>'
+                        );
+                    }
+                }
+                $('#mdlAccordionAnexos').removeAttr('style');
+            }
+            else {
+                $('#mdlAccordionAnexos').attr('style', 'display:none');
+            }
+            $('.ui.confirmar.modal').modal('show');
+            $('.ui.confirmar.modal div').popup();
+        }
     </script>
 }
 
@@ -341,6 +420,41 @@
     <div class="actions">
         <a href="/Dashboard" class="ui cancel button">Cancelar</a>
         <div class="ui approve button">Sim, continuar</div>
+    </div>
+</div>
+
+<div class="ui confirmar modal">
+    <div class="header">Confirmar</div>
+    <div class="content">
+        <div class="ui labels">
+            <div class="ui label">
+                Disciplina
+                <div id="mdlDisciplina" class="detail"></div>
+            </div>
+            <div class="ui label">
+                Dificuldade
+                <div id="mdlDificuldade" class="detail"></div>
+            </div>    
+            <span id="mdlTagTemas" class="ui tag labels"></span>       
+        </div>
+        <div id="mdlEnunciado" class="ui dividing header" data-html=""></div>
+        <div id="mdlListAlternativas" class="ui very relaxed list">            
+            
+        </div>
+        <div id="mdlChaveDeResposta" data-html="">            
+        </div>
+        <br />
+        <div id="mdlAccordionAnexos" class="ui styled fluid accordion">
+            <div class="title" onclick="$('.ui.confirmar.modal').modal('refresh')"><i class="icon dropdown"></i>Anexos</div>
+            <div class="content">
+                <div id="mdlCardAnexos" class="ui cards">                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui negative button">Voltar</div>
+        <div class="ui positive button">Confirmar</div>
     </div>
 </div>
 
@@ -412,7 +526,7 @@
         </div>
         <div class="field">
             <label for="txtObjetivo">Objetivo</label>
-            <textarea name="txtObjetivo" rows="2" placeholder="Objetivo..."></textarea>
+            <textarea id="txtObjetivo" name="txtObjetivo" rows="2" placeholder="Objetivo..."></textarea>
         </div>
         <div class="field required questao discursiva">
             <label for="txtChaveDeResposta">Chave de Resposta</label>
@@ -420,7 +534,7 @@
         </div>
         <div class="field questao discursiva">
             <label for="txtComentario">Comentário</label>
-            <textarea name="txtComentario" rows="2" placeholder="Comentário..."></textarea>
+            <textarea id="txtComentario" name="txtComentario" rows="2" placeholder="Comentário..."></textarea>
         </div>
     </div>
     @* Alternativas da Questão *@
