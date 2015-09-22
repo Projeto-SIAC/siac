@@ -809,6 +809,8 @@
           <Property Name="Objetivo" Type="text" />
           <Property Name="Comentario" Type="text" />
           <Property Name="ChaveDeResposta" Type="text" />
+          <Property Name="DtUltimoUso" Type="datetime" />
+          <Property Name="DtCadastro" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="QuestaoAnexo">
           <Key>
@@ -4184,6 +4186,8 @@
           <NavigationProperty Name="TipoQuestao" Relationship="Self.FK__Questao__CodTipo__2334397B" FromRole="Questao" ToRole="TipoQuestao" />
           <NavigationProperty Name="QuestaoAnexo" Relationship="Self.FK__QuestaoAn__CodQu__44952D46" FromRole="Questao" ToRole="QuestaoAnexo" />
           <NavigationProperty Name="QuestaoTema" Relationship="Self.FK__QuestaoTe__CodQu__3EDC53F0" FromRole="Questao" ToRole="QuestaoTema" />
+          <Property Name="DtCadastro" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="DtUltimoUso" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="QuestaoAnexo">
           <Key>
@@ -6995,6 +6999,8 @@
           <EntitySetMapping Name="Questao">
             <EntityTypeMapping TypeName="dbSIACModel.Questao">
               <MappingFragment StoreEntitySet="Questao">
+                <ScalarProperty Name="DtUltimoUso" ColumnName="DtUltimoUso" />
+                <ScalarProperty Name="DtCadastro" ColumnName="DtCadastro" />
                 <ScalarProperty Name="CodQuestao" ColumnName="CodQuestao" />
                 <ScalarProperty Name="CodProfessor" ColumnName="CodProfessor" />
                 <ScalarProperty Name="CodDificuldade" ColumnName="CodDificuldade" />

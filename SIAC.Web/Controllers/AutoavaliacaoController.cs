@@ -106,7 +106,7 @@ namespace SIAC.Web.Controllers
                 }
 
                 /* Questões */
-                List<Questao> lstQuestoes = Questao.ListarPorDisciplina(int.Parse(strDisc), temasCod, codDificuldade, qteObjetiva, qteDiscursiva);
+                //List<Questao> lstQuestoes = Questao.ListarPorDisciplina(int.Parse(strDisc), temasCod, codDificuldade, qteObjetiva, qteDiscursiva);
                 /* return QuestaoTema
                 foreach (var temaCod in temasCod)
                 {
@@ -134,11 +134,11 @@ namespace SIAC.Web.Controllers
                 temasi.Add(int.Parse(item));
             }
             Helpers.TimeLog.Iniciar("Lista de Questões");
-            List<Questao> questoes = Questao.ListarPorDisciplina(coddisciplina, temasi, dificuldade, qteObj, qteDis);
+            List<QuestaoTema> questoes = Questao.ListarPorDisciplina(coddisciplina, temasi, dificuldade, qteObj, qteDis);
             Helpers.TimeLog.Parar();
 
             /* TERÁ QUE MELHORAR A PERFORMANCE */
-
+            
             //ESSA PARTE EU NÃO SEI O QUE CÊ VAI FAZER DEPOIS
             ViewBag.QuestoesDaAvaliacao = questoes;
 
