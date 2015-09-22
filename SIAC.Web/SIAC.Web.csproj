@@ -451,6 +451,7 @@
     <Compile Include="Models\pProfessor.cs" />
     <Compile Include="Models\pQuestao.cs" />
     <Compile Include="Models\pTema.cs" />
+    <Compile Include="Models\pTipoAvaliacao.cs" />
     <Compile Include="Models\pTipoQuestao.cs" />
     <Compile Include="Models\pUsuario.cs" />
     <Compile Include="Models\Pessoa.cs">

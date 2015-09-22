@@ -150,23 +150,23 @@
                 case '1':
                     //$('.objetiva').attr('style', '');
                     //$('.discursiva').attr('style', 'display:none');
-                    $('.discursiva').addClass('disabled');
-                    $('.objetiva').removeClass('disabled');
+                    $('.discursiva').addClass('disabled').attr('style', 'pointer-events: none');
+                    $('.objetiva').removeClass('disabled').removeAttr('style');
                     break;
                 case '2':
                     //$('.discursiva').attr('style', '');
                     //$('.objetiva').attr('style', 'display:none');
-                    $('.discursiva').removeClass('disabled');
-                    $('.objetiva').addClass('disabled');
+                    $('.discursiva').removeClass('disabled').removeAttr('style');
+                    $('.objetiva').addClass('disabled').attr('style', 'pointer-events: none');
                     break;
                 case '3':
                     //$('.objetiva, .discursiva').attr('style', '');
-                    $('.discursiva').removeClass('disabled');
-                    $('.objetiva').removeClass('disabled');
+                    $('.discursiva').removeClass('disabled').removeAttr('style');
+                    $('.objetiva').removeClass('disabled').removeAttr('style');
                     break;
                 default:
-                    $('.discursiva').addClass('disabled');
-                    $('.objetiva').addClass('disabled');
+                    $('.discursiva').addClass('disabled').attr('style', 'pointer-events: none');
+                    $('.objetiva').addClass('disabled').attr('style', 'pointer-events: none');
             }
         }
 
