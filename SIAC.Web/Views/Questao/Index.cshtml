@@ -72,6 +72,9 @@
                         }
                     }
                 }
+                $('html, body').animate({
+                    scrollTop: $('html, body').offset().top
+                }, 1000);
                 $('.ui.items').parent().removeClass('loading');
             }
         </script>

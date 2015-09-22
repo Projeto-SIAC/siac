@@ -67,6 +67,13 @@ namespace SIAC.Web
                 defaults: new { controller = "LeroLero", action = "Index" },
                 namespaces: new[] { "SIAC.Web.Controllers" }
             );
+
+
+            routes.MapRoute(
+                name: "Controle Não Encontrado",
+                url: "{*all}",
+                defaults: new { controller = "Erro", action = "Index", code = "404" }
+            );
         }
     }
 }

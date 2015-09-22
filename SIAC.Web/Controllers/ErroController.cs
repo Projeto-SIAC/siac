@@ -8,6 +8,24 @@ namespace SIAC.Web.Controllers
 {
     public class ErroController : Controller
     {
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            TempData["UrlReferrer"] = Request.Url.ToString();
+            if (Session["Autenticado"] == null)
+            {
+                filterContext.Result = RedirectToAction("Entrar", "Acesso");
+            }
+            else if (String.IsNullOrEmpty(Session["Autenticado"].ToString()))
+            {
+                filterContext.Result = RedirectToAction("Entrar", "Acesso");
+            }
+            else if (!(bool)Session["Autenticado"])
+            {
+                filterContext.Result = RedirectToAction("Entrar", "Acesso");
+            }            
+            base.OnActionExecuting(filterContext);
+        }
+
         // GET: Erro
         public ActionResult Index(int code = 0)
         {
