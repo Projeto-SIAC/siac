@@ -20,8 +20,34 @@
             on: 'click'
         })
         ;
+
+        function expandirImagem(card) {
+            card = $(card);
+            src = card.find('img').attr('src');
+            legenda = card.find('.description').text();
+            fonte = card.find('.extra.content').text();
+            modal = $('.ui.modal');
+
+            modal.find('.header').text(legenda);
+            modal.find('img.image').attr('src', src);
+            modal.find('.description').html('<p>' + fonte + '</p>');
+
+            modal.modal('show');
+        }
     </script>
 }
+
+<div class="ui basic modal">
+    <div class="header"></div>
+    <div class="image content">
+        <img class="image">
+    </div>
+    <div class="content">
+        <div class="description">
+            <p></p>
+        </div>
+    </div>
+</div>
 
 <h2>@ViewBag.Title</h2>
 <div class="ui attached segment">
@@ -99,7 +125,7 @@
                     switch (anexo.CodTipoAnexo)
                     {
                         case 1:
-                            <div class="ui card">
+                            <a onclick="expandirImagem(this)" class="ui card">
                                 <div class="image">
                                     <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo,0, anexo.Anexo.Length)" />
                                 </div>
@@ -111,7 +137,7 @@
                                 <div class="extra content">
                                     @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte não informada")
                                 </div>
-                            </div>
+                            </a>
                             break;
                         default:
                             break;
