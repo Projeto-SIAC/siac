@@ -29,9 +29,27 @@ namespace SIAC.Web.Models
 
             qTemp.Enunciado = questao.Enunciado;
             qTemp.Objetivo = questao.Objetivo;
-            qTemp.Comentario = questao.Comentario;
-            qTemp.ChaveDeResposta = questao.ChaveDeResposta;
+            if (qTemp.CodTipoQuestao == 1)
+            {
+                for (int i = 0; i < qTemp.Alternativa.Count; i++)
+                {
+                    qTemp.Alternativa.ElementAt(i).Enunciado = questao.Alternativa.ElementAt(i).Enunciado;
+                    qTemp.Alternativa.ElementAt(i).Comentario = questao.Alternativa.ElementAt(i).Comentario;
+                }
+            }
+            else { 
+                qTemp.Comentario = questao.Comentario;
+                qTemp.ChaveDeResposta = questao.ChaveDeResposta;
+            }
 
+            if (qTemp.QuestaoAnexo.Count > 0)
+            {
+                for (int i = 0; i < qTemp.QuestaoAnexo.Count; i++)
+                {
+                    qTemp.QuestaoAnexo.ElementAt(i).Legenda = questao.QuestaoAnexo.ElementAt(i).Legenda;
+                    qTemp.QuestaoAnexo.ElementAt(i).Fonte = questao.QuestaoAnexo.ElementAt(i).Fonte;
+                }
+            }
             contexto.SaveChanges();
         }
 
