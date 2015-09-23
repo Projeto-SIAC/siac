@@ -290,10 +290,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Criptografia.cs" />
-    <Compile Include="Helpers\DateTimeExtensao.cs" />
-    <Compile Include="Helpers\IntExtensao.cs" />
     <Compile Include="Helpers\LeroLero.cs" />
-    <Compile Include="Helpers\StringExtensao.cs" />
+    <Compile Include="Helpers\Extensoes.cs" />
     <Compile Include="Helpers\TimeLog.cs" />
     <Compile Include="Models\Alternativa.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>

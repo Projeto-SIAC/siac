@@ -54,6 +54,7 @@ namespace SIAC.Web.Controllers
             AvalAuto auto = new AvalAuto();
 
             var hoje = DateTime.Now;
+
             /* Chave */
             auto.Avaliacao = new Avaliacao();
             auto.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(1);
@@ -80,7 +81,6 @@ namespace SIAC.Web.Controllers
                 int qteDiscursiva = 0;
                 if (formCollection["ddlTipo"] == "3")
                 {
-
                     int.TryParse(formCollection["txtQteObjetiva" + strDisc], out qteObjetiva);
                     int.TryParse(formCollection["txtQteDiscursiva" + strDisc], out qteDiscursiva);
                 }
@@ -94,57 +94,30 @@ namespace SIAC.Web.Controllers
                 }
 
                 /* Temas */
-                //var temasCod = new List<int>();
-                string[] temasCod = formCollection["ddlTemas" + strDisc].Split(',');
-                foreach (var strTema in formCollection["ddlTemas" + strDisc].Split(','))
-                {
-                    auto.Avaliacao.AvaliacaoTema.Add(new AvaliacaoTema
-                    {
-                        Tema = Tema.ListarPorCodigo(int.Parse(strDisc), int.Parse(strTema)),
-                    });
-                }
+                string[] arrTemaCods = formCollection["ddlTemas" + strDisc].Split(',');
 
                 /* Questões */
                 Helpers.TimeLog.Iniciar("Lista de Questões");
-                List<QuestaoTema> lstQuestoes = Questao.ListarPorDisciplina(int.Parse(strDisc), temasCod, codDificuldade, qteObjetiva, qteDiscursiva);
+                List<QuestaoTema> lstQuestoes = Questao.ListarPorDisciplina(int.Parse(strDisc), arrTemaCods, codDificuldade, qteObjetiva, qteDiscursiva);
                 Helpers.TimeLog.Parar();
-                /* return QuestaoTema
-                foreach (var temaCod in temasCod)
+                foreach (var strTemaCod in arrTemaCods)
                 {
-                    auto.Avaliacao.AvaliacaoTema.Add(new AvaliacaoTema
+                    AvaliacaoTema avalTema = new AvaliacaoTema();
+                    avalTema.Tema = Tema.ListarPorCodigo(int.Parse(strDisc), int.Parse(strTemaCod));
+                    foreach (var queTma in lstQuestoes.Where(q=>q.CodTema == int.Parse(strTemaCod)))
                     {
-                        Tema = Tema.ListarPorCodigo(int.Parse(strDisc), temaCod),
-                    });
-
-                    foreach (var questaoTema in lstQuestoes.Select(q=>q.QuestaoTema.Where(qt=>qt.CodTema == temaCod)))
-                    {
-                        auto.Avaliacao.AvaliacaoTema.Add()
-                    }
-                }*/
-                ViewBag.QuestoesDaAvaliacao = lstQuestoes;
-                ViewBag.QteQuestoes = lstQuestoes.Count;
-
+                        AvalTemaQuestao avalTemaQuestao = new AvalTemaQuestao();
+                        avalTemaQuestao.QuestaoTema = queTma;
+                        avalTema.AvalTemaQuestao.Add(avalTemaQuestao);
+                    }                   
+                    auto.Avaliacao.AvaliacaoTema.Add(avalTema);                    
+                }
             }
-            /*auto.Dificuldade = Dificuldade.ListarPorCodigo(dificuldades.Max());
+
             auto.Avaliacao.DtCadastro = hoje;
+            auto.CodDificuldade = dificuldades.Max();
 
-            int coddisciplina =int.Parse(disciplinas.ElementAt(0));
-            int dificuldade = int.Parse(formCollection["ddlDificuldade"+coddisciplina]);
-            int qteObj  = int.Parse(formCollection["txtQteObjetiva" + coddisciplina]);
-            int qteDis  = int.Parse(formCollection["txtQteDiscursiva" + coddisciplina]);
-            List <int> temasi = new List<int>();
-            foreach (var item in formCollection["ddlTemas" + coddisciplina].Split(','))
-            {
-                temasi.Add(int.Parse(item));
-            }
-            Helpers.TimeLog.Iniciar("Lista de Questões");
-            List<QuestaoTema> questoes = Questao.ListarPorDisciplina(coddisciplina, temasi, dificuldade, qteObj, qteDis);
-            Helpers.TimeLog.Parar();
-            */
-            /* TERÁ QUE MELHORAR A PERFORMANCE */
-            
-            //ESSA PARTE EU NÃO SEI O QUE CÊ VAI FAZER DEPOIS
-            //ViewBag.QuestoesDaAvaliacao = questoes;
+            AvalAuto.Inserir(auto);
 
             return View(auto);
         }

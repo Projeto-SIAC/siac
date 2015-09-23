@@ -1,7 +1,7 @@
 ﻿@model SIAC.Web.Models.AvalAuto
 
 @{
-    ViewBag.Title = "Avaliação ";
+    ViewBag.Title = "Autoavaliação ";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
@@ -13,13 +13,20 @@
     <div class="content">        
         <div class="header">Avaliação gerada com sucesso.</div>
         <p>Sua autoavalicao encontra-se no seu <b><a href="/Historico/Autoavaliacao">Histórico</a></b> e você poderá realizá-la quando bem entender.</div>
-    </h3>    
 </div>
 <div class="ui segment">
     <div class="ui dividing header">
         Detalhes
     </div>
-    <table class="ui very basic table">
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th>Disciplina</th>
+                <th>Tema(s)</th>
+                <th>Quantidade</th>
+                <th>Dificuldade</th>
+            </tr>
+        </thead>
         <tbody>
             @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
             {
@@ -27,17 +34,18 @@
                     <td> @* disciplina *@
                         <b>@disc.Descricao</b>
                     </td>
-                    <td> @* temas *@
+                    <td class="ui labels"> @* temas *@
                         @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
                         {
                             <div class="ui tag label">@avalTema.Tema.Descricao</div>
                         }
                     </td>
-                    <td> @* qte de questões *@
-                        @Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina).Select(a => a.AvalTemaQuestao.Count).ToList()[0] questões
+                    <td class="ui labels"> @* qte de questões *@
+                        <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoes(disc.CodDisciplina, 1)</div></div>
+                        <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoes(disc.CodDisciplina, 2)</div></div>
                     </td>
                     <td> @* dificuldade *@
-                        Dificuldade
+                        @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
                     </td>
                 </tr>
             }
@@ -62,36 +70,37 @@
         }
     </tbody>
 </table>
+@*
+    <div class="ui very relaxed items">
+        <span class="ui label">@ViewBag.QteQuestoes Questões</span>
 
-<div class="ui very relaxed items">
-    <span class="ui label">@ViewBag.QteQuestoes Questões</span>
-    
-    @{
-        List<int> cods = new List<int>();
-        foreach (SIAC.Web.Models.QuestaoTema questao in ViewBag.QuestoesDaAvaliacao)
-        {
-            cods.Add(questao.CodQuestao);
-            if (questao != null)
+        @{
+            List<int> cods = new List<int>();
+            foreach (SIAC.Web.Models.QuestaoTema questao in ViewBag.QuestoesDaAvaliacao)
             {
-                <div class="item">
-                    <div class="content">
-                        <a href="/Historico/Questao/@questao.CodQuestao" class="header">@questao.Questao.Enunciado.ToShortString(140)</a>
-                        <div class="meta ui labels">
-                            <span class="ui label">@questao.Tema.Disciplina.Descricao - @questao.Tema.Descricao</span>
-                            <span class="ui label">@questao.Questao.Dificuldade.Descricao - @questao.Questao.CodDificuldade</span>
-                            <span class="ui label">@questao.Questao.TipoQuestao.Descricao</span>
+                cods.Add(questao.CodQuestao);
+                if (questao != null)
+                {
+                    <div class="item">
+                        <div class="content">
+                            <a href="/Historico/Questao/@questao.CodQuestao" class="header">@questao.Questao.Enunciado.ToShortString(140)</a>
+                            <div class="meta ui labels">
+                                <span class="ui label">@questao.Tema.Disciplina.Descricao - @questao.Tema.Descricao</span>
+                                <span class="ui label">@questao.Questao.Dificuldade.Descricao - @questao.Questao.CodDificuldade</span>
+                                <span class="ui label">@questao.Questao.TipoQuestao.Descricao</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+            }
+            cods.Sort();
+            foreach (var item in cods)
+            {
+                <span class="ui label">@item</span>
             }
         }
-        cods.Sort();
-        foreach (var item in cods)
-        {
-            <span class="ui label">@item</span>
-        }
-    }
-</div>
+    </div>
+*@
 
 <div class="ui button">Voltar para Dashboard</div>
 <div class="ui button">Realizar agora</div>
