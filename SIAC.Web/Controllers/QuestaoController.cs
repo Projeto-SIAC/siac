@@ -54,7 +54,8 @@ namespace SIAC.Web.Controllers
                          {
                              CodQuestao = q.CodQuestao,
                              Enunciado = q.Enunciado,
-                             DtCadastro = q.DtCadastro.ToString("dddd, dd 'de' MMMM 'de' yyyy 'às' HH'h'mm", new System.Globalization.CultureInfo("pt-BR")),
+                             DtCadastro = q.DtCadastro.ToBrazilianString(),
+                             DtCadastroTempo = q.DtCadastro.ToElapsedTimeString(),
                              Disciplina = q.QuestaoTema.First().Tema.Disciplina.Descricao,
                              Temas = q.QuestaoTema.Select(qt => qt.Tema.Descricao).ToList(),
                              TipoQuestao = q.TipoQuestao.Descricao,

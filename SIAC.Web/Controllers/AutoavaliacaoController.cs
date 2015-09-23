@@ -96,10 +96,13 @@ namespace SIAC.Web.Controllers
                 /* Temas */
                 //var temasCod = new List<int>();
                 string[] temasCod = formCollection["ddlTemas" + strDisc].Split(',');
-                //foreach (var strTema in formCollection["ddlTemas" + strDisc].Split(','))
-                //{
-                //temasCod.Add(int.Parse(strTema));
-                //}
+                foreach (var strTema in formCollection["ddlTemas" + strDisc].Split(','))
+                {
+                    auto.Avaliacao.AvaliacaoTema.Add(new AvaliacaoTema
+                    {
+                        Tema = Tema.ListarPorCodigo(int.Parse(strDisc), int.Parse(strTema)),
+                    });
+                }
 
                 /* Questões */
                 Helpers.TimeLog.Iniciar("Lista de Questões");

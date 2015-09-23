@@ -57,7 +57,7 @@ namespace SIAC.Web.Models
         {
             int codProfessor = contexto.Professor.SingleOrDefault(p => p.MatrProfessor == matricula).CodProfessor;
 
-            return contexto.Questao.Where(q => q.CodProfessor == codProfessor).ToList();
+            return contexto.Questao.Where(q => q.CodProfessor == codProfessor).OrderByDescending(q=>q.DtCadastro).ToList();
         }
 
         public static Questao PesquisarPorCodigo(int codigo)
