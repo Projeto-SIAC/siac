@@ -63,6 +63,12 @@ namespace SIAC.Web.Controllers
                          };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult PalavrasChaves(string[] palavras)
+        {
+            var result = Questao.ListarPorPalavraChave(Session["UsuarioMatricula"].ToString(), palavras);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
 
         // GET: Questao/Cadastrar
         public ActionResult Cadastrar()

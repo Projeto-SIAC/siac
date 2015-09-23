@@ -339,5 +339,27 @@ namespace SIAC.Web.Models
             }
             return QuestoesTemas;
         }
+
+        public static List<Questao> ListarPorPalavraChave(string matrProfessor, string[] palavraChave)
+        {
+            List<Questao> todas = ListarPorProfessor(matrProfessor);
+            List<Questao> retorno = new List<Questao>();
+
+            foreach (Questao questao in todas)
+            {
+                foreach (string palavra in palavraChave)
+                {
+                    if(questao.Enunciado.Contains(palavra))
+                    {
+                        retorno.Add(questao);
+                        break;
+                    }
+                }
+                //todas.Remove(questao);
+            }
+
+            return retorno;
+
+        }
     }
 }

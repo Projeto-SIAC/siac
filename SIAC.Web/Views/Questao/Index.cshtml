@@ -124,6 +124,28 @@
 
                 return text;
             }
+
+            function palavraChave(palavraChave)
+            {
+                if (palavraChave.indexOf(";") > -1)
+                {
+                    var palavras = palavraChave.split(';');
+
+                    $.ajax({
+                        type: 'POST',
+                        data: { "palavras": palavras },
+                        url: "Questao/PalavrasChaves",
+                        success: function (data) {
+                            jsnQuestoesFiltro = data;
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert(thrownError.error);
+                            jsnQuestoesFiltro = null;
+                        }
+                    });
+                    MinhasQuestoes();
+                }
+            }
         </script>
     }
 
@@ -132,5 +154,9 @@
             <input type="text" placeholder="Filtrar..." onkeydown="Filtro($(this).val())" />
             <i class="search icon"></i>
     </div>
+<div class="ui fluid icon input">
+    <input type="text" placeholder="Palavras Chaves..." onchange="palavraChave($(this).val())" />
+    <i class="search icon"></i>
+</div>
     <div class="ui very relaxed items"></div>
     <div class="ui pagination menu"></div>
