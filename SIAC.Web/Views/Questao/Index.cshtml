@@ -63,7 +63,7 @@
                     $('.ui.items').append('\
                         <div class="item">\
                             <div class="content">\
-                                <a href="/Historico/Questao/' + jsnQuestoesFiltro[i].CodQuestao + '" class="header">' + jsnQuestoesFiltro[i].Enunciado + '</a>\
+                                <a href="/Historico/Questao/' + jsnQuestoesFiltro[i].CodQuestao + '" class="header">' + ToShortString(jsnQuestoesFiltro[i].Enunciado, 140) + '</a>\
                                 <div class="meta"><span>' + jsnQuestoesFiltro[i].DtCadastro + '</span></div>\
                                 <div class="description ui labels">\
                                     <span class="ui label">' + jsnQuestoesFiltro[i].Disciplina + '</span>\
@@ -103,10 +103,26 @@
                         }
                     }
                 }
-                $('html, body').animate({
-                    scrollTop: $('html, body').offset().top
-                }, 1000);
                 $('.ui.items').parent().removeClass('loading');
+            }
+
+            function ToShortString(str, length) {
+                var text = '';
+
+                if (str.length > length) {
+                    text = str.substring(0, length);
+                    var afterText = str.substring(length);
+                    if (afterText.indexOf(' ') > -1) {
+                        afterText = afterText.substring(0, afterText.indexOf(' '));
+                        afterText = afterText + '...';
+                    }
+                    text = text + afterText;
+                }
+                else {
+                    text = str;
+                }
+
+                return text;
             }
         </script>
     }

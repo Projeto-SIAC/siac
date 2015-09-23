@@ -53,8 +53,8 @@ namespace SIAC.Web.Controllers
                          select new
                          {
                              CodQuestao = q.CodQuestao,
-                             Enunciado = q.Enunciado.ToShortString(140),
-                             DtCadastro = q.DtCadastro.ToString(),
+                             Enunciado = q.Enunciado,
+                             DtCadastro = q.DtCadastro.ToString("dddd, dd 'de' MMMM 'de' yyyy 'às' HH'h'mm", new System.Globalization.CultureInfo("pt-BR")),
                              Disciplina = q.QuestaoTema.First().Tema.Disciplina.Descricao,
                              Temas = q.QuestaoTema.Select(qt => qt.Tema.Descricao).ToList(),
                              TipoQuestao = q.TipoQuestao.Descricao,
@@ -165,25 +165,64 @@ namespace SIAC.Web.Controllers
             return RedirectToAction("Detalhe", new { codigo = questao.CodQuestao });
         }
 
-        //GET:Dashboard/Questão/Confirmar
+        //GET: Dashboard/Questão/Editar/5
         [HttpGet]
-        public ActionResult Confirmar()
+        public ActionResult Editar(string codigo)
         {
-            if (TempData.Keys.Count > 0)
+            int codQuestao = 0;
+            int.TryParse(codigo, out codQuestao);
+            Questao questao = null;
+            if (codQuestao > 0)
             {
-                if (TempData["Questao"] != null)
+                questao = Questao.PesquisarPorCodigo(codQuestao);
+            }
+            if (questao == null)
+            {
+                return RedirectToAction("index");
+            }
+            return View(questao);
+        }
+
+        //POST: Dashboard/Questão/Editar/5
+        [HttpPost]
+        public ActionResult Editar(string codigo, FormCollection formCollection)
+        {
+            int codQuestao = 0;
+            int.TryParse(codigo, out codQuestao);
+            Questao questao = null;
+            if (codQuestao > 0)
+            {
+                questao = Questao.PesquisarPorCodigo(codQuestao);
+            }
+
+            questao.Enunciado = !String.IsNullOrEmpty(formCollection["txtEnunciado"]) ? formCollection["txtEnunciado"].Trim() : questao.Enunciado;
+            questao.Objetivo = !String.IsNullOrEmpty(formCollection["txtObjetivo"]) ? formCollection["txtObjetivo"].RemoveSpaces() : questao.Objetivo;
+
+            if (questao.CodTipoQuestao == 2)
+            {
+                questao.ChaveDeResposta = !String.IsNullOrEmpty(formCollection["txtChaveDeResposta"])? formCollection["txtChaveDeResposta"].Trim() : questao.ChaveDeResposta;
+                questao.Comentario = !String.IsNullOrEmpty(formCollection["txtComentario"]) ? formCollection["txtComentario"].RemoveSpaces() : questao.Comentario;
+            }
+
+            if (questao.CodTipoQuestao == 1)
+            {
+                for (int i = 0; i < questao.Alternativa.Count; i++)
                 {
-                    Questao temp = TempData["Questao"] as Questao;
-
-                    Questao.Inserir(temp);
-
-                    TempData.Clear();
-
-                    return RedirectToAction("Index");
+                    questao.Alternativa.ElementAt(i).Enunciado = !String.IsNullOrEmpty(formCollection["txtAlternativaEnunciado" + (i + 1)]) ? formCollection["txtAlternativaEnunciado" + (i + 1)].RemoveSpaces() : questao.Alternativa.ElementAt(i).Enunciado;
+                    questao.Alternativa.ElementAt(i).Comentario = !String.IsNullOrEmpty(formCollection["txtAlternativaComentario" + (i + 1)]) ? formCollection["txtAlternativaComentario" + (i + 1)].RemoveSpaces() : questao.Alternativa.ElementAt(i).Comentario;
                 }
             }
 
-            return RedirectToAction("Index");
+            if (questao.QuestaoAnexo.Count > 0)
+            {
+                for (int i = 0; i < questao.QuestaoAnexo.Count; i++)
+                {
+                    questao.QuestaoAnexo.ElementAt(i).Legenda = !String.IsNullOrEmpty(formCollection["txtAnexoLegenda" + (i + 1)]) ? formCollection["txtAnexoLegenda" + (i + 1)].RemoveSpaces() : questao.QuestaoAnexo.ElementAt(i).Legenda;
+                    questao.QuestaoAnexo.ElementAt(i).Fonte = !String.IsNullOrEmpty(formCollection["txtAnexoFonte" + (i + 1)]) ? formCollection["txtAnexoFonte" + (i + 1)].RemoveSpaces() : questao.QuestaoAnexo.ElementAt(i).Fonte;
+                }
+            }
+
+            return RedirectToAction("Detalhe", new { codigo = questao.CodQuestao });
         }
 
         //GET: Dashboard/Questao/Detalhe/4

@@ -1,0 +1,319 @@
+﻿
+@{
+    ViewBag.Title = "Editar Questão " + Model.CodQuestao;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model SIAC.Web.Models.Questao
+
+@section Scripts{
+    <script>
+        $('.disabled').parent().popup({
+            html: '<i class="icon red warning"></i>Este campo não pode ser modificado',
+            variation: 'wide'
+        });
+        $('.ui.checkbox').checkbox();
+        $('.ui.accordion').accordion();
+        $('.ui.dropdown').dropdown();
+        $('.tabular.menu .item').tab();
+        $('.cancelar.button').popup({ on: 'click' });
+        $('.ui.confirmar.modal')
+          .modal({
+              onApprove: function () {
+                  $('#frmQuestao').addClass('loading').submit();
+              }
+          });
+
+        function Confirmar() {
+            $('#mdlEnunciado').text($('#txtEnunciado').val()).attr('data-html', '<b>Objetivo</b>: ' + $('#txtObjetivo').val());
+            var tipo = @Model.CodTipoQuestao;
+            if (tipo == 1) {
+                var qteAlternativas = @Model.Alternativa.Count;
+                $('#mdlListAlternativas').html('');
+                for (var i = 0; i < qteAlternativas; i++) {
+                    if ($('#chkAlternativaCorreta' + (i + 1)).is(':checked')) {
+                        $('#mdlListAlternativas')
+                        .append('<div class="item">\
+                                    <div class="middle aligned content" data-html="<b>Comentário</b>: ' + $('#txtAlternativaComentario' + (i + 1)).val() + '">\
+                                        <b>' + (i + 1) + '</b>) ' + $('#txtAlternativaEnunciado' + (i + 1)).val() + '<a class="ui green label">Correta</a>\
+                                    </div>\
+                                </div>'
+                        );
+                        continue;
+                    }
+                    $('#mdlListAlternativas')
+                        .append('<div class="item">\
+                                    <div class="middle aligned content" data-html="<b>Comentário</b>: ' + $('#txtAlternativaComentario' + (i + 1)).val() + '">\
+                                        <b>' + (i + 1) + '</b>) ' + $('#txtAlternativaEnunciado' + (i + 1)).val() + '\
+                                    </div>\
+                                </div>'
+                        );
+                }
+                $('#mdlChaveDeResposta').attr('style', 'display:none');
+                $('#mdlListAlternativas').removeAttr('style');
+            }
+            else if (tipo == 2) {
+                $('#mdlChaveDeResposta').html('<i>' + $('#txtChaveDeResposta').val() + '</i><a class="ui green label">Chave de Resposta</a>').attr('data-html', '<b>Comentário</b>: ' + $('#txtComentario').val());
+                $('#mdlListAlternativas').attr('style', 'display:none');
+                $('#mdlChaveDeResposta').removeAttr('style');
+            }
+            var qteAnexos = @Model.QuestaoAnexo.Count;
+            if (qteAnexos > 0) {
+                $('#mdlCardAnexos').html('');
+                for (var i = 0; i < qteAnexos; i++) {
+                    var tipoAnexo = $('#txtAnexoTipo' + (i + 1)).val();
+                    if (tipoAnexo == 1) {
+                        $('#mdlCardAnexos')
+                            .append('<div class="ui card">\
+                                        <div class="image">\
+                                            <img src="' + $('#preImagem' + (i + 1)).attr('src') + '" />\
+                                        </div>\
+                                        <div class="content">\
+                                            <div class="description">\
+                                                ' + $('#txtAnexoLegenda' + (i + 1)).val() + '\
+                                            </div>\
+                                        </div>\
+                                        <div class="extra content">\
+                                            ' + $('#txtAnexoFonte' + (i + 1)).val() + '\
+                                        </div>\
+                                    </div>'
+                        );
+                    }
+                }
+                $('#mdlAccordionAnexos').removeAttr('style');
+            }
+            else {
+                $('#mdlAccordionAnexos').attr('style', 'display:none');
+            }
+            $('.ui.confirmar.modal').modal('show');
+            $('.ui.confirmar.modal div').popup();
+        }
+
+        function enviarForm() {
+            $('.ui.error.message .list').html('');
+            var validado = false;
+            var tipo = @Model.CodTipoQuestao;
+            if ($('#txtEnunciado').val() != '') {
+                if (tipo == 1) {
+                    var qteAlternativas = @Model.Alternativa.Count;
+                    var ok = true;
+                    for (var i = 0; i < qteAlternativas; i++) {
+                        if ($('#txtAlternativaEnunciado' + (i + 1)).val() == '') {
+                            ok = false;
+                        }
+                    }
+                    if (ok) {
+                        ok = false;
+                        for (var i = 0; i < qteAlternativas; i++) {
+                            if ($('#chkAlternativaCorreta' + (i + 1)).is(':checked')) {
+                                ok = true;
+                            }
+                        }
+                        if (ok) {
+                            validado = true;
+                        }
+                        else {
+                            $('.ui.error.message .list').append('<li>É necessário selecionar pelo menos umas das alternativas como correta</li>')
+                        }
+                    }
+                    else {
+                        $('.ui.error.message .list').append('<li>É necessário preencher os enunciados de todas as alternativas</li>')
+                    }
+                }
+                else if (tipo == 2) {
+                    if ($('#txtChaveDeResposta').val() != '') {
+                        validado = true;
+                    }
+                    else {
+                        $('.ui.error.message .list').append('<li>É necessário preencher a chave de resposta</li>')
+                    }
+                }
+            }
+            else {
+                $('.ui.error.message .list').append('<li>É necessário preencher o enunciado</li>')
+            }
+
+            if (validado) Confirmar();
+            else $('#frmQuestao').addClass('error');
+        }
+    </script>
+}
+
+<div class="ui confirmar modal">
+    <div class="header">Confirmar</div>
+    <div class="content">
+        <div class="ui labels">
+            <div class="ui label">
+                Disciplina
+                <div id="mdlDisciplina" class="detail">@Model.QuestaoTema.First().Tema.Disciplina.Descricao</div>
+            </div>
+            <div class="ui label">
+                Dificuldade
+                <div id="mdlDificuldade" class="detail">@Model.Dificuldade.Descricao</div>
+            </div>
+            <span id="mdlTagTemas" class="ui tag labels">
+                @foreach (var queTma in Model.QuestaoTema)
+                {
+                    <div class="ui tag label">@queTma.Tema.Descricao</div>
+                }
+            </span>
+        </div>
+        <div id="mdlEnunciado" class="ui dividing header" data-html=""></div>
+        <div id="mdlListAlternativas" class="ui very relaxed list">
+        </div>
+        <div id="mdlChaveDeResposta" data-html="">
+        </div>
+        <br />
+        <div id="mdlAccordionAnexos" class="ui styled fluid accordion">
+            <div class="title" onclick="$('.ui.confirmar.modal').modal('refresh')"><i class="icon dropdown"></i>Anexos</div>
+            <div class="content">
+                <div id="mdlCardAnexos" class="ui cards">                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui negative button">Voltar</div>
+        <div class="ui positive button">Confirmar</div>
+    </div>
+</div>
+
+<h2>@ViewBag.Title</h2>
+
+<form id="frmQuestao" method="post" class="ui form">
+    <div class="ui error message">
+        <div class="header">Verifique</div>
+        <ul class="list"></ul>
+    </div>
+    <div class="ui top attached tabular menu">
+        <div class="active item" data-tab="tab-name">Gerais</div>
+        <div class="item" data-tab="tab-name2">Detalhes</div>
+        @if (Model.CodTipoQuestao == 1)
+        {
+            <div class="item questao objetiva" data-tab="tab-name3">Alternativas</div>
+        }
+        @if (Model.QuestaoAnexo.Count > 0)
+        {
+            <div class="item anexos" data-tab="tab-name4">Anexos</div>
+        }
+    </div>
+    @* Gerais da Questão *@
+    <div class="ui bottom attached active tab segment" data-tab="tab-name">
+        <div class="field required">
+            <label>Disciplina</label>
+            <select class="ui dropdown disabled" readonly disabled>
+                <option selected value="@Model.QuestaoTema.First().Tema.CodDisciplina">@Model.QuestaoTema.First().Tema.Disciplina.Descricao</option>
+            </select>
+        </div>
+        <div class="field required">
+            <label>Tema</label>
+            <select multiple class="ui multiple dropdown disabled" readonly disabled>
+                @foreach (var queTma in Model.QuestaoTema)
+                {
+                    <option selected value="@queTma.CodTema">@queTma.Tema.Descricao</option>
+                }
+            </select>
+        </div>
+        <div class="field required">
+            <label>Dificuldade</label>
+            <select class="ui dropdown disabled" readonly disabled>
+                <option selected value="@Model.CodDificuldade">@Model.Dificuldade.Descricao</option>
+            </select>
+        </div>
+        <div class="field required">
+            <label>Tipo</label>
+            <select class="ui dropdown disabled" readonly disabled>
+                <option selected value="@Model.CodTipoQuestao">@Model.TipoQuestao.Descricao</option>
+            </select>
+        </div>
+        <div class="ui segment">
+            <div class="field">
+                <div class="ui toggle checkbox disabled">
+                    <input type="checkbox" tabindex="0" class="hidden" @(Model.QuestaoAnexo.Count > 0 ? "checked" : "") readonly disabled>
+                    <label>Esta questão possui anexos</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* Detalhes da Questão *@
+    <div class="ui bottom attached tab segment" data-tab="tab-name2">
+        <div class="field required">
+            <label for="txtEnunciado">Enunciado</label>
+            <textarea id="txtEnunciado" name="txtEnunciado" rows="2" required placeholder="Enunciado...">@Model.Enunciado</textarea>
+        </div>
+        <div class="field">
+            <label for="txtObjetivo">Objetivo</label>
+            <textarea id="txtObjetivo" name="txtObjetivo" rows="2" placeholder="Objetivo...">@Model.Objetivo</textarea>
+        </div>
+        @if (Model.CodTipoQuestao == 2)
+        {
+            <div class="field required questao discursiva">
+                <label for="txtChaveDeResposta">Chave de Resposta</label>
+                <textarea required id="txtChaveDeResposta" name="txtChaveDeResposta" rows="2" placeholder="Chave de Resposta...">@Model.ChaveDeResposta</textarea>
+            </div>
+            <div class="field questao discursiva">
+                <label for="txtComentario">Comentário</label>
+                <textarea id="txtComentario" name="txtComentario" rows="2" placeholder="Comentário...">@Model.Comentario</textarea>
+            </div>
+        }
+    </div>
+    @* Alternativas da Questão *@
+    <div class="ui bottom attached tab segment questao objetiva" data-tab="tab-name3">
+        <div class="ui alternativas fluid accordion">
+            @foreach (var alt in Model.Alternativa)
+            {
+                <div class="title">
+                    <i class="dropdown icon"></i>Alternativa @(alt.CodOrdem + 1)
+                </div>
+                <div class="content ui segment">
+                    <div class="field required">
+                        <label for="txtAlternativaEnunciado@(alt.CodOrdem+1)">Enunciado</label>
+                        <textarea required id="txtAlternativaEnunciado@(alt.CodOrdem+1)" name="txtAlternativaEnunciado@(alt.CodOrdem+1)" rows="2" placeholder="Enunciado...">@alt.Enunciado</textarea>
+                    </div>
+                    <div class="field">
+                        <label for="txtAlternativaComentario@(alt.CodOrdem+1)">Comentário</label>
+                        <textarea id="txtAlternativaComentario@(alt.CodOrdem+1)" name="txtAlternativaComentario@(alt.CodOrdem+1)" rows="2" placeholder="Comentário...">@alt.Comentario</textarea>
+                    </div>
+                    <div class="field">
+                        <div class="ui toggle checkbox disabled">
+                            <input id="chkAlternativaCorreta@(alt.CodOrdem+1)" name="chkAlternativaCorreta@(alt.CodOrdem+1)" @(alt.FlagGabarito.HasValue && alt.FlagGabarito.Value ? "checked" : "") disabled readonly type="checkbox" tabindex="0" class="hidden">
+                            <label for="chkAlternativaCorreta@(alt.CodOrdem+1)">Correta</label>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    @* Anexos da Questão *@
+    <div class="ui bottom attached tab segment anexos" data-tab="tab-name4">
+        @* Anexos *@
+        <div class="ui anexos fluid accordion">
+            @foreach (var ane in Model.QuestaoAnexo)
+            {
+                <div class="title">
+                    <input name="txtAnexoTipo@(ane.CodOrdem + 1)" id="txtAnexoTipo@(ane.CodOrdem + 1)" value="@ane.CodTipoAnexo" hidden />
+                    <i class="dropdown icon"></i>Anexo @(ane.CodOrdem + 1)
+                    <span class="ui label" id="txtAnexoTipoDescricao@(ane.CodOrdem + 1)">@ane.TipoAnexo.Descricao</span>
+                </div>
+                <div class="content ui segment">
+                    <div class="field required">
+                        <div class="ui card">
+                            <div class="image"><img name="preImagem@(ane.CodOrdem + 1)" id="preImagem@(ane.CodOrdem + 1)" src="data:image/png;base64,@Convert.ToBase64String(ane.Anexo,0, ane.Anexo.Length)" /></div>
+                        </div>
+                    </div>
+                    <div class="field required">
+                        <label for="txtAnexoLegenda@(ane.CodOrdem + 1)">Legenda</label>
+                        <textarea required maxlength="250" id="txtAnexoLegenda@(ane.CodOrdem + 1)" name="txtAnexoLegenda@(ane.CodOrdem + 1)" rows="2" placeholder="Legenda...">@ane.Legenda</textarea>
+                    </div>
+                    <div class="field">
+                        <label for="txtAnexoFonte@(ane.CodOrdem + 1)">Fonte</label>
+                        <input maxlength="250" type="text" id="txtAnexoFonte@(ane.CodOrdem + 1)" name="txtAnexoFonte@(ane.CodOrdem + 1)" placeholder="Fonte..." value="@ane.Fonte">
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <br />
+    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todas as alterações</p><a href='/Historico/Questao/@Model.CodQuestao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+    <div class="ui button" onclick="enviarForm()">Prosseguir</div>
+</form>
