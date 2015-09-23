@@ -58,7 +58,7 @@ namespace SIAC.Web.Controllers
             /* Chave */
             auto.Avaliacao = new Avaliacao();
             auto.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(1);
-            auto.Avaliacao.CodTipoAvaliacao = 1;
+            //auto.Avaliacao.CodTipoAvaliacao = 1;
             auto.Avaliacao.Ano = hoje.Year;
             auto.Avaliacao.Semestre = hoje.Month > 6 ? 2 : 1;
             auto.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(1);
@@ -70,6 +70,7 @@ namespace SIAC.Web.Controllers
             var disciplinas = formCollection["ddlDisciplinas"].Split(',');
             /* Dados */
             List<int> dificuldades = new List<int>();
+            List<QuestaoTema> VBQuestoes = new List<QuestaoTema>();
             foreach (var strDisc in disciplinas)
             {
                 /* Dificuldade */
@@ -112,12 +113,15 @@ namespace SIAC.Web.Controllers
                     }                   
                     auto.Avaliacao.AvaliacaoTema.Add(avalTema);                    
                 }
+                VBQuestoes.AddRange(lstQuestoes);
             }
 
             auto.Avaliacao.DtCadastro = hoje;
             auto.CodDificuldade = dificuldades.Max();
 
-            AvalAuto.Inserir(auto);
+            //AvalAuto.Inserir(auto);
+            ViewBag.QuestoesDaAvaliacao = VBQuestoes;
+            ViewBag.QteQuestoes = VBQuestoes.Count;
 
             return View(auto);
         }

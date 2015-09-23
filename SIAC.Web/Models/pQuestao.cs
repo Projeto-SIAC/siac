@@ -349,7 +349,7 @@ namespace SIAC.Web.Models
             {
                 foreach (string palavra in palavraChave)
                 {
-                    if(questao.Enunciado.Contains(palavra))
+                    if(questao.Enunciado.ToLower().Contains(palavra))
                     {
                         retorno.Add(questao);
                         break;

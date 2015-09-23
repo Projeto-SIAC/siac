@@ -9,7 +9,7 @@
         $('.ui.accordion').accordion();
         $('.ui.dropdown').dropdown();
         $('.tabular.menu .item').tab();
-        $('.ui.termo.modal').modal('setting', 'closable', false).modal('show');
+        //$('.ui.termo.modal').modal('setting', 'closable', false).modal('show');
 
         function recuperarTemasPorCodDisciplina() {
             var selecionado = $('#ddlDisciplina :selected').val();
@@ -386,7 +386,7 @@
                                         </div>\
                                         <div class="content">\
                                             <div class="description">\
-                                                ' + $('#txtAnexoLegenda'+(i+1)).val() + '\
+                                                ' + $('#txtAnexoLegenda' + (i + 1)).val() + '\
                                             </div>\
                                         </div>\
                                         <div class="extra content">\
@@ -404,8 +404,59 @@
             $('.ui.confirmar.modal').modal('show');
             $('.ui.confirmar.modal div').popup();
         }
+
+        //LEMBRAR DE ATIVAR O MODAL DE TERMO!!!
+
+        function abrirPesquisaModal()
+        {
+            $('.ui.pesquisa.modal').modal('show');
+        }
+        function palavraChave(palavras) {
+            var palavraChave = palavras.toLowerCase();
+            if (palavraChave.indexOf(";") > -1) {
+                var palavras = palavraChave.split(';');
+                $('.ui.pesquisa.modal .pesquisar').addClass('loading');
+                $.ajax({
+                    type: 'POST',
+                    data: { "palavras": palavras },
+                    url: '@Url.RouteUrl("PalavrasChave")',
+                    success: function (data) {
+                        $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
+                        $('#divQuestoes').html('');
+                        for (var i = 0; i < data.length; i++)
+                        {
+                            $('#divQuestoes').append('<p>' + data[i].Enunciado + '</p>');
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(thrownError.error);
+                        //jsnQuestoesFiltro = null;
+                    }
+                });
+            }
+        }
+        abrirPesquisaModal();
     </script>
 }
+
+<div class="ui form pesquisa modal">
+    <div class="header">Pesquisar Questões com as Tags</div>
+    <div class="content">
+        <div class="ui field">
+            <label>Digite as Palavras-chave (separados por ';')</label>
+            <div class="ui action input">
+                <input id="txtPalavraChave" type="text" class="ui input text" placeholder="Palavras-chave..." />
+                <div tabindex="0" class="ui button pesquisar" onclick=" palavraChave(txtPalavraChave.value)">Pesquisar</div>
+            </div>
+        </div>
+    </div>
+    <div id="divQuestoes">
+
+    </div>
+    <div class="actions">
+        <a href="/Dashboard" class="ui cancel button">Cancelar</a>
+    </div>
+</div>
 
 <div class="ui termo modal">
     <div class="header">Você está ciente de...</div>
@@ -462,6 +513,7 @@
     </div>
 </div>
 
+<a class="ui attached top right label" onclick="abrirPesquisaModal()"><i class="ui search icon"></i>Pesquisar</a>  
 <h2>@ViewBag.Title</h2>
 
 <form id="frmQuestao" action="/Dashboard/Questao/Confirmar" method="post" class="ui form" enctype="multipart/form-data">

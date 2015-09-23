@@ -60,7 +60,14 @@ namespace SIAC.Web
                 defaults: new { controller = "Tema", action = "RecuperarTemasPorCodDisciplina" },
                 namespaces: new[] { "SIAC.Web.Controllers" }
             );
-            
+
+            routes.MapRoute(
+                name: "RecuperarTemasPorCodDisciplinaTemQuestao",
+                url: "Tema/RecuperarTemasPorCodDisciplinaTemQuestao/",
+                defaults: new { controller = "Tema", action = "RecuperarTemasPorCodDisciplinaTemQuestao" },
+                namespaces: new[] { "SIAC.Web.Controllers" }
+            );
+
             routes.MapRoute(
                 name: "LeroLero",
                 url: "LeroLero",
@@ -68,6 +75,12 @@ namespace SIAC.Web
                 namespaces: new[] { "SIAC.Web.Controllers" }
             );
 
+            routes.MapRoute(
+                name: "PalavrasChave",
+                url: "PalavrasChave",
+                defaults: new { controller = "Questao", action = "PalavrasChave" },
+                namespaces: new[] { "SIAC.Web.Controllers" }
+            );
 
             routes.MapRoute(
                 name: "Controle Não Encontrado",

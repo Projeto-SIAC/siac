@@ -63,10 +63,25 @@ namespace SIAC.Web.Controllers
                          };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        //POST: /PalavrasChave
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult PalavrasChaves(string[] palavras)
+        public ActionResult PalavrasChave(string[] palavras)
         {
-            var result = Questao.ListarPorPalavraChave(Session["UsuarioMatricula"].ToString(), palavras);
+            var resultado = Questao.ListarPorPalavraChave(Session["UsuarioMatricula"].ToString(), palavras);
+            var result = (from q in resultado select new Questao()
+            {
+                CodQuestao = q.CodQuestao,
+                CodDificuldade = q.CodDificuldade,
+                Enunciado = q.Enunciado,
+                Comentario = q.Comentario,
+                CodTipoQuestao = q.CodTipoQuestao,
+                CodProfessor = q.CodProfessor,
+                ChaveDeResposta = q.ChaveDeResposta,
+                DtCadastro = q.DtCadastro,
+                DtUltimoUso = q.DtUltimoUso,
+                Objetivo = q.Objetivo
+            });
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 

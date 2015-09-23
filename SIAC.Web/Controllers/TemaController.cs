@@ -49,5 +49,22 @@ namespace SIAC.Web.Controllers
             }
             return Json(null);
         }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult RecuperarTemasPorCodDisciplinaTemQuestao(string codDisciplina)
+        {
+            if (!String.IsNullOrEmpty(codDisciplina))
+            {
+                int cod = 0;
+                if (int.TryParse(codDisciplina, out cod))
+                {
+                    var dc = DataContextSIAC.GetInstance();
+                    var temas = Tema.ListarPorDisciplinaTemQuestao(cod);
+                    var result = from t in temas select new { CodTema = t.CodTema, Descricao = t.Descricao };
+                    return Json(result.ToList(), JsonRequestBehavior.AllowGet);
+                }
+            }
+            return Json(null);
+        }
     }
 }

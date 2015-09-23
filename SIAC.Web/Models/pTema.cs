@@ -25,5 +25,10 @@ namespace SIAC.Web.Models
             contexto.SaveChanges();
             return tema.CodTema;
         }
+
+        public static List<Tema> ListarPorDisciplinaTemQuestao(int codDisciplina)
+        {
+            return contexto.QuestaoTema.Where(qt => qt.CodDisciplina == codDisciplina).OrderBy(qt => qt.Tema.Descricao).Select(qt=>qt.Tema).Distinct().ToList();
+        }
     }
 }
