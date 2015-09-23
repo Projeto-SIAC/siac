@@ -126,10 +126,10 @@
             }
         </script>
     }
-
+    <a class="ui right floated button" href="/Dashboard/Questao/Cadastrar">Cadastrar</a>
     <h2>@ViewBag.Title</h2>
         <div class="ui fluid icon input">
-            <input type="text" placeholder="Filtrar..." onkeydown="Filtro($(this).val())" />
+            <input type="text" placeholder="Filtrar..." onkeyup="Filtro($(this).val())" />
             <i class="search icon"></i>
     </div>
     <div class="ui very relaxed items"></div>

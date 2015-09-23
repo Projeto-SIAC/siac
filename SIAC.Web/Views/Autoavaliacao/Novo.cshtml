@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "Realizar autoavaliacao";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<a href="~/Dashboard/Autoavaliacao/Gerar" class="ui right floated button">Gerar</a>
+
+@if (ViewBag.Geradas.Count > 0)
+{
+    <h2>@ViewBag.Title</h2>
+    <div class="ui divided items">
+        @foreach (var auto in ViewBag.Geradas)
+        {
+            <div class="item">
+                <div class="content">
+                    <a href="/Dashboard/Autoavaliacao/Realizar/@(((SIAC.Web.Models.AvalAuto)auto).Avaliacao.CodAvaliacao())" class="header">@(((SIAC.Web.Models.Avaliacao)auto.Avaliacao).CodAvaliacao())</a>
+                    <div class="meta">
+                        <span>@(((SIAC.Web.Models.AvalAuto)auto).Avaliacao.DtCadastro.ToBrazilianString())</span>
+                    </div>
+                    <div class="extra">
+                        <a href="/Dashboard/Autoavaliacao/Realizar/@(((SIAC.Web.Models.AvalAuto)auto).Avaliacao.CodAvaliacao())" class="ui right floated button">
+                            Realizar
+                        </a>
+                        <div class="ui labels">
+                            <div class="ui label">Dificuldade<div class="detail">@auto.Dificuldade.Descricao</div></div>
+                            @foreach (var disc in ((SIAC.Web.Models.AvalAuto)auto).Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+                    {
+                                <div class="ui tag label">@disc.Descricao</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="ui grid row centered">
+        <h2 class="ui icon header">
+            <i class="icon frown"></i>
+            Você não tem autoavaliações salvas
+            <div class="sub header">Desejar gerar uma agora? <a href="/Dashboard/Autoavaliacao/Gerar">Gerar</a></div>
+        </h2>
+    </div>
+}

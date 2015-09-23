@@ -34,7 +34,12 @@ namespace SIAC.Web.Controllers
             {
                 return Redirect("~/Historico/Autoavaliacao");
             }
-            return View();
+            int codPessoaFisica = Usuario.ObterPessoaFisica(Session["UsuarioMatricula"].ToString());
+            List<AvalAuto> model = (from avalAuto in DataContextSIAC.GetInstance().AvalAuto
+                                    where avalAuto.CodPessoaFisica == codPessoaFisica
+                                    orderby avalAuto.Avaliacao.DtCadastro descending
+                                    select avalAuto).ToList();
+            return View(model);
         }
 
         // GET: Autoavaliacao/Gerar
@@ -129,8 +134,31 @@ namespace SIAC.Web.Controllers
         // GET: Autoavaliacao/Realizar/AUTO201520001
         public ActionResult Realizar(string codigo)
         {
-            AvalAuto auto = new AvalAuto();
-            return View(auto);
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                int numIdentificador = int.Parse(codigo.Substring(codigo.Length-4));
+                codigo = codigo.Remove(codigo.Length - 4);
+                int semestre = int.Parse(codigo.Substring(codigo.Length - 1));
+                codigo = codigo.Remove(codigo.Length - 1);
+                int ano = int.Parse(codigo.Substring(codigo.Length - 4));
+                codigo = codigo.Remove(codigo.Length - 4);
+                int codTipoAvaliacao = (from tipo in DataContextSIAC.GetInstance().TipoAvaliacao
+                                          where tipo.Sigla == codigo
+                                          select tipo.CodTipoAvaliacao).First();
+                AvalAuto auto = (from avalAuto in DataContextSIAC.GetInstance().AvalAuto
+                                where avalAuto.Ano == ano 
+                                && avalAuto.Semestre == semestre
+                                && avalAuto.NumIdentificador == numIdentificador
+                                && avalAuto.CodTipoAvaliacao == codTipoAvaliacao
+                                select avalAuto).SingleOrDefault();
+                return View(auto);
+            }
+            int codPessoaFisica = Usuario.ObterPessoaFisica(Session["UsuarioMatricula"].ToString());
+            ViewBag.Geradas = (from avalAuto in DataContextSIAC.GetInstance().AvalAuto
+                              where avalAuto.CodPessoaFisica == codPessoaFisica
+                              && avalAuto.Avaliacao.AvalPessoaResultado.Count == 0
+                              select avalAuto).ToList();
+            return View("Novo");
         }
     }
 }

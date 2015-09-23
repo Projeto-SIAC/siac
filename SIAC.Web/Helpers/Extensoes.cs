@@ -182,8 +182,6 @@ namespace SIAC.Web
         // List<AvaliacaoTema>
         public static int QteQuestoes(this List<AvaliacaoTema> lstAvaliacaoTema, int codDisciplina, int codTipoQuestao)
         {
-            //@Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina).Select(a => a.AvalTemaQuestao.Count).ToList()[0]
-
             int qteQuestoes = 0;
 
             foreach (var avaliacaoTema in lstAvaliacaoTema.Where(a=>a.Tema.CodDisciplina == codDisciplina))
@@ -198,8 +196,6 @@ namespace SIAC.Web
 
         public static string MaxDificuldade(this List<AvaliacaoTema> lstAvaliacaoTema, int codDisciplina)
         {
-            //@Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina).Select(a => a.AvalTemaQuestao.First().QuestaoTema.Questao.Dificuldade.Descricao).ToList()[0]
-
             Dificuldade dificuldade = new Dificuldade();
 
             foreach (var avaliacaoTema in lstAvaliacaoTema.Where(a => a.Tema.CodDisciplina == codDisciplina))
@@ -212,6 +208,21 @@ namespace SIAC.Web
             }
 
             return dificuldade.Descricao;
+        }
+
+
+        // Avaliacao
+        public static string CodAvaliacao(this Avaliacao avaliacao)
+        {
+            //@Model.Avaliacao.TipoAvaliacao.Sigla@Model.Avaliacao.Ano@Model.Avaliacao.Semestre@Model.Avaliacao.NumIdentificador.ToString("0000")
+            string codAvalicao = String.Empty;
+
+            codAvalicao += avaliacao.TipoAvaliacao.Sigla;
+            codAvalicao += avaliacao.Ano;
+            codAvalicao += avaliacao.Semestre;
+            codAvalicao += avaliacao.NumIdentificador.ToString("0000");
+
+            return codAvalicao;
         }
     }
 }
