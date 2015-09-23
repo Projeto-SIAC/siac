@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<a class="ui right floated button" href="/Dashboard/Autoavaliacao/Gerar">Gerar</a>
 <h2>@ViewBag.Title</h2>
 
 <div class="ui divided items">
@@ -11,7 +12,7 @@
     {
         <div class="item">
             <div class="content">
-                <a href="/Dashboard/Autoavaliacao/Realizar/@(auto.Avaliacao.CodAvaliacao())" class="header">@(auto.Avaliacao.CodAvaliacao())</a>
+                <a href="/Dashboard/Autoavaliacao/Detalhe/@(auto.Avaliacao.CodAvaliacao())" class="header">@(auto.Avaliacao.CodAvaliacao())</a>
                 <div class="meta">
                     <span title="@auto.Avaliacao.DtCadastro.ToBrazilianString()">@(auto.Avaliacao.DtCadastro.ToElapsedTimeString())</span>
                 </div>
@@ -20,6 +21,12 @@
                     {
                         <a href="/Dashboard/Autoavaliacao/Realizar/@(auto.Avaliacao.CodAvaliacao())" class="ui right floated button">
                             Realizar
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="/Dashboard/Autoavaliacao/Detalhe/@(auto.Avaliacao.CodAvaliacao())" class="ui right floated button">
+                            Desempenho
                         </a>
                     }
                     <div class="ui labels">
