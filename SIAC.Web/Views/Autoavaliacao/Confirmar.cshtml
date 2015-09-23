@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Avaliação ";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    
+
 }
 
 <h2>@ViewBag.Title @Model.Avaliacao.TipoAvaliacao.Sigla.@Model.Avaliacao.Ano.@Model.Avaliacao.Semestre-@Model.Avaliacao.NumIdentificador.ToString("0000")</h2>
@@ -28,13 +28,13 @@
                         <b>@disc.Descricao</b>
                     </td>
                     <td> @* temas *@
-                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a=> a.Tema.CodDisciplina == disc.CodDisciplina))
+                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
                         {
                             <div class="ui tag label">@avalTema.Tema.Descricao</div>
                         }
                     </td>
                     <td> @* qte de questões *@
-                        @Model.Avaliacao.AvaliacaoTema.Where(a=>a.Tema.CodDisciplina == disc.CodDisciplina).Select(a=>a.AvalTemaQuestao.Count).ToList()[0] questões
+                        @Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina).Select(a => a.AvalTemaQuestao.Count).ToList()[0] questões
                     </td>
                     <td> @* dificuldade *@
                         Dificuldade
@@ -64,20 +64,31 @@
 </table>
 
 <div class="ui very relaxed items">
-    @foreach (SIAC.Web.Models.QuestaoTema questao in ViewBag.QuestoesDaAvaliacao)
-    {
-        if (questao != null)
+    <span class="ui label">@ViewBag.QteQuestoes Questões</span>
+    
+    @{
+        List<int> cods = new List<int>();
+        foreach (SIAC.Web.Models.QuestaoTema questao in ViewBag.QuestoesDaAvaliacao)
         {
-        <div class="item">
-            <div class="content">
-                <a href="/Historico/Questao/@questao.CodQuestao" class="header">@questao.Questao.Enunciado.ToShortString(140)</a>
-                <div class="meta ui labels">
-                    <span class="ui label">@questao.Tema.Disciplina.Descricao - @questao.Tema.Descricao</span>
-                    <span class="ui label">@questao.Questao.Dificuldade.Descricao - @questao.Questao.CodDificuldade</span>
-                    <span class="ui label">@questao.Questao.TipoQuestao.Descricao</span>
+            cods.Add(questao.CodQuestao);
+            if (questao != null)
+            {
+                <div class="item">
+                    <div class="content">
+                        <a href="/Historico/Questao/@questao.CodQuestao" class="header">@questao.Questao.Enunciado.ToShortString(140)</a>
+                        <div class="meta ui labels">
+                            <span class="ui label">@questao.Tema.Disciplina.Descricao - @questao.Tema.Descricao</span>
+                            <span class="ui label">@questao.Questao.Dificuldade.Descricao - @questao.Questao.CodDificuldade</span>
+                            <span class="ui label">@questao.Questao.TipoQuestao.Descricao</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            }
+        }
+        cods.Sort();
+        foreach (var item in cods)
+        {
+            <span class="ui label">@item</span>
         }
     }
 </div>
