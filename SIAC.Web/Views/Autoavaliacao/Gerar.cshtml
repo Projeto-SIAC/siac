@@ -10,7 +10,6 @@
         $('.ui.accordion').accordion();
 
         function submitForm() {
-            $('form').addClass('loading');
             var validado = false;
             $('form .error.message .list').html('');
 
@@ -39,7 +38,7 @@
                                     if ($('#txtQteDiscursiva' + discs[i]).val() == '' || $('#txtQteObjetiva' + discs[i]).val() == '') {
                                         ok = false;
                                         validado = false;
-                                         $('form .error.message .list').append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
+                                        $('form .error.message .list').append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
                                     }
                                 }
 
@@ -70,10 +69,10 @@
             }
 
             if (validado) {
-                $('form').submit();
+                Confirmar()
             }
             else {
-                $('form').addClass('error').removeClass('loading');
+                $('form').addClass('error');
                 $('html, body').animate({
                     scrollTop: $('form .error.message').offset().top
                 }, 100);
@@ -106,8 +105,7 @@
             var temAccordion = $('.ui.tema.accordion');
             var difAccordion = $('.ui.dificuldade.accordion');
             var qteAccordion = $('.ui.quantidade.accordion');
-            for (var i = 0; i < discs.length; i++)
-            {
+            for (var i = 0; i < discs.length; i++) {
                 var disciplina = $('#ddlDisciplinas option[value="' + discs[i] + '"]').text();
                 temAccordion.append('\
                     <div class="title"><i class="icon dropdown"></i>' + disciplina + '</div>\
@@ -170,20 +168,73 @@
             }
         }
 
+        function Confirmar() {
+            $modal = $('.ui.confirmar.modal');
+            $ddlDisciplinas = $('#ddlDisciplinas :selected');
+            $ddlTipo = $('#ddlTipo');
+            $table = $modal.find('tbody').html('');
+            for (var i = 0; i < $ddlDisciplinas.length; i++) {
+                $tr = $('<tr></tr>');
+                $tdDisciplina = $('<td></td>').html('<b>' + $ddlDisciplinas.eq(i).text() + '</b>');
+                $tdTemas = $('<td class="ui labels"></td>');
+                $ddlTemas = $('#ddlTemas'+$ddlDisciplinas.eq(i).val() + ' :selected');
+                for (var j = 0; j < $ddlTemas.length; j++) {
+                    $tdTemas.append($('<div class="ui tag label"></div>').text($ddlTemas.eq(j).text()));
+                }
+                $tdQteQuestoes = $('<td class="ui labels"></td>');
+                if ($ddlTipo.val() == 1 || $ddlTipo.val() == 3) {
+                    $tdQteQuestoes.append($('<div class="ui label"></div>').html('Objetiva<div class="detail">' + $('#txtQteObjetiva' + $ddlDisciplinas.eq(i).val()).val() + '</div>'));
+                }
+                if ($ddlTipo.val() == 2 || $ddlTipo.val() == 3) {
+                    $tdQteQuestoes.append($('<div class="ui label"></div>').html('Discursiva<div class="detail">' + $('#txtQteDiscursiva' + $ddlDisciplinas.eq(i).val()).val() + '</div>'));
+                }
+                $tdDificuldade = $('<td></td>').text($('#ddlDificuldade' + $ddlDisciplinas.eq(i).val() + ' :selected').text());
+                $table.append($tr.append($tdDisciplina).append($tdTemas).append($tdQteQuestoes).append($tdDificuldade));
+            }
+            $modal.modal('show');
+        }
+
+        $('.ui.confirmar.modal')
+          .modal({
+              onApprove: function () {
+                  $('form').addClass('loading').submit();
+              }
+          });
+
         $('.cancelar.button').popup({ on: 'click' });
         $('.prosseguir.button').popup({ on: 'click' });
     </script>
 }
-@section Styles{
-}
+
+<div class="ui confirmar modal">
+    <div class="header">Verificação e confirmação</div>
+    <div class="content">
+        <table class="ui very basic table">
+            <thead>
+                <tr>
+                    <th>Disciplina</th>
+                    <th>Tema(s)</th>
+                    <th>Quantidade</th>
+                    <th>Dificuldade</th>
+                </tr>
+            </thead>
+            <tbody>                
+            </tbody>
+        </table>
+    </div>
+    <div class="actions">
+        <div class="ui negative button">Voltar</div>
+        <div class="ui positive button">Confirmar</div>
+    </div>
+</div>
 
 <h2>@ViewBag.Title</h2>
 
 <form id="frmAutoavaliacao" method="post" action="/Dashboard/Autoavaliacao/Confirmar" class="ui form">
-        <div class="ui error message">
-            <div class="header">Verifique</div>
-            <ul class="list"></ul>
-        </div>
+    <div class="ui error message">
+        <div class="header">Verifique</div>
+        <ul class="list"></ul>
+    </div>
     @* Disciplinas *@
     <div class="field required" onmouseout="$('.ui.dropdown').dropdown();">
         <label for="ddlDisciplinas">Disciplina (s)</label>
@@ -199,9 +250,9 @@
     <div class="field required">
         <label>Tema (s)</label>
         <div class="ui styled fluid tema accordion">
-            
+
         </div>
-    </div> 
+    </div>
     @* Tipo das Questões *@
     <div class="field required">
         <label>Tipo das Questões</label>
@@ -211,7 +262,7 @@
             <option value="1">Somente objetivas</option>
             <option value="3">Misto</option>
         </select>
-    </div>    
+    </div>
     @* Dificuldade das Questões *@
     <div class="field required">
         <label>Dificuldade das Questões</label>
@@ -222,11 +273,11 @@
     <div class="field required">
         <label>Quantidade das Questões</label>
         <div class="ui styled fluid quantidade accordion">
-            
+
         </div>
     </div>
     <div class="field">
         <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Historico/Autoavaliacao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
-        <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Verifique os detalhes</p><input onclick='submitForm()' type='button' class='ui small button'' value='Continuar' /></div>" class="ui prosseguir button">Prosseguir</div>
+        <div onclick="submitForm()" class="ui prosseguir button">Prosseguir</div>
     </div>
 </form>

@@ -14,6 +14,9 @@
         });
         $('.ui.checkbox').checkbox();
         $('.ui.accordion').accordion();
+        $('.ui.modal .ui.accordion').accordion({
+            onChange: function() { $('.ui.confirmar.modal').modal('refresh'); }
+        });
         $('.ui.dropdown').dropdown();
         $('.tabular.menu .item').tab();
         $('.cancelar.button').popup({ on: 'click' });
@@ -140,7 +143,7 @@
 }
 
 <div class="ui confirmar modal">
-    <div class="header">Confirmar</div>
+    <div class="header">Verificação e confirmação</div>
     <div class="content">
         <div class="ui labels">
             <div class="ui label">
@@ -165,7 +168,7 @@
         </div>
         <br />
         <div id="mdlAccordionAnexos" class="ui styled fluid accordion">
-            <div class="title" onclick="$('.ui.confirmar.modal').modal('refresh')"><i class="icon dropdown"></i>Anexos</div>
+            <div class="title"><i class="icon dropdown"></i>Anexos</div>
             <div class="content">
                 <div id="mdlCardAnexos" class="ui cards">                    
                 </div>
