@@ -15,19 +15,11 @@ namespace SIAC.Web.Controllers
         {
             if(Session["Autenticado"] == null)
             {
-                if (TempData["UrlReferrer"] != null)
-                {
-                    filterContext.Result = Redirect(TempData["UrlReferrer"].ToString());
-                }
-                else filterContext.Result = RedirectToAction("Index", "Dashboard");
+                filterContext.Result = RedirectToAction("Index", "Dashboard");
             }
             else if(!(bool)Session["Autenticado"])
             {
-                if (TempData["UrlReferrer"] != null)
-                {
-                    filterContext.Result = Redirect(TempData["UrlReferrer"].ToString());
-                }
-                else filterContext.Result = RedirectToAction("Index", "Dashboard");
+                filterContext.Result = RedirectToAction("Index", "Dashboard");
             }
             else if((int)Session["UsuarioCategoriaCodigo"] != 3)
             {
@@ -47,7 +39,12 @@ namespace SIAC.Web.Controllers
             Parametro model = Parametro.Obter();
 
             ViewBag.Disciplinas = Disciplina.ListarOrdenadamente();
-
+            ViewBag.Professores = from prof in DataContextSIAC.GetInstance().Professor
+                                  orderby prof.Usuario.PessoaFisica.Nome
+                                  select prof;
+            ViewBag.Temas = from tema in DataContextSIAC.GetInstance().Tema
+                            orderby tema.CodDisciplina, tema.Descricao
+                            select tema;
             return View(model);
         }
 

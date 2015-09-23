@@ -13,9 +13,7 @@ namespace SIAC.Web.Controllers
         // GET: Acesso
         public ActionResult Index()
         {
-            //if(Usuario.SAutenticado)
             if (Session["Autenticado"] != null && (bool)Session["Autenticado"])
-
             {
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -27,7 +25,6 @@ namespace SIAC.Web.Controllers
         public ActionResult Entrar()
         {
             if (Session["Autenticado"] != null && (bool)Session["Autenticado"])
-            //if (Usuario.SAutenticado)
             {
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -40,8 +37,6 @@ namespace SIAC.Web.Controllers
         public ActionResult Entrar(FormCollection formCollection)
         {
             if (Session["Autenticado"] != null && (bool)Session["Autenticado"])
-            //if (Usuario.SAutenticado)
-
             {
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -91,7 +86,6 @@ namespace SIAC.Web.Controllers
         public ActionResult Sair()
         {
             Session.Clear();
-            //Usuario.Sair();
             return RedirectToAction("Index");
         }
     }

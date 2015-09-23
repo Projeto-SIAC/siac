@@ -13,6 +13,7 @@
     <script>
         $('.menu .item').tab();
         $('.ui.dropdown').dropdown();
+        $('.ui.accordion').accordion();
 
         function atualizarParametros() {
             var form = $(':input');
@@ -54,7 +55,7 @@
         <i class="close icon"></i>
         <div class="ui icon header">
             <i class="close red icon"></i>
-            Parametros atualizados com Erro!
+            Parametros atualizados com erro!
         </div>
     </div>
 
@@ -107,6 +108,36 @@
 
     @* Cadastro de Professor *@
     <div class="ui bottom attached tab segment professor" data-tab="tab-professor">
+        <div class="ui styled fluid accordion">
+            <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+            <div class="content">
+                <table class="ui striped table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Matricula</th>
+                            <th>Disciplina(s)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Professor prof in ViewBag.Professores)
+                        {
+                            <tr>
+                                <td>@prof.Usuario.PessoaFisica.Nome</td>
+                                <td>@prof.MatrProfessor</td>
+                                <td class="ui labels">
+                                    @foreach (var disc in prof.Disciplina)
+                                    {
+                                        <span class="ui tag label">@disc.Descricao</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
         <form id="professorForm" method="post" action="/Configuracoes/CadastrarProfessor">
             <div class="ui text loader">Inserindo</div>
             <div class="field required">
@@ -134,7 +165,31 @@
 
     @* Cadastro de Disciplina *@
     <div class="ui bottom attached tab segment disciplina" data-tab="tab-disciplina">
-        <form id="disciplinaForm" method="post" action="/Configuracoes/CadastrarDisciplina">
+        <div class="ui styled fluid accordion">
+            <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+            <div class="content">
+                <table class="ui striped table">
+                    <thead>
+                        <tr>
+                            <th>Disciplina</th>
+                            <th>Sigla</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Disciplina disc in ViewBag.Disciplinas)
+                        {
+                            <tr>
+                                <td>@disc.Descricao</td>
+                                <td>@disc.Sigla</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <br />
+        <form id="disciplinaForm" class="ui form" method="post" action="/Configuracoes/CadastrarDisciplina">
             <div class="field required">
                 <label>Disciplina</label>
                 <input type="text" name="txtDisciplina" placeholder="Disciplina..." required />
@@ -163,7 +218,38 @@
 
     @* Cadastro de Tema *@
     <div class="ui bottom attached tab segment disciplina" data-tab="tab-tema">
-        <form id="temaForm" method="post" action="/Configuracoes/CadastrarTema">
+        <div class="ui styled fluid accordion">
+            <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+            <div class="content">
+                <table class="ui striped table">
+                    <thead>
+                        <tr>
+                            <th>Disciplina</th>
+                            <th>Tema(s)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Disciplina disc in ViewBag.Disciplinas)
+                        {
+                            <tr>
+                                <td>@disc.Descricao</td>
+                                <td class="ui labels">
+                                    @foreach (Tema tema in ViewBag.Temas)
+                                    {
+                                        if (tema.CodDisciplina == disc.CodDisciplina)
+                                        {
+                                            <span class="ui tag label">@tema.Descricao</span>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        <form id="temaForm" class="ui form" method="post" action="/Configuracoes/CadastrarTema">
             <div class="field required">
                 <label>Disciplina</label>
                 <select name="ddlTemaDisciplina" class="ui fluid search dropdown" required>
@@ -176,7 +262,7 @@
             </div>
             <div class="field required">
                 <label>Tema</label>
-                <input type="text" name="txtTemaDescricao" maxlength="100" placeholder="Tema" required/>
+                <input type="text" name="txtTemaDescricao" maxlength="100" placeholder="Tema" required />
             </div>
             <input type="submit" class="ui button" onclick="$(this).parent().addClass('loading')" value="Cadastrar" />
         </form>
