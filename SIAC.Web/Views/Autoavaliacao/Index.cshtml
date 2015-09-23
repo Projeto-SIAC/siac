@@ -1,8 +1,39 @@
-﻿
+﻿@model List<SIAC.Web.Models.AvalAuto>
 @{
     ViewBag.Title = "Minhas autoavaliações";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
+
+<div class="ui divided items">
+    @foreach (var auto in Model)
+    {
+        <div class="item">
+            <div class="content">
+                <a href="/Dashboard/Autoavaliacao/Realizar/@(auto.Avaliacao.CodAvaliacao())" class="header">@(auto.Avaliacao.CodAvaliacao())</a>
+                <div class="meta">
+                    <span title="@auto.Avaliacao.DtCadastro.ToBrazilianString()">@(auto.Avaliacao.DtCadastro.ToElapsedTimeString())</span>
+                </div>
+                <div class="extra">
+                    @if (auto.Avaliacao.AvalPessoaResultado.Count == 0)
+                    {
+                        <a href="/Dashboard/Autoavaliacao/Realizar/@(auto.Avaliacao.CodAvaliacao())" class="ui right floated button">
+                            Realizar
+                        </a>
+                    }
+                    <div class="ui labels">
+                        <div class="ui label">Dificuldade<div class="detail">@auto.Dificuldade.Descricao</div></div>
+                        @foreach (var disc in auto.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+                        {
+                            <div class="ui tag label">@disc.Descricao</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
 

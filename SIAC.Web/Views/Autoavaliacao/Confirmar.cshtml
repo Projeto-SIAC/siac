@@ -1,12 +1,12 @@
 ﻿@model SIAC.Web.Models.AvalAuto
 
 @{
-    ViewBag.Title = "Autoavaliação ";
+    ViewBag.Title = "Autoavaliação " + @Model.Avaliacao.CodAvaliacao();
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
 
-<h2>@ViewBag.Title @Model.Avaliacao.TipoAvaliacao.Sigla.@Model.Avaliacao.Ano.@Model.Avaliacao.Semestre-@Model.Avaliacao.NumIdentificador.ToString("0000")</h2>
+<h2>@ViewBag.Title</h2>
 
 <div class="ui icon message positive">
     <i class="icon checkmark"></i>
@@ -103,4 +103,4 @@
 *@
 
 <div class="ui button">Voltar para Dashboard</div>
-<div class="ui button">Realizar agora</div>
+<a href="/Dashboard/Autoavaliacao/Realizar/@Model.Avaliacao.CodAvaliacao()" class="ui button">Realizar agora</a>
