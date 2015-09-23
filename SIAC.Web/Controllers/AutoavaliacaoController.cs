@@ -119,6 +119,8 @@ namespace SIAC.Web.Controllers
                     }
                 }*/
                 ViewBag.QuestoesDaAvaliacao = lstQuestoes;
+                ViewBag.QteQuestoes = lstQuestoes.Count;
+
             }
             /*auto.Dificuldade = Dificuldade.ListarPorCodigo(dificuldades.Max());
             auto.Avaliacao.DtCadastro = hoje;
