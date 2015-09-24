@@ -93,7 +93,22 @@ namespace SIAC.Web.Models
                                               where qt.Questao.CodTipoQuestao == 1 && qt.Questao.CodDificuldade <= dificulDisc && qt.CodDisciplina == codDisciplina && qt.CodTema == codTema
                                               select qt).ToList();
 
-                    QuestoesTotal.AddRange(temp);
+                    if (temp.Count != 0 && QuestoesTemas.Count < qteObj)
+                    {
+                        List<QuestaoTema> lstideal = (from qt in temp where qt.Questao.CodDificuldade == dificulDisc select qt).ToList();
+
+                        if(lstideal.Count != 0)
+                        {
+                            temp = lstideal;
+                        }
+
+                        int random = new Random().Next(0, temp.Count);
+
+                        QuestoesTemas.Add(temp.ElementAtOrDefault(random));
+                        temp.RemoveAt(random);
+
+                        QuestoesTotal.AddRange(temp);
+                    }
                 }
 
                 for (int i = dificulDisc; i >= 1 && QuestoesTemas.Count < qteObj; i--)

@@ -13,6 +13,7 @@ namespace SIAC.Web.Controllers
         // GET: Acesso
         public ActionResult Index()
         {
+            Parametro.ObterAsync();
             if (Session["Autenticado"] != null && (bool)Session["Autenticado"])
             {
                 return RedirectToAction("Index", "Dashboard");

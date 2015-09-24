@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace SIAC.Web.Models
@@ -25,6 +26,11 @@ namespace SIAC.Web.Models
             temp.TermoResponsabilidade = parametro.TermoResponsabilidade.Trim();
 
             contexto.SaveChanges();
+        }
+
+        public async static Task<Parametro> ObterAsync()
+        {
+            return await contexto.Parametro.FindAsync(1);
         }
     }
 }
