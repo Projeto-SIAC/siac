@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Realizar " + Model.Avaliacao.CodAvaliacao();
     Layout = "~/Views/Shared/_Layout.cshtml";
-    List<Questao> lstQuestao = Model.Avaliacao.Questao();
+    List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
 }
 
 @section Scripts {
@@ -69,6 +69,19 @@
             modal.find('.description').html(fonte);
 
             modal.modal('show');
+        }
+        function gabarito(codQuestao, resposta, obj) {
+            $label = $('.ui.accordion').find('#txtCodQuestao[value="' + codQuestao + '"]').parent().find('.ui.label');
+            if (resposta != '') {
+                $label.removeAttr('style');
+                if (obj) {
+                    $label.html('Respondida');
+                    $label.append($('<div class="detail"></div>').text(resposta));
+                }
+            }
+            else {
+                $label.attr('style', 'display:none')
+            }
         }
     </script>
 }
@@ -228,7 +241,11 @@
     <div class="ui accordion">
         @for (int i = 0; i < lstQuestao.Count; i++)
         {
-            <div class="title"><i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToShortString(80))</div>
+            <div class="title">
+                <input id="txtCodQuestao" value="@lstQuestao[i].CodQuestao" hidden />
+                <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToShortString(80))
+                <div class="ui small label" style="display:none">Respondida</div>
+            </div>
             <div class="content">
                 <div class="ui segment">
                     <div class="ui dividing header" style="text-align:justify">
@@ -248,12 +265,13 @@
                         var temUmaCorreta = lstQuestao[i].TemUmaCorreta();
                         <div class="grouped fields">
                             <label>Selecione a@(!temUmaCorreta ? "s" : "") alternativa@(!temUmaCorreta ? "s" : "")</label>
-                            @foreach (var alternativa in lstQuestao[i].Alternativa)
-                    {
+                            @{ var lstAlternativa = lstQuestao[i].EmbaralharAlternativa(); }
+                            @for (int j = 0; j < lstAlternativa.Count; j++)
+                            {
                                 <div class="field">
                                     <div class="ui @(temUmaCorreta ? "radio" : "") checkbox">
-                                        <input type="@(temUmaCorreta ? "radio" : "checkbox")" name="@lstQuestao[i].CodQuestao" value="@alternativa.CodOrdem">
-                                        <label><b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado</label>
+                                        <input onchange="gabarito(@lstQuestao[i].CodQuestao,'@j.GetIndiceAlternativa()', true)" type="@(temUmaCorreta ? "radio" : "checkbox")" name="@( temUmaCorreta ? "rdoResposta" + lstQuestao[i].CodQuestao : "chkResposta"+lstQuestao[i].CodQuestao+"Alternativa"+lstAlternativa[i].CodOrdem)" @(temUmaCorreta ? "value=\""+@lstAlternativa[j].CodOrdem+"\"" : "")>
+                                        <label><b>@j.GetIndiceAlternativa()</b>) @lstAlternativa[j].Enunciado</label>
                                     </div>
                                 </div>
                             }
@@ -263,7 +281,7 @@
                     {
                         <div class="field">
                             <label>Resposta</label>
-                            <textarea class="" placeholder="Resposta..." rows="3"></textarea>
+                            <textarea onchange="gabarito(@lstQuestao[i].CodQuestao, $(this).val())" name="txtResposta@(lstQuestao[i].CodQuestao)" id="txtResposta@(lstQuestao[i].CodQuestao)" placeholder="Resposta..." rows="3"></textarea>
                         </div>
                     }
                     @if (lstQuestao[i].QuestaoAnexo.Count > 0)
