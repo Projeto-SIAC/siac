@@ -9,7 +9,7 @@
         $('.ui.accordion').accordion();
         $('.ui.dropdown').dropdown();
         $('.tabular.menu .item').tab();
-        //$('.ui.termo.modal').modal('setting', 'closable', false).modal('show');
+        $('.ui.termo.modal').modal('setting', 'closable', false).modal('show');
 
         function recuperarTemasPorCodDisciplina() {
             var selecionado = $('#ddlDisciplina :selected').val();
@@ -74,7 +74,7 @@
             var i = $('.ui.alternativas.accordion .title').length + 1;
             $('.ui.alternativas.accordion').append('\
                         <div class="title">\
-                            <input id="txtAlternativaIndex" value="'+i+'" hidden />\
+                            <input id="txtAlternativaIndex" value="'+ i + '" hidden />\
                             <i class="dropdown icon"></i>Alternativa ' + i + '\
                         </div>\
                         <div class="content ui segment">\
@@ -111,8 +111,8 @@
 
         function carregarImagem(file) {
             var ind = $(file).parent().parent().parent().prev().find('#txtAnexoIndex').val();
-            var pre = $('#preImagem'+ind);
-            var arq = $('#fleAnexo'+ind)[0].files[0];
+            var pre = $('#preImagem' + ind);
+            var arq = $('#fleAnexo' + ind)[0].files[0];
             var reader = new FileReader();
 
             if (arq.size < 1000000) {
@@ -138,7 +138,7 @@
                 var j = list.eq(i).find('#txtAlternativaIndex').val();
                 list.eq(i).html('<input id="txtAlternativaIndex" value="' + (i + 1) + '" hidden /><i class="dropdown icon"></i>Alternativa ' + (i + 1));
                 /* RENOMEAR LABELS, INPUTS e TEXTAREAS */
-                listContent.eq(i).find('label[for="txtAlternativaEnunciado'+j+'"]').attr('for', 'txtAlternativaEnunciado' + (i + 1));
+                listContent.eq(i).find('label[for="txtAlternativaEnunciado' + j + '"]').attr('for', 'txtAlternativaEnunciado' + (i + 1));
                 listContent.eq(i).find('label[for="txtAlternativaComentario' + j + '"]').attr('for', 'txtAlternativaComentario' + (i + 1));
                 listContent.eq(i).find('label[for="chkAlternativaCorreta' + j + '"]').attr('for', 'chkAlternativaCorreta' + (i + 1));
                 listContent.eq(i).find('textarea[name="txtAlternativaEnunciado' + j + '"]').attr('name', 'txtAlternativaEnunciado' + (i + 1)).attr('id', 'txtAlternativaEnunciado' + (i + 1));
@@ -157,7 +157,7 @@
                             <input id="txtAnexoIndex" value="'+ i + '" class="disabled" readonly hidden/>\
                             <input name="txtAnexoTipo' + i + '" id="txtAnexoTipo' + i + '" value="' + tipoAnexo + '" hidden />\
                             <i class="dropdown icon"></i>Anexo ' + i + '\
-                            <span class="ui label" id="txtAnexoTipoDescricao">'+tipoAnexoDescricao+'</span>\
+                            <span class="ui label" id="txtAnexoTipoDescricao">'+ tipoAnexoDescricao + '</span>\
                         </div>\
                         <div class="content ui segment">\
                             <div class="field required">\
@@ -196,7 +196,7 @@
                 var j = list.eq(i).find('#txtAnexoIndex').val();
                 var tipoAnexo = list.eq(i).find('#txtAnexoTipo' + j).val();
                 var tipoAnexoDescricao = list.eq(i).find('#txtAnexoTipoDescricao').text();
-                list.eq(i).html('<input id="txtAnexoIndex" value="'+(i+1)+'" class="disabled" readonly hidden/><i class="dropdown icon"></i>Anexo ' + (i + 1) + '<input name="txtAnexoTipo' + (i + 1) + '" id="txtAnexoTipo' + (i + 1) + '" value="' + tipoAnexo + '" hidden /><span class="ui label" id="txtAnexoTipoDescricao">' + tipoAnexoDescricao + '</span>');
+                list.eq(i).html('<input id="txtAnexoIndex" value="' + (i + 1) + '" class="disabled" readonly hidden/><i class="dropdown icon"></i>Anexo ' + (i + 1) + '<input name="txtAnexoTipo' + (i + 1) + '" id="txtAnexoTipo' + (i + 1) + '" value="' + tipoAnexo + '" hidden /><span class="ui label" id="txtAnexoTipoDescricao">' + tipoAnexoDescricao + '</span>');
                 listContent.eq(i).find('label[for="txtAnexoLegenda' + j + '"]').attr('for', 'txtAlternativaEnunciado' + (i + 1));
                 listContent.eq(i).find('label[for="txtAnexoFonte' + j + '"]').attr('for', 'txtAlternativaComentario' + (i + 1));
                 listContent.eq(i).find('textarea[name="txtAnexoLegenda' + j + '"]').attr('name', 'txtAnexoLegenda' + (i + 1)).attr('id', 'txtAnexoLegenda' + (i + 1));
@@ -205,7 +205,7 @@
                 listContent.eq(i).find('img[name="preImagem' + j + '"]').attr('name', 'preImagem' + (i + 1)).attr('id', 'preImagem' + (i + 1));
             }
         }
-        
+
         function removerAnexo(button) {
             var content = $(button).parent().parent().parent().parent();
             var title = $(content).prev();
@@ -249,7 +249,7 @@
                                             if ($('#chkAnexos').is(':checked')) {
                                                 var qteAnexos = $('#txtQtdAnexos').val();
                                                 for (var i = 0; i < qteAnexos; i++) {
-                                                    if ($('#fleAnexo' + (i+1))[0].files.length == 0) {
+                                                    if ($('#fleAnexo' + (i + 1))[0].files.length == 0) {
                                                         ok = false;
                                                     }
                                                 }
@@ -278,7 +278,7 @@
                                             var ok = true;
                                             var qteAnexos = $('#txtQtdAnexos').val();
                                             for (var i = 0; i < qteAnexos; i++) {
-                                                if ($('#fleAnexo' + (i+1))[0].files.length == 0) {
+                                                if ($('#fleAnexo' + (i + 1))[0].files.length == 0) {
                                                     ok = false;
                                                 }
                                             }
@@ -405,56 +405,101 @@
             $('.ui.confirmar.modal div').popup();
         }
 
-        //LEMBRAR DE ATIVAR O MODAL DE TERMO!!!
+        function ToShortString(str, length) {
+            var text = '';
 
-        function abrirPesquisaModal()
-        {
+            if (str.length > length) {
+                text = str.substring(0, length);
+                var afterText = str.substring(length);
+                if (afterText.indexOf(' ') > -1) {
+                    afterText = afterText.substring(0, afterText.indexOf(' '));
+                    afterText = afterText + '...';
+                }
+                text = text + afterText;
+            }
+            else {
+                text = str;
+            }
+
+            return text;
+        }
+
+        function abrirPesquisaModal() {
             $('.ui.pesquisa.modal').modal('show');
         }
         function palavraChave(palavras) {
-            var palavraChave = palavras.toLowerCase();
-            if (palavraChave.indexOf(";") > -1) {
-                var palavras = palavraChave.split(';');
-                $('.ui.pesquisa.modal .pesquisar').addClass('loading');
-                $.ajax({
-                    type: 'POST',
-                    data: { "palavras": palavras },
-                    url: '@Url.RouteUrl("PalavrasChave")',
-                    success: function (data) {
-                        $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
-                        $('#divQuestoes').html('');
-                        for (var i = 0; i < data.length; i++)
-                        {
-                            $('#divQuestoes').append('<p>' + data[i].Enunciado + '</p>');
-                        }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert(thrownError.error);
-                        //jsnQuestoesFiltro = null;
-                    }
-                });
+            palavras = palavras.toLowerCase();
+
+            if (palavras.indexOf(";") > -1) {
+                palavras = palavras.split(';');
+            } else {
+                palavras[0] = palavras;
             }
+            $('.ui.pesquisa.modal .pesquisar').addClass('loading');
+            $.ajax({
+                type: 'POST',
+                data: { "palavras": palavras },
+                url: '@Url.RouteUrl("PalavrasChave")',
+                success: function (data) {
+                    $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
+                    $('#divQuestoes').html('');
+                    if (data.length != 0) {
+                        $('#divQuestoes').append('<span class="header">' + data.length + ' Resultado(s)</span>');
+                        for (var i = 0; i < data.length; i++) {
+                            $('#divQuestoes').append('\
+                        <div class="item">\
+                            <div class="content">\
+                                <a href="/Historico/Questao/' + data[i].CodQuestao + '" class="header">' + ToShortString(data[i].Enunciado, 140) + '</a>\
+                                <div class="description ui labels">\
+                                    <span class="ui label">' + data[i].Disciplina + '</span>\
+                                    <span class="ui label">' + data[i].Dificuldade + '</span>\
+                                    <span class="ui label">' + data[i].TipoQuestao + '</span>\
+                                    <span class="ui label">' + data[i].Professor + '</span>\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+                        }
+                    } else {
+                        $('#divQuestoes').append('\
+                        <div class="item">\
+                            <div class="content">\
+                            <a class="header">Nenhuma questão foi encontrada</a>\
+                            </div>\
+                        </div>\
+                        ');
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Erro na pesquisa');
+                }
+            });
         }
-        abrirPesquisaModal();
+
+        $('.ui.top.label').popup({
+            title: 'Pesquisar questão',
+            content: 'Clique aqui para descobrir se sua questão já foi cadastrada',
+            duration:100
+        });
     </script>
 }
 
-<div class="ui form pesquisa modal">
+<div class="ui form scrolling pesquisa modal">
     <div class="header">Pesquisar Questões com as Tags</div>
     <div class="content">
         <div class="ui field">
             <label>Digite as Palavras-chave (separados por ';')</label>
             <div class="ui action input">
                 <input id="txtPalavraChave" type="text" class="ui input text" placeholder="Palavras-chave..." />
-                <div tabindex="0" class="ui button pesquisar" onclick=" palavraChave(txtPalavraChave.value)">Pesquisar</div>
+                <button tabindex="0" class="ui button pesquisar" onclick=" palavraChave(txtPalavraChave.value)">Pesquisar</button>
             </div>
         </div>
+        <div id="divQuestoes" class="ui very relaxed items">
+        </div>
     </div>
-    <div id="divQuestoes">
-
-    </div>
+    
     <div class="actions">
-        <a href="/Dashboard" class="ui cancel button">Cancelar</a>
+        <a class="ui cancel button">Cancelar</a>
     </div>
 </div>
 
@@ -474,7 +519,7 @@
     </div>
     <div class="actions">
         <a href="/Dashboard" class="ui cancel button">Cancelar</a>
-        <div class="ui approve button">Sim, continuar</div>
+        <div class="ui approve button" onclick="$('.ui.top.label').popup('show');" >Sim, continuar</div>
     </div>
 </div>
 
@@ -513,7 +558,7 @@
     </div>
 </div>
 
-<a class="ui attached top right label" onclick="abrirPesquisaModal()"><i class="ui search icon"></i>Pesquisar</a>  
+<a class="ui attached top right label"  onclick="abrirPesquisaModal()"><i class="ui search icon"></i>Pesquisar</a>  
 <h2>@ViewBag.Title</h2>
 
 <form id="frmQuestao" action="/Dashboard/Questao/Confirmar" method="post" class="ui form" enctype="multipart/form-data">
