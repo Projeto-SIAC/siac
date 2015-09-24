@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -340,26 +341,43 @@ namespace SIAC.Web.Models
             return QuestoesTemas;
         }
 
-        public static List<Questao> ListarPorPalavraChave(string matrProfessor, string[] palavraChave)
+        //MÉTODO PARA USAR EM AJAX 
+        public static List<Questao> ListarPorPalavraChave(string[] palavraChave)
         {
-            List<Questao> todas = ListarPorProfessor(matrProfessor);
+            List<Questao> todas = Questao.Listar();
             List<Questao> retorno = new List<Questao>();
+            List<string> tags = new List<string>();
+            string tagsReservadas = "ão das do da porque que quais porquê quê por abaixo porém mas a e o as os para cujo quais";
 
-            foreach (Questao questao in todas)
+            for (int i = 0; i < palavraChave.Length; i++)
             {
-                foreach (string palavra in palavraChave)
+                if (!string.IsNullOrWhiteSpace(palavraChave[i]) && !tagsReservadas.Contains(palavraChave[i]))
                 {
-                    if(questao.Enunciado.ToLower().Contains(palavra))
-                    {
-                        retorno.Add(questao);
-                        break;
-                    }
+                    tags.Add(palavraChave[i].Trim());
                 }
-                //todas.Remove(questao);
             }
-
+            if (tags.Count != 0)
+            {
+                int contador = 0;
+                foreach (Questao questao in todas)
+                {
+                    foreach (string palavra in tags)
+                    {
+                        if (questao.Enunciado.ToLower().Contains(palavra)) contador++;
+                    }
+                    if (contador == tags.Count)
+                        retorno.Insert(0, questao);
+                    else if (contador == 0) { }
+                    else retorno.Add(questao);
+                    contador = 0;
+                }
+            }
             return retorno;
+        }
 
+        public static List<Questao> Listar()
+        {
+            return contexto.Questao.ToList();
         }
     }
 }

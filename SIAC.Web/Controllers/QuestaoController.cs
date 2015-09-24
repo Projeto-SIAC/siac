@@ -68,19 +68,16 @@ namespace SIAC.Web.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PalavrasChave(string[] palavras)
         {
-            var resultado = Questao.ListarPorPalavraChave(Session["UsuarioMatricula"].ToString(), palavras);
-            var result = (from q in resultado select new Questao()
+            var resultado = Questao.ListarPorPalavraChave(palavras);
+            var result = (from q in resultado select new
             {
                 CodQuestao = q.CodQuestao,
-                CodDificuldade = q.CodDificuldade,
+                Dificuldade = q.Dificuldade.Descricao,
+                Disciplina = q.QuestaoTema.First().Tema.Disciplina.Descricao,
                 Enunciado = q.Enunciado,
-                Comentario = q.Comentario,
-                CodTipoQuestao = q.CodTipoQuestao,
-                CodProfessor = q.CodProfessor,
-                ChaveDeResposta = q.ChaveDeResposta,
-                DtCadastro = q.DtCadastro,
-                DtUltimoUso = q.DtUltimoUso,
-                Objetivo = q.Objetivo
+                TipoQuestao = q.TipoQuestao.Descricao,
+                Professor = q.Professor.Usuario.PessoaFisica.Nome,
+                DtCadastro = q.DtCadastro.ToBrazilianString()
             });
             return Json(result, JsonRequestBehavior.AllowGet);
         }
