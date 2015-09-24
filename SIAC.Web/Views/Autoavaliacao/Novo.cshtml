@@ -1,36 +1,44 @@
 ﻿
 @{
-    ViewBag.Title = "Realizar autoavaliacao";
+    ViewBag.Title = "Realizar autoavaliação";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<a href="~/Dashboard/Autoavaliacao/Gerar" class="ui right floated button">Gerar</a>
 
 @if (ViewBag.Geradas.Count > 0)
 {
-    <h2>@ViewBag.Title</h2>
-    <div class="ui divided items">
+    <h2>@ViewBag.Title<a href="~/Dashboard/Autoavaliacao/Gerar" class="ui right floated button">Gerar</a></h2>
+    <div class="ui cards">
         @foreach (var auto in ViewBag.Geradas)
         {
-            <div class="item">
+            <div class="card">
                 <div class="content">
                     <a href="/Dashboard/Autoavaliacao/Realizar/@(((SIAC.Web.Models.AvalAuto)auto).Avaliacao.CodAvaliacao())" class="header">@(((SIAC.Web.Models.Avaliacao)auto.Avaliacao).CodAvaliacao())</a>
                     <div class="meta">
-                        <span>@(((SIAC.Web.Models.AvalAuto)auto).Avaliacao.DtCadastro.ToBrazilianString())</span>
+                        <span>@(((SIAC.Web.Models.AvalAuto)auto).Avaliacao.DtCadastro.ToElapsedTimeString())</span>
                     </div>
-                    <div class="extra">
-                        <a href="/Dashboard/Autoavaliacao/Realizar/@(((SIAC.Web.Models.AvalAuto)auto).Avaliacao.CodAvaliacao())" class="ui right floated button">
-                            Realizar
-                        </a>
-                        <div class="ui labels">
-                            <div class="ui label">Dificuldade<div class="detail">@auto.Dificuldade.Descricao</div></div>
-                            @foreach (var disc in ((SIAC.Web.Models.AvalAuto)auto).Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+
+                    <div class="description">
+                        <p>
+                            <b>Dificuldade</b>: @auto.Dificuldade.Descricao
+                        </p>
+                        <p>
+                            <b>Quantidade de Questões</b>: @(((SIAC.Web.Models.AvalAuto)auto).Avaliacao.QteQuestoes())
+                        </p>
+                    </div>
+                    
+                </div>
+                <div class="extra content">
+                    <div class="ui labels">
+                        @foreach (var disc in ((SIAC.Web.Models.AvalAuto)auto).Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
                     {
-                                <div class="ui tag label">@disc.Descricao</div>
-                            }
-                        </div>
+                            <div class="ui tag label">@disc.Descricao</div>
+                        }
                     </div>
                 </div>
+                <a href="/Dashboard/Autoavaliacao/Realizar/@(((SIAC.Web.Models.AvalAuto)auto).Avaliacao.CodAvaliacao())" class="ui bottom attached button">
+                    Realizar
+                </a>
             </div>
         }
     </div>

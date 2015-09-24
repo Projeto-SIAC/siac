@@ -3,20 +3,27 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using SIAC.Web.Models
 
 @section Styles {
     <style>
-        .dashmenu > div {
+        .dashmenu > div.row > div.column {
             padding: 1.5em 0.5em;
         }
     </style>
 }
 
+@section Scripts {
+    <script>
+        $('a[href]').on('click', function () {
+            $('.dashmenu').parent().addClass('loading');
+        });
+    </script>    
+}
+
 <h2>@ViewBag.Title</h2>
 
-<div class="ui stackable grid">
-    <div class="stackable doubling four columns centered row dashmenu">
+<div class="ui stackable grid dashmenu">
+    <div class="stackable doubling four columns centered row">
         <div class="column aligned center">
             <a href="/Dashboard/Autoavaliacao/Realizar">
                 <div class="ui icon header">

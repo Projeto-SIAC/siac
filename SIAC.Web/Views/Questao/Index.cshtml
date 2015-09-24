@@ -34,6 +34,9 @@
                     else if (jsnQuestoesGeral[i].Dificuldade.toLowerCase().indexOf(strTexto) > -1) {
                         jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
                     }
+                    else if (jsnQuestoesGeral[i].DtCadastro.toLowerCase().indexOf(strTexto) > -1) {
+                        jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
+                    }
                     else {
                         for (var j = 0; j < jsnQuestoesGeral[i].Temas.length; j++) {
                             if (jsnQuestoesGeral[i].Temas[j].toLowerCase().indexOf(strTexto) > -1) {
@@ -126,8 +129,8 @@
             }
         </script>
     }
-    <a class="ui right floated button" href="/Dashboard/Questao/Cadastrar">Cadastrar</a>
-    <h2>@ViewBag.Title</h2>
+    
+    <h2>@ViewBag.Title <a class="ui right floated button" href="/Dashboard/Questao/Cadastrar">Cadastrar</a></h2>
         <div class="ui fluid icon input">
             <input type="text" placeholder="Filtrar..." onkeyup="Filtro($(this).val())" />
             <i class="search icon"></i>

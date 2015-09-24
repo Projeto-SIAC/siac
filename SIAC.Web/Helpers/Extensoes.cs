@@ -180,7 +180,7 @@ namespace SIAC.Web
 
 
         // List<AvaliacaoTema>
-        public static int QteQuestoes(this List<AvaliacaoTema> lstAvaliacaoTema, int codDisciplina, int codTipoQuestao)
+        public static int QteQuestoesPorTipo(this List<AvaliacaoTema> lstAvaliacaoTema, int codDisciplina, int codTipoQuestao)
         {
             int qteQuestoes = 0;
 
@@ -214,7 +214,6 @@ namespace SIAC.Web
         // Avaliacao
         public static string CodAvaliacao(this Avaliacao avaliacao)
         {
-            //@Model.Avaliacao.TipoAvaliacao.Sigla@Model.Avaliacao.Ano@Model.Avaliacao.Semestre@Model.Avaliacao.NumIdentificador.ToString("0000")
             string codAvalicao = String.Empty;
 
             codAvalicao += avaliacao.TipoAvaliacao.Sigla;
@@ -223,6 +222,18 @@ namespace SIAC.Web
             codAvalicao += avaliacao.NumIdentificador.ToString("0000");
 
             return codAvalicao;
+        }
+
+        public static int QteQuestoes(this Avaliacao avaliacao)
+        {
+            int qte = 0;
+
+            foreach (var avalTema in avaliacao.AvaliacaoTema)
+            {
+                qte += avalTema.AvalTemaQuestao.Count;
+            }
+
+            return qte;
         }
     }
 }

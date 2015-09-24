@@ -1,46 +1,130 @@
-﻿@model List<SIAC.Web.Models.AvalAuto>
+﻿
 @{
-    ViewBag.Title = "Minhas autoavaliações";
+    ViewBag.Title = "Minhas Autoavaliações";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<a class="ui right floated button" href="/Dashboard/Autoavaliacao/Gerar">Gerar</a>
-<h2>@ViewBag.Title</h2>
+@section Scripts {
+    <script>
+        $('.ui.cards').parent().addClass('loading');
+        var jsnAutosGeral;
+        var jsnAutosFiltro;
 
-<div class="ui divided items">
-    @foreach (var auto in Model)
-    {
-        <div class="item">
-            <div class="content">
-                <a href="/Dashboard/Autoavaliacao/Detalhe/@(auto.Avaliacao.CodAvaliacao())" class="header">@(auto.Avaliacao.CodAvaliacao())</a>
-                <div class="meta">
-                    <span title="@auto.Avaliacao.DtCadastro.ToBrazilianString()">@(auto.Avaliacao.DtCadastro.ToElapsedTimeString())</span>
-                </div>
-                <div class="extra">
-                    @if (auto.Avaliacao.AvalPessoaResultado.Count == 0)
-                    {
-                        <a href="/Dashboard/Autoavaliacao/Realizar/@(auto.Avaliacao.CodAvaliacao())" class="ui right floated button">
-                            Realizar
-                        </a>
-                    }
-                    else
-                    {
-                        <a href="/Dashboard/Autoavaliacao/Detalhe/@(auto.Avaliacao.CodAvaliacao())" class="ui right floated button">
-                            Desempenho
-                        </a>
-                    }
-                    <div class="ui labels">
-                        <div class="ui label">Dificuldade<div class="detail">@auto.Dificuldade.Descricao</div></div>
-                        @foreach (var disc in auto.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
-                        {
-                            <div class="ui tag label">@disc.Descricao</div>
+        $.getJSON(
+            '/Historico/Autoavaliacao/Minhas',
+            function (autos) {
+                jsnAutosGeral = autos;
+                jsnAutosFiltro = autos;
+                MinhasAutos();
+            }
+        );
+
+        function Filtro(strTexto) {
+            strTexto = strTexto.toLowerCase();
+            jsnAutosFiltro = [];
+            for (var i = 0; i < jsnAutosGeral.length; i++) {
+                if (jsnAutosGeral[i].CodAvaliacao.toLowerCase().indexOf(strTexto) > -1) {
+                    jsnAutosFiltro.push(jsnAutosGeral[i]);
+                }
+                else if (jsnAutosGeral[i].DtCadastro.toLowerCase().indexOf(strTexto) > -1) {
+                    jsnAutosFiltro.push(jsnAutosGeral[i]);
+                }
+                else if (jsnAutosGeral[i].Dificuldade.toLowerCase().indexOf(strTexto) > -1) {
+                    jsnAutosFiltro.push(jsnAutosGeral[i]);
+                }
+                else {
+                    for (var j = 0; j < jsnAutosGeral[i].Disciplinas.length; j++) {
+                        if (jsnAutosGeral[i].Disciplinas[j].toLowerCase().indexOf(strTexto) > -1) {
+                            jsnAutosFiltro.push(jsnAutosGeral[i]);
+                            break;
                         }
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
+                    }
+                }
+            }
+            MinhasAutos();
+        }
+
+        function MinhasAutos(pagina) {
+            $('.ui.cards').parent().addClass('loading');
+            var qtePorPagina = 9;
+            var qtePaginacao = 7;
+            var length = jsnAutosFiltro.length;
+            if (pagina == null) {
+                pagina = 1;
+            }
+            var count = pagina * qtePorPagina;
+            if (count > length) {
+                count = length;
+            }
+            $('.ui.cards').html('');
+            for (var i = ((qtePorPagina * pagina) - qtePorPagina) ; i < count; i++) {
+                $card = $('<div class="card"></div>').html('\
+                            <div class="content">\
+                                <a href="/Historico/Autoavaliacao/Detalhe/'+jsnAutosFiltro[i].CodAvaliacao+'" class="header">'+jsnAutosFiltro[i].CodAvaliacao+'</a>\
+                                <div class="meta">\
+                                    <span title="'+jsnAutosFiltro[i].DtCadastro+'">'+jsnAutosFiltro[i].DtCadastroTempo+'</span>\
+                                </div>\
+                                <div class="description">\
+                                    <p><b>Dificuldade</b>: '+jsnAutosFiltro[i].Dificuldade+'</p>\
+                                    <p><b>Quantidade de Questões</b>: '+jsnAutosFiltro[i].QteQuestoes+'</p>\
+                                </div>\
+                            </div>\
+                        ');
+                $labelsDisc = $('<div class="ui labels"></div>');
+                for (var j = 0; j < jsnAutosFiltro[i].Disciplinas.length; j++) {
+                    $labelsDisc.append('<div class="ui tag label">'+jsnAutosFiltro[i].Disciplinas[j]+'</div>');
+                }
+                $extraContent = $('<div class="extra content"></div>').append($labelsDisc);
+                $card.append($extraContent);
+                if (jsnAutosFiltro[i].FlagPendente == true) {
+                    $card.append('<span class="ui attached top right label"><i class="clock icon"></i>Pendente</span>');
+                    $card.append('<a href="/Dashboard/Autoavaliacao/Realizar/'+jsnAutosFiltro[i].CodAvaliacao+'" class="ui bottom attached button">Realizar</a>');
+                }
+                else {
+                    $card.append('<a href="/Historico/Autoavaliacao/Detalhe/'+jsnAutosFiltro[i].CodAvaliacao+'" class="ui bottom attached button">Desempenho</a>');
+                }
+                $('.ui.cards').append($card);
+            }
+            $('.ui.pagination.menu').html('');
+            var i = pagina - 3;
+            for (i; i <= (Math.ceil(length / qtePorPagina)) - 3 && $('.ui.pagination.menu .item').length < 5; i++) {
+                if (i < 1) {
+                    continue;
+                }
+                if (i == pagina) {
+                    $('.ui.pagination.menu').append('<a class="active item" onclick="MinhasAutos(' + i + ')">' + i + '</a>');
+                    continue;
+                }
+                $('.ui.pagination.menu').append('<a class="item" onclick="MinhasAutos(' + i + ')">' + i + '</a>');
+            }
+            if ($('.ui.pagination.menu .item').length < 5) {
+                for (i; $('.ui.pagination.menu .item').length < 5 && i <= (Math.ceil(length / qtePorPagina)) ; i++) {
+                    if (i < 1) {
+                        continue;
+                    }
+                    if (i == pagina) {
+                        $('.ui.pagination.menu').append('<a class="active item" onclick="MinhasAutos(' + i + ')">' + i + '</a>');
+                        continue;
+                    }
+                    $('.ui.pagination.menu').append('<a class="item" onclick="MinhasAutos(' + i + ')">' + i + '</a>');
+                }
+                if (pagina == (Math.ceil(length / qtePorPagina))) {
+                    if (!((i - 5) < 1)) {
+                        $('.ui.pagination.menu').prepend('<a class="item" onclick="MinhasAutos(' + (i - 5) + ')">' + (i - 5) + '</a>');
+                    }
+                }
+            }
+            $('.ui.cards').parent().removeClass('loading');
+        }
+    </script>    
+}
+
+<h2>@ViewBag.Title <a class="ui right floated button" href="/Dashboard/Autoavaliacao/Gerar">Gerar</a></h2>
+<div class="ui fluid icon input">
+    <input type="text" placeholder="Filtrar..." onkeyup="Filtro($(this).val())" />
+    <i class="search icon"></i>
 </div>
-
-
-
+<br />
+<div class="ui three stackable cards"></div>
+<br />
+<div class="ui pagination menu"></div>

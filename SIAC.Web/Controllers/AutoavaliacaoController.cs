@@ -34,12 +34,29 @@ namespace SIAC.Web.Controllers
             {
                 return Redirect("~/Historico/Autoavaliacao");
             }
+            return View();
+        }
+
+        // GET: Autoavaliacao/Minhas
+        public ActionResult Minhas()
+        {
             int codPessoaFisica = Usuario.ObterPessoaFisica(Session["UsuarioMatricula"].ToString());
-            List<AvalAuto> model = (from avalAuto in DataContextSIAC.GetInstance().AvalAuto
-                                    where avalAuto.CodPessoaFisica == codPessoaFisica
-                                    orderby avalAuto.Avaliacao.DtCadastro descending
-                                    select avalAuto).ToList();
-            return View(model);
+            var lstAutos = (from avalAuto in DataContextSIAC.GetInstance().AvalAuto
+                               where avalAuto.CodPessoaFisica == codPessoaFisica
+                               orderby avalAuto.Avaliacao.DtCadastro descending
+                               select avalAuto).ToList();
+            var result = from a in lstAutos
+                         select new
+                         {
+                             CodAvaliacao = a.Avaliacao.CodAvaliacao(),
+                             DtCadastro = a.Avaliacao.DtCadastro.ToBrazilianString(),
+                             DtCadastroTempo = a.Avaliacao.DtCadastro.ToElapsedTimeString(),
+                             Dificuldade = a.Dificuldade.Descricao,
+                             QteQuestoes = a.Avaliacao.QteQuestoes(),
+                             Disciplinas = a.Avaliacao.AvaliacaoTema.Select(at => at.Tema.Disciplina.Descricao).Distinct().ToList(),
+                             FlagPendente = a.Avaliacao.AvalPessoaResultado.Count > 0 ? false : true
+                         };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Autoavaliacao/Gerar
