@@ -236,16 +236,26 @@ namespace SIAC.Web
             return qte;
         }
 
-        public static List<Questao> Questao(this Avaliacao avaliacao)
+        public static List<Questao> EmbaralharQuestao(this Avaliacao avaliacao)
         {
             List<Questao> lstQuestao = new List<Models.Questao>();
+            List<Questao> lstQuestaoEmbalharada = new List<Questao>();
+            Random r = new Random();
 
             foreach (var avalTema in avaliacao.AvaliacaoTema)
             {
                 lstQuestao.AddRange(avalTema.AvalTemaQuestao.Select(a => a.QuestaoTema.Questao).ToList());
             }
 
-            return lstQuestao;
+            while (lstQuestao.Count > 0)
+            {
+                int i = r.Next(lstQuestao.Count);
+                Questao qst = lstQuestao.ElementAt(i);
+                lstQuestaoEmbalharada.Add(qst);
+                lstQuestao.Remove(qst);
+            }
+
+            return lstQuestaoEmbalharada;
         }
 
         // Questao
@@ -267,6 +277,23 @@ namespace SIAC.Web
             }
 
             return unica;
+        }
+
+        public static List<Alternativa> EmbaralharAlternativa(this Questao questao)
+        {
+            List<Alternativa> lstAlternativa = questao.Alternativa.ToList();
+            List<Alternativa> lstAlternativaEmbaralhada = new List<Alternativa>();
+            Random r = new Random();
+
+            while (lstAlternativaEmbaralhada.Count != questao.Alternativa.Count)
+            {
+                int i = r.Next(lstAlternativa.Count);
+                Alternativa alt = lstAlternativa.ElementAt(i);
+                lstAlternativaEmbaralhada.Add(alt);
+                lstAlternativa.Remove(alt);
+            }
+
+            return lstAlternativaEmbaralhada;
         }
     }
 }
