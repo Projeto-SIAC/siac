@@ -70,18 +70,74 @@
 
             modal.modal('show');
         }
-        function gabarito(codQuestao, resposta, obj) {
+        function gabarito(codQuestao, resposta, obj, multi) {
             $label = $('.ui.accordion').find('#txtCodQuestao[value="' + codQuestao + '"]').parent().find('.ui.label');
             if (resposta != '') {
                 $label.removeAttr('style');
                 if (obj) {
                     $label.html('Respondida');
-                    $label.append($('<div class="detail"></div>').text(resposta));
+                    if (multi) {
+                        // Continuar
+                        $detail = $('<div class="detail"></div>');
+                        $lstTitle = $('.ui.accordion > .title');
+                        for (var i = 0; i < $lstTitle.length; i++) {
+                            if ($lstTitle.eq(i).find('#txtCodQuestao').val() == codQuestao) {
+                                $lstCheckbox = $lstTitle.eq(i).next().find('input[type="checkbox"]');
+                                for (var j = 0; j < $lstCheckbox.lenght; j++) {
+                                    if($lstCheckbox.eq(j).is(':checked')) {
+                                        $detail.append($lstCheckbox.eq(j).next().find('b').text());
+                                    }
+                                    console.log($lstCheckbox.eq(j));
+                                }
+                            }
+                        }
+                        $label.append($detail);
+                    }
+                    else {
+                        $label.append($('<div class="detail"></div>').text(resposta));
+                    }
                 }
             }
             else {
                 $label.attr('style', 'display:none')
             }
+        }
+
+        function submitForm() {
+            var finalizada = true;
+            $lstTitle = $('.ui.accordion > .title');
+            for (var i = 0; i < $lstTitle.length; i++) {
+                var codQuestao = $lstTitle.eq(i).find('#txtCodQuestao').val();
+                var txtResposta = $lstTitle.eq(i).next().find('#txtResposta'+codQuestao).val();
+                if (txtResposta == '') {       
+                    finalizada = false;
+                    break;
+                }
+                else if (!txtResposta) {
+                    var umaCorreta = $lstTitle.eq(i).next().find('#txtUmaCorreta'+codQuestao).val();
+                    if (umaCorreta == 1) {
+                        if (!$lstTitle.eq(i).next().find('input[name="rdoResposta'+codQuestao+'"]').is(':checked')) {
+                            finalizada = false;
+                            break;
+                        }
+                    }
+                    else {
+                        var ok = false;
+                        $lstCheckbox = $lstTitle.eq(i).next().find('input[type="checkbox"]');
+                        for (var j = 0; j < $lstCheckbox.length; j++) {
+                            if($lstCheckbox.eq(j).is(':checked')) {
+                                ok = true;
+                                break;
+                            }
+                        }
+                        if (!ok) {
+                            finalizada = false;
+                            break;
+                        }
+                    }                    
+                }
+            }
+            console.log(finalizada);
         }
     </script>
 }
@@ -221,7 +277,6 @@
     <div class="description" style="text-align:center;"></div>
 </div>
 
-
 <div class="ui labels">
     <div class="ui label">
         Ínicio
@@ -264,13 +319,14 @@
                     {
                         var temUmaCorreta = lstQuestao[i].TemUmaCorreta();
                         <div class="grouped fields">
+                            <input id="txtUmaCorreta@(lstQuestao[i].CodQuestao)" type="text" value="@(temUmaCorreta ? "1" : "0")" hidden />
                             <label>Selecione a@(!temUmaCorreta ? "s" : "") alternativa@(!temUmaCorreta ? "s" : "")</label>
                             @{ var lstAlternativa = lstQuestao[i].EmbaralharAlternativa(); }
                             @for (int j = 0; j < lstAlternativa.Count; j++)
                             {
                                 <div class="field">
                                     <div class="ui @(temUmaCorreta ? "radio" : "") checkbox">
-                                        <input onchange="gabarito(@lstQuestao[i].CodQuestao,'@j.GetIndiceAlternativa()', true)" type="@(temUmaCorreta ? "radio" : "checkbox")" name="@( temUmaCorreta ? "rdoResposta" + lstQuestao[i].CodQuestao : "chkResposta"+lstQuestao[i].CodQuestao+"Alternativa"+lstAlternativa[i].CodOrdem)" @(temUmaCorreta ? "value=\""+@lstAlternativa[j].CodOrdem+"\"" : "")>
+                                        <input onchange="gabarito(@lstQuestao[i].CodQuestao,'@j.GetIndiceAlternativa()', true@(!temUmaCorreta ? ", true":""))" type="@(temUmaCorreta ? "radio" : "checkbox")" name="@( temUmaCorreta ? "rdoResposta" + lstQuestao[i].CodQuestao : "chkResposta"+lstQuestao[i].CodQuestao+"Alternativa"+lstAlternativa[i].CodOrdem)" @(temUmaCorreta ? "value="+@lstAlternativa[j].CodOrdem+"" : "")>
                                         <label><b>@j.GetIndiceAlternativa()</b>) @lstAlternativa[j].Enunciado</label>
                                     </div>
                                 </div>
