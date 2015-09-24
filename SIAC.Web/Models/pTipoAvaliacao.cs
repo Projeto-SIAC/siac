@@ -13,5 +13,10 @@ namespace SIAC.Web.Models
         {
             return contexto.TipoAvaliacao.FirstOrDefault(ta => ta.CodTipoAvaliacao == codTipoAvaliacao);
         }
+
+        public static TipoAvaliacao ListarPorSigla(string sigla)
+        {
+            return contexto.TipoAvaliacao.FirstOrDefault(ta => ta.Sigla == sigla);
+        }
     }
 }
