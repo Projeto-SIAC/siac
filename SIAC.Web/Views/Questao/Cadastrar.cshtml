@@ -444,7 +444,8 @@
                     $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
                     $('#divQuestoes').html('');
                     if (data.length != 0) {
-                        $('#divQuestoes').append('<span class="header">' + data.length + ' Resultado(s)</span>');
+                        $('#divQuestoes').append('<div class="ui label"> Resultado(s)<div class="detail">' + data.length + '</div></div>');
+                        //$('#divQuestoes').append('<a class="header">' + data.length + ' resultado(s)</a>');
                         for (var i = 0; i < data.length; i++) {
                             $('#divQuestoes').append('\
                         <div class="item">\
@@ -464,11 +465,12 @@
                         $('#divQuestoes').append('\
                         <div class="item">\
                             <div class="content">\
-                            <a class="header">Nenhuma questão foi encontrada</a>\
+                            <div class="header">Nenhuma questão foi encontrada</div>\
                             </div>\
                         </div>\
                         ');
                     }
+                    $('.ui.pesquisa.modal').modal('refresh');
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert('Erro na pesquisa');
@@ -476,24 +478,29 @@
             });
         }
 
-        $('.ui.top.label').popup({
+        $('#btnPesquisa').popup({
             title: 'Pesquisar questão',
             content: 'Clique aqui para descobrir se sua questão já foi cadastrada',
-            duration:100
+            duration: 100
         });
+
+        $('.ui.pesquisa.modal').modal();
     </script>
 }
 
-<div class="ui form scrolling pesquisa modal">
-    <div class="header">Pesquisar Questões com as Tags</div>
+<div class="ui pesquisa modal">
+    <i class="icon close"></i>
+    <div class="header">Pesquisar questão</div>
     <div class="content">
-        <div class="ui field">
-            <label>Digite as Palavras-chave (separados por ';')</label>
-            <div class="ui action input">
-                <input id="txtPalavraChave" type="text" class="ui input text" placeholder="Palavras-chave..." />
-                <button tabindex="0" class="ui button pesquisar" onclick=" palavraChave(txtPalavraChave.value)">Pesquisar</button>
+        <form class="ui form">
+            <div class="field">
+                <label>Palavras-chave (separados por ";")</label>
+                <div class="ui action input">
+                    <input id="txtPalavraChave" type="text" class="ui input text" placeholder="Palavras-chave..." />
+                    <button tabindex="0" class="ui button pesquisar" onclick="palavraChave(txtPalavraChave.value); return false;">Pesquisar</button>
+                </div>
             </div>
-        </div>
+        </form>
         <div id="divQuestoes" class="ui very relaxed items">
         </div>
     </div>
@@ -519,7 +526,7 @@
     </div>
     <div class="actions">
         <a href="/Dashboard" class="ui cancel button">Cancelar</a>
-        <div class="ui approve button" onclick="$('.ui.top.label').popup('show');" >Sim, continuar</div>
+        <div class="ui approve button" onclick="$('#btnPesquisa').popup('show');" >Sim, continuar</div>
     </div>
 </div>
 
@@ -559,7 +566,7 @@
 </div>
  
 
-<h2>@ViewBag.Title <a class="ui right floated button" onclick="abrirPesquisaModal()"><i class="search icon"></i>Pesquisar</a></h2>
+<h2>@ViewBag.Title <a id="btnPesquisa" class="ui right floated button" onclick="abrirPesquisaModal()"><i class="search icon"></i>Pesquisar</a></h2>
  
 <form id="frmQuestao" action="/Dashboard/Questao/Confirmar" method="post" class="ui form" enctype="multipart/form-data">
     <div class="ui error message">
