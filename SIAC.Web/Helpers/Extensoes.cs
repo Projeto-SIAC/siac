@@ -74,7 +74,7 @@ namespace SIAC.Web
         public static string GetIndiceQuestao(this int i)
         {
             i++;
-            int tipo = DataContextSIAC.GetInstance().Parametro.ElementAt(0).NumeracaoQuestao;
+            int tipo = DataContextSIAC.GetInstance().Parametro.First().NumeracaoQuestao;
 
             switch (tipo)
             {
@@ -234,6 +234,39 @@ namespace SIAC.Web
             }
 
             return qte;
+        }
+
+        public static List<Questao> Questao(this Avaliacao avaliacao)
+        {
+            List<Questao> lstQuestao = new List<Models.Questao>();
+
+            foreach (var avalTema in avaliacao.AvaliacaoTema)
+            {
+                lstQuestao.AddRange(avalTema.AvalTemaQuestao.Select(a => a.QuestaoTema.Questao).ToList());
+            }
+
+            return lstQuestao;
+        }
+
+        // Questao
+        public static bool TemUmaCorreta(this Questao questao)
+        {
+            bool unica = false;
+
+            foreach (var alt in questao.Alternativa)
+            {
+                if (alt.FlagGabarito.HasValue && alt.FlagGabarito.Value)
+                {
+                    if (unica == true)
+                    {
+                        unica = false;
+                        break;
+                    }
+                    unica = true;
+                }
+            }
+
+            return unica;
         }
     }
 }

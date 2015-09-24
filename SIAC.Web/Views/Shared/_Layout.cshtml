@@ -152,11 +152,32 @@
     <div class="ui lero icon button" onmouseover="selecionarFocado()" onclick="leroLero()" style="position: fixed; right:.5em; bottom:.5em; z-index: 1003"><i class="icon write"></i></div>
     @Scripts.Render("~/bundles/js")
     @RenderSection("scripts", required: false)
-    <script>     
+    <script>    
+        $('a[href]').on('click', function () { $('.ui.grid .thirteen.wide.column > .ui.segment').addClass('loading') });
+
         var focado;
         
         function selecionarFocado() {
             focado = $(':focus');
+        }
+
+        function ToShortString(str, length) {
+            var text = '';
+
+            if (str.length > length) {
+                text = str.substring(0, length);
+                var afterText = str.substring(length);
+                if (afterText.indexOf(' ') > -1) {
+                    afterText = afterText.substring(0, afterText.indexOf(' '));
+                    afterText = afterText + '...';
+                }
+                text = text + afterText;
+            }
+            else {
+                text = str;
+            }
+
+            return text;
         }
            
         function leroLero() {

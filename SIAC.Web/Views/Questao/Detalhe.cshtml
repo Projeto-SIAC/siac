@@ -24,8 +24,8 @@
         function expandirImagem(card) {
             card = $(card);
             src = card.find('img').attr('src');
-            legenda = card.find('.description').text();
-            fonte = card.find('.extra.content').text();
+            legenda = card.find('.header').text();
+            fonte = card.find('.description').text();
             modal = $('.ui.modal');
 
             modal.find('.header').text(legenda);
@@ -39,7 +39,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<div class="ui basic modal">
+<div class="ui anexo basic modal">
     <i class="close icon"></i>
     <div class="ui centered header"></div>
     <div class="image content">
@@ -129,13 +129,13 @@
                                     <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo,0, anexo.Anexo.Length)" />
                                 </div>
                                 <div class="content">
-                                    <div class="description">
+                                    <div class="header">
                                         @anexo.Legenda
                                     </div>
-                                </div>
-                                <div class="extra content">
-                                    @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte não informada")
-                                </div>
+                                    <div class="description">
+                                        @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte não informada")
+                                    </div>
+                                </div> 
                             </a>
                             break;
                         default:
