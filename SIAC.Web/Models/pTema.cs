@@ -28,7 +28,7 @@ namespace SIAC.Web.Models
 
         public static List<Tema> ListarPorDisciplinaTemQuestao(int codDisciplina)
         {
-            return contexto.QuestaoTema.Where(qt => qt.CodDisciplina == codDisciplina).OrderBy(qt => qt.Tema.Descricao).Select(qt=>qt.Tema).Distinct().ToList();
+            return contexto.QuestaoTema.Where(qt => qt.CodDisciplina == codDisciplina).Select(qt=>qt.Tema).Distinct().OrderBy(t => t.Descricao).ToList();
         }
     }
 }
