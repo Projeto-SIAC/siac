@@ -95,18 +95,19 @@ namespace SIAC.Web.Models
 
                     if (temp.Count != 0 && QuestoesTemas.Count < qteObj)
                     {
-                        List<QuestaoTema> lstideal = (from qt in temp where qt.Questao.CodDificuldade == dificulDisc select qt).ToList();
-
-                        if(lstideal.Count != 0)
+                        for (int i = dificulDisc; i >= 1; i--)
                         {
-                            temp = lstideal;
+                            List<QuestaoTema> lstideal = (from qt in temp where qt.Questao.CodDificuldade == i select qt).ToList();
+
+                            if (lstideal.Count != 0)
+                            {
+                                int random = new Random().Next(0, lstideal.Count);
+
+                                QuestoesTemas.Add(lstideal.ElementAtOrDefault(random));
+                                temp.Remove(lstideal.ElementAtOrDefault(random));
+                                break;
+                            }
                         }
-
-                        int random = new Random().Next(0, temp.Count);
-
-                        QuestoesTemas.Add(temp.ElementAtOrDefault(random));
-                        temp.RemoveAt(random);
-
                         QuestoesTotal.AddRange(temp);
                     }
                 }
@@ -238,7 +239,24 @@ namespace SIAC.Web.Models
                                               where qt.Questao.CodTipoQuestao == 2 && qt.Questao.CodDificuldade <= dificulDisc && qt.CodDisciplina == codDisciplina && qt.CodTema == codTema
                                               select qt).ToList();
 
-                    QuestoesTotal.AddRange(temp);
+                    if (temp.Count != 0 && qteDiscuResultado < qteDiscu)
+                    {
+                        for (int i = dificulDisc; i >= 1; i--)
+                        {
+                            List<QuestaoTema> lstideal = (from qt in temp where qt.Questao.CodDificuldade == i select qt).ToList();
+
+                            if (lstideal.Count != 0)
+                            {
+                                int random = new Random().Next(0, lstideal.Count);
+
+                                QuestoesTemas.Add(lstideal.ElementAtOrDefault(random));
+                                qteDiscuResultado++;
+                                temp.Remove(lstideal.ElementAtOrDefault(random));
+                                break;
+                            }
+                        }
+                        QuestoesTotal.AddRange(temp);
+                    }
                 }
 
                 for (int i = dificulDisc; i >= 1 && qteDiscuResultado < qteDiscu; i--)
