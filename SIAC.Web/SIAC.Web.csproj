@@ -441,6 +441,7 @@
     </Compile>
     <Compile Include="Models\pAvalAuto.cs" />
     <Compile Include="Models\pAvaliacao.cs" />
+    <Compile Include="Models\pAvalPessoaResultado.cs" />
     <Compile Include="Models\pCategoria.cs" />
     <Compile Include="Models\pDificuldade.cs" />
     <Compile Include="Models\pDisciplina.cs" />
