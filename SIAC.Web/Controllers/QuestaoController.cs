@@ -21,11 +21,9 @@ namespace SIAC.Web.Controllers
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
             else if (!(bool)Session["Autenticado"])
-            //if (!Usuario.SAutenticado)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
-            //else if (Usuario.SCategoriaCodigo != 2)
             else if ((int)Session["UsuarioCategoriaCodigo"] != 2)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
@@ -40,7 +38,6 @@ namespace SIAC.Web.Controllers
             {
                 return Redirect("~/Historico/Questao");
             }
-            //List<Questao> model = Questao.ListarPorProfessor(Usuario.SMatricula);
 
             return View();
         }
@@ -85,7 +82,6 @@ namespace SIAC.Web.Controllers
         // GET: Questao/Cadastrar
         public ActionResult Cadastrar()
         {
-            //var dc = DataContextSIAC.GetInstance();
             ViewBag.Termo = Parametro.Obter().TermoResponsabilidade;
             ViewBag.Disciplinas = Professor.ObterDisciplinas(Session["UsuarioMatricula"].ToString());
             ViewBag.Tipos = TipoQuestao.ListarOrdenadamente();
@@ -98,11 +94,9 @@ namespace SIAC.Web.Controllers
         [HttpPost]
         public ActionResult Confirmar(FormCollection formCollection)
         {
-            //var dc = DataContextSIAC.GetInstance();
             Questao questao = new Questao();
 
             questao.Professor = Professor.ListarPorMatricula(Session["UsuarioMatricula"].ToString());
-            //questao.Professor = Professor.ListarPorMatricula(Usuario.SMatricula);
 
             questao.CodProfessor = questao.Professor.CodProfessor;
 
