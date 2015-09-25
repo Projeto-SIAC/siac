@@ -172,7 +172,7 @@ namespace SIAC.Web.Controllers
                 AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
                 avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
                 avalPessoaResultado.HoraTermino = DateTime.Now;
-                auto.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
+                avalPessoaResultado.QteAcertoObj = 0;
 
                 foreach (var avaliacaoTema in auto.Avaliacao.AvaliacaoTema)
                 {
@@ -183,6 +183,10 @@ namespace SIAC.Web.Controllers
                         if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1)
                         {
                             avalQuesPessoaResposta.RespAlternativa = int.Parse(form["rdoResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]);
+                            if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q=> q.FlagGabarito.HasValue && q.FlagGabarito.Value).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
+                            {
+                                avalPessoaResultado.QteAcertoObj++;
+                            }
                         }
                         else
                         {
@@ -190,7 +194,11 @@ namespace SIAC.Web.Controllers
                         }
                         avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
                     }
-                }                
+                }
+
+                auto.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
+
+                //DataContextSIAC.GetInstance().SaveChanges();        
 
                 ViewBag.Form = form;
                 return View(auto);

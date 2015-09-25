@@ -7,7 +7,9 @@
 
 <h2>@ViewBag.Title</h2>
 
-<table class="ui table">
+<div class="ui label">Quantidade de acertos (objetiva)<div class="detail">@Model.Avaliacao.AvalPessoaResultado.First().QteAcertoObj</div></div>
+
+<table class="ui table" hidden>
     <thead>
         <tr>
             <th>Key</th>
