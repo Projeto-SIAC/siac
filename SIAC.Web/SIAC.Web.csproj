@@ -576,6 +576,7 @@
     <Content Include="Views\Autoavaliacao\Confirmar.cshtml" />
     <Content Include="Views\Questao\Editar.cshtml" />
     <Content Include="Views\Autoavaliacao\Novo.cshtml" />
+    <Content Include="Views\Autoavaliacao\Resultado.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

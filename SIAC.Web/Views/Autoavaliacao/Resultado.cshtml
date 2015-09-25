@@ -1,0 +1,26 @@
+﻿@using SIAC.Web.Models
+@model AvalAuto
+@{
+    ViewBag.Title = "Resultado "+Model.Avaliacao.CodAvaliacao();
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="ui table">
+    <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var key in ViewBag.Form.Keys)
+        {
+            <tr>
+                <td>@key</td>
+                <td>@ViewBag.Form[key]</td>
+            </tr>
+        }
+    </tbody>
+</table>

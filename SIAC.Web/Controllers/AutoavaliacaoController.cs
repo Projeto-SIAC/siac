@@ -65,7 +65,7 @@ namespace SIAC.Web.Controllers
             return View();
         }
 
-        // POST: Autoavaliacao/Realizar
+        // POST: Autoavaliacao/Confirmar
         [HttpPost]
         public ActionResult Confirmar(FormCollection formCollection)
         {
@@ -147,6 +147,7 @@ namespace SIAC.Web.Controllers
         }
 
         // GET: Autoavaliacao/Realizar/AUTO201520001
+        [HttpGet]
         public ActionResult Realizar(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))
@@ -155,6 +156,45 @@ namespace SIAC.Web.Controllers
                 return View(auto);
             }
             int codPessoaFisica = Usuario.ObterPessoaFisica(Session["UsuarioMatricula"].ToString());
+            ViewBag.Geradas = AvalAuto.ListarNaoRealizadaPorPessoa(codPessoaFisica);
+            return View("Novo");
+        }
+
+        // POST: Autoavaliacao/Resultado/AUTO201520001
+        [HttpPost]
+        public ActionResult Resultado(string codigo, FormCollection form)
+        {
+            int codPessoaFisica = Usuario.ObterPessoaFisica(Session["UsuarioMatricula"].ToString());
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
+
+                AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
+                avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
+                avalPessoaResultado.HoraTermino = DateTime.Now;
+                auto.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
+
+                foreach (var avaliacaoTema in auto.Avaliacao.AvaliacaoTema)
+                {
+                    foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                    {
+                        AvalQuesPessoaResposta avalQuesPessoaResposta = new AvalQuesPessoaResposta();
+                        avalQuesPessoaResposta.CodPessoaFisica = codPessoaFisica;
+                        if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1)
+                        {
+                            avalQuesPessoaResposta.RespAlternativa = int.Parse(form["rdoResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]);
+                        }
+                        else
+                        {
+                            avalQuesPessoaResposta.RespDiscursiva = form["txtResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao];
+                        }
+                        avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
+                    }
+                }                
+
+                ViewBag.Form = form;
+                return View(auto);
+            }            
             ViewBag.Geradas = AvalAuto.ListarNaoRealizadaPorPessoa(codPessoaFisica);
             return View("Novo");
         }
