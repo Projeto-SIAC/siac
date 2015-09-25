@@ -9,6 +9,9 @@
 @section Scripts {
     <script>
         $('a[href]').on('click', function () { $('.ui.confirmar.modal').modal('show'); $('.ui.confirmar.modal #txtRef').val($(this).attr('href')); return false; });
+        window.onbeforeunload = function(){
+            return 'Você está realizando uma autoavaliação.';
+        };
         $('.ui.checkbox')
             .checkbox()
         ;
@@ -73,21 +76,25 @@
         function gabarito(codQuestao, resposta, obj, multi) {
             $label = $('.ui.accordion').find('#txtCodQuestao[value="' + codQuestao + '"]').parent().find('.ui.label');
             if (resposta != '') {
+                $label.removeClass('red');
                 $label.removeAttr('style');
+                $label.html('Respondida');
                 if (obj) {
-                    $label.html('Respondida');
                     if (multi) {
-                        // Continuar
                         $detail = $('<div class="detail"></div>');
                         $lstTitle = $('.ui.accordion > .title');
                         for (var i = 0; i < $lstTitle.length; i++) {
                             if ($lstTitle.eq(i).find('#txtCodQuestao').val() == codQuestao) {
                                 $lstCheckbox = $lstTitle.eq(i).next().find('input[type="checkbox"]');
-                                for (var j = 0; j < $lstCheckbox.lenght; j++) {
+                                var ok = false;
+                                for (var j = 0; j < $lstCheckbox.length; j++) {                                    
                                     if($lstCheckbox.eq(j).is(':checked')) {
+                                        ok = true;
                                         $detail.append($lstCheckbox.eq(j).next().find('b').text());
-                                    }
-                                    console.log($lstCheckbox.eq(j));
+                                    }                                    
+                                }
+                                if (!ok) {
+                                    $label.attr('style', 'display:none')
                                 }
                             }
                         }
@@ -105,20 +112,21 @@
 
         function submitForm() {
             var finalizada = true;
+            var lstNaoRespondidas = [];
             $lstTitle = $('.ui.accordion > .title');
             for (var i = 0; i < $lstTitle.length; i++) {
                 var codQuestao = $lstTitle.eq(i).find('#txtCodQuestao').val();
                 var txtResposta = $lstTitle.eq(i).next().find('#txtResposta'+codQuestao).val();
                 if (txtResposta == '') {       
                     finalizada = false;
-                    break;
+                    lstNaoRespondidas.push(codQuestao);
                 }
                 else if (!txtResposta) {
                     var umaCorreta = $lstTitle.eq(i).next().find('#txtUmaCorreta'+codQuestao).val();
                     if (umaCorreta == 1) {
                         if (!$lstTitle.eq(i).next().find('input[name="rdoResposta'+codQuestao+'"]').is(':checked')) {
-                            finalizada = false;
-                            break;
+                            finalizada = false;                            
+                            lstNaoRespondidas.push(codQuestao);
                         }
                     }
                     else {
@@ -127,17 +135,29 @@
                         for (var j = 0; j < $lstCheckbox.length; j++) {
                             if($lstCheckbox.eq(j).is(':checked')) {
                                 ok = true;
-                                break;
                             }
                         }
                         if (!ok) {
-                            finalizada = false;
-                            break;
+                            finalizada = false;                            
+                            lstNaoRespondidas.push(codQuestao);
                         }
                     }                    
                 }
             }
-            console.log(finalizada);
+            if (finalizada) {
+                window.onbeforeunload = null;
+                $('form').addClass('loading').submit();
+            }
+            else {
+                for (var i = 0; i < lstNaoRespondidas.length; i++) {
+                    for (var j = 0; j < $lstTitle.length; j++) {
+                        if ($lstTitle.eq(j).find('#txtCodQuestao').val() == lstNaoRespondidas[i]) {
+                            console.log($lstTitle.eq(i).find('.ui.label'));
+                            $lstTitle.eq(j).find('.ui.label').removeAttr('style').addClass('red').html('Não respondida');
+                        }
+                    }
+                }
+            }
         }
     </script>
 }
@@ -326,7 +346,7 @@
                             {
                                 <div class="field">
                                     <div class="ui @(temUmaCorreta ? "radio" : "") checkbox">
-                                        <input onchange="gabarito(@lstQuestao[i].CodQuestao,'@j.GetIndiceAlternativa()', true@(!temUmaCorreta ? ", true":""))" type="@(temUmaCorreta ? "radio" : "checkbox")" name="@( temUmaCorreta ? "rdoResposta" + lstQuestao[i].CodQuestao : "chkResposta"+lstQuestao[i].CodQuestao+"Alternativa"+lstAlternativa[i].CodOrdem)" @(temUmaCorreta ? "value="+@lstAlternativa[j].CodOrdem+"" : "")>
+                                        <input onchange="gabarito(@lstQuestao[i].CodQuestao,'@j.GetIndiceAlternativa()', true@(!temUmaCorreta ? ", true":""))" type="@(temUmaCorreta ? "radio" : "checkbox")" name="@( temUmaCorreta ? "rdoResposta" + lstQuestao[i].CodQuestao : "chkResposta"+lstQuestao[i].CodQuestao+"Alternativa"+lstAlternativa[j].CodOrdem)" @(temUmaCorreta ? "value="+@lstAlternativa[j].CodOrdem+"" : "")>
                                         <label><b>@j.GetIndiceAlternativa()</b>) @lstAlternativa[j].Enunciado</label>
                                     </div>
                                 </div>
