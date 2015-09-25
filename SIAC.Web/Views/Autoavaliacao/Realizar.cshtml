@@ -39,6 +39,7 @@
                         $('#lblHoraDuracao').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
                     }
                     else {
+                        $('#lblHoraRestante').parent().remove();
                         $('#lblHoraDuracao').parent().remove();
                     }
                 }
@@ -79,30 +80,8 @@
                 $label.removeClass('red');
                 $label.removeAttr('style');
                 $label.html('Respondida');
-                if (obj) {
-                    if (multi) {
-                        $detail = $('<div class="detail"></div>');
-                        $lstTitle = $('.ui.accordion > .title');
-                        for (var i = 0; i < $lstTitle.length; i++) {
-                            if ($lstTitle.eq(i).find('#txtCodQuestao').val() == codQuestao) {
-                                $lstCheckbox = $lstTitle.eq(i).next().find('input[type="checkbox"]');
-                                var ok = false;
-                                for (var j = 0; j < $lstCheckbox.length; j++) {                                    
-                                    if($lstCheckbox.eq(j).is(':checked')) {
-                                        ok = true;
-                                        $detail.append($lstCheckbox.eq(j).next().find('b').text());
-                                    }                                    
-                                }
-                                if (!ok) {
-                                    $label.attr('style', 'display:none')
-                                }
-                            }
-                        }
-                        $label.append($detail);
-                    }
-                    else {
+                if (obj) {                    
                         $label.append($('<div class="detail"></div>').text(resposta));
-                    }
                 }
             }
             else {
@@ -122,26 +101,10 @@
                     lstNaoRespondidas.push(codQuestao);
                 }
                 else if (!txtResposta) {
-                    var umaCorreta = $lstTitle.eq(i).next().find('#txtUmaCorreta'+codQuestao).val();
-                    if (umaCorreta == 1) {
-                        if (!$lstTitle.eq(i).next().find('input[name="rdoResposta'+codQuestao+'"]').is(':checked')) {
-                            finalizada = false;                            
-                            lstNaoRespondidas.push(codQuestao);
-                        }
-                    }
-                    else {
-                        var ok = false;
-                        $lstCheckbox = $lstTitle.eq(i).next().find('input[type="checkbox"]');
-                        for (var j = 0; j < $lstCheckbox.length; j++) {
-                            if($lstCheckbox.eq(j).is(':checked')) {
-                                ok = true;
-                            }
-                        }
-                        if (!ok) {
-                            finalizada = false;                            
-                            lstNaoRespondidas.push(codQuestao);
-                        }
-                    }                    
+                    if (!$lstTitle.eq(i).next().find('input[name="rdoResposta'+codQuestao+'"]').is(':checked')) {
+                        finalizada = false;                            
+                        lstNaoRespondidas.push(codQuestao);
+                    }                                       
                 }
             }
             if (finalizada) {
@@ -337,16 +300,14 @@
                     </div>
                     @if (lstQuestao[i].CodTipoQuestao == 1)
                     {
-                        var temUmaCorreta = lstQuestao[i].TemUmaCorreta();
-                        <div class="grouped fields">
-                            <input id="txtUmaCorreta@(lstQuestao[i].CodQuestao)" type="text" value="@(temUmaCorreta ? "1" : "0")" hidden />
-                            <label>Selecione a@(!temUmaCorreta ? "s" : "") alternativa@(!temUmaCorreta ? "s" : "")</label>
+                        <div class="grouped fields">                            
+                            <label>Selecione a alternativa</label>
                             @{ var lstAlternativa = lstQuestao[i].EmbaralharAlternativa(); }
                             @for (int j = 0; j < lstAlternativa.Count; j++)
                             {
                                 <div class="field">
-                                    <div class="ui @(temUmaCorreta ? "radio" : "") checkbox">
-                                        <input onchange="gabarito(@lstQuestao[i].CodQuestao,'@j.GetIndiceAlternativa()', true@(!temUmaCorreta ? ", true":""))" type="@(temUmaCorreta ? "radio" : "checkbox")" name="@( temUmaCorreta ? "rdoResposta" + lstQuestao[i].CodQuestao : "chkResposta"+lstQuestao[i].CodQuestao+"Alternativa"+lstAlternativa[j].CodOrdem)" @(temUmaCorreta ? "value="+@lstAlternativa[j].CodOrdem+"" : "")>
+                                    <div class="ui radio checkbox">
+                                        <input onchange="gabarito(@lstQuestao[i].CodQuestao,'@j.GetIndiceAlternativa()', true" type="radio" name="rdoResposta@(lstQuestao[i].CodQuestao)" value="@lstAlternativa[j].CodOrdem" />
                                         <label><b>@j.GetIndiceAlternativa()</b>) @lstAlternativa[j].Enunciado</label>
                                     </div>
                                 </div>
