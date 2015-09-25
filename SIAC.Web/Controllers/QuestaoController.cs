@@ -235,6 +235,8 @@ namespace SIAC.Web.Controllers
                 }
             }
 
+            Questao.Atualizar(questao);
+
             return RedirectToAction("Detalhe", new { codigo = questao.CodQuestao });
         }
 
