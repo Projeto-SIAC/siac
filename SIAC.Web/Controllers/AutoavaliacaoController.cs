@@ -139,11 +139,21 @@ namespace SIAC.Web.Controllers
             auto.Avaliacao.DtCadastro = hoje;
             auto.CodDificuldade = dificuldades.Max();
 
-            //AvalAuto.Inserir(auto);
-            ViewBag.QuestoesDaAvaliacao = VBQuestoes;
-            ViewBag.QteQuestoes = VBQuestoes.Count;
+            AvalAuto.Inserir(auto);
 
             return View(auto);
+        }
+
+
+        // GET: Autoavaliacao/Detalhe/AUTO201520001
+        public ActionResult Detalhe(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
+                return View(auto);
+            }
+            return RedirectToAction("Index");
         }
 
         // GET: Autoavaliacao/Realizar/AUTO201520001
@@ -198,9 +208,8 @@ namespace SIAC.Web.Controllers
 
                 auto.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
-                //DataContextSIAC.GetInstance().SaveChanges();        
+                DataContextSIAC.GetInstance().SaveChanges();        
 
-                ViewBag.Form = form;
                 return View(auto);
             }            
             ViewBag.Geradas = AvalAuto.ListarNaoRealizadaPorPessoa(codPessoaFisica);
