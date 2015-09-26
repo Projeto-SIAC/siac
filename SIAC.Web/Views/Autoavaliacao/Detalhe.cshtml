@@ -11,7 +11,7 @@
 @section Scripts {
     <script>
         $('.ui.accordion').accordion();
-        $('.label').popup();
+        $('.label, div').popup();
     </script>
 }
 
@@ -66,6 +66,22 @@
 }
 else
 {
+    // Desempenho
+    <div class="ui segment">
+        <div class="ui dividing header" data-content="Note que os cálculos levem em conta somente as questões objetivas.">
+            Desempenho
+            <div class="ui label">Porcentagem de Acerto<div class="detail">@(ViewBag.Porcentagem.ToString("0.##'%'"))</div></div>
+        </div>
+        <table class="ui very basic collapsing table">
+            @foreach (var key in ViewBag.Desempenho.Keys)
+            {
+                <tr>
+                    <th>@key</th>
+                    <td><div class="ui @(ViewBag.Desempenho[key]>50 ? "green" : "red") label">@ViewBag.Desempenho[key].ToString("0.##'%'")</div></td>
+                </tr>
+            }
+        </table>
+    </div>
     // Resultado
     <div class="ui segment">
         <div class="ui dividing header">
@@ -81,7 +97,7 @@ else
                     @if (lstQuestao[i].CodTipoQuestao == 1)
                     {
                         var correta = lstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
-                        <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? "Correta" : "Incorreta" )</div>
+                        <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? Html.Raw("<i class=\"checkmark icon\"></i>Correta") : Html.Raw("<i class=\"remove icon\"></i>Incorreta") )</div>
                     }
                 </div>
                 <div class="content">
@@ -108,11 +124,11 @@ else
                                             <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
                                             @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
                                             {
-                                                <a data-html="@alternativa.Comentario.Replace("\n","<br>")" data-variation="very wide" class="ui tag label">Correta</a>
+                                                <a data-html="@((""+alternativa.Comentario).Replace("\n","<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
                                             }
                                             @if (alternativa.CodOrdem == resposta.RespAlternativa)
                                             {
-                                                <a data-html="@alternativa.Comentario.Replace("\n","<br>")" data-variation="very wide" class="ui tag label">Marcada</a>
+                                                <a data-html="@((""+alternativa.Comentario).Replace("\n","<br>"))" data-variation="very wide" class="ui tag label">Marcada</a>
                                             }
                                         </div>
                                     </div>

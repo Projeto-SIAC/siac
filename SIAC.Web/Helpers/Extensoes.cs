@@ -194,6 +194,20 @@ namespace SIAC.Web
             return qteQuestoes;
         }
 
+        public static int QteQuestoesPorTipo(this List<AvaliacaoTema> lstAvaliacaoTema, int codTipoQuestao)
+        {
+            int qteQuestoes = 0;
+
+            foreach (var avaliacaoTema in lstAvaliacaoTema)
+            {
+                var lstAvalTemaQuestao = avaliacaoTema.AvalTemaQuestao.ToList();
+                var lstAvalTemaQuestaoFiltrada = lstAvalTemaQuestao.Where(a => a.QuestaoTema.Questao.CodTipoQuestao == codTipoQuestao).ToList();
+                qteQuestoes += lstAvalTemaQuestaoFiltrada.Count;
+            }
+
+            return qteQuestoes;
+        }
+
         public static string MaxDificuldade(this List<AvaliacaoTema> lstAvaliacaoTema, int codDisciplina)
         {
             Dificuldade dificuldade = new Dificuldade();

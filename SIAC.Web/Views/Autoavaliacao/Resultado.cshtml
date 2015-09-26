@@ -10,13 +10,27 @@
 @section Scripts {
     <script>
         $('.ui.accordion').accordion();
-        $('.label').popup();
+        $('.label, div').popup();
     </script>
 }
 
 <h2>@ViewBag.Title</h2>
+<div class="ui segment">
+    <div class="ui dividing header" data-content="Note que os cálculos levem em conta somente as questões objetivas.">
+        Desempenho
+        <div class="ui label">Porcentagem de Acerto<div class="detail">@(ViewBag.Porcentagem.ToString("0.##'%'"))</div></div>
+    </div>
+    <table class="ui very basic collapsing table">
+        @foreach (var key in ViewBag.Desempenho.Keys)
+            {
+            <tr>
+                <th>@key</th>
+                <td><div class="ui @(ViewBag.Desempenho[key]>50 ? "green" : "red") label">@ViewBag.Desempenho[key].ToString("0.##'%'")</div></td>
+            </tr>
+        }
+    </table>
+</div>
 
-<div class="ui label">Quantidade de acertos (objetiva)<div class="detail">@Model.Avaliacao.AvalPessoaResultado.First().QteAcertoObj</div></div>
 <div class="ui segment">
     <div class="ui dividing header">
         Resultado
@@ -31,7 +45,7 @@
                 @if (lstQuestao[i].CodTipoQuestao == 1)
                 {
                     var correta = lstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
-                    <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? "Correta" : "Incorreta" )</div>
+                    <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? Html.Raw("<i class=\"checkmark icon\"></i>Correta") : Html.Raw("<i class=\"remove icon\"></i>Incorreta") )</div>
                 }
             </div>
                 <div class="content">
