@@ -127,6 +127,15 @@
                 $label.attr('style', 'display:none')
             }
         }
+        
+        $('.ui.gabarito.modal')
+            .modal({
+                onApprove: function() { 
+                    window.onbeforeunload = null;
+                    $('form').addClass('loading').submit(); 
+                }
+            })
+        ;
 
         function submitForm() {
             var finalizada = true;
@@ -147,8 +156,7 @@
                 }
             }
             if (finalizada) {
-                window.onbeforeunload = null;
-                $('form').addClass('loading').submit();
+                VerificarConfirmar();
             }
             else {
                 for (var i = 0; i < lstNaoRespondidas.length; i++) {
@@ -160,6 +168,34 @@
                     }
                 }
             }
+        }
+
+        function VerificarConfirmar() {
+            $modal = $('.ui.gabarito.modal');
+
+            $accordion = $('form .ui.accordion').clone();
+
+            $accordion.removeAttr('style');
+            
+            $modal.find('.content').append($('<div class="ui form"></div>').append($accordion));
+                            
+            $modalAccordion = $modal.find('.ui.accordion');
+
+            $modalAccordion.accordion({
+                onChange: function () { $('.ui.gabarito.modal').modal('refresh'); }
+            });
+
+            $lstInput = $modalAccordion.find(':input');
+
+            for (var i = 0; i < $lstInput.length; i++) {
+                console.log($lstInput.eq(i));
+                $lstInput.eq(i).attr({
+                    'readonly':'readonly',
+                    'disabled':'disabled'
+                });  
+            }
+
+            $modal.modal('show');
         }
     </script>
 }
@@ -223,6 +259,17 @@
         <a href="/Dashboard" class="ui button">Voltar para Dashboard</a>
         <a href="/Historico/Autoavaliacao" class="ui button">Voltar para Histórico</a>
         <div class="ui button">Realizar</div>
+    </div>
+</div>
+
+<div class="ui gabarito modal">
+    <div class="header">Verifique e confirme</div>
+    <div class="content">
+
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Voltar</div>
+        <div class="ui approve button">Confirmar</div>
     </div>
 </div>
 
