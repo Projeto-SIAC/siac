@@ -24,9 +24,6 @@
         $('.ui.checkbox')
             .checkbox()
         ;
-        $('.ui.radio.checkbox')
-            .checkbox()
-        ;
         $('.ui.verificar.modal')
             .modal({
                 closable: false,
@@ -35,17 +32,31 @@
             })
             .modal('show')
         ;
+        var date;
+        var duracao;
+        function minutesToTimeString(minutes) {
+            if (minutes > 59) {
+                var strHour = Math.floor(minutes/60);
+                var strMinutes = (minutes%60);
+                return ('0'+strHour).slice(-2)+'h'+('0'+strMinutes).slice(-2)+'min';
+            }
+            else {
+                return '00h'+('0'+minutes).slice(-2)+'min';
+            }            
+        }
         $('.ui.cronometrar.modal')
             .modal({
                 closable: false,
                 onApprove: function () {
-                    var date = new Date();
+                    date = new Date()
                     $('#lblHoraInicio').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
-                    if ($('#chkCronometrar').is(':checked')) {
-                        // Não finalizado
-                        var duracao = $('#txtDuracao').val();
-                        date = new Date((duracao * 60 * 1000));
-                        $('#lblHoraDuracao').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
+                    $('#lblHoraAgora').text(date.getHours() + 'h' + ('0' + (date.getMinutes())).slice(-2) + 'min');
+                    setTimeout(Relogio(), ((60 - date.getSeconds())*1000));
+                    if ($('#chkCronometrar').is(':checked')) {                        
+                        duracao = $('#txtDuracao').val();
+                        $('#lblHoraDuracao').text(minutesToTimeString(duracao));
+                        $('#lblHoraRestante').text(minutesToTimeString(duracao));
+                        Temporizador();
                     }
                     else {
                         $('#lblHoraRestante').parent().remove();
@@ -55,6 +66,25 @@
             })
             .modal('attach events', '.ui.verificar.modal .button')
         ;
+        function Relogio() {
+            setInterval(function(){ date = new Date(); $('#lblHoraAgora').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min'); }, 1000);
+        }
+        var timerId;
+        function Temporizador() {
+            timerId = setInterval(function () {
+                if (duracao > 0) {
+                    duracao = duracao - 1;
+                    $('#lblHoraRestante').text(minutesToTimeString(duracao)).parent().transition('flash');
+                    if (duracao < 6 && !$('#lblHoraRestante').parent().hasClass('red')) {
+                        $('#lblHoraRestante').parent().addClass('red');
+                    }
+                }
+                else {
+                    clearInterval(timerId);
+                }
+            }, 60000);
+        }
+        
         $('.ui.informacoes.modal')
             .modal()
         ;
@@ -198,17 +228,18 @@
 </div>
 
 <div class="ui small cronometrar modal">
+    <div class="header">Temporizador</div>
     <div class="content">
         <div class="ui form">
             <div class="field">
-                <div class="ui checkbox">
-                    <input id="chkCronometrar" type="checkbox" tabindex="0" class="hidden">
+                <div class="ui toggle checkbox">
+                    <input id="chkCronometrar" onchange="if ($(this).is(':checked')) { $('#txtDuracao').removeAttr('disabled').parent().removeClass('disabled') } else { $('#txtDuracao').attr('disabled', 'disabled').parent().addClass('disabled') }" type="checkbox" tabindex="0">
                     <label>Desejo cronometrar minha autoavaliação</label>
                 </div>
             </div>
-            <div class="inline field">
+            <div class="inline field disabled">
                 <label>Duração (em minutos)</label>
-                <input id="txtDuracao" type="number" value="60" />
+                <input id="txtDuracao" type="number" value="60" min="1" max="1439" disabled />
             </div>
         </div>
     </div>
@@ -274,6 +305,10 @@
     <div class="ui label">
         Ínicio
         <div id="lblHoraInicio" class="detail">13h00min</div>
+    </div>
+    <div class="ui label">
+        Agora
+        <div id="lblHoraAgora" class="detail">13h30min</div>
     </div>
     <div class="ui label">
         Duração
