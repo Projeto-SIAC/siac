@@ -151,7 +151,10 @@ namespace SIAC.Web.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
-                return View(auto);
+                if (auto.CodPessoaFisica == Usuario.ObterPessoaFisica(Session["UsuarioMatricula"].ToString()))
+                {
+                    return View(auto);
+                }
             }
             return RedirectToAction("Index");
         }
@@ -163,7 +166,10 @@ namespace SIAC.Web.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
-                return View(auto);
+                if (auto.CodPessoaFisica == Usuario.ObterPessoaFisica(Session["UsuarioMatricula"].ToString()))
+                {
+                    return View(auto);
+                }
             }
             int codPessoaFisica = Usuario.ObterPessoaFisica(Session["UsuarioMatricula"].ToString());
             ViewBag.Geradas = AvalAuto.ListarNaoRealizadaPorPessoa(codPessoaFisica);
