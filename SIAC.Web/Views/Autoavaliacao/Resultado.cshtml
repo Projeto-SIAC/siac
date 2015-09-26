@@ -72,11 +72,11 @@
                                             <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
                                             @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
                                             {
-                                                <a data-html="@alternativa.Comentario.Replace("\n","<br>")" data-variation="very wide" class="ui tag label">Correta</a>
+                                                <a data-html="@((""+alternativa.Comentario).Replace("\n","<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
                                             }
                                             @if (alternativa.CodOrdem == resposta.RespAlternativa)
                                             {
-                                                <a data-html="@alternativa.Comentario.Replace("\n","<br>")" data-variation="very wide" class="ui tag label">Marcada</a>
+                                                <a data-html="@((""+alternativa.Comentario).Replace("\n","<br>"))" data-variation="very wide" class="ui tag label">Marcada</a>
                                             }
                                         </div>
                                     </div>

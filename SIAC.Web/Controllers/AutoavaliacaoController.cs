@@ -154,42 +154,45 @@ namespace SIAC.Web.Controllers
                 int codPessoaFisica = Usuario.ObterPessoaFisica(Session["UsuarioMatricula"].ToString());
                 if (auto.CodPessoaFisica == codPessoaFisica)
                 {
-                    double qteObjetiva = 0;
-                    Dictionary<string, double> qteObjetivaDisciplina = new Dictionary<string, double>();
-                    Dictionary<string, double> qteObjetivaAcertoDisciplina = new Dictionary<string, double>();
-
-                    foreach (var avaliacaoTema in auto.Avaliacao.AvaliacaoTema)
+                    if (auto.Avaliacao.AvalPessoaResultado.Count > 0)
                     {
-                        if (!qteObjetivaDisciplina.ContainsKey(avaliacaoTema.Tema.Disciplina.Descricao))
+                        double qteObjetiva = 0;
+                        Dictionary<string, double> qteObjetivaDisciplina = new Dictionary<string, double>();
+                        Dictionary<string, double> qteObjetivaAcertoDisciplina = new Dictionary<string, double>();
+
+                        foreach (var avaliacaoTema in auto.Avaliacao.AvaliacaoTema)
                         {
-                            qteObjetivaDisciplina.Add(avaliacaoTema.Tema.Disciplina.Descricao, 0);
-                        }
-                        if (!qteObjetivaAcertoDisciplina.ContainsKey(avaliacaoTema.Tema.Disciplina.Descricao))
-                        {
-                            qteObjetivaAcertoDisciplina.Add(avaliacaoTema.Tema.Disciplina.Descricao, 0);
-                        }
-                        foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
-                        {
-                            AvalQuesPessoaResposta avalQuesPessoaResposta = avalTemaQuestao.AvalQuesPessoaResposta.First();
-                            if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1)
+                            if (!qteObjetivaDisciplina.ContainsKey(avaliacaoTema.Tema.Disciplina.Descricao))
                             {
-                                qteObjetivaDisciplina[avaliacaoTema.Tema.Disciplina.Descricao]++;
-                                qteObjetiva++;
-                                if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q => q.FlagGabarito.HasValue && q.FlagGabarito.Value).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
+                                qteObjetivaDisciplina.Add(avaliacaoTema.Tema.Disciplina.Descricao, 0);
+                            }
+                            if (!qteObjetivaAcertoDisciplina.ContainsKey(avaliacaoTema.Tema.Disciplina.Descricao))
+                            {
+                                qteObjetivaAcertoDisciplina.Add(avaliacaoTema.Tema.Disciplina.Descricao, 0);
+                            }
+                            foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                            {
+                                AvalQuesPessoaResposta avalQuesPessoaResposta = avalTemaQuestao.AvalQuesPessoaResposta.First();
+                                if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1)
                                 {
-                                    qteObjetivaAcertoDisciplina[avaliacaoTema.Tema.Disciplina.Descricao]++;
+                                    qteObjetivaDisciplina[avaliacaoTema.Tema.Disciplina.Descricao]++;
+                                    qteObjetiva++;
+                                    if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q => q.FlagGabarito.HasValue && q.FlagGabarito.Value).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
+                                    {
+                                        qteObjetivaAcertoDisciplina[avaliacaoTema.Tema.Disciplina.Descricao]++;
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    ViewBag.Porcentagem = (auto.Avaliacao.AvalPessoaResultado.First().QteAcertoObj / qteObjetiva) * 100;
-                    ViewBag.Desempenho = new Dictionary<string, double>();
-                    foreach (var key in qteObjetivaDisciplina.Keys)
-                    {
-                        if (qteObjetivaDisciplina[key] > 0)
+                        ViewBag.Porcentagem = (auto.Avaliacao.AvalPessoaResultado.First().QteAcertoObj / qteObjetiva) * 100;
+                        ViewBag.Desempenho = new Dictionary<string, double>();
+                        foreach (var key in qteObjetivaDisciplina.Keys)
                         {
-                            ViewBag.Desempenho.Add(key, (qteObjetivaAcertoDisciplina[key] / qteObjetivaDisciplina[key]) * 100);
+                            if (qteObjetivaDisciplina[key] > 0)
+                            {
+                                ViewBag.Desempenho.Add(key, (qteObjetivaAcertoDisciplina[key] / qteObjetivaDisciplina[key]) * 100);
+                            }
                         }
                     }
 
@@ -224,66 +227,68 @@ namespace SIAC.Web.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
-
-                AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
-                avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
-                avalPessoaResultado.HoraTermino = DateTime.Now;
-                avalPessoaResultado.QteAcertoObj = 0;
-
-                double qteObjetiva = 0;
-                Dictionary<string, double> qteObjetivaDisciplina = new Dictionary<string, double>();
-                Dictionary<string, double> qteObjetivaAcertoDisciplina = new Dictionary<string, double>();
-
-                foreach (var avaliacaoTema in auto.Avaliacao.AvaliacaoTema)
+                if (auto.Avaliacao.AvalPessoaResultado.Count == 0)
                 {
-                    if (!qteObjetivaDisciplina.ContainsKey(avaliacaoTema.Tema.Disciplina.Descricao))
+                    AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
+                    avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
+                    avalPessoaResultado.HoraTermino = DateTime.Now;
+                    avalPessoaResultado.QteAcertoObj = 0;
+
+                    double qteObjetiva = 0;
+                    Dictionary<string, double> qteObjetivaDisciplina = new Dictionary<string, double>();
+                    Dictionary<string, double> qteObjetivaAcertoDisciplina = new Dictionary<string, double>();
+
+                    foreach (var avaliacaoTema in auto.Avaliacao.AvaliacaoTema)
                     {
-                        qteObjetivaDisciplina.Add(avaliacaoTema.Tema.Disciplina.Descricao, 0);
-                    }
-                    if (!qteObjetivaAcertoDisciplina.ContainsKey(avaliacaoTema.Tema.Disciplina.Descricao))
-                    {
-                        qteObjetivaAcertoDisciplina.Add(avaliacaoTema.Tema.Disciplina.Descricao, 0);
-                    }
-                    foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
-                    {
-                        AvalQuesPessoaResposta avalQuesPessoaResposta = new AvalQuesPessoaResposta();
-                        avalQuesPessoaResposta.CodPessoaFisica = codPessoaFisica;
-                        if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1)
+                        if (!qteObjetivaDisciplina.ContainsKey(avaliacaoTema.Tema.Disciplina.Descricao))
                         {
-                            qteObjetivaDisciplina[avaliacaoTema.Tema.Disciplina.Descricao]++;
-                            qteObjetiva++;
-                            avalQuesPessoaResposta.RespAlternativa = int.Parse(form["rdoResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]);
-                            if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q=> q.FlagGabarito.HasValue && q.FlagGabarito.Value).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
+                            qteObjetivaDisciplina.Add(avaliacaoTema.Tema.Disciplina.Descricao, 0);
+                        }
+                        if (!qteObjetivaAcertoDisciplina.ContainsKey(avaliacaoTema.Tema.Disciplina.Descricao))
+                        {
+                            qteObjetivaAcertoDisciplina.Add(avaliacaoTema.Tema.Disciplina.Descricao, 0);
+                        }
+                        foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                        {
+                            AvalQuesPessoaResposta avalQuesPessoaResposta = new AvalQuesPessoaResposta();
+                            avalQuesPessoaResposta.CodPessoaFisica = codPessoaFisica;
+                            if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1)
                             {
-                                avalPessoaResultado.QteAcertoObj++;
-                                qteObjetivaAcertoDisciplina[avaliacaoTema.Tema.Disciplina.Descricao]++;
+                                qteObjetivaDisciplina[avaliacaoTema.Tema.Disciplina.Descricao]++;
+                                qteObjetiva++;
+                                avalQuesPessoaResposta.RespAlternativa = int.Parse(form["rdoResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]);
+                                if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q => q.FlagGabarito.HasValue && q.FlagGabarito.Value).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
+                                {
+                                    avalPessoaResultado.QteAcertoObj++;
+                                    qteObjetivaAcertoDisciplina[avaliacaoTema.Tema.Disciplina.Descricao]++;
+                                }
                             }
+                            else
+                            {
+                                avalQuesPessoaResposta.RespDiscursiva = form["txtResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim();
+                            }
+                            avalQuesPessoaResposta.RespComentario = !String.IsNullOrEmpty(form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]) ? form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim() : null;
+                            avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
                         }
-                        else
-                        {
-                            avalQuesPessoaResposta.RespDiscursiva = form["txtResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim();
-                        }
-                        avalQuesPessoaResposta.RespComentario = !String.IsNullOrEmpty(form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]) ? form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim() : null;
-                        avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
+
                     }
 
-                }
+                    auto.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
-                auto.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
+                    DataContextSIAC.GetInstance().SaveChanges();
 
-                DataContextSIAC.GetInstance().SaveChanges();
-
-                ViewBag.Porcentagem = (avalPessoaResultado.QteAcertoObj / qteObjetiva) * 100;
-                ViewBag.Desempenho = new Dictionary<string, double>();
-                foreach (var key in qteObjetivaDisciplina.Keys)
-                {
-                    if (qteObjetivaDisciplina[key]>0)
+                    ViewBag.Porcentagem = (avalPessoaResultado.QteAcertoObj / qteObjetiva) * 100;
+                    ViewBag.Desempenho = new Dictionary<string, double>();
+                    foreach (var key in qteObjetivaDisciplina.Keys)
                     {
-                        ViewBag.Desempenho.Add(key, (qteObjetivaAcertoDisciplina[key] / qteObjetivaDisciplina[key]) * 100);
+                        if (qteObjetivaDisciplina[key] > 0)
+                        {
+                            ViewBag.Desempenho.Add(key, (qteObjetivaAcertoDisciplina[key] / qteObjetivaDisciplina[key]) * 100);
+                        }
                     }
-                }                
-
-                return View(auto);
+                    return View(auto);
+                }
+                return RedirectToAction("Detalhe", new { codigo = auto.Avaliacao.CodAvaliacao() });
             }            
             ViewBag.Geradas = AvalAuto.ListarNaoRealizadaPorPessoa(codPessoaFisica);
             return View("Novo");
