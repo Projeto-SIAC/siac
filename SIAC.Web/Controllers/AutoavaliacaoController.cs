@@ -200,8 +200,9 @@ namespace SIAC.Web.Controllers
                         }
                         else
                         {
-                            avalQuesPessoaResposta.RespDiscursiva = form["txtResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao];
+                            avalQuesPessoaResposta.RespDiscursiva = form["txtResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim();
                         }
+                        avalQuesPessoaResposta.RespComentario = !String.IsNullOrEmpty(form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]) ? form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim() : null;
                         avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
                     }
                 }

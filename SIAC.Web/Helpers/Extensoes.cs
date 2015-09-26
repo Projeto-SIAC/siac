@@ -295,5 +295,18 @@ namespace SIAC.Web
 
             return lstAlternativaEmbaralhada;
         }
+
+        public static List<AvalQuesPessoaResposta> Resposta(this Questao questao)
+        {
+            List<AvalQuesPessoaResposta> lstResposta = new List<AvalQuesPessoaResposta>();
+
+            lstResposta.AddRange(
+                    from r in DataContextSIAC.GetInstance().AvalQuesPessoaResposta
+                    where r.CodQuestao == questao.CodQuestao
+                    select r
+                );
+
+            return lstResposta;
+        }
     }
 }

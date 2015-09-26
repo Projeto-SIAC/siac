@@ -151,5 +151,33 @@
         <p>Comentários</p>
     </div>
     @* Expor comentários dos usuários que já responderam essa questão *@
+    <div class="ui comments">
+        @foreach (var resp in Model.Resposta())
+        {
+            if (!String.IsNullOrEmpty(resp.RespComentario))
+            {
+                <div class="comment">
+                    <div class="content">
+                        <a class="author">@resp.PessoaFisica.Nome.Split(' ')[0]</a>
+                        <div class="metadata">
+                            <span class="date">@resp.AvalTemaQuestao.AvaliacaoTema.Avaliacao.DtCadastro.ToElapsedTimeString()</span>@* Continuar: pegar data da AvalPessoaResultado *@
+                        </div>
+                        <div class="text">
+                            @{
+                                var comentario = resp.RespComentario.Split('\n', '\r');
+                                foreach (var strComentario in comentario)
+                                {
+                                    if (!String.IsNullOrWhiteSpace(strComentario))
+                                    {
+                                        <p>@strComentario</p>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
 </div>
 

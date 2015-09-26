@@ -161,7 +161,6 @@
                 }
             }
         }
-
     </script>
 }
 
@@ -331,7 +330,7 @@
                 <div class="ui small label teal" style="display:none">Respondida</div>
             </div>
             <div class="content">
-                <div class="ui segment">
+                <div class="ui segment">                    
                     <div class="ui dividing header" style="text-align:justify">
                         @{
                             var enunciado = (@i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).Split('\n', '\r');
@@ -367,9 +366,10 @@
                             <textarea onchange="gabarito(@lstQuestao[i].CodQuestao, $(this).val())" name="txtResposta@(lstQuestao[i].CodQuestao)" id="txtResposta@(lstQuestao[i].CodQuestao)" placeholder="Resposta..." rows="3"></textarea>
                         </div>
                     }
-                    @if (lstQuestao[i].QuestaoAnexo.Count > 0)
-                    {
+                    
                         <div class="accordion">
+                        @if (lstQuestao[i].QuestaoAnexo.Count > 0)
+                        {
                             <div class="title"><i class="icon dropdown"></i>Anexos</div>
                             <div class="content">
                                 @foreach (var anexo in lstQuestao[i].QuestaoAnexo)
@@ -379,7 +379,7 @@
                                         case 1:
                                             <a onclick="expandirImagem(this)" class="ui card">
                                                 <div class="image">
-                                                    <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo,0, anexo.Anexo.Length)" />
+                                                    <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo, 0, anexo.Anexo.Length)" />
                                                 </div>
                                                 <div class="content">
                                                     <div class="header">
@@ -396,8 +396,15 @@
                                     }
                                 }
                             </div>
+                        }
+                        <div class="title"><i class="icon dropdown"></i>Comentário</div>
+                            <div class="content">
+                                <div class="field">
+                                    <label>Comentário</label>
+                                    <textarea name="txtComentario@(lstQuestao[i].CodQuestao)" id="txtComentario@(lstQuestao[i].CodQuestao)" placeholder="Comentário..." rows="3"></textarea>
+                                </div>
+                            </div>
                         </div>
-                    }
                 </div>
             </div>
                             }
