@@ -1,0 +1,210 @@
+﻿@using SIAC.Web.Models
+
+@model AvalAuto
+
+@{
+    ViewBag.Title = "Autoavaliação " + Model.Avaliacao.CodAvaliacao();
+    Layout = null;
+    List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
+}
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - SIAC</title>
+    <link href="~/Resources/images/layout/logo-black.png" rel="shortcut icon" />
+    @Styles.Render("~/bundles/css")
+    <style>
+        @@media print  
+        {
+            div.parentQuestao {
+                page-break-before: always;
+            }
+            div.questao {
+                padding-top: 2.5em;
+                page-break-inside: avoid;
+            }
+            div.form > :first-child {
+                padding-top: unset;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ui text content">
+        <h2>@ViewBag.Title</h2>
+    </div>
+        <div class="ui vertical segment">
+            <div class="ui header dividing">
+                Cabeçalho
+            </div>
+            <table class="ui very basic table">
+                <tbody>
+                    <tr>
+                        <td>
+                            <b>Instituição</b>
+                        </td>
+                        <td>
+                            Sistema Interativo de Avaliação de Conhecimento
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Nome</b>
+                        </td>
+                        <td>
+                            @Model.PessoaFisica.Nome
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Data de Cadastro</b>
+                        </td>
+                        <td>
+                            @Model.Avaliacao.DtCadastro.ToShortDateString()
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Data de Impressão</b>
+                        </td>
+                        <td>
+                            @DateTime.Now.ToShortDateString()
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="ui vertical segment">
+            <div class="ui header dividing">
+                Informações
+            </div>
+            <table class="ui striped table">
+                <thead>
+                    <tr>
+                        <th>Disciplina</th>
+                        <th>Tema(s)</th>
+                        <th>Quantidade</th>
+                        <th>Dificuldade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+            {
+                    <tr>
+                        <td>
+                            <b>@disc.Descricao</b>
+                        </td>
+                        <td class="ui labels">
+                            @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                            {
+                            <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                            }
+                        </td>
+                        <td class="ui labels">
+                            <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
+                            <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
+                        </td>
+                        <td>
+                            @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="ui parentQuestao vertical segment">
+            <div class="ui header dividing">
+                Questões
+            </div>
+            <div class="ui form">
+                @for (int i = 0; i < lstQuestao.Count; i++)
+                {
+                    <div class="questao">
+                        <div class="ui dividing header" style="text-align:justify">
+                            @{
+                                var enunciado = (@i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).Split('\n', '\r');
+                                foreach (var strEnunciado in enunciado)
+                                {
+                                    if (!String.IsNullOrWhiteSpace(strEnunciado))
+                                    {
+                                        <p>@strEnunciado</p>
+                                    }
+                                }
+                            }
+                        </div>
+
+                        @if (lstQuestao[i].CodTipoQuestao == 1)
+                        {
+                        <div class="grouped fields">
+                            <label>Marque a alternativa</label>
+                            @{ var lstAlternativa = lstQuestao[i].EmbaralharAlternativa(); }
+                            @for (int j = 0; j < lstAlternativa.Count; j++)
+                            {
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" />
+                                        <label><b>@j.GetIndiceAlternativa()</b>) @lstAlternativa[j].Enunciado</label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        }
+                        else
+                        {
+                        <div class="field">
+                            <label>Resposta</label>
+                            <textarea></textarea>
+                        </div>
+                        }
+
+                        @if (lstQuestao[i].QuestaoAnexo.Count > 0)
+                        {
+                        <div class="field">
+                            <label>Anexos</label>
+                            @foreach (var anexo in lstQuestao[i].QuestaoAnexo)
+                            {
+                                switch (anexo.CodTipoAnexo)
+                                {
+                                    case 1:
+                                        <div class="ui segment">
+                                            <img class="ui image" src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo, 0, anexo.Anexo.Length)" />
+                                            <div>
+                                                <b>
+                                                    @anexo.Legenda
+                                                </b>
+                                                <p>
+                                                    @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte não informada")
+                                                </p>
+                                            </div>
+                                        </div>
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="ui vertical inverted segment">
+            <h5 class="ui centered header">&copy; SIAC - Sistema Interativo de Avaliação de Conhecimento</h5>
+        </div>
+
+    @Scripts.Render("~/bundles/js")
+    <script>
+        $('.ui.checkbox')
+                .checkbox()
+        ;
+        var focused = false;
+        window.print();
+        focused = true;
+        setInterval(function () { if (focused === true) { window.close(); } }, 300);
+    </script>
+</body>
+</html>
