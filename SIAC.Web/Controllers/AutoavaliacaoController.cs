@@ -203,7 +203,6 @@ namespace SIAC.Web.Controllers
         }
 
         // GET: Autoavaliacao/Realizar/AUTO201520001
-        [HttpGet]
         public ActionResult Realizar(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))
@@ -219,6 +218,20 @@ namespace SIAC.Web.Controllers
             return View("Novo");
         }
 
+        // GET: Autoavaliacao/Imprimir/AUTO201520001
+        public ActionResult Imprimir(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
+                if (auto.CodPessoaFisica == Usuario.ObterPessoaFisica(Session["UsuarioMatricula"].ToString()))
+                {
+                    return View(auto);
+                }
+            }
+            return RedirectToAction("index");
+        }
+
         // POST: Autoavaliacao/Resultado/AUTO201520001
         [HttpPost]
         public ActionResult Resultado(string codigo, FormCollection form)
@@ -227,7 +240,7 @@ namespace SIAC.Web.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
-                if (auto.Avaliacao.AvalPessoaResultado.Count == 0)
+                if (auto.Avaliacao.AvalPessoaResultado.Count == 0 && auto.CodPessoaFisica == codPessoaFisica)
                 {
                     AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
                     avalPessoaResultado.CodPessoaFisica = codPessoaFisica;

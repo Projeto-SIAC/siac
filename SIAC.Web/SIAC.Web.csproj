@@ -584,6 +584,7 @@
     <Content Include="Views\Autoavaliacao\Novo.cshtml" />
     <Content Include="Views\Autoavaliacao\Resultado.cshtml" />
     <Content Include="Views\Autoavaliacao\Detalhe.cshtml" />
+    <Content Include="Views\Autoavaliacao\Imprimir.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

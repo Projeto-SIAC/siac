@@ -64,7 +64,7 @@
                     }
                 }
             })
-            .modal('attach events', '.ui.verificar.modal .button')
+            .modal('attach events', '.ui.verificar.modal .approve.button')
         ;
         function Relogio() {
             setInterval(function(){ date = new Date(); $('#lblHoraAgora').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min'); }, 1000);
@@ -258,7 +258,8 @@
     <div class="actions">
         <a href="/Dashboard" class="ui button">Voltar para Dashboard</a>
         <a href="/Historico/Autoavaliacao" class="ui button">Voltar para Histórico</a>
-        <div class="ui button">Realizar</div>
+        <a onclick="window.open('/Dashboard/Autoavaliacao/Imprimir/@Model.Avaliacao.CodAvaliacao()', '_blank');" class="ui button">Imprimir</a>
+        <div class="ui approve button">Realizar</div>
     </div>
 </div>
 
