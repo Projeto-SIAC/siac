@@ -27,6 +27,9 @@
                 padding-top: unset;
                 page-break-inside: avoid;
             }
+            div.questao .ui.header {
+                font-size: 1em;
+            }
         }
     </style>
 </head>
@@ -123,7 +126,7 @@
                 @for (int i = 0; i < lstQuestao.Count; i++)
                 {
                     <div class="questao">
-                        <div class="ui dividing header" style="text-align:justify">
+                        <div class="ui header" style="text-align:justify">
                             @{
                                 var enunciado = (@i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).Split('\n', '\r');
                                 foreach (var strEnunciado in enunciado)
