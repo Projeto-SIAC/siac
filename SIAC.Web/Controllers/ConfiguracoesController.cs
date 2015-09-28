@@ -189,12 +189,13 @@ namespace SIAC.Web.Controllers
                 diretoria.PessoaJuridica.Portal = formCollection["txtDiretoriaPortal"];
 
                 //Diretoria
-                diretoria.CodCampus = int.Parse(formCollection["ddlDiretoriaCampus"]);
+                int codCampus = int.Parse(formCollection["ddlDiretoriaCampus"]);
+                diretoria.CodCampus = codCampus;
+                diretoria.CodInstituicao = Campus.ListarPorCodigo(codCampus).CodInstituicao;
+                diretoria.CodColaboradorDiretor = int.Parse(formCollection["ddlDiretoriaDiretor"]);
+                diretoria.Sigla = formCollection["txtDiretoriaSigla"];
 
-                campus.CodColaboradorDiretor = int.Parse(formCollection["ddlCampusDiretor"]);
-                campus.Sigla = formCollection["txtCampusSigla"];
-
-                Campus.Inserir(campus);
+                Diretoria.Inserir(diretoria);
             }
             return RedirectToAction("Index");
         }
