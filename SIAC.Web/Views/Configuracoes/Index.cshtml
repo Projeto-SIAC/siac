@@ -42,6 +42,11 @@
             $('#disciplinaForm').addClass('ui form loading');
         }
 
+        function cadastrar(itemFormId)
+        {
+            $(itemFormId).addClass('ui form loading');
+        }
+
     </script>
 
 
@@ -63,9 +68,7 @@
     <div class="ui top attached tabular menu">
         <a class="active item" data-tab="tab-gerais">Gerais</a>
         <a class="item" data-tab="tab-termo">Termo de Responsabilidade</a>
-        <a class="item" data-tab="tab-professor">Cadastro de Professor</a>
-        <a class="item" data-tab="tab-disciplina">Cadastro de Disciplina</a>
-        <a class="item" data-tab="tab-tema">Cadastro de Tema</a>
+        <a class="item" data-tab="tab-cadastro">Cadastros</a>
     </div>
 
     @* Tab Geral *@
@@ -106,168 +109,277 @@
         </div>
     </div>
 
-    @* Cadastro de Professor *@
-    <div class="ui bottom attached tab segment professor" data-tab="tab-professor">
-        <div class="ui styled fluid accordion">
-            <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
-            <div class="content">
-                <table class="ui striped table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Matricula</th>
-                            <th>Disciplina(s)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (Professor prof in ViewBag.Professores)
-                        {
-                            <tr>
-                                <td>@prof.Usuario.PessoaFisica.Nome</td>
-                                <td>@prof.MatrProfessor</td>
-                                <td class="ui labels">
-                                    @foreach (var disc in prof.Disciplina)
-                                    {
-                                        <span class="ui tag label">@disc.Descricao</span>
-                                    }
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+    @* Cadastros *@
+    <div class="ui bottom attached tab segment cadastro" data-tab="tab-cadastro">
+        <div class="ui top attached tabular menu">
+            <a class="active item" data-tab="tab-aluno">Aluno</a> 
+            <a class="item" data-tab="tab-professor">Professor</a>
+            <a class="item" data-tab="tab-colaborador">Colaborador</a>
+            <a class="item" data-tab="tab-disciplina">Disciplina</a>
+            <a class="item" data-tab="tab-tema">Tema</a>
         </div>
-        <br />
-        <form id="professorForm" method="post" action="/Configuracoes/CadastrarProfessor">
-            <div class="ui text loader">Inserindo</div>
-            <div class="field required">
-                <label>Nome</label>
-                <input type="text" name="txtProfessorNome" placeholder="Nome..." required />
-            </div>
-            <div class="field required">
-                <label>Matrícula</label>
-                <input type="text" name="txtProfessorMatricula" placeholder="Matrícula..." required />
-            </div>
-            <div class="field required">
-                <label>Disciplinas</label>
-                <select name="ddlProfessorDisciplinas" class="ui fluid search dropdown" multiple="" required">
-                    <option value="">Disciplinas...</option>
-                    @foreach (var d in ViewBag.Disciplinas)
-                    {
-                        <option value="@d.CodDisciplina">@d.Descricao</option>
-                    }
-                </select>
+
+        @* Aluno *@
+        <div class="ui bottom attached active tab segment aluno" data-tab="tab-aluno">
+            <div class="ui styled fluid accordion">
+                <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                <div class="content">
+                    <table class="ui striped table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Matricula</th>
+                                <th>Curso</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Aluno aluno in ViewBag.Alunos)
+                            {
+                                <tr>
+                                    <td>@aluno.Usuario.PessoaFisica.Nome</td>
+                                    <td>@aluno.MatrAluno</td>
+                                    <td>@aluno.Curso.Descricao</td>
+                                    @*<td class="ui labels">
+                                        @foreach (var disc in prof.Disciplina)
+                                        {
+                                            <span class="ui tag label">@disc.Descricao</span>
+                                        }
+                                    </td>*@
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <br />
-            <input type="submit" onclick="cadastrarProfessor()" class="ui button" value="Cadastrar" />
-        </form>
-    </div>
-
-    @* Cadastro de Disciplina *@
-    <div class="ui bottom attached tab segment disciplina" data-tab="tab-disciplina">
-        <div class="ui styled fluid accordion">
-            <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
-            <div class="content">
-                <table class="ui striped table">
-                    <thead>
-                        <tr>
-                            <th>Disciplina</th>
-                            <th>Sigla</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (Disciplina disc in ViewBag.Disciplinas)
+            <form id="alunoForm" method="post" action="/Configuracoes/CadastrarAluno">
+                <div class="ui text loader">Inserindo</div>
+                <div class="field required">
+                    <label>Nome</label>
+                    <input type="text" name="txtAlunoNome" placeholder="Nome..." required />
+                </div>
+                <div class="field required">
+                    <label>Matrícula</label>
+                    <input type="text" name="txtAlunoMatricula" placeholder="Matrícula..." required />
+                </div>
+                <div class="field required">
+                    <label>Curso</label>
+                    <select name="ddlAlunoCurso" class="ui fluid search dropdown" required">
+                        <option value="">Curso...</option>
+                        @foreach (Curso c in ViewBag.Cursos)
                         {
-                            <tr>
-                                <td>@disc.Descricao</td>
-                                <td>@disc.Sigla</td>
-                            </tr>
+                            <option value="@c.CodCurso">@c.Descricao</option>
                         }
-                    </tbody>
-                </table>
-            </div>
+                    </select>
+                </div>
+                <br />
+                <input type="submit" onclick="cadastrar('#alunoForm')" class="ui button" value="Cadastrar" />
+            </form>
         </div>
 
-        <br />
-        <form id="disciplinaForm" class="ui form" method="post" action="/Configuracoes/CadastrarDisciplina">
-            <div class="field required">
-                <label>Disciplina</label>
-                <input type="text" name="txtDisciplina" placeholder="Disciplina..." required />
-            </div>
-            <div class="field required">
-                <label>Sigla da Disciplina</label>
-                <input type="text" name="txtSigla" placeholder="Sigla..." required />
-            </div>
-            <div class="ui toggle checkbox">
-                <input type="checkbox" name="chkEletivaOptativa" />
-                <label><b>Eletiva / Optativa</b></label>
-                <br />
-            </div>
-            <div class="ui toggle checkbox">
-                <input type="checkbox" name="chkFlexivel" />
-                <label><b>Flexível</b></label>
-                <br />
-            </div>
-            <div class="field required">
-                <label>Temas (use ' ; ' para separar cada tema)</label>
-                <input type="text" name="txtTema" placeholder="Temas..." required />
-            </div>
-            <input type="submit" class="ui button" onclick="cadastrarDisciplina()" value="Cadastrar" />
-        </form>
-    </div>
-
-    @* Cadastro de Tema *@
-    <div class="ui bottom attached tab segment disciplina" data-tab="tab-tema">
-        <div class="ui styled fluid accordion">
-            <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
-            <div class="content">
-                <table class="ui striped table">
-                    <thead>
-                        <tr>
-                            <th>Disciplina</th>
-                            <th>Tema(s)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (Disciplina disc in ViewBag.Disciplinas)
-                        {
+        @* Professor *@
+        <div class="ui bottom attached tab segment professor" data-tab="tab-professor">
+            <div class="ui styled fluid accordion">
+                <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                <div class="content">
+                    <table class="ui striped table">
+                        <thead>
                             <tr>
-                                <td>@disc.Descricao</td>
-                                <td class="ui labels">
-                                    @foreach (Tema tema in ViewBag.Temas)
-                                    {
-                                        if (tema.CodDisciplina == disc.CodDisciplina)
+                                <th>Nome</th>
+                                <th>Matricula</th>
+                                <th>Disciplina(s)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Professor prof in ViewBag.Professores)
+                            {
+                                <tr>
+                                    <td>@prof.Usuario.PessoaFisica.Nome</td>
+                                    <td>@prof.MatrProfessor</td>
+                                    <td class="ui labels">
+                                        @foreach (var disc in prof.Disciplina)
                                         {
-                                            <span class="ui tag label">@tema.Descricao</span>
+                                            <span class="ui tag label">@disc.Descricao</span>
                                         }
-                                    }
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br />
+            <form id="professorForm" method="post" action="/Configuracoes/CadastrarProfessor">
+                <div class="ui text loader">Inserindo</div>
+                <div class="field required">
+                    <label>Nome</label>
+                    <input type="text" name="txtProfessorNome" placeholder="Nome..." required />
+                </div>
+                <div class="field required">
+                    <label>Matrícula</label>
+                    <input type="text" name="txtProfessorMatricula" placeholder="Matrícula..." required />
+                </div>
+                <div class="field required">
+                    <label>Disciplinas</label>
+                    <select name="ddlProfessorDisciplinas" class="ui fluid search dropdown" multiple="" required">
+                        <option value="">Disciplinas...</option>
+                        @foreach (var d in ViewBag.Disciplinas)
+                        {
+                            <option value="@d.CodDisciplina">@d.Descricao</option>
                         }
-                    </tbody>
-                </table>
-            </div>
+                    </select>
+                </div>
+                <br />
+                <input type="submit" onclick="cadastrarProfessor()" class="ui button" value="Cadastrar" />
+            </form>
         </div>
-        <br />
-        <form id="temaForm" class="ui form" method="post" action="/Configuracoes/CadastrarTema">
-            <div class="field required">
-                <label>Disciplina</label>
-                <select name="ddlTemaDisciplina" class="ui fluid search dropdown" required>
-                    <option value="">Disciplina</option>
-                    @foreach (var d in ViewBag.Disciplinas)
-                    {
-                        <option value="@d.CodDisciplina">@d.Descricao</option>
-                    }
-                </select>
-            </div>
-            <div class="field required">
-                <label>Tema</label>
-                <input type="text" name="txtTemaDescricao" maxlength="100" placeholder="Tema" required />
-            </div>
-            <input type="submit" class="ui button" onclick="$(this).parent().addClass('loading')" value="Cadastrar" />
-        </form>
-    </div>
 
+        @* Colaborador *@
+        <div class="ui bottom attached tab segment colaborador" data-tab="tab-colaborador">
+            <div class="ui styled fluid accordion">
+                <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                <div class="content">
+                    <table class="ui striped table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Matricula</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Colaborador col in ViewBag.Colaboradores)
+                            {
+                                <tr>
+                                    <td>@col.Usuario.PessoaFisica.Nome</td>
+                                    <td>@col.MatrColaborador</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br />
+            <form id="colaboradorForm" method="post" action="/Configuracoes/CadastrarColaborador">
+                <div class="field required">
+                    <label>Nome</label>
+                    <input type="text" name="txtColaboradorNome" placeholder="Nome..." required />
+                </div>
+                <div class="field required">
+                    <label>Matrícula</label>
+                    <input type="text" name="txtColaboradorMatricula" placeholder="Matrícula..." required />
+                </div>
+                <br />
+                <input type="submit" onclick="cadastrar('#colaboradorForm')" class="ui button" value="Cadastrar" />
+            </form>
+        </div>
+
+        @* Disciplina *@
+        <div class="ui bottom attached tab segment disciplina" data-tab="tab-disciplina">
+            <div class="ui styled fluid accordion">
+                <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                <div class="content">
+                    <table class="ui striped table">
+                        <thead>
+                            <tr>
+                                <th>Disciplina</th>
+                                <th>Sigla</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Disciplina disc in ViewBag.Disciplinas)
+                            {
+                                <tr>
+                                    <td>@disc.Descricao</td>
+                                    <td>@disc.Sigla</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <br />
+            <form id="disciplinaForm" class="ui form" method="post" action="/Configuracoes/CadastrarDisciplina">
+                <div class="field required">
+                    <label>Disciplina</label>
+                    <input type="text" name="txtDisciplina" placeholder="Disciplina..." required />
+                </div>
+                <div class="field required">
+                    <label>Sigla da Disciplina</label>
+                    <input type="text" name="txtSigla" placeholder="Sigla..." required />
+                </div>
+                <div class="ui toggle checkbox">
+                    <input type="checkbox" name="chkEletivaOptativa" />
+                    <label><b>Eletiva / Optativa</b></label>
+                    <br />
+                </div>
+                <div class="ui toggle checkbox">
+                    <input type="checkbox" name="chkFlexivel" />
+                    <label><b>Flexível</b></label>
+                    <br />
+                </div>
+                <div class="field required">
+                    <label>Temas (use ' ; ' para separar cada tema)</label>
+                    <input type="text" name="txtTema" placeholder="Temas..." required />
+                </div>
+                <input type="submit" class="ui button" onclick="cadastrarDisciplina()" value="Cadastrar" />
+            </form>
+        </div>
+
+        @* Tema *@
+        <div class="ui bottom attached tab segment disciplina" data-tab="tab-tema">
+            <div class="ui styled fluid accordion">
+                <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                <div class="content">
+                    <table class="ui striped table">
+                        <thead>
+                            <tr>
+                                <th>Disciplina</th>
+                                <th>Tema(s)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Disciplina disc in ViewBag.Disciplinas)
+                            {
+                                <tr>
+                                    <td>@disc.Descricao</td>
+                                    <td class="ui labels">
+                                        @foreach (Tema tema in ViewBag.Temas)
+                                        {
+                                            if (tema.CodDisciplina == disc.CodDisciplina)
+                                            {
+                                                <span class="ui tag label">@tema.Descricao</span>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br />
+            <form id="temaForm" class="ui form" method="post" action="/Configuracoes/CadastrarTema">
+                <div class="field required">
+                    <label>Disciplina</label>
+                    <select name="ddlTemaDisciplina" class="ui fluid search dropdown" required>
+                        <option value="">Disciplina</option>
+                        @foreach (var d in ViewBag.Disciplinas)
+                        {
+                            <option value="@d.CodDisciplina">@d.Descricao</option>
+                        }
+                    </select>
+                </div>
+                <div class="field required">
+                    <label>Tema</label>
+                    <input type="text" name="txtTemaDescricao" maxlength="100" placeholder="Tema" required />
+                </div>
+                <input type="submit" class="ui button" onclick="$(this).parent().addClass('loading')" value="Cadastrar" />
+            </form>
+        </div>
+
+    </div> 
+    
     <br />
     <div id="btnAtualizar" onclick="atualizarParametros()" type="button" class="ui button">Atualizar</div>
 

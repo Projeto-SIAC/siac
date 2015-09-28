@@ -30,5 +30,10 @@ namespace SIAC.Web.Models
         {
             return contexto.QuestaoTema.Where(qt => qt.CodDisciplina == codDisciplina).Select(qt=>qt.Tema).Distinct().OrderBy(t => t.Descricao).ToList();
         }
+
+        public static List<Tema> ListarOrdenadamenteComDisciplina()
+        {
+            return contexto.Tema.OrderBy(t => t.Disciplina.Descricao).OrderBy(t => t.Descricao).ToList();
+        }
     }
 }

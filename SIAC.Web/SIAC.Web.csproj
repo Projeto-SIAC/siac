@@ -435,6 +435,7 @@
     <Compile Include="Models\Pais.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\pAluno.cs" />
     <Compile Include="Models\pAnexo.cs" />
     <Compile Include="Models\Parametro.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
@@ -442,9 +443,13 @@
     <Compile Include="Models\pAvalAuto.cs" />
     <Compile Include="Models\pAvaliacao.cs" />
     <Compile Include="Models\pAvalPessoaResultado.cs" />
+    <Compile Include="Models\pCampus.cs" />
     <Compile Include="Models\pCategoria.cs" />
+    <Compile Include="Models\pColaborador.cs" />
+    <Compile Include="Models\pCurso.cs" />
     <Compile Include="Models\pDificuldade.cs" />
     <Compile Include="Models\pDisciplina.cs" />
+    <Compile Include="Models\pInstituicao.cs" />
     <Compile Include="Models\pParametro.cs" />
     <Compile Include="Models\pPessoa.cs" />
     <Compile Include="Models\pPessoaFisica.cs" />

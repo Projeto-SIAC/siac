@@ -39,12 +39,12 @@ namespace SIAC.Web.Controllers
             Parametro model = Parametro.Obter();
 
             ViewBag.Disciplinas = Disciplina.ListarOrdenadamente();
-            ViewBag.Professores = from prof in DataContextSIAC.GetInstance().Professor
-                                  orderby prof.Usuario.PessoaFisica.Nome
-                                  select prof;
-            ViewBag.Temas = from tema in DataContextSIAC.GetInstance().Tema
-                            orderby tema.CodDisciplina, tema.Descricao
-                            select tema;
+            ViewBag.Professores = Professor.ListarOrdenadamente();
+            ViewBag.Temas = Tema.ListarOrdenadamenteComDisciplina();
+            ViewBag.Alunos = Aluno.ListarOrdenadamente();
+            ViewBag.Cursos = Curso.ListarOrdenadamente();
+            ViewBag.Colaboradores = Colaborador.ListarOrdenadamente();
+
             return View(model);
         }
 
@@ -107,6 +107,38 @@ namespace SIAC.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        //POST: /Configuracoes/CadastrarColaborador
+        [HttpPost]
+        public ActionResult CadastrarColaborador(FormCollection formCollection)
+        {
+            if (formCollection.HasKeys())
+            {
+                Colaborador colaborador = new Colaborador();
+                colaborador.Usuario = new Usuario();
+                colaborador.Usuario.PessoaFisica = new PessoaFisica();
+                colaborador.Usuario.PessoaFisica.Pessoa = new Pessoa();
+
+
+                //Pessoa
+                colaborador.Usuario.PessoaFisica.Pessoa.TipoPessoa = "F";
+
+                //PessoaFisica
+                colaborador.Usuario.PessoaFisica.Nome = formCollection["txtColaboradorNome"];
+                colaborador.Usuario.PessoaFisica.Categoria.Add(Categoria.ListarPorCodigo(3));
+
+                //Usuario
+                colaborador.Usuario.Categoria = Categoria.ListarPorCodigo(3);
+                colaborador.Usuario.Matricula = formCollection["txtColaboradorMatricula"];
+                colaborador.Usuario.Senha = Criptografia.RetornarHash("senha");
+                colaborador.Usuario.DtCadastro = DateTime.Now;
+
+                colaborador.MatrColaborador = formCollection["txtColaboradorMatricula"];
+
+                Colaborador.Inserir(colaborador);
+            }
+            return RedirectToAction("Index");
+        }
+
         //POST: Configuracoes/CadastrarDisciplina
         [HttpPost]
         public ActionResult CadastrarDisciplina(FormCollection formCollection)
@@ -161,5 +193,37 @@ namespace SIAC.Web.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        //POST: Configuracoes/CadastrarAluno //FALTA TESTAR
+        [HttpPost]
+        public ActionResult CadastrarAluno(FormCollection formCollection)
+        {
+            if (formCollection.HasKeys())
+            {
+                Aluno aluno = new Aluno();
+
+                //Usuario
+                aluno.Usuario = new Usuario();
+                aluno.Usuario.Matricula = formCollection["txtAlunoMatricula"];
+                aluno.Usuario.Senha = Criptografia.RetornarHash("senha");
+                aluno.Usuario.CodCategoria = 1;
+                aluno.Usuario.DtCadastro = DateTime.Now;
+                
+                //PessoaFisica
+                aluno.Usuario.PessoaFisica = new PessoaFisica();
+                aluno.Usuario.PessoaFisica.Nome = formCollection["txtAlunoNome"];
+
+                //Pessoa
+                aluno.Usuario.PessoaFisica.Pessoa.TipoPessoa = "F";
+
+                //Curso
+                aluno.CodCurso = int.Parse(formCollection["ddlAlunoCurso"]);
+
+                Aluno.Inserir(aluno);
+            }
+
+            return RedirectToAction("Index");
+        }
+
     }
 }
