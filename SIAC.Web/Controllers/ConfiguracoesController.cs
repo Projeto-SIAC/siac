@@ -44,6 +44,9 @@ namespace SIAC.Web.Controllers
             ViewBag.Alunos = Aluno.ListarOrdenadamente();
             ViewBag.Cursos = Curso.ListarOrdenadamente();
             ViewBag.Colaboradores = Colaborador.ListarOrdenadamente();
+            ViewBag.Campi = Campus.ListarOrdenadamente();
+            ViewBag.Instituicoes = Instituicao.ListarOrdenadamente();
+            ViewBag.Diretorias = Diretoria.ListarOrdenadamente();
 
             return View(model);
         }
@@ -135,6 +138,63 @@ namespace SIAC.Web.Controllers
                 colaborador.MatrColaborador = formCollection["txtColaboradorMatricula"];
 
                 Colaborador.Inserir(colaborador);
+            }
+            return RedirectToAction("Index");
+        }
+
+        //POST: /Configuracoes/CadastrarCampus
+        [HttpPost]
+        public ActionResult CadastrarCampus(FormCollection formCollection)
+        {
+            if (formCollection.HasKeys())
+            {
+                Campus campus = new Campus();
+                campus.PessoaJuridica = new PessoaJuridica();
+                campus.PessoaJuridica.Pessoa = new Pessoa();
+
+                //Pessoa
+                campus.PessoaJuridica.Pessoa.TipoPessoa = "J";
+
+                //PessoaJuridica
+                campus.PessoaJuridica.RazaoSocial = formCollection["txtCampusRazaoSocial"];
+                campus.PessoaJuridica.NomeFantasia = formCollection["txtCampusNomeFantasia"];
+                campus.PessoaJuridica.Portal = formCollection["txtCampusPortal"];
+
+                //Campus
+                campus.CodInstituicao = int.Parse(formCollection["ddlCampusInstituicao"]);
+                campus.CodColaboradorDiretor = int.Parse(formCollection["ddlCampusDiretor"]);
+                campus.Sigla = formCollection["txtCampusSigla"];
+
+                Campus.Inserir(campus);
+            }
+            return RedirectToAction("Index");
+        }
+
+        //POST: /Configuracoes/CadastrarDiretoria
+        [HttpPost]
+        public ActionResult CadastrarDiretoria(FormCollection formCollection)
+        {
+            if (formCollection.HasKeys())
+            {
+                Diretoria diretoria = new Diretoria();
+                diretoria.PessoaJuridica = new PessoaJuridica();
+                diretoria.PessoaJuridica.Pessoa = new Pessoa();
+
+                //Pessoa
+                diretoria.PessoaJuridica.Pessoa.TipoPessoa = "J";
+
+                //PessoaJuridica
+                diretoria.PessoaJuridica.RazaoSocial = formCollection["txtDiretoriaRazaoSocial"];
+                diretoria.PessoaJuridica.NomeFantasia = formCollection["txtDiretoriaNomeFantasia"];
+                diretoria.PessoaJuridica.Portal = formCollection["txtDiretoriaPortal"];
+
+                //Diretoria
+                diretoria.CodCampus = int.Parse(formCollection["ddlDiretoriaCampus"]);
+
+                campus.CodColaboradorDiretor = int.Parse(formCollection["ddlCampusDiretor"]);
+                campus.Sigla = formCollection["txtCampusSigla"];
+
+                Campus.Inserir(campus);
             }
             return RedirectToAction("Index");
         }

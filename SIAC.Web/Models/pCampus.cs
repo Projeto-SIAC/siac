@@ -19,5 +19,10 @@ namespace SIAC.Web.Models
             contexto.Campus.Add(campus);
             contexto.SaveChanges();
         }
+        
+        public static Campus ListarPorCodigo(int codCampus)
+        {
+            return contexto.Campus.FirstOrDefault(c => c.CodCampus == codCampus);
+        }
     }
 }

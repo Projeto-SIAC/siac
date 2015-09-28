@@ -82,6 +82,7 @@
           <Property Name="Ano" Type="int" Nullable="false" />
           <Property Name="CodDificuldade" Type="int" Nullable="false" />
           <Property Name="CodPessoaFisica" Type="int" Nullable="false" />
+          <Property Name="FlagArquivo" Type="bit" />
         </EntityType>
         <EntityType Name="AvalAvi">
           <Key>
@@ -809,8 +810,8 @@
           <Property Name="Objetivo" Type="text" />
           <Property Name="Comentario" Type="text" />
           <Property Name="ChaveDeResposta" Type="text" />
-          <Property Name="DtUltimoUso" Type="datetime" />
           <Property Name="DtCadastro" Type="datetime" Nullable="false" />
+          <Property Name="DtUltimoUso" Type="datetime" />
         </EntityType>
         <EntityType Name="QuestaoAnexo">
           <Key>
@@ -3494,6 +3495,7 @@
           <NavigationProperty Name="Avaliacao" Relationship="Self.FK__AvalAuto__00DF2177" FromRole="AvalAuto" ToRole="Avaliacao" />
           <NavigationProperty Name="Dificuldade" Relationship="Self.FK__AvalAuto__CodDif__02C769E9" FromRole="AvalAuto" ToRole="Dificuldade" />
           <NavigationProperty Name="PessoaFisica" Relationship="Self.FK__AvalAuto__CodPes__01D345B0" FromRole="AvalAuto" ToRole="PessoaFisica" />
+          <Property Name="FlagArquivo" Type="Boolean" />
         </EntityType>
         <EntityType Name="AvalAvi">
           <Key>
@@ -6506,6 +6508,7 @@
           <EntitySetMapping Name="AvalAuto">
             <EntityTypeMapping TypeName="dbSIACModel.AvalAuto">
               <MappingFragment StoreEntitySet="AvalAuto">
+                <ScalarProperty Name="FlagArquivo" ColumnName="FlagArquivo" />
                 <ScalarProperty Name="NumIdentificador" ColumnName="NumIdentificador" />
                 <ScalarProperty Name="CodTipoAvaliacao" ColumnName="CodTipoAvaliacao" />
                 <ScalarProperty Name="Semestre" ColumnName="Semestre" />

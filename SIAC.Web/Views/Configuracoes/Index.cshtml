@@ -115,6 +115,8 @@
             <a class="active item" data-tab="tab-aluno">Aluno</a> 
             <a class="item" data-tab="tab-professor">Professor</a>
             <a class="item" data-tab="tab-colaborador">Colaborador</a>
+            <a class="item" data-tab="tab-campus">Campus</a>
+            <a class="item" data-tab="tab-diretoria">Diretoria</a>
             <a class="item" data-tab="tab-disciplina">Disciplina</a>
             <a class="item" data-tab="tab-tema">Tema</a>
         </div>
@@ -270,6 +272,142 @@
                 </div>
                 <br />
                 <input type="submit" onclick="cadastrar('#colaboradorForm')" class="ui button" value="Cadastrar" />
+            </form>
+        </div>
+
+        @* Campus *@
+        <div class="ui bottom attached tab segment campus" data-tab="tab-campus">
+            <div class="ui styled fluid accordion">
+                <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                <div class="content">
+                    <table class="ui striped table">
+                        <thead>
+                            <tr>
+                                <th>Campus</th>
+                                <th>Instituição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Campus camp in ViewBag.Campi)
+                            {
+                                <tr>
+                                    <td>@camp.Sigla</td>
+                                    <td>@camp.Instituicao.Sigla</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br />
+            <form id="campusForm" method="post" action="/Configuracoes/CadastrarCampus">
+                <div class="field required">
+                    <label>Instituição</label>
+                    <select name="ddlCampusInstituicao" class="ui fluid search dropdown" required>
+                        <option value="">Instituição...</option>
+                        @foreach (Instituicao inst in ViewBag.Instituicoes)
+                        {
+                            <option value="@inst.CodInstituicao">@inst.Sigla</option>
+                        }
+                    </select>
+                </div>
+                <div class="field required">
+                    <label>Razão Social</label>
+                    <input type="text" name="txtCampusRazaoSocial" placeholder="Razão Social..." required />
+                </div>
+                <div class="field required">
+                    <label>Nome Fantasia</label>
+                    <input type="text" name="txtCampusNomeFantasia" placeholder="Nome Fantasia..." required />
+                </div>
+                <div class="field required">
+                    <label>Sigla</label>
+                    <input type="text" name="txtCampusSigla" placeholder="Sigla..." required />
+                </div>
+                <div class="field required">
+                    <label>Portal</label>
+                    <input type="text" name="txtCampusPortal" placeholder="Portal..." required />
+                </div>
+                <div class="field required">
+                    <label>Diretor</label>
+                    <select name="ddlCampusDiretor" class="ui fluid search dropdown" required>
+                        <option value="">Diretor...</option>
+                        @foreach (Colaborador col in ViewBag.Colaboradores)
+                        {
+                            <option value="@col.CodColaborador">@col.Usuario.PessoaFisica.Nome</option>
+                        }
+                    </select>
+                </div>
+                <br />
+                <input type="submit" onclick="cadastrar('#campusForm')" class="ui button" value="Cadastrar" />
+            </form>
+        </div>
+
+        @* Diretoria *@
+        <div class="ui bottom attached tab segment diretoria" data-tab="tab-diretoria">
+            <div class="ui styled fluid accordion">
+                <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                <div class="content">
+                    <table class="ui striped table">
+                        <thead>
+                            <tr>
+                                <th>Diretoria</th>
+                                <th>Campus</th>
+                                <th>Instituição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Diretoria dir in ViewBag.Diretorias)
+                            {
+                                <tr>
+                                    <td>@dir.Sigla</td>
+                                    <td>@dir.Campus.Sigla</td>
+                                    <td>@dir.Campus.Instituicao.Sigla</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br />
+            <form id="diretoriaForm" method="post" action="/Configuracoes/CadastrarDiretoria">
+                <div class="field required">
+                    <label>Campus</label>
+                    <select name="ddlDiretoriaCampus" class="ui fluid search dropdown" required>
+                        <option value="">Campus...</option>
+                        @foreach (Campus camp in ViewBag.Campi)
+                        {
+                            <option value="@camp.CodCampus">@camp.Sigla</option>
+                        }
+                    </select>
+                </div>
+                <div class="field required">
+                    <label>Razão Social</label>
+                    <input type="text" name="txtDiretoriaRazaoSocial" placeholder="Razão Social..." required />
+                </div>
+                <div class="field required">
+                    <label>Nome Fantasia</label>
+                    <input type="text" name="txtDiretoriaNomeFantasia" placeholder="Nome Fantasia..." required />
+                </div>
+                <div class="field required">
+                    <label>Sigla</label>
+                    <input type="text" name="txtDiretoriaSigla" placeholder="Sigla..." required />
+                </div>
+                <div class="field required">
+                    <label>Portal</label>
+                    <input type="text" name="txtDiretoriaPortal" placeholder="Portal..." required />
+                </div>
+                <div class="field required">
+                    <label>Diretor</label>
+                    <select name="ddlDiretoriaDiretor" class="ui fluid search dropdown" required>
+                        <option value="">Diretor...</option>
+                        @foreach (Colaborador col in ViewBag.Colaboradores)
+                        {
+                            <option value="@col.CodColaborador">@col.Usuario.PessoaFisica.Nome</option>
+                        }
+                    </select>
+                </div>
+                <br />
+                <input type="submit" onclick="cadastrar('#diretoriaForm')" class="ui button" value="Cadastrar" />
             </form>
         </div>
 
