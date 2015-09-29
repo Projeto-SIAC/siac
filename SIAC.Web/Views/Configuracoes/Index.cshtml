@@ -43,8 +43,21 @@
         var MatrizCount = 2;
 
         function adicionarDisciplinaMatriz() {
-            $('.table.body').append('<tr><td><div class="field required"><input type="number" name="txtPeriodo' + MatrizCount + '" placeholder="Periodo..." required/></div></td><td><div class="field"><select name="ddlDisciplina' + MatrizCount + '" class="ui search dropdown" required><option value="">Disciplina...</option>@foreach(Disciplina d in ViewBag.Disciplinas){<option value=@d.CodDisciplina>@d.Descricao</option>}</select></div></td><td><div class="field required"><input type="number" name="txtCH' + MatrizCount + '" placeholder="Carga Horária..." required /></div></td></tr>');
+            var copia = $('[name="ddlDisciplina1"').clone();
+            $tr = $('<tr></tr>');
+            $td1 = $('<td></td>').append('\
+                        <div class="field required">\
+                            <input type="number" name="txtPeriodo' + MatrizCount + '" placeholder="Periodo..." required/>\
+                        </div>');
+            $td2 = $('<td></td>').append(copia.attr('name','ddlDisciplina'+MatrizCount).addClass('ui dropdown search fluid'));
+            $td3 = $('<td></td>').append('\
+                        <div class="field required">\
+                            <input type="number" name="txtCH' + MatrizCount + '" placeholder="Carga Horária..." required />\
+                        </div>');
+            $tr.append($td1).append($td2).append($td3);
+            $('.table.body').append($tr);
             $('#matrizQte').val(MatrizCount);
+            $('.ui.dropdown').dropdown();
             MatrizCount++;
             
         }
@@ -772,7 +785,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <input id="matrizQte" name="matrizQte" value=""/>
+                <input id="matrizQte" name="matrizQte" value="" hidden/>
                 <div class="ui floated right button" onclick="adicionarDisciplinaMatriz()">Adicionar Disciplina</div>
                 <input type="submit" class="ui button" onclick="cadastrar('#matrizForm')" value="Cadastrar" />
             </form>

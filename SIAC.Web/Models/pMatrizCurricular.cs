@@ -19,5 +19,16 @@ namespace SIAC.Web.Models
             contexto.MatrizCurricular.Add(matrizCurricular);
             contexto.SaveChanges();
         }
+
+        public static int ObterCodMatriz(int codCurso)
+        {
+            int codMatriz = 1;
+            int qteMatriz = contexto.MatrizCurricular.Where(m => m.CodCurso == codCurso).Count();
+            if (qteMatriz != 0)
+            {
+                codMatriz = qteMatriz + 1;
+            }
+            return codMatriz;
+        }
     }
 }
