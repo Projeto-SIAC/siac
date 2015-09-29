@@ -383,6 +383,7 @@ namespace SIAC.Web.Controllers
 
                 int codCurso = int.Parse(formCollection["ddlMatrizCurso"]);
                 matrizCurricular.CodCurso = codCurso;
+                matrizCurricular.CodMatriz = MatrizCurricular.ObterCodMatriz(codCurso);
 
                 int qteDisc = int.Parse(formCollection["matrizQte"]);
 
