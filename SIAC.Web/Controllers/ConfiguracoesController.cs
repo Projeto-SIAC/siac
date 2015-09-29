@@ -52,6 +52,7 @@ namespace SIAC.Web.Controllers
             ViewBag.Turmas = Turma.ListarOrdenadamente();
             ViewBag.Turnos = Turno.ListarOrdenadamente();
             ViewBag.Salas = Sala.ListarOrdenadamente();
+            ViewBag.Matrizes = MatrizCurricular.ListarOrdenadamente();
 
             return View(model);
         }
@@ -358,6 +359,35 @@ namespace SIAC.Web.Controllers
 
             return RedirectToAction("Index");
         }
-        
+
+        //POST: Configuracoes/CadastrarMatriz
+        [HttpPost]
+        public ActionResult CadastrarMatriz(FormCollection formCollection)
+        {
+            if (formCollection.HasKeys())
+            {
+                MatrizCurricular matrizCurricular = new MatrizCurricular();
+
+                int codCurso = int.Parse(formCollection["ddlMatrizCurso"]);
+                matrizCurricular.CodCurso = codCurso;
+
+                int qteDisc = int.Parse(formCollection["matrizQte"]);
+
+                for (int i = 1; i <= qteDisc; i++)
+                {
+                    matrizCurricular.MatrizCurricularDisciplina.Add(new MatrizCurricularDisciplina() {
+                        Periodo = int.Parse(formCollection["txtPeriodo" + i]),
+                        CodDisciplina = int.Parse(formCollection["ddlDisciplina" + i]),
+                        DiscCargaHoraria = int.Parse(formCollection["txtCH" + i])
+                    });
+                }
+
+                MatrizCurricular.Inserir(matrizCurricular);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
     }
 }
