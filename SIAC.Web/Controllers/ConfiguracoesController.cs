@@ -274,12 +274,15 @@ namespace SIAC.Web.Controllers
                 foreach (string item in temas)
                 {
                     string tema = item.Trim();
-                    Tema t = new Tema();
-                    t.CodDisciplina = codDisciplina;
-                    t.CodTema = i;
-                    t.Descricao = tema;
-                    i++;
-                    Tema.Inserir(t);
+                    if (!String.IsNullOrWhiteSpace(tema))
+                    {
+                        Tema t = new Tema();
+                        t.CodDisciplina = codDisciplina;
+                        t.CodTema = i;
+                        t.Descricao = tema;
+                        i++;
+                        Tema.Inserir(t);
+                    }
                 }
             }
             return RedirectToAction("Index");
@@ -303,12 +306,15 @@ namespace SIAC.Web.Controllers
                 foreach (string item in temas)
                 {
                     string tema = item.Trim();
-                    Tema t = new Tema();
-                    t.CodDisciplina = codDisciplina;
-                    t.CodTema = i;
-                    t.Descricao = tema;
-                    i++;
-                    Tema.Inserir(t);
+                    if (!String.IsNullOrWhiteSpace(tema))
+                    {
+                        Tema t = new Tema();
+                        t.CodDisciplina = codDisciplina;
+                        t.CodTema = i;
+                        t.Descricao = tema;
+                        i++;
+                        Tema.Inserir(t);
+                    }
                 }
             }
             return RedirectToAction("Index");

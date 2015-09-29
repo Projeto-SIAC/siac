@@ -17,7 +17,7 @@
 
 <h2>Gerar</h2>
 
-<div class="">
+<div style="max-height:60em; overflow-y:scroll">
     @foreach (var questao in Model)
     {
         <div class="ui segment">
@@ -127,3 +127,7 @@
         </div>
                         }
 </div>
+<form action="/Dashboard/Questao/Gerar" method="post">
+    <a href="/Historico/Questao" class="ui button">Voltar</a>
+    <input type="submit" class="ui button" value="Inserir" />
+</form>

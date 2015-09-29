@@ -19,6 +19,7 @@ namespace SIAC.Web.Helpers
             for (int i = 0; i < qte; i++)
             {
                 Questao questao = new Questao();
+                questao.DtCadastro = DateTime.Now;
                 questao.Professor = lstProfessor.ElementAt(r.Next(lstProfessor.Count));
                 questao.Dificuldade = lstDificuldade.ElementAt(r.Next(lstDificuldade.Count));
                 questao.TipoQuestao = lstTipoQuestao.ElementAt(r.Next(lstTipoQuestao.Count));
@@ -43,12 +44,14 @@ namespace SIAC.Web.Helpers
                 int qteTema = lstTema.Count > 4 ? r.Next(1, 5) : r.Next(1, lstTema.Count);
                 for (int j = 0; j < qteTema; j++)
                 {
+                    var index = r.Next(lstTema.Count);
                     questao.QuestaoTema.Add(
                         new QuestaoTema
                         {
-                            Tema = lstTema.ElementAt(r.Next(lstTema.Count))                            
+                            Tema = lstTema.ElementAt(index)                            
                         }    
                     );
+                    lstTema.Remove(lstTema.ElementAt(index));
                 }
                 if (questao.TipoQuestao.CodTipoQuestao == 1)
                 {

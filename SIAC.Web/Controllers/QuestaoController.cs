@@ -258,10 +258,27 @@ namespace SIAC.Web.Controllers
         }    
         
         //GET: Dashboard/Questao/Gerar/50
+        [HttpGet]
         public ActionResult Gerar(string strQte)
         {
-            int qte = int.Parse(strQte);            
-            return View(Helpers.DevGerarQuestao.GerarQuestao(qte));            
+            Helpers.TimeLog.Iniciar("Gerar Questões (" + strQte + ")");
+            int qte = int.Parse(strQte);
+            List<Questao> lstQuestao = Helpers.DevGerarQuestao.GerarQuestao(qte);
+            TempData["lstQuestao"] = lstQuestao;
+            Helpers.TimeLog.Parar();
+            return View(lstQuestao);            
         }    
+
+        [HttpPost]
+        public ActionResult Gerar()
+        {
+            if (TempData.ContainsKey("lstQuestao"))
+            {
+                List<Questao> lstQuestao = (List<Questao>)TempData["lstQuestao"];
+                DataContextSIAC.GetInstance().Questao.AddRange(lstQuestao);
+                DataContextSIAC.GetInstance().SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
     }
 }
