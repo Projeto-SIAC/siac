@@ -290,6 +290,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Criptografia.cs" />
+    <Compile Include="Helpers\DevGerarQuestao.cs" />
     <Compile Include="Helpers\LeroLero.cs" />
     <Compile Include="Helpers\Extensoes.cs" />
     <Compile Include="Helpers\TimeLog.cs" />
@@ -591,6 +592,7 @@
     <Content Include="Views\Autoavaliacao\Resultado.cshtml" />
     <Content Include="Views\Autoavaliacao\Detalhe.cshtml" />
     <Content Include="Views\Autoavaliacao\Imprimir.cshtml" />
+    <Content Include="Views\Questao\Gerar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -255,6 +255,13 @@ namespace SIAC.Web.Controllers
                 return View(model);
             }
             return RedirectToAction("Index");
-        }        
+        }    
+        
+        //GET: Dashboard/Questao/Gerar/50
+        public ActionResult Gerar(string strQte)
+        {
+            int qte = int.Parse(strQte);            
+            return View(Helpers.DevGerarQuestao.GerarQuestao(qte));            
+        }    
     }
 }

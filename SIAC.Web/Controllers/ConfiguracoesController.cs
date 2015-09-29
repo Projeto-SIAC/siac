@@ -293,16 +293,23 @@ namespace SIAC.Web.Controllers
             {
                 int codDisciplina;
                 int.TryParse(formCollection["ddlTemaDisciplina"], out codDisciplina);
-                string descricao = formCollection["txtTemaDescricao"];
 
-                Tema tema = new Tema();
-                tema.Disciplina = Disciplina.ListarPorCodigo(codDisciplina);
-                tema.Descricao = descricao;
                 var codTemas = (from t in DataContextSIAC.GetInstance().Tema
                                 where t.CodDisciplina == codDisciplina
                                 select t.CodTema).ToList();
-                tema.CodTema = codTemas != null && codTemas.Count>0 ? codTemas.Max() + 1 : 1;
-                Tema.Inserir(tema);
+
+                string[] temas = formCollection["txtTemaDescricao"].Split(';');
+                int i = codTemas != null && codTemas.Count > 0 ? codTemas.Max() + 1 : 1; ;
+                foreach (string item in temas)
+                {
+                    string tema = item.Trim();
+                    Tema t = new Tema();
+                    t.CodDisciplina = codDisciplina;
+                    t.CodTema = i;
+                    t.Descricao = tema;
+                    i++;
+                    Tema.Inserir(t);
+                }
             }
             return RedirectToAction("Index");
         }
