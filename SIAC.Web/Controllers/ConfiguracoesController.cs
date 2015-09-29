@@ -47,6 +47,11 @@ namespace SIAC.Web.Controllers
             ViewBag.Campi = Campus.ListarOrdenadamente();
             ViewBag.Instituicoes = Instituicao.ListarOrdenadamente();
             ViewBag.Diretorias = Diretoria.ListarOrdenadamente();
+            ViewBag.Cursos = Curso.ListarOrdenadamente();
+            ViewBag.NiveisEnsino = NivelEnsino.ListarOrdenadamente();
+            ViewBag.Turmas = Turma.ListarOrdenadamente();
+            ViewBag.Turnos = Turno.ListarOrdenadamente();
+            ViewBag.Salas = Sala.ListarOrdenadamente();
 
             return View(model);
         }
@@ -200,6 +205,52 @@ namespace SIAC.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        //POST: /Configuracoes/CadastrarCurso
+        [HttpPost]
+        public ActionResult CadastrarCurso(FormCollection formCollection)
+        {
+            if (formCollection.HasKeys())
+            {
+                Curso curso = new Curso();
+
+                //Diretoria
+                int codDiretoria = int.Parse(formCollection["ddlCursoDiretoria"]);
+                curso.Diretoria = Diretoria.ListarPorCodigo(codDiretoria);
+
+                //NivelEnsino
+                curso.CodNivelEnsino = int.Parse(formCollection["ddlCursoNivelEnsino"]);
+
+                //Diretor
+                curso.CodColabCoordenador = int.Parse(formCollection["ddlCursoCoordenador"]);
+
+                //Curso
+                curso.Descricao = formCollection["txtCursoDescricao"];
+                curso.Sigla = formCollection["txtCursoSigla"];
+
+                Curso.Inserir(curso);
+            }
+            return RedirectToAction("Index");
+        }
+
+        //POST: Configuracoes/CadastrarTurma
+        [HttpPost]
+        public ActionResult CadastrarTurma(FormCollection formCollection)
+        {
+            if (formCollection.HasKeys())
+            {
+                Turma turma = new Turma();
+
+                //Turma
+                turma.CodCurso = int.Parse(formCollection["ddlTurmaCurso"]);
+                turma.Periodo = int.Parse(formCollection["txtTurmaPeriodo"]);
+                turma.CodTurno = formCollection["ddlTurmaTurno"];
+                turma.Nome = formCollection["txtTurmaNome"];
+
+                Turma.Inserir(turma);
+            }
+            return RedirectToAction("Index");
+        }
+
         //POST: Configuracoes/CadastrarDisciplina
         [HttpPost]
         public ActionResult CadastrarDisciplina(FormCollection formCollection)
@@ -255,27 +306,29 @@ namespace SIAC.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        //POST: Configuracoes/CadastrarAluno //FALTA TESTAR
+        //POST: Configuracoes/CadastrarAluno
         [HttpPost]
         public ActionResult CadastrarAluno(FormCollection formCollection)
         {
             if (formCollection.HasKeys())
             {
                 Aluno aluno = new Aluno();
-
-                //Usuario
                 aluno.Usuario = new Usuario();
-                aluno.Usuario.Matricula = formCollection["txtAlunoMatricula"];
-                aluno.Usuario.Senha = Criptografia.RetornarHash("senha");
-                aluno.Usuario.CodCategoria = 1;
-                aluno.Usuario.DtCadastro = DateTime.Now;
-                
-                //PessoaFisica
                 aluno.Usuario.PessoaFisica = new PessoaFisica();
-                aluno.Usuario.PessoaFisica.Nome = formCollection["txtAlunoNome"];
+                aluno.Usuario.PessoaFisica.Pessoa = new Pessoa();
 
                 //Pessoa
                 aluno.Usuario.PessoaFisica.Pessoa.TipoPessoa = "F";
+
+                //PessoaFisica
+                aluno.Usuario.PessoaFisica.Nome = formCollection["txtAlunoNome"];
+                aluno.Usuario.PessoaFisica.Categoria.Add(Categoria.ListarPorCodigo(1));
+
+                //Usuario
+                aluno.Usuario.Categoria = Categoria.ListarPorCodigo(1);
+                aluno.Usuario.Matricula = formCollection["txtAlunoMatricula"];
+                aluno.Usuario.Senha = Criptografia.RetornarHash("senha");
+                aluno.Usuario.DtCadastro = DateTime.Now;
 
                 //Curso
                 aluno.CodCurso = int.Parse(formCollection["ddlAlunoCurso"]);
@@ -286,5 +339,25 @@ namespace SIAC.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        //POST: Configuracoes/CadastrarSala
+        [HttpPost]
+        public ActionResult CadastrarSala(FormCollection formCollection)
+        {
+            if (formCollection.HasKeys())
+            {
+                Sala sala = new Sala();
+
+                //Campus
+                int codCampus = int.Parse(formCollection["ddlSalaCampus"]);
+                sala.Campus = Campus.ListarPorCodigo(codCampus);
+                sala.Descricao = formCollection["txtSalaDescricao"];
+                sala.Sigla = formCollection["txtSalaSigla"];
+
+                Sala.Inserir(sala);
+            }
+
+            return RedirectToAction("Index");
+        }
+        
     }
 }

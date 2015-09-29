@@ -5,18 +5,18 @@ using System.Web;
 
 namespace SIAC.Web.Models
 {
-    public partial class Curso
+    public partial class Sala
     {
         private static dbSIACEntities contexto = DataContextSIAC.GetInstance();
 
-        public static List<Curso> ListarOrdenadamente()
+        public static List<Sala> ListarOrdenadamente()
         {
-            return contexto.Curso.OrderBy(c => c.Descricao).ToList();
+            return contexto.Sala.OrderBy(s => s.Descricao).ToList();
         }
 
-        public static void Inserir(Curso curso)
+        public static void Inserir(Sala sala)
         {
-            contexto.Curso.Add(curso);
+            contexto.Sala.Add(sala);
             contexto.SaveChanges();
         }
     }

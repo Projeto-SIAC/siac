@@ -20,5 +20,9 @@ namespace SIAC.Web.Models
             return contexto.Diretoria.OrderBy(d => d.Sigla).ToList();
         }
 
+        public static Diretoria ListarPorCodigo(int codDiretoria)
+        {
+            return contexto.Diretoria.FirstOrDefault(d => d.CodDiretoria == codDiretoria);
+        }
     }
 }

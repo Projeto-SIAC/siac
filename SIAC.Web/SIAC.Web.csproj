@@ -451,14 +451,18 @@
     <Compile Include="Models\pDiretoria.cs" />
     <Compile Include="Models\pDisciplina.cs" />
     <Compile Include="Models\pInstituicao.cs" />
+    <Compile Include="Models\pNivelEnsino.cs" />
     <Compile Include="Models\pParametro.cs" />
     <Compile Include="Models\pPessoa.cs" />
     <Compile Include="Models\pPessoaFisica.cs" />
     <Compile Include="Models\pProfessor.cs" />
     <Compile Include="Models\pQuestao.cs" />
+    <Compile Include="Models\pSala.cs" />
     <Compile Include="Models\pTema.cs" />
     <Compile Include="Models\pTipoAvaliacao.cs" />
     <Compile Include="Models\pTipoQuestao.cs" />
+    <Compile Include="Models\pTurma.cs" />
+    <Compile Include="Models\pTurno.cs" />
     <Compile Include="Models\pUsuario.cs" />
     <Compile Include="Models\Pessoa.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
