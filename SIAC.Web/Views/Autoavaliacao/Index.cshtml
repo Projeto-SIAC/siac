@@ -147,6 +147,7 @@
                     }
                 }
             }
+            $('a[href]').on('click', function () { $('.ui.grid .thirteen.wide.column > .ui.segment').addClass('loading') });
             $('.ui.cards').parent().removeClass('loading');
         }
 
