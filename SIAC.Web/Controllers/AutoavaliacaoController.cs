@@ -139,6 +139,9 @@ namespace SIAC.Web.Controllers
             auto.Avaliacao.DtCadastro = hoje;
             auto.CodDificuldade = dificuldades.Max();
 
+            //ViewBag.QteQuestoes = VBQuestoes.Count;
+            //ViewBag.QuestoesDaAvaliacao = VBQuestoes;
+
             AvalAuto.Inserir(auto);
 
             return View(auto);
