@@ -41,6 +41,7 @@
         }
 
         var MatrizCount = 2;
+        var HorarioCount = 2;
 
         function adicionarDisciplinaMatriz() {
             var copia = $('[name="ddlDisciplina1"').clone();
@@ -59,8 +60,24 @@
             $('#matrizQte').val(MatrizCount);
             $('.ui.dropdown').dropdown();
             MatrizCount++;
-            
         }
+
+        function adicionarHorario() {
+            var horario = $('[name="txtHorario1"').clone();
+            var inicio = $('[name="txtInicio1"').clone();
+            var termino = $('[name="txtTermino1"').clone();
+
+            $tr = $('<tr></tr>');
+            $td1 = $('<td></td>').append(horario.attr('name', 'txtHorario' + HorarioCount).val(HorarioCount));
+            $td2 = $('<td></td>').append(inicio.attr('name', 'txtInicio' + HorarioCount));
+            $td3 = $('<td></td>').append(termino.attr('name', 'txtTermino' + HorarioCount));
+
+            $tr.append($td1).append($td2).append($td3);
+            $('.table.body.horario').append($tr);
+            $('#horarioQte').val(HorarioCount);
+            HorarioCount++;
+        }
+
 
     </script>
 
@@ -138,6 +155,7 @@
             <a class="item" data-tab="tab-tema">Tema</a>
             <a class="item" data-tab="tab-sala">Sala</a>
             <a class="item" data-tab="tab-matriz">Matriz</a>
+            <a class="item" data-tab="tab-horario">Horário</a>
         </div>
 
         @* Aluno *@
@@ -788,6 +806,87 @@
                 <input id="matrizQte" name="matrizQte" value="" hidden/>
                 <div class="ui floated right button" onclick="adicionarDisciplinaMatriz()">Adicionar Disciplina</div>
                 <input type="submit" class="ui button" onclick="cadastrar('#matrizForm')" value="Cadastrar" />
+            </form>
+        </div>
+
+        @* Horario *@
+        <div class="ui bottom attached tab segment horario" data-tab="tab-horario">
+            <div class="ui styled fluid accordion">
+                <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                <div class="content">
+                    <table class="ui striped table">
+                        <thead>
+                            <tr>
+                                <th>Turno</th>
+                                <th>Grupo</th>
+                                <th>Horário</th>
+                                <th>Ínicio</th>
+                                <th>Término</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Horario horario in ViewBag.Horarios)
+                            {
+                                <tr>
+                                    <td>@horario.Turno.Descricao</td>
+                                    <td>@horario.CodGrupo</td>
+                                    <td>@horario.CodHorario</td>
+                                    <td>@(DateTime.Parse(horario.HoraInicio.ToString()).ToString("HH:mm"))</td>
+                                    <td>@(DateTime.Parse(horario.HoraTermino.ToString()).ToString("HH:mm"))</td>
+                                    </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <br />
+            <form id="horarioForm" class="ui form" method="post" action="/Configuracoes/CadastrarHorario">
+                <div class="field required">
+                    <label>Turno</label>
+                    <select name="ddlHorarioTurno" class="ui search dropdown" required>
+                        <option value="">Turno...</option>
+                        @foreach (Turno turno in ViewBag.Turnos)
+                        {
+                            <option value="@turno.CodTurno">@turno.Descricao</option>
+                        }
+                    </select>
+                </div>
+                <div class="field required">
+                    <label>Grupo</label>
+                    <input type="number" name="txtHorarioGrupo" class="ui search dropdown" required />
+                </div>
+                <table class="ui striped table">
+                    <thead>
+                        <tr>
+                            <th>Horário</th>
+                            <th>Ínicio</th>
+                            <th>Término</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table body horario">
+                        <tr>
+                            <td>
+                                <div class="field required">
+                                    <input type="number" value="1" name="txtHorario1" placeholder="Horário..." disabled required/>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="field required">
+                                    <input type="time" name="txtInicio1" placeholder="Ínicio..." required />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="field required">
+                                    <input type="time" name="txtTermino1" placeholder="Término..." required />
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <input id="horarioQte" name="horarioQte" value="" hidden />
+                <div class="ui floated right button" onclick="adicionarHorario()">Adicionar Horário</div>
+                <input type="submit" class="ui button" onclick="cadastrar('#horarioForm')" value="Cadastrar" />
             </form>
         </div>
 

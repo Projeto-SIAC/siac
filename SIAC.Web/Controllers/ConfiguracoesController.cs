@@ -53,6 +53,7 @@ namespace SIAC.Web.Controllers
             ViewBag.Turnos = Turno.ListarOrdenadamente();
             ViewBag.Salas = Sala.ListarOrdenadamente();
             ViewBag.Matrizes = MatrizCurricular.ListarOrdenadamente();
+            ViewBag.Horarios = Horario.ListarOrdenadamente();
 
             return View(model);
         }
@@ -402,6 +403,35 @@ namespace SIAC.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        //POST: Configuracoes/CadastrarHorario
+        [HttpPost]
+        public ActionResult CadastrarHorario(FormCollection formCollection)
+        {
+            if (formCollection.HasKeys())
+            {
+                List<Horario> horarios = new List<Horario>();
 
+                string codTurno = formCollection["ddlHorarioTurno"];
+                int codGrupo = int.Parse(formCollection["txtHorarioGrupo"]);
+                int horarioQte = int.Parse(formCollection["horarioQte"]);
+
+                for (int i = 1; i <= horarioQte; i++)
+                {
+                    Horario h = new Horario();
+
+                    h.CodTurno = codTurno;
+                    h.CodGrupo = codGrupo;
+                    h.CodHorario = i;
+                    h.HoraInicio = DateTime.Parse(formCollection["txtInicio" + i]);
+                    h.HoraTermino = DateTime.Parse(formCollection["txtTermino" + i]);
+
+                    horarios.Add(h);
+                }
+
+                Horario.Inserir(horarios);
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }

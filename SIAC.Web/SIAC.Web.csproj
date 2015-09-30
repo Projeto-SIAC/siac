@@ -451,6 +451,7 @@
     <Compile Include="Models\pDificuldade.cs" />
     <Compile Include="Models\pDiretoria.cs" />
     <Compile Include="Models\pDisciplina.cs" />
+    <Compile Include="Models\pHorario.cs" />
     <Compile Include="Models\pInstituicao.cs" />
     <Compile Include="Models\pMatrizCurricular.cs" />
     <Compile Include="Models\pNivelEnsino.cs" />
