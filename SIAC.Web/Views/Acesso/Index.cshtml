@@ -174,7 +174,7 @@
             </div>
         </div>
         <div class="actions">
-            <input type="reset" value="Cancelar" class="ui cancel button" onclick="$('.form').removeClass('error')" />
+            <input type="reset" value="Cancelar" class="ui cancel button" onclick="window.stop();$('.form').removeClass('error').removeClass('loading');" />
             <input type="submit" value="Entrar" class="ui primary button" onclick="if ($('.form input:required:invalid').length == 0) { $('.ui.form').addClass('loading') } else { $('.form input:required:invalid').first().parent().transition('tada') }" />
         </div>
     </form>
