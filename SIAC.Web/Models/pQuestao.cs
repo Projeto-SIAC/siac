@@ -81,6 +81,7 @@ namespace SIAC.Web.Models
             List<QuestaoTema> QuestoesTotal = new List<QuestaoTema>(); //LISTA DE TODAS AS QUESTÕES DO BANCO
             List<QuestaoTema> QuestoesAtual = new List<QuestaoTema>(); //LISTA DE QUESTÕES FILTRADAS DE TODAS [QUESTÕES] PARA O RETORNO - MEIO TERMO
 
+            Random r = new Random();
             int temaContador = 0;
             int temaAtual = int.Parse(Temas[temaContador]);
 
@@ -90,8 +91,13 @@ namespace SIAC.Web.Models
                 {
                     int codTema = int.Parse(tema);
                     List<QuestaoTema> temp = (from qt in contexto.QuestaoTema
-                                              where qt.Questao.CodTipoQuestao == 1 && qt.Questao.CodDificuldade <= dificulDisc && qt.CodDisciplina == codDisciplina && qt.CodTema == codTema
+                                              where qt.Questao.CodTipoQuestao == 1 
+                                              && qt.Questao.CodDificuldade <= dificulDisc 
+                                              && qt.CodDisciplina == codDisciplina 
+                                              && qt.CodTema == codTema
                                               select qt).ToList();
+                
+                    temp = Models.QuestaoTema.LimparRepeticao(temp,QuestoesTemas,QuestoesTotal);
 
                     if (temp.Count != 0 && QuestoesTemas.Count < qteObj)
                     {
@@ -101,10 +107,11 @@ namespace SIAC.Web.Models
 
                             if (lstideal.Count != 0)
                             {
-                                int random = new Random().Next(0, lstideal.Count);
+                                int random = r.Next(0, lstideal.Count);
 
                                 QuestoesTemas.Add(lstideal.ElementAtOrDefault(random));
                                 temp.Remove(lstideal.ElementAtOrDefault(random));
+                                lstideal.Clear();
                                 break;
                             }
                         }
@@ -122,7 +129,7 @@ namespace SIAC.Web.Models
                         int random = 0;
                         if (QuestoesAtual.Count > 1)
                         {
-                            random = new Random().Next(0, QuestoesAtual.Count);
+                            random = r.Next(0, QuestoesAtual.Count);
                             QuestoesTemas.Add(QuestoesAtual.ElementAtOrDefault(random));
 
                             temaContador = (Temas.Length >= temaContador) ? 0 : temaContador++;
@@ -150,7 +157,7 @@ namespace SIAC.Web.Models
                             int random = 0;
                             if (QuestoesAtual.Count > 1)
                             {
-                                random = new Random().Next(0, QuestoesAtual.Count);
+                                random = r.Next(0, QuestoesAtual.Count);
                                 QuestoesTemas.Add(QuestoesAtual.ElementAtOrDefault(random));
                             }
                             else
@@ -189,7 +196,7 @@ namespace SIAC.Web.Models
                                             int random = 0;
                                             if (QuestoesAtual.Count > 1)
                                             {
-                                                random = new Random().Next(0, QuestoesAtual.Count);
+                                                random = r.Next(0, QuestoesAtual.Count);
                                                 QuestoesTemas.Add(QuestoesAtual.ElementAtOrDefault(random));
 
                                                 temaContador = (Temas.Length >= temaContador) ? 0 : temaContador++;
@@ -239,6 +246,8 @@ namespace SIAC.Web.Models
                                               where qt.Questao.CodTipoQuestao == 2 && qt.Questao.CodDificuldade <= dificulDisc && qt.CodDisciplina == codDisciplina && qt.CodTema == codTema
                                               select qt).ToList();
 
+                    temp = Models.QuestaoTema.LimparRepeticao(temp, QuestoesTemas, QuestoesTotal);
+
                     if (temp.Count != 0 && qteDiscuResultado < qteDiscu)
                     {
                         for (int i = dificulDisc; i >= 1; i--)
@@ -247,7 +256,7 @@ namespace SIAC.Web.Models
 
                             if (lstideal.Count != 0)
                             {
-                                int random = new Random().Next(0, lstideal.Count);
+                                int random = r.Next(0, lstideal.Count);
 
                                 QuestoesTemas.Add(lstideal.ElementAtOrDefault(random));
                                 qteDiscuResultado++;
@@ -269,7 +278,7 @@ namespace SIAC.Web.Models
                         int random = 0;
                         if (QuestoesAtual.Count > 1)
                         {
-                            random = new Random().Next(0, QuestoesAtual.Count);
+                            random = r.Next(0, QuestoesAtual.Count);
                             QuestoesTemas.Add(QuestoesAtual.ElementAtOrDefault(random));
                             temaContador = (Temas.Length >= temaContador) ? 0 : temaContador++;
                             temaAtual = int.Parse(Temas[temaContador]);
@@ -297,7 +306,7 @@ namespace SIAC.Web.Models
                             int random = 0;
                             if (QuestoesAtual.Count > 1)
                             {
-                                random = new Random().Next(0, QuestoesAtual.Count);
+                                random = r.Next(0, QuestoesAtual.Count);
                                 QuestoesTemas.Add(QuestoesAtual.ElementAtOrDefault(random));
                             }
                             else
@@ -335,7 +344,7 @@ namespace SIAC.Web.Models
                                             int random = 0;
                                             if (QuestoesAtual.Count > 1)
                                             {
-                                                random = new Random().Next(0, QuestoesAtual.Count);
+                                                random = r.Next(0, QuestoesAtual.Count);
                                                 QuestoesTemas.Add(QuestoesAtual.ElementAtOrDefault(random));
 
                                                 temaContador = (Temas.Length >= temaContador) ? 0 : temaContador++;

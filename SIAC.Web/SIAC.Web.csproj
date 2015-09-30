@@ -460,6 +460,7 @@
     <Compile Include="Models\pPessoaFisica.cs" />
     <Compile Include="Models\pProfessor.cs" />
     <Compile Include="Models\pQuestao.cs" />
+    <Compile Include="Models\pQuestaoTema.cs" />
     <Compile Include="Models\pSala.cs" />
     <Compile Include="Models\pTema.cs" />
     <Compile Include="Models\pTipoAvaliacao.cs" />
