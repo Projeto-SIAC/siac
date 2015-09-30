@@ -8,6 +8,21 @@
 
 @section Scripts {
     <script>
+        var conectado = false;
+
+        function TesteConexao() {
+            $.ajax({
+                type: 'GET',
+                url: "/",
+                success: function () {
+                    conectado = true;
+                },
+                error: function () {
+                    conectado = false;
+                }
+            });
+        }
+
         function definirTamanhoDiv() {
             var tamTela = $(window).height();
             var tamDesejado = tamTela * 0.65;
@@ -130,9 +145,16 @@
         
         $('.ui.gabarito.modal')
             .modal({
-                onApprove: function() { 
-                    window.onbeforeunload = null;
-                    $('form').addClass('loading').submit(); 
+                onApprove: function () {
+                    TesteConexao();
+                    if (conectado) {
+                        window.onbeforeunload = null;
+                        $('form').addClass('loading').submit();
+                    }
+                    else {
+                        alert('Conecte-se à internet antes de confirmar.')
+                        return false;
+                    }
                 }
             })
         ;
@@ -162,7 +184,6 @@
                 for (var i = 0; i < lstNaoRespondidas.length; i++) {
                     for (var j = 0; j < $lstTitle.length; j++) {
                         if ($lstTitle.eq(j).find('#txtCodQuestao').val() == lstNaoRespondidas[i]) {
-                            console.log($lstTitle.eq(i).find('.ui.label'));
                             $lstTitle.eq(j).find('.ui.label').removeAttr('style').addClass('red').html('Não respondida');
                         }
                     }
@@ -188,7 +209,6 @@
             $lstInput = $modalAccordion.find(':input');
 
             for (var i = 0; i < $lstInput.length; i++) {
-                console.log($lstInput.eq(i));
                 $lstInput.eq(i).attr({
                     'readonly':'readonly',
                     'disabled':'disabled'
