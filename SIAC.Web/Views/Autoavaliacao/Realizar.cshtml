@@ -64,7 +64,7 @@
                     }
                 }
             })
-            .modal('attach events', '.ui.verificar.modal .approve.button')
+            .modal('attach events', '.ui.verificar.modal .iniciar.button')
         ;
         function Relogio() {
             setInterval(function(){ date = new Date(); $('#lblHoraAgora').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min'); }, 1000);
@@ -197,6 +197,21 @@
 
             $modal.modal('show');
         }
+
+        function Arquivar() {
+            $.ajax({
+                type: 'POST',
+                data: {codigo: '@Model.Avaliacao.CodAvaliacao()'},
+                url: "/Dashboard/Autoavaliacao/Arquivar",
+                success: function () {
+                    window.onbeforeunload = null;
+                    window.location.href = '/Historico/Autoavaliacao';
+                },
+                error: function () {
+                    alert('Não foi possível arquivar a autoavaliação.')
+                }
+            });
+        }
     </script>
 }
 
@@ -256,10 +271,11 @@
         </table>
     </div>
     <div class="actions">
-        <a href="/Dashboard" class="ui button">Voltar para Dashboard</a>
-        <a href="/Historico/Autoavaliacao" class="ui button">Voltar para Histórico</a>
+        <a onclick="window.location.href = '/Dashboard';" class="ui button">Voltar para Dashboard</a>
+        <a onclick="window.location.href = '/Historico/Autoavaliacao';" class="ui button">Voltar para Histórico</a>
+        <div onclick="Arquivar()" class="ui button">Arquivar</div>
         <a onclick="window.open('/Dashboard/Autoavaliacao/Imprimir/@Model.Avaliacao.CodAvaliacao()', '_blank');" class="ui button">Imprimir</a>
-        <div class="ui approve button">Realizar</div>
+        <div class="ui iniciar button">Realizar</div>
     </div>
 </div>
 

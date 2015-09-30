@@ -20,7 +20,7 @@
         );
 
         function Filtro(strTexto) {
-            strTexto = strTexto.toLowerCase();
+            strTexto = strTexto.toLowerCase().trim();
             jsnAutosFiltro = [];
             for (var i = 0; i < jsnAutosGeral.length; i++) {
                 if (jsnAutosGeral[i].CodAvaliacao.toLowerCase().indexOf(strTexto) > -1) {
@@ -32,6 +32,16 @@
                 else if (jsnAutosGeral[i].Dificuldade.toLowerCase().indexOf(strTexto) > -1) {
                     jsnAutosFiltro.push(jsnAutosGeral[i]);
                 }
+                else if (strTexto == 'arquivo') {
+                    if (jsnAutosGeral[i].FlagArquivo == true) {
+                        jsnAutosFiltro.push(jsnAutosGeral[i]);
+                    }
+                }
+                else if (strTexto == 'pendente') {
+                    if (jsnAutosGeral[i].FlagPendente == true) {
+                        jsnAutosFiltro.push(jsnAutosGeral[i]);
+                    }
+                }
                 else {
                     for (var j = 0; j < jsnAutosGeral[i].Disciplinas.length; j++) {
                         if (jsnAutosGeral[i].Disciplinas[j].toLowerCase().indexOf(strTexto) > -1) {
@@ -42,6 +52,20 @@
                 }
             }
             MinhasAutos();
+        }
+
+        function Arquivar(strCodigo) {
+            $.ajax({
+                type: 'POST',
+                data: { codigo: strCodigo },
+                url: "/Dashboard/Autoavaliacao/Arquivar",
+                success: function () {
+                    window.location.href = '/Historico/Autoavaliacao';
+                },
+                error: function () {
+                    alert('Não foi possível arquivar a autoavaliação.')
+                }
+            });
         }
 
         function MinhasAutos(pagina) {
@@ -78,10 +102,19 @@
                 $card.append($extraContent);
                 if (jsnAutosFiltro[i].FlagPendente == true) {
                     $card.append('<span class="ui attached top right label"><i class="clock icon"></i>Pendente</span>');
-                    $card.append('<a href="/Dashboard/Autoavaliacao/Realizar/'+jsnAutosFiltro[i].CodAvaliacao+'" class="ui bottom attached button">Realizar</a>');
+                    $buttons = $('<div class="ui two buttons"></div>')
+                    $buttons.append('<a href="/Dashboard/Autoavaliacao/Realizar/' + jsnAutosFiltro[i].CodAvaliacao + '" class="ui button">Realizar</a>');
+                    $buttons.append('<a onclick="Arquivar(\'' + jsnAutosFiltro[i].CodAvaliacao + '\')" class="ui button">Arquivar</a>');
+                    $card.append($buttons);
                 }
                 else {
-                    $card.append('<a href="/Historico/Autoavaliacao/Detalhe/'+jsnAutosFiltro[i].CodAvaliacao+'" class="ui bottom attached button">Desempenho</a>');
+                    if (jsnAutosFiltro[i].FlagArquivo == true) {
+                        $card.append('<span class="ui attached top right label"><i class="archive icon"></i>Arquivo</span>');
+                        $card.append('<a href="/Historico/Autoavaliacao/Detalhe/' + jsnAutosFiltro[i].CodAvaliacao + '" class="ui button">Detalhe</a>');
+                    }
+                    else {
+                        $card.append('<a href="/Historico/Autoavaliacao/Detalhe/' + jsnAutosFiltro[i].CodAvaliacao + '" class="ui button">Desempenho</a>');
+                    }
                 }
                 $('.ui.cards').append($card);
             }

@@ -52,7 +52,8 @@ namespace SIAC.Web.Controllers
                              Dificuldade = a.Dificuldade.Descricao,
                              QteQuestoes = a.Avaliacao.QteQuestoes(),
                              Disciplinas = a.Avaliacao.AvaliacaoTema.Select(at => at.Tema.Disciplina.Descricao).Distinct().ToList(),
-                             FlagPendente = a.Avaliacao.AvalPessoaResultado.Count > 0 ? false : true
+                             FlagPendente = a.Avaliacao.AvalPessoaResultado.Count > 0 || (a.FlagArquivo.HasValue && a.FlagArquivo.Value) ? false : true,
+                             FlagArquivo = a.FlagArquivo.HasValue ? a.FlagArquivo.Value : false
                          };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -306,5 +307,11 @@ namespace SIAC.Web.Controllers
             ViewBag.Geradas = AvalAuto.ListarNaoRealizadaPorPessoa(codPessoaFisica);
             return View("Novo");
         }
+
+        [HttpPost]
+        public void Arquivar(string codigo)
+        {
+            AvalAuto.AlternarFlagArquivo(codigo);
+        } 
     }
 }

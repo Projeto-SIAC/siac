@@ -12,10 +12,24 @@
     <script>
         $('.ui.accordion').accordion();
         $('.label, div').popup();
+
+        function Arquivar() {
+            $.ajax({
+                type: 'POST',
+                data: { codigo: '@Model.Avaliacao.CodAvaliacao()' },
+                url: "/Dashboard/Autoavaliacao/Arquivar",
+                success: function () {
+                    window.location.href = '/Historico/Autoavaliacao/Detalhe/@Model.Avaliacao.CodAvaliacao()';
+                },
+                error: function () {
+                    alert('Não foi possível arquivar a autoavaliação.')
+                }
+            });
+        }
     </script>
 }
 
-<h2>@ViewBag.Title</h2>
+<h2>@ViewBag.Title@if (Model.FlagArquivo.HasValue && Model.FlagArquivo.Value) { <div class="ui label"><i class="icon archive"></i>Arquivo</div> }</h2>
 
 <div class="ui segment">
     <div class="ui dividing header">
@@ -62,7 +76,15 @@
 
 @if (Model.Avaliacao.AvalPessoaResultado.Count == 0)
 {
-    <a href="/Dashboard/Autoavaliacao/Realizar/@Model.Avaliacao.CodAvaliacao()" class="ui button">Realizar agora</a>
+    if (!Model.FlagArquivo.HasValue || !Model.FlagArquivo.Value)
+    {
+        <a href="/Dashboard/Autoavaliacao/Realizar/@Model.Avaliacao.CodAvaliacao()" class="ui button">Realizar agora</a>
+        <a onclick="Arquivar()" class="ui button">Arquivar</a>
+    }
+    else
+    {
+        <a onclick="Arquivar()" class="ui button">Desarquivar</a>
+    }
 }
 else
 {
