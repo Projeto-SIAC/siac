@@ -108,7 +108,7 @@
         ;
         $('.ui.confirmar.modal')
             .modal({
-                onApprove: function () { window.location.href = $('.ui.confirmar.modal #txtRef').val(); },
+                onApprove: function () { window.onbeforeunload = null; window.location.href = $('.ui.confirmar.modal #txtRef').val(); },
                 onDeny: function () { $('.ui.segment.loading').removeClass('loading');}
             })
         ;
