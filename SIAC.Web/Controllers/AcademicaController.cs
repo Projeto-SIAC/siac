@@ -7,7 +7,7 @@ using SIAC.Web.Models;
 
 namespace SIAC.Web.Controllers
 {
-    public class AvaliacaoAcademicaController : Controller
+    public class AcademicaController : Controller
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {

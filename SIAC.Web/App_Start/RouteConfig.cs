@@ -22,17 +22,24 @@ namespace SIAC.Web
 
 
             routes.MapRoute(
-                name: "Questao",
+                name: "Historico",
                 url: "Historico/{controller}/{action}/{codigo}",
                 defaults: new { controller = "Historico", action = "Index", codigo = UrlParameter.Optional },
                 constraints: new { controller = @"^(Questao|Autoavaliacao)$" }
             );
 
             routes.MapRoute(
+                name: "Avaliacao",
+                url: "Dashboard/Avaliacao/{controller}/{action}/{codigo}",
+                defaults: new { controller = "Dashboard", action = "Index", codigo = UrlParameter.Optional },
+                constraints: new { controller = @"^(Academica|Reposicao|Certificacao|Institucional)$" }
+            );
+
+            routes.MapRoute(
                 name: "Dashboard",
                 url: "Dashboard/{controller}/{action}/{codigo}",
                 defaults: new { controller = "Dashboard", action = "Index", codigo = UrlParameter.Optional },
-                constraints: new { controller = @"^(Questao|Autoavaliacao|AvaliacaoAcademica)$" }
+                constraints: new { controller = @"^(Questao|Autoavaliacao)$" }
             );
 
             routes.MapRoute(

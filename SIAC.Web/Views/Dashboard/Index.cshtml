@@ -35,7 +35,7 @@
         @if ((int)Session["UsuarioCategoriaCodigo"] == 2)
         {
             <div class="column aligned center">
-                <a href="/Dashboard/AvaliacaoAcademica/Agendar">
+                <a href="/Dashboard/Avaliacao/Academica/Agendar">
                     <div class="ui icon header">
                         <i class="file icon"></i>
                         Agendar Avaliação Acadêmica
@@ -46,7 +46,7 @@
         @if ((int)Session["UsuarioCategoriaCodigo"] == 2 || (int)Session["UsuarioCategoriaCodigo"] == 3)
         {
             <div class="column aligned center">
-                <a href="/Dashboard/Certificacao/Agendar">
+                <a href="/Dashboard/Avaliacao/Certificacao/Agendar">
                     <div class="ui icon header">
                         <i class="file text icon"></i>
                         Agendar Avaliação de Certificação
@@ -79,7 +79,7 @@
         @if ((int)Session["UsuarioCategoriaCodigo"] == 1)
         {
             <div class="column aligned center">
-                <a href="/Historico/Avaliacao/Agendada">
+                <a href="/Historico/Avaliacao/Academica">
                     <div class="ui icon header">
                         <i class="calendar icon"></i>
                         Avaliações Agendadas
