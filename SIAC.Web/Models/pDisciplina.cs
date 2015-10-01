@@ -34,5 +34,10 @@ namespace SIAC.Web.Models
                     OrderBy(d => d.Descricao).
                     ToList();
         }
+
+        public static List<Disciplina> ListarPorProfessor(string matrProfessor)
+        {
+            return contexto.Professor.FirstOrDefault(p => p.MatrProfessor == matrProfessor).Disciplina.ToList();
+        }
     }
 }

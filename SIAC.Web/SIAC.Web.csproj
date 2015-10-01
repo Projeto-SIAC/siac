@@ -279,6 +279,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AutoavaliacaoController.cs" />
+    <Compile Include="Controllers\AvaliacaoAcademicaController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\AcessoController.cs" />
     <Compile Include="Controllers\ErroController.cs" />
@@ -595,6 +596,7 @@
     <Content Include="Views\Autoavaliacao\Detalhe.cshtml" />
     <Content Include="Views\Autoavaliacao\Imprimir.cshtml" />
     <Content Include="Views\Questao\Gerar.cshtml" />
+    <Content Include="Views\AvaliacaoAcademica\Agendar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
