@@ -25,7 +25,7 @@
 
         function definirTamanhoDiv() {
             var tamTela = $(window).height();
-            var tamDesejado = tamTela * 0.65;
+            var tamDesejado = tamTela * 0.6;
             $('.ui.accordion').
                 css('max-height', tamDesejado + 'px').
                 css('overflow-y','scroll');
@@ -133,6 +133,7 @@
             if (resposta != '') {
                 $label.removeClass('red');
                 $label.removeAttr('style');
+                $label.addClass('teal');
                 $label.html('Respondida');
                 if (obj) {
                         $label.append($('<div class="detail"></div>').text(resposta));
@@ -141,6 +142,7 @@
             else {
                 $label.attr('style', 'display:none')
             }
+            definirTamanhoDiv();
         }
         
         $('.ui.gabarito.modal')
@@ -160,6 +162,7 @@
         ;
 
         function submitForm() {
+            $('form').removeClass('error');
             var finalizada = true;
             var lstNaoRespondidas = [];
             $lstTitle = $('.ui.accordion > .title');
@@ -184,10 +187,14 @@
                 for (var i = 0; i < lstNaoRespondidas.length; i++) {
                     for (var j = 0; j < $lstTitle.length; j++) {
                         if ($lstTitle.eq(j).find('#txtCodQuestao').val() == lstNaoRespondidas[i]) {
-                            $lstTitle.eq(j).find('.ui.label').removeAttr('style').addClass('red').html('Não respondida');
+                            $lstTitle.eq(j).find('.ui.label').removeAttr('style').removeClass('teal').addClass('red').html('Não respondida').transition('tada');
+                            
                         }
                     }
                 }
+                $('form').addClass('error');
+                $('form .message').removeClass('hidden');
+                definirTamanhoDiv();
             }
         }
 
@@ -197,22 +204,26 @@
             $accordion = $('form .ui.accordion').clone();
 
             $accordion.removeAttr('style');
-            
-            $modal.find('.content').append($('<div class="ui form"></div>').append($accordion));
-                            
+                        
+            $modal.find('.content').html($('<div class="ui form"></div>').append($accordion));
+                                        
             $modalAccordion = $modal.find('.ui.accordion');
 
             $modalAccordion.accordion({
                 onChange: function () { $('.ui.gabarito.modal').modal('refresh'); }
             });
 
-            $lstInput = $modalAccordion.find(':input');
+            $lstInput = $modalAccordion.find(':input,a');
 
             for (var i = 0; i < $lstInput.length; i++) {
-                $lstInput.eq(i).attr({
-                    'readonly':'readonly',
-                    'disabled':'disabled'
-                });  
+                $lstInput.eq(i)
+                    .attr({
+                        'readonly':'readonly',
+                        'disabled':'disabled'
+                    })
+                    .removeAttr('onchange')
+                    .removeAttr('onclick')
+                ;
             }
 
             $modal.modal('show');
@@ -232,6 +243,15 @@
                 }
             });
         }
+
+        $('.message .close')
+          .on('click', function () {
+              $(this)
+                .closest('.message')
+                .transition('fade')
+              ;
+          })
+        ;
     </script>
 }
 
@@ -402,9 +422,14 @@
         <div id="lblHoraRestante" class="detail">00h47min</div>
     </div>
 </div>
-<br />
 
 <form class="ui form" action="/Historico/Autoavaliacao/Resultado/@Model.Avaliacao.CodAvaliacao()" method="post">
+    <div class="ui message error">
+        <i class="icon close"></i>
+            <div class="header">
+                Responda todas as questões!
+            </div>
+    </div>
     <div class="ui accordion">
         @for (int i = 0; i < lstQuestao.Count; i++)
         {
@@ -495,5 +520,5 @@
     </div>
     <br />
     <div class="ui right floated button green" onclick="submitForm()">Finalizar</div>
-    <a href="/Dashboard/Autoavaliacao/Realizar" class="ui red button">Cancelar</a>
+    <a href="/Dashboard/Autoavaliacao/Realizar" class="ui button">Cancelar</a>
 </form>

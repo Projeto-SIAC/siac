@@ -103,8 +103,8 @@
                 if (jsnAutosFiltro[i].FlagPendente == true) {
                     $card.append('<span class="ui attached top right label"><i class="clock icon"></i>Pendente</span>');
                     $buttons = $('<div class="ui two buttons"></div>')
-                    $buttons.append('<a href="/Dashboard/Autoavaliacao/Realizar/' + jsnAutosFiltro[i].CodAvaliacao + '" class="ui button">Realizar</a>');
                     $buttons.append('<a onclick="Arquivar(\'' + jsnAutosFiltro[i].CodAvaliacao + '\')" class="ui button">Arquivar</a>');
+                    $buttons.append('<a href="/Dashboard/Autoavaliacao/Realizar/' + jsnAutosFiltro[i].CodAvaliacao + '" class="ui button">Realizar</a>');
                     $card.append($buttons);
                 }
                 else {
