@@ -243,7 +243,10 @@ namespace SIAC.Web.Models
                 {
                     int codTema = int.Parse(tema);
                     List<QuestaoTema> temp = (from qt in contexto.QuestaoTema
-                                              where qt.Questao.CodTipoQuestao == 2 && qt.Questao.CodDificuldade <= dificulDisc && qt.CodDisciplina == codDisciplina && qt.CodTema == codTema
+                                              where qt.Questao.CodTipoQuestao == 2 
+                                              && qt.Questao.CodDificuldade <= dificulDisc 
+                                              && qt.CodDisciplina == codDisciplina 
+                                              && qt.CodTema == codTema
                                               select qt).ToList();
 
                     temp = Models.QuestaoTema.LimparRepeticao(temp, QuestoesTemas, QuestoesTotal);
@@ -323,6 +326,7 @@ namespace SIAC.Web.Models
                     else
                     {
                         QuestoesTemas.AddRange(QuestoesAtual);
+                        qteDiscuResultado += QuestoesAtual.Count;
                         foreach (QuestaoTema qt in QuestoesAtual)
                         {
                             QuestoesTotal.Remove(qt);
@@ -365,6 +369,7 @@ namespace SIAC.Web.Models
                                 else
                                 {
                                     QuestoesTemas.AddRange(QuestoesAtual);
+                                    qteDiscuResultado += QuestoesAtual.Count;
                                     foreach (QuestaoTema qt in QuestoesAtual)
                                     {
                                         QuestoesTotal.Remove(qt);
