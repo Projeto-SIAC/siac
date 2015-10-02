@@ -21,7 +21,7 @@ namespace SIAC.Web.Helpers
         public static void Parar()
         {
             var total = (DateTime.Now - tempo).TotalSeconds;
-            Debug.WriteLine("TimeLog: {0} segundos para realizar {1}", total.ToString(), teste);
+            Debug.WriteLine("TimeLog: {0} segundos para realizar {1} [{2}]", total.ToString(), teste, tempo.ToString());
         }
     }
 }
