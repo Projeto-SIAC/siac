@@ -17,38 +17,32 @@
             $('form').removeClass('error');
 
             var valido = true;
-            var ddlDisciplinas;
-            var ddlTemas;
-            var ddlTipo;
-            var ddlDificuldade;
-            var txtQteObjetiva;
-            var txtQteDiscursiva;
 
-            if ($('#ddlDisciplina').val() == "") {
+            if (!$('#ddlDisciplina').val()) {
                 errorList.append('<li>Selecione uma disciplina</li>');
                 valido = false;
             }
 
-            if ($('#ddlTemas').val() == null || $('#ddlTemas').val() == "") {
+            if (!$('#ddlTemas').val()) {
                 errorList.append('<li>Selecione ao menos um tema</li>');
                 valido = false;
             }
 
-            if ($('#ddlTipo').val() == "") {
+            if (!$('#ddlTipo').val()) {
                 errorList.append('<li>Selecione o tipo das questões da sua avaliação acadêmica</li>');
                 valido = false;
             }
 
-            if (($('#ddlTipo').val() == 1 || $('#ddlTipo').val()==3) && $('#txtQteObjetiva').val() == "" ) {
+            if (($('#ddlTipo').val() == 1 || $('#ddlTipo').val() == 3) && !$('#txtQteObjetiva').val()) {
                 errorList.append('<li>Indique a quantidade das questões objetivas</li>');
                 valido = false;
             }
-            if (($('#ddlTipo').val() == 2 || $('#ddlTipo').val() == 3) && $('#txtQteDiscursiva').val() == "") {
+            if (($('#ddlTipo').val() == 2 || $('#ddlTipo').val() == 3) && !$('#txtQteDiscursiva').val()) {
                 errorList.append('<li>Indique a quantidade das questões discursivas</li>');
                 valido = false;
             }
 
-            if ($('#ddlDificuldade').val() == null || $('#ddlDificuldade').val() == "") {
+            if (!$('#ddlDificuldade').val()) {
                 errorList.append('<li>Selecione a dificuldade das questões</li>');
                 valido = false;
             }
@@ -68,6 +62,8 @@
         function listarTemas(codDisciplina) {
             var disciplinas = $('#ddlDisciplinas');
             var ddlTemas = $('#ddlTemas');
+
+            ddlTemas.parent().addClass('loading');
             $.ajax({
                 type: 'GET',
                 url: '@(Url.RouteUrl("RecuperarTemasPorCodDisciplinaTemQuestao"))',
@@ -83,6 +79,7 @@
                     alert(xhr.error);
                 }
             });
+            ddlTemas.parent().removeClass('loading');
         }
 
         function OpcoesPorTipo(tipoAvaliacao) {

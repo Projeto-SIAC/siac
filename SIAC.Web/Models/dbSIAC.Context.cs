@@ -67,6 +67,7 @@ namespace SIAC.Web.Models
         public virtual DbSet<NivelEnsino> NivelEnsino { get; set; }
         public virtual DbSet<Ocupacao> Ocupacao { get; set; }
         public virtual DbSet<Pais> Pais { get; set; }
+        public virtual DbSet<Parametro> Parametro { get; set; }
         public virtual DbSet<Pessoa> Pessoa { get; set; }
         public virtual DbSet<PessoaFisica> PessoaFisica { get; set; }
         public virtual DbSet<PessoaFormacao> PessoaFormacao { get; set; }
@@ -93,6 +94,5 @@ namespace SIAC.Web.Models
         public virtual DbSet<UsuarioAcessoPagina> UsuarioAcessoPagina { get; set; }
         public virtual DbSet<UsuarioOpiniao> UsuarioOpiniao { get; set; }
         public virtual DbSet<Visitante> Visitante { get; set; }
-        public virtual DbSet<Parametro> Parametro { get; set; }
     }
 }

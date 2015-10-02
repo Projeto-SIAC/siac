@@ -4,85 +4,86 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="876c1782860a4ee9b2d2897d3e6a6fad" Name="Diagram1" ZoomLevel="284">
-        <EntityTypeShape EntityType="dbSIACModel.Alternativa" Width="1.5" PointX="21" PointY="47.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Aluno" Width="1.5" PointX="18.5" PointY="42.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Area" Width="1.5" PointX="6" PointY="51.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.AvalAcademica" Width="1.5" PointX="35.25" PointY="48.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.AvalAcadReposicao" Width="1.5" PointX="18" PointY="38.5" IsExpanded="true" />
+      <Diagram DiagramId="1506ca9910364b0b8b0d4f133fbfc3c5" Name="Diagram1">
+        <EntityTypeShape EntityType="dbSIACModel.Alternativa" Width="1.5" PointX="21" PointY="38" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Aluno" Width="1.5" PointX="13.5" PointY="45" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Area" Width="1.5" PointX="6" PointY="51.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvalAcademica" Width="1.5" PointX="38.25" PointY="45.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvalAcadReposicao" Width="1.5" PointX="15.75" PointY="36.5" IsExpanded="true" />
         <EntityTypeShape EntityType="dbSIACModel.AvalAuto" Width="1.5" PointX="5.25" PointY="42.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.AvalAvi" Width="1.5" PointX="15.75" PointY="36.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.AvalCertificacao" Width="1.5" PointX="30.75" PointY="48.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Avaliacao" Width="1.5" PointX="13.5" PointY="34" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.AvaliacaoTema" Width="1.5" PointX="23" PointY="28.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.AvalPessoaResultado" Width="1.5" PointX="8.25" PointY="42.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.AvalQuesPessoaResposta" Width="1.5" PointX="5.25" PointY="38.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.AvalTemaQuestao" Width="1.5" PointX="25.25" PointY="42" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.AviCategoria" Width="1.5" PointX="15.75" PointY="29.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.AviIndicador" Width="1.5" PointX="15.75" PointY="31.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.AviModulo" Width="1.5" PointX="15.75" PointY="26.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.AviPublico" Width="1.5" PointX="21" PointY="50.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.AviQuestao" Width="1.5" PointX="18" PointY="32.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.AviQuestaoAlternativa" Width="1.5" PointX="20.25" PointY="33.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.AviQuestaoPessoaResposta" Width="1.5" PointX="8.25" PointY="37" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.AviTipoPublico" Width="1.5" PointX="18.75" PointY="51.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Bairro" Width="1.5" PointX="3.75" PointY="54.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Campus" Width="1.5" PointX="23.25" PointY="51" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Categoria" Width="1.5" PointX="0.75" PointY="41.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Colaborador" Width="1.5" PointX="13.5" PointY="39.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Curso" Width="1.5" PointX="30.75" PointY="42.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.DiaSemana" Width="1.5" PointX="36" PointY="54.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Dificuldade" Width="1.5" PointX="16.5" PointY="50.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Diretoria" Width="1.5" PointX="28.5" PointY="49" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Disciplina" Width="1.5" PointX="18.5" PointY="28.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Email" Width="1.5" PointX="3" PointY="46.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Endereco" Width="1.5" PointX="6" PointY="46.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Estado" Width="1.5" PointX="1.5" PointY="62.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Horario" Width="1.5" PointX="36" PointY="56.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Instituicao" Width="1.5" PointX="5.25" PointY="58.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Justificacao" Width="1.5" PointX="15.75" PointY="41.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.MatrizCurricular" Width="1.5" PointX="33" PointY="43.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.MatrizCurricularDisciplina" Width="1.5" PointX="35.25" PointY="43.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Municipio" Width="1.5" PointX="1.5" PointY="54.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.NivelEnsino" Width="1.5" PointX="28.5" PointY="43.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Ocupacao" Width="1.5" PointX="0.75" PointY="44.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvalAvi" Width="1.5" PointX="15.75" PointY="41.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvalCertificacao" Width="1.5" PointX="27.75" PointY="46.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Avaliacao" Width="1.5" PointX="18.75" PointY="25.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvaliacaoTema" Width="1.5" PointX="21" PointY="28" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvalPessoaResultado" Width="1.5" PointX="8.25" PointY="42.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvalQuesPessoaResposta" Width="1.5" PointX="5.25" PointY="37.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AvalTemaQuestao" Width="1.5" PointX="23.25" PointY="33.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AviCategoria" Width="1.5" PointX="15.75" PointY="45.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AviIndicador" Width="1.5" PointX="15.75" PointY="51.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AviModulo" Width="1.5" PointX="15.75" PointY="57.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AviPublico" Width="1.5" PointX="18" PointY="49.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AviQuestao" Width="1.5" PointX="18" PointY="42.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AviQuestaoAlternativa" Width="1.5" PointX="20.25" PointY="49.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AviQuestaoPessoaResposta" Width="1.5" PointX="8.25" PointY="37.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.AviTipoPublico" Width="1.5" PointX="15.75" PointY="61" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Bairro" Width="1.5" PointX="3.75" PointY="54.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Campus" Width="1.5" PointX="23.25" PointY="50.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Categoria" Width="1.5" PointX="0.75" PointY="42" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Colaborador" Width="1.5" PointX="13.5" PointY="41.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Curso" Width="1.5" PointX="30.75" PointY="45.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.DiaSemana" Width="1.5" PointX="33" PointY="54.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Dificuldade" Width="1.5" PointX="16.5" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Diretoria" Width="1.5" PointX="25.5" PointY="49.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Disciplina" Width="1.5" PointX="16.5" PointY="30.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Email" Width="1.5" PointX="3" PointY="47" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Endereco" Width="1.5" PointX="6" PointY="46.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Estado" Width="1.5" PointX="1.5" PointY="63" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Horario" Width="1.5" PointX="33" PointY="56.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Instituicao" Width="1.5" PointX="5.25" PointY="58.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Justificacao" Width="1.5" PointX="10.5" PointY="37.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.MatrizCurricular" Width="1.5" PointX="33" PointY="46.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.MatrizCurricularDisciplina" Width="1.5" PointX="35.25" PointY="46" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Municipio" Width="1.5" PointX="1.5" PointY="55" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.NivelEnsino" Width="1.5" PointX="28.5" PointY="43.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Ocupacao" Width="1.5" PointX="0.75" PointY="44.5" IsExpanded="true" />
         <EntityTypeShape EntityType="dbSIACModel.Pais" Width="1.5" PointX="1.5" PointY="66.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Pessoa" Width="1.5" PointX="0.75" PointY="46.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.PessoaFisica" Width="1.5" PointX="3" PointY="41.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.PessoaFormacao" Width="1.5" PointX="8.25" PointY="46.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.PessoaJuridica" Width="1.5" PointX="3" PointY="58.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Professor" Width="1.5" PointX="13.5" PointY="43.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.ProReitoria" Width="1.5" PointX="26.25" PointY="50.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Questao" Width="1.5" PointX="18.75" PointY="46.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.QuestaoAnexo" Width="1.5" PointX="24" PointY="47.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.QuestaoTema" Width="1.5" PointX="23" PointY="43.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Reitoria" Width="1.5" PointX="26.25" PointY="46.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Sala" Width="1.5" PointX="25.5" PointY="54.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Telefone" Width="1.5" PointX="3" PointY="50.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Tema" Width="1.5" PointX="20.75" PointY="28.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.TipoAnexo" Width="1.5" PointX="21.75" PointY="39.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.TipoAvaliacao" Width="1.5" PointX="11.25" PointY="35.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Parametro" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Pessoa" Width="1.5" PointX="0.75" PointY="46.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.PessoaFisica" Width="1.5" PointX="3" PointY="42" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.PessoaFormacao" Width="1.5" PointX="8.25" PointY="46.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.PessoaJuridica" Width="1.5" PointX="3" PointY="58.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Professor" Width="1.5" PointX="13.5" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.ProReitoria" Width="1.5" PointX="23.25" PointY="47.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Questao" Width="1.5" PointX="18.75" PointY="37" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.QuestaoAnexo" Width="1.5" PointX="24" PointY="37.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.QuestaoTema" Width="1.5" PointX="21" PointY="35" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Reitoria" Width="1.5" PointX="20.25" PointY="54.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Sala" Width="1.5" PointX="25.5" PointY="54.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Telefone" Width="1.5" PointX="3" PointY="50.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Tema" Width="1.5" PointX="18.75" PointY="30.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.TipoAnexo" Width="1.5" PointX="21.75" PointY="41.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.TipoAvaliacao" Width="1.5" PointX="16.5" PointY="26.375" IsExpanded="true" />
         <EntityTypeShape EntityType="dbSIACModel.TipoContato" Width="1.5" PointX="0.75" PointY="50.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.TipoQuestao" Width="1.5" PointX="16.5" PointY="52.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Turma" Width="1.5" PointX="33" PointY="47.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.TurmaDiscAluno" Width="1.5" PointX="20.75" PointY="42.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.TurmaDiscProfHorario" Width="1.5" PointX="38.25" PointY="48.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Turno" Width="1.5" PointX="30.75" PointY="53" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.TipoQuestao" Width="1.5" PointX="16.5" PointY="54.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Turma" Width="1.5" PointX="33" PointY="49.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.TurmaDiscAluno" Width="1.5" PointX="20.75" PointY="44.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.TurmaDiscProfHorario" Width="1.5" PointX="35.25" PointY="49.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Turno" Width="1.5" PointX="30.75" PointY="50.375" IsExpanded="true" />
         <EntityTypeShape EntityType="dbSIACModel.Usuario" Width="1.5" PointX="11.25" PointY="42.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.UsuarioAcesso" Width="1.5" PointX="13.5" PointY="46.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.UsuarioAcessoPagina" Width="1.5" PointX="15.75" PointY="46.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.UsuarioOpiniao" Width="1.5" PointX="13.5" PointY="49.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="dbSIACModel.Visitante" Width="1.5" PointX="13.5" PointY="52.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.UsuarioAcesso" Width="1.5" PointX="13.5" PointY="48.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.UsuarioAcessoPagina" Width="1.5" PointX="15.75" PointY="48.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.UsuarioOpiniao" Width="1.5" PointX="13.5" PointY="51.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbSIACModel.Visitante" Width="1.5" PointX="13.5" PointY="54.25" IsExpanded="true" />
         <AssociationConnector Association="dbSIACModel.FK__Alternati__CodQu__345EC57D" ManuallyRouted="false" />
         <AssociationConnector Association="dbSIACModel.FK__Aluno__CodCurso__69C6B1F5" ManuallyRouted="false" />
         <AssociationConnector Association="dbSIACModel.FK__Aluno__MatrAluno__6ABAD62E" ManuallyRouted="false" />
         <AssociationConnector Association="dbSIACModel.FK__TurmaDisc__CodAl__52AE4273" ManuallyRouted="false" />
         <AssociationConnector Association="dbSIACModel.FK__PessoaFor__CodAr__0880433F" ManuallyRouted="false" />
-        <AssociationConnector Association="dbSIACModel.FK__AvalAcade__CodDi__5C37ACAD" ManuallyRouted="false" />
-        <AssociationConnector Association="dbSIACModel.FK__AvalAcade__CodPr__5B438874" ManuallyRouted="false" />
-        <AssociationConnector Association="dbSIACModel.FK__AvalAcade__CodSa__5E1FF51F" ManuallyRouted="false" />
-        <AssociationConnector Association="dbSIACModel.FK__AvalAcademica__5A4F643B" ManuallyRouted="false" />
-        <AssociationConnector Association="dbSIACModel.FK__AvalAcademica__5D2BD0E6" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAcade__CodDi__1940BAED" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAcade__CodPr__1A34DF26" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAcade__CodSa__1B29035F" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAcademica__1C1D2798" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__AvalAcademica__1D114BD1" ManuallyRouted="false" />
         <AssociationConnector Association="dbSIACModel.FK__AvalAcadR__CodSa__725BF7F6" ManuallyRouted="false" />
         <AssociationConnector Association="dbSIACModel.FK__AvalAcadReposica__7073AF84" ManuallyRouted="false" />
         <AssociationConnector Association="dbSIACModel.FK__AvalAcadReposica__7167D3BD" ManuallyRouted="false" />
@@ -186,8 +187,7 @@
         <AssociationConnector Association="dbSIACModel.AviPublicoTurma" ManuallyRouted="false" />
         <AssociationConnector Association="dbSIACModel.PessoaCategoria" ManuallyRouted="false" />
         <AssociationConnector Association="dbSIACModel.PessoaOcupacao" ManuallyRouted="false" />
-        <AssociationConnector Association="dbSIACModel.ProfessorDisciplina" />
-        <EntityTypeShape EntityType="dbSIACModel.Parametro" Width="1.5" PointX="0.75" PointY="0.75" />
+        <AssociationConnector Association="dbSIACModel.ProfessorDisciplina" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
