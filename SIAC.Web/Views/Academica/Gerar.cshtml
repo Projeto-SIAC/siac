@@ -1,0 +1,192 @@
+﻿
+@{
+    ViewBag.Title = "Gerar Avaliação Acadêmica";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using SIAC.Web.Models;
+@section Scripts{
+    <script>
+
+        $('.ui.dropdown').dropdown();
+        $('.ui.modal').modal();
+        
+        function prosseguir() {
+            var errorList = $('form .error.message .list');
+
+            errorList.html('');
+            $('form').removeClass('error');
+
+            var valido = true;
+            var ddlDisciplinas;
+            var ddlTemas;
+            var ddlTipo;
+            var ddlDificuldade;
+            var txtQteObjetiva;
+            var txtQteDiscursiva;
+
+            if ($('#ddlDisciplina').val() == "") {
+                errorList.append('<li>Selecione uma disciplina</li>');
+                valido = false;
+            }
+
+            if ($('#ddlTemas').val() == null || $('#ddlTemas').val() == "") {
+                errorList.append('<li>Selecione ao menos um tema</li>');
+                valido = false;
+            }
+
+            if ($('#ddlTipo').val() == "") {
+                errorList.append('<li>Selecione o tipo das questões da sua avaliação acadêmica</li>');
+                valido = false;
+            }
+
+            if (($('#ddlTipo').val() == 1 || $('#ddlTipo').val()==3) && $('#txtQteObjetiva').val() == "" ) {
+                errorList.append('<li>Indique a quantidade das questões objetivas</li>');
+                valido = false;
+            }
+            if (($('#ddlTipo').val() == 2 || $('#ddlTipo').val() == 3) && $('#txtQteDiscursiva').val() == "") {
+                errorList.append('<li>Indique a quantidade das questões discursivas</li>');
+                valido = false;
+            }
+
+            if ($('#ddlDificuldade').val() == null || $('#ddlDificuldade').val() == "") {
+                errorList.append('<li>Selecione a dificuldade das questões</li>');
+                valido = false;
+            }
+
+
+            if(valido){
+                $('form').submit();
+            }
+            else {
+                $('form').addClass('error');
+                $('html, body').animate({
+                    scrollTop: $('form .error.message').offset().top
+                }, 100);
+            }
+        }
+
+        function listarTemas(codDisciplina) {
+            var disciplinas = $('#ddlDisciplinas');
+            var ddlTemas = $('#ddlTemas');
+            $.ajax({
+                type: 'GET',
+                url: '@(Url.RouteUrl("RecuperarTemasPorCodDisciplinaTemQuestao"))',
+                data: { 'codDisciplina': codDisciplina },
+                success: function (data) {
+                    ddlTemas.html('');
+                    ddlTemas.val(ddlTemas.prop('defaultSelected'));
+                    $.each(data, function (id, item) {
+                        ddlTemas.append('<option value="' + item.CodTema + '">' + item.Descricao + '</option>');
+                    });
+                },
+                error: function (xhr) {
+                    alert(xhr.error);
+                }
+            });
+        }
+
+        function OpcoesPorTipo(tipoAvaliacao) {
+            var txtQteObjetiva = $('#txtQteObjetiva');
+            var txtQteDiscursiva = $('#txtQteDiscursiva');
+
+            if (tipoAvaliacao == 1) {
+                txtQteObjetiva.prop('disabled', false);
+                txtQteDiscursiva.prop('disabled', true);
+            }
+            else if(tipoAvaliacao == 2){
+                txtQteObjetiva.prop('disabled', true);
+                txtQteDiscursiva.prop('disabled', false);
+            }
+            else {
+                txtQteObjetiva.prop('disabled', false);
+                txtQteDiscursiva.prop('disabled', false);
+            }
+        }
+
+    </script>
+}
+
+<div class="ui confirmar modal">
+    <div class="header">Verificação e confirmação</div>
+    <div class="content">
+        <table class="ui very basic table">
+            <thead>
+                <tr>
+                    <th>Disciplina</th>
+                    <th>Tema(s)</th>
+                    <th>Quantidade</th>
+                    <th>Dificuldade</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="actions">
+        <div class="ui negative button">Voltar</div>
+        <div class="ui positive button">Confirmar</div>
+    </div>
+</div>
+
+<h2>@ViewBag.Title</h2>
+
+<form id="frmAutoavaliacao" method="post" action="/Dashboard/Avaliacao/Academica/Confirmar" class="ui form">
+    <div class="ui error message">
+        <div class="header">Verifique</div>
+        <ul class="list"></ul>
+    </div>
+    @* Disciplinas *@
+    <div class="field required">
+        <label>Disciplina</label>
+        <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" onchange="listarTemas($(this).val())" required>
+            <option value="">Disciplina</option>
+            @foreach (var disc in ViewBag.Disciplinas)
+            {
+                <option value="@disc.CodDisciplina">@disc.Descricao</option>
+            }
+        </select>
+    </div>
+    @* Temas *@
+    <div class="field required">
+        <label>Tema (s)</label>
+        <select id="ddlTemas" name="ddlTemas" class="ui search dropdown fluid tema" multiple required>
+            <option value="">Temas...</option>
+        </select>
+    </div>
+    @* Tipo das Questões *@
+    <div class="field required">
+        <label>Tipo das Questões</label>
+        <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" onchange="OpcoesPorTipo($(this).val())" required>
+            <option value="">Tipo</option>
+            <option value="2">Somente discursivas</option>
+            <option value="1">Somente objetivas</option>
+            <option value="3">Misto</option>
+        </select>
+    </div>
+    @* Dificuldade das Questões *@
+    <div class="field required">
+        <label>Dificuldade das Questões</label>
+        <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown" required>
+            <option value="">Dificuldade...</option>
+            @foreach (Dificuldade d in ViewBag.Dificuldades)
+            {
+                <option value="@d.CodDificuldade">@d.Descricao</option>
+            }
+        </select>
+    </div>
+    @* Qte das Questões *@
+    <div class="field"><label>Quantidade das Questões</label></div>
+    <div class="two fields"> 
+        <div class="field required">
+            <label>Objetiva</label>
+            <input id="txtQteObjetiva" name="txtQteObjetiva" type="number" placeholder="Objetivas..." required />
+        </div>
+        <div class="field required">
+            <label>Discursiva</label>
+            <input id="txtQteDiscursiva" name="txtQteDiscursiva" type="number" placeholder="Discursivas..." required />
+        </div>
+    </div>
+    <div class="field">
+        <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Historico/Autoavaliacao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+        <div onclick="prosseguir()" class="ui prosseguir button">Prosseguir</div>
+    </div>
+</form>

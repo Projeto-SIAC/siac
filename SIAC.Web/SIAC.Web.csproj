@@ -442,6 +442,7 @@
     <Compile Include="Models\Parametro.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\pAvalAcademica.cs" />
     <Compile Include="Models\pAvalAuto.cs" />
     <Compile Include="Models\pAvaliacao.cs" />
     <Compile Include="Models\pAvalPessoaResultado.cs" />
@@ -596,7 +597,8 @@
     <Content Include="Views\Autoavaliacao\Detalhe.cshtml" />
     <Content Include="Views\Autoavaliacao\Imprimir.cshtml" />
     <Content Include="Views\Questao\Gerar.cshtml" />
-    <Content Include="Views\Academica\Agendar.cshtml" />
+    <Content Include="Views\Academica\Gerar.cshtml" />
+    <Content Include="Views\Academica\Confirmar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

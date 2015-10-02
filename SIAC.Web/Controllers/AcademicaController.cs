@@ -35,19 +35,96 @@ namespace SIAC.Web.Controllers
             base.OnActionExecuting(filterContext);
         }
 
-        // GET: AvaliacaoAcademica
+        // GET: Avaliacao/Academica
         public ActionResult Index()
         {
             return View();
         }
 
-        //GET: AvaliacaoAcademica/Agendar
-        public ActionResult Agendar()
+        //GET: Avaliacao/Academica/Gerar
+        public ActionResult Gerar()
         {
             ViewBag.Disciplinas = Disciplina.ListarPorProfessor(Session["UsuarioMatricula"].ToString());
             ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
 
             return View();
+        }
+
+        //POST: Avaliacao/Academica/Confirmar
+        [HttpPost]
+        public ActionResult Confirmar(FormCollection formCollection)
+        {
+            AvalAcademica acad = new AvalAcademica();
+
+            if (formCollection.HasKeys())
+            {
+                //ViewBag.Form = formCollection;
+                //AvalAuto auto = new AvalAuto();
+                DateTime hoje = DateTime.Now;
+
+                /* Chave */
+                acad.Avaliacao = new Avaliacao();
+                acad.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(2);
+                acad.Avaliacao.Ano = hoje.Year;
+                acad.Avaliacao.Semestre = hoje.Month > 6 ? 2 : 1;
+                acad.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(2);
+                acad.Avaliacao.DtCadastro = hoje;
+
+                /* Professor */
+                string strMatr = Session["UsuarioMatricula"].ToString();
+                acad.Professor = Professor.ListarPorMatricula(strMatr);
+
+                /* Dados */
+                int codDisciplina = int.Parse(formCollection["ddlDisciplina"]);
+
+                acad.CodDisciplina = codDisciplina;
+
+                /* Dificuldade */
+                int codDificuldade = int.Parse(formCollection["ddlDificuldade"]);
+
+                /* Quantidade */
+                int qteObjetiva = 0;
+                int qteDiscursiva = 0;
+                if (formCollection["ddlTipo"] == "3")
+                {
+                    int.TryParse(formCollection["txtQteObjetiva"], out qteObjetiva);
+                    int.TryParse(formCollection["txtQteDiscursiva"], out qteDiscursiva);
+                }
+                else if (formCollection["ddlTipo"] == "2")
+                {
+                    int.TryParse(formCollection["txtQteDiscursiva"], out qteDiscursiva);
+                }
+                else if (formCollection["ddlTipo"] == "1")
+                {
+                    int.TryParse(formCollection["txtQteObjetiva"], out qteObjetiva);
+                }
+
+                /* Temas */
+                string[] arrTemaCods = formCollection["ddlTemas"].Split(',');
+
+                /* Questões */
+                List<QuestaoTema> lstQuestoes = Questao.ListarPorDisciplina(codDisciplina, arrTemaCods, codDificuldade, qteObjetiva, qteDiscursiva);
+                
+                foreach (var strTemaCod in arrTemaCods)
+                {
+                    AvaliacaoTema avalTema = new AvaliacaoTema();
+                    avalTema.Tema = Tema.ListarPorCodigo(codDisciplina, int.Parse(strTemaCod));
+                    foreach (var queTma in lstQuestoes.Where(q => q.CodTema == int.Parse(strTemaCod)))
+                    {
+                        AvalTemaQuestao avalTemaQuestao = new AvalTemaQuestao();
+                        avalTemaQuestao.QuestaoTema = queTma;
+                        avalTema.AvalTemaQuestao.Add(avalTemaQuestao);
+                    }
+                    acad.Avaliacao.AvaliacaoTema.Add(avalTema);
+                }
+
+                ViewBag.QteQuestoes = lstQuestoes.Count;
+                ViewBag.QuestoesDaAvaliacao = lstQuestoes;
+
+                //AvalAcademica.Inserir(acad);
+            }
+
+            return View(acad);
         }
     }
 }
