@@ -120,7 +120,7 @@ namespace SIAC.Web.Controllers
                 ViewBag.QteQuestoes = lstQuestoes.Count;
                 ViewBag.QuestoesDaAvaliacao = lstQuestoes;
 
-                AvalAcademica.Inserir(acad);
+                //AvalAcademica.Inserir(acad);
             }
 
             return View(acad);
