@@ -1,69 +1,125 @@
-﻿    @{
-        ViewBag.Title = "Minhas Questões";
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
+﻿@{
+    ViewBag.Title = "Minhas Questões";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-    @section Scripts {
-        <script>
-            $('.ui.items').parent().addClass('loading');
-            var jsnQuestoesGeral;
-            var jsnQuestoesFiltro;
+@section Scripts {
+    <script>
+        $('.ui.items').parent().addClass('loading');
+        var jsnQuestoesGeral;
+        var jsnQuestoesFiltro;
 
-            $.getJSON(
-                '/Historico/Questao/Minhas',
-                function (questoes) {
-                    jsnQuestoesGeral = questoes;
-                    jsnQuestoesFiltro = questoes;
-                    MinhasQuestoes();
-                }
-            );
+        $.getJSON(
+            '/Historico/Questao/Minhas',
+            function (questoes) {
+                jsnQuestoesGeral = questoes;
+                jsnQuestoesFiltro = questoes;
+                MinhasQuestoes();
+            }
+        );
 
-            function Filtro(strTexto) {
-                strTexto = strTexto.toLowerCase();
+        function Filtro(strTexto) {
+            if (strTexto) {
+                strTexto = strTexto.toLowerCase().split(';');
                 jsnQuestoesFiltro = [];
-                for (var i = 0; i < jsnQuestoesGeral.length; i++) {
-                    if (jsnQuestoesGeral[i].Enunciado.toLowerCase().indexOf(strTexto) > -1) {
-                        jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
+                for (var j = 0; j < strTexto.length; j++) {
+                    strTexto[j] = strTexto[j].trim();
+                    if (strTexto[j].indexOf('+') > -1) {
+                        lstFiltro = jsnQuestoesGeral;
+                        termos = strTexto[j].split('+');
+                        for (var k = 0; k < termos.length; k++) {
+                            termos[k] = termos[k].trim();
+                            if (termos[k]) {
+                                var lstFiltroAnd = [];
+                                for (var i = 0; i < lstFiltro.length; i++) {
+                                    if (lstFiltro[i].Enunciado.toLowerCase().indexOf(termos[k]) > -1) {
+                                        lstFiltroAnd.push(lstFiltro[i]);
+                                    }
+                                    else if (lstFiltro[i].Disciplina.toLowerCase().indexOf(termos[k]) > -1) {
+                                        lstFiltroAnd.push(lstFiltro[i]);
+                                    }
+                                    else if (lstFiltro[i].TipoQuestao.toLowerCase().indexOf(termos[k]) > -1) {
+                                        lstFiltroAnd.push(lstFiltro[i]);
+                                    }
+                                    else if (lstFiltro[i].Dificuldade.toLowerCase().indexOf(termos[k]) > -1) {
+                                        lstFiltroAnd.push(lstFiltro[i]);
+                                    }
+                                    else if (lstFiltro[i].DtCadastro.toLowerCase().indexOf(termos[k]) > -1) {
+                                        lstFiltroAnd.push(lstFiltro[i]);
+                                    }
+                                    else {
+                                        for (var l = 0; l < lstFiltro[i].Temas.length; l++) {
+                                            if (lstFiltro[i].Temas[l].toLowerCase().indexOf(termos[k]) > -1) {
+                                                lstFiltroAnd.push(lstFiltro[i]);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                lstFiltro = lstFiltroAnd;
+                            }
+                        }
+                        jsnQuestoesFiltro = jsnQuestoesFiltro.concat(lstFiltro);
                     }
-                    else if (jsnQuestoesGeral[i].Disciplina.toLowerCase().indexOf(strTexto) > -1) {
-                        jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
-                    }
-                    else if (jsnQuestoesGeral[i].TipoQuestao.toLowerCase().indexOf(strTexto) > -1) {
-                        jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
-                    }
-                    else if (jsnQuestoesGeral[i].Dificuldade.toLowerCase().indexOf(strTexto) > -1) {
-                        jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
-                    }
-                    else if (jsnQuestoesGeral[i].DtCadastro.toLowerCase().indexOf(strTexto) > -1) {
-                        jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
-                    }
-                    else {
-                        for (var j = 0; j < jsnQuestoesGeral[i].Temas.length; j++) {
-                            if (jsnQuestoesGeral[i].Temas[j].toLowerCase().indexOf(strTexto) > -1) {
+                    else if (strTexto[j]) {
+                        for (var i = 0; i < jsnQuestoesGeral.length; i++) {
+                            if (jsnQuestoesGeral[i].Enunciado.toLowerCase().indexOf(strTexto[j]) > -1) {
                                 jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
-                                break;
+                            }
+                            else if (jsnQuestoesGeral[i].Disciplina.toLowerCase().indexOf(strTexto[j]) > -1) {
+                                jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
+                            }
+                            else if (jsnQuestoesGeral[i].TipoQuestao.toLowerCase().indexOf(strTexto[j]) > -1) {
+                                jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
+                            }
+                            else if (jsnQuestoesGeral[i].Dificuldade.toLowerCase().indexOf(strTexto[j]) > -1) {
+                                jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
+                            }
+                            else if (jsnQuestoesGeral[i].DtCadastro.toLowerCase().indexOf(strTexto[j]) > -1) {
+                                jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
+                            }
+                            else {
+                                for (var k = 0; k < jsnQuestoesGeral[i].Temas.length; k++) {
+                                    if (jsnQuestoesGeral[i].Temas[k].toLowerCase().indexOf(strTexto[j]) > -1) {
+                                        jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
                 }
-                MinhasQuestoes();
-            }
 
-            function MinhasQuestoes(pagina) {
-                $('.ui.items').parent().addClass('loading');
-                var qtePorPagina = 20;
-                var qtePaginacao = 7;
-                var length = jsnQuestoesFiltro.length;
-                if (pagina == null) {
-                    pagina = 1;
+                var strCod = '';
+                for (var i = 0; i < jsnQuestoesFiltro.length; i++) {
+                    if (strCod.indexOf(''+jsnQuestoesFiltro[i].CodQuestao) == -1) {
+                        strCod += jsnQuestoesFiltro[i].CodQuestao + ';';
+                        continue;
+                    }
+                    jsnQuestoesFiltro = jsnQuestoesFiltro.splice(i, 1);
                 }
-                var count = pagina * qtePorPagina;
-                if (count > length) {
-                    count = length;
-                }
-                $('.ui.items').html('');
-                for (var i = ((qtePorPagina * pagina) - qtePorPagina) ; i < count; i++) {
-                    $('.ui.items').append('\
+            }
+            else {
+                jsnQuestoesFiltro = jsnQuestoesGeral;
+            }
+            MinhasQuestoes();
+        }
+
+        function MinhasQuestoes(pagina) {
+            $('.ui.items').parent().addClass('loading');
+            var qtePorPagina = 20;
+            var qtePaginacao = 7;
+            var length = jsnQuestoesFiltro.length;
+            if (pagina == null) {
+                pagina = 1;
+            }
+            var count = pagina * qtePorPagina;
+            if (count > length) {
+                count = length;
+            }
+            $('.ui.items').html('');
+            for (var i = ((qtePorPagina * pagina) - qtePorPagina) ; i < count; i++) {
+                $('.ui.items').append('\
                         <div class="item">\
                             <div class="content">\
                                 <a href="/Historico/Questao/' + jsnQuestoesFiltro[i].CodQuestao + '" class="header">' + ToShortString(jsnQuestoesFiltro[i].Enunciado, 140) + '</a>\
@@ -76,46 +132,46 @@
                             </div>\
                         </div>\
                         ');
+            }
+            $('.ui.pagination.menu').html('');
+            var i = pagina - 3;
+            for (i; i <= (Math.ceil(length / qtePorPagina)) - 3 && $('.ui.pagination.menu .item').length < 5; i++) {
+                if (i < 1) {
+                    continue;
                 }
-                $('.ui.pagination.menu').html('');
-                var i = pagina - 3;
-                for (i; i <= (Math.ceil(length / qtePorPagina)) - 3 && $('.ui.pagination.menu .item').length < 5; i++) {
+                if (i == pagina) {
+                    $('.ui.pagination.menu').append('<a class="active item" onclick="MinhasQuestoes(' + i + ')">' + i + '</a>');
+                    continue;
+                }
+                $('.ui.pagination.menu').append('<a class="item" onclick="MinhasQuestoes(' + i + ')">' + i + '</a>');
+            }
+            if ($('.ui.pagination.menu .item').length < 5) {
+                for (i; $('.ui.pagination.menu .item').length < 5 && i <= (Math.ceil(length / qtePorPagina)) ; i++) {
                     if (i < 1) {
                         continue;
                     }
                     if (i == pagina) {
                         $('.ui.pagination.menu').append('<a class="active item" onclick="MinhasQuestoes(' + i + ')">' + i + '</a>');
                         continue;
-                    }                    
+                    }
                     $('.ui.pagination.menu').append('<a class="item" onclick="MinhasQuestoes(' + i + ')">' + i + '</a>');
                 }
-                if ($('.ui.pagination.menu .item').length < 5) {                    
-                    for (i; $('.ui.pagination.menu .item').length < 5 && i <= (Math.ceil(length / qtePorPagina)) ; i++) {
-                        if (i < 1) {
-                            continue;
-                        }
-                        if (i == pagina) {
-                            $('.ui.pagination.menu').append('<a class="active item" onclick="MinhasQuestoes(' + i + ')">' + i + '</a>');
-                            continue;
-                        }
-                        $('.ui.pagination.menu').append('<a class="item" onclick="MinhasQuestoes(' + i + ')">' + i + '</a>');
-                    }
-                    if (pagina == (Math.ceil(length / qtePorPagina))) {
-                        if (!((i - 5) < 1)) {
-                            $('.ui.pagination.menu').prepend('<a class="item" onclick="MinhasQuestoes(' + (i - 5) + ')">' + (i - 5) + '</a>');
-                        }
+                if (pagina == (Math.ceil(length / qtePorPagina))) {
+                    if (!((i - 5) < 1)) {
+                        $('.ui.pagination.menu').prepend('<a class="item" onclick="MinhasQuestoes(' + (i - 5) + ')">' + (i - 5) + '</a>');
                     }
                 }
-                $('a[href]').on('click', function () { $('.ui.grid .thirteen.wide.column > .ui.segment').addClass('loading') });
-                $('.ui.items').parent().removeClass('loading');
-            }            
-        </script>
-    }
-    
-    <h2>@ViewBag.Title <a class="ui right floated button" href="/Dashboard/Questao/Cadastrar">Cadastrar</a></h2>
-        <div class="ui fluid icon input">
-            <input type="text" placeholder="Filtrar..." onkeyup="Filtro($(this).val())" />
-            <i class="search icon"></i>
-    </div>
-    <div class="ui very relaxed items"></div>
-    <div class="ui pagination menu"></div>
+            }
+            $('a[href]').on('click', function () { $('.ui.grid .thirteen.wide.column > .ui.segment').addClass('loading') });
+            $('.ui.items').parent().removeClass('loading');
+        }
+    </script>
+}
+
+<h2>@ViewBag.Title <a class="ui right floated button" href="/Dashboard/Questao/Cadastrar">Cadastrar</a></h2>
+<div class="ui fluid icon input">
+    <input type="text" placeholder="Filtrar..." onkeyup="Filtro($(this).val())" />
+    <i class="search icon"></i>
+</div>
+<div class="ui very relaxed items"></div>
+<div class="ui pagination menu"></div>
