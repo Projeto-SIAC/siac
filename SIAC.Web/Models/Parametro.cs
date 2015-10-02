@@ -14,11 +14,12 @@ namespace SIAC.Web.Models
     
     public partial class Parametro
     {
-        public int Id { get; set; }
+        public int CodParametro { get; set; }
         public int TempoInatividade { get; set; }
         public int NumeracaoQuestao { get; set; }
         public int NumeracaoAlternativa { get; set; }
         public int QteSemestres { get; set; }
         public string TermoResponsabilidade { get; set; }
+        public string NotaUso { get; set; }
     }
 }

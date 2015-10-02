@@ -706,14 +706,15 @@
         </EntityType>
         <EntityType Name="Parametro">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="CodParametro" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodParametro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TempoInatividade" Type="int" Nullable="false" />
           <Property Name="NumeracaoQuestao" Type="int" Nullable="false" />
           <Property Name="NumeracaoAlternativa" Type="int" Nullable="false" />
           <Property Name="QteSemestres" Type="int" Nullable="false" />
           <Property Name="TermoResponsabilidade" Type="text" Nullable="false" />
+          <Property Name="NotaUso" Type="text" Nullable="false" />
         </EntityType>
         <EntityType Name="Pessoa">
           <Key>
@@ -6418,27 +6419,28 @@
             <End Role="Ocupacao" EntitySet="Ocupacao" />
             <End Role="PessoaFisica" EntitySet="PessoaFisica" />
           </AssociationSet>
-          <EntitySet Name="Parametro" EntityType="dbSIACModel.Parametro" />
           <AssociationSet Name="ProfessorDisciplina" Association="dbSIACModel.ProfessorDisciplina">
             <End Role="Disciplina" EntitySet="Disciplina" />
             <End Role="Professor" EntitySet="Professor" />
           </AssociationSet>
+          <EntitySet Name="Parametro" EntityType="dbSIACModel.Parametro" />
         </EntityContainer>
+        <Association Name="ProfessorDisciplina">
+          <End Type="dbSIACModel.Disciplina" Role="Disciplina" Multiplicity="*" />
+          <End Type="dbSIACModel.Professor" Role="Professor" Multiplicity="*" />
+        </Association>
         <EntityType Name="Parametro">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="CodParametro" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodParametro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TempoInatividade" Type="Int32" Nullable="false" />
           <Property Name="NumeracaoQuestao" Type="Int32" Nullable="false" />
           <Property Name="NumeracaoAlternativa" Type="Int32" Nullable="false" />
           <Property Name="QteSemestres" Type="Int32" Nullable="false" />
           <Property Name="TermoResponsabilidade" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="NotaUso" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
-        <Association Name="ProfessorDisciplina">
-          <End Type="dbSIACModel.Disciplina" Role="Disciplina" Multiplicity="*" />
-          <End Type="dbSIACModel.Professor" Role="Professor" Multiplicity="*" />
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7358,18 +7360,6 @@
               <ScalarProperty Name="CodPessoa" ColumnName="CodPessoaFisica" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="Parametro">
-            <EntityTypeMapping TypeName="dbSIACModel.Parametro">
-              <MappingFragment StoreEntitySet="Parametro">
-                <ScalarProperty Name="TermoResponsabilidade" ColumnName="TermoResponsabilidade" />
-                <ScalarProperty Name="QteSemestres" ColumnName="QteSemestres" />
-                <ScalarProperty Name="NumeracaoAlternativa" ColumnName="NumeracaoAlternativa" />
-                <ScalarProperty Name="NumeracaoQuestao" ColumnName="NumeracaoQuestao" />
-                <ScalarProperty Name="TempoInatividade" ColumnName="TempoInatividade" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <AssociationSetMapping Name="ProfessorDisciplina" TypeName="dbSIACModel.ProfessorDisciplina" StoreEntitySet="ProfessorDisciplina">
             <EndProperty Name="Professor">
               <ScalarProperty Name="CodProfessor" ColumnName="CodProfessor" />
@@ -7378,6 +7368,19 @@
               <ScalarProperty Name="CodDisciplina" ColumnName="CodDisciplina" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Parametro">
+            <EntityTypeMapping TypeName="dbSIACModel.Parametro">
+              <MappingFragment StoreEntitySet="Parametro">
+                <ScalarProperty Name="NotaUso" ColumnName="NotaUso" />
+                <ScalarProperty Name="TermoResponsabilidade" ColumnName="TermoResponsabilidade" />
+                <ScalarProperty Name="QteSemestres" ColumnName="QteSemestres" />
+                <ScalarProperty Name="NumeracaoAlternativa" ColumnName="NumeracaoAlternativa" />
+                <ScalarProperty Name="NumeracaoQuestao" ColumnName="NumeracaoQuestao" />
+                <ScalarProperty Name="TempoInatividade" ColumnName="TempoInatividade" />
+                <ScalarProperty Name="CodParametro" ColumnName="CodParametro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
