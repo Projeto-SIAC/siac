@@ -55,10 +55,9 @@
         </tbody>
     </table>
 </div>
-
+@*
 <div class="ui very relaxed items">
     <span class="ui label">@ViewBag.QteQuestoes Questões</span>
-
     @{
         List<int> cods = new List<int>();
         foreach (QuestaoTema questao in ViewBag.QuestoesDaAvaliacao)
@@ -89,7 +88,7 @@
         }
     }
 </div>
-
+*@
 <a href="/Dashboard" class="ui button">Voltar para Dashboard</a>
 <a href="/Historico/Autoavaliacao" class="ui button">Autoavaliações Salvas</a>
 <a href="/Dashboard/Autoavaliacao/Realizar/@Model.Avaliacao.CodAvaliacao()" class="ui button">Realizar agora</a>

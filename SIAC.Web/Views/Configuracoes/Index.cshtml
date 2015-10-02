@@ -16,6 +16,7 @@
         $('.ui.accordion').accordion();
 
         function atualizarParametros() {
+            $('#btnAtualizar').addClass('loading');
             var form = $(':input');
             $.ajax({
                 type: 'POST',
@@ -28,6 +29,7 @@
                     $('.ui.modal').modal('show');
                 }
             });
+            $('#btnAtualizar').removeClass('loading');
             return false;
         };
 
