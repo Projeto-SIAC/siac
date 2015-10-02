@@ -453,23 +453,6 @@
     <Compile Include="Models\pDificuldade.cs" />
     <Compile Include="Models\pDiretoria.cs" />
     <Compile Include="Models\pDisciplina.cs" />
-    <Compile Include="Models\pHorario.cs" />
-    <Compile Include="Models\pInstituicao.cs" />
-    <Compile Include="Models\pMatrizCurricular.cs" />
-    <Compile Include="Models\pNivelEnsino.cs" />
-    <Compile Include="Models\pParametro.cs" />
-    <Compile Include="Models\pPessoa.cs" />
-    <Compile Include="Models\pPessoaFisica.cs" />
-    <Compile Include="Models\pProfessor.cs" />
-    <Compile Include="Models\pQuestao.cs" />
-    <Compile Include="Models\pQuestaoTema.cs" />
-    <Compile Include="Models\pSala.cs" />
-    <Compile Include="Models\pTema.cs" />
-    <Compile Include="Models\pTipoAvaliacao.cs" />
-    <Compile Include="Models\pTipoQuestao.cs" />
-    <Compile Include="Models\pTurma.cs" />
-    <Compile Include="Models\pTurno.cs" />
-    <Compile Include="Models\pUsuario.cs" />
     <Compile Include="Models\Pessoa.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -482,12 +465,29 @@
     <Compile Include="Models\PessoaJuridica.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\pHorario.cs" />
+    <Compile Include="Models\pInstituicao.cs" />
+    <Compile Include="Models\pMatrizCurricular.cs" />
+    <Compile Include="Models\pNivelEnsino.cs" />
+    <Compile Include="Models\pParametro.cs" />
+    <Compile Include="Models\pPessoa.cs" />
+    <Compile Include="Models\pPessoaFisica.cs" />
+    <Compile Include="Models\pProfessor.cs" />
+    <Compile Include="Models\pQuestao.cs" />
+    <Compile Include="Models\pQuestaoTema.cs" />
     <Compile Include="Models\Professor.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProReitoria.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\pSala.cs" />
+    <Compile Include="Models\pTema.cs" />
+    <Compile Include="Models\pTipoAvaliacao.cs" />
+    <Compile Include="Models\pTipoQuestao.cs" />
+    <Compile Include="Models\pTurma.cs" />
+    <Compile Include="Models\pTurno.cs" />
+    <Compile Include="Models\pUsuario.cs" />
     <Compile Include="Models\Questao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>

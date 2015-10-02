@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="dbSIACModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="dbSIACModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Alternativa">
           <Key>
             <PropertyRef Name="CodOrdem" />
@@ -42,11 +42,11 @@
           <Property Name="CodTipoAvaliacao" Type="int" Nullable="false" />
           <Property Name="Semestre" Type="int" Nullable="false" />
           <Property Name="Ano" Type="int" Nullable="false" />
-          <Property Name="CodTurno" Type="char" MaxLength="1" Nullable="false" />
-          <Property Name="NumTurma" Type="int" Nullable="false" />
-          <Property Name="Periodo" Type="int" Nullable="false" />
-          <Property Name="CodCurso" Type="int" Nullable="false" />
-          <Property Name="CodSala" Type="int" Nullable="false" />
+          <Property Name="CodTurno" Type="char" MaxLength="1" />
+          <Property Name="NumTurma" Type="int" />
+          <Property Name="Periodo" Type="int" />
+          <Property Name="CodCurso" Type="int" />
+          <Property Name="CodSala" Type="int" />
           <Property Name="CodProfessor" Type="int" Nullable="false" />
           <Property Name="CodDisciplina" Type="int" Nullable="false" />
           <Property Name="Valor" Type="float" />
@@ -1066,7 +1066,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcade__CodDi__5C37ACAD">
+        <Association Name="FK__AvalAcade__CodDi__1940BAED">
           <End Role="Disciplina" Type="Self.Disciplina" Multiplicity="1" />
           <End Role="AvalAcademica" Type="Self.AvalAcademica" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1078,7 +1078,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcade__CodPr__5B438874">
+        <Association Name="FK__AvalAcade__CodPr__1A34DF26">
           <End Role="Professor" Type="Self.Professor" Multiplicity="1" />
           <End Role="AvalAcademica" Type="Self.AvalAcademica" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1090,8 +1090,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcade__CodSa__5E1FF51F">
-          <End Role="Sala" Type="Self.Sala" Multiplicity="1" />
+        <Association Name="FK__AvalAcade__CodSa__1B29035F">
+          <End Role="Sala" Type="Self.Sala" Multiplicity="0..1" />
           <End Role="AvalAcademica" Type="Self.AvalAcademica" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sala">
@@ -1102,7 +1102,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcademica__5A4F643B">
+        <Association Name="FK__AvalAcademica__1C1D2798">
           <End Role="Avaliacao" Type="Self.Avaliacao" Multiplicity="1" />
           <End Role="AvalAcademica" Type="Self.AvalAcademica" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1120,8 +1120,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcademica__5D2BD0E6">
-          <End Role="Turma" Type="Self.Turma" Multiplicity="1" />
+        <Association Name="FK__AvalAcademica__1D114BD1">
+          <End Role="Turma" Type="Self.Turma" Multiplicity="0..1" />
           <End Role="AvalAcademica" Type="Self.AvalAcademica" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Turma">
@@ -2906,23 +2906,23 @@
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Aluno" EntitySet="Aluno" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcade__CodDi__5C37ACAD" Association="Self.FK__AvalAcade__CodDi__5C37ACAD">
+          <AssociationSet Name="FK__AvalAcade__CodDi__1940BAED" Association="Self.FK__AvalAcade__CodDi__1940BAED">
             <End Role="Disciplina" EntitySet="Disciplina" />
             <End Role="AvalAcademica" EntitySet="AvalAcademica" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcade__CodPr__5B438874" Association="Self.FK__AvalAcade__CodPr__5B438874">
+          <AssociationSet Name="FK__AvalAcade__CodPr__1A34DF26" Association="Self.FK__AvalAcade__CodPr__1A34DF26">
             <End Role="Professor" EntitySet="Professor" />
             <End Role="AvalAcademica" EntitySet="AvalAcademica" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcade__CodSa__5E1FF51F" Association="Self.FK__AvalAcade__CodSa__5E1FF51F">
+          <AssociationSet Name="FK__AvalAcade__CodSa__1B29035F" Association="Self.FK__AvalAcade__CodSa__1B29035F">
             <End Role="Sala" EntitySet="Sala" />
             <End Role="AvalAcademica" EntitySet="AvalAcademica" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcademica__5A4F643B" Association="Self.FK__AvalAcademica__5A4F643B">
+          <AssociationSet Name="FK__AvalAcademica__1C1D2798" Association="Self.FK__AvalAcademica__1C1D2798">
             <End Role="Avaliacao" EntitySet="Avaliacao" />
             <End Role="AvalAcademica" EntitySet="AvalAcademica" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcademica__5D2BD0E6" Association="Self.FK__AvalAcademica__5D2BD0E6">
+          <AssociationSet Name="FK__AvalAcademica__1D114BD1" Association="Self.FK__AvalAcademica__1D114BD1">
             <End Role="Turma" EntitySet="Turma" />
             <End Role="AvalAcademica" EntitySet="AvalAcademica" />
           </AssociationSet>
@@ -3399,7 +3399,8 @@
             <End Role="ProfessorDisciplina" EntitySet="ProfessorDisciplina" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="dbSIACModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3445,19 +3446,19 @@
           <Property Name="CodTipoAvaliacao" Type="Int32" Nullable="false" />
           <Property Name="Semestre" Type="Int32" Nullable="false" />
           <Property Name="Ano" Type="Int32" Nullable="false" />
-          <Property Name="CodTurno" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="NumTurma" Type="Int32" Nullable="false" />
-          <Property Name="Periodo" Type="Int32" Nullable="false" />
-          <Property Name="CodCurso" Type="Int32" Nullable="false" />
-          <Property Name="CodSala" Type="Int32" Nullable="false" />
+          <Property Name="CodTurno" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="NumTurma" Type="Int32" />
+          <Property Name="Periodo" Type="Int32" />
+          <Property Name="CodCurso" Type="Int32" />
+          <Property Name="CodSala" Type="Int32" />
           <Property Name="CodProfessor" Type="Int32" Nullable="false" />
           <Property Name="CodDisciplina" Type="Int32" Nullable="false" />
           <Property Name="Valor" Type="Double" />
-          <NavigationProperty Name="Disciplina" Relationship="Self.FK__AvalAcade__CodDi__5C37ACAD" FromRole="AvalAcademica" ToRole="Disciplina" />
-          <NavigationProperty Name="Professor" Relationship="Self.FK__AvalAcade__CodPr__5B438874" FromRole="AvalAcademica" ToRole="Professor" />
-          <NavigationProperty Name="Sala" Relationship="Self.FK__AvalAcade__CodSa__5E1FF51F" FromRole="AvalAcademica" ToRole="Sala" />
-          <NavigationProperty Name="Avaliacao" Relationship="Self.FK__AvalAcademica__5A4F643B" FromRole="AvalAcademica" ToRole="Avaliacao" />
-          <NavigationProperty Name="Turma" Relationship="Self.FK__AvalAcademica__5D2BD0E6" FromRole="AvalAcademica" ToRole="Turma" />
+          <NavigationProperty Name="Disciplina" Relationship="Self.FK__AvalAcade__CodDi__1940BAED" FromRole="AvalAcademica" ToRole="Disciplina" />
+          <NavigationProperty Name="Professor" Relationship="Self.FK__AvalAcade__CodPr__1A34DF26" FromRole="AvalAcademica" ToRole="Professor" />
+          <NavigationProperty Name="Sala" Relationship="Self.FK__AvalAcade__CodSa__1B29035F" FromRole="AvalAcademica" ToRole="Sala" />
+          <NavigationProperty Name="Avaliacao" Relationship="Self.FK__AvalAcademica__1C1D2798" FromRole="AvalAcademica" ToRole="Avaliacao" />
+          <NavigationProperty Name="Turma" Relationship="Self.FK__AvalAcademica__1D114BD1" FromRole="AvalAcademica" ToRole="Turma" />
         </EntityType>
         <EntityType Name="AvalAcadReposicao">
           <Key>
@@ -3493,10 +3494,10 @@
           <Property Name="Ano" Type="Int32" Nullable="false" />
           <Property Name="CodDificuldade" Type="Int32" Nullable="false" />
           <Property Name="CodPessoaFisica" Type="Int32" Nullable="false" />
+          <Property Name="FlagArquivo" Type="Boolean" />
           <NavigationProperty Name="Avaliacao" Relationship="Self.FK__AvalAuto__00DF2177" FromRole="AvalAuto" ToRole="Avaliacao" />
           <NavigationProperty Name="Dificuldade" Relationship="Self.FK__AvalAuto__CodDif__02C769E9" FromRole="AvalAuto" ToRole="Dificuldade" />
           <NavigationProperty Name="PessoaFisica" Relationship="Self.FK__AvalAuto__CodPes__01D345B0" FromRole="AvalAuto" ToRole="PessoaFisica" />
-          <Property Name="FlagArquivo" Type="Boolean" />
         </EntityType>
         <EntityType Name="AvalAvi">
           <Key>
@@ -3554,7 +3555,7 @@
           <Property Name="DtAplicacao" Type="DateTime" Precision="3" />
           <Property Name="Duracao" Type="Int32" />
           <Property Name="FlagLiberada" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="AvalAcademica" Relationship="Self.FK__AvalAcademica__5A4F643B" FromRole="Avaliacao" ToRole="AvalAcademica" />
+          <NavigationProperty Name="AvalAcademica" Relationship="Self.FK__AvalAcademica__1C1D2798" FromRole="Avaliacao" ToRole="AvalAcademica" />
           <NavigationProperty Name="AvalAcadReposicao" Relationship="Self.FK__AvalAcadReposica__7073AF84" FromRole="Avaliacao" ToRole="AvalAcadReposicao" />
           <NavigationProperty Name="AvalAuto" Relationship="Self.FK__AvalAuto__00DF2177" FromRole="Avaliacao" ToRole="AvalAuto" />
           <NavigationProperty Name="AvalAvi" Relationship="Self.FK__AvalAvi__4959E263" FromRole="Avaliacao" ToRole="AvalAvi" />
@@ -3914,13 +3915,13 @@
           <Property Name="FlagEletivaOptativa" Type="Boolean" />
           <Property Name="FlagFlexivel" Type="Boolean" />
           <Property Name="CodDiscIFRN" Type="Int32" />
-          <NavigationProperty Name="AvalAcademica" Relationship="Self.FK__AvalAcade__CodDi__5C37ACAD" FromRole="Disciplina" ToRole="AvalAcademica" />
+          <NavigationProperty Name="AvalAcademica" Relationship="Self.FK__AvalAcade__CodDi__1940BAED" FromRole="Disciplina" ToRole="AvalAcademica" />
           <NavigationProperty Name="AvalCertificacao" Relationship="Self.FK__AvalCerti__CodDi__019E3B86" FromRole="Disciplina" ToRole="AvalCertificacao" />
           <NavigationProperty Name="MatrizCurricularDisciplina" Relationship="Self.FK__MatrizCur__CodDi__12C8C788" FromRole="Disciplina" ToRole="MatrizCurricularDisciplina" />
           <NavigationProperty Name="Tema" Relationship="Self.FK__Tema__CodDiscipl__3587F3E0" FromRole="Disciplina" ToRole="Tema" />
           <NavigationProperty Name="TurmaDiscAluno" Relationship="Self.FK__TurmaDisc__CodDi__54968AE5" FromRole="Disciplina" ToRole="TurmaDiscAluno" />
           <NavigationProperty Name="TurmaDiscProfHorario" Relationship="Self.FK__TurmaDisc__CodDi__64CCF2AE" FromRole="Disciplina" ToRole="TurmaDiscProfHorario" />
-          <NavigationProperty Name="Professor" Relationship="dbSIACModel.ProfessorDisciplina" FromRole="Disciplina" ToRole="Professor" />
+          <NavigationProperty Name="Professor" Relationship="Self.ProfessorDisciplina" FromRole="Disciplina" ToRole="Professor" />
         </EntityType>
         <EntityType Name="Email">
           <Key>
@@ -4076,6 +4077,18 @@
           <Property Name="Sigla" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Estado" Relationship="Self.FK__Estado__CodPais__2BFE89A6" FromRole="Pais" ToRole="Estado" />
         </EntityType>
+        <EntityType Name="Parametro">
+          <Key>
+            <PropertyRef Name="CodParametro" />
+          </Key>
+          <Property Name="CodParametro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TempoInatividade" Type="Int32" Nullable="false" />
+          <Property Name="NumeracaoQuestao" Type="Int32" Nullable="false" />
+          <Property Name="NumeracaoAlternativa" Type="Int32" Nullable="false" />
+          <Property Name="QteSemestres" Type="Int32" Nullable="false" />
+          <Property Name="TermoResponsabilidade" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NotaUso" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
         <EntityType Name="Pessoa">
           <Key>
             <PropertyRef Name="CodPessoa" />
@@ -4148,13 +4161,13 @@
           </Key>
           <Property Name="CodProfessor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MatrProfessor" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="AvalAcademica" Relationship="Self.FK__AvalAcade__CodPr__5B438874" FromRole="Professor" ToRole="AvalAcademica" />
+          <NavigationProperty Name="AvalAcademica" Relationship="Self.FK__AvalAcade__CodPr__1A34DF26" FromRole="Professor" ToRole="AvalAcademica" />
           <NavigationProperty Name="AvalCertificacao" Relationship="Self.FK__AvalCerti__CodPr__00AA174D" FromRole="Professor" ToRole="AvalCertificacao" />
           <NavigationProperty Name="Justificacao" Relationship="Self.FK__Justifica__CodPr__6FB49575" FromRole="Professor" ToRole="Justificacao" />
           <NavigationProperty Name="Usuario" Relationship="Self.FK__Professor__MatrP__56E8E7AB" FromRole="Professor" ToRole="Usuario" />
           <NavigationProperty Name="Questao" Relationship="Self.FK__Questao__CodProf__24285DB4" FromRole="Professor" ToRole="Questao" />
           <NavigationProperty Name="TurmaDiscProfHorario" Relationship="Self.FK__TurmaDisc__CodPr__62E4AA3C" FromRole="Professor" ToRole="TurmaDiscProfHorario" />
-          <NavigationProperty Name="Disciplina" Relationship="dbSIACModel.ProfessorDisciplina" FromRole="Professor" ToRole="Disciplina" />
+          <NavigationProperty Name="Disciplina" Relationship="Self.ProfessorDisciplina" FromRole="Professor" ToRole="Disciplina" />
         </EntityType>
         <EntityType Name="ProReitoria">
           <Key>
@@ -4183,14 +4196,14 @@
           <Property Name="Objetivo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Comentario" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ChaveDeResposta" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DtCadastro" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DtUltimoUso" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Alternativa" Relationship="Self.FK__Alternati__CodQu__345EC57D" FromRole="Questao" ToRole="Alternativa" />
           <NavigationProperty Name="Dificuldade" Relationship="Self.FK__Questao__CodDifi__22401542" FromRole="Questao" ToRole="Dificuldade" />
           <NavigationProperty Name="Professor" Relationship="Self.FK__Questao__CodProf__24285DB4" FromRole="Questao" ToRole="Professor" />
           <NavigationProperty Name="TipoQuestao" Relationship="Self.FK__Questao__CodTipo__2334397B" FromRole="Questao" ToRole="TipoQuestao" />
           <NavigationProperty Name="QuestaoAnexo" Relationship="Self.FK__QuestaoAn__CodQu__44952D46" FromRole="Questao" ToRole="QuestaoAnexo" />
           <NavigationProperty Name="QuestaoTema" Relationship="Self.FK__QuestaoTe__CodQu__3EDC53F0" FromRole="Questao" ToRole="QuestaoTema" />
-          <Property Name="DtCadastro" Type="DateTime" Precision="3" Nullable="false" />
-          <Property Name="DtUltimoUso" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="QuestaoAnexo">
           <Key>
@@ -4246,7 +4259,7 @@
           <Property Name="Sigla" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="RefLocal" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="Observacao" Type="String" MaxLength="140" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="AvalAcademica" Relationship="Self.FK__AvalAcade__CodSa__5E1FF51F" FromRole="Sala" ToRole="AvalAcademica" />
+          <NavigationProperty Name="AvalAcademica" Relationship="Self.FK__AvalAcade__CodSa__1B29035F" FromRole="Sala" ToRole="AvalAcademica" />
           <NavigationProperty Name="AvalAcadReposicao" Relationship="Self.FK__AvalAcadR__CodSa__725BF7F6" FromRole="Sala" ToRole="AvalAcadReposicao" />
           <NavigationProperty Name="AvalCertificacao" Relationship="Self.FK__AvalCerti__CodSa__038683F8" FromRole="Sala" ToRole="AvalCertificacao" />
           <NavigationProperty Name="Campus" Relationship="Self.FK__Sala__39237A9A" FromRole="Sala" ToRole="Campus" />
@@ -4326,7 +4339,7 @@
           <Property Name="CodCurso" Type="Int32" Nullable="false" />
           <Property Name="CodTurno" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="Nome" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="AvalAcademica" Relationship="Self.FK__AvalAcademica__5D2BD0E6" FromRole="Turma" ToRole="AvalAcademica" />
+          <NavigationProperty Name="AvalAcademica" Relationship="Self.FK__AvalAcademica__1D114BD1" FromRole="Turma" ToRole="AvalAcademica" />
           <NavigationProperty Name="Curso" Relationship="Self.FK__Turma__CodCurso__178D7CA5" FromRole="Turma" ToRole="Curso" />
           <NavigationProperty Name="Turno" Relationship="Self.FK__Turma__CodTurno__1881A0DE" FromRole="Turma" ToRole="Turno" />
           <NavigationProperty Name="TurmaDiscAluno" Relationship="Self.FK__TurmaDiscAluno__53A266AC" FromRole="Turma" ToRole="TurmaDiscAluno" />
@@ -4522,7 +4535,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcade__CodDi__5C37ACAD">
+        <Association Name="FK__AvalAcade__CodDi__1940BAED">
           <End Role="Disciplina" Type="Self.Disciplina" Multiplicity="1" />
           <End Role="AvalAcademica" Type="Self.AvalAcademica" Multiplicity="*" />
           <ReferentialConstraint>
@@ -4534,7 +4547,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcade__CodPr__5B438874">
+        <Association Name="FK__AvalAcade__CodPr__1A34DF26">
           <End Role="Professor" Type="Self.Professor" Multiplicity="1" />
           <End Role="AvalAcademica" Type="Self.AvalAcademica" Multiplicity="*" />
           <ReferentialConstraint>
@@ -4546,8 +4559,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcade__CodSa__5E1FF51F">
-          <End Role="Sala" Type="Self.Sala" Multiplicity="1" />
+        <Association Name="FK__AvalAcade__CodSa__1B29035F">
+          <End Role="Sala" Type="Self.Sala" Multiplicity="0..1" />
           <End Role="AvalAcademica" Type="Self.AvalAcademica" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sala">
@@ -4558,7 +4571,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcademica__5A4F643B">
+        <Association Name="FK__AvalAcademica__1C1D2798">
           <End Role="Avaliacao" Type="Self.Avaliacao" Multiplicity="1" />
           <End Role="AvalAcademica" Type="Self.AvalAcademica" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -4576,8 +4589,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcademica__5D2BD0E6">
-          <End Role="Turma" Type="Self.Turma" Multiplicity="1" />
+        <Association Name="FK__AvalAcademica__1D114BD1">
+          <End Role="Turma" Type="Self.Turma" Multiplicity="0..1" />
           <End Role="AvalAcademica" Type="Self.AvalAcademica" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Turma">
@@ -5898,6 +5911,10 @@
           <End Role="Ocupacao" Type="Self.Ocupacao" Multiplicity="*" />
           <End Role="PessoaFisica" Type="Self.PessoaFisica" Multiplicity="*" />
         </Association>
+        <Association Name="ProfessorDisciplina">
+          <End Role="Disciplina" Type="Self.Disciplina" Multiplicity="*" />
+          <End Role="Professor" Type="Self.Professor" Multiplicity="*" />
+        </Association>
         <EntityContainer Name="dbSIACEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Alternativa" EntityType="Self.Alternativa" />
           <EntitySet Name="Aluno" EntityType="Self.Aluno" />
@@ -5941,6 +5958,7 @@
           <EntitySet Name="NivelEnsino" EntityType="Self.NivelEnsino" />
           <EntitySet Name="Ocupacao" EntityType="Self.Ocupacao" />
           <EntitySet Name="Pais" EntityType="Self.Pais" />
+          <EntitySet Name="Parametro" EntityType="Self.Parametro" />
           <EntitySet Name="Pessoa" EntityType="Self.Pessoa" />
           <EntitySet Name="PessoaFisica" EntityType="Self.PessoaFisica" />
           <EntitySet Name="PessoaFormacao" EntityType="Self.PessoaFormacao" />
@@ -5987,23 +6005,23 @@
             <End Role="Area" EntitySet="Area" />
             <End Role="PessoaFormacao" EntitySet="PessoaFormacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcade__CodDi__5C37ACAD" Association="Self.FK__AvalAcade__CodDi__5C37ACAD">
+          <AssociationSet Name="FK__AvalAcade__CodDi__1940BAED" Association="Self.FK__AvalAcade__CodDi__1940BAED">
             <End Role="Disciplina" EntitySet="Disciplina" />
             <End Role="AvalAcademica" EntitySet="AvalAcademica" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcade__CodPr__5B438874" Association="Self.FK__AvalAcade__CodPr__5B438874">
+          <AssociationSet Name="FK__AvalAcade__CodPr__1A34DF26" Association="Self.FK__AvalAcade__CodPr__1A34DF26">
             <End Role="Professor" EntitySet="Professor" />
             <End Role="AvalAcademica" EntitySet="AvalAcademica" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcade__CodSa__5E1FF51F" Association="Self.FK__AvalAcade__CodSa__5E1FF51F">
+          <AssociationSet Name="FK__AvalAcade__CodSa__1B29035F" Association="Self.FK__AvalAcade__CodSa__1B29035F">
             <End Role="Sala" EntitySet="Sala" />
             <End Role="AvalAcademica" EntitySet="AvalAcademica" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcademica__5A4F643B" Association="Self.FK__AvalAcademica__5A4F643B">
+          <AssociationSet Name="FK__AvalAcademica__1C1D2798" Association="Self.FK__AvalAcademica__1C1D2798">
             <End Role="Avaliacao" EntitySet="Avaliacao" />
             <End Role="AvalAcademica" EntitySet="AvalAcademica" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcademica__5D2BD0E6" Association="Self.FK__AvalAcademica__5D2BD0E6">
+          <AssociationSet Name="FK__AvalAcademica__1D114BD1" Association="Self.FK__AvalAcademica__1D114BD1">
             <End Role="Turma" EntitySet="Turma" />
             <End Role="AvalAcademica" EntitySet="AvalAcademica" />
           </AssociationSet>
@@ -6419,28 +6437,11 @@
             <End Role="Ocupacao" EntitySet="Ocupacao" />
             <End Role="PessoaFisica" EntitySet="PessoaFisica" />
           </AssociationSet>
-          <AssociationSet Name="ProfessorDisciplina" Association="dbSIACModel.ProfessorDisciplina">
+          <AssociationSet Name="ProfessorDisciplina" Association="Self.ProfessorDisciplina">
             <End Role="Disciplina" EntitySet="Disciplina" />
             <End Role="Professor" EntitySet="Professor" />
           </AssociationSet>
-          <EntitySet Name="Parametro" EntityType="dbSIACModel.Parametro" />
         </EntityContainer>
-        <Association Name="ProfessorDisciplina">
-          <End Type="dbSIACModel.Disciplina" Role="Disciplina" Multiplicity="*" />
-          <End Type="dbSIACModel.Professor" Role="Professor" Multiplicity="*" />
-        </Association>
-        <EntityType Name="Parametro">
-          <Key>
-            <PropertyRef Name="CodParametro" />
-          </Key>
-          <Property Name="CodParametro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TempoInatividade" Type="Int32" Nullable="false" />
-          <Property Name="NumeracaoQuestao" Type="Int32" Nullable="false" />
-          <Property Name="NumeracaoAlternativa" Type="Int32" Nullable="false" />
-          <Property Name="QteSemestres" Type="Int32" Nullable="false" />
-          <Property Name="TermoResponsabilidade" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="NotaUso" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6510,13 +6511,13 @@
           <EntitySetMapping Name="AvalAuto">
             <EntityTypeMapping TypeName="dbSIACModel.AvalAuto">
               <MappingFragment StoreEntitySet="AvalAuto">
-                <ScalarProperty Name="FlagArquivo" ColumnName="FlagArquivo" />
                 <ScalarProperty Name="NumIdentificador" ColumnName="NumIdentificador" />
                 <ScalarProperty Name="CodTipoAvaliacao" ColumnName="CodTipoAvaliacao" />
                 <ScalarProperty Name="Semestre" ColumnName="Semestre" />
                 <ScalarProperty Name="Ano" ColumnName="Ano" />
                 <ScalarProperty Name="CodDificuldade" ColumnName="CodDificuldade" />
                 <ScalarProperty Name="CodPessoaFisica" ColumnName="CodPessoaFisica" />
+                <ScalarProperty Name="FlagArquivo" ColumnName="FlagArquivo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6940,6 +6941,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Parametro">
+            <EntityTypeMapping TypeName="dbSIACModel.Parametro">
+              <MappingFragment StoreEntitySet="Parametro">
+                <ScalarProperty Name="CodParametro" ColumnName="CodParametro" />
+                <ScalarProperty Name="TempoInatividade" ColumnName="TempoInatividade" />
+                <ScalarProperty Name="NumeracaoQuestao" ColumnName="NumeracaoQuestao" />
+                <ScalarProperty Name="NumeracaoAlternativa" ColumnName="NumeracaoAlternativa" />
+                <ScalarProperty Name="QteSemestres" ColumnName="QteSemestres" />
+                <ScalarProperty Name="TermoResponsabilidade" ColumnName="TermoResponsabilidade" />
+                <ScalarProperty Name="NotaUso" ColumnName="NotaUso" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Pessoa">
             <EntityTypeMapping TypeName="dbSIACModel.Pessoa">
               <MappingFragment StoreEntitySet="Pessoa">
@@ -7004,8 +7018,6 @@
           <EntitySetMapping Name="Questao">
             <EntityTypeMapping TypeName="dbSIACModel.Questao">
               <MappingFragment StoreEntitySet="Questao">
-                <ScalarProperty Name="DtUltimoUso" ColumnName="DtUltimoUso" />
-                <ScalarProperty Name="DtCadastro" ColumnName="DtCadastro" />
                 <ScalarProperty Name="CodQuestao" ColumnName="CodQuestao" />
                 <ScalarProperty Name="CodProfessor" ColumnName="CodProfessor" />
                 <ScalarProperty Name="CodDificuldade" ColumnName="CodDificuldade" />
@@ -7014,6 +7026,8 @@
                 <ScalarProperty Name="Objetivo" ColumnName="Objetivo" />
                 <ScalarProperty Name="Comentario" ColumnName="Comentario" />
                 <ScalarProperty Name="ChaveDeResposta" ColumnName="ChaveDeResposta" />
+                <ScalarProperty Name="DtCadastro" ColumnName="DtCadastro" />
+                <ScalarProperty Name="DtUltimoUso" ColumnName="DtUltimoUso" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7361,26 +7375,13 @@
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="ProfessorDisciplina" TypeName="dbSIACModel.ProfessorDisciplina" StoreEntitySet="ProfessorDisciplina">
-            <EndProperty Name="Professor">
-              <ScalarProperty Name="CodProfessor" ColumnName="CodProfessor" />
-            </EndProperty>
             <EndProperty Name="Disciplina">
               <ScalarProperty Name="CodDisciplina" ColumnName="CodDisciplina" />
             </EndProperty>
+            <EndProperty Name="Professor">
+              <ScalarProperty Name="CodProfessor" ColumnName="CodProfessor" />
+            </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="Parametro">
-            <EntityTypeMapping TypeName="dbSIACModel.Parametro">
-              <MappingFragment StoreEntitySet="Parametro">
-                <ScalarProperty Name="NotaUso" ColumnName="NotaUso" />
-                <ScalarProperty Name="TermoResponsabilidade" ColumnName="TermoResponsabilidade" />
-                <ScalarProperty Name="QteSemestres" ColumnName="QteSemestres" />
-                <ScalarProperty Name="NumeracaoAlternativa" ColumnName="NumeracaoAlternativa" />
-                <ScalarProperty Name="NumeracaoQuestao" ColumnName="NumeracaoQuestao" />
-                <ScalarProperty Name="TempoInatividade" ColumnName="TempoInatividade" />
-                <ScalarProperty Name="CodParametro" ColumnName="CodParametro" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
