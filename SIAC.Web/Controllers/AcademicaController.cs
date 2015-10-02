@@ -46,6 +46,7 @@ namespace SIAC.Web.Controllers
         {
             ViewBag.Disciplinas = Disciplina.ListarPorProfessor(Session["UsuarioMatricula"].ToString());
             ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
+            ViewBag.Termo = Parametro.Obter().NotaUso;
 
             return View();
         }
@@ -58,8 +59,6 @@ namespace SIAC.Web.Controllers
 
             if (formCollection.HasKeys())
             {
-                //ViewBag.Form = formCollection;
-                //AvalAuto auto = new AvalAuto();
                 DateTime hoje = DateTime.Now;
 
                 /* Chave */

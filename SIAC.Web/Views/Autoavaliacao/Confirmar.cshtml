@@ -68,7 +68,11 @@
                         <div class="content">
                             <a href="/Historico/Questao/@questao.CodQuestao" class="header">@questao.Questao.Enunciado.ToShortString(140)</a>
                             <div class="meta ui labels">
-                                <span class="ui label">@questao.Tema.Disciplina.Descricao - @questao.Tema.Descricao</span>
+                                <span class="ui label">@questao.Tema.Disciplina.Descricao</span>
+                                @foreach (QuestaoTema t in questao.Questao.QuestaoTema)
+                                {
+                                    <span class="ui tag label">@t.Tema.Descricao</span>
+                                }
                                 <span class="ui label">@questao.Questao.Dificuldade.Descricao - @questao.Questao.CodDificuldade</span>
                                 <span class="ui label">@questao.Questao.TipoQuestao.Descricao</span>
                             </div>

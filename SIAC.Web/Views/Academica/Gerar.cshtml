@@ -9,6 +9,7 @@
 
         $('.ui.dropdown').dropdown();
         $('.ui.modal').modal();
+        $('.ui.termo.modal').modal('show');
         
         function prosseguir() {
             var errorList = $('form .error.message .list');
@@ -49,7 +50,7 @@
 
 
             if(valido){
-                $('form').submit();
+                Confirmar();
             }
             else {
                 $('form').addClass('error');
@@ -58,6 +59,42 @@
                 }, 100);
             }
         }
+
+        function Confirmar() {
+            $modal = $('.ui.confirmar.modal');
+            $ddlDisciplina = $('#ddlDisciplina :selected');
+            $ddlTipo = $('#ddlTipo');
+            $table = $modal.find('tbody').html('');
+
+            $tr = $('<tr></tr>');
+            $tdDisciplina = $('<td></td>').html('<b>' + $ddlDisciplina.text() + '</b>');
+            $tdTemas = $('<td class="ui labels"></td>');
+
+            $ddlTemas = $('#ddlTemas :selected');
+            for (var i = 0; i < $ddlTemas.length; i++) {
+                $tdTemas.append($('<div class="ui tag label"></div>').text($ddlTemas.eq(i).text()));
+            }
+            $tdQteQuestoes = $('<td class="ui labels"></td>');
+            if ($ddlTipo.val() == 1 || $ddlTipo.val() == 3) {
+                $tdQteQuestoes.append($('<div class="ui label"></div>').html('Objetiva<div class="detail">' + $('#txtQteObjetiva').val() + '</div>'));
+            }
+            if ($ddlTipo.val() == 2 || $ddlTipo.val() == 3) {
+                $tdQteQuestoes.append($('<div class="ui label"></div>').html('Discursiva<div class="detail">' + $('#txtQteDiscursiva').val() + '</div>'));
+            }
+            $tdDificuldade = $('<td></td>').text($('#ddlDificuldade :selected').text());
+
+            $table.append($tr.append($tdDisciplina).append($tdTemas).append($tdQteQuestoes).append($tdDificuldade));
+
+            $modal.modal('show');
+        }
+
+        $('.ui.confirmar.modal')
+         .modal({
+             onApprove: function () {
+                 $('form').addClass('loading').submit();
+             }
+         });
+
 
         function listarTemas(codDisciplina) {
             var disciplinas = $('#ddlDisciplinas');
@@ -102,6 +139,26 @@
 
     </script>
 }
+
+<div class="ui termo modal">
+    <div class="header">Você está ciente de...</div>
+    <div class="content">
+        @{
+            var termo = ViewBag.Termo.Split('\n', '\r');
+            foreach (var str in termo)
+            {
+                if (!String.IsNullOrWhiteSpace(str))
+                {
+                    <p>@str</p>
+                }
+            }
+        }
+    </div>
+    <div class="actions">
+        <a href="/Dashboard" class="ui cancel button">Cancelar</a>
+        <div class="ui approve button">Sim, continuar</div>
+    </div>
+</div>
 
 <div class="ui confirmar modal">
     <div class="header">Verificação e confirmação</div>
