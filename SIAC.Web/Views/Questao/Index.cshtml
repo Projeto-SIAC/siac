@@ -5,7 +5,7 @@
 
 @section Scripts {
     <script>
-        $('.ui.items').parent().addClass('loading');
+        $('.ui.cards').parent().addClass('loading');
         var jsnQuestoesGeral;
         var jsnQuestoesFiltro;
 
@@ -106,7 +106,7 @@
         }
 
         function MinhasQuestoes(pagina) {
-            $('.ui.items').parent().addClass('loading');
+            $('.ui.cards').parent().addClass('loading');
             var qtePorPagina = 20;
             var qtePaginacao = 7;
             var length = jsnQuestoesFiltro.length;
@@ -117,12 +117,12 @@
             if (count > length) {
                 count = length;
             }
-            $('.ui.items').html('');
+            $('.ui.cards').html('');
             for (var i = ((qtePorPagina * pagina) - qtePorPagina) ; i < count; i++) {
-                $('.ui.items').append('\
-                        <div class="item">\
+                $('.ui.cards').append('\
+                        <a class="ui card" href="/Historico/Questao/' + jsnQuestoesFiltro[i].CodQuestao + '">\
                             <div class="content">\
-                                <a href="/Historico/Questao/' + jsnQuestoesFiltro[i].CodQuestao + '" class="header">' + ToShortString(jsnQuestoesFiltro[i].Enunciado, 140) + '</a>\
+                                <div class="header">' + ToShortString(jsnQuestoesFiltro[i].Enunciado, 140) + '</div>\
                                 <div class="meta"><span title="' + jsnQuestoesFiltro[i].DtCadastro + '">' + jsnQuestoesFiltro[i].DtCadastroTempo + '</span></div>\
                                 <div class="description ui labels">\
                                     <span class="ui label">' + jsnQuestoesFiltro[i].Disciplina + '</span>\
@@ -130,7 +130,7 @@
                                     <span class="ui label">' + jsnQuestoesFiltro[i].TipoQuestao + '</span>\
                                 </div>\
                             </div>\
-                        </div>\
+                        </a>\
                         ');
             }
             $('.ui.pagination.menu').html('');
@@ -163,7 +163,7 @@
                 }
             }
             $('a[href]').on('click', function () { $('.ui.grid .thirteen.wide.column > .ui.segment').addClass('loading') });
-            $('.ui.items').parent().removeClass('loading');
+            $('.ui.cards').parent().removeClass('loading');
         }
     </script>
 }
@@ -173,5 +173,7 @@
     <input type="text" placeholder="Filtrar..." onkeyup="Filtro($(this).val())" />
     <i class="search icon"></i>
 </div>
-<div class="ui very relaxed items"></div>
+<br />
+<div class="ui two cards"></div>
+<br />
 <div class="ui pagination menu"></div>
