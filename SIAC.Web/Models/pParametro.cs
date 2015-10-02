@@ -24,6 +24,7 @@ namespace SIAC.Web.Models
             temp.NumeracaoAlternativa = parametro.NumeracaoAlternativa;
             temp.QteSemestres = parametro.QteSemestres;
             temp.TermoResponsabilidade = parametro.TermoResponsabilidade.Trim();
+            temp.NotaUso = parametro.NotaUso.Trim();
 
             contexto.SaveChanges();
         }

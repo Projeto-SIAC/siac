@@ -255,20 +255,40 @@ namespace SIAC.Web.Controllers
                 return View(model);
             }
             return RedirectToAction("Index");
-        }    
-        
+        }
+
         //GET: Dashboard/Questao/Gerar/50
-        [HttpGet]
+        [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Gerar(string strQte)
         {
-            Helpers.TimeLog.Iniciar("Gerar Questões (" + strQte + ")");
-            int qte = int.Parse(strQte);
-            List<Questao> lstQuestao = Helpers.DevGerarQuestao.GerarQuestao(qte);
-            TempData["lstQuestao"] = lstQuestao;
-            Helpers.TimeLog.Parar();
-            return View(lstQuestao);            
-        }    
-
+            if (!String.IsNullOrEmpty(strQte))
+            {
+                Helpers.TimeLog.Iniciar("Gerar Questões (" + strQte + ")");
+                int qte = int.Parse(strQte);
+                List<Questao> lstQuestao = Helpers.DevGerarQuestao.GerarQuestao(qte);
+                TempData["lstQuestao"] = lstQuestao;
+                Helpers.TimeLog.Parar();
+                return Json(lstQuestao
+                    .Select(q=> new
+                    {
+                        CodQuestao = q.CodQuestao,
+                        Professor = q.Professor.Usuario.PessoaFisica.Nome,
+                        Disciplina = q.QuestaoTema.First().Tema.Disciplina.Descricao,
+                        Dificuldade = new { q.Dificuldade.Descricao, q.Dificuldade.Comentario },
+                        Tema = q.QuestaoTema.Select(qt=> new { qt.Tema.Descricao, qt.Tema.Comentario }),
+                        Enunciado = q.Enunciado,
+                        Objetivo = q.Objetivo,
+                        TipoQuestao = q.TipoQuestao.CodTipoQuestao,
+                        Alternativa = q.Alternativa.Select(a=>new { a.Enunciado, a.Comentario, a.FlagGabarito }),
+                        ChaveDeResposta = q.ChaveDeResposta,
+                        Comentario = q.Comentario
+                    }), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return View();
+            }
+        }
         [HttpPost]
         public ActionResult Gerar()
         {

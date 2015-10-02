@@ -136,8 +136,12 @@
     @* Termo *@
     <div class="ui bottom attached tab segment termo" data-tab="tab-termo">
         <div class="field required">
-            <label>Termo</label>
+            <label>Termo de Responsabilidade</label>
             <textarea rows="20" name="txtTermoResponsabilidade" placeholder="Digite aqui o Termo de Responsabilidade..." required onchange="parametroModificado()">@Model.TermoResponsabilidade</textarea>
+        </div>
+        <div class="field required">
+            <label>Nota de Uso</label>
+            <textarea rows="20" name="txtNotaUso" placeholder="Digite aqui a Nota de Uso..." required onchange="parametroModificado()">@Model.NotaUso</textarea>
         </div>
     </div>
 

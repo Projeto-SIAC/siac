@@ -10,7 +10,6 @@ namespace SIAC.Web.Controllers
 {
     public class ConfiguracoesController : Controller
     {
-
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if(Session["Autenticado"] == null)
@@ -70,7 +69,7 @@ namespace SIAC.Web.Controllers
                 temp.NumeracaoAlternativa = int.Parse(formCollection["ddlNumeracaoAlternativa"]);
                 temp.QteSemestres = int.Parse(formCollection["txtQteSemestre"]);
                 temp.TermoResponsabilidade = formCollection["txtTermoResponsabilidade"];
-
+                temp.NotaUso = formCollection["txtNotaUso"];
                 Parametro.Atualizar(temp);
             }
 

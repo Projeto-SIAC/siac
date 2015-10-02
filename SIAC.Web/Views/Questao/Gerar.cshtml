@@ -1,133 +1,110 @@
-﻿@model List<SIAC.Web.Models.Questao>
-@{
+﻿@{
     ViewBag.Title = "Gerar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Scripts {
     <script>
-        $('.ui.accordion')
-            .accordion()
-        ;
-        $('div,p')
-            .popup()
-        ;
-</script>
+        function Gerar() {
+            $('div.ui.form').parent().addClass('loading');
+            strQte = $('#txtQuantidade').val();
+            $.ajax({
+                type: 'GET',
+                url: '/Dashboard/Questao/Gerar',
+                data: { "strQte": strQte },
+                success: function (data) {
+                    console.log(data);
+                    $questoes = $('div.questoes');
+                    $questoes.html('');
+                    for (var i = 0; i < data.length; i++) {
+                        $questao = $('<div class="ui segment"></div>');
+
+                        $labels = $('<div class="ui labels"></div>');
+                        $labelProfessor = $('<div class="ui label">\
+                                                Professor\
+                                                <div class="detail">\
+                                                    '+ data[i].Professor + '\
+                                                </div>\
+                                            </div>');
+                        $labelDisciplina = $('<div class="ui label">\
+                                                Disciplina\
+                                                <div class="detail">\
+                                                    '+ data[i].Disciplina + '\
+                                                </div>\
+                                            </div>');
+                        $labelDificuldade = $('<div class="ui label" data-html="<b>Comentário</b>: ' + data[i].Dificuldade.Comentario + '">\
+                                                Dificuldade\
+                                                <div class="detail">\
+                                                    '+ data[i].Dificuldade.Descricao + '\
+                                                </div>\
+                                            </div>');
+                        $labels.append($labelProfessor).append($labelDisciplina).append($labelDificuldade);
+
+                        for (var j = 0; j < data[i].Tema.length; j++) {
+                            $labels.append($('<div class="ui tag label" data-html="<b>Comentário</b>: ' + data[i].Tema[j].Comentario + '"></div>').text(data[i].Tema[j].Descricao));
+                        }
+
+                        $enunciado = $('<div class="ui dividing header" data-html="<b>Objetivo</b>: ' + data[i].Objetivo + '"></div>');
+                        $enunciado.text(data[i].Enunciado);
+
+                        $questao.append($labels);
+                        $questao.append($enunciado);
+
+                        if (data[i].TipoQuestao == 1) {
+                            $lstAlternativa = $('<div class="ui very relaxed list"></div>');
+                            for (var j = 0; j < data[i].Alternativa.length; j++) {
+                                $alternativa = $('<div class="item"></div>');
+                                $content = $('<div class="middle aligned content" data-html="<b>Comentário</b>: ' + data[i].Alternativa[j].Comentario + '">');
+                                $content.append('<b>' + (j + 1) + '</b>) ');
+                                $content.append(data[i].Alternativa[j].Enunciado);
+                                if (data[i].Alternativa[j].FlagGabarito) {
+                                    if (data[i].Alternativa[j].FlagGabarito == true) {
+                                        $content.append('<a class="ui green label">Correta</a>');
+                                    }
+                                }
+                                $alternativa.append($content);
+                                $lstAlternativa.append($alternativa);
+                            }
+                            $questao.append($lstAlternativa);
+                        }
+                        else {
+                            $chaveDeResposta = $('<div data-html="<b>Comentário</b>: ' + data[i].Comentario + '"></div>');
+                            $chaveDeResposta.html('<a class="ui green ribbon label">Chave de Resposta</a>' + data[i].ChaveDeResposta);
+                            $questao.append($chaveDeResposta);
+                        }
+
+                        $questoes.append($questao);
+                    }
+                    $('div,p')
+                        .popup()
+                    ;
+                    $('div.ui.form').parent().removeClass('loading');
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $('div.ui.form').parent().removeClass('loading');
+                    alert(xhr.error);
+                }
+            });
+        }
+    </script>
 }
 
 <h2>Gerar</h2>
 
-<div style="max-height:60em; overflow-y:scroll">
-    @foreach (var questao in Model)
-    {
-        <div class="ui segment">
-            <div class="ui labels">
-                <div class="ui label">
-                    Professor
-                    <div class="detail">
-                        @questao.Professor.Usuario.PessoaFisica.Nome.Split(' ')[0]
-                    </div>
-                </div>
-                <div class="ui label">
-                    Disciplina
-                    <div class="detail">
-                        @questao.QuestaoTema.ElementAt(0).Tema.Disciplina.Descricao
-                    </div>
-                </div>
-                <div class="ui label" data-html="@( !String.IsNullOrEmpty(questao.Dificuldade.Comentario) ? "<b>Comentário</b>: "+questao.Dificuldade.Comentario : "" )">
-                    Dificuldade
-                    <div class="detail">
-                        @questao.Dificuldade.Descricao
-                    </div>
-                </div>
-                @foreach (var questaoTema in questao.QuestaoTema)
-                {
-                    <div class="ui tag label" data-html="@( !String.IsNullOrEmpty(questaoTema.Tema.Comentario) ? "<b>Comentário</b>: "+questaoTema.Tema.Comentario : "" )">@questaoTema.Tema.Descricao</div>
-                }
-            </div>
-            <div class="ui dividing header" data-html="@( !String.IsNullOrEmpty(questao.Objetivo) ? "<b>Objetivo</b>: " + questao.Objetivo : "")">
-                @{
-                    var enunciado = questao.Enunciado.Split('\n', '\r');
-                    foreach (var strEnunciado in enunciado)
-                    {
-                        if (!String.IsNullOrWhiteSpace(strEnunciado))
-                        {
-                            <p>@strEnunciado</p>
-                        }
-                    }
-                }
-            </div>
-            @if (questao.TipoQuestao.CodTipoQuestao == 1)
-            {
-                <div class="ui very relaxed list">
-                    @foreach (var alternativa in questao.Alternativa)
-                    {
-                        <div class="item">
-                            <div class="middle aligned content" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
-                                <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
-                                @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
-                        {
-                                    <a class="ui green label">Correta</a>
-                                }
-                            </div>
-                        </div>
-                    }
-                </div>
-            }
-            else
-            {
-                <div data-html="@(!String.IsNullOrEmpty(questao.Comentario) ? "<b>Comentário</b>: " + questao.Comentario : "")">
-                    <a class="ui green ribbon label">Chave de Resposta</a>
-                    @{
-                        var chaveDeResposta = questao.ChaveDeResposta.Split('\n', '\r');
-                        foreach (var strChaveDeResposta in chaveDeResposta)
-                        {
-                            if (!String.IsNullOrWhiteSpace(strChaveDeResposta))
-                            {
-                                <p><i>@strChaveDeResposta</i></p>
-                            }
-                        }
-                    }
-                </div>
-                        }
-            @if (questao.QuestaoAnexo.Count > 0)
-            {
-                <br />
-                <div class="ui styled fluid accordion">
-                    <div class="title"><i class="icon dropdown"></i>Anexos</div>
-                    <div class="content">
-                        <div class="ui cards">
-                            @foreach (var anexo in questao.QuestaoAnexo)
-                    {
-                        switch (anexo.CodTipoAnexo)
-                        {
-                            case 1:
-                                        <div class="ui card">
-                                            <div class="image">
-                                                <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo,0, anexo.Anexo.Length)" />
-                                            </div>
-                                            <div class="content">
-                                                <div class="description">
-                                                    @anexo.Legenda
-                                                </div>
-                                            </div>
-                                            <div class="extra content">
-                                                @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte não informada")
-                                            </div>
-                                        </div>
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-                        }
+<div class="ui form">
+    <div class="inline field">
+        <label>Quantidade</label>
+        <input id="txtQuantidade" type="number" min="1" value="10" />
+        <div onclick="Gerar()" class="ui button">Gerar</div>
+    </div>
 </div>
+<div class="questoes" style="max-height:50em; overflow-y:scroll; margin-top:1em">
+
+</div>
+
+
 <form action="/Dashboard/Questao/Gerar" method="post">
     <a href="/Historico/Questao" class="ui button">Voltar</a>
     <input type="submit" class="ui button" value="Inserir" />
 </form>
+
