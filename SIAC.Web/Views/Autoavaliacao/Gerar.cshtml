@@ -17,48 +17,50 @@
                 var discs = $('#ddlDisciplinas').val();
                 var ok = true;
                 for (var i = 0; i < discs.length; i++) {
-                    if ($('#ddlTemas' + discs[i] + ' :selected').length > 0) {
-                        if ($('#ddlDificuldade' + discs[i]).val() != '') {
-                            if ($('#ddlTipo').val() != '') {
-                                if ($('#ddlTipo').val() == '1') {
-                                    if ($('#txtQteObjetiva' + discs[i]).val() == '') {
-                                        ok = false;
-                                        validado = false;
-                                        $('form .error.message .list').append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
-                                    }
-                                }
-                                else if ($('#ddlTipo').val() == '2') {
-                                    if ($('#txtQteDiscursiva' + discs[i]).val() == '') {
-                                        ok = false;
-                                        validado = false;
-                                        $('form .error.message .list').append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
-                                    }
-                                }
-                                else if ($('#ddlTipo').val() == '3') {
-                                    if ($('#txtQteDiscursiva' + discs[i]).val() == '' || $('#txtQteObjetiva' + discs[i]).val() == '') {
-                                        ok = false;
-                                        validado = false;
-                                        $('form .error.message .list').append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
-                                    }
-                                }
-
-                                if (ok == true) {
-                                    validado = true;
-                                }
-                                else {
-                                    validado = false;
-                                }
-                            }
-                            else {
-                                $('form .error.message .list').html('<li>Selecione o tipo das questões</li>');
-                                validado = false;
-                            }
-                        } else {
-                            $('form .error.message .list').append('<li>Selecione a dificuldade para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
-                            validado = false;
-                        }
-                    } else {
+                    if (!$('#ddlTemas' + discs[i] + ' :selected').length > 0) {
                         $('form .error.message .list').append('<li>Selecione pelo menos um tema para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
+                        validado = false;
+                    }
+
+                    if (!$('#ddlDificuldade' + discs[i]).val()) {
+                        $('form .error.message .list').append('<li>Selecione a dificuldade para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
+                        validado = false;
+                    }
+
+                    if (!$('#ddlTipo').val()) {
+                        $('form .error.message .list').html('<li>Selecione o tipo das questões</li>');
+                        ok = false;
+                        validado = false;
+                    }
+                    else {
+                        ok = true;
+                        if ($('#ddlTipo').val() == '1') {
+                            if (!$('#txtQteObjetiva' + discs[i]).val()) {
+                                ok = false;
+                                validado = false;
+                                $('form .error.message .list').append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
+                            }
+                        }
+                        else if ($('#ddlTipo').val() == '2') {
+                            if (!$('#txtQteDiscursiva' + discs[i]).val()) {
+                                ok = false;
+                                validado = false;
+                                $('form .error.message .list').append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
+                            }
+                        }
+                        else if ($('#ddlTipo').val() == '3') {
+                            if (!$('#txtQteDiscursiva' + discs[i]).val() || !$('#txtQteObjetiva' + discs[i]).val()) {
+                                ok = false;
+                                validado = false;
+                                $('form .error.message .list').append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
+                            }
+                        }
+                    }
+
+                    if (ok == true) {
+                        validado = true;
+                    }
+                    else {
                         validado = false;
                     }
                 }

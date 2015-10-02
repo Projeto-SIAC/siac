@@ -249,99 +249,97 @@
         function enviarForm() {
             $('.ui.error.message .list').html('');
             var validado = false;
-            if ($('#ddlDisciplina').val() != '') {
-                if ($('#ddlTema :selected').length > 0) {
-                    if ($('#ddlDificuldade').val() != '') {
-                        if ($('#ddlTipo').val() != '') {
-                            var tipo = $('#ddlTipo').val();
-                            if ($('#txtEnunciado').val() != '') {
-                                if (tipo == 1) {
-                                    var qteAlternativas = $('#txtQtdAlternativas').val();
-                                    var ok = true;
-                                    for (var i = 0; i < qteAlternativas; i++) {
-                                        if ($('#txtAlternativaEnunciado' + (i + 1)).val() == '') {
-                                            ok = false;
-                                        }
-                                    }
-                                    if (ok) {
+            if (!$('#ddlDisciplina').val()) {
+                $('.ui.error.message .list').append('<li>É necessário selecionar uma disciplina</li>')
+            }
+
+            if (!$('#ddlTema :selected').length > 0) {
+                $('.ui.error.message .list').append('<li>É necessário selecionar pelo menos um tema</li>')
+            }
+            if (!$('#ddlDificuldade').val()) {
+                $('.ui.error.message .list').append('<li>É necessário selecionar uma dificuldade</li>')
+            }
+
+            if (!$('#ddlTipo').val()) {
+                $('.ui.error.message .list').append('<li>É necessário selecionar um tipo</li>')
+            }
+
+            if (!$('#txtEnunciado').val()) {
+                $('.ui.error.message .list').append('<li>É necessário preencher o enunciado</li>')
+            }
+
+            if ($('#ddlTipo').val()) {
+                var tipo = $('#ddlTipo').val();
+
+                if (tipo == 1) {
+                    var qteAlternativas = $('#txtQtdAlternativas').val();
+                    var ok = true;
+                    for (var i = 0; i < qteAlternativas; i++) {
+                        if ($('#txtAlternativaEnunciado' + (i + 1)).val() == '') {
+                            ok = false;
+                        }
+                    }
+                    if (ok) {
+                        ok = false;
+                        for (var i = 0; i < qteAlternativas; i++) {
+                            if ($('#chkAlternativaCorreta' + (i + 1)).is(':checked')) {
+                                ok = true;
+                            }
+                        }
+                        if (ok) {
+                            if ($('#chkAnexos').is(':checked')) {
+                                var qteAnexos = $('#txtQtdAnexos').val();
+                                for (var i = 0; i < qteAnexos; i++) {
+                                    if ($('#fleAnexo' + (i + 1))[0].files.length == 0) {
                                         ok = false;
-                                        for (var i = 0; i < qteAlternativas; i++) {
-                                            if ($('#chkAlternativaCorreta' + (i + 1)).is(':checked')) {
-                                                ok = true;
-                                            }
-                                        }
-                                        if (ok) {
-                                            if ($('#chkAnexos').is(':checked')) {
-                                                var qteAnexos = $('#txtQtdAnexos').val();
-                                                for (var i = 0; i < qteAnexos; i++) {
-                                                    if ($('#fleAnexo' + (i + 1))[0].files.length == 0) {
-                                                        ok = false;
-                                                    }
-                                                }
-                                                if (ok) {
-                                                    validado = true;
-                                                }
-                                                else {
-                                                    $('.ui.error.message .list').append('<li>É necessário selecionar os arquivos dos anexos</li>')
-                                                }
-                                            }
-                                            else {
-                                                validado = true;
-                                            }
-                                        }
-                                        else {
-                                            $('.ui.error.message .list').append('<li>É necessário selecionar pelo menos umas das alternativas como correta</li>')
-                                        }
-                                    }
-                                    else {
-                                        $('.ui.error.message .list').append('<li>É necessário preencher os enunciados de todas as alternativas</li>')
                                     }
                                 }
-                                else if (tipo == 2) {
-                                    if ($('#txtChaveDeResposta').val() != '') {
-                                        if ($('#chkAnexos').is(':checked')) {
-                                            var ok = true;
-                                            var qteAnexos = $('#txtQtdAnexos').val();
-                                            for (var i = 0; i < qteAnexos; i++) {
-                                                if ($('#fleAnexo' + (i + 1))[0].files.length == 0) {
-                                                    ok = false;
-                                                }
-                                            }
-                                            if (ok) {
-                                                validado = true;
-                                            }
-                                            else {
-                                                $('.ui.error.message .list').append('<li>É necessário selecionar os arquivos dos anexos</li>')
-                                            }
-                                        }
-                                        else {
-                                            validado = true;
-                                        }
-                                    }
-                                    else {
-                                        $('.ui.error.message .list').append('<li>É necessário preencher a chave de resposta</li>')
-                                    }
+                                if (ok) {
+                                    validado = true;
+                                }
+                                else {
+                                    $('.ui.error.message .list').append('<li>É necessário selecionar os arquivos dos anexos</li>')
                                 }
                             }
                             else {
-                                $('.ui.error.message .list').append('<li>É necessário preencher o enunciado</li>')
+                                validado = true;
                             }
                         }
                         else {
-                            $('.ui.error.message .list').append('<li>É necessário selecionar um tipo</li>')
+                            $('.ui.error.message .list').append('<li>É necessário selecionar pelo menos umas das alternativas como correta</li>')
                         }
                     }
                     else {
-                        $('.ui.error.message .list').append('<li>É necessário selecionar uma dificuldade</li>')
+                        $('.ui.error.message .list').append('<li>É necessário preencher os enunciados de todas as alternativas</li>')
                     }
                 }
-                else {
-                    $('.ui.error.message .list').append('<li>É necessário selecionar pelo menos um tema</li>')
+                else if (tipo == 2) {
+                    if ($('#txtChaveDeResposta').val() != '') {
+                        if ($('#chkAnexos').is(':checked')) {
+                            var ok = true;
+                            var qteAnexos = $('#txtQtdAnexos').val();
+                            for (var i = 0; i < qteAnexos; i++) {
+                                if ($('#fleAnexo' + (i + 1))[0].files.length == 0) {
+                                    ok = false;
+                                }
+                            }
+                            if (ok) {
+                                validado = true;
+                            }
+                            else {
+                                $('.ui.error.message .list').append('<li>É necessário selecionar os arquivos dos anexos</li>')
+                            }
+                        }
+                        else {
+                            validado = true;
+                        }
+                    }
+                    else {
+                        $('.ui.error.message .list').append('<li>É necessário preencher a chave de resposta</li>')
+                    }
                 }
             }
-            else {
-                $('.ui.error.message .list').append('<li>É necessário selecionar uma disciplina</li>')
-            }
+
             if (validado) Confirmar();
             else $('#frmQuestao').addClass('error');
         }
