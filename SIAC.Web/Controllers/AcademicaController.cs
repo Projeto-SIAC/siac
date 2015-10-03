@@ -56,7 +56,7 @@ namespace SIAC.Web.Controllers
         public ActionResult Confirmar(FormCollection formCollection)
         {
             AvalAcademica acad = new AvalAcademica();
-
+            Helpers.TimeLog.Iniciar("AvalAcad");
             if (formCollection.HasKeys())
             {
                 DateTime hoje = DateTime.Now;
@@ -116,11 +116,13 @@ namespace SIAC.Web.Controllers
                     }
                     acad.Avaliacao.AvaliacaoTema.Add(avalTema);
                 }
-
+                
                 ViewBag.QteQuestoes = lstQuestoes.Count;
                 ViewBag.QuestoesDaAvaliacao = lstQuestoes;
 
-                //AvalAcademica.Inserir(acad);
+                AvalAcademica.Inserir(acad);
+                QuestaoTema.AtualizarDtUltimoUso(lstQuestoes);
+                Helpers.TimeLog.Parar();
             }
 
             return View(acad);

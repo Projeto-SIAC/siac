@@ -98,6 +98,7 @@ namespace SIAC.Web.Models
                                               select qt).ToList();
                 
                     temp = Models.QuestaoTema.LimparRepeticao(temp,QuestoesTemas,QuestoesTotal);
+                    temp = Models.QuestaoTema.LimparPorData(temp);
 
                     if (temp.Count != 0 && QuestoesTemas.Count < qteObj)
                     {
@@ -250,6 +251,7 @@ namespace SIAC.Web.Models
                                               select qt).ToList();
 
                     temp = Models.QuestaoTema.LimparRepeticao(temp, QuestoesTemas, QuestoesTotal);
+                    temp = Models.QuestaoTema.LimparPorData(temp);
 
                     if (temp.Count != 0 && qteDiscuResultado < qteDiscu)
                     {
