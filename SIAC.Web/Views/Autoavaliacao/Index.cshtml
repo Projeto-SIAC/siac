@@ -19,6 +19,14 @@
             }
         );
 
+
+        function Topo() {
+            $("html, body").animate({
+                scrollTop: 0
+            }, 500);
+            return false;
+        }
+
         function Filtro(strTexto) {
             if (strTexto) {
                 strTexto = strTexto.toLowerCase().split(';');
@@ -195,10 +203,10 @@
                     continue;
                 }
                 if (i == pagina) {
-                    $('.ui.pagination.menu').append('<a class="active item" onclick="MinhasAutos(' + i + ')">' + i + '</a>');
+                    $('.ui.pagination.menu').append('<a class="active item" onclick="Topo(); MinhasAutos(' + i + ')">' + i + '</a>');
                     continue;
                 }
-                $('.ui.pagination.menu').append('<a class="item" onclick="MinhasAutos(' + i + ')">' + i + '</a>');
+                $('.ui.pagination.menu').append('<a class="item" onclick="Topo(); MinhasAutos(' + i + ')">' + i + '</a>');
             }
             if ($('.ui.pagination.menu .item').length < 5) {
                 for (i; $('.ui.pagination.menu .item').length < 5 && i <= (Math.ceil(length / qtePorPagina)) ; i++) {
@@ -206,14 +214,14 @@
                         continue;
                     }
                     if (i == pagina) {
-                        $('.ui.pagination.menu').append('<a class="active item" onclick="MinhasAutos(' + i + ')">' + i + '</a>');
+                        $('.ui.pagination.menu').append('<a class="active item" onclick="Topo(); MinhasAutos(' + i + ')">' + i + '</a>');
                         continue;
                     }
-                    $('.ui.pagination.menu').append('<a class="item" onclick="MinhasAutos(' + i + ')">' + i + '</a>');
+                    $('.ui.pagination.menu').append('<a class="item" onclick="Topo(); MinhasAutos(' + i + ')">' + i + '</a>');
                 }
                 if (pagina == (Math.ceil(length / qtePorPagina))) {
                     if (!((i - 5) < 1)) {
-                        $('.ui.pagination.menu').prepend('<a class="item" onclick="MinhasAutos(' + (i - 5) + ')">' + (i - 5) + '</a>');
+                        $('.ui.pagination.menu').prepend('<a class="item" onclick="Topo(); MinhasAutos(' + (i - 5) + ')">' + (i - 5) + '</a>');
                     }
                 }
             }
