@@ -20,36 +20,106 @@
         );
 
         function Filtro(strTexto) {
-            strTexto = strTexto.toLowerCase().trim();
-            jsnAutosFiltro = [];
-            for (var i = 0; i < jsnAutosGeral.length; i++) {
-                if (jsnAutosGeral[i].CodAvaliacao.toLowerCase().indexOf(strTexto) > -1) {
-                    jsnAutosFiltro.push(jsnAutosGeral[i]);
-                }
-                else if (jsnAutosGeral[i].DtCadastro.toLowerCase().indexOf(strTexto) > -1) {
-                    jsnAutosFiltro.push(jsnAutosGeral[i]);
-                }
-                else if (jsnAutosGeral[i].Dificuldade.toLowerCase().indexOf(strTexto) > -1) {
-                    jsnAutosFiltro.push(jsnAutosGeral[i]);
-                }
-                else if (strTexto == 'arquivo') {
-                    if (jsnAutosGeral[i].FlagArquivo == true) {
-                        jsnAutosFiltro.push(jsnAutosGeral[i]);
+            if (strTexto) {
+                strTexto = strTexto.toLowerCase().split(';');
+                jsnAutosFiltro = [];
+                for (var j = 0; j < strTexto.length; j++) {
+                    strTexto[j] = strTexto[j].trim();
+                    if (strTexto[j].indexOf('+') > -1) {
+                        lstFiltro = jsnAutosGeral;
+                        termos = strTexto[j].split('+');
+                        for (var k = 0; k < termos.length; k++) {
+                            termos[k] = termos[k].trim();
+                            if (termos[k]) {
+                                var lstFiltroAnd = [];
+                                for (var i = 0; i < lstFiltro.length; i++) {
+                                    if (lstFiltro[i].CodAvaliacao.toLowerCase().indexOf(termos[k]) > -1) {
+                                        lstFiltroAnd.push(lstFiltro[i]);
+                                    }
+                                    else if (lstFiltro[i].DtCadastro.toLowerCase().indexOf(termos[k]) > -1) {
+                                        lstFiltroAnd.push(lstFiltro[i]);
+                                    }
+                                    else if (lstFiltro[i].Dificuldade.toLowerCase().indexOf(termos[k]) > -1) {
+                                        lstFiltroAnd.push(lstFiltro[i]);
+                                    }
+                                    else if (termos[k] == 'pendente') {
+                                        if (jsnAutosGeral[i].FlagPendente == true) {
+                                            lstFiltroAnd.push(lstFiltro[i]);
+                                        }
+                                    }
+                                    else if (termos[k] == 'arquivo') {
+                                        if (jsnAutosGeral[i].FlagArquivo == true) {
+                                            lstFiltroAnd.push(lstFiltro[i]);
+                                        }
+                                    }
+                                    else {
+                                        for (var l = 0; l < lstFiltro[i].Disciplinas.length; l++) {
+                                            if (lstFiltro[i].Disciplinas[l].toLowerCase().indexOf(termos[k]) > -1) {
+                                                lstFiltroAnd.push(lstFiltro[i]);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                lstFiltro = lstFiltroAnd;
+                            }
+                        }
+                        jsnAutosFiltro = jsnAutosFiltro.concat(lstFiltro);
                     }
-                }
-                else if (strTexto == 'pendente') {
-                    if (jsnAutosGeral[i].FlagPendente == true) {
-                        jsnAutosFiltro.push(jsnAutosGeral[i]);
-                    }
-                }
-                else {
-                    for (var j = 0; j < jsnAutosGeral[i].Disciplinas.length; j++) {
-                        if (jsnAutosGeral[i].Disciplinas[j].toLowerCase().indexOf(strTexto) > -1) {
-                            jsnAutosFiltro.push(jsnAutosGeral[i]);
-                            break;
+                    else if (strTexto[j]) {
+                        for (var i = 0; i < jsnAutosGeral.length; i++) {
+                            if (jsnAutosGeral[i].CodAvaliacao.toLowerCase().indexOf(strTexto[j]) > -1) {
+                                jsnAutosFiltro.push(jsnAutosGeral[i]);
+                            }
+                            else if (jsnAutosGeral[i].DtCadastro.toLowerCase().indexOf(strTexto[j]) > -1) {
+                                jsnAutosFiltro.push(jsnAutosGeral[i]);
+                            }
+                            else if (jsnAutosGeral[i].Dificuldade.toLowerCase().indexOf(strTexto[j]) > -1) {
+                                jsnAutosFiltro.push(jsnAutosGeral[i]);
+                            }
+                            else if (strTexto[j] == 'arquivo') {
+                                if (jsnAutosGeral[i].FlagArquivo == true) {
+                                    jsnAutosFiltro.push(jsnAutosGeral[i]);
+                                }
+                            }
+                            else if (strTexto[j] == 'pendente') {
+                                if (jsnAutosGeral[i].FlagPendente == true) {
+                                    jsnAutosFiltro.push(jsnAutosGeral[i]);
+                                }
+                            }
+                            else {
+                                for (var l = 0; l < jsnAutosGeral[i].Disciplinas.length; l++) {
+                                    if (jsnAutosGeral[i].Disciplinas[l].toLowerCase().indexOf(strTexto[j]) > -1) {
+                                        jsnAutosFiltro.push(jsnAutosGeral[i]);
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
+
+                var strCod = '';
+                for (var i = 0; i < jsnAutosFiltro.length; i++) {
+                    if (strCod.indexOf(jsnAutosFiltro[i].CodAvaliacao) == -1) {
+                        strCod += jsnAutosFiltro[i].CodAvaliacao + ';';
+                        continue;
+                    }
+                }
+                var lstAutosTemp = jsnAutosFiltro;
+                var strCodTemp = '';
+                jsnAutosFiltro = [];
+                for (var i = 0; i < lstAutosTemp.length; i++) {
+                    if (strCodTemp.indexOf(lstAutosTemp[i].CodAvaliacao) == -1) {
+                        if (strCod.indexOf(lstAutosTemp[i].CodAvaliacao) > -1) {
+                            jsnAutosFiltro.push(lstAutosTemp[i]);
+                            strCodTemp += lstAutosTemp[i].CodAvaliacao + ';';
+                        }
+                    }
+                }
+            }        
+            else {
+                jsnAutosFiltro = jsnAutosGeral;
             }
             MinhasAutos();
         }
@@ -151,7 +221,7 @@
             $('.ui.cards').parent().removeClass('loading');
         }
 
-    </script>    
+    </script>
 }
 
 <h2>@ViewBag.Title <a class="ui right floated button" href="/Dashboard/Autoavaliacao/Gerar">Gerar</a></h2>
