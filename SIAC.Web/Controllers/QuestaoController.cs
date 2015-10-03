@@ -187,7 +187,7 @@ namespace SIAC.Web.Controllers
             Questao questao = null;
             if (codQuestao > 0)
             {
-                questao = Questao.PesquisarPorCodigo(codQuestao);
+                questao = Questao.ListarPorCodigo(codQuestao);
             }
             if (questao == null)
             {
@@ -205,7 +205,7 @@ namespace SIAC.Web.Controllers
             Questao questao = null;
             if (codQuestao > 0)
             {
-                questao = Questao.PesquisarPorCodigo(codQuestao);
+                questao = Questao.ListarPorCodigo(codQuestao);
             }
 
             questao.Enunciado = !String.IsNullOrEmpty(formCollection["txtEnunciado"]) ? formCollection["txtEnunciado"].Trim() : questao.Enunciado;
@@ -248,7 +248,7 @@ namespace SIAC.Web.Controllers
             Questao model = null;
             if (codQuestao > 0)
             {
-                model = Questao.PesquisarPorCodigo(codQuestao);
+                model = Questao.ListarPorCodigo(codQuestao);
             }
             if (model != null)
             {

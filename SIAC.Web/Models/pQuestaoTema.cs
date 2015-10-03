@@ -9,6 +9,8 @@ namespace SIAC.Web.Models
     {
         private static dbSIACEntities contexto = DataContextSIAC.GetInstance();
 
+        private static int ParamTempoInatividade = Parametro.Obter().TempoInatividade;
+
         public static List<QuestaoTema> LimparRepeticao(List<QuestaoTema> retorno, List<QuestaoTema> lst1, List<QuestaoTema> lst2)
         {
             List<int> codigos1 = (from qt in lst1 select qt.CodQuestao).ToList();
@@ -22,7 +24,10 @@ namespace SIAC.Web.Models
                 {
                     if (!codigos2.Contains(item.CodQuestao))
                     {
-                        ret.Add(item);
+                        if (PrazoValido(item))
+                        {
+                            ret.Add(item);
+                        }
                     }
                 }
             }
@@ -30,26 +35,21 @@ namespace SIAC.Web.Models
             return ret;
         }
 
-        public static List<QuestaoTema> LimparPorData(List<QuestaoTema> questoes)
+        public static bool PrazoValido(QuestaoTema questao)
         {
-            List<QuestaoTema> ret = new List<QuestaoTema>();
-
-            foreach (QuestaoTema item in questoes)
+            Questao q = Questao.ListarPorCodigo(questao.CodQuestao);
+            if (q.DtUltimoUso.HasValue)
             {
-                if(item.Questao.DtUltimoUso != null)
-                {
-                    DateTime prazo = DateTime.Parse(item.Questao.DtUltimoUso.ToString()).AddDays(Parametro.Obter().TempoInatividade);
-                    if(DateTime.Now >= prazo)
-                    {
-                        ret.Add(item);
-                    }
-                }
+                DateTime prazo = questao.Questao.DtUltimoUso.Value.AddDays(ParamTempoInatividade);
+                if (DateTime.Now >= prazo)
+                    return true;
                 else
-                {
-                    ret.Add(item);
-                }
+                    return false;
             }
-            return ret;
+            else
+            {
+                return true;
+            }
         }
 
         public static void AtualizarDtUltimoUso(List<QuestaoTema> questoes)

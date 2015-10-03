@@ -121,7 +121,6 @@ namespace SIAC.Web.Controllers
                 ViewBag.QuestoesDaAvaliacao = lstQuestoes;
 
                 AvalAcademica.Inserir(acad);
-                QuestaoTema.AtualizarDtUltimoUso(lstQuestoes);
                 Helpers.TimeLog.Parar();
             }
 

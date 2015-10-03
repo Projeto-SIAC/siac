@@ -10,9 +10,17 @@ namespace SIAC.Web.Models
     {
         private static dbSIACEntities contexto = DataContextSIAC.GetInstance();
 
+        private static Parametro parametro;
+
+        private Parametro() { }
+
         public static Parametro Obter()
         {
-            return contexto.Parametro.FirstOrDefault();
+            if (parametro == null)
+            {
+                parametro = contexto.Parametro.FirstOrDefault();
+            }
+            return parametro;
         }
 
         public static void Atualizar(Parametro parametro)

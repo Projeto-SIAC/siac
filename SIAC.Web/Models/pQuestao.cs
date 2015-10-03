@@ -61,7 +61,7 @@ namespace SIAC.Web.Models
             return contexto.Questao.Where(q => q.CodProfessor == codProfessor).OrderByDescending(q=>q.DtCadastro).ToList();
         }
 
-        public static Questao PesquisarPorCodigo(int codigo)
+        public static Questao ListarPorCodigo(int codigo)
         {
             return contexto.Questao.SingleOrDefault(q => q.CodQuestao == codigo);
         }
@@ -98,7 +98,6 @@ namespace SIAC.Web.Models
                                               select qt).ToList();
                 
                     temp = Models.QuestaoTema.LimparRepeticao(temp,QuestoesTemas,QuestoesTotal);
-                    temp = Models.QuestaoTema.LimparPorData(temp);
 
                     if (temp.Count != 0 && QuestoesTemas.Count < qteObj)
                     {
@@ -251,7 +250,6 @@ namespace SIAC.Web.Models
                                               select qt).ToList();
 
                     temp = Models.QuestaoTema.LimparRepeticao(temp, QuestoesTemas, QuestoesTotal);
-                    temp = Models.QuestaoTema.LimparPorData(temp);
 
                     if (temp.Count != 0 && qteDiscuResultado < qteDiscu)
                     {
