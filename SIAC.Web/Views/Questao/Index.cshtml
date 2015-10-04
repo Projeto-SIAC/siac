@@ -18,6 +18,13 @@
             }
         );
 
+        function Topo() {
+            $("html, body").animate({
+                scrollTop: 0
+            }, 500);
+            return false;
+        }
+
         function Filtro(strTexto) {
             if (strTexto) {
                 strTexto = strTexto.toLowerCase().split(';');
@@ -92,11 +99,21 @@
 
                 var strCod = '';
                 for (var i = 0; i < jsnQuestoesFiltro.length; i++) {
-                    if (strCod.indexOf(''+jsnQuestoesFiltro[i].CodQuestao) == -1) {
+                    if (strCod.indexOf(jsnQuestoesFiltro[i].CodQuestao) == -1) {
                         strCod += jsnQuestoesFiltro[i].CodQuestao + ';';
                         continue;
                     }
-                    jsnQuestoesFiltro = jsnQuestoesFiltro.splice(i, 1);
+                }
+                var lstQuestoesTemp = jsnQuestoesFiltro;
+                var strCodTemp = '';
+                jsnQuestoesFiltro = [];
+                for (var i = 0; i < lstQuestoesTemp.length; i++) {
+                    if (strCodTemp.indexOf(lstQuestoesTemp[i].CodQuestao) == -1) {
+                        if (strCod.indexOf(lstQuestoesTemp[i].CodQuestao) > -1) {
+                            jsnQuestoesFiltro.push(lstQuestoesTemp[i]);
+                            strCodTemp += lstQuestoesTemp[i].CodQuestao + ';';
+                        }
+                    }
                 }
             }
             else {
@@ -106,6 +123,7 @@
         }
 
         function MinhasQuestoes(pagina) {
+
             $('.ui.cards').parent().addClass('loading');
             var qtePorPagina = 20;
             var qtePaginacao = 7;
@@ -133,6 +151,7 @@
                         </a>\
                         ');
             }
+            
             $('.ui.pagination.menu').html('');
             var i = pagina - 3;
             for (i; i <= (Math.ceil(length / qtePorPagina)) - 3 && $('.ui.pagination.menu .item').length < 5; i++) {
@@ -140,10 +159,10 @@
                     continue;
                 }
                 if (i == pagina) {
-                    $('.ui.pagination.menu').append('<a class="active item" onclick="MinhasQuestoes(' + i + ')">' + i + '</a>');
+                    $('.ui.pagination.menu').append('<a class="active item" onclick="Topo(); MinhasQuestoes(' + i + ')">' + i + '</a>');
                     continue;
                 }
-                $('.ui.pagination.menu').append('<a class="item" onclick="MinhasQuestoes(' + i + ')">' + i + '</a>');
+                $('.ui.pagination.menu').append('<a class="item" onclick="Topo(); MinhasQuestoes(' + i + ')">' + i + '</a>');
             }
             if ($('.ui.pagination.menu .item').length < 5) {
                 for (i; $('.ui.pagination.menu .item').length < 5 && i <= (Math.ceil(length / qtePorPagina)) ; i++) {
@@ -151,14 +170,14 @@
                         continue;
                     }
                     if (i == pagina) {
-                        $('.ui.pagination.menu').append('<a class="active item" onclick="MinhasQuestoes(' + i + ')">' + i + '</a>');
+                        $('.ui.pagination.menu').append('<a class="active item" onclick="Topo(); MinhasQuestoes(' + i + ')">' + i + '</a>');
                         continue;
                     }
-                    $('.ui.pagination.menu').append('<a class="item" onclick="MinhasQuestoes(' + i + ')">' + i + '</a>');
+                    $('.ui.pagination.menu').append('<a class="item" onclick="Topo(); MinhasQuestoes(' + i + ')">' + i + '</a>');
                 }
                 if (pagina == (Math.ceil(length / qtePorPagina))) {
                     if (!((i - 5) < 1)) {
-                        $('.ui.pagination.menu').prepend('<a class="item" onclick="MinhasQuestoes(' + (i - 5) + ')">' + (i - 5) + '</a>');
+                        $('.ui.pagination.menu').prepend('<a class="item" onclick="Topo(); MinhasQuestoes(' + (i - 5) + ')">' + (i - 5) + '</a>');
                     }
                 }
             }
