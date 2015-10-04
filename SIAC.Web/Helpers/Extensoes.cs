@@ -322,5 +322,11 @@ namespace SIAC.Web
 
             return lstResposta;
         }
+
+        // Turma
+        public static string CodTurma(this Turma turma)
+        {
+            return String.Format("{0}.{1}.{2}{3}", turma.Periodo, turma.CodCurso.ToString("00000"), turma.NumTurma, turma.CodTurno);
+        }
     }
 }

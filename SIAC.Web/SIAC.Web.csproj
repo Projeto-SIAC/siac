@@ -294,6 +294,7 @@
     <Compile Include="Helpers\DevGerarQuestao.cs" />
     <Compile Include="Helpers\LeroLero.cs" />
     <Compile Include="Helpers\Extensoes.cs" />
+    <Compile Include="Helpers\StringExt.cs" />
     <Compile Include="Helpers\TimeLog.cs" />
     <Compile Include="Models\Alternativa.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
@@ -600,6 +601,7 @@
     <Content Include="Views\Academica\Gerar.cshtml" />
     <Content Include="Views\Academica\Confirmar.cshtml" />
     <Content Include="Views\Academica\Index.cshtml" />
+    <Content Include="Views\Academica\Agendar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

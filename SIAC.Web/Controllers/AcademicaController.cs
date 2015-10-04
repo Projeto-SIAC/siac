@@ -24,7 +24,7 @@ namespace SIAC.Web.Controllers
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
-            else if ((int)Session["UsuarioCategoriaCodigo"] != 2)
+            else if ((int)Session["UsuarioCategoriaCodigo"] > 2)
             {
                 if (TempData["UrlReferrer"] != null)
                 {
@@ -38,6 +38,15 @@ namespace SIAC.Web.Controllers
         //GET: Historico/Academica/Minhas <- Ajax 
         public ActionResult Minhas()
         {
+            if ((int)Session["UsuarioCategoriaCodigo"] != 2)
+            {
+                if (TempData["UrlReferrer"] != null)
+                {
+                    return Redirect(TempData["UrlReferrer"].ToString());
+                }
+                else return RedirectToAction("Index", "Dashboard");
+            }
+
             int codProfessor = Professor.ListarPorMatricula(Session["UsuarioMatricula"].ToString()).CodProfessor;
 
             var result = from a in AvalAcademica.ListarPorProfessor(codProfessor)
@@ -55,7 +64,7 @@ namespace SIAC.Web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Avaliacao/Academica
+        // GET: Historico/Avaliacao/Academica
         public ActionResult Index()
         {
             if (Request.Url.ToString().ToLower().Contains("dashboard"))
@@ -65,9 +74,17 @@ namespace SIAC.Web.Controllers
             return View();
         }
 
-        //GET: Avaliacao/Academica/Gerar
+        //GET: Dashboard/Avaliacao/Academica/Gerar
         public ActionResult Gerar()
         {
+            if ((int)Session["UsuarioCategoriaCodigo"] != 2)
+            {
+                if (TempData["UrlReferrer"] != null)
+                {
+                    return Redirect(TempData["UrlReferrer"].ToString());
+                }
+                else return RedirectToAction("Index", "Dashboard");
+            }
             ViewBag.Disciplinas = Disciplina.ListarPorProfessor(Session["UsuarioMatricula"].ToString());
             ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
             ViewBag.Termo = Parametro.Obter().NotaUso;
@@ -75,10 +92,18 @@ namespace SIAC.Web.Controllers
             return View();
         }
 
-        //POST: Avaliacao/Academica/Confirmar
+        //POST: Dashboard/Avaliacao/Academica/Confirmar
         [HttpPost]
         public ActionResult Confirmar(FormCollection formCollection)
         {
+            if ((int)Session["UsuarioCategoriaCodigo"] != 2)
+            {
+                if (TempData["UrlReferrer"] != null)
+                {
+                    return Redirect(TempData["UrlReferrer"].ToString());
+                }
+                else return RedirectToAction("Index", "Dashboard");
+            }
             AvalAcademica acad = new AvalAcademica();
             Helpers.TimeLog.Iniciar("AvalAcad");
             if (formCollection.HasKeys())
@@ -127,7 +152,7 @@ namespace SIAC.Web.Controllers
 
                 /* Questões */
                 List<QuestaoTema> lstQuestoes = Questao.ListarPorDisciplina(codDisciplina, arrTemaCods, codDificuldade, qteObjetiva, qteDiscursiva);
-                
+
                 foreach (var strTemaCod in arrTemaCods)
                 {
                     AvaliacaoTema avalTema = new AvaliacaoTema();
@@ -140,7 +165,7 @@ namespace SIAC.Web.Controllers
                     }
                     acad.Avaliacao.AvaliacaoTema.Add(avalTema);
                 }
-                
+
                 ViewBag.QteQuestoes = lstQuestoes.Count;
                 ViewBag.QuestoesDaAvaliacao = lstQuestoes;
 
@@ -149,6 +174,80 @@ namespace SIAC.Web.Controllers
             }
 
             return View(acad);
+        }
+
+        //GET: Dashboard/Avaliacao/Academica/Agendar/ACAD2015100002
+        [HttpGet]
+        public ActionResult Agendar(string codigo)
+        {
+            if ((int)Session["UsuarioCategoriaCodigo"] != 2)
+            {
+                if (TempData["UrlReferrer"] != null)
+                {
+                    return Redirect(TempData["UrlReferrer"].ToString());
+                }
+                else return RedirectToAction("Index", "Dashboard");
+            }
+            AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+
+            string strMatr = Session["UsuarioMatricula"].ToString();
+            Professor prof = Professor.ListarPorMatricula(strMatr);
+
+            ViewBag.lstTurma = prof.TurmaDiscProfHorario.Select(d => d.Turma).Distinct().OrderBy(t => t.Curso.Descricao).ToList();
+            ViewBag.lstSala = Sala.ListarOrdenadamente();
+
+            return View(acad);
+        }
+
+        //POST: Dashboard/Avaliacao/Academica/Agendar/ACAD2015100002
+        [HttpPost]
+        public ActionResult Agendar(string codigo, FormCollection form)
+        {
+            if ((int)Session["UsuarioCategoriaCodigo"] != 2)
+            {
+                if (TempData["UrlReferrer"] != null)
+                {
+                    return Redirect(TempData["UrlReferrer"].ToString());
+                }
+                else return RedirectToAction("Index", "Dashboard");
+            }
+            string strCodTurma = form["ddlTurma"];
+            string strCodSala = form["ddlSala"];
+            string strData = form["txtData"];
+            string strHoraInicio = form["txtHoraInicio"];
+            string strHoraTermino = form["txtHoraTermino"];
+            if (Helpers.StringExt.IsNullOrWhiteSpace(strCodTurma, strCodSala, strData, strHoraInicio, strHoraTermino))
+            {
+                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+
+                string strMatr = Session["UsuarioMatricula"].ToString();
+                Professor prof = Professor.ListarPorMatricula(strMatr);
+
+                if (acad.CodProfessor == prof.CodProfessor)
+                {
+                    // Turma
+                    acad.Turma = Turma.ListarPorCodigo(strCodTurma);
+
+                    // Sala
+                    int codSala;
+                    int.TryParse(strCodSala, out codSala);
+                    acad.Sala = Sala.ListarPorCodigo(codSala);
+
+                    // Data de Aplicacao
+                    acad.Avaliacao.DtAplicacao = DateTime.Parse(strData+" "+strHoraInicio);
+
+                    // Duracao
+                    acad.Avaliacao.Duracao = Convert.ToInt32((DateTime.Parse(strData + " " + strHoraTermino) - acad.Avaliacao.DtAplicacao.Value).TotalMinutes);
+
+                    /* 
+                     * DataContextSIAC.GetInstance().SaveChanges();
+                     * OU
+                     * AvalAcademica.Agendar(acad);
+                     */
+                }
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

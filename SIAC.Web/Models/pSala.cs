@@ -13,6 +13,11 @@ namespace SIAC.Web.Models
         {
             return contexto.Sala.OrderBy(s => s.Descricao).ToList();
         }
+        
+        public static Sala ListarPorCodigo(int codSala)
+        {
+            return contexto.Sala.SingleOrDefault(s => s.CodSala == codSala);
+        }
 
         public static void Inserir(Sala sala)
         {

@@ -1,0 +1,189 @@
+﻿@using SIAC.Web.Models
+@model AvalAcademica
+@{
+    ViewBag.Title = "Agendar " + Model.Avaliacao.CodAvaliacao();
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Scripts{
+    <script>
+        $('.ui.informacoes.modal')
+            .modal()
+        ;
+        $('.ui.dropdown')
+            .dropdown()
+        ;
+        $('.ui.confirmar.modal')
+            .modal({
+                onApprove: function () {
+                    $('form').addClass('loading').submit();
+                }
+            })
+        ;
+        function Validar() {
+            retorno = true;
+
+            lstErro = $('form .error.message .list');
+            lstErro.html('');
+            $('form').removeClass('error');
+
+            if (!$('#ddlTurma').val()) {
+                lstErro.append('<li>Selecione uma turma</li>');
+                retorno = false;
+            }
+
+            if (!$('#txtData').val()) {
+                lstErro.append('<li>Especifique a data de aplicação</li>');
+                retorno = false;
+            }
+
+            if (!$('#txtHoraInicio').val()) {
+                lstErro.append('<li>Especifique a hora de ínicio</li>');
+                retorno = false;
+            }
+
+            if (!$('#txtHoraTermino').val()) {
+                lstErro.append('<li>Especifique a hora de término</li>');
+                retorno = false;
+            }
+
+            if (!$('#ddlSala').val()) {
+                lstErro.append('<li>Selecione uma sala</li>');
+                retorno = false;
+            }
+
+            return retorno;
+        }
+        function Confirmar() {
+            if (Validar()) {
+                $form = $('form');
+                $div = $('<div class="ui form"></div>');
+                $div.append($form.html());
+                lstInput = $div.find(':input');
+                $div.find('.button').remove();
+                $div.find('#txtData').attr('value', $form.find('#txtData').val());
+                $div.find('#txtHoraInicio').attr('value', $form.find('#txtHoraInicio').val());
+                $div.find('#txtHoraTermino').attr('value', $form.find('#txtHoraTermino').val());
+                for (var i = 0; i < lstInput.length; i++) {
+                    lstInput.eq(i)
+                        .removeAttr('id')
+                        .removeAttr('name')
+                        .removeAttr('required')
+                        .prop('disabled', true)
+                        .prop('readonly', true)
+                    ;
+                    if (lstInput.eq(i).parent().hasClass('ui')) {
+                        lstInput.eq(i).parent()
+                            .addClass('disabled')
+                        ;
+                    }
+                }
+                $('.ui.confirmar.modal .content').html('').append($div);
+                $('.ui.confirmar.modal')
+                    .modal('show')
+                ;
+            }
+            else {
+                $('form').addClass('error');
+            }
+        }
+    </script>    
+}
+<h2>@ViewBag.Title <div class="ui right floated button" onclick="$('.ui.informacoes.modal').modal('show')">Informações</div></h2>
+
+<div class="ui confirmar modal">
+    <div class="header">
+        Verificar e confirmar
+    </div>
+    <div class="content">
+
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Voltar</div>
+        <div class="ui approve button">Confirmar</div>
+    </div>
+</div>
+
+<div class="ui informacoes modal">
+    <i class="icon close"></i>
+    <div class="header">Informações sobre a avaliação</div>
+    <div class="content">
+        <table class="ui striped table">
+            <thead>
+                <tr>
+                    <th>Disciplina</th>
+                    <th>Tema(s)</th>
+                    <th>Quantidade</th>
+                    <th>Dificuldade</th>
+                </tr>
+            </thead>
+            <tbody>                
+                <tr>
+                    <td>
+                        @* Disciplina *@
+                        <b>@Model.Disciplina.Descricao</b>
+                    </td>
+                    <td class="ui labels">
+                        @* Temas *@
+                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema)
+                        {
+                            <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                        }
+                    </td>
+                    <td class="ui labels">
+                        @* Qte de Questões *@
+                        <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.CodDisciplina, 1)</div></div>
+                        <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.CodDisciplina, 2)</div></div>
+                    </td>
+                    <td>
+                        @* Dificuldade *@
+                        @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(Model.CodDisciplina)
+                    </td>
+                </tr>                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<form class="ui form" method="post">
+    <div class="ui error message">
+        <div class="header">Verifique</div>
+        <ul class="list"></ul>
+    </div>
+    <div class="field required">
+        <label title="Apenas são mostradas as turmas do seu horário.">Turma</label>
+        <select id="ddlTurma" name="ddlTurma" class="ui search dropdown" required>
+            <option value="">Turma</option>
+            @foreach (Turma turma in ViewBag.lstTurma)
+            {
+                var cod = @turma.CodTurma();
+                <option value="@cod">@turma.Curso.Descricao (@cod)</option>
+            }
+        </select>
+    </div>
+        <div class="three fields">
+            <div class="field required">
+                <label>Data de Aplicação</label>
+                <input id="txtData" name="txtData" type="date" placeholder="Data" required />
+            </div>
+            <div class="field required">
+                <label>Hora de Início</label>
+                <input id="txtHoraInicio" name="txtHoraInicio" type="time" placeholder="Hora de início" required/>
+            </div>
+            <div class="field required">
+                <label>Hora de Término</label>
+                <input id="txtHoraTermino" name="txtHoraTermino" type="time" placeholder="Hora de término" required />
+            </div>
+        </div>
+    <div class="field required">
+        <label>Sala</label>
+        <select id="ddlSala" name="ddlSala" class="ui search dropdown" required>
+            <option value="">Sala</option>
+            @foreach (Sala sala in ViewBag.lstSala)
+            {
+                <option value="@sala.CodSala" title="@sala.RefLocal">@sala.Descricao</option>
+            }
+        </select>
+    </div>
+    <div class="ui button">Cancelar</div>
+    <div class="ui button" onclick="Confirmar()">Avançar</div>
+</form>

@@ -19,17 +19,24 @@ namespace SIAC.Web
                 defaults: new { controller = "Questao", action = "Detalhe", codigo = UrlParameter.Optional },
                 constraints: new { controller = @"^(Questao)$", codigo = @"^[0-9]+$" }
             );
-
+            
+            routes.MapRoute(
+                name: "HistoricoAvaliacao",
+                url: "Historico/Avaliacao/{controller}/{action}/{codigo}",
+                defaults: new { controller = "Historico", action = "Index", codigo = UrlParameter.Optional },
+                constraints: new { controller = @"^(Academica|Reposicao|Certificacao|Institucional)$" }
+            );
 
             routes.MapRoute(
                 name: "Historico",
                 url: "Historico/{controller}/{action}/{codigo}",
                 defaults: new { controller = "Historico", action = "Index", codigo = UrlParameter.Optional },
-                constraints: new { controller = @"^(Questao|Autoavaliacao|Academica)$" }
+                constraints: new { controller = @"^(Questao|Autoavaliacao)$" }
             );
 
+
             routes.MapRoute(
-                name: "Avaliacao",
+                name: "DashboardAvaliacao",
                 url: "Dashboard/Avaliacao/{controller}/{action}/{codigo}",
                 defaults: new { controller = "Dashboard", action = "Index", codigo = UrlParameter.Optional },
                 constraints: new { controller = @"^(Academica|Reposicao|Certificacao|Institucional)$" }

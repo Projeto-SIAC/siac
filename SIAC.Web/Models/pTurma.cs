@@ -21,6 +21,24 @@ namespace SIAC.Web.Models
             contexto.SaveChanges();
         }
 
+        public static Turma ListarPorCodigo(string codigo)
+        {
+            string[] strCodigo = codigo.Split('.');
+            int periodo = int.Parse(strCodigo[0]);
+            int codCurso = int.Parse(strCodigo[1]);
+            string codTurno = strCodigo[2][strCodigo[2].Length - 1].ToString();
+            strCodigo[2] = strCodigo[2].Remove(strCodigo[2].Length - 1);
+            int numTurma = int.Parse(strCodigo[2]);
+
+            return contexto.Turma
+                .SingleOrDefault(t =>
+                    t.Periodo == periodo &&
+                    t.CodCurso == codCurso &&
+                    t.NumTurma == numTurma &&
+                    t.CodTurno == codTurno
+                );
+        }
+
         private static int ObterNumTurma(int codCurso, string codTurno, int periodo)
         {
             int codNumTurma = 1;
