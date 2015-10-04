@@ -14,5 +14,10 @@ namespace SIAC.Web.Models
             contexto.AvalAcademica.Add(avalAcademica);
             contexto.SaveChanges();
         }
+
+        public static List<AvalAcademica> ListarPorProfessor(int codProfessor)
+        {
+            return contexto.AvalAcademica.Where(ac => ac.CodProfessor == codProfessor).ToList();
+        } 
     }
 }

@@ -599,6 +599,7 @@
     <Content Include="Views\Questao\Gerar.cshtml" />
     <Content Include="Views\Academica\Gerar.cshtml" />
     <Content Include="Views\Academica\Confirmar.cshtml" />
+    <Content Include="Views\Academica\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

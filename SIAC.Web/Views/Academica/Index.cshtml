@@ -1,0 +1,152 @@
+﻿
+@{
+    ViewBag.Title = "Minhas Avaliações Acadêmicas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts{
+    <script>
+        $('.ui.cards').parent().addClass('loading');
+        var jsnAvalAcadGeral;
+        var jsnAvalAcadFiltro;
+
+        $.getJSON(
+            '/Historico/Academica/Minhas',
+            function (acad) {
+                jsnAvalAcadGeral = acad;
+                jsnAvalAcadFiltro = acad;
+                MinhasAutos();
+            }
+        );
+
+        function Filtro(strTexto) {
+            strTexto = strTexto.toLowerCase().trim();
+            jsnAvalAcadFiltro = [];
+            for (var i = 0; i < jsnAvalAcadGeral.length; i++) {
+                if (jsnAvalAcadGeral[i].CodAvaliacao.toLowerCase().indexOf(strTexto) > -1) {
+                    jsnAvalAcadFiltro.push(jsnAvalAcadGeral[i]);
+                }
+                else if (jsnAvalAcadGeral[i].DtCadastro.toLowerCase().indexOf(strTexto) > -1) {
+                    jsnAvalAcadFiltro.push(jsnAvalAcadGeral[i]);
+                }
+                else if (jsnAvalAcadGeral[i].Dificuldade.toLowerCase().indexOf(strTexto) > -1) {
+                    jsnAvalAcadFiltro.push(jsnAvalAcadGeral[i]);
+                }
+                else if (strTexto == 'arquivo') {
+                    if (jsnAvalAcadGeral[i].FlagArquivo == true) {
+                        jsnAvalAcadFiltro.push(jsnAvalAcadGeral[i]);
+                    }
+                }
+                else if (strTexto == 'pendente') {
+                    if (jsnAvalAcadGeral[i].FlagPendente == true) {
+                        jsnAvalAcadFiltro.push(jsnAvalAcadGeral[i]);
+                    }
+                }
+                else {
+                    for (var j = 0; j < jsnAvalAcadGeral[i].Disciplinas.length; j++) {
+                        if (jsnAvalAcadGeral[i].Disciplinas[j].toLowerCase().indexOf(strTexto) > -1) {
+                            jsnAvalAcadFiltro.push(jsnAvalAcadGeral[i]);
+                            break;
+                        }
+                    }
+                }
+            }
+            MinhasAutos();
+        }
+
+        function MinhasAutos(pagina) {
+            $('.ui.cards').parent().addClass('loading');
+            var qtePorPagina = 9;
+            var qtePaginacao = 7;
+            var length = jsnAvalAcadFiltro.length;
+            if (pagina == null) {
+                pagina = 1;
+            }
+            var count = pagina * qtePorPagina;
+            if (count > length) {
+                count = length;
+            }
+            $('.ui.cards').html('');
+            for (var i = ((qtePorPagina * pagina) - qtePorPagina) ; i < count; i++) {
+                $card = $('<div class="card"></div>').html('\
+                            <div class="content">\
+                                <a href="/Historico/Autoavaliacao/Detalhe/'+ jsnAvalAcadFiltro[i].CodAvaliacao + '" class="header">' + jsnAvalAcadFiltro[i].CodAvaliacao + '</a>\
+                                <div class="meta">\
+                                    <span title="'+ jsnAvalAcadFiltro[i].DtCadastro + '">' + jsnAvalAcadFiltro[i].DtCadastroTempo + '</span>\
+                                </div>\
+                                <div class="description">\
+                                    <p><b>Turma</b>: '+ jsnAvalAcadFiltro[i].Turma + '</p>\
+                                    <p><b>Quantidade de Questões</b>: '+ jsnAvalAcadFiltro[i].QteQuestoes + '</p>\
+                                </div>\
+                            </div>\
+                        ');
+                $labelsDisc = $('<div class="ui labels"></div>');
+                for (var j = 0; j < jsnAvalAcadFiltro[i].Disciplinas.length; j++) {
+                    $labelsDisc.append('<div class="ui tag label">' + jsnAvalAcadFiltro[i].Disciplinas[j] + '</div>');
+                }
+                $extraContent = $('<div class="extra content"></div>').append($labelsDisc);
+                $card.append($extraContent);
+                if (jsnAvalAcadFiltro[i].FlagLiberada == true) {
+                    $card.append('<span class="ui attached top right label"><i class="clock icon"></i>Pendente</span>');
+                    $buttons = $('<div class="ui two buttons"></div>')
+                    $buttons.append('<a onclick="Arquivar(\'' + jsnAvalAcadFiltro[i].CodAvaliacao + '\')" class="ui button">Arquivar</a>');
+                    $buttons.append('<a href="/Dashboard/Autoavaliacao/Realizar/' + jsnAvalAcadFiltro[i].CodAvaliacao + '" class="ui button">Realizar</a>');
+                    $card.append($buttons);
+                }
+                else {
+                    if (jsnAvalAcadFiltro[i].FlagLiberada == true) {
+                        $card.append('<span class="ui attached top right label"><i class="archive icon"></i>Arquivo</span>');
+                        $card.append('<a href="/Historico/Autoavaliacao/Detalhe/' + jsnAvalAcadFiltro[i].CodAvaliacao + '" class="ui button">Detalhe</a>');
+                    }
+                    else {
+                        $card.append('<a href="/Historico/Autoavaliacao/Detalhe/' + jsnAvalAcadFiltro[i].CodAvaliacao + '" class="ui button">Desempenho</a>');
+                    }
+                }
+                $('.ui.cards').append($card);
+            }
+            $('.ui.pagination.menu').html('');
+            var i = pagina - 3;
+            for (i; i <= (Math.ceil(length / qtePorPagina)) - 3 && $('.ui.pagination.menu .item').length < 5; i++) {
+                if (i < 1) {
+                    continue;
+                }
+                if (i == pagina) {
+                    $('.ui.pagination.menu').append('<a class="active item" onclick="MinhasAutos(' + i + ')">' + i + '</a>');
+                    continue;
+                }
+                $('.ui.pagination.menu').append('<a class="item" onclick="MinhasAutos(' + i + ')">' + i + '</a>');
+            }
+            if ($('.ui.pagination.menu .item').length < 5) {
+                for (i; $('.ui.pagination.menu .item').length < 5 && i <= (Math.ceil(length / qtePorPagina)) ; i++) {
+                    if (i < 1) {
+                        continue;
+                    }
+                    if (i == pagina) {
+                        $('.ui.pagination.menu').append('<a class="active item" onclick="MinhasAutos(' + i + ')">' + i + '</a>');
+                        continue;
+                    }
+                    $('.ui.pagination.menu').append('<a class="item" onclick="MinhasAutos(' + i + ')">' + i + '</a>');
+                }
+                if (pagina == (Math.ceil(length / qtePorPagina))) {
+                    if (!((i - 5) < 1)) {
+                        $('.ui.pagination.menu').prepend('<a class="item" onclick="MinhasAutos(' + (i - 5) + ')">' + (i - 5) + '</a>');
+                    }
+                }
+            }
+            $('a[href]').on('click', function () { $('.ui.grid .thirteen.wide.column > .ui.segment').addClass('loading') });
+            $('.ui.cards').parent().removeClass('loading');
+        }
+
+    </script>
+}
+
+
+<h2>@ViewBag.Title <a class="ui right floated button" href="/Dashboard/Avaliacao/Academica/Gerar">Gerar</a></h2>
+<div class="ui fluid icon input">
+    <input type="text" placeholder="Filtrar..." onkeyup="Filtro($(this).val())" />
+    <i class="search icon"></i>
+</div>
+<br />
+<div class="ui three stackable cards"></div>
+<br />
+<div class="ui pagination menu"></div>

@@ -35,9 +35,33 @@ namespace SIAC.Web.Controllers
             base.OnActionExecuting(filterContext);
         }
 
+        //GET: Historico/Academica/Minhas <- Ajax 
+        public ActionResult Minhas()
+        {
+            int codProfessor = Professor.ListarPorMatricula(Session["UsuarioMatricula"].ToString()).CodProfessor;
+
+            var result = from a in AvalAcademica.ListarPorProfessor(codProfessor)
+                         select new
+                         {
+                             CodAvaliacao = a.Avaliacao.CodAvaliacao(),
+                             DtCadastro = a.Avaliacao.DtCadastro.ToBrazilianString(),
+                             DtCadastroTempo = a.Avaliacao.DtCadastro.ToElapsedTimeString(),
+                             Turma = a.NumTurma != null ? a.Turma.Nome : null,
+                             QteQuestoes = a.Avaliacao.QteQuestoes(),
+                             Disciplinas = a.Avaliacao.AvaliacaoTema.Select(at => at.Tema.Disciplina.Descricao).Distinct().ToList(),
+                             FlagLiberada = a.Avaliacao.FlagLiberada
+                         };
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         // GET: Avaliacao/Academica
         public ActionResult Index()
         {
+            if (Request.Url.ToString().ToLower().Contains("dashboard"))
+            {
+                return Redirect("~/Historico/Academica");
+            }
             return View();
         }
 
