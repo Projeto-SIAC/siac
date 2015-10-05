@@ -111,12 +111,14 @@
                     $.each(data, function (id, item) {
                         ddlTemas.append('<option value="' + item.CodTema + '">' + item.Descricao + '</option>');
                     });
+
+                    ddlTemas.parent().removeClass('loading');
                 },
                 error: function (xhr) {
-                    alert(xhr.error);
+                    Mensagem("Erro no carregamento de Temas","Erro");
+                    ddlTemas.parent().removeClass('loading');
                 }
             });
-            ddlTemas.parent().removeClass('loading');
         }
 
         function OpcoesPorTipo(tipoAvaliacao) {
