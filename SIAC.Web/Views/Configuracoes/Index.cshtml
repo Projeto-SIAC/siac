@@ -26,7 +26,7 @@
                     $('#btnAtualizar').addClass('green').text('Atualizado');
                 },
                 error: function () {
-                    $('.ui.modal').modal('show');
+                    $('.ui.erro.modal').modal('show');
                 }
             });
             $('#btnAtualizar').removeClass('loading');
@@ -90,7 +90,7 @@
 
 <div class="ui form">
     @* Modal de Conclusão *@
-    <div class="ui basic modal">
+    <div class="ui erro basic modal">
         <i class="close icon"></i>
         <div class="ui icon header">
             <i class="close red icon"></i>

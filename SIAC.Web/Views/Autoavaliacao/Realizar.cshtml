@@ -154,7 +154,7 @@
                         $('form').addClass('loading').submit();
                     }
                     else {
-                        alert('Conecte-se à internet antes de confirmar.')
+                        Mensagem('Conecte-se à internet antes de confirmar.')
                         return false;
                     }
                 }
@@ -239,7 +239,7 @@
                     window.location.href = '/Historico/Autoavaliacao';
                 },
                 error: function () {
-                    alert('Não foi possível arquivar a autoavaliação.')
+                    Mensagem('Não foi possível arquivar a autoavaliação.')
                 }
             });
         }

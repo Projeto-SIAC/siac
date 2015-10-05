@@ -82,7 +82,7 @@
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     $('div.ui.form').parent().removeClass('loading');
-                    alert(xhr.error);
+                    Mensagem(xhr.error);
                 }
             });
         }
