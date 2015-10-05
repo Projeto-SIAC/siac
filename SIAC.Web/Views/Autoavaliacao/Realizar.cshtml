@@ -1,7 +1,7 @@
 ﻿@using SIAC.Web.Models
 @model AvalAuto
 @{
-    ViewBag.Title = "Realizar " + Model.Avaliacao.CodAvaliacao();
+    ViewBag.Title = "Realizar " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
 }
@@ -154,7 +154,7 @@
                         $('form').addClass('loading').submit();
                     }
                     else {
-                        alert('Conecte-se à internet antes de confirmar.')
+                        Mensagem('Conecte-se à internet antes de confirmar.')
                         return false;
                     }
                 }
@@ -232,14 +232,14 @@
         function Arquivar() {
             $.ajax({
                 type: 'POST',
-                data: {codigo: '@Model.Avaliacao.CodAvaliacao()'},
+                data: {codigo: '@Model.Avaliacao.CodAvaliacao'},
                 url: "/Dashboard/Autoavaliacao/Arquivar",
                 success: function () {
                     window.onbeforeunload = null;
                     window.location.href = '/Historico/Autoavaliacao';
                 },
                 error: function () {
-                    alert('Não foi possível arquivar a autoavaliação.')
+                    Mensagem('Não foi possível arquivar a autoavaliação.')
                 }
             });
         }
@@ -314,7 +314,7 @@
         <a onclick="window.location.href = '/Dashboard';" class="ui button">Voltar para Dashboard</a>
         <a onclick="window.location.href = '/Historico/Autoavaliacao';" class="ui button">Voltar para Histórico</a>
         <div onclick="Arquivar()" class="ui button">Arquivar</div>
-        <a onclick="window.open('/Dashboard/Autoavaliacao/Imprimir/@Model.Avaliacao.CodAvaliacao()', '_blank');" class="ui button">Imprimir</a>
+        <a onclick="window.open('/Dashboard/Autoavaliacao/Imprimir/@Model.Avaliacao.CodAvaliacao', '_blank');" class="ui button">Imprimir</a>
         <div class="ui iniciar button">Realizar</div>
     </div>
 </div>
@@ -423,7 +423,7 @@
     </div>
 </div>
 
-<form class="ui form" action="/Historico/Autoavaliacao/Resultado/@Model.Avaliacao.CodAvaliacao()" method="post">
+<form class="ui form" action="/Historico/Autoavaliacao/Resultado/@Model.Avaliacao.CodAvaliacao" method="post">
     <div class="ui message error">
         <i class="icon close"></i>
             <div class="header">

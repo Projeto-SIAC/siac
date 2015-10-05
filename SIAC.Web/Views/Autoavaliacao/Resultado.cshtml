@@ -1,7 +1,7 @@
 ﻿@using SIAC.Web.Models
 @model AvalAuto
 @{
-    ViewBag.Title = "Resultado "+Model.Avaliacao.CodAvaliacao();
+    ViewBag.Title = "Resultado "+Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<Questao> lstQuestao = Model.Questao;
     List<AvalQuesPessoaResposta> lstPessoaResposta = Model.PessoaResposta;

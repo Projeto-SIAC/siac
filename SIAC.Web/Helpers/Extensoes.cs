@@ -226,18 +226,6 @@ namespace SIAC.Web
 
 
         // Avaliacao
-        public static string CodAvaliacao(this Avaliacao avaliacao)
-        {
-            string codAvalicao = String.Empty;
-
-            codAvalicao += avaliacao.TipoAvaliacao.Sigla;
-            codAvalicao += avaliacao.Ano;
-            codAvalicao += avaliacao.Semestre;
-            codAvalicao += avaliacao.NumIdentificador.ToString("0000");
-
-            return codAvalicao;
-        }
-
         public static int QteQuestoes(this Avaliacao avaliacao)
         {
             int qte = 0;
@@ -321,12 +309,6 @@ namespace SIAC.Web
                 );
 
             return lstResposta;
-        }
-
-        // Turma
-        public static string CodTurma(this Turma turma)
-        {
-            return String.Format("{0}.{1}.{2}{3}", turma.Periodo, turma.CodCurso.ToString("00000"), turma.NumTurma, turma.CodTurno);
-        }
+        }        
     }
 }

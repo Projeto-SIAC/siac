@@ -117,6 +117,7 @@
                 error: function (xhr) {
                     Mensagem("Erro no carregamento de Temas","Erro");
                     ddlTemas.parent().removeClass('loading');
+                    Mensagem(xhr.error);
                 }
             });
         }

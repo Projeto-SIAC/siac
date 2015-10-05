@@ -7,6 +7,14 @@ namespace SIAC.Web.Models
 {
     public partial class Turma
     {
+        public string CodTurma
+        {
+            get
+            {
+                return String.Format("{0}.{1}.{2}{3}", Periodo, CodCurso.ToString("00000"), NumTurma, CodTurno);
+            }
+        }
+
         private static dbSIACEntities contexto = DataContextSIAC.GetInstance();
 
         public static List<Turma> ListarOrdenadamente()

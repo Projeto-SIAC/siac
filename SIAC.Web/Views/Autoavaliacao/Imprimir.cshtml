@@ -3,7 +3,7 @@
 @model AvalAuto
 
 @{
-    ViewBag.Title = "Autoavaliação " + Model.Avaliacao.CodAvaliacao();
+    ViewBag.Title = "Autoavaliação " + Model.Avaliacao.CodAvaliacao;
     Layout = null;
     List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
 }

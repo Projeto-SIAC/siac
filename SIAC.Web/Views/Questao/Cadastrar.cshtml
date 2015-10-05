@@ -29,7 +29,7 @@
                     ddlTema.parent().removeClass('loading');
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    alert('Falha ao recuperar temas.');
+                    Mensagem('Falha ao recuperar temas.');
                     ddlTema.parent().removeClass('loading');
                 }
             });
@@ -148,7 +148,7 @@
                 }
             }
             else {
-                alert("Selecione um arquivo menor.");
+                Mensagem("Selecione um arquivo menor.");
             }
         }
 
@@ -495,7 +495,7 @@
                     $('.ui.pesquisa.modal').modal('refresh');
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    alert('Erro na pesquisa');
+                    Mensagem('Erro na pesquisa');
                 }
             });
         }

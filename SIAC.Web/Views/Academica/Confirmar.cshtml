@@ -1,7 +1,7 @@
 ﻿@using SIAC.Web.Models;
 @model AvalAcademica
 @{
-    ViewBag.Title = "Avaliação "+ @Model.Avaliacao.CodAvaliacao();
+    ViewBag.Title = "Avaliação "+ @Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>@ViewBag.Title</h2>
@@ -91,4 +91,4 @@
 
 <a href="/Dashboard" class="ui button">Voltar para Dashboard</a>
 <a href="/Historico/Autoavaliacao" class="ui button">Autoavaliações Salvas</a>
-<a href="/Dashboard/Autoavaliacao/Realizar/@Model.Avaliacao.CodAvaliacao()" class="ui button">Realizar agora</a>
+<a href="/Dashboard/Autoavaliacao/Realizar/@Model.Avaliacao.CodAvaliacao" class="ui button">Realizar agora</a>
