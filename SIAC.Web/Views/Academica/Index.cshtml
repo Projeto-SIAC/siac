@@ -10,6 +10,7 @@
         var jsnAvalAcadGeral;
         var jsnAvalAcadFiltro;
 
+        var dtNow = new Date();
         $.getJSON(
             '/Historico/Avaliacao/Academica/Minhas',
             function (acad) {
@@ -70,7 +71,7 @@
             for (var i = ((qtePorPagina * pagina) - qtePorPagina) ; i < count; i++) {
                 $card = $('<div class="card"></div>').html('\
                             <div class="content">\
-                                <a href="/Historico/Autoavaliacao/Detalhe/'+ jsnAvalAcadFiltro[i].CodAvaliacao + '" class="header">' + jsnAvalAcadFiltro[i].CodAvaliacao + '</a>\
+                                <a href="/Historico/Avaliacao/Academica/Detalhe/'+ jsnAvalAcadFiltro[i].CodAvaliacao + '" class="header">' + jsnAvalAcadFiltro[i].CodAvaliacao + '</a>\
                                 <div class="meta">\
                                     <span title="'+ jsnAvalAcadFiltro[i].DtCadastro + '">' + jsnAvalAcadFiltro[i].DtCadastroTempo + '</span>\
                                 </div>\
@@ -94,12 +95,12 @@
                     $card.append($buttons);
                 }
                 else {
-                    if (jsnAvalAcadFiltro[i].FlagLiberada == true) {
-                        $card.append('<span class="ui attached top right label"><i class="archive icon"></i>Arquivo</span>');
-                        $card.append('<a href="/Historico/Autoavaliacao/Detalhe/' + jsnAvalAcadFiltro[i].CodAvaliacao + '" class="ui button">Detalhe</a>');
+                    if (jsnAvalAcadFiltro[i].Turma) {
+                        $card.append('<span class="ui attached top right label"><i class="archive icon"></i>Realizada</span>');
+                        $card.append('<a href="/Historico/Avaliacao/Academica/Detalhe/' + jsnAvalAcadFiltro[i].CodAvaliacao + '" class="ui button">Detalhe</a>');
                     }
                     else {
-                        $card.append('<a href="/Historico/Autoavaliacao/Detalhe/' + jsnAvalAcadFiltro[i].CodAvaliacao + '" class="ui button">Desempenho</a>');
+                        $card.append('<a href="/Historico/Avaliacao/Academica/Agendar/' + jsnAvalAcadFiltro[i].CodAvaliacao + '" class="ui button">Agendar</a>');
                     }
                 }
                 $('.ui.cards').append($card);

@@ -35,7 +35,7 @@ namespace SIAC.Web.Controllers
             base.OnActionExecuting(filterContext);
         }
 
-        //GET: Historico/Academica/Minhas <- Ajax 
+        //GET: Historico/Avaliacao/Academica/Minhas <- Ajax 
         public ActionResult Minhas()
         {
             if ((int)Session["UsuarioCategoriaCodigo"] != 2)
@@ -48,19 +48,20 @@ namespace SIAC.Web.Controllers
             }
 
             int codProfessor = Professor.ListarPorMatricula(Session["UsuarioMatricula"].ToString()).CodProfessor;
+            List<AvalAcademica> avaliacoes = AvalAcademica.ListarPorProfessor(codProfessor);
 
-            var result = from a in AvalAcademica.ListarPorProfessor(codProfessor)
+            var result = from a in avaliacoes
                          select new
                          {
                              CodAvaliacao = a.Avaliacao.CodAvaliacao,
                              DtCadastro = a.Avaliacao.DtCadastro.ToBrazilianString(),
                              DtCadastroTempo = a.Avaliacao.DtCadastro.ToElapsedTimeString(),
-                             Turma = a.NumTurma != null ? a.Turma.Nome : null,
+                             Turma = a.NumTurma != null ? a.Turma.CodTurma() : null,
+                             Curso = a.NumTurma != null ? a.Turma.Curso.Descricao : "Curso",
                              QteQuestoes = a.Avaliacao.QteQuestoes(),
                              Disciplinas = a.Avaliacao.AvaliacaoTema.Select(at => at.Tema.Disciplina.Descricao).Distinct().ToList(),
                              FlagLiberada = a.Avaliacao.FlagLiberada
                          };
-
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -254,10 +255,27 @@ namespace SIAC.Web.Controllers
                     DataContextSIAC.GetInstance().SaveChanges();
                     // OU
                     // AvalAcademica.Agendar(acad);
+                    
                 }
             }
 
             return RedirectToAction("Index");
+        }
+
+        // GET: Avaliacao/Academica/Detalhe/ACAD201520001
+        public ActionResult Detalhe(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+                if (acad != null)
+                {
+                    return View(acad);
+                }
+            }
+
+            return RedirectToAction("Index");
+
         }
     }
 }

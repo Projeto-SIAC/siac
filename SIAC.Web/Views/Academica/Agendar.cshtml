@@ -12,6 +12,9 @@
         $('.ui.dropdown')
             .dropdown()
         ;
+
+        $('.cancelar.button').popup({ on: 'click' });
+
         $('.ui.confirmar.modal')
             .modal({
                 onApprove: function () {
@@ -51,6 +54,8 @@
                 retorno = false;
             }
 
+            
+
             return retorno;
         }
         function Confirmar() {
@@ -68,14 +73,8 @@
                         .removeAttr('id')
                         .removeAttr('name')
                         .removeAttr('required')
-                        .prop('disabled', true)
                         .prop('readonly', true)
                     ;
-                    if (lstInput.eq(i).parent().hasClass('ui')) {
-                        lstInput.eq(i).parent()
-                            .addClass('disabled')
-                        ;
-                    }
                 }
                 $('.ui.confirmar.modal .content').html('').append($div);
                 $('.ui.confirmar.modal')
@@ -184,6 +183,6 @@
             }
         </select>
     </div>
-    <div class="ui button">Cancelar</div>
+    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Historico/Avaliacao/Academica' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
     <div class="ui button" onclick="Confirmar()">Avançar</div>
 </form>

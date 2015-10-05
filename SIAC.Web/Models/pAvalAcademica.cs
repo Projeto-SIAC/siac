@@ -29,23 +29,34 @@ namespace SIAC.Web.Models
 
         public static List<AvalAcademica> ListarPorProfessor(int codProfessor)
         {
-            return contexto.AvalAcademica.Where(ac => ac.CodProfessor == codProfessor).ToList();
+            return contexto.AvalAcademica.Where(ac => ac.CodProfessor == codProfessor)
+                                         .OrderBy(ac => ac.NumTurma)
+                                         .ThenByDescending(ac=>ac.NumIdentificador).ToList();
         }
 
         public static AvalAcademica ListarPorCodigoAvaliacao(string codigo)
         {
-            int numIdentificador = int.Parse(codigo.Substring(codigo.Length - 4));
-            codigo = codigo.Remove(codigo.Length - 4);
-            int semestre = int.Parse(codigo.Substring(codigo.Length - 1));
-            codigo = codigo.Remove(codigo.Length - 1);
-            int ano = int.Parse(codigo.Substring(codigo.Length - 4));
-            codigo = codigo.Remove(codigo.Length - 4);
+            int numIdentificador = 0;
+            int semestre = 0;
+            int ano = 0;
 
-            int codTipoAvaliacao = TipoAvaliacao.ListarPorSigla(codigo).CodTipoAvaliacao;
+            if (codigo.Length == 13)
+            {
 
-            AvalAcademica avalAcademica = contexto.AvalAcademica.FirstOrDefault(acad => acad.Ano == ano && acad.Semestre == semestre && acad.NumIdentificador == numIdentificador && acad.CodTipoAvaliacao == codTipoAvaliacao);
+                int.TryParse(codigo.Substring(codigo.Length - 4), out numIdentificador);
+                codigo = codigo.Remove(codigo.Length - 4);
+                int.TryParse(codigo.Substring(codigo.Length - 1), out semestre);
+                codigo = codigo.Remove(codigo.Length - 1);
+                int.TryParse(codigo.Substring(codigo.Length - 4), out ano);
+                codigo = codigo.Remove(codigo.Length - 4);
 
-            return avalAcademica;
+                int codTipoAvaliacao = TipoAvaliacao.ListarPorSigla(codigo).CodTipoAvaliacao;
+
+                AvalAcademica avalAcademica = contexto.AvalAcademica.FirstOrDefault(acad => acad.Ano == ano && acad.Semestre == semestre && acad.NumIdentificador == numIdentificador && acad.CodTipoAvaliacao == codTipoAvaliacao);
+
+                return avalAcademica;
+            }
+            return null;
         }
     }
 }
