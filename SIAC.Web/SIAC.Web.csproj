@@ -290,6 +290,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Captcha.cs" />
     <Compile Include="Helpers\Criptografia.cs" />
     <Compile Include="Helpers\DevGerarQuestao.cs" />
     <Compile Include="Helpers\LeroLero.cs" />

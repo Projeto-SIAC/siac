@@ -226,24 +226,34 @@ namespace SIAC.Web.Controllers
                 if (acad.CodProfessor == prof.CodProfessor)
                 {
                     // Turma
-                    acad.Turma = Turma.ListarPorCodigo(strCodTurma);
+                    Turma turma = Turma.ListarPorCodigo(strCodTurma);
+                    if (turma != null)
+                    {
+                        acad.Turma = turma;
+                    }
 
                     // Sala
                     int codSala;
                     int.TryParse(strCodSala, out codSala);
-                    acad.Sala = Sala.ListarPorCodigo(codSala);
+                    Sala sala = Sala.ListarPorCodigo(codSala);
+                    if (sala!=null)
+                    {
+                        acad.Sala = sala;
+                    }
 
                     // Data de Aplicacao
-                    acad.Avaliacao.DtAplicacao = DateTime.Parse(strData+" "+strHoraInicio);
+                    DateTime dtAplicacao = DateTime.Parse(strData + " " + strHoraInicio);
+                    DateTime dtAplicacaoTermino = DateTime.Parse(strData + " " + strHoraTermino);
 
-                    // Duracao
-                    acad.Avaliacao.Duracao = Convert.ToInt32((DateTime.Parse(strData + " " + strHoraTermino) - acad.Avaliacao.DtAplicacao.Value).TotalMinutes);
+                    if (dtAplicacao.IsFuture() && dtAplicacaoTermino.IsFuture() && dtAplicacaoTermino > dtAplicacao)
+                    {
+                        acad.Avaliacao.DtAplicacao = dtAplicacao;
+                        acad.Avaliacao.Duracao = Convert.ToInt32((dtAplicacaoTermino - acad.Avaliacao.DtAplicacao.Value).TotalMinutes);
+                    }
 
-                    /* 
-                     * DataContextSIAC.GetInstance().SaveChanges();
-                     * OU
-                     * AvalAcademica.Agendar(acad);
-                     */
+                    DataContextSIAC.GetInstance().SaveChanges();
+                    // OU
+                    // AvalAcademica.Agendar(acad);
                 }
             }
 

@@ -82,12 +82,31 @@ namespace SIAC.Web.Controllers
         // GET: Questao/Cadastrar
         public ActionResult Cadastrar()
         {
+            ViewBag.Captcha = Helpers.Captcha.Novo();
             ViewBag.Termo = Parametro.Obter().TermoResponsabilidade;
             ViewBag.Disciplinas = Professor.ObterDisciplinas(Session["UsuarioMatricula"].ToString());
             ViewBag.Tipos = TipoQuestao.ListarOrdenadamente();
             ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
             ViewBag.TiposAnexo = TipoAnexo.ListarOrdenadamente();
             return View();
+        }
+
+        // GET: Questao/Captcha
+        [AcceptVerbs(HttpVerbs.Get)]
+        public string ChequeCaptcha(string captcha)
+        {
+            if (captcha == Session["Captcha"].ToString())
+            {
+                return "true";
+            }
+            return "false";
+        }
+
+        // GET: Questao/Captcha
+        [AcceptVerbs(HttpVerbs.Get)]
+        public string NovoCaptcha()
+        {
+            return Helpers.Captcha.Novo();
         }
 
         // POST: Questao/Confirmar

@@ -348,7 +348,9 @@
         $('.ui.confirmar.modal')
           .modal({
               onApprove: function () {
-                  $('#frmQuestao').addClass('loading').submit();
+                  $('.ui.confirmar.modal .approve').addClass('loading');
+                  ChecarCaptcha();
+                  return false;
               }
           });
 
@@ -508,6 +510,47 @@
         });
 
         $('.ui.pesquisa.modal').modal();
+
+        function ChecarCaptcha() {
+            $.ajax({
+                type: 'GET',
+                data: { captcha: $('#txtCaptcha').val() },
+                url: "/Dashboard/Questao/ChequeCaptcha",
+                success: function (resp) {
+                    if (resp == "true") {
+                        $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
+                        $('.ui.confirmar.modal').modal('hide');
+                        $('#txtCaptcha').next().prop('class', 'checkmark green icon');
+                        $('#frmQuestao').addClass('loading').submit();
+                    }
+                    else {
+                        $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
+                        $('.ui.confirmar.modal').modal('show');
+                        $('#txtCaptcha').next().prop('class', 'remove red icon');
+                    }
+                },
+                error: function () {
+                    $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
+                    $('#txtCaptcha').next().prop('class', 'remove icon');
+                    Mensagem("Ocorreu um erro ao verificar o captcha.", "Resultado do Captcha");
+                }
+            });
+        }
+
+        function NovoCaptcha() {
+            $.ajax({
+                type: 'GET',
+                url: "/Dashboard/Questao/NovoCaptcha",
+                success: function (strBase64) {
+                    if (strBase64) {
+                        $('#imgCaptcha').attr('src', 'data:image/png;base64,' + strBase64);
+                    }
+                },
+                error: function () {
+                    Mensagem("Ocorreu um erro ao atualizar o captcha, tente novamente.", "Erro");
+                }
+            });
+        }
     </script>
 }
 
@@ -577,6 +620,20 @@
             <div class="title"><i class="icon dropdown"></i>Anexos</div>
             <div class="content">
                 <div id="mdlCardAnexos" class="ui cards">                    
+                </div>
+            </div>
+        </div>
+        <div class="ui segment">
+            <div class="ui form">
+                <div class="field required">
+                    <label>Prove que você não é uma máquina <i class="icon refresh" onclick="NovoCaptcha()"></i></label>
+                    <div class="ui small image">
+                        <img id="imgCaptcha" class="image" src="data:image/png;base64,@ViewBag.Captcha" />
+                    </div>
+                    <div class="ui icon input">
+                        <input id="txtCaptcha" type="text" placeholder="Código...">
+                        <i class="remove icon"></i>
+                    </div>
                 </div>
             </div>
         </div>
