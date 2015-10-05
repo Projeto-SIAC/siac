@@ -7,6 +7,14 @@ namespace SIAC.Web.Models
 {
     public partial class Avaliacao
     {
+        public string CodAvaliacao
+        {
+            get
+            {
+                return String.Format("{0}{1}{2}{3}", TipoAvaliacao.Sigla.ToUpper(), Ano, Semestre, NumIdentificador.ToString("0000"));
+            }
+        }
+
         private static dbSIACEntities contexto = DataContextSIAC.GetInstance();
 
         public static int ObterNumIdentificador(int codTipoAvaliacao)

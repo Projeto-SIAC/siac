@@ -1,7 +1,7 @@
 ﻿@using SIAC.Web.Models
 @model AvalAcademica
 @{
-    ViewBag.Title = "Agendar " + Model.Avaliacao.CodAvaliacao();
+    ViewBag.Title = "Agendar " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Scripts{
@@ -155,7 +155,7 @@
             <option value="">Turma</option>
             @foreach (Turma turma in ViewBag.lstTurma)
             {
-                var cod = @turma.CodTurma();
+                var cod = @turma.CodTurma;
                 <option value="@cod">@turma.Curso.Descricao (@cod)</option>
             }
         </select>

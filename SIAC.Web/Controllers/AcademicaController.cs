@@ -52,7 +52,7 @@ namespace SIAC.Web.Controllers
             var result = from a in AvalAcademica.ListarPorProfessor(codProfessor)
                          select new
                          {
-                             CodAvaliacao = a.Avaliacao.CodAvaliacao(),
+                             CodAvaliacao = a.Avaliacao.CodAvaliacao,
                              DtCadastro = a.Avaliacao.DtCadastro.ToBrazilianString(),
                              DtCadastroTempo = a.Avaliacao.DtCadastro.ToElapsedTimeString(),
                              Turma = a.NumTurma != null ? a.Turma.Nome : null,

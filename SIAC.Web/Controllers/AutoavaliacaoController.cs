@@ -46,7 +46,7 @@ namespace SIAC.Web.Controllers
             var result = from a in lstAutos
                          select new
                          {
-                             CodAvaliacao = a.Avaliacao.CodAvaliacao(),
+                             CodAvaliacao = a.Avaliacao.CodAvaliacao,
                              DtCadastro = a.Avaliacao.DtCadastro.ToBrazilianString(),
                              DtCadastroTempo = a.Avaliacao.DtCadastro.ToElapsedTimeString(),
                              Dificuldade = a.Dificuldade.Descricao,
@@ -305,7 +305,7 @@ namespace SIAC.Web.Controllers
                     }
                     return View(auto);
                 }
-                return RedirectToAction("Detalhe", new { codigo = auto.Avaliacao.CodAvaliacao() });
+                return RedirectToAction("Detalhe", new { codigo = auto.Avaliacao.CodAvaliacao });
             }            
             ViewBag.Geradas = AvalAuto.ListarNaoRealizadaPorPessoa(codPessoaFisica);
             return View("Novo");

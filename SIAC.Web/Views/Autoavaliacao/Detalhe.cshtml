@@ -2,7 +2,7 @@
 @model AvalAuto
 
 @{
-    ViewBag.Title = "Autoavaliação " + Model.Avaliacao.CodAvaliacao();
+    ViewBag.Title = "Autoavaliação " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<Questao> lstQuestao = Model.Questao;
     List<AvalQuesPessoaResposta> lstPessoaResposta = Model.PessoaResposta;
@@ -16,10 +16,10 @@
         function Arquivar() {
             $.ajax({
                 type: 'POST',
-                data: { codigo: '@Model.Avaliacao.CodAvaliacao()' },
+                data: { codigo: '@Model.Avaliacao.CodAvaliacao' },
                 url: "/Dashboard/Autoavaliacao/Arquivar",
                 success: function () {
-                    window.location.href = '/Historico/Autoavaliacao/Detalhe/@Model.Avaliacao.CodAvaliacao()';
+                    window.location.href = '/Historico/Autoavaliacao/Detalhe/@Model.Avaliacao.CodAvaliacao';
                 },
                 error: function () {
                     Mensagem('Não foi possível arquivar a autoavaliação.')
@@ -78,7 +78,7 @@
 {
     if (!Model.FlagArquivo.HasValue || !Model.FlagArquivo.Value)
     {
-        <a href="/Dashboard/Autoavaliacao/Realizar/@Model.Avaliacao.CodAvaliacao()" class="ui button">Realizar agora</a>
+        <a href="/Dashboard/Autoavaliacao/Realizar/@Model.Avaliacao.CodAvaliacao" class="ui button">Realizar agora</a>
         <a onclick="Arquivar()" class="ui button">Arquivar</a>
     }
     else
