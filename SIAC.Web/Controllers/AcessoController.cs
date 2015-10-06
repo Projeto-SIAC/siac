@@ -77,8 +77,12 @@ namespace SIAC.Web.Controllers
             }
             else
             {
-                ViewBag.Acao = "$('.modal').modal('show')";
+                ViewBag.Acao = "$('.modal').modal('show');";
                 ViewBag.Erro = "error";
+                if (Sistema.MatriculaAtivo.Contains(formCollection["txtMatricula"].ToString()))
+                {
+                    ViewBag.Acao += "$('.ui.message.error .header').text('Seu usuário já está conectado.');$('.ui.message.error p').text('Seu usuário já está conectado.');";
+                }
                 return View("Index");
             }
         }

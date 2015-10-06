@@ -505,6 +505,7 @@
     <Compile Include="Models\Sala.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Sistema.cs" />
     <Compile Include="Models\Telefone.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>

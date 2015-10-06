@@ -12,18 +12,21 @@ namespace SIAC.Web.Models
 
         public static Usuario Autenticar(string matricula, string senha)
         {
-            Usuario usuario = contexto.Usuario.SingleOrDefault(u => u.Matricula == matricula);
-
-            if (usuario != null)
+            if (!Sistema.MatriculaAtivo.Contains(matricula))
             {
-                string strSenha = Criptografia.RetornarHash(senha);
+                Usuario usuario = contexto.Usuario.SingleOrDefault(u => u.Matricula == matricula);
 
-                if (usuario.Senha == strSenha)
+                if (usuario != null)
                 {
-                    return usuario;
+                    string strSenha = Criptografia.RetornarHash(senha);
+
+                    if (usuario.Senha == strSenha)
+                    {
+                        Sistema.MatriculaAtivo.Add(matricula);
+                        return usuario;
+                    }
                 }
             }
-
             return null;
         }
 
