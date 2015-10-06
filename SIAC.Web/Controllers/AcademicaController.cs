@@ -56,7 +56,7 @@ namespace SIAC.Web.Controllers
                              CodAvaliacao = a.Avaliacao.CodAvaliacao,
                              DtCadastro = a.Avaliacao.DtCadastro.ToBrazilianString(),
                              DtCadastroTempo = a.Avaliacao.DtCadastro.ToElapsedTimeString(),
-                             Turma = a.NumTurma != null ? a.Turma.CodTurma() : null,
+                             Turma = a.NumTurma != null ? a.Turma.CodTurma : null,
                              Curso = a.NumTurma != null ? a.Turma.Curso.Descricao : "Curso",
                              QteQuestoes = a.Avaliacao.QteQuestoes(),
                              Disciplinas = a.Avaliacao.AvaliacaoTema.Select(at => at.Tema.Disciplina.Descricao).Distinct().ToList(),

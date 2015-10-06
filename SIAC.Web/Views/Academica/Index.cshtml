@@ -88,15 +88,16 @@
                 $extraContent = $('<div class="extra content"></div>').append($labelsDisc);
                 $card.append($extraContent);
                 if (jsnAvalAcadFiltro[i].FlagLiberada == true) {
-                    $card.append('<span class="ui attached top right label"><i class="clock icon"></i>Pendente</span>');
+                    $card.append('<span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>');
                     $buttons = $('<div class="ui two buttons"></div>')
                     $buttons.append('<a onclick="Arquivar(\'' + jsnAvalAcadFiltro[i].CodAvaliacao + '\')" class="ui button">Arquivar</a>');
                     $buttons.append('<a href="/Dashboard/Autoavaliacao/Realizar/' + jsnAvalAcadFiltro[i].CodAvaliacao + '" class="ui button">Realizar</a>');
-                    $card.append($buttons);
+                    //$card.append($buttons);
+                    $card.append('<a href="/Historico/Avaliacao/Academica/Detalhe/' + jsnAvalAcadFiltro[i].CodAvaliacao + '" class="ui button">Resultados</a>');
                 }
                 else {
                     if (jsnAvalAcadFiltro[i].Turma) {
-                        $card.append('<span class="ui attached top right label"><i class="archive icon"></i>Realizada</span>');
+                        $card.append('<span class="ui attached top right label"><i class="clock icon"></i>Agendada</span>');
                         $card.append('<a href="/Historico/Avaliacao/Academica/Detalhe/' + jsnAvalAcadFiltro[i].CodAvaliacao + '" class="ui button">Detalhe</a>');
                     }
                     else {

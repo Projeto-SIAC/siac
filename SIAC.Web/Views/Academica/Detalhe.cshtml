@@ -1,9 +1,98 @@
 ﻿
 @model SIAC.Web.Models.AvalAcademica
 @{
-    ViewBag.Title = Model.Avaliacao.CodAvaliacao();
+    ViewBag.Title = "Avaliação Acadêmica " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
 
+<h2>@ViewBag.Title@if (Model.Avaliacao.FlagLiberada)
+{ <div class="ui label"><i class="icon checkmark"></i>Realizada</div> }</h2>
+
+<div class="ui segment">
+    <div class="ui dividing header">
+        Avaliação
+    </div>
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th>Disciplina</th>
+                <th>Tema(s)</th>
+                <th>Quantidade</th>
+                <th>Dificuldade</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+            {
+                <tr>
+                    <td>
+                        @* disciplina *@
+                        <b>@disc.Descricao</b>
+                    </td>
+                    <td class="ui labels">
+                        @* temas *@
+                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                        {
+                            <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                        }
+                    </td>
+                    <td class="ui labels">
+                        @* qte de questões *@
+                        <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
+                        <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
+                    </td>
+                    <td>
+                        @* dificuldade *@
+                        @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (Model.NumTurma != null)
+{
+    <div class="ui segment">
+        <div class="ui dividing header">
+            Agendamento
+        </div>
+        <table class="ui striped table">
+            <thead>
+                <tr>
+                    <th>Curso</th>
+                    <th>Período</th>
+                    <th>Sala</th>
+                    <th>Turno</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @* Curso *@
+                        @Model.Turma.Curso.Descricao
+                    </td>
+                    <td>
+                        @* Período *@
+                        @Model.Turma.Periodo
+                    </td>
+                    <td>
+                        @* Sala *@
+                        @Model.Sala.Descricao
+                    </td>
+                    <td>
+                        @* Turno *@
+                        @Model.Turma.Turno.Descricao
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+}
+else
+{
+    <a href="/Dashboard/Avaliacao/Academica/Agendar/@Model.Avaliacao.CodAvaliacao" class="ui button">Agendar</a>
+}
+<a href="/Historico/Avaliacao/Academica" class="ui button">Histórico</a>
