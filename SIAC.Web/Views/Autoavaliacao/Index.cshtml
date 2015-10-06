@@ -9,16 +9,23 @@
         $('.ui.cards').parent().addClass('loading');
         var jsnAutosGeral;
         var jsnAutosFiltro;
-
-        $.getJSON(
-            '/Historico/Autoavaliacao/Minhas',
-            function (autos) {
+        
+        $(document).ready(function () {
+            window.onbeforeunload = function () { $ajax.abort(); $('.ui.global.loader').parent().addClass('active'); };
+        });
+        $ajax = $.ajax({
+            url: '/Historico/Autoavaliacao/Minhas',
+            method: 'GET',
+            success: function (autos) {
                 jsnAutosGeral = autos;
                 jsnAutosFiltro = autos;
                 MinhasAutos();
+            },
+            error: function () {
+                Mensagem("Erro ao recuperar as avaliações");
+                $('.ui.cards').parent().removeClass('loading');
             }
-        );
-
+        });
 
         function Topo() {
             $("html, body").animate({
@@ -225,7 +232,6 @@
                     }
                 }
             }
-            $('a[href]').on('click', function () { $('.ui.grid .thirteen.wide.column > .ui.segment').addClass('loading') });
             $('.ui.cards').parent().removeClass('loading');
         }
 

@@ -31,7 +31,8 @@ namespace SIAC.Web.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
-            return View();            
+            Usuario usuario = Usuario.ListarPorMatricula((string)Session["UsuarioMatricula"]);
+            return View(usuario);            
         }
        
     }

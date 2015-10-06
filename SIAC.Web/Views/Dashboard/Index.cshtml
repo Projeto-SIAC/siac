@@ -1,7 +1,24 @@
 ﻿@{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int autoavaliacao = Model.PessoaFisica.AvalAuto.Where(a => a.Avaliacao.AvalPessoaResultado.Count == 0).Count();
+    int academica =0;
+    int certificacao=0;
+    int agendada=0;
+    if (Model.CodCategoria == 2)
+    {
+        var prof = Model.Professor.First();
+        academica = prof.AvalAcademica.Where(a=>!a.NumTurma.HasValue).Count();
+        certificacao = prof.AvalCertificacao.Where(a => a.PessoaFisica.Count == 0).Count();
+        agendada = prof.AvalAcademica.Where(a => a.NumTurma.HasValue).Count();
+    }
+    else if (Model.CodCategoria == 1)
+    {
+        var aluno = Model.Aluno.First();
+        agendada = aluno.TurmaDiscAluno.Sum(t => t.Turma.AvalAcademica.Where(c=> c.Avaliacao.AvalPessoaResultado.Count == 0).Count());
+    }
 }
+@model SIAC.Web.Models.Usuario
 
 
 @section Styles {
@@ -17,9 +34,14 @@
 <div class="ui stackable grid dashmenu">
     <div class="stackable doubling four columns centered row">
         <div class="column aligned center">
-            <a href="/Dashboard/Autoavaliacao/Realizar">
+            <a href="/Dashboard/Autoavaliacao/Realizar" class="ui basic segment">
                 <div class="ui icon header">
                     <i class="file outline icon"></i>
+                    @if (autoavaliacao > 0)
+                    {
+                        <div class="ui floating small red label">@autoavaliacao</div>
+
+                    }
                         Realizar Autoavaliação
                 </div>
             </a>
@@ -27,9 +49,13 @@
         @if ((int)Session["UsuarioCategoriaCodigo"] == 2)
         {
             <div class="column aligned center">
-                <a href="/Historico/Avaliacao/Academica/">
+                <a href="/Historico/Avaliacao/Academica/" class="ui basic segment">
                     <div class="ui icon header">
                         <i class="file icon"></i>
+                        @if (academica > 0)
+                        {
+                            <div class="ui floating small red label">@academica</div>
+                        }
                         Agendar Avaliação Acadêmica
                     </div>
                 </a>
@@ -38,9 +64,13 @@
         @if ((int)Session["UsuarioCategoriaCodigo"] == 2 || (int)Session["UsuarioCategoriaCodigo"] == 3)
         {
             <div class="column aligned center">
-                <a href="/Dashboard/Avaliacao/Certificacao/Agendar">
+                <a href="/Dashboard/Avaliacao/Certificacao/Agendar" class="ui basic segment">
                     <div class="ui icon header">
                         <i class="file text icon"></i>
+                        @if (certificacao > 0)
+                        {
+                            <div class="ui floating small red label">@certificacao</div>
+                        }
                         Agendar Avaliação de Certificação
                     </div>
                 </a>
@@ -49,7 +79,7 @@
         @if ((int)Session["UsuarioCategoriaCodigo"] == 2)
         {
             <div class="column aligned center">
-                <a href="/Dashboard/Questao/Cadastrar">
+                <a href="/Dashboard/Questao/Cadastrar" class="ui basic segment">
                     <div class="ui icon header">
                         <i class="add circle icon"></i>
                         Cadastrar Questão
@@ -60,7 +90,7 @@
         @if ((int)Session["UsuarioCategoriaCodigo"] == 2)
         {
             <div class="column aligned center">
-                <a href="/Historico/Questao">
+                <a href="/Historico/Questao" class="ui basic segment">
                     <div class="ui icon header">
                         <i class="book icon"></i>
                         Minhas Questões
@@ -68,12 +98,16 @@
                 </a>
             </div>
         }
-        @if ((int)Session["UsuarioCategoriaCodigo"] == 1)
+        @if ((int)Session["UsuarioCategoriaCodigo"] <= 2)
         {
             <div class="column aligned center">
-                <a href="/Historico/Avaliacao/Academica">
+                <a href="/Historico/Avaliacao/Academica" class="ui basic segment">
                     <div class="ui icon header">
                         <i class="calendar icon"></i>
+                        @if (agendada > 0)
+                        {
+                            <div class="ui floating small red label">@agendada</div>
+                        }
                         Avaliações Agendadas
                     </div>
                 </a>
@@ -82,7 +116,7 @@
         @if ((int)Session["UsuarioCategoriaCodigo"] == 1 || (int)Session["UsuarioCategoriaCodigo"] == 2 || (int)Session["UsuarioCategoriaCodigo"] == 3)
         {
             <div class="column aligned center">
-                <a href="/Historico/Autoavaliacao">
+                <a href="/Historico/Autoavaliacao" class="ui basic segment">
                     <div class="ui icon header">
                         <i class="folder icon"></i>
                         Autoavaliações Salvas
@@ -91,7 +125,7 @@
             </div>
         }
         <div class="column aligned center">
-            <a href="/Perfil">
+            <a href="/Perfil" class="ui basic segment">
                 <div class="ui icon header">
                     <i class="user icon"></i>
                     Ver Perfil
@@ -99,7 +133,7 @@
             </a>
         </div>
         <div class="column aligned center">
-            <a href="/Historico">
+            <a href="/Historico" class="ui basic segment">
                 <div class="ui icon header">
                     <i class="wait icon"></i>
                         Ver Histórico

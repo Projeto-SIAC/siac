@@ -72,7 +72,7 @@ namespace SIAC.Web.Controllers
         [HttpPost]
         public ActionResult Confirmar(FormCollection formCollection)
         {
-            ViewBag.Form = formCollection;
+            //ViewBag.Form = formCollection;
 
             AvalAuto auto = new AvalAuto();
 
@@ -93,7 +93,7 @@ namespace SIAC.Web.Controllers
             var disciplinas = formCollection["ddlDisciplinas"].Split(',');
             /* Dados */
             List<int> dificuldades = new List<int>();
-            List<QuestaoTema> VBQuestoes = new List<QuestaoTema>();
+            //List<QuestaoTema> VBQuestoes = new List<QuestaoTema>();
             foreach (var strDisc in disciplinas)
             {
                 /* Dificuldade */
@@ -121,9 +121,9 @@ namespace SIAC.Web.Controllers
                 string[] arrTemaCods = formCollection["ddlTemas" + strDisc].Split(',');
 
                 /* Questões */
-                Helpers.TimeLog.Iniciar("Lista de Questões");
+                //Helpers.TimeLog.Iniciar("Lista de Questões");
                 List<QuestaoTema> lstQuestoes = Questao.ListarPorDisciplina(int.Parse(strDisc), arrTemaCods, codDificuldade, qteObjetiva, qteDiscursiva);
-                Helpers.TimeLog.Parar();
+                //Helpers.TimeLog.Parar();
                 foreach (var strTemaCod in arrTemaCods)
                 {
                     AvaliacaoTema avalTema = new AvaliacaoTema();
@@ -136,7 +136,7 @@ namespace SIAC.Web.Controllers
                     }                   
                     auto.Avaliacao.AvaliacaoTema.Add(avalTema);                    
                 }
-                VBQuestoes.AddRange(lstQuestoes);
+                //VBQuestoes.AddRange(lstQuestoes);
             }
 
             auto.Avaliacao.DtCadastro = hoje;

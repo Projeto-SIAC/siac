@@ -8,15 +8,22 @@
         $('.ui.cards').parent().addClass('loading');
         var jsnQuestoesGeral;
         var jsnQuestoesFiltro;
-
-        $.getJSON(
-            '/Historico/Questao/Minhas',
-            function (questoes) {
+        $(document).ready(function () {
+            window.onbeforeunload = function () { $ajax.abort(); $('.ui.global.loader').parent().addClass('active'); };
+        });
+        $ajax = $.ajax({
+            url: '/Historico/Questao/Minhas',
+            method: 'GET',
+            success: function (questoes) {
                 jsnQuestoesGeral = questoes;
                 jsnQuestoesFiltro = questoes;
                 MinhasQuestoes();
+            },
+            error: function() {
+                Mensagem("Erro ao recuperar as questões");
+                $('.ui.cards').parent().removeClass('loading');
             }
-        );
+        });
 
         function Topo() {
             $("html, body").animate({
@@ -181,7 +188,6 @@
                     }
                 }
             }
-            $('a[href]').on('click', function () { $('.ui.grid .thirteen.wide.column > .ui.segment').addClass('loading') });
             $('.ui.cards').parent().removeClass('loading');
         }
     </script>
