@@ -4,8 +4,8 @@
 @{
     ViewBag.Title = "Autoavaliação " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
-    List<Questao> lstQuestao = Model.Questao;
-    List<AvalQuesPessoaResposta> lstPessoaResposta = Model.PessoaResposta;
+    List<Questao> lstQuestao = Model.Avaliacao.Questao;
+    List<AvalQuesPessoaResposta> lstPessoaResposta = Model.Avaliacao.PessoaResposta;
 }
 
 @section Scripts {
@@ -31,7 +31,7 @@
 
 <h2>@ViewBag.Title@if (Model.FlagArquivo.HasValue && Model.FlagArquivo.Value) { <div class="ui label"><i class="icon archive"></i>Arquivo</div> }</h2>
 
-<div class="ui segment">
+<div class="ui basic segment">
     <div class="ui dividing header">
         Detalhes
     </div>
@@ -76,36 +76,39 @@
 
 @if (Model.Avaliacao.AvalPessoaResultado.Count == 0)
 {
+    <a onclick="window.open('/Dashboard/Autoavaliacao/Imprimir/@Model.Avaliacao.CodAvaliacao', '_blank');" class="ui button">Imprimir</a>
     if (!Model.FlagArquivo.HasValue || !Model.FlagArquivo.Value)
     {
+        <div onclick="Arquivar()" class="ui button">Arquivar</div>
         <a href="/Dashboard/Autoavaliacao/Realizar/@Model.Avaliacao.CodAvaliacao" class="ui button">Realizar agora</a>
-        <a onclick="Arquivar()" class="ui button">Arquivar</a>
     }
     else
     {
-        <a onclick="Arquivar()" class="ui button">Desarquivar</a>
+        <div onclick="Arquivar()" class="ui button">Desarquivar</div>
     }
 }
 else
 {
     // Desempenho
-    <div class="ui segment">
+    <div class="ui basic segment">
         <div class="ui dividing header" data-content="Note que os cálculos levem em conta somente as questões objetivas.">
             Desempenho
             <div class="ui label">Porcentagem de Acerto<div class="detail">@(ViewBag.Porcentagem.ToString("0.##'%'"))</div></div>
         </div>
-        <table class="ui very basic collapsing table">
+        <div class="ui centered statistics">
             @foreach (var key in ViewBag.Desempenho.Keys)
             {
-                <tr>
-                    <th>@key</th>
-                    <td><div class="ui @(ViewBag.Desempenho[key]>50 ? "green" : "red") label">@ViewBag.Desempenho[key].ToString("0.##'%'")</div></td>
-                </tr>
+                <div class="statistic @(ViewBag.Desempenho[key]>50 ? "green" : "red")">
+                        <div class="value circular" style="border:1px">
+                            @ViewBag.Desempenho[key].ToString("0.##'%'")
+                        </div>
+                        <div class="label">@key</div>
+                </div>
             }
-        </table>
+        </div>
     </div>
     // Resultado
-    <div class="ui segment">
+    <div class="ui basic segment">
         <div class="ui dividing header">
             Resultado
         </div>

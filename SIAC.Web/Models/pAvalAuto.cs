@@ -6,42 +6,7 @@ using System.Web;
 namespace SIAC.Web.Models
 {
     public partial class AvalAuto
-    {
-        // Propriedades
-        public List<Questao> Questao
-        {
-            get
-            {
-                List<Questao> lstQuestao = new List<Questao>();
-                foreach (var avaliacaoTema in Avaliacao.AvaliacaoTema)
-                {
-                    foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
-                    {
-                        lstQuestao.Add(avalTemaQuestao.QuestaoTema.Questao);
-                    }
-                };
-                return lstQuestao;
-            }
-        }
-
-        public List<AvalQuesPessoaResposta> PessoaResposta
-        {
-            get {
-                List<AvalQuesPessoaResposta> lstPessoaResposta = new List<AvalQuesPessoaResposta>();
-                foreach (var avaliacaoTema in Avaliacao.AvaliacaoTema)
-                {
-                    foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
-                    {
-                        lstPessoaResposta.AddRange(avalTemaQuestao.AvalQuesPessoaResposta);
-                    }
-                };
-                return lstPessoaResposta;
-            }
-        }
-
-
-        // Métodos
-
+    {     
         private static dbSIACEntities contexto = DataContextSIAC.GetInstance();
 
         public static void Inserir(AvalAuto AvalAuto)

@@ -15,6 +15,38 @@ namespace SIAC.Web.Models
             }
         }
 
+        public List<Questao> Questao
+        {
+            get
+            {
+                List<Questao> lstQuestao = new List<Questao>();
+                foreach (var avaliacaoTema in AvaliacaoTema)
+                {
+                    foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                    {
+                        lstQuestao.Add(avalTemaQuestao.QuestaoTema.Questao);
+                    }
+                };
+                return lstQuestao;
+            }
+        }
+
+        public List<AvalQuesPessoaResposta> PessoaResposta
+        {
+            get
+            {
+                List<AvalQuesPessoaResposta> lstPessoaResposta = new List<AvalQuesPessoaResposta>();
+                foreach (var avaliacaoTema in AvaliacaoTema)
+                {
+                    foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                    {
+                        lstPessoaResposta.AddRange(avalTemaQuestao.AvalQuesPessoaResposta);
+                    }
+                };
+                return lstPessoaResposta;
+            }
+        }
+
         private static dbSIACEntities contexto = DataContextSIAC.GetInstance();
 
         public static int ObterNumIdentificador(int codTipoAvaliacao)

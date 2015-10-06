@@ -3,8 +3,8 @@
 @{
     ViewBag.Title = "Resultado "+Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
-    List<Questao> lstQuestao = Model.Questao;
-    List<AvalQuesPessoaResposta> lstPessoaResposta = Model.PessoaResposta;
+    List<Questao> lstQuestao = Model.Avaliacao.Questao;
+    List<AvalQuesPessoaResposta> lstPessoaResposta = Model.Avaliacao.PessoaResposta;
 }
 
 @section Scripts {

@@ -9,9 +9,9 @@
 <h2>@ViewBag.Title@if (Model.Avaliacao.FlagLiberada)
 { <div class="ui label"><i class="icon checkmark"></i>Realizada</div> }</h2>
 
-<div class="ui segment">
+<div class="ui basic segment">
     <div class="ui dividing header">
-        Avaliação
+        Detalhes
     </div>
     <table class="ui striped table">
         <thead>
@@ -52,38 +52,38 @@
     </table>
 </div>
 
-@if (Model.NumTurma != null)
+@if (Model.NumTurma.HasValue)
 {
-    <div class="ui segment">
+    <div class="ui basic segment">
         <div class="ui dividing header">
             Agendamento
         </div>
         <table class="ui striped table">
             <thead>
                 <tr>
-                    <th>Curso</th>
-                    <th>Período</th>
+                    <th>Turma</th>
+                    <th>Data</th>
+                    <th>Horário</th>
                     <th>Sala</th>
-                    <th>Turno</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>
-                        @* Curso *@
-                        @Model.Turma.Curso.Descricao
+                        @* Turma *@
+                        @Model.Turma.Curso.Descricao (@Model.Turma.CodTurma)
                     </td>
                     <td>
-                        @* Período *@
-                        @Model.Turma.Periodo
+                        @* Data *@
+                        @Model.Avaliacao.DtAplicacao.Value.ToShortDateString()
+                    </td>
+                    <td>
+                        @* Horário *@
+                        Das @Model.Avaliacao.DtAplicacao.Value.ToShortTimeString() até @Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToShortTimeString()
                     </td>
                     <td>
                         @* Sala *@
                         @Model.Sala.Descricao
-                    </td>
-                    <td>
-                        @* Turno *@
-                        @Model.Turma.Turno.Descricao
                     </td>
                 </tr>
             </tbody>
