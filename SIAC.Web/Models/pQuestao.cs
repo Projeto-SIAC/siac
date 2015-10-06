@@ -38,7 +38,8 @@ namespace SIAC.Web.Models
                     qTemp.Alternativa.ElementAt(i).Comentario = questao.Alternativa.ElementAt(i).Comentario;
                 }
             }
-            else { 
+            else
+            {
                 qTemp.Comentario = questao.Comentario;
                 qTemp.ChaveDeResposta = questao.ChaveDeResposta;
             }
@@ -58,7 +59,7 @@ namespace SIAC.Web.Models
         {
             int codProfessor = contexto.Professor.SingleOrDefault(p => p.MatrProfessor == matricula).CodProfessor;
 
-            return contexto.Questao.Where(q => q.CodProfessor == codProfessor).OrderByDescending(q=>q.DtCadastro).ToList();
+            return contexto.Questao.Where(q => q.CodProfessor == codProfessor).OrderByDescending(q => q.DtCadastro).ToList();
         }
 
         public static Questao ListarPorCodigo(int codigo)
@@ -91,13 +92,13 @@ namespace SIAC.Web.Models
                 {
                     int codTema = int.Parse(tema);
                     List<QuestaoTema> temp = (from qt in contexto.QuestaoTema
-                                              where qt.Questao.CodTipoQuestao == 1 
-                                              && qt.Questao.CodDificuldade <= dificulDisc 
-                                              && qt.CodDisciplina == codDisciplina 
+                                              where qt.Questao.CodTipoQuestao == 1
+                                              && qt.Questao.CodDificuldade <= dificulDisc
+                                              && qt.CodDisciplina == codDisciplina
                                               && qt.CodTema == codTema
                                               select qt).ToList();
-                
-                    temp = Models.QuestaoTema.LimparRepeticao(temp,QuestoesTemas,QuestoesTotal);
+
+                    temp = Models.QuestaoTema.LimparRepeticao(temp, QuestoesTemas, QuestoesTotal);
 
                     if (temp.Count != 0 && QuestoesTemas.Count < qteObj)
                     {
@@ -174,7 +175,7 @@ namespace SIAC.Web.Models
                     else
                     {
                         QuestoesTemas.AddRange(QuestoesAtual);
-                        foreach(QuestaoTema qt in QuestoesAtual)
+                        foreach (QuestaoTema qt in QuestoesAtual)
                         {
                             QuestoesTotal.Remove(qt);
                         }
@@ -243,9 +244,9 @@ namespace SIAC.Web.Models
                 {
                     int codTema = int.Parse(tema);
                     List<QuestaoTema> temp = (from qt in contexto.QuestaoTema
-                                              where qt.Questao.CodTipoQuestao == 2 
-                                              && qt.Questao.CodDificuldade <= dificulDisc 
-                                              && qt.CodDisciplina == codDisciplina 
+                                              where qt.Questao.CodTipoQuestao == 2
+                                              && qt.Questao.CodDificuldade <= dificulDisc
+                                              && qt.CodDisciplina == codDisciplina
                                               && qt.CodTema == codTema
                                               select qt).ToList();
 
@@ -425,6 +426,52 @@ namespace SIAC.Web.Models
         public static List<Questao> Listar()
         {
             return contexto.Questao.ToList();
+        }
+
+        //MÉTODO PARA USAR EM AJAX 
+        public static QuestaoTema ObterNovaQuestao(List<QuestaoTema> QuestoesOriginais)
+        {
+            if (QuestoesOriginais.Count > 0)
+            {
+                int codDisciplina = QuestoesOriginais.FirstOrDefault().CodDisciplina;
+                List<int> temas = (from qt in QuestoesOriginais select qt.CodTema).Distinct().ToList();
+                List<int> codQuestoes = (from qt in QuestoesOriginais select qt.CodQuestao).Distinct().ToList();
+                int codDificuldade = (from qt in QuestoesOriginais select qt.Questao.CodDificuldade).Max();
+
+                List<QuestaoTema> questoes = new List<QuestaoTema>();
+
+                Random r = new Random();
+
+                foreach (int codTema in temas)
+                {
+                    List<QuestaoTema> qstTemp = (from qt in contexto.QuestaoTema
+                                                 where qt.CodDisciplina == codDisciplina
+                                                 && qt.CodTema == codTema
+                                                 && qt.Questao.CodDificuldade <= codDificuldade
+                                                 select qt).ToList();
+
+                    qstTemp = Models.QuestaoTema.LimparRepeticao(qstTemp, QuestoesOriginais);
+
+                    if (qstTemp.Count > 0)
+                    {
+                        for (int i = codDificuldade; i >= 1; i--)
+                        {
+                            List<QuestaoTema> qstIdeal = (from qt in qstTemp
+                                                          where qt.Questao.CodDificuldade == codDificuldade
+                                                          select qt).ToList();
+
+                            if (qstIdeal.Count > 0)
+                            {
+                                int random = r.Next(0, qstIdeal.Count);
+
+                                return qstIdeal.ElementAtOrDefault(random);
+                            }
+
+                        }
+                    }
+                }
+            }
+            return null;
         }
     }
 }

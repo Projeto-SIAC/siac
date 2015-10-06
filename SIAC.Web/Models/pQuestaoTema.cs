@@ -11,12 +11,15 @@ namespace SIAC.Web.Models
 
         private static int ParamTempoInatividade = Parametro.Obter().TempoInatividade;
 
-        public static List<QuestaoTema> LimparRepeticao(List<QuestaoTema> retorno, List<QuestaoTema> lst1, List<QuestaoTema> lst2)
+        public static List<QuestaoTema> LimparRepeticao(List<QuestaoTema> retorno, List<QuestaoTema> lst1 = null, List<QuestaoTema> lst2 = null)
         {
-            List<int> codigos1 = (from qt in lst1 select qt.CodQuestao).ToList();
-            List<int> codigos2 = (from qt in lst2 select qt.CodQuestao).ToList();
-            List<QuestaoTema> ret = new List<QuestaoTema>();
+            List<int> codigos1 = new List<int>();
+            List<int> codigos2 = new List<int>();
 
+            codigos1 = lst1 != null ? (from qt in lst1 select qt.CodQuestao).ToList() : codigos1;
+            codigos2 = lst2 != null ? (from qt in lst2 select qt.CodQuestao).ToList() : codigos2;
+
+            List<QuestaoTema> ret = new List<QuestaoTema>();
 
             foreach (QuestaoTema item in retorno)
             {
