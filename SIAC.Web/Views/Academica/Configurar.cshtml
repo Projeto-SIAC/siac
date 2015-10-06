@@ -1,0 +1,70 @@
+﻿@using SIAC.Web.Models
+@model AvalAcademica
+@{
+    ViewBag.Title = "Configurar " + Model.Avaliacao.CodAvaliacao;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Scripts{
+    <script>
+        $('.ui.informacoes.modal')
+            .modal()
+        ;
+        $('.cancelar.button')
+            .popup({
+                on: 'click'
+            })
+        ;
+    </script>
+    }
+
+<h2>
+    @ViewBag.Title 
+    <div class="ui right floated button" onclick="$('.ui.informacoes.modal').modal('show')">Informações</div>
+    <a onclick="window.open('/Historico/Avaliacao/Academica/Imprimir/@Model.Avaliacao.CodAvaliacao', '_blank');" class="ui right floated button">Visualizar impressão</a>
+</h2>
+
+<div class="ui informacoes modal">
+    <i class="icon close"></i>
+    <div class="header">Informações sobre a avaliação</div>
+    <div class="content">
+        <table class="ui striped table">
+            <thead>
+                <tr>
+                    <th>Disciplina</th>
+                    <th>Tema(s)</th>
+                    <th>Quantidade</th>
+                    <th>Dificuldade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @* Disciplina *@
+                        <b>@Model.Disciplina.Descricao</b>
+                    </td>
+                    <td class="ui labels">
+                        @* Temas *@
+                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema)
+                        {
+                            <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                        }
+                    </td>
+                    <td class="ui labels">
+                        @* Qte de Questões *@
+                        <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.CodDisciplina, 1)</div></div>
+                        <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.CodDisciplina, 2)</div></div>
+                    </td>
+                    <td>
+                        @* Dificuldade *@
+                        @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(Model.CodDisciplina)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div></div>
+
+<div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Historico/Avaliacao/Academica/Detalhe/@Model.Avaliacao.CodAvaliacao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+<div class="ui button disabled">Salvar</div>

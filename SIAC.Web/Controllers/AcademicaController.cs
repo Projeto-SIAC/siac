@@ -275,7 +275,44 @@ namespace SIAC.Web.Controllers
             }
 
             return RedirectToAction("Index");
+        }
 
+        // GET: Avaliacao/Academica/Configurar/ACAD201520001
+        public ActionResult Configurar(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+                if (acad != null)
+                {
+                    string strMatr = Session["UsuarioMatricula"].ToString();
+                    Professor prof = Professor.ListarPorMatricula(strMatr);
+                    if (prof.CodProfessor == acad.CodProfessor)
+                    {
+                        return View(acad);
+                    }
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        // GET: Avaliacao/Academica/Imprimir/ACAD201520001
+        public ActionResult Imprimir(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+                if (acad != null)
+                {
+                    string strMatr = Session["UsuarioMatricula"].ToString();
+                    Professor prof = Professor.ListarPorMatricula(strMatr);
+                    if (prof.CodProfessor == acad.CodProfessor)
+                    {
+                        return View(acad);
+                    }
+                }
+            }
+            return RedirectToAction("Index");
         }
     }
 }
