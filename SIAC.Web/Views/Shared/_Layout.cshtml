@@ -156,11 +156,19 @@
             <div class="ui cancel button">Fechar</div>
         </div>
     </div>
+    <div class="ui dimmer">
+        <div class="ui large text global loader">Carregando</div>
+    </div>
     <div class="ui lero icon button" onmouseover="selecionarFocado()" onclick="leroLero()" style="position: fixed; right:.5em; bottom:.5em; z-index: 1003"><i class="icon write"></i></div>
     @Scripts.Render("~/bundles/js")
     @RenderSection("scripts", required: false)
-    <script>    
-        $('a[href]').on('click', function () { $('.ui.grid .thirteen.wide.column > .ui.segment').addClass('loading') });
+    <script>            
+        document.onreadystatechange = function () {
+            if (document.readyState == "complete") {
+                $('.ui.global.loader').parent().removeClass('active');
+            }
+        }
+        window.onbeforeunload = function () { $('.ui.global.loader').parent().addClass('active'); };
 
         $('.ui.mensagem.modal')
             .modal({
