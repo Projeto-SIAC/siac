@@ -190,6 +190,33 @@
             focado = $(':focus');
         }
 
+        // return 1 = a is bigger than b, 0 = a and b are same, -1 = a is smaller than b
+        function DateCompare(strDateA, strDateB)
+        {
+            timeDateA = Date.parse(strDateA);
+            timeDateB = Date.parse(strDateB);
+            if (timeDateA > timeDateB) {
+                return 1;
+            }
+            else if (timeDateA == timeDateB)
+            {
+                return 0;
+            }
+            else {
+                return -1;
+            }
+        }
+
+        // return true or false
+        function DateIsFuture(strDate) {
+            timeDateNow = new Date().getTime();
+            timeDate = Date.parse(strDate);
+            if (timeDate > timeDateNow) {
+                return true;
+            }
+            return false;
+        }
+
         function ToShortString(str, length) {
             var text = '';
 

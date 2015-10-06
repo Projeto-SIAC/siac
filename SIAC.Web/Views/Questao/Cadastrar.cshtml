@@ -428,26 +428,7 @@
             }
             $('.ui.confirmar.modal').modal('show');
             $('.ui.confirmar.modal div').popup();
-        }
-
-        function ToShortString(str, length) {
-            var text = '';
-
-            if (str.length > length) {
-                text = str.substring(0, length);
-                var afterText = str.substring(length);
-                if (afterText.indexOf(' ') > -1) {
-                    afterText = afterText.substring(0, afterText.indexOf(' '));
-                    afterText = afterText + '...';
-                }
-                text = text + afterText;
-            }
-            else {
-                text = str;
-            }
-
-            return text;
-        }
+        }        
 
         function abrirPesquisaModal() {
             $('.ui.pesquisa.modal').modal('show');
