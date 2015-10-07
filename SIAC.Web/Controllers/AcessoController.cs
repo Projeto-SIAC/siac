@@ -90,6 +90,7 @@ namespace SIAC.Web.Controllers
         // GET: Acesso/Sair
         public ActionResult Sair()
         {
+            Sistema.MatriculaAtivo.Remove(Session["UsuarioMatricula"].ToString());
             Session.Clear();
             return RedirectToAction("Index");
         }
