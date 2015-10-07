@@ -314,5 +314,24 @@ namespace SIAC.Web.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        //POST: Avaliacao/Academica/Trocar/ACAD20150001
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Trocar(string codigo)
+        {
+            if(!String.IsNullOrEmpty(codigo))
+            {
+                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+                if (acad != null)
+                {
+                    List<QuestaoTema> AvalQuestTema = acad.Avaliacao.QuestaoTema;
+
+                    Questao questao = Questao.ObterNovaQuestao(AvalQuestTema);
+                    return Json(questao.Enunciado);   
+                }
+            }
+
+            return Json(false);
+        }
     }
 }

@@ -12,6 +12,12 @@ namespace SIAC.Web
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute(
+                name: "AvalAcadTrocarQuestao",
+                url: "Avaliacao/Academica/Trocar/{codigo}",
+                defaults: new { controller = "Academica", action = "Trocar", codigo = UrlParameter.Optional}
+            );
             
             routes.MapRoute(
                 name: "QuestaoDetalhe",

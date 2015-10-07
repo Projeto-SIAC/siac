@@ -6,14 +6,28 @@
 }
 @section Scripts{
     <script>
-        $('.ui.informacoes.modal')
-            .modal()
-        ;
-        $('.cancelar.button')
-            .popup({
-                on: 'click'
-            })
-        ;
+        $('.ui.informacoes.modal').modal();
+        $('.cancelar.button').popup({ on: 'click' });
+        $('div').popup();
+
+        function obterNovaQuestao(codQuestao)
+        {
+            $('.ui.segment').addClass('loading');
+            $.ajax({
+                type: "POST",
+                url: '@Url.RouteUrl("AvalAcadTrocarQuestao")',
+                data: { codigo: '@Model.Avaliacao.CodAvaliacao' },
+                success: function (data) {
+                    $('.ui.segment').removeClass('loading');
+                    Mensagem(data);
+                },
+                error: function (data) {
+                    $('.ui.segment').removeClass('loading');
+                    alert('erro');
+                }
+            });
+            //Mensagem(codQuestao,"Código de Questão");
+        }
     </script>
     }
 
@@ -74,7 +88,7 @@
                 <div class="card">
                     <div class="content">
                         <div class="header" data-html="@( !String.IsNullOrEmpty(questao.Objetivo) ? "<b>Objetivo</b>: " + questao.Objetivo : "")">
-                            <div class="ui icon right floated button"><i class="refresh icon"></i></div>
+                            <div onclick="obterNovaQuestao(@questao.CodQuestao)" class="ui icon right floated button"><i class="refresh icon"></i></div>
                             @{
                                 var enunciado = (contador.GetIndiceQuestao()+". "+questao.Enunciado).Split('\n', '\r');
                                 foreach (var strEnunciado in enunciado)

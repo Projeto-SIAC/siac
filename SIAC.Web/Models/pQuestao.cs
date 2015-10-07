@@ -429,8 +429,9 @@ namespace SIAC.Web.Models
         }
 
         //MÉTODO PARA USAR EM AJAX 
-        public static QuestaoTema ObterNovaQuestao(List<QuestaoTema> QuestoesOriginais)
+        public static Questao ObterNovaQuestao(List<QuestaoTema> QuestoesOriginais)
         {
+            Helpers.TimeLog.Iniciar("Trocar Questão");
             if (QuestoesOriginais.Count > 0)
             {
                 int codDisciplina = QuestoesOriginais.FirstOrDefault().CodDisciplina;
@@ -457,20 +458,22 @@ namespace SIAC.Web.Models
                         for (int i = codDificuldade; i >= 1; i--)
                         {
                             List<QuestaoTema> qstIdeal = (from qt in qstTemp
-                                                          where qt.Questao.CodDificuldade == codDificuldade
+                                                          where qt.Questao.CodDificuldade == i
                                                           select qt).ToList();
 
                             if (qstIdeal.Count > 0)
                             {
                                 int random = r.Next(0, qstIdeal.Count);
 
-                                return qstIdeal.ElementAtOrDefault(random);
+                                return qstIdeal.ElementAtOrDefault(random).Questao;
                             }
 
                         }
                     }
                 }
             }
+
+            Helpers.TimeLog.Parar();
             return null;
         }
     }

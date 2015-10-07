@@ -31,6 +31,22 @@ namespace SIAC.Web.Models
             }
         }
 
+        public List<QuestaoTema> QuestaoTema
+        {
+            get
+            {
+                List<QuestaoTema> QuestoesTema = new List<QuestaoTema>();
+                foreach (AvaliacaoTema item in this.AvaliacaoTema)
+                {
+                    foreach (AvalTemaQuestao qt in item.AvalTemaQuestao)
+                    {
+                        QuestoesTema.Add(qt.QuestaoTema);
+                    }
+                }
+                return QuestoesTema;
+            }
+        }
+
         public List<AvalQuesPessoaResposta> PessoaResposta
         {
             get
