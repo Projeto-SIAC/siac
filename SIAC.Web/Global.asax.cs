@@ -15,7 +15,11 @@ namespace SIAC.Web
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
 
+        protected void Session_End(object sender, EventArgs e)
+        {
+            Models.Sistema.MatriculaAtivo.Remove((string)Session["UsuarioMatricula"]);
         }
     }
 }
