@@ -7,7 +7,7 @@ namespace SIAC.Web.Models
 {
     public partial class QuestaoTema
     {
-        private static dbSIACEntities contexto = DataContextSIAC.GetInstance();
+        private static dbSIACEntities contexto { get { return DataContextSIAC.GetInstance(); } }
 
         private static int ParamTempoInatividade = Parametro.Obter().TempoInatividade;
 

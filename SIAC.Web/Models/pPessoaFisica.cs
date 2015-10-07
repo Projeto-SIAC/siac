@@ -7,7 +7,7 @@ namespace SIAC.Web.Models
 {
     public partial class PessoaFisica
     {
-        private static dbSIACEntities contexto = DataContextSIAC.GetInstance();
+        private static dbSIACEntities contexto { get { return DataContextSIAC.GetInstance(); } }
 
         public static int Inserir(PessoaFisica pessoaFisica)
         {

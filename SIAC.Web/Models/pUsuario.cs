@@ -8,7 +8,9 @@ namespace SIAC.Web.Models
 {
     public partial class Usuario
     {
-        private static dbSIACEntities contexto = DataContextSIAC.GetInstance();
+        //private static dbSIACEntities contexto { get { return DataContextSIAC.GetInstance(); } }
+
+        private static dbSIACEntities contexto { get { return DataContextSIAC.GetInstance(); } }
 
         public static Usuario Autenticar(string matricula, string senha)
         {

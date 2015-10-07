@@ -7,7 +7,7 @@ namespace SIAC.Web.Models
 {
     public partial class Colaborador
     {
-        private static dbSIACEntities contexto = DataContextSIAC.GetInstance();
+        private static dbSIACEntities contexto { get { return DataContextSIAC.GetInstance(); } }
 
         public static void Inserir(Colaborador colaborador)
         {

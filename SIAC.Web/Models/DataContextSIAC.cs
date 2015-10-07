@@ -6,18 +6,15 @@ using System.Web;
 namespace SIAC.Web.Models
 { 
     public class DataContextSIAC
-    {
-        private static dbSIACEntities contexto;
-        
-        private DataContextSIAC() {}
-
+    {        
         public static dbSIACEntities GetInstance()
         {
+            dbSIACEntities contexto = HttpContext.Current.Session["dbSIACEntities"] as dbSIACEntities;
             if (contexto == null)
             {
-                contexto = new dbSIACEntities();
-            }   
-            return contexto;
+                HttpContext.Current.Session["dbSIACEntities"] = new dbSIACEntities();
+            }
+            return (dbSIACEntities)HttpContext.Current.Session["dbSIACEntities"];
         }
     }
 }
