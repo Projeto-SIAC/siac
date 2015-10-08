@@ -91,5 +91,11 @@ namespace SIAC.Web.Models
             }
             return Sistema.NumIdentificador[codTipoAvaliacao]++;
         }
+
+        public void TrocarQuestao(int codQuestao,Questao questao)
+        {
+            //var avalTema = from at in AvaliacaoTema where at.CodDisciplina == select at.AvalTemaQuestao
+            //var avalTema = AvaliacaoTema.FirstOrDefault(at=>at.CodDisciplina 
+        }
     }
 }

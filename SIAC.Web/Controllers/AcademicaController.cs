@@ -359,54 +359,24 @@ namespace SIAC.Web.Controllers
                 if (acad != null)
                 {
                     List<QuestaoTema> AvalQuestTema = acad.Avaliacao.QuestaoTema;
+                    Questao questaoAntiga = acad.Avaliacao.Questao.ElementAt(indice);
 
-                    Questao questao = Questao.ObterNovaQuestao(AvalQuestTema, tipo);
-                    
+                    QuestaoTema questao = Questao.ObterNovaQuestao(AvalQuestTema, tipo);
+
+                    var avalTemaQuestao = DataContextSIAC.GetInstance().AvalTemaQuestao.SingleOrDefault(
+                                a=> a.AvaliacaoTema.Avaliacao.Ano== acad.Avaliacao.Ano
+                                && a.AvaliacaoTema.Avaliacao.Semestre == acad.Avaliacao.Semestre
+                                && a.AvaliacaoTema.Avaliacao.CodTipoAvaliacao == acad.Avaliacao.CodTipoAvaliacao
+                                && a.AvaliacaoTema.Avaliacao.NumIdentificador == acad.Avaliacao.NumIdentificador
+                                && a.CodQuestao == questaoAntiga.CodQuestao
+                        );
+
+                    avalTemaQuestao.QuestaoTema = questao;
+                    DataContextSIAC.GetInstance().SaveChanges();
                     if (questao != null)
                     {
-                        /*
-                        if (tipo == 1)
-                        {
-                            //List<Alternativa> alts = new List<Alternativa>();
-                            var alts = from a in questao.Alternativa select new { Enunciado = a.Enunciado };
-                            var result = new
-                            {
-                                CodQuestao = questao.CodQuestao,
-                                Professor = questao.Professor.Usuario.PessoaFisica.Nome,
-                                Dificuldade = questao.Dificuldade.Descricao,
-                                TipoQuestao = questao.TipoQuestao.Descricao,
-                                Enunciado = questao.Enunciado,
-                                Objetivo = questao.Objetivo,
-                                Comentario = questao.Comentario,
-                                ChaveDeResposta = questao.ChaveDeResposta,
-                                DtCadastro = questao.DtCadastro,
-                                DtUltimoUso = questao.DtUltimoUso,
-                                Disciplina = questao.QuestaoTema.FirstOrDefault().Tema.Disciplina.Descricao,
-                                Alternativas = alts
-                            };
-                            return Json(result);
-                        }
-                        else if(tipo == 2)
-                        {
-                            var result = new
-                            {
-                                CodQuestao = questao.CodQuestao,
-                                Professor = questao.Professor.Usuario.PessoaFisica.Nome,
-                                Dificuldade = questao.Dificuldade.Descricao,
-                                TipoQuestao = questao.TipoQuestao.Descricao,
-                                Enunciado = questao.Enunciado,
-                                Objetivo = questao.Objetivo,
-                                Comentario = questao.Comentario,
-                                ChaveDeResposta = questao.ChaveDeResposta,
-                                DtCadastro = questao.DtCadastro,
-                                DtUltimoUso = questao.DtUltimoUso,
-                                Disciplina = questao.QuestaoTema.FirstOrDefault().Tema.Disciplina.Descricao
-                            };
-                            return Json(result);
-                        }
-                        */
                         ViewData["Index"] = indice;
-                        return PartialView("_Questao", questao);
+                        return PartialView("_Questao", questao.Questao);
                     }
                 }
             }

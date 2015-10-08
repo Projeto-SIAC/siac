@@ -429,7 +429,7 @@ namespace SIAC.Web.Models
         }
 
         //MÉTODO PARA USAR EM AJAX 
-        public static Questao ObterNovaQuestao(List<QuestaoTema> QuestoesOriginais, int codTipoQuestao)
+        public static QuestaoTema ObterNovaQuestao(List<QuestaoTema> QuestoesOriginais, int codTipoQuestao)
         {
             if (QuestoesOriginais.Count > 0)
             {
@@ -465,7 +465,7 @@ namespace SIAC.Web.Models
                             {
                                 int random = r.Next(0, qstIdeal.Count);
 
-                                return qstIdeal.ElementAtOrDefault(random).Questao;
+                                return qstIdeal.ElementAtOrDefault(random);
                             }
 
                         }
