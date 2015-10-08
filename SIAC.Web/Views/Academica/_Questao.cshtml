@@ -1,0 +1,85 @@
+﻿@using SIAC.Web.Models
+@model Questao
+<div class="content">
+    <div class="header" data-html="@( !String.IsNullOrEmpty(Model.Objetivo) ? "<b>Objetivo</b>: " + Model.Objetivo : "")">
+        <div onclick="obterNovaQuestao(@Model.CodQuestao, @ViewData["Index"], @Model.CodTipoQuestao)" class="ui icon right floated button"><i class="refresh icon"></i></div>
+        @{
+            var enunciado = (((int)ViewData["Index"]).GetIndiceQuestao()+". "+Model.Enunciado).Split('\n', '\r');
+            foreach (var strEnunciado in enunciado)
+            {
+                if (!String.IsNullOrWhiteSpace(strEnunciado))
+                {
+                    <p>@strEnunciado</p>
+                }
+            }
+        }
+    </div>
+</div>
+<div class="content">
+    @if (Model.CodTipoQuestao == 1)
+    {
+        <div class="ui list">
+            @foreach (var alternativa in Model.Alternativa)
+            {
+                <div class="item">
+                    <div class="middle aligned content" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
+                        <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
+                        @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
+                        {
+                            <a class="ui tiny green label">Correta</a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div data-html="@(!String.IsNullOrEmpty(Model.Comentario) ? "<b>Comentário</b>: " + Model.Comentario : "")">
+            <a class="ui tiny green ribbon label">Chave de Resposta</a>
+            @{
+                var chaveDeResposta = Model.ChaveDeResposta.Split('\n', '\r');
+                foreach (var strChaveDeResposta in chaveDeResposta)
+                {
+                    if (!String.IsNullOrWhiteSpace(strChaveDeResposta))
+                    {
+                        <p><i>@strChaveDeResposta</i></p>
+                    }
+                }
+            }
+        </div>
+                }
+</div>
+@if (Model.QuestaoAnexo.Count > 0)
+{
+    <div class="extra content">
+        <div class="ui styled fluid accordion">
+            <div class="title"><i class="icon dropdown"></i>Anexos</div>
+            <div class="content">
+                @foreach (var anexo in Model.QuestaoAnexo)
+                {
+                    switch (anexo.CodTipoAnexo)
+                    {
+                        case 1:
+                            <a class="ui card">
+                                <div class="image">
+                                    <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo, 0, anexo.Anexo.Length)" />
+                                </div>
+                                <div class="content">
+                                    <div class="header">
+                                        @anexo.Legenda
+                                    </div>
+                                    <div class="description">
+                                        @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte não informada")
+                                    </div>
+                                </div>
+                            </a>
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            </div>
+        </div>
+    </div>
+}  

@@ -351,7 +351,7 @@ namespace SIAC.Web.Controllers
 
         //POST: Avaliacao/Academica/Trocar/ACAD20150001
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Trocar(string codigo,int tipo)
+        public ActionResult Trocar(string codigo, int tipo, int indice)
         {
             if(!String.IsNullOrEmpty(codigo))
             {
@@ -360,10 +360,11 @@ namespace SIAC.Web.Controllers
                 {
                     List<QuestaoTema> AvalQuestTema = acad.Avaliacao.QuestaoTema;
 
-                    Questao questao = Questao.ObterNovaQuestao(AvalQuestTema,tipo);
+                    Questao questao = Questao.ObterNovaQuestao(AvalQuestTema, tipo);
                     
                     if (questao != null)
                     {
+                        /*
                         if (tipo == 1)
                         {
                             //List<Alternativa> alts = new List<Alternativa>();
@@ -403,11 +404,14 @@ namespace SIAC.Web.Controllers
                             };
                             return Json(result);
                         }
+                        */
+                        ViewData["Index"] = indice;
+                        return PartialView("_Questao", questao);
                     }
                 }
             }
 
-            return Json(false);
+            return Json(String.Empty);
         }
     }
 }

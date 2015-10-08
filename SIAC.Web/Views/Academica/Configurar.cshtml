@@ -19,19 +19,20 @@
                 url: '@Url.RouteUrl("AvalAcadTrocarQuestao")',
                 data: {
                     codigo: '@Model.Avaliacao.CodAvaliacao',
-                    tipo: codTipoQuestao
+                    tipo: codTipoQuestao,
+                    indice: indice
                 },
                 success: function (data) {
+                    if (data) {
+                        card.html(data);
+                    }
                     card.removeClass('ui form loading');
-                    card.html('');
-
+                    /*
                     var enunciado = indice + data.Enunciado;
-
-
                     card.append('\
                         <div class="content">\
                             <div class="header">\
-                                <div onclick="obterNovaQuestao('+ data.CodQuestao, indice, codTipoQuestao + ')" class="ui icon right floated button"><i class="refresh icon"></i></div>\
+                                <div onclick="obterNovaQuestao('+ data.CodQuestao, codTipoQuestao + ')" class="ui icon right floated button"><i class="refresh icon"></i></div>\
                                 <p>'+ enunciado + '</p>\
                             </div>\
                         </div>\
@@ -46,11 +47,11 @@
                             </div>\
                         </div>\
                         ');
+                    */
                 },
-                error: function (data) {
+                error: function () {
                     card.removeClass('ui form loading');
-                    alert('erro');
-                    console.log("error");
+                    Mensagem('Ocorreu um erro não esperado.');
                 }
             });
         }
@@ -108,95 +109,13 @@
     <h3 class="ui dividing header">Questões</h3>
     <div class="ui one cards" style="max-height: 25em; overflow-y: auto">
         @{ 
-            int contador = 0;
-            foreach (Questao questao in Model.Avaliacao.Questao)
-            {
-                <div id="CardQuestao@(contador+1)" class="card">
-                    <div class="content">
-                        <div class="header" data-html="@( !String.IsNullOrEmpty(questao.Objetivo) ? "<b>Objetivo</b>: " + questao.Objetivo : "")">
-                            <div onclick="obterNovaQuestao(@questao.CodQuestao,@(contador+1),@questao.CodTipoQuestao)" class="ui icon right floated button"><i class="refresh icon"></i></div>
-                            @{
-                                var enunciado = (contador.GetIndiceQuestao()+". "+questao.Enunciado).Split('\n', '\r');
-                                foreach (var strEnunciado in enunciado)
-                                {
-                                    if (!String.IsNullOrWhiteSpace(strEnunciado))
-                                    {
-                                        <p>@strEnunciado</p>
-                                    }
-                                }
-                            }
-                        </div>                    
-                    </div>
-                    <div class="content">
-                        @if (questao.CodTipoQuestao == 1)
-                        {
-                            <div class="ui list">
-                                @foreach (var alternativa in questao.Alternativa)
-                                    {
-                                    <div class="item">
-                                        <div class="middle aligned content" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
-                                            <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
-                                            @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
-                                            {
-                                                <a class="ui tiny green label">Correta</a>
-                                            }
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        }
-                        else
-                        {
-                            <div data-html="@(!String.IsNullOrEmpty(questao.Comentario) ? "<b>Comentário</b>: " + questao.Comentario : "")">
-                                <a class="ui tiny green ribbon label">Chave de Resposta</a>
-                                @{
-                                    var chaveDeResposta = questao.ChaveDeResposta.Split('\n', '\r');
-                                    foreach (var strChaveDeResposta in chaveDeResposta)
-                                    {
-                                        if (!String.IsNullOrWhiteSpace(strChaveDeResposta))
-                                        {
-                                            <p><i>@strChaveDeResposta</i></p>
-                                        }
-                                    }
-                                }
-                            </div>
-                        }
-                    </div>
-                    @if (questao.QuestaoAnexo.Count > 0)
-                    {
-                        <div class="extra content">
-                            <div class="ui styled fluid accordion">
-                                <div class="title"><i class="icon dropdown"></i>Anexos</div>
-                                <div class="content">
-                                    @foreach (var anexo in questao.QuestaoAnexo)
-                                    {
-                                        switch (anexo.CodTipoAnexo)
-                                        {
-                                            case 1:
-                                                <a class="ui card">
-                                                    <div class="image">
-                                                        <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo, 0, anexo.Anexo.Length)" />
-                                                    </div>
-                                                    <div class="content">
-                                                        <div class="header">
-                                                            @anexo.Legenda
-                                                        </div>
-                                                        <div class="description">
-                                                            @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte não informada")
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    }    
+            //int contador = 0;
+            for (int i = 0; i < Model.Avaliacao.Questao.Count; i++)
+            {                
+                <div id="CardQuestao@(i)" class="card">
+                    @Html.Partial("_Questao", Model.Avaliacao.Questao[i], new ViewDataDictionary { { "Index", i } })
                 </div>
-                contador++;
+            //contador++;
             }
         }
     </div>
