@@ -67,12 +67,31 @@ namespace SIAC.Web.Models
 
         public static int ObterNumIdentificador(int codTipoAvaliacao)
         {
-            int ano = DateTime.Now.Year;
-            int semestre = (DateTime.Now.Month > 6) ? 2 : 1;
-
-            Avaliacao avalTemp = contexto.Avaliacao.Where(a => a.Ano == ano && a.Semestre == semestre && a.CodTipoAvaliacao == codTipoAvaliacao).OrderByDescending(a => a.NumIdentificador).FirstOrDefault();
-
-            return (avalTemp != null) ? avalTemp.NumIdentificador + 1 : 1;
+            if (Sistema.NumIdentificador.Count == 0)
+            {
+                for (int i = 1; i <= contexto.TipoAvaliacao.Max(t=>t.CodTipoAvaliacao); i++)
+                {
+                    int ano = DateTime.Now.Year;
+                    int semestre = (DateTime.Now.Month > 6) ? 2 : 1;
+                    Avaliacao avalTemp = contexto.Avaliacao
+                        .Where(a => a.Ano == ano 
+                            && a.Semestre == semestre 
+                            && a.CodTipoAvaliacao == i)
+                        .OrderByDescending(a => a.NumIdentificador)
+                        .FirstOrDefault();
+                    if (avalTemp != null)
+                    {
+                        Sistema.NumIdentificador.Add(i, avalTemp.NumIdentificador + 1);
+                    } 
+                    else
+                    {
+                        Sistema.NumIdentificador.Add(i, 1);
+                    }
+                }
+            }
+            int numIdentifcador = Sistema.NumIdentificador[codTipoAvaliacao];
+            Sistema.NumIdentificador[codTipoAvaliacao]++;
+            return numIdentifcador;
         }
     }
 }
