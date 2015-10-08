@@ -351,30 +351,22 @@ namespace SIAC.Web.Controllers
 
         //POST: Avaliacao/Academica/Trocar/ACAD20150001
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Trocar(string codigo, int tipo, int indice)
+        public ActionResult Trocar(string codigoAvaliacao, int tipo, int indice, int codQuestao)
         {
-            if(!String.IsNullOrEmpty(codigo))
+            if(!String.IsNullOrEmpty(codigoAvaliacao))
             {
-                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigoAvaliacao);
                 if (acad != null)
                 {
                     List<QuestaoTema> AvalQuestTema = acad.Avaliacao.QuestaoTema;
-                    Questao questaoAntiga = acad.Avaliacao.Questao.ElementAt(indice);
+
+                    //Questao questaoAntiga = acad.Avaliacao.Questao.ElementAt(indice); //REVER o INDICE
 
                     QuestaoTema questao = Questao.ObterNovaQuestao(AvalQuestTema, tipo);
-
-                    var avalTemaQuestao = DataContextSIAC.GetInstance().AvalTemaQuestao.SingleOrDefault(
-                                a=> a.AvaliacaoTema.Avaliacao.Ano== acad.Avaliacao.Ano
-                                && a.AvaliacaoTema.Avaliacao.Semestre == acad.Avaliacao.Semestre
-                                && a.AvaliacaoTema.Avaliacao.CodTipoAvaliacao == acad.Avaliacao.CodTipoAvaliacao
-                                && a.AvaliacaoTema.Avaliacao.NumIdentificador == acad.Avaliacao.NumIdentificador
-                                && a.CodQuestao == questaoAntiga.CodQuestao
-                        );
-
-                    avalTemaQuestao.QuestaoTema = questao;
-                    DataContextSIAC.GetInstance().SaveChanges();
+                    
                     if (questao != null)
                     {
+                        acad.Avaliacao.TrocarQuestao(codQuestao, questao);
                         ViewData["Index"] = indice;
                         return PartialView("_Questao", questao.Questao);
                     }

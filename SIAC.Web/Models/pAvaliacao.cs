@@ -92,10 +92,27 @@ namespace SIAC.Web.Models
             return Sistema.NumIdentificador[codTipoAvaliacao]++;
         }
 
-        public void TrocarQuestao(int codQuestao,Questao questao)
+        public void TrocarQuestao(int codQuestaoAntiga,QuestaoTema novoQuestaoTema)
         {
-            //var avalTema = from at in AvaliacaoTema where at.CodDisciplina == select at.AvalTemaQuestao
-            //var avalTema = AvaliacaoTema.FirstOrDefault(at=>at.CodDisciplina 
+            AvalTemaQuestao aqtAntiga = (from atq in contexto.AvalTemaQuestao
+                                    where atq.Ano == Ano
+                                    && atq.Semestre == Semestre
+                                    && atq.CodTipoAvaliacao == CodTipoAvaliacao
+                                    && atq.NumIdentificador == NumIdentificador
+                                    && atq.CodQuestao == codQuestaoAntiga select atq).FirstOrDefault();
+
+            contexto.AvalTemaQuestao.Remove(aqtAntiga);
+
+            AvalTemaQuestao aqtNovo = new AvalTemaQuestao();
+            aqtNovo.QuestaoTema = novoQuestaoTema;
+            aqtNovo.Ano = Ano;
+            aqtNovo.Semestre = Semestre;
+            aqtNovo.CodTipoAvaliacao = CodTipoAvaliacao;
+            aqtNovo.NumIdentificador = NumIdentificador;
+
+            contexto.AvalTemaQuestao.Add(aqtNovo);
+
+            contexto.SaveChanges();
         }
     }
 }

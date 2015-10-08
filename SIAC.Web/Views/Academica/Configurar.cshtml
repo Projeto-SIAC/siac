@@ -9,6 +9,7 @@
         $('.ui.informacoes.modal').modal();
         $('.cancelar.button').popup({ on: 'click' });
         $('div').popup();
+        $('.ui.accordion').accordion();
 
         function obterNovaQuestao(codQuestao, indice, codTipoQuestao) {
             var card = $('#CardQuestao' + indice);
@@ -18,36 +19,17 @@
                 type: "POST",
                 url: '@Url.RouteUrl("AvalAcadTrocarQuestao")',
                 data: {
-                    codigo: '@Model.Avaliacao.CodAvaliacao',
+                    codigoAvaliacao: '@Model.Avaliacao.CodAvaliacao',
                     tipo: codTipoQuestao,
-                    indice: indice
+                    indice: indice,
+                    codQuestao: codQuestao
                 },
                 success: function (data) {
                     if (data) {
                         card.html(data);
+                        $('.ui.accordion').accordion();
                     }
                     card.removeClass('ui form loading');
-                    /*
-                    var enunciado = indice + data.Enunciado;
-                    card.append('\
-                        <div class="content">\
-                            <div class="header">\
-                                <div onclick="obterNovaQuestao('+ data.CodQuestao, codTipoQuestao + ')" class="ui icon right floated button"><i class="refresh icon"></i></div>\
-                                <p>'+ enunciado + '</p>\
-                            </div>\
-                        </div>\
-                        <div class="content">\
-                            <div class="ui list">\
-                                <div class="item">\
-                                    <div class="middle aligned content">\
-                                        <b>'+ data.Alternativas[0].CodOrdem + '</b>)' + data.Alternativas[0].Enunciado + '\
-                                        <a class="ui tiny green label">Correta</a>\
-                                    </div>\
-                                </div>\
-                            </div>\
-                        </div>\
-                        ');
-                    */
                 },
                 error: function () {
                     card.removeClass('ui form loading');
