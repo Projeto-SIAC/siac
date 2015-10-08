@@ -315,6 +315,40 @@ namespace SIAC.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: Avaliacao/Academica/Agendada
+        [HttpGet]
+        public ActionResult Agendada()
+        {
+            if ((int)Session["UsuarioCategoriaCodigo"] == 2)
+            {
+                string strMatr = Session["UsuarioMatricula"].ToString();
+                int codProfessor = Professor.ListarPorMatricula(strMatr).CodProfessor;
+                return View(AvalAcademica.ListarAgendadaPorProfessor(codProfessor));
+            }
+            return RedirectToAction("Index");
+        }
+
+        // POST: Avaliacao/Academica/Agendada/ACAD201520001
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Agendada(string codigo)
+        {
+            if (String.IsNullOrEmpty(codigo))
+            {
+                return RedirectToAction("Index");
+            }
+            if ((int)Session["UsuarioCategoriaCodigo"] == 2)
+            {
+                string strMatr = Session["UsuarioMatricula"].ToString();
+                int codProfessor = Professor.ListarPorMatricula(strMatr).CodProfessor;
+                AvalAcademica avalAcademica = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+                if (codProfessor == avalAcademica.CodProfessor)
+                {
+                    return PartialView("_Agendada", avalAcademica);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
         //POST: Avaliacao/Academica/Trocar/ACAD20150001
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Trocar(string codigo)

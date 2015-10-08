@@ -607,6 +607,8 @@
     <Content Include="Views\Academica\Detalhe.cshtml" />
     <Content Include="Views\Academica\Configurar.cshtml" />
     <Content Include="Views\Academica\Imprimir.cshtml" />
+    <Content Include="Views\Academica\Agendada.cshtml" />
+    <Content Include="Views\Academica\_Agendada.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -34,6 +34,14 @@ namespace SIAC.Web.Models
                                          .ThenByDescending(ac=>ac.NumIdentificador).ToList();
         }
 
+        public static List<AvalAcademica> ListarAgendadaPorProfessor(int codProfessor)
+        {
+            return contexto.AvalAcademica
+                .Where(a => a.CodProfessor == codProfessor && a.Avaliacao.DtAplicacao.HasValue)
+                .OrderBy(a => a.Avaliacao.DtAplicacao)
+                .ToList();
+        }
+
         public static AvalAcademica ListarPorCodigoAvaliacao(string codigo)
         {
             int numIdentificador = 0;

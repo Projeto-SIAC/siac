@@ -89,9 +89,7 @@ namespace SIAC.Web.Models
                     }
                 }
             }
-            int numIdentifcador = Sistema.NumIdentificador[codTipoAvaliacao];
-            Sistema.NumIdentificador[codTipoAvaliacao]++;
-            return numIdentifcador;
+            return Sistema.NumIdentificador[codTipoAvaliacao]++;
         }
     }
 }

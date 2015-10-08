@@ -1,0 +1,58 @@
+﻿@using SIAC.Web.Models
+@model List<AvalAcademica>
+@{
+    ViewBag.Title = "Avaliações Agendadas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Scripts {
+    <script>        
+        $('.ui.avaliacao.modal').modal();
+        function Detalhe(strCodigo) {
+            $('.ui.global.loader').parent().addClass('active');
+            $.ajax({
+                url: '/Historico/Avaliacao/Academica/Agendada/' + strCodigo,
+                method: 'POST',
+                success: function (htmlModal) {
+                    $('.ui.avaliacao.modal').html('').append(htmlModal).modal('show');
+                    $('.ui.global.loader').parent().removeClass('active');
+                    $('.ui.avaliacao.modal .ui.accordion').accordion({
+                        onChange: function () { $('.ui.avaliacao.modal').modal('refresh'); }
+                    });
+                },
+                error: function (xhr) { Mensagem("Ocorreu um erro."); $('.ui.global.loader').parent().removeClass('active'); }
+            });
+        }
+    </script>
+}
+<div class="ui fullscreen avaliacao modal">
+</div>
+
+<h2>@ViewBag.Title</h2>
+<div class="ui basic segment">
+    <div class="ui two stackable cards">
+        @foreach (AvalAcademica avalAcademica in Model)
+            {
+            <a onclick="Detalhe('@avalAcademica.Avaliacao.CodAvaliacao')" class="card">
+                <div class="content">
+                    <div class="header">@avalAcademica.Avaliacao.CodAvaliacao</div>
+                    <div class="meta">
+                        <span title="@avalAcademica.Avaliacao.DtCadastro.ToBrazilianString()">@avalAcademica.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
+                    </div>
+                    <div class="description">
+                        <p><b>Disciplina</b>: @avalAcademica.Disciplina.Descricao</p>
+                        <p><b>Turma</b>: @avalAcademica.Turma.Curso.Descricao (@avalAcademica.Turma.CodTurma)</p>
+                        <p><b>Quantidade de Questões</b>: @avalAcademica.Avaliacao.QteQuestoes()</p>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <div class="ui button">Arquivar</div>
+                </div>
+                <span class="ui @(avalAcademica.Avaliacao.DtAplicacao.Value < DateTime.Now ? "red" : "") attached top right label">
+                    <i class="warning icon"></i>
+                    @avalAcademica.Avaliacao.DtAplicacao.Value.ToShortDateString() @avalAcademica.Avaliacao.DtAplicacao.Value.ToShortTimeString()
+                </span>
+            </a>
+        }
+    </div>
+</div>
+
