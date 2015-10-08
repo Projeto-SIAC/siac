@@ -351,7 +351,7 @@ namespace SIAC.Web.Controllers
 
         //POST: Avaliacao/Academica/Trocar/ACAD20150001
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Trocar(string codigo)
+        public ActionResult Trocar(string codigo,int tipo)
         {
             if(!String.IsNullOrEmpty(codigo))
             {
@@ -360,8 +360,50 @@ namespace SIAC.Web.Controllers
                 {
                     List<QuestaoTema> AvalQuestTema = acad.Avaliacao.QuestaoTema;
 
-                    Questao questao = Questao.ObterNovaQuestao(AvalQuestTema);
-                    return Json(questao.Enunciado);   
+                    Questao questao = Questao.ObterNovaQuestao(AvalQuestTema,tipo);
+                    
+                    if (questao != null)
+                    {
+                        if (tipo == 1)
+                        {
+                            //List<Alternativa> alts = new List<Alternativa>();
+                            var alts = from a in questao.Alternativa select new { Enunciado = a.Enunciado };
+                            var result = new
+                            {
+                                CodQuestao = questao.CodQuestao,
+                                Professor = questao.Professor.Usuario.PessoaFisica.Nome,
+                                Dificuldade = questao.Dificuldade.Descricao,
+                                TipoQuestao = questao.TipoQuestao.Descricao,
+                                Enunciado = questao.Enunciado,
+                                Objetivo = questao.Objetivo,
+                                Comentario = questao.Comentario,
+                                ChaveDeResposta = questao.ChaveDeResposta,
+                                DtCadastro = questao.DtCadastro,
+                                DtUltimoUso = questao.DtUltimoUso,
+                                Disciplina = questao.QuestaoTema.FirstOrDefault().Tema.Disciplina.Descricao,
+                                Alternativas = alts
+                            };
+                            return Json(result);
+                        }
+                        else if(tipo == 2)
+                        {
+                            var result = new
+                            {
+                                CodQuestao = questao.CodQuestao,
+                                Professor = questao.Professor.Usuario.PessoaFisica.Nome,
+                                Dificuldade = questao.Dificuldade.Descricao,
+                                TipoQuestao = questao.TipoQuestao.Descricao,
+                                Enunciado = questao.Enunciado,
+                                Objetivo = questao.Objetivo,
+                                Comentario = questao.Comentario,
+                                ChaveDeResposta = questao.ChaveDeResposta,
+                                DtCadastro = questao.DtCadastro,
+                                DtUltimoUso = questao.DtUltimoUso,
+                                Disciplina = questao.QuestaoTema.FirstOrDefault().Tema.Disciplina.Descricao
+                            };
+                            return Json(result);
+                        }
+                    }
                 }
             }
 

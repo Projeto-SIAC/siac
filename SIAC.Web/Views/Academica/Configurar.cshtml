@@ -10,23 +10,49 @@
         $('.cancelar.button').popup({ on: 'click' });
         $('div').popup();
 
-        function obterNovaQuestao(codQuestao)
-        {
-            $('.ui.segment').addClass('loading');
+        function obterNovaQuestao(codQuestao, indice, codTipoQuestao) {
+            var card = $('#CardQuestao' + indice);
+            console.log("inicio");
+            card.addClass('ui form loading');
             $.ajax({
                 type: "POST",
                 url: '@Url.RouteUrl("AvalAcadTrocarQuestao")',
-                data: { codigo: '@Model.Avaliacao.CodAvaliacao' },
+                data: {
+                    codigo: '@Model.Avaliacao.CodAvaliacao',
+                    tipo: codTipoQuestao
+                },
                 success: function (data) {
-                    $('.ui.segment').removeClass('loading');
-                    Mensagem(data);
+                    card.removeClass('ui form loading');
+                    card.html('');
+
+                    var enunciado = indice + data.Enunciado;
+
+
+                    card.append('\
+                        <div class="content">\
+                            <div class="header">\
+                                <div onclick="obterNovaQuestao('+ data.CodQuestao, indice, codTipoQuestao + ')" class="ui icon right floated button"><i class="refresh icon"></i></div>\
+                                <p>'+ enunciado + '</p>\
+                            </div>\
+                        </div>\
+                        <div class="content">\
+                            <div class="ui list">\
+                                <div class="item">\
+                                    <div class="middle aligned content">\
+                                        <b>'+ data.Alternativas[0].CodOrdem + '</b>)' + data.Alternativas[0].Enunciado + '\
+                                        <a class="ui tiny green label">Correta</a>\
+                                    </div>\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
                 },
                 error: function (data) {
-                    $('.ui.segment').removeClass('loading');
+                    card.removeClass('ui form loading');
                     alert('erro');
+                    console.log("error");
                 }
             });
-            //Mensagem(codQuestao,"Código de Questão");
         }
     </script>
     }
@@ -85,10 +111,10 @@
             int contador = 0;
             foreach (Questao questao in Model.Avaliacao.Questao)
             {
-                <div class="card">
+                <div id="CardQuestao@(contador+1)" class="card">
                     <div class="content">
                         <div class="header" data-html="@( !String.IsNullOrEmpty(questao.Objetivo) ? "<b>Objetivo</b>: " + questao.Objetivo : "")">
-                            <div onclick="obterNovaQuestao(@questao.CodQuestao)" class="ui icon right floated button"><i class="refresh icon"></i></div>
+                            <div onclick="obterNovaQuestao(@questao.CodQuestao,@(contador+1),@questao.CodTipoQuestao)" class="ui icon right floated button"><i class="refresh icon"></i></div>
                             @{
                                 var enunciado = (contador.GetIndiceQuestao()+". "+questao.Enunciado).Split('\n', '\r');
                                 foreach (var strEnunciado in enunciado)
