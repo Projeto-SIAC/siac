@@ -12,16 +12,7 @@ namespace SIAC.Web.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             TempData["UrlReferrer"] = Request.Url.ToString();
-            if (Session["Autenticado"] == null)
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }
-            else if (String.IsNullOrEmpty(Session["Autenticado"].ToString()))
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }
-            else if (!(bool)Session["Autenticado"])
-            //if (!Usuario.SAutenticado)
+            if (!Helpers.Sessao.Autenticado)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
@@ -31,7 +22,7 @@ namespace SIAC.Web.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
-            Usuario usuario = Usuario.ListarPorMatricula((string)Session["UsuarioMatricula"]);
+            Usuario usuario = Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
             return View(usuario);            
         }
        

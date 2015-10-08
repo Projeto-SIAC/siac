@@ -12,19 +12,11 @@ namespace SIAC.Web.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             TempData["UrlReferrer"] = Request.Url.ToString();
-            if (Session["Autenticado"] == null)
+            if (!Helpers.Sessao.Autenticado)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
-            else if (String.IsNullOrEmpty(Session["Autenticado"].ToString()))
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }
-            else if (!(bool)Session["Autenticado"])
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }
-            else if ((int)Session["UsuarioCategoriaCodigo"] > 2)
+            else if (Helpers.Sessao.UsuarioCategoriaCodigo > 2)
             {
                 if (TempData["UrlReferrer"] != null)
                 {
@@ -38,7 +30,7 @@ namespace SIAC.Web.Controllers
         //GET: Historico/Avaliacao/Academica/Minhas <- Ajax 
         public ActionResult Minhas()
         {
-            if ((int)Session["UsuarioCategoriaCodigo"] != 2)
+            if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
             {
                 if (TempData["UrlReferrer"] != null)
                 {
@@ -47,7 +39,7 @@ namespace SIAC.Web.Controllers
                 else return RedirectToAction("Index", "Dashboard");
             }
 
-            int codProfessor = Professor.ListarPorMatricula(Session["UsuarioMatricula"].ToString()).CodProfessor;
+            int codProfessor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodProfessor;
             List<AvalAcademica> avaliacoes = AvalAcademica.ListarPorProfessor(codProfessor);
 
             var result = from a in avaliacoes
@@ -78,7 +70,7 @@ namespace SIAC.Web.Controllers
         //GET: Dashboard/Avaliacao/Academica/Gerar
         public ActionResult Gerar()
         {
-            if ((int)Session["UsuarioCategoriaCodigo"] != 2)
+            if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
             {
                 if (TempData["UrlReferrer"] != null)
                 {
@@ -86,7 +78,7 @@ namespace SIAC.Web.Controllers
                 }
                 else return RedirectToAction("Index", "Dashboard");
             }
-            ViewBag.Disciplinas = Disciplina.ListarPorProfessor(Session["UsuarioMatricula"].ToString());
+            ViewBag.Disciplinas = Disciplina.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula);
             ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
             ViewBag.Termo = Parametro.Obter().NotaUso;
 
@@ -97,7 +89,7 @@ namespace SIAC.Web.Controllers
         [HttpPost]
         public ActionResult Confirmar(FormCollection formCollection)
         {
-            if ((int)Session["UsuarioCategoriaCodigo"] != 2)
+            if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
             {
                 if (TempData["UrlReferrer"] != null)
                 {
@@ -120,7 +112,7 @@ namespace SIAC.Web.Controllers
                 acad.Avaliacao.DtCadastro = hoje;
 
                 /* Professor */
-                string strMatr = Session["UsuarioMatricula"].ToString();
+                string strMatr = Helpers.Sessao.UsuarioMatricula;
                 acad.Professor = Professor.ListarPorMatricula(strMatr);
 
                 /* Dados */
@@ -181,7 +173,7 @@ namespace SIAC.Web.Controllers
         [HttpGet]
         public ActionResult Agendar(string codigo)
         {
-            if ((int)Session["UsuarioCategoriaCodigo"] != 2)
+            if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
             {
                 if (TempData["UrlReferrer"] != null)
                 {
@@ -191,7 +183,7 @@ namespace SIAC.Web.Controllers
             }
             AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
 
-            string strMatr = Session["UsuarioMatricula"].ToString();
+            string strMatr = Helpers.Sessao.UsuarioMatricula;
             Professor prof = Professor.ListarPorMatricula(strMatr);
 
             ViewBag.lstTurma = prof.TurmaDiscProfHorario.Select(d => d.Turma).Distinct().OrderBy(t => t.Curso.Descricao).ToList();
@@ -204,7 +196,7 @@ namespace SIAC.Web.Controllers
         [HttpPost]
         public ActionResult Agendar(string codigo, FormCollection form)
         {
-            if ((int)Session["UsuarioCategoriaCodigo"] != 2)
+            if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
             {
                 if (TempData["UrlReferrer"] != null)
                 {
@@ -221,7 +213,7 @@ namespace SIAC.Web.Controllers
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
 
-                string strMatr = Session["UsuarioMatricula"].ToString();
+                string strMatr = Helpers.Sessao.UsuarioMatricula;
                 Professor prof = Professor.ListarPorMatricula(strMatr);
 
                 if (acad.CodProfessor == prof.CodProfessor)
@@ -285,7 +277,7 @@ namespace SIAC.Web.Controllers
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                 if (acad != null)
                 {
-                    string strMatr = Session["UsuarioMatricula"].ToString();
+                    string strMatr = Helpers.Sessao.UsuarioMatricula;
                     Professor prof = Professor.ListarPorMatricula(strMatr);
                     if (prof.CodProfessor == acad.CodProfessor)
                     {
@@ -304,7 +296,7 @@ namespace SIAC.Web.Controllers
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                 if (acad != null)
                 {
-                    string strMatr = Session["UsuarioMatricula"].ToString();
+                    string strMatr = Helpers.Sessao.UsuarioMatricula;
                     Professor prof = Professor.ListarPorMatricula(strMatr);
                     if (prof.CodProfessor == acad.CodProfessor)
                     {
@@ -319,9 +311,9 @@ namespace SIAC.Web.Controllers
         [HttpGet]
         public ActionResult Agendada()
         {
-            if ((int)Session["UsuarioCategoriaCodigo"] == 2)
+            if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
             {
-                string strMatr = Session["UsuarioMatricula"].ToString();
+                string strMatr = Helpers.Sessao.UsuarioMatricula;
                 int codProfessor = Professor.ListarPorMatricula(strMatr).CodProfessor;
                 return View(AvalAcademica.ListarAgendadaPorProfessor(codProfessor));
             }
@@ -336,9 +328,9 @@ namespace SIAC.Web.Controllers
             {
                 return RedirectToAction("Index");
             }
-            if ((int)Session["UsuarioCategoriaCodigo"] == 2)
+            if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
             {
-                string strMatr = Session["UsuarioMatricula"].ToString();
+                string strMatr = Helpers.Sessao.UsuarioMatricula;
                 int codProfessor = Professor.ListarPorMatricula(strMatr).CodProfessor;
                 AvalAcademica avalAcademica = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                 if (codProfessor == avalAcademica.CodProfessor)

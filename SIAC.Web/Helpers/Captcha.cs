@@ -25,7 +25,7 @@ namespace SIAC.Web.Helpers
                 valuesArray[x] = Convert.ToInt32(autoRand.Next(0, 9));
                 captchaValue += (valuesArray[x].ToString());
             }
-            HttpContext.Current.Session.Add("Captcha", captchaValue);
+            Sessao.Inserir("Captcha", captchaValue);
             System.IO.MemoryStream stream = new System.IO.MemoryStream();
             objGraphics.DrawString(captchaValue, objFont, System.Drawing.Brushes.Black, 3, 3);
             objBMP.Save(stream, System.Drawing.Imaging.ImageFormat.Png);

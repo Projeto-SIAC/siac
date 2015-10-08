@@ -14,7 +14,7 @@ namespace SIAC.Web.Controllers
         public ActionResult Index()
         {
             Parametro.ObterAsync();
-            if (Session["Autenticado"] != null && (bool)Session["Autenticado"])
+            if (Helpers.Sessao.Autenticado)
             {
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -25,7 +25,7 @@ namespace SIAC.Web.Controllers
         [HttpGet]
         public ActionResult Entrar()
         {
-            if (Session["Autenticado"] != null && (bool)Session["Autenticado"])
+            if (Helpers.Sessao.Autenticado)
             {
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -37,7 +37,7 @@ namespace SIAC.Web.Controllers
         [HttpPost]
         public ActionResult Entrar(FormCollection formCollection)
         {
-            if (Session["Autenticado"] != null && (bool)Session["Autenticado"])
+            if (Helpers.Sessao.Autenticado)
             {
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -58,11 +58,11 @@ namespace SIAC.Web.Controllers
                     if (usuario != null)
                     {
                         valido = true;
-                        Session["Autenticado"] = true;
-                        Session["UsuarioMatricula"] = usuario.Matricula;
-                        Session["UsuarioNome"] = usuario.PessoaFisica.Nome;
-                        Session["UsuarioCategoriaCodigo"] = usuario.CodCategoria;
-                        Session["UsuarioCategoria"] = usuario.Categoria.Descricao;
+                        Helpers.Sessao.Inserir("Autenticado", true);
+                        Helpers.Sessao.Inserir("UsuarioMatricula", usuario.Matricula);
+                        Helpers.Sessao.Inserir("UsuarioNome", usuario.PessoaFisica.Nome);
+                        Helpers.Sessao.Inserir("UsuarioCategoriaCodigo", usuario.CodCategoria);
+                        Helpers.Sessao.Inserir("UsuarioCategoria", usuario.Categoria.Descricao);
                     }
                 }
             }
@@ -90,8 +90,8 @@ namespace SIAC.Web.Controllers
         // GET: Acesso/Sair
         public ActionResult Sair()
         {
-            Sistema.MatriculaAtivo.Remove(Session["UsuarioMatricula"].ToString());
-            Session.Clear();
+            Sistema.MatriculaAtivo.Remove(Helpers.Sessao.UsuarioMatricula);
+            Helpers.Sessao.Limpar();
             return RedirectToAction("Index");
         }
     }

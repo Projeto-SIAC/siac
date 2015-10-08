@@ -295,6 +295,7 @@
     <Compile Include="Helpers\DevGerarQuestao.cs" />
     <Compile Include="Helpers\LeroLero.cs" />
     <Compile Include="Helpers\Extensoes.cs" />
+    <Compile Include="Helpers\Sessao.cs" />
     <Compile Include="Helpers\StringExt.cs" />
     <Compile Include="Helpers\TimeLog.cs" />
     <Compile Include="Models\Alternativa.cs">

@@ -12,15 +12,11 @@ namespace SIAC.Web.Controllers
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if(Session["Autenticado"] == null)
+            if (!Helpers.Sessao.Autenticado)
             {
                 filterContext.Result = RedirectToAction("Index", "Dashboard");
             }
-            else if(!(bool)Session["Autenticado"])
-            {
-                filterContext.Result = RedirectToAction("Index", "Dashboard");
-            }
-            else if((int)Session["UsuarioCategoriaCodigo"] != 3)
+            else if(Helpers.Sessao.UsuarioCategoriaCodigo != 3)
             {
                 if (TempData["UrlReferrer"] != null)
                 {

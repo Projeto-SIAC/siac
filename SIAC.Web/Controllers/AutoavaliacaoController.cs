@@ -12,15 +12,7 @@ namespace SIAC.Web.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             TempData["UrlReferrer"] = Request.Url.ToString();
-            if (Session["Autenticado"] == null)
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }
-            else if (String.IsNullOrEmpty(Session["Autenticado"].ToString()))
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }
-            else if (!(bool)Session["Autenticado"])
+            if (!Helpers.Sessao.Autenticado)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
@@ -41,7 +33,7 @@ namespace SIAC.Web.Controllers
         public ActionResult Minhas()
         {
             Helpers.TimeLog.Iniciar("Gerar Autoavaliações");
-            int codPessoaFisica = Usuario.ObterPessoaFisica(Session["UsuarioMatricula"].ToString());
+            int codPessoaFisica = Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula);
             List<AvalAuto> lstAutos = AvalAuto.ListarPorPessoa(codPessoaFisica);
 
             var result = from a in lstAutos
@@ -87,7 +79,7 @@ namespace SIAC.Web.Controllers
             auto.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(1);
 
             /* Pessoa */
-            var strMatr = Session["UsuarioMatricula"].ToString();
+            var strMatr = Helpers.Sessao.UsuarioMatricula;
             auto.CodPessoaFisica = Usuario.ObterPessoaFisica(strMatr);
 
             var disciplinas = formCollection["ddlDisciplinas"].Split(',');
@@ -157,7 +149,7 @@ namespace SIAC.Web.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
-                int codPessoaFisica = Usuario.ObterPessoaFisica(Session["UsuarioMatricula"].ToString());
+                int codPessoaFisica = Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula);
                 if (auto != null)
                 {
                     if (auto.CodPessoaFisica == codPessoaFisica)
@@ -217,12 +209,12 @@ namespace SIAC.Web.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
-                if (auto.CodPessoaFisica == Usuario.ObterPessoaFisica(Session["UsuarioMatricula"].ToString()))
+                if (auto.CodPessoaFisica == Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula))
                 {
                     return View(auto);
                 }
             }
-            int codPessoaFisica = Usuario.ObterPessoaFisica(Session["UsuarioMatricula"].ToString());
+            int codPessoaFisica = Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula);
             ViewBag.Geradas = AvalAuto.ListarNaoRealizadaPorPessoa(codPessoaFisica);
             return View("Novo");
         }
@@ -233,7 +225,7 @@ namespace SIAC.Web.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
-                if (auto.CodPessoaFisica == Usuario.ObterPessoaFisica(Session["UsuarioMatricula"].ToString()))
+                if (auto.CodPessoaFisica == Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula))
                 {
                     return View(auto);
                 }
@@ -245,7 +237,7 @@ namespace SIAC.Web.Controllers
         [HttpPost]
         public ActionResult Resultado(string codigo, FormCollection form)
         {
-            int codPessoaFisica = Usuario.ObterPessoaFisica(Session["UsuarioMatricula"].ToString());
+            int codPessoaFisica = Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula);
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);

@@ -12,15 +12,7 @@ namespace SIAC.Web.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             TempData["UrlReferrer"] = Request.Url.ToString();
-            if (Session["Autenticado"] == null)
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }
-            else if (String.IsNullOrEmpty(Session["Autenticado"].ToString()))
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }
-            else if (!(bool)Session["Autenticado"])
+            if (!Helpers.Sessao.Autenticado)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }

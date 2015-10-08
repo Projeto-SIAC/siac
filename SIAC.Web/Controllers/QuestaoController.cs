@@ -12,19 +12,11 @@ namespace SIAC.Web.Controllers
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             TempData["UrlReferrer"] = Request.Url.ToString();
-            if (Session["Autenticado"] == null)
+            if (!Helpers.Sessao.Autenticado)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
-            else if (String.IsNullOrEmpty(Session["Autenticado"].ToString()))
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }
-            else if (!(bool)Session["Autenticado"])
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }
-            else if ((int)Session["UsuarioCategoriaCodigo"] != 2)
+            else if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
@@ -45,7 +37,7 @@ namespace SIAC.Web.Controllers
         // GET: Questao/Minhas
         public ActionResult Minhas()
         {
-            var lstQuestoes = Questao.ListarPorProfessor(Session["UsuarioMatricula"].ToString());
+            var lstQuestoes = Questao.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula);
             var result = from q in lstQuestoes
                          select new
                          {
@@ -84,7 +76,7 @@ namespace SIAC.Web.Controllers
         {
             ViewBag.Captcha = Helpers.Captcha.Novo();
             ViewBag.Termo = Parametro.Obter().TermoResponsabilidade;
-            ViewBag.Disciplinas = Professor.ObterDisciplinas(Session["UsuarioMatricula"].ToString());
+            ViewBag.Disciplinas = Professor.ObterDisciplinas(Helpers.Sessao.UsuarioMatricula);
             ViewBag.Tipos = TipoQuestao.ListarOrdenadamente();
             ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
             ViewBag.TiposAnexo = TipoAnexo.ListarOrdenadamente();
@@ -95,7 +87,7 @@ namespace SIAC.Web.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public string ChequeCaptcha(string captcha)
         {
-            if (captcha == Session["Captcha"].ToString())
+            if (captcha == Helpers.Sessao.Retornar("Captcha") as string)
             {
                 return "true";
             }
@@ -115,7 +107,7 @@ namespace SIAC.Web.Controllers
         {
             Questao questao = new Questao();
 
-            questao.Professor = Professor.ListarPorMatricula(Session["UsuarioMatricula"].ToString());
+            questao.Professor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
 
             questao.CodProfessor = questao.Professor.CodProfessor;
 

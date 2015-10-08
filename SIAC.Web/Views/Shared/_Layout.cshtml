@@ -109,9 +109,9 @@
                 <div class="ui header">
                     <i class="icon user"></i>
                     <div class="content">
-                        @Session["UsuarioNome"]
+                        @SIAC.Web.Helpers.Sessao.UsuarioNome
                         <div class="sub header">
-                            @Session["UsuarioCategoria"]
+                            @SIAC.Web.Helpers.Sessao.UsuarioCategoria
                         </div>
                     </div>
                 </div>
@@ -129,7 +129,7 @@
                         <i class="user icon"></i><span class="content">Perfil</span>
                     </a>
 
-                    @if ((int)Session["UsuarioCategoriaCodigo"] == 3)
+                    @if (SIAC.Web.Helpers.Sessao.UsuarioCategoriaCodigo == 3)
                     {
                         <a href="~/Configuracoes" class="@(Request.Url.ToString().Contains("Configuracoes")? "active blue" : "") item">
                             <i class="setting icon"></i><span class="content">Configurações</span>

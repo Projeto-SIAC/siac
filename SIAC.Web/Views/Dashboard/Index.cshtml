@@ -20,7 +20,6 @@
 }
 @model SIAC.Web.Models.Usuario
 
-
 @section Styles {
     <style>
         .dashmenu > div.row > div.column {
@@ -46,7 +45,7 @@
                 </div>
             </a>
         </div>
-        @if ((int)Session["UsuarioCategoriaCodigo"] == 2)
+        @if (Model.CodCategoria == 2)
         {
             <div class="column aligned center">
                 <a href="/Historico/Avaliacao/Academica/" class="ui basic segment">
@@ -61,7 +60,7 @@
                 </a>
             </div>
         }
-        @if ((int)Session["UsuarioCategoriaCodigo"] == 2 || (int)Session["UsuarioCategoriaCodigo"] == 3)
+        @if (Model.CodCategoria == 2 || Model.CodCategoria == 3)
         {
             <div class="column aligned center">
                 <a href="/Dashboard/Avaliacao/Certificacao/Agendar" class="ui basic segment">
@@ -76,7 +75,7 @@
                 </a>
             </div>
         }
-        @if ((int)Session["UsuarioCategoriaCodigo"] == 2)
+        @if (Model.CodCategoria == 2)
         {
             <div class="column aligned center">
                 <a href="/Dashboard/Questao/Cadastrar" class="ui basic segment">
@@ -87,7 +86,7 @@
                 </a>
             </div>
         }
-        @if ((int)Session["UsuarioCategoriaCodigo"] == 2)
+        @if (Model.CodCategoria == 2)
         {
             <div class="column aligned center">
                 <a href="/Historico/Questao" class="ui basic segment">
@@ -98,7 +97,7 @@
                 </a>
             </div>
         }
-        @if ((int)Session["UsuarioCategoriaCodigo"] <= 2)
+        @if (Model.CodCategoria <= 2)
         {
             <div class="column aligned center">
                 <a href="/Historico/Avaliacao/Academica" class="ui basic segment">
@@ -113,7 +112,7 @@
                 </a>
             </div>
         }
-        @if ((int)Session["UsuarioCategoriaCodigo"] == 1 || (int)Session["UsuarioCategoriaCodigo"] == 2 || (int)Session["UsuarioCategoriaCodigo"] == 3)
+        @if (Model.CodCategoria == 1 || Model.CodCategoria == 2 || Model.CodCategoria == 3)
         {
             <div class="column aligned center">
                 <a href="/Historico/Autoavaliacao" class="ui basic segment">
