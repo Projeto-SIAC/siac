@@ -429,7 +429,7 @@ namespace SIAC.Web.Models
         }
 
         //MÉTODO PARA USAR EM AJAX 
-        public static QuestaoTema ObterNovaQuestao(List<QuestaoTema> QuestoesOriginais, int codTipoQuestao)
+        public static List<QuestaoTema> ObterNovasQuestoes(List<QuestaoTema> QuestoesOriginais, int codTipoQuestao)
         {
             if (QuestoesOriginais.Count > 0)
             {
@@ -451,26 +451,38 @@ namespace SIAC.Web.Models
                                                  && qt.Questao.CodTipoQuestao == codTipoQuestao
                                                  select qt).ToList();
 
-                    qstTemp = Models.QuestaoTema.LimparRepeticao(qstTemp, QuestoesOriginais);
+                    qstTemp = Models.QuestaoTema.LimparRepeticao(qstTemp, QuestoesOriginais,questoes);
 
                     if (qstTemp.Count > 0)
                     {
-                        for (int i = codDificuldade; i >= 1; i--)
-                        {
-                            List<QuestaoTema> qstIdeal = (from qt in qstTemp
-                                                          where qt.Questao.CodDificuldade == i
-                                                          select qt).ToList();
-
-                            if (qstIdeal.Count > 0)
-                            {
-                                int random = r.Next(0, qstIdeal.Count);
-
-                                return qstIdeal.ElementAtOrDefault(random);
-                            }
-
-                        }
+                        questoes.AddRange(qstTemp);
                     }
                 }
+
+                if (questoes.Count > 0)
+                {
+                    return questoes;
+                }
+                /*if (questoes.Count > 0)
+                {
+                    int random = r.Next(0, questoes.Count);
+
+                    return questoes.ElementAtOrDefault(random);
+                }
+                for (int i = codDificuldade; i >= 1; i--)
+                {
+                    List<QuestaoTema> qstIdeal = (from qt in questoes
+                                                  where qt.Questao.CodDificuldade == i
+                                                  select qt).ToList();
+
+                    if (qstIdeal.Count > 0)
+                    {
+                        int random = r.Next(0, qstIdeal.Count);
+
+                        return qstIdeal.ElementAtOrDefault(random);
+                    }
+
+                }*/
             }
             return null;
         }

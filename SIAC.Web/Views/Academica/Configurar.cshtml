@@ -41,12 +41,14 @@
             });
         }
 
-        function configurar()
+        function salvar()
         {
             $('.button.salvar').addClass('loading');
-            $.ajax({
-                url: '@Url.RouteUrl("ConfigurarAvalAcad")',
+            $('form').submit();
+            @*$.ajax({
+                url: '@Url.RouteUrl("SalvarAvalAcad")',
                 type: 'POST',
+                data: {codigoAval:'@Model.Avaliacao.CodAvaliacao'},
                 success: function (data) {
                     $('.button.salvar').removeClass('loading');
                     $('.button.salvar').addClass('disabled');
@@ -55,7 +57,7 @@
                 error: function(data){
                     alert('error');
                 }
-            });
+            });*@
         }
     </script>
     }
@@ -122,7 +124,7 @@
         }
     </div>
 </div>
-
-<div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Historico/Avaliacao/Academica/Detalhe/@Model.Avaliacao.CodAvaliacao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
-<div class="ui button">Arquivar</div>
-<div class="ui button disabled salvar" onclick="configurar()">Salvar</div>
+<form method="post" action="@(Url.RouteUrl("SalvarAvalAcad"))/@Model.Avaliacao.CodAvaliacao">
+    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Historico/Avaliacao/Academica/Detalhe/@Model.Avaliacao.CodAvaliacao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+    <div class="ui button disabled salvar" onclick="salvar()">Salvar</div>
+</form>

@@ -2,7 +2,7 @@
 @model Questao
 <div class="content">
     <div class="header" data-html="@( !String.IsNullOrEmpty(Model.Objetivo) ? "<b>Objetivo</b>: " + Model.Objetivo : "")">
-        <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você não poderá desfazer essa troca</p><a onclick='obterNovaQuestao(@Model.CodQuestao, @ViewData["Index"], @Model.CodTipoQuestao)' class='ui small button'>Sim, Continuar</a></div>" class="ui icon right floated button"><i class="refresh icon"></i></div>
+        <div data-html="<div class='header'>Deseja substituir essa questão?</div><div class='content'><p>Você não poderá desfazer essa troca</p><a onclick='obterNovaQuestao(@Model.CodQuestao, @ViewData["Index"], @Model.CodTipoQuestao)' class='ui small button'>Sim, Continuar</a></div>" class="ui icon right floated button"><i class="refresh icon"></i></div>
         @{
             var enunciado = (((int)ViewData["Index"]).GetIndiceQuestao()+". "+Model.Enunciado).Split('\n', '\r');
             foreach (var strEnunciado in enunciado)
