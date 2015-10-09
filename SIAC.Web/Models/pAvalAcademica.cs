@@ -66,5 +66,10 @@ namespace SIAC.Web.Models
             }
             return null;
         }
+
+        public static void Persistir()
+        {
+            contexto.SaveChanges();
+        }
     }
 }

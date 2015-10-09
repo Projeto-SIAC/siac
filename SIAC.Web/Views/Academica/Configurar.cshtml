@@ -7,8 +7,9 @@
 @section Scripts{
     <script>
         $('.ui.informacoes.modal').modal();
-        $('.cancelar.button').popup({ on: 'click' });
         $('div').popup();
+        $('.cancelar.button').popup({ on: 'click' });
+        $('.right.floated.button').popup({ on: 'click' });
         $('.ui.accordion').accordion();
 
         function obterNovaQuestao(codQuestao, indice, codTipoQuestao) {
@@ -28,12 +29,31 @@
                     if (data) {
                         card.html(data);
                         $('.ui.accordion').accordion();
+                        $('.right.floated.button').popup({ on: 'click' });
+                        $('.ui.button.disabled').removeClass('disabled');
                     }
                     card.removeClass('ui form loading');
                 },
                 error: function () {
                     card.removeClass('ui form loading');
                     Mensagem('Ocorreu um erro não esperado.');
+                }
+            });
+        }
+
+        function configurar()
+        {
+            $('.button.salvar').addClass('loading');
+            $.ajax({
+                url: '@Url.RouteUrl("ConfigurarAvalAcad")',
+                type: 'POST',
+                success: function (data) {
+                    $('.button.salvar').removeClass('loading');
+                    $('.button.salvar').addClass('disabled');
+                    Mensagem("Avaliação Configurada com sucesso!", "Aviso");
+                },
+                error: function(data){
+                    alert('error');
                 }
             });
         }
@@ -105,4 +125,4 @@
 
 <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Historico/Avaliacao/Academica/Detalhe/@Model.Avaliacao.CodAvaliacao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
 <div class="ui button">Arquivar</div>
-<div class="ui button disabled">Salvar</div>
+<div class="ui button disabled salvar" onclick="configurar()">Salvar</div>

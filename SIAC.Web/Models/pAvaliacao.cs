@@ -112,7 +112,7 @@ namespace SIAC.Web.Models
 
             contexto.AvalTemaQuestao.Add(aqtNovo);
 
-            contexto.SaveChanges();
+            //contexto.SaveChanges();
         }
     }
 }

@@ -351,9 +351,7 @@ namespace SIAC.Web.Controllers
                 if (acad != null)
                 {
                     List<QuestaoTema> AvalQuestTema = acad.Avaliacao.QuestaoTema;
-
-                    //Questao questaoAntiga = acad.Avaliacao.Questao.ElementAt(indice); //REVER o INDICE
-
+                    
                     QuestaoTema questao = Questao.ObterNovaQuestao(AvalQuestTema, tipo);
                     
                     if (questao != null)
@@ -366,6 +364,14 @@ namespace SIAC.Web.Controllers
             }
 
             return Json(String.Empty);
+        }
+
+        //POST: Avaliacao/Academica/Configurar
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Configurar()
+        {
+            AvalAcademica.Persistir();
+            return null;
         }
     }
 }
