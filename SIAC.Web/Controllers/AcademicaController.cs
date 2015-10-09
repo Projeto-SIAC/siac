@@ -270,8 +270,15 @@ namespace SIAC.Web.Controllers
         }
 
         // GET: Avaliacao/Academica/Configurar/ACAD201520001
+        [HttpGet]
         public ActionResult Configurar(string codigo)
         {
+            TempData["listaQuestoesAntigas"] = new List<AvalTemaQuestao>();
+            TempData["listaQuestoesNovas"] = new List<AvalTemaQuestao>();
+            TempData["listaQuestoesIndices"] = new List<int>();
+            TempData["listaQuestoesPossiveisObj"] = new List<QuestaoTema>();
+            TempData["listaQuestoesPossiveisDisc"] = new List<QuestaoTema>();
+
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
@@ -341,22 +348,82 @@ namespace SIAC.Web.Controllers
             return RedirectToAction("Index");
         }
 
-        //POST: Avaliacao/Academica/Trocar/ACAD20150001
+        //POST: Avaliacao/Academica/Trocar/ACAD201520001
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Trocar(string codigoAvaliacao, int tipo, int indice, int codQuestao)
         {
-            if(!String.IsNullOrEmpty(codigoAvaliacao))
+            List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData["listaQuestoesAntigas"];
+            List<AvalTemaQuestao> novas = (List<AvalTemaQuestao>)TempData["listaQuestoesNovas"];
+            List<QuestaoTema> questoesTrocaObj = (List<QuestaoTema>)TempData["listaQuestoesPossiveisObj"];
+            List<QuestaoTema> questoesTrocaDisc = (List<QuestaoTema>)TempData["listaQuestoesPossiveisDisc"];
+            List<int> indices = (List<int>)TempData["listaQuestoesIndices"];
+
+            TempData.Keep();
+            Random r = new Random();
+
+            if (!String.IsNullOrEmpty(codigoAvaliacao))
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigoAvaliacao);
                 if (acad != null)
                 {
                     List<QuestaoTema> AvalQuestTema = acad.Avaliacao.QuestaoTema;
-                    
-                    QuestaoTema questao = Questao.ObterNovaQuestao(AvalQuestTema, tipo);
-                    
+
+                    QuestaoTema questao = null;
+
+                    if (tipo == 1)
+                    {
+                        if (questoesTrocaObj.Count <= 0)
+                        {
+                            TempData["listaQuestoesPossiveisObj"] = Questao.ObterNovasQuestoes(AvalQuestTema, tipo);
+                            questoesTrocaObj = (List<QuestaoTema>)TempData["listaQuestoesPossiveisObj"];
+                        }
+
+                        int random = r.Next(0, questoesTrocaObj.Count);
+                        questao = questoesTrocaObj.ElementAtOrDefault(random);
+                    }
+                    else if(tipo ==2)
+                    {
+                        if (questoesTrocaDisc.Count <= 0)
+                        {
+                            TempData["listaQuestoesPossiveisDisc"] = Questao.ObterNovasQuestoes(AvalQuestTema, tipo);
+                            questoesTrocaDisc = (List<QuestaoTema>)TempData["listaQuestoesPossiveisDisc"];
+                        }
+
+                        int random = r.Next(0, questoesTrocaDisc.Count);
+                        questao = questoesTrocaDisc.ElementAtOrDefault(random);
+                    }
+
                     if (questao != null)
                     {
-                        acad.Avaliacao.TrocarQuestao(codQuestao, questao);
+                        if(!indices.Contains(indice))
+                        {
+                            AvalTemaQuestao aqtAntiga = (from atq in DataContextSIAC.GetInstance().AvalTemaQuestao
+                                                         where atq.Ano == acad.Ano
+                                                         && atq.Semestre == acad.Semestre
+                                                         && atq.CodTipoAvaliacao == acad.CodTipoAvaliacao
+                                                         && atq.NumIdentificador == acad.NumIdentificador
+                                                         && atq.CodQuestao == codQuestao
+                                                         select atq).FirstOrDefault();
+                            antigas.Add(aqtAntiga);
+                            indices.Add(indice);
+                        }
+
+                        int index = indices.IndexOf(indice);
+
+                        AvalTemaQuestao atqNova = new AvalTemaQuestao();
+                        atqNova.Ano = acad.Avaliacao.Ano;
+                        atqNova.Semestre = acad.Avaliacao.Semestre;
+                        atqNova.CodTipoAvaliacao = acad.Avaliacao.CodTipoAvaliacao;
+                        atqNova.NumIdentificador = acad.Avaliacao.NumIdentificador;
+                        atqNova.QuestaoTema = questao;
+
+                        if (novas.Count > index)
+                        {
+                            novas.RemoveAt(index);
+                        }
+
+                        novas.Insert(index, atqNova);
+
                         ViewData["Index"] = indice;
                         return PartialView("_Questao", questao.Questao);
                     }
@@ -366,12 +433,29 @@ namespace SIAC.Web.Controllers
             return Json(String.Empty);
         }
 
-        //POST: Avaliacao/Academica/Configurar
+        //POST: Avaliacao/Academica/Salvar/ACAD201520001
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Configurar()
+        [HttpPost]
+        public ActionResult Salvar(string codigoAval)
         {
-            AvalAcademica.Persistir();
-            return null;
+            List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData["listaQuestoesAntigas"];
+            List<AvalTemaQuestao> novas = (List<AvalTemaQuestao>)TempData["listaQuestoesNovas"];
+
+            if(antigas.Count != 0 && novas.Count != 0)
+            {
+                //AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigoAval);
+                var contexto = DataContextSIAC.GetInstance();
+                for (int i = 0; i < antigas.Count && i < novas.Count; i++)
+                {
+                    contexto.AvalTemaQuestao.Remove(antigas.ElementAtOrDefault(i));
+                    contexto.AvalTemaQuestao.Add(novas.ElementAtOrDefault(i));
+                }
+                contexto.SaveChanges();
+            }
+            TempData.Clear();
+
+
+            return RedirectToAction("Detalhe",new { codigo = codigoAval });
         }
     }
 }
