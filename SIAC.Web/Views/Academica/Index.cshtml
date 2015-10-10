@@ -1,4 +1,5 @@
-﻿
+﻿@using SIAC.Web.Models
+@model List<AvalAcademica>
 @{
     ViewBag.Title = "Minhas Avaliações Acadêmicas";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,13 +7,13 @@
 
 @section Scripts{
     <script>
-        $('.ui.cards').parent().addClass('loading');
         var jsnAvalAcadGeral;
         var jsnAvalAcadFiltro;
 
         $(document).ready(function () {
             window.onbeforeunload = function () { $ajax.abort(); $('.ui.global.loader').parent().addClass('active'); };
         });
+
         $ajax = $.ajax({
             url: '/Historico/Avaliacao/Academica/Minhas',
             method: 'GET',
@@ -20,10 +21,11 @@
                 jsnAvalAcadGeral = acad;
                 jsnAvalAcadFiltro = acad;
                 MinhasAutos();
+                $('.ui.loading.input > input[type="text"]').prop('disabled', false);
+                $('.ui.loading.input').removeClass('loading');
             },
             error: function () {
-                Mensagem("Erro ao recuperar as avaliações");
-                $('.ui.cards').parent().removeClass('loading');
+                $('.ui.loading.input').removeClass('loading');
             }
         });
 
@@ -40,23 +42,18 @@
                 else if (jsnAvalAcadGeral[i].Dificuldade.toLowerCase().indexOf(strTexto) > -1) {
                     jsnAvalAcadFiltro.push(jsnAvalAcadGeral[i]);
                 }
-                else if (strTexto == 'arquivo') {
-                    if (jsnAvalAcadGeral[i].FlagArquivo == true) {
-                        jsnAvalAcadFiltro.push(jsnAvalAcadGeral[i]);
-                    }
-                }
-                else if (strTexto == 'pendente') {
-                    if (jsnAvalAcadGeral[i].FlagPendente == true) {
-                        jsnAvalAcadFiltro.push(jsnAvalAcadGeral[i]);
-                    }
-                }
-                else {
-                    for (var j = 0; j < jsnAvalAcadGeral[i].Disciplinas.length; j++) {
-                        if (jsnAvalAcadGeral[i].Disciplinas[j].toLowerCase().indexOf(strTexto) > -1) {
-                            jsnAvalAcadFiltro.push(jsnAvalAcadGeral[i]);
-                            break;
-                        }
-                    }
+                //else if (strTexto == 'arquivo') {
+                //    if (jsnAvalAcadGeral[i].FlagArquivo == true) {
+                //        jsnAvalAcadFiltro.push(jsnAvalAcadGeral[i]);
+                //    }
+                //}
+                //else if (strTexto == 'pendente') {
+                //    if (jsnAvalAcadGeral[i].FlagPendente == true) {
+                //        jsnAvalAcadFiltro.push(jsnAvalAcadGeral[i]);
+                //    }
+                //}
+                else if (jsnAvalAcadGeral[i].Disciplina.toLowerCase().indexOf(strTexto) > -1) {
+                    jsnAvalAcadFiltro.push(jsnAvalAcadGeral[i]);                        
                 }
             }
             MinhasAutos();
@@ -89,9 +86,7 @@
                             </div>\
                         ');
                 $labelsDisc = $('<div class="ui labels"></div>');
-                for (var j = 0; j < jsnAvalAcadFiltro[i].Disciplinas.length; j++) {
-                    $labelsDisc.append('<div class="ui tag label">' + jsnAvalAcadFiltro[i].Disciplinas[j] + '</div>');
-                }
+                $labelsDisc.append('<div class="ui tag label">' + jsnAvalAcadFiltro[i].Disciplina + '</div>');
                 $extraContent = $('<div class="extra content"></div>').append($labelsDisc);
                 $card.append($extraContent);
                 if (jsnAvalAcadFiltro[i].FlagLiberada == true) {
@@ -144,13 +139,49 @@
     </script>
 }
 
-
 <h2>@ViewBag.Title <a class="ui right floated button" href="/Dashboard/Avaliacao/Academica/Gerar">Gerar</a></h2>
-<div class="ui fluid icon input">
-    <input type="text" placeholder="Filtrar..." onkeyup="Filtro($(this).val())" />
+<div class="ui fluid icon loading input">
+    <input type="text" placeholder="Filtrar..." onkeyup="Filtro($(this).val())" disabled />
     <i class="search icon"></i>
 </div>
 <div class="ui basic segment">
-    <div class="ui three stackable cards"></div>
+    <div class="ui three stackable cards">
+        @foreach (AvalAcademica avalAcad in Model)
+        {
+            <div class="card">
+                <div class="content">
+                    <a href="/Historico/Avaliacao/Academica/Detalhe/@avalAcad.Avaliacao.CodAvaliacao" class="header">
+                        @avalAcad.Avaliacao.CodAvaliacao
+                    </a>
+                    <div class="meta">
+                        <span title="@avalAcad.Avaliacao.DtCadastro.ToBrazilianString()"> @avalAcad.Avaliacao.DtCadastro.ToElapsedTimeString() </span>
+                    </div>
+                    <div class="description">
+	                    <p><b>Turma</b>: @(avalAcad.NumTurma.HasValue ? avalAcad.Turma.CodTurma : "null")</p>
+                        <p><b>Quantidade de Questões</b>: @avalAcad.Avaliacao.QteQuestoes()</p>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <div class="ui labels">
+                        <div class="ui tag label">@avalAcad.Disciplina.Descricao</div>
+                    </div>
+                </div>
+                @if (avalAcad.Avaliacao.FlagLiberada)
+                {
+                    <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
+                    <a href="/Historico/Avaliacao/Academica/Detalhe/@avalAcad.Avaliacao.CodAvaliacao" class="ui button">Resultados</a>
+                }
+                else if (avalAcad.NumTurma.HasValue)
+                {
+                    <span class="ui attached top right label"><i class="clock icon"></i>Agendada</span>
+                    <a href="/Historico/Avaliacao/Academica/Configurar/@avalAcad.Avaliacao.CodAvaliacao" class="ui button">Configurar</a>
+                }
+                else
+                {
+                    <a href="/Historico/Avaliacao/Academica/Agendar/@avalAcad.Avaliacao.CodAvaliacao" class="ui button">Agendar</a>
+                }
+            </div>
+        }
+    </div>
 </div>
 <div class="ui pagination menu"></div>

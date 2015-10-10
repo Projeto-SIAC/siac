@@ -38,22 +38,28 @@ namespace SIAC.Web.Controllers
                 }
                 else return RedirectToAction("Index", "Dashboard");
             }
-
-            int codProfessor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodProfessor;
-            List<AvalAcademica> avaliacoes = AvalAcademica.ListarPorProfessor(codProfessor);
-
+            List<AvalAcademica> avaliacoes = new List<AvalAcademica>();
+            if (TempData["lstAvalAcademica"] == null)
+            {
+                int codProfessor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodProfessor;
+                avaliacoes = AvalAcademica.ListarPorProfessor(codProfessor);
+            }
+            else
+            {
+                avaliacoes = TempData["lstAvalAcademica"] as List<AvalAcademica>;
+            }
             var result = from a in avaliacoes
-                         select new
-                         {
-                             CodAvaliacao = a.Avaliacao.CodAvaliacao,
-                             DtCadastro = a.Avaliacao.DtCadastro.ToBrazilianString(),
-                             DtCadastroTempo = a.Avaliacao.DtCadastro.ToElapsedTimeString(),
-                             Turma = a.NumTurma.HasValue ? a.Turma.CodTurma : null,
-                             Curso = a.NumTurma.HasValue ? a.Turma.Curso.Descricao : "Curso",
-                             QteQuestoes = a.Avaliacao.QteQuestoes(),
-                             Disciplinas = a.Avaliacao.AvaliacaoTema.Select(at => at.Tema.Disciplina.Descricao).Distinct().ToList(),
-                             FlagLiberada = a.Avaliacao.FlagLiberada
-                         };
+                            select new
+                            {
+                                CodAvaliacao = a.Avaliacao.CodAvaliacao,
+                                DtCadastro = a.Avaliacao.DtCadastro.ToBrazilianString(),
+                                DtCadastroTempo = a.Avaliacao.DtCadastro.ToElapsedTimeString(),
+                                Turma = a.NumTurma.HasValue ? a.Turma.CodTurma : null,
+                                Curso = a.NumTurma.HasValue ? a.Turma.Curso.Descricao : "Curso",
+                                QteQuestoes = a.Avaliacao.QteQuestoes(),
+                                Disciplina = a.Disciplina.Descricao,
+                                FlagLiberada = a.Avaliacao.FlagLiberada
+                            };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -63,6 +69,13 @@ namespace SIAC.Web.Controllers
             if (Request.Url.ToString().ToLower().Contains("dashboard"))
             {
                 return Redirect("~/Historico/Academica");
+            }
+            if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
+            {
+                int codProfessor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodProfessor;
+                List<AvalAcademica> avaliacoes = AvalAcademica.ListarPorProfessor(codProfessor);
+                TempData["lstAvalAcademica"] = avaliacoes;
+                return View(avaliacoes.Take(9).ToList());
             }
             return View();
         }
