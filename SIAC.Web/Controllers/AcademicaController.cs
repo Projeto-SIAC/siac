@@ -229,7 +229,7 @@ namespace SIAC.Web.Controllers
                     int codSala;
                     int.TryParse(strCodSala, out codSala);
                     Sala sala = Sala.ListarPorCodigo(codSala);
-                    if (sala!=null)
+                    if (sala != null)
                     {
                         acad.Sala = sala;
                     }
@@ -247,7 +247,7 @@ namespace SIAC.Web.Controllers
                     DataContextSIAC.GetInstance().SaveChanges();
                     // OU
                     // AvalAcademica.Agendar(acad);
-                    
+
                 }
             }
 
@@ -275,9 +275,10 @@ namespace SIAC.Web.Controllers
         {
             TempData["listaQuestoesAntigas"] = new List<AvalTemaQuestao>();
             TempData["listaQuestoesNovas"] = new List<AvalTemaQuestao>();
-            TempData["listaQuestoesIndices"] = new List<int>();
             TempData["listaQuestoesPossiveisObj"] = new List<QuestaoTema>();
             TempData["listaQuestoesPossiveisDisc"] = new List<QuestaoTema>();
+            TempData["listaQuestoesIndices"] = new List<int>();
+            TempData["listaQuestoesRecentes"] = new List<int>();
 
             if (!String.IsNullOrEmpty(codigo))
             {
@@ -286,9 +287,12 @@ namespace SIAC.Web.Controllers
                 {
                     string strMatr = Helpers.Sessao.UsuarioMatricula;
                     Professor prof = Professor.ListarPorMatricula(strMatr);
-                    if (prof.CodProfessor == acad.CodProfessor)
+                    if (prof != null)
                     {
-                        return View(acad);
+                        if (prof.CodProfessor == acad.CodProfessor)
+                        {
+                            return View(acad);
+                        }
                     }
                 }
             }
@@ -350,13 +354,14 @@ namespace SIAC.Web.Controllers
 
         //POST: Avaliacao/Academica/Trocar/ACAD201520001
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Trocar(string codigoAvaliacao, int tipo, int indice, int codQuestao)
+        public ActionResult TrocarQuestao(string codigoAvaliacao, int tipo, int indice, int codQuestao)
         {
             List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData["listaQuestoesAntigas"];
             List<AvalTemaQuestao> novas = (List<AvalTemaQuestao>)TempData["listaQuestoesNovas"];
             List<QuestaoTema> questoesTrocaObj = (List<QuestaoTema>)TempData["listaQuestoesPossiveisObj"];
             List<QuestaoTema> questoesTrocaDisc = (List<QuestaoTema>)TempData["listaQuestoesPossiveisDisc"];
             List<int> indices = (List<int>)TempData["listaQuestoesIndices"];
+            List<int> recentes = (List<int>)TempData["listaQuestoesRecentes"];
 
             TempData.Keep();
             Random r = new Random();
@@ -381,7 +386,7 @@ namespace SIAC.Web.Controllers
                         int random = r.Next(0, questoesTrocaObj.Count);
                         questao = questoesTrocaObj.ElementAtOrDefault(random);
                     }
-                    else if(tipo ==2)
+                    else if (tipo == 2)
                     {
                         if (questoesTrocaDisc.Count <= 0)
                         {
@@ -395,7 +400,7 @@ namespace SIAC.Web.Controllers
 
                     if (questao != null)
                     {
-                        if(!indices.Contains(indice))
+                        if (!indices.Contains(indice))
                         {
                             AvalTemaQuestao aqtAntiga = (from atq in DataContextSIAC.GetInstance().AvalTemaQuestao
                                                          where atq.Ano == acad.Ano
@@ -421,8 +426,13 @@ namespace SIAC.Web.Controllers
                         {
                             novas.RemoveAt(index);
                         }
+                        if (recentes.Count > index)
+                        {
+                            recentes.RemoveAt(index);
+                        }
 
                         novas.Insert(index, atqNova);
+                        recentes.Insert(index, codQuestao);
 
                         ViewData["Index"] = indice;
                         return PartialView("_Questao", questao.Questao);
@@ -441,7 +451,7 @@ namespace SIAC.Web.Controllers
             List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData["listaQuestoesAntigas"];
             List<AvalTemaQuestao> novas = (List<AvalTemaQuestao>)TempData["listaQuestoesNovas"];
 
-            if(antigas.Count != 0 && novas.Count != 0)
+            if (antigas.Count != 0 && novas.Count != 0)
             {
                 //AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigoAval);
                 var contexto = DataContextSIAC.GetInstance();
@@ -455,7 +465,55 @@ namespace SIAC.Web.Controllers
             TempData.Clear();
 
 
-            return RedirectToAction("Detalhe",new { codigo = codigoAval });
+            return RedirectToAction("Detalhe", new { codigo = codigoAval });
+        }
+
+        //POST: Avaliacao/Academica/Desfazer/ACAD201520001
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Desfazer(string codigoAvaliacao, int tipo, int indice, int codQuestao)
+        {
+            List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData["listaQuestoesAntigas"];
+            List<AvalTemaQuestao> novas = (List<AvalTemaQuestao>)TempData["listaQuestoesNovas"];
+            List<QuestaoTema> questoesTrocaObj = (List<QuestaoTema>)TempData["listaQuestoesPossiveisObj"];
+            List<QuestaoTema> questoesTrocaDisc = (List<QuestaoTema>)TempData["listaQuestoesPossiveisDisc"];
+            List<int> indices = (List<int>)TempData["listaQuestoesIndices"];
+            List<int> recentes = (List<int>)TempData["listaQuestoesRecentes"];
+
+            TempData.Keep();
+
+            if (!String.IsNullOrEmpty(codigoAvaliacao))
+            {
+                int codQuestaoRecente = recentes[indice];
+
+                QuestaoTema questao = null;
+
+                if (tipo == 1)
+                {
+                    questao = questoesTrocaObj.FirstOrDefault(qt => qt.CodQuestao == codQuestaoRecente);
+                    if(questao == null)
+                    {
+                        questao = antigas[indices.IndexOf(indice)].QuestaoTema;
+                    }
+                }
+                else if (tipo == 2)
+                {
+                    questao = questoesTrocaDisc.FirstOrDefault(qt => qt.CodQuestao == codQuestaoRecente);
+                    if (questao == null)
+                    {
+                        questao = antigas[indices.IndexOf(indice)].QuestaoTema;
+                    }
+                }
+
+                if (questao != null)
+                {
+                    novas[indice].QuestaoTema = questao;
+
+                    ViewData["Index"] = indice;
+                    return PartialView("_Questao", questao.Questao);
+                }
+            }
+
+            return Json(String.Empty);
         }
     }
 }

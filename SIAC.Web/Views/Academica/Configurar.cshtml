@@ -16,6 +16,7 @@
             var card = $('#CardQuestao' + indice);
             console.log("inicio");
             card.addClass('ui form loading');
+            $('#CardQuestao' + indice + ' div').popup('hide');
             $.ajax({
                 type: "POST",
                 url: '@Url.RouteUrl("AvalAcadTrocarQuestao")',
@@ -31,6 +32,37 @@
                         $('.ui.accordion').accordion();
                         $('.right.floated.button').popup({ on: 'click' });
                         $('.ui.button.disabled').removeClass('disabled');
+                        $('#CardQuestao' + indice+' .ui.desfazer.button').show();
+                    }
+                    card.removeClass('ui form loading');
+                    console.log("fim");
+                },
+                error: function () {
+                    card.removeClass('ui form loading');
+                    Mensagem('Ocorreu um erro não esperado.');
+                }
+            });
+        }
+
+        function desfazer(codQuestao, indice, codTipoQuestao) {
+            var card = $('#CardQuestao' + indice);
+            card.addClass('ui form loading');
+            $('#CardQuestao' + indice + ' div').popup('hide');
+            $.ajax({
+                type: 'POST',
+                url: '@Url.RouteUrl("DesfazerAvalAcadTrocaQuestao")',
+                data: {
+                    codigoAvaliacao: '@Model.Avaliacao.CodAvaliacao',
+                    tipo: codTipoQuestao,
+                    indice: indice,
+                    codQuestao: codQuestao
+                },
+                success: function (data) {
+                    if (data) {
+                        card.html(data);
+                        $('.ui.accordion').accordion();
+                        $('.right.floated.button').popup({ on: 'click' });
+                        $('#CardQuestao' + indice + ' .ui.desfazer.button').hide();
                     }
                     card.removeClass('ui form loading');
                 },
@@ -45,19 +77,6 @@
         {
             $('.button.salvar').addClass('loading');
             $('form').submit();
-            @*$.ajax({
-                url: '@Url.RouteUrl("SalvarAvalAcad")',
-                type: 'POST',
-                data: {codigoAval:'@Model.Avaliacao.CodAvaliacao'},
-                success: function (data) {
-                    $('.button.salvar').removeClass('loading');
-                    $('.button.salvar').addClass('disabled');
-                    Mensagem("Avaliação Configurada com sucesso!", "Aviso");
-                },
-                error: function(data){
-                    alert('error');
-                }
-            });*@
         }
     </script>
     }
