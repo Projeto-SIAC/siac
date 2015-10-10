@@ -42,6 +42,22 @@ namespace SIAC.Web.Models
                 .ToList();
         }
 
+        public static List<AvalAcademica> ListarPorAluno(int codAluno)
+        {
+            return contexto.AvalAcademica
+                .Where(a => a.Turma.TurmaDiscAluno.Where(t => t.CodAluno == codAluno).Count() > 0)
+                .OrderByDescending(a => a.Avaliacao.DtCadastro)
+                .ToList();
+        }
+
+        public static List<AvalAcademica> ListarAgendadaPorAluno(int codAluno)
+        {          
+            return contexto.AvalAcademica
+                .Where(a => a.Turma.TurmaDiscAluno.Where(t => t.CodAluno == codAluno).Count() > 0 && a.Avaliacao.DtAplicacao.HasValue)
+                .OrderBy(a => a.Avaliacao.DtAplicacao)
+                .ToList();
+        }
+
         public static AvalAcademica ListarPorCodigoAvaliacao(string codigo)
         {
             int numIdentificador = 0;
@@ -65,6 +81,12 @@ namespace SIAC.Web.Models
                 return avalAcademica;
             }
             return null;
+        }
+
+        public static void Liberar(string codAvaliacao)
+        {
+            ListarPorCodigoAvaliacao(codAvaliacao).Avaliacao.FlagLiberada = true;
+            contexto.SaveChanges();
         }
 
         public static void Persistir()

@@ -188,6 +188,7 @@
         <AssociationConnector Association="dbSIACModel.PessoaCategoria" ManuallyRouted="false" />
         <AssociationConnector Association="dbSIACModel.PessoaOcupacao" ManuallyRouted="false" />
         <AssociationConnector Association="dbSIACModel.ProfessorDisciplina" ManuallyRouted="false" />
+        <AssociationConnector Association="dbSIACModel.FK__TurmaDiscAluno__53A266AC1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
