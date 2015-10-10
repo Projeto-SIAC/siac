@@ -85,14 +85,12 @@
         <div class="ui very relaxed list">
             @foreach (var alternativa in Model.Alternativa)
             {
-                <div class="item">
-                    <div class="middle aligned content" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
+                <div class="item" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
                         <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
                         @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
                         {
                             <a class="ui green label">Correta</a>
                         }
-                    </div>
                 </div>
             }
         </div>

@@ -186,6 +186,10 @@ namespace SIAC.Web.Controllers
         [HttpGet]
         public ActionResult Agendar(string codigo)
         {
+            if (String.IsNullOrEmpty(codigo))
+            {
+                return RedirectToAction("Index");
+            }
             if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
             {
                 if (TempData["UrlReferrer"] != null)

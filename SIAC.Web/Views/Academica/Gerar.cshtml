@@ -10,7 +10,8 @@
         $('.ui.dropdown').dropdown();
         $('.ui.modal').modal();
         $('.ui.termo.modal').modal('show');
-        
+        $('.cancelar.button').popup({ on: 'click' });
+
         function prosseguir() {
             var errorList = $('form .error.message .list');
 
@@ -235,15 +236,15 @@
     <div class="two fields"> 
         <div class="field required">
             <label>Objetiva</label>
-            <input id="txtQteObjetiva" name="txtQteObjetiva" type="number" placeholder="Objetivas..." required />
+            <input id="txtQteObjetiva" name="txtQteObjetiva" data-mask="0#" type="number" placeholder="Quantidade..." required />
         </div>
         <div class="field required">
             <label>Discursiva</label>
-            <input id="txtQteDiscursiva" name="txtQteDiscursiva" type="number" placeholder="Discursivas..." required />
+            <input id="txtQteDiscursiva" name="txtQteDiscursiva" data-mask="0#" type="number" placeholder="Quantidade..." required />
         </div>
     </div>
     <div class="field">
-        <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Historico/Autoavaliacao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+        <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Historico/Avaliacao/Academica' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
         <div onclick="prosseguir()" class="ui prosseguir button">Prosseguir</div>
     </div>
 </form>

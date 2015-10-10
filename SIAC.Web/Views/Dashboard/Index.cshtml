@@ -28,6 +28,7 @@
     </style>
 }
 
+
 <h2>@ViewBag.Title</h2>
 
 <div class="ui stackable grid dashmenu">
@@ -41,7 +42,7 @@
                         <div class="ui floating small red label">@autoavaliacao</div>
 
                     }
-                        Realizar Autoavaliação
+                    Autoavaliação
                 </div>
             </a>
         </div>
@@ -55,7 +56,7 @@
                         {
                             <div class="ui floating small red label">@academica</div>
                         }
-                        Agendar Avaliação Acadêmica
+                        Avaliação Acadêmica
                     </div>
                 </a>
             </div>
@@ -63,14 +64,14 @@
         @if (Model.CodCategoria == 2 || Model.CodCategoria == 3)
         {
             <div class="column aligned center">
-                <a href="/Dashboard/Avaliacao/Certificacao/Agendar" class="ui basic segment">
+                <a href="/Dashboard/Avaliacao/Certificacao" class="ui basic segment">
                     <div class="ui icon header">
                         <i class="file text icon"></i>
                         @if (certificacao > 0)
                         {
                             <div class="ui floating small red label">@certificacao</div>
                         }
-                        Agendar Avaliação de Certificação
+                        Avaliação de Certificação
                     </div>
                 </a>
             </div>
@@ -81,7 +82,7 @@
                 <a href="/Dashboard/Questao/Cadastrar" class="ui basic segment">
                     <div class="ui icon header">
                         <i class="add circle icon"></i>
-                        Cadastrar Questão
+                        Nova Questão
                     </div>
                 </a>
             </div>
@@ -100,7 +101,7 @@
         @if (Model.CodCategoria <= 2)
         {
             <div class="column aligned center">
-                <a href="/Historico/Avaliacao/Academica" class="ui basic segment">
+                <a href="/Historico/Avaliacao/Academica/Agendada" class="ui basic segment">
                     <div class="ui icon header">
                         <i class="calendar icon"></i>
                         @if (agendada > 0)

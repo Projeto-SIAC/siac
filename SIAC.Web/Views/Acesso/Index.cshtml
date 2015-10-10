@@ -160,14 +160,14 @@
                 <div class="field required">
                     <label for="TextBoxMatricula">Matrícula</label>
                     <div class="ui icon input">
-                        @Html.TextBox("txtMatricula", (string)ViewBag.TextBoxMatricula, new { placeholder = "Matrícula", required = "required" })
+                        <input name="txtMatricula" type="text" value="@ViewBag.TextBoxMatricula" placeholder="Matrícula" required pattern="[a-zA-Z0-9]+" />
                         <i class="icon user"></i>
                     </div>
                 </div>
                 <div class="field required">
                     <label for="TextBoxSenha">Senha</label>
                     <div class="ui icon input">
-                        @Html.Password("txtSenha", null, new { placeholder = "Senha", required = "required" })
+                        <input name="txtMatricula" type="password" placeholder="Senha" required />
                         <i class="icon lock"></i>
                     </div>
                 </div>

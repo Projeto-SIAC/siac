@@ -179,6 +179,36 @@ namespace SIAC.Web
             return s;
         }
 
+        public static string ToLeftTimeString(this DateTime dt)
+        {
+            string s = String.Empty;
+            double segundos = (dt - DateTime.Now).TotalSeconds;
+            if (segundos < 1)
+            {
+                s = "Daqui a pouco";
+            }
+            else if (segundos < 60)
+            {
+                double q = Math.Round(segundos);
+                s = q > 1 ? q + " segundos" : q + " segundo";
+            }
+            else if (segundos < 3600)
+            {
+                double q = Math.Round(segundos / 60);
+                s = q > 1 ? q + " minutos" : q + " minuto";
+            }
+            else if (segundos < 86400)
+            {
+                double q = Math.Round((segundos / 60) / 60);
+                s = q > 1 ? q + " horas" : q + " hora";
+            }
+            else
+            {
+                double q = Math.Round(((segundos / 60) / 60) / 24);
+                s = q > 1 ? q + " dias" : q + " dia";
+            }
+            return s;
+        }
 
         // List<AvaliacaoTema>
         public static int QteQuestoesPorTipo(this List<AvaliacaoTema> lstAvaliacaoTema, int codDisciplina, int codTipoQuestao)

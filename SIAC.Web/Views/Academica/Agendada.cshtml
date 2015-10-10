@@ -44,11 +44,13 @@
                         <p><b>Quantidade de Questões</b>: @avalAcademica.Avaliacao.QteQuestoes()</p>
                     </div>
                 </div>
+                <!--
                 <div class="extra content">
                     <div class="ui button">Arquivar</div>
                 </div>
+                -->
                 <span class="ui @(avalAcademica.Avaliacao.DtAplicacao.Value < DateTime.Now ? "red" : "") attached top right label">
-                    <i class="warning icon"></i>
+                    <i class="@(avalAcademica.Avaliacao.DtAplicacao.Value < DateTime.Now ? "warning" : "clock") icon"></i>
                     @avalAcademica.Avaliacao.DtAplicacao.Value.ToShortDateString() @avalAcademica.Avaliacao.DtAplicacao.Value.ToShortTimeString()
                 </span>
             </a>

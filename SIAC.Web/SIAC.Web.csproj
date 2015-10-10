@@ -264,6 +264,7 @@
     <Content Include="Resources\components\transition.min.js" />
     <Content Include="Resources\components\visibility.js" />
     <Content Include="Resources\components\visibility.min.js" />
+    <Content Include="Resources\jquery.mask.min.js" />
     <Content Include="Resources\jquery.min.js" />
     <Content Include="Resources\modernizr.js" />
     <Content Include="Resources\semantic.min.css" />

@@ -172,22 +172,22 @@
             @foreach (Turma turma in ViewBag.lstTurma)
             {
                 var cod = @turma.CodTurma;
-                <option value="@cod">@turma.Curso.Descricao (@cod)</option>
+                <option @(Model.NumTurma.HasValue ? Model.Turma.CodTurma == cod ? "selected" : "" : "") value="@cod">@turma.Curso.Descricao (@cod)</option>
             }
         </select>
     </div>
         <div class="three fields">
             <div class="field required">
                 <label>Data de Aplicação</label>
-                <input id="txtData" name="txtData" type="date" placeholder="Data" required />
+                <input id="txtData" name="txtData" type="date" data-mask="00/00/0000" placeholder="Data" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("yyyy-MM-dd") : "")" required />
             </div>
             <div class="field required">
                 <label>Hora de Início</label>
-                <input id="txtHoraInicio" name="txtHoraInicio" type="time" placeholder="Hora de início" required/>
+                <input id="txtHoraInicio" name="txtHoraInicio" type="time" data-mask="00:00" placeholder="Hora de início" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("hh:mm") : "")" required/>
             </div>
             <div class="field required">
                 <label>Hora de Término</label>
-                <input id="txtHoraTermino" name="txtHoraTermino" type="time" placeholder="Hora de término" required />
+                <input id="txtHoraTermino" name="txtHoraTermino" type="time" data-mask="00:00" placeholder="Hora de término" value="@(Model.Avaliacao.DtAplicacao.HasValue && Model.Avaliacao.Duracao.HasValue ? Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToString("hh:mm") : "")" required />
             </div>
         </div>
     <div class="field required">
@@ -196,7 +196,7 @@
             <option value="">Sala</option>
             @foreach (Sala sala in ViewBag.lstSala)
             {
-                <option value="@sala.CodSala" title="@sala.RefLocal">@sala.Descricao</option>
+                <option @(Model.CodSala.HasValue && Model.CodSala.Value == sala.CodSala?"selected" :"") value="@sala.CodSala" title="@sala.RefLocal">@sala.Descricao</option>
             }
         </select>
     </div>

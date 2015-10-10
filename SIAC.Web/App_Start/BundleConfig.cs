@@ -12,7 +12,8 @@ namespace SIAC.Web
 
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
                         "~/Resources/jquery.min.js",
-                        "~/Resources/semantic.min.js"));
+                        "~/Resources/semantic.min.js",
+                        "~/Resources/jquery.mask.min.js"));
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                       "~/Resources/semantic.min.css"));

@@ -1,7 +1,27 @@
 ﻿@using SIAC.Web.Models
 @model AvalAcademica
+
+@{
+    var FlagVencida = Model.Avaliacao.DtAplicacao.Value < DateTime.Now;
+}
+
 <i class="icon close"></i>
-<div class="header">@Model.Avaliacao.CodAvaliacao <div class="ui label">Restante <div class="detail">15min</div></div></div>
+<div class="header">
+    @Model.Avaliacao.CodAvaliacao
+    @if (!FlagVencida)
+    {
+        <div class="ui label">
+            Restante 
+            <div class="detail">@Model.Avaliacao.DtAplicacao.Value.ToLeftTimeString()</div>
+        </div>
+    }
+    else
+    {
+        <div class="ui red label">
+            <i class="warning icon"></i>Vencida
+        </div>
+    }
+</div>
 <div class="content">
     <div class="ui fluid styled accordion">
         <div class="active title"><i class="dropdown icon"></i>Detalhes</div>
@@ -102,17 +122,15 @@
                             <div class="content">
                                 @if (questao.CodTipoQuestao == 1)
                                 {
-                                    <div class="ui list">
+                                    <div class="ui very relaxed list">
                                         @foreach (var alternativa in questao.Alternativa)
                                         {
-                                            <div class="item">
-                                                <div class="middle aligned content" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
+                                            <div class="item" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
                                                     <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
                                                     @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
                                                     {
                                                         <a class="ui tiny green label">Correta</a>
                                                     }
-                                                </div>
                                             </div>
                                         }
                                     </div>
@@ -137,7 +155,7 @@
                             @if (questao.QuestaoAnexo.Count > 0)
                 {
                                 <div class="extra content">
-                                    <div class="ui styled fluid accordion">
+                                    <div class="accordion">
                                         <div class="title"><i class="icon dropdown"></i>Anexos</div>
                                         <div class="content">
                                             @foreach (var anexo in questao.QuestaoAnexo)
@@ -177,7 +195,7 @@
 </div>
 <div class="actions">
     <div class="ui cancel button">Fechar</div>
-    <div class="ui button">Imprimir</div>
-    <div class="ui button">Configurar</div>
-    <div class="ui button">Liberar</div>
+    <div onclick="window.open('/Historico/Avaliacao/Academica/Imprimir/@Model.Avaliacao.CodAvaliacao', '_blank');" class="ui button">Imprimir</div>
+    <a href="/Dashboard/Avaliacao/Academica/Configurar/@Model.Avaliacao.CodAvaliacao" class="ui button">Configurar</a>
+    <div @(FlagVencida ? "onclick=window.location.replace('/Dashboard/Avaliacao/Academica/Agendar/"+Model.Avaliacao.CodAvaliacao+"')" : "") class="ui button">@(FlagVencida ? "Reagendar" : "Liberar")</div>
 </div>

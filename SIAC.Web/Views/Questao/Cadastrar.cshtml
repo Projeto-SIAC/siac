@@ -3,6 +3,210 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="ui pesquisa modal">
+    <i class="icon close"></i>
+    <div class="header">Pesquisar questão</div>
+    <div class="content">
+        <form class="ui form">
+            <div class="field">
+                <label>Palavras-chave (separados por ";")</label>
+                <div class="ui action input">
+                    <input id="txtPalavraChave" type="text" class="ui input text" placeholder="Palavras-chave..." />
+                    <button tabindex="0" class="ui button pesquisar" onclick="palavraChave(txtPalavraChave.value); return false;">Pesquisar</button>
+                </div>
+            </div>
+        </form>
+        <div id="divQuestoes" class="ui very relaxed items">
+        </div>
+    </div>
+    
+    <div class="actions">
+        <a class="ui cancel button">Cancelar</a>
+    </div>
+</div>
+
+<div class="ui termo modal">
+    <div class="header">Você está ciente de...</div>
+    <div class="content">
+        @{
+            var termo = ViewBag.Termo.Split('\n', '\r');
+            foreach (var str in termo)
+            {
+                if (!String.IsNullOrWhiteSpace(str))
+                {
+                    <p>@str</p>
+                }
+            }
+        }
+    </div>
+    <div class="actions">
+        <a href="/Dashboard" class="ui cancel button">Cancelar</a>
+        <div class="ui approve button" onclick="$('#btnPesquisa').popup('show');" >Sim, continuar</div>
+    </div>
+</div>
+
+<div class="ui confirmar modal">
+    <div class="header">Verificação e confirmação</div>
+    <div class="content">
+        <div class="ui labels">
+            <div class="ui label">
+                Disciplina
+                <div id="mdlDisciplina" class="detail"></div>
+            </div>
+            <div class="ui label">
+                Dificuldade
+                <div id="mdlDificuldade" class="detail"></div>
+            </div>    
+            <span id="mdlTagTemas" class="ui tag labels"></span>       
+        </div>
+        <div id="mdlEnunciado" class="ui dividing header" data-html=""></div>
+        <div id="mdlListAlternativas" class="ui very relaxed list">
+        </div>
+        <div id="mdlChaveDeResposta" data-html="">            
+        </div>
+        <br />
+        <div id="mdlAccordionAnexos" class="ui styled fluid accordion">
+            <div class="title"><i class="icon dropdown"></i>Anexos</div>
+            <div class="content">
+                <div id="mdlCardAnexos" class="ui cards">                    
+                </div>
+            </div>
+        </div>
+        <div class="ui segment">
+            <div class="ui form">
+                <div class="field required">
+                    <label>Prove que você não é uma máquina <i class="icon refresh" onclick="NovoCaptcha()"></i></label>
+                    <div class="ui small image">
+                        <img id="imgCaptcha" class="image" src="data:image/png;base64,@ViewBag.Captcha" />
+                    </div>
+                    <div class="ui icon input">
+                        <input id="txtCaptcha" type="text" placeholder="Código...">
+                        <i class="remove icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui negative button">Voltar</div>
+        <div class="ui positive button">Confirmar</div>
+    </div>
+</div>
+ 
+
+<h2>@ViewBag.Title <a id="btnPesquisa" class="ui right floated button" onclick="abrirPesquisaModal()"><i class="search icon"></i>Pesquisar</a></h2>
+ 
+<form id="frmQuestao" action="/Dashboard/Questao/Confirmar" method="post" class="ui form" enctype="multipart/form-data">
+    <div class="ui error message">
+        <div class="header">Verifique</div>
+        <ul class="list"></ul>
+    </div>
+    <div class="ui top attached tabular menu">
+        <div class="active item" data-tab="tab-name">Gerais</div>
+        <div class="item" data-tab="tab-name2">Detalhes</div>
+        <div class="item questao objetiva" data-tab="tab-name3">Alternativas</div>
+        <div class="item anexos" data-tab="tab-name4">Anexos</div>
+    </div>
+    @* Gerais da Questão *@
+    <div class="ui bottom attached active tab segment" data-tab="tab-name">
+        <div class="field required">
+            <label>Disciplina</label>
+            <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" onchange="recuperarTemasPorCodDisciplina()" required>
+                <option value="">Disciplina</option>
+                @foreach (var obj in ViewBag.Disciplinas)
+                {
+                    <option value="@obj.CodDisciplina">@obj.Descricao</option>
+                }
+            </select>
+        </div>
+        <div class="field required">
+            <label>Tema</label>
+            <select id="ddlTema" name="ddlTema" multiple class="ui multiple search dropdown" required>
+                <option value="">Tema</option>
+            </select>
+        </div>
+        <div class="field required">
+            <label>Dificuldade</label>
+            <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown" required>
+                <option value="">Dificuldade</option>
+                @foreach (var obj in ViewBag.Dificuldades)
+                {
+                    <option value="@obj.CodDificuldade" title="@obj.Comentario">@obj.Descricao</option>
+                }
+            </select>
+        </div>
+        <div class="field required">
+            <label>Tipo</label>
+            <select id="ddlTipo" name="ddlTipo" onchange="mostrarCamposPorTipo()" class="ui search dropdown" required>
+                <option value="">Tipo</option>
+                @foreach (var obj in ViewBag.Tipos)
+                {
+                    <option value="@obj.CodTipoQuestao">@obj.Descricao</option>
+                }
+            </select>
+        </div>
+        <div class="ui segment">
+            <div class="field">
+                <div class="ui toggle checkbox">
+                    <input id="chkAnexos" name="chkAnexos" onchange="mostrarOpcaoAnexos()" type="checkbox" tabindex="0" class="hidden">
+                    <label for="chkAnexos">Esta questão possui anexos</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* Detalhes da Questão *@
+    <div class="ui bottom attached tab segment" data-tab="tab-name2">
+        <div class="field required">
+            <label for="txtEnunciado">Enunciado</label>
+            <textarea id="txtEnunciado" name="txtEnunciado" rows="2" required placeholder="Enunciado..."></textarea>
+        </div>
+        <div class="field">
+            <label for="txtObjetivo">Objetivo</label>
+            <textarea id="txtObjetivo" name="txtObjetivo" rows="2" placeholder="Objetivo..."></textarea>
+        </div>
+        <div class="field required questao discursiva">
+            <label for="txtChaveDeResposta">Chave de Resposta</label>
+            <textarea id="txtChaveDeResposta" name="txtChaveDeResposta" rows="2" placeholder="Chave de Resposta..."></textarea>
+        </div>
+        <div class="field questao discursiva">
+            <label for="txtComentario">Comentário</label>
+            <textarea id="txtComentario" name="txtComentario" rows="2" placeholder="Comentário..."></textarea>
+        </div>
+    </div>
+    @* Alternativas da Questão *@
+    <div class="ui bottom attached tab segment questao objetiva" data-tab="tab-name3">
+            <input id="txtQtdAlternativas" name="txtQtdAlternativas" type="number" hidden />
+            <div class="ui button" onclick="adicionarAlternativa()" style="float: right">Adicionar</div>
+        <div class="ui alternativas fluid accordion">
+        </div>
+    </div>   
+     @* Anexos da Questão *@
+    <div class="ui bottom attached tab segment anexos" data-tab="tab-name4">
+        <input id="txtQtdAnexos" name="txtQtdAnexos" type="number" hidden />
+        @* Anexos *@
+        <div class="ui segment">
+            <div class="field">
+                <label>Tipo do Anexo</label>
+                <select id="ddlTiposAnexo" name="ddlTiposAnexo" class="ui dropdown">
+                    <option value="">Tipo do Anexo</option>
+                    @foreach (var obj in ViewBag.TiposAnexo)
+                    {
+                        <option value="@obj.CodTipoAnexo">@obj.Descricao</option>
+                    }
+                </select>
+            </div>
+            <div class="field">
+                <div class="ui button" onclick="adicionarAnexo()">Adicionar</div>
+            </div>
+        </div>
+        <div class="ui anexos fluid accordion">
+        </div>
+    </div>
+    <br />
+    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Dashboard/Questao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+    <div class="ui button" onclick="enviarForm()">Prosseguir</div>
+</form>
+
 @section Scripts {
     <script>
         $('.ui.checkbox').checkbox();
@@ -428,7 +632,7 @@
             }
             $('.ui.confirmar.modal').modal('show');
             $('.ui.confirmar.modal div').popup();
-        }        
+        }
 
         function abrirPesquisaModal() {
             $('.ui.pesquisa.modal').modal('show');
@@ -533,208 +737,3 @@
         }
     </script>
 }
-
-<div class="ui pesquisa modal">
-    <i class="icon close"></i>
-    <div class="header">Pesquisar questão</div>
-    <div class="content">
-        <form class="ui form">
-            <div class="field">
-                <label>Palavras-chave (separados por ";")</label>
-                <div class="ui action input">
-                    <input id="txtPalavraChave" type="text" class="ui input text" placeholder="Palavras-chave..." />
-                    <button tabindex="0" class="ui button pesquisar" onclick="palavraChave(txtPalavraChave.value); return false;">Pesquisar</button>
-                </div>
-            </div>
-        </form>
-        <div id="divQuestoes" class="ui very relaxed items">
-        </div>
-    </div>
-    
-    <div class="actions">
-        <a class="ui cancel button">Cancelar</a>
-    </div>
-</div>
-
-<div class="ui termo modal">
-    <div class="header">Você está ciente de...</div>
-    <div class="content">
-        @{
-            var termo = ViewBag.Termo.Split('\n', '\r');
-            foreach (var str in termo)
-            {
-                if (!String.IsNullOrWhiteSpace(str))
-                {
-                    <p>@str</p>
-                }
-            }
-        }
-    </div>
-    <div class="actions">
-        <a href="/Dashboard" class="ui cancel button">Cancelar</a>
-        <div class="ui approve button" onclick="$('#btnPesquisa').popup('show');" >Sim, continuar</div>
-    </div>
-</div>
-
-<div class="ui confirmar modal">
-    <div class="header">Verificação e confirmação</div>
-    <div class="content">
-        <div class="ui labels">
-            <div class="ui label">
-                Disciplina
-                <div id="mdlDisciplina" class="detail"></div>
-            </div>
-            <div class="ui label">
-                Dificuldade
-                <div id="mdlDificuldade" class="detail"></div>
-            </div>    
-            <span id="mdlTagTemas" class="ui tag labels"></span>       
-        </div>
-        <div id="mdlEnunciado" class="ui dividing header" data-html=""></div>
-        <div id="mdlListAlternativas" class="ui very relaxed list">
-        </div>
-        <div id="mdlChaveDeResposta" data-html="">            
-        </div>
-        <br />
-        <div id="mdlAccordionAnexos" class="ui styled fluid accordion">
-            <div class="title"><i class="icon dropdown"></i>Anexos</div>
-            <div class="content">
-                <div id="mdlCardAnexos" class="ui cards">                    
-                </div>
-            </div>
-        </div>
-        <div class="ui segment">
-            <div class="ui form">
-                <div class="field required">
-                    <label>Prove que você não é uma máquina <i class="icon refresh" onclick="NovoCaptcha()"></i></label>
-                    <div class="ui small image">
-                        <img id="imgCaptcha" class="image" src="data:image/png;base64,@ViewBag.Captcha" />
-                    </div>
-                    <div class="ui icon input">
-                        <input id="txtCaptcha" type="text" placeholder="Código...">
-                        <i class="remove icon"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="actions">
-        <div class="ui negative button">Voltar</div>
-        <div class="ui positive button">Confirmar</div>
-    </div>
-</div>
- 
-
-<h2>@ViewBag.Title <a id="btnPesquisa" class="ui right floated button" onclick="abrirPesquisaModal()"><i class="search icon"></i>Pesquisar</a></h2>
- 
-<form id="frmQuestao" action="/Dashboard/Questao/Confirmar" method="post" class="ui form" enctype="multipart/form-data">
-    <div class="ui error message">
-        <div class="header">Verifique</div>
-        <ul class="list"></ul>
-    </div>
-    <div class="ui top attached tabular menu">
-        <div class="active item" data-tab="tab-name">Gerais</div>
-        <div class="item" data-tab="tab-name2">Detalhes</div>
-        <div class="item questao objetiva" data-tab="tab-name3">Alternativas</div>
-        <div class="item anexos" data-tab="tab-name4">Anexos</div>
-    </div>
-    @* Gerais da Questão *@
-    <div class="ui bottom attached active tab segment" data-tab="tab-name">
-        <div class="field required">
-            <label>Disciplina</label>
-            <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" onchange="recuperarTemasPorCodDisciplina()" required>
-                <option value="">Disciplina</option>
-                @foreach (var obj in ViewBag.Disciplinas)
-                {
-                    <option value="@obj.CodDisciplina">@obj.Descricao</option>
-                }
-            </select>
-        </div>
-        <div class="field required">
-            <label>Tema</label>
-            <select id="ddlTema" name="ddlTema" multiple class="ui multiple search dropdown" required>
-                <option value="">Tema</option>
-            </select>
-        </div>
-        <div class="field required">
-            <label>Dificuldade</label>
-            <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown" required>
-                <option value="">Dificuldade</option>
-                @foreach (var obj in ViewBag.Dificuldades)
-                {
-                    <option value="@obj.CodDificuldade" title="@obj.Comentario">@obj.Descricao</option>
-                }
-            </select>
-        </div>
-        <div class="field required">
-            <label>Tipo</label>
-            <select id="ddlTipo" name="ddlTipo" onchange="mostrarCamposPorTipo()" class="ui search dropdown" required>
-                <option value="">Tipo</option>
-                @foreach (var obj in ViewBag.Tipos)
-                {
-                    <option value="@obj.CodTipoQuestao">@obj.Descricao</option>
-                }
-            </select>
-        </div>
-        <div class="ui segment">
-            <div class="field">
-                <div class="ui toggle checkbox">
-                    <input id="chkAnexos" name="chkAnexos" onchange="mostrarOpcaoAnexos()" type="checkbox" tabindex="0" class="hidden">
-                    <label for="chkAnexos">Esta questão possui anexos</label>
-                </div>
-            </div>
-        </div>
-    </div>
-    @* Detalhes da Questão *@
-    <div class="ui bottom attached tab segment" data-tab="tab-name2">
-        <div class="field required">
-            <label for="txtEnunciado">Enunciado</label>
-            <textarea id="txtEnunciado" name="txtEnunciado" rows="2" required placeholder="Enunciado..."></textarea>
-        </div>
-        <div class="field">
-            <label for="txtObjetivo">Objetivo</label>
-            <textarea id="txtObjetivo" name="txtObjetivo" rows="2" placeholder="Objetivo..."></textarea>
-        </div>
-        <div class="field required questao discursiva">
-            <label for="txtChaveDeResposta">Chave de Resposta</label>
-            <textarea id="txtChaveDeResposta" name="txtChaveDeResposta" rows="2" placeholder="Chave de Resposta..."></textarea>
-        </div>
-        <div class="field questao discursiva">
-            <label for="txtComentario">Comentário</label>
-            <textarea id="txtComentario" name="txtComentario" rows="2" placeholder="Comentário..."></textarea>
-        </div>
-    </div>
-    @* Alternativas da Questão *@
-    <div class="ui bottom attached tab segment questao objetiva" data-tab="tab-name3">
-            <input id="txtQtdAlternativas" name="txtQtdAlternativas" type="number" hidden />
-            <div class="ui button" onclick="adicionarAlternativa()" style="float: right">Adicionar</div>
-        <div class="ui alternativas fluid accordion">
-        </div>
-    </div>   
-     @* Anexos da Questão *@
-    <div class="ui bottom attached tab segment anexos" data-tab="tab-name4">
-        <input id="txtQtdAnexos" name="txtQtdAnexos" type="number" hidden />
-        @* Anexos *@
-        <div class="ui segment">
-            <div class="field">
-                <label>Tipo do Anexo</label>
-                <select id="ddlTiposAnexo" name="ddlTiposAnexo" class="ui dropdown">
-                    <option value="">Tipo do Anexo</option>
-                    @foreach (var obj in ViewBag.TiposAnexo)
-                    {
-                        <option value="@obj.CodTipoAnexo">@obj.Descricao</option>
-                    }
-                </select>
-            </div>
-            <div class="field">
-                <div class="ui button" onclick="adicionarAnexo()">Adicionar</div>
-            </div>
-        </div>
-        <div class="ui anexos fluid accordion">
-        </div>
-    </div>
-    <br />
-    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Dashboard/Questao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
-    <div class="ui button" onclick="enviarForm()">Prosseguir</div>
-</form>
-
