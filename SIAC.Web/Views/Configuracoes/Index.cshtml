@@ -24,12 +24,13 @@
                 url: "/Configuracoes",
                 success: function () {
                     $('#btnAtualizar').addClass('green').text('Atualizado');
+                    $('#btnAtualizar').removeClass('loading');
                 },
                 error: function () {
                     $('.ui.erro.modal').modal('show');
+                    $('#btnAtualizar').removeClass('loading');
                 }
             });
-            $('#btnAtualizar').removeClass('loading');
             return false;
         };
 

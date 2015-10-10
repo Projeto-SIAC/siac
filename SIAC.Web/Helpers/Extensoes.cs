@@ -114,7 +114,8 @@ namespace SIAC.Web
 
         public static string paraCaixaBaixa(int number)
         {
-            const string letters = " abcdefghijklmnopqrstuvwxyz";
+            number--;
+            const string letters = "abcdefghijklmnopqrstuvwxyz";
 
             string value = "";
 

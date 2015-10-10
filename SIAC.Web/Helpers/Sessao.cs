@@ -49,7 +49,7 @@ namespace SIAC.Web.Helpers
 
         public static void Inserir(string chave, object valor)
         {
-            HttpContext.Current.Session.Add(chave, valor);
+            HttpContext.Current.Session[chave] = valor;
         }
 
         public static object Retornar(string chave)
