@@ -500,7 +500,7 @@ namespace SIAC.Web.Controllers
 
             if (!String.IsNullOrEmpty(codigoAvaliacao))
             {
-                int codQuestaoRecente = recentes[indice];
+                int codQuestaoRecente = recentes[indices.IndexOf(indice)];
 
                 QuestaoTema questao = null;
 
@@ -523,7 +523,7 @@ namespace SIAC.Web.Controllers
 
                 if (questao != null)
                 {
-                    novas[indice].QuestaoTema = questao;
+                    novas[indices.IndexOf(indice)].QuestaoTema = questao;
 
                     ViewData["Index"] = indice;
                     return PartialView("_Questao", questao.Questao);
