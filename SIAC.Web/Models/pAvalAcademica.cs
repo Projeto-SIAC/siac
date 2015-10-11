@@ -37,7 +37,7 @@ namespace SIAC.Web.Models
         public static List<AvalAcademica> ListarAgendadaPorProfessor(int codProfessor)
         {
             return contexto.AvalAcademica
-                .Where(a => a.CodProfessor == codProfessor && a.Avaliacao.DtAplicacao.HasValue)
+                .Where(a => a.CodProfessor == codProfessor && a.Avaliacao.DtAplicacao.HasValue && a.Avaliacao.AvalPessoaResultado.Count == 0)
                 .OrderBy(a => a.Avaliacao.DtAplicacao)
                 .ToList();
         }
@@ -53,7 +53,7 @@ namespace SIAC.Web.Models
         public static List<AvalAcademica> ListarAgendadaPorAluno(int codAluno)
         {          
             return contexto.AvalAcademica
-                .Where(a => a.Turma.TurmaDiscAluno.Where(t => t.CodAluno == codAluno).Count() > 0 && a.Avaliacao.DtAplicacao.HasValue)
+                .Where(a => a.Turma.TurmaDiscAluno.Where(t => t.CodAluno == codAluno).Count() > 0 && a.Avaliacao.DtAplicacao.HasValue && a.Avaliacao.AvalPessoaResultado.Count == 0)
                 .OrderBy(a => a.Avaliacao.DtAplicacao)
                 .ToList();
         }
@@ -83,10 +83,12 @@ namespace SIAC.Web.Models
             return null;
         }
 
-        public static void Liberar(string codAvaliacao)
+        public static bool AlternarLiberar(string codAvaliacao)
         {
-            ListarPorCodigoAvaliacao(codAvaliacao).Avaliacao.FlagLiberada = true;
+            AvalAcademica avalAcad = ListarPorCodigoAvaliacao(codAvaliacao);
+            avalAcad.Avaliacao.FlagLiberada = !avalAcad.Avaliacao.FlagLiberada;
             contexto.SaveChanges();
+            return avalAcad.Avaliacao.FlagLiberada;
         }
 
         public static void Persistir()

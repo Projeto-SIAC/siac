@@ -44,6 +44,10 @@
                         data: { codAvaliacao: avalCodigo},
                         success: function(data) {
                             $('#contagem').text(data.Tempo).parent().transition('flash');
+                            if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
+                                $('.iniciar.button').removeClass('disabled').text('Iniciar');
+                                $('.acompanhar.button').removeClass('disabled');
+                            }
                             ContagemRegressiva(data.Intervalo);
                         }                        
                     });
@@ -58,16 +62,46 @@
 
             if (usuarioCategoria == 1) {   
                 acadHub.client.liberar = function (strCodigo) {
-                    alert('Avaliação Liberada ['+strCodigo+']');
+                    alert('O professor liberou a avaliação.');
                     var $modal = $('#'+strCodigo);
-                    $modal.find('.iniciar.button').removeClass('disabled').text('Iniciar');                    
+                    $.ajax({
+                        type:'GET',
+                        url:'/Historico/Avaliacao/Academica/ContagemRegressiva',
+                        data: { codAvaliacao: avalCodigo},
+                        success: function(data) {
+                            if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
+                                $('.iniciar.button').removeClass('disabled').text('Iniciar');
+                            }
+                        }                        
+                    });                                    
                     $modal.find('#mensagem').html('\
                         <i class="checkmark icon"></i>\
                         <div class="content">\
                             Seu professor liberou a prova\
-                            <div class="sub header">Você já pode iniciar</div>\
+                            <div class="sub header">Você já pode iniciar assim que chegar a hora de aplicação</div>\
                         </div>');
-                };           
+                };  
+                acadHub.client.bloquear = function (strCodigo) {
+                    alert('O professor bloqueou a avaliação.');
+                    var $modal = $('#'+strCodigo);
+                    $modal.find('.iniciar.button').addClass('disabled').text('Aguarde'); 
+                    $.ajax({
+                        type:'GET',
+                        url:'/Historico/Avaliacao/Academica/ContagemRegressiva',
+                        data: { codAvaliacao: avalCodigo},
+                        success: function(data) {
+                            if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
+                                $('.iniciar.button').addClass('disabled').text('Aguarde');
+                            }
+                        }                        
+                    }); 
+                    $modal.find('#mensagem').html('\
+                        <i class="clock icon"></i>\
+                        <div class="content">\
+                            Seu professor não liberou a prova ainda\
+                            <div class="sub header">Aguarde a liberação da avaliação para iniciar</div>\
+                        </div>');
+                }; 
                 $.connection.hub.start().done(function () {
                     acadHub.server.realizar(avalCodigo);
                 });
@@ -77,10 +111,33 @@
                     $('.liberar.button').click(function() { 
                         $('.liberar.button').addClass('loading');
                         $.ajax({
-                            url: '/Dashboard/Avaliacao/Academica/Liberar',
+                            url: '/Dashboard/Avaliacao/Academica/AlternarLiberar',
                             type: 'POST',
                             data: { codAvaliacao: avalCodigo },
-                            success: function () { acadHub.server.liberar(avalCodigo); $('.liberar.button').addClass('active').removeClass('loading').text('Liberada'); }
+                            success: function (data) { 
+                                if (data == true) {
+                                    acadHub.server.liberar(avalCodigo, true); 
+                                    $('.liberar.button').addClass('active').removeClass('loading').text('Liberada');
+                                    $.ajax({
+                                        type:'GET',
+                                        url:'/Historico/Avaliacao/Academica/ContagemRegressiva',
+                                        data: { codAvaliacao: avalCodigo},
+                                        success: function(data) {
+                                            if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
+                                                $('.acompanhar.button').removeClass('disabled');
+                                            }
+                                        }                        
+                                    });
+                                }
+                                else {
+                                    acadHub.server.liberar(avalCodigo, false);
+                                    $('.liberar.button').removeClass('active').removeClass('loading').text('Liberar'); 
+                                }
+                            },
+                            error: function() {
+                                $('.liberar.button').removeClass('loading');
+                                Mensagem('Ocorreu um erro inesperado.', 'Liberar avaliação');
+                            }
                         });
                     } );
                 });
@@ -116,7 +173,7 @@
                 -->
                 <span class="ui @(avalAcademica.Avaliacao.DtAplicacao.Value < DateTime.Now ? "red" : "") attached top right label">
                     <i class="@(avalAcademica.Avaliacao.DtAplicacao.Value < DateTime.Now ? "warning" : "clock") icon"></i>
-                    @avalAcademica.Avaliacao.DtAplicacao.Value.ToShortDateString() @avalAcademica.Avaliacao.DtAplicacao.Value.ToShortTimeString()
+                    @avalAcademica.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy HH:mm")
                 </span>
             </a>
         }

@@ -183,11 +183,11 @@
             </div>
             <div class="field required">
                 <label>Hora de Início</label>
-                <input id="txtHoraInicio" name="txtHoraInicio" type="time" data-mask="00:00" placeholder="Hora de início" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("hh:mm") : "")" required/>
+                <input id="txtHoraInicio" name="txtHoraInicio" type="time" data-mask="00:00" placeholder="Hora de início" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("HH:mm") : "")" required/>
             </div>
             <div class="field required">
                 <label>Hora de Término</label>
-                <input id="txtHoraTermino" name="txtHoraTermino" type="time" data-mask="00:00" placeholder="Hora de término" value="@(Model.Avaliacao.DtAplicacao.HasValue && Model.Avaliacao.Duracao.HasValue ? Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToString("hh:mm") : "")" required />
+                <input id="txtHoraTermino" name="txtHoraTermino" type="time" data-mask="00:00" placeholder="Hora de término" value="@(Model.Avaliacao.DtAplicacao.HasValue && Model.Avaliacao.Duracao.HasValue ? Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToString("HH:mm") : "")" required />
             </div>
         </div>
     <div class="field required">

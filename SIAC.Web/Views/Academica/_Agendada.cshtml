@@ -215,7 +215,7 @@
                 <i class="checkmark icon"></i>
                 <div class="content">
                     Seu professor liberou a prova
-                    <div class="sub header">Você já pode iniciar</div>
+                    <div class="sub header">Você já pode iniciar assim que chegar a hora de aplicação</div>
                 </div>
             </div>
         }
@@ -227,11 +227,11 @@
     {
     <div onclick="window.open('/Historico/Avaliacao/Academica/Imprimir/@Model.Avaliacao.CodAvaliacao', '_blank');" class="ui button">Imprimir</div>
     <div class="ui button">Arquivar</div>
-        if (FlagVencida)
+        if (!FlagAgora)
         {
             <div onclick="window.location.replace('/Dashboard/Avaliacao/Academica/Agendar/@Model.Avaliacao.CodAvaliacao')" class="ui button">Reagendar</div>
         }
-        else
+        if(!FlagVencida)
         {
             if (!Model.Avaliacao.FlagLiberada)
             {
@@ -240,16 +240,13 @@
                     <a href="/Dashboard/Avaliacao/Academica/Configurar/@Model.Avaliacao.CodAvaliacao" class="ui button">Configurar</a>
                 }
                 <div class="ui toggle liberar button">Liberar</div>
-            }
+            } 
             else
             {
-                <div class="ui toggle active button">Liberada</div>
-                if (FlagAgora)
-                {
-                    <div class="ui acompanhar button">Acompanhar</div>
-                }
+                <div class="ui toggle active liberar button">Liberada</div>
             }
         }
+        <div class="ui acompanhar disabled button">Acompanhar</div>
     }
     else if (CodCategoria == 1)
     {

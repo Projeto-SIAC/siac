@@ -13,9 +13,16 @@ namespace SIAC.Web.Hubs
             Groups.Add(Context.ConnectionId, codAvaliacao);
         }
 
-        public void Liberar(string codAvaliacao)
+        public void Liberar(string codAvaliacao, bool flag)
         {
-            Clients.Group(codAvaliacao).liberar(codAvaliacao);
+            if (flag)
+            {
+                Clients.Group(codAvaliacao).liberar(codAvaliacao);
+            }
+            else
+            {
+                Clients.Group(codAvaliacao).bloquear(codAvaliacao);
+            }
         }
     }
 }

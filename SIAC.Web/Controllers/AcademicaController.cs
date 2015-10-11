@@ -278,6 +278,8 @@ namespace SIAC.Web.Controllers
                         acad.Avaliacao.Duracao = Convert.ToInt32((dtAplicacaoTermino - acad.Avaliacao.DtAplicacao.Value).TotalMinutes);
                     }
 
+                    acad.Avaliacao.FlagLiberada = false;
+
                     DataContextSIAC.GetInstance().SaveChanges();
                     // OU
                     // AvalAcademica.Agendar(acad);
@@ -285,7 +287,7 @@ namespace SIAC.Web.Controllers
                 }
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Agendada");
         }
 
         // GET: Avaliacao/Academica/Detalhe/ACAD201520001
@@ -564,8 +566,10 @@ namespace SIAC.Web.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult ContagemRegressiva(string codAvaliacao)
         {
-            string strTempo = AvalAcademica.ListarPorCodigoAvaliacao(codAvaliacao).Avaliacao.DtAplicacao.Value.ToLeftTimeString();
+            AvalAcademica avalAcad = AvalAcademica.ListarPorCodigoAvaliacao(codAvaliacao);
+            string strTempo = avalAcad.Avaliacao.DtAplicacao.Value.ToLeftTimeString();
             int qteMilissegundo = 0;
+            bool flagLiberada = avalAcad.Avaliacao.FlagLiberada;
             if (strTempo != "Agora")
             {
                 char tipo = strTempo[(strTempo.IndexOf(' '))+1];
@@ -587,14 +591,14 @@ namespace SIAC.Web.Controllers
                         break;
                 }
             }
-            return Json(new { Tempo = strTempo, Intervalo = qteMilissegundo },JsonRequestBehavior.AllowGet);
+            return Json(new { Tempo = strTempo, Intervalo = qteMilissegundo, FlagLiberada = flagLiberada },JsonRequestBehavior.AllowGet);
         }
 
         //POST: Avaliacao/Academica/Liberar/ACAD201520001
         [AcceptVerbs(HttpVerbs.Post)]
-        public void Liberar(string codAvaliacao)
+        public ActionResult AlternarLiberar(string codAvaliacao)
         {
-            AvalAcademica.Liberar(codAvaliacao);
+            return Json(AvalAcademica.AlternarLiberar(codAvaliacao), JsonRequestBehavior.AllowGet);
         }
     }
 }
