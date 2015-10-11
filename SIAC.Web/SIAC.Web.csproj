@@ -638,6 +638,7 @@
     <Content Include="Views\Academica\Agendada.cshtml" />
     <Content Include="Views\Academica\_Agendada.cshtml" />
     <Content Include="Views\Academica\_Questao.cshtml" />
+    <Content Include="Resources\siac.scrollbar.css" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

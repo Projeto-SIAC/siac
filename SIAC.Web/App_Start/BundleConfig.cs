@@ -22,7 +22,8 @@ namespace SIAC.Web
             ));
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
-                "~/Resources/semantic.min.css"
+                "~/Resources/semantic.min.css",
+                "~/Resources/siac.scrollbar.css"
             ));
         }
     }
