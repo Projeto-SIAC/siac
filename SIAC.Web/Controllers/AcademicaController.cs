@@ -41,8 +41,18 @@ namespace SIAC.Web.Controllers
             List<AvalAcademica> avaliacoes = new List<AvalAcademica>();
             if (TempData["lstAvalAcademica"] == null)
             {
-                int codProfessor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodProfessor;
-                avaliacoes = AvalAcademica.ListarPorProfessor(codProfessor);
+                if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
+                {
+                    int codProfessor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodProfessor;
+                    avaliacoes = AvalAcademica.ListarPorProfessor(codProfessor);
+                    TempData["lstAvalAcademica"] = avaliacoes;
+                }
+                else if (Helpers.Sessao.UsuarioCategoriaCodigo == 1)
+                {
+                    int codAluno = Aluno.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodAluno;
+                    avaliacoes = AvalAcademica.ListarPorAluno(codAluno);
+                    TempData["lstAvalAcademica"] = avaliacoes;
+                }
             }
             else
             {
@@ -74,6 +84,13 @@ namespace SIAC.Web.Controllers
             {
                 int codProfessor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodProfessor;
                 List<AvalAcademica> avaliacoes = AvalAcademica.ListarPorProfessor(codProfessor);
+                TempData["lstAvalAcademica"] = avaliacoes;
+                return View(avaliacoes.Take(9).ToList());
+            }
+            else if (Helpers.Sessao.UsuarioCategoriaCodigo == 1)
+            {
+                int codAluno = Aluno.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodAluno;
+                List<AvalAcademica> avaliacoes = AvalAcademica.ListarPorAluno(codAluno);
                 TempData["lstAvalAcademica"] = avaliacoes;
                 return View(avaliacoes.Take(9).ToList());
             }
@@ -345,6 +362,11 @@ namespace SIAC.Web.Controllers
                 int codProfessor = Professor.ListarPorMatricula(strMatr).CodProfessor;
                 return View(AvalAcademica.ListarAgendadaPorProfessor(codProfessor));
             }
+            else if (Helpers.Sessao.UsuarioCategoriaCodigo == 1)
+            {
+                int codAluno = Aluno.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodAluno;
+                return View(AvalAcademica.ListarAgendadaPorAluno(codAluno));
+            }
             return RedirectToAction("Index");
         }
 
@@ -365,6 +387,12 @@ namespace SIAC.Web.Controllers
                 {
                     return PartialView("_Agendada", avalAcademica);
                 }
+            }
+            else if (Helpers.Sessao.UsuarioCategoriaCodigo == 1)
+            {
+                //int codAluno = Aluno.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodAluno;
+                AvalAcademica avalAcademica = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+                return PartialView("_Agendada", avalAcademica);
             }
             return RedirectToAction("Index");
         }
@@ -531,6 +559,42 @@ namespace SIAC.Web.Controllers
             }
 
             return Json(String.Empty);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult ContagemRegressiva(string codAvaliacao)
+        {
+            string strTempo = AvalAcademica.ListarPorCodigoAvaliacao(codAvaliacao).Avaliacao.DtAplicacao.Value.ToLeftTimeString();
+            int qteMilissegundo = 0;
+            if (strTempo != "Agora")
+            {
+                char tipo = strTempo[(strTempo.IndexOf(' '))+1];
+                switch (tipo)
+                {
+                    case 'd':
+                        qteMilissegundo = 0;
+                        break;
+                    case 'h':
+                        qteMilissegundo = 1 * 60 * 60 * 1000;
+                        break;
+                    case 'm':
+                        qteMilissegundo = 1 * 60 * 1000;
+                        break;
+                    case 's':
+                        qteMilissegundo = 1 * 1000;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return Json(new { Tempo = strTempo, Intervalo = qteMilissegundo },JsonRequestBehavior.AllowGet);
+        }
+
+        //POST: Avaliacao/Academica/Liberar/ACAD201520001
+        [AcceptVerbs(HttpVerbs.Post)]
+        public void Liberar(string codAvaliacao)
+        {
+            AvalAcademica.Liberar(codAvaliacao);
         }
     }
 }

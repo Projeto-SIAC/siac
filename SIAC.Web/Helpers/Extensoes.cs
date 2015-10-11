@@ -185,7 +185,7 @@ namespace SIAC.Web
             double segundos = (dt - DateTime.Now).TotalSeconds;
             if (segundos < 1)
             {
-                s = "Daqui a pouco";
+                s = "Agora";
             }
             else if (segundos < 60)
             {

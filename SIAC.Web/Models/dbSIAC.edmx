@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="dbSIACModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="dbSIACModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Alternativa">
           <Key>
             <PropertyRef Name="CodOrdem" />
@@ -2673,9 +2673,9 @@
               <PropertyRef Name="CodTurno" />
             </Principal>
             <Dependent Role="TurmaDiscAluno">
-              <PropertyRef Name="CodCurso" />
-              <PropertyRef Name="Periodo" />
               <PropertyRef Name="NumTurma" />
+              <PropertyRef Name="Periodo" />
+              <PropertyRef Name="CodCurso" />
               <PropertyRef Name="CodTurno" />
             </Dependent>
           </ReferentialConstraint>
@@ -3399,8 +3399,7 @@
             <End Role="ProfessorDisciplina" EntitySet="ProfessorDisciplina" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="dbSIACModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -4342,7 +4341,7 @@
           <NavigationProperty Name="AvalAcademica" Relationship="Self.FK__AvalAcademica__1D114BD1" FromRole="Turma" ToRole="AvalAcademica" />
           <NavigationProperty Name="Curso" Relationship="Self.FK__Turma__CodCurso__178D7CA5" FromRole="Turma" ToRole="Curso" />
           <NavigationProperty Name="Turno" Relationship="Self.FK__Turma__CodTurno__1881A0DE" FromRole="Turma" ToRole="Turno" />
-          <NavigationProperty Name="TurmaDiscAluno" Relationship="Self.FK__TurmaDiscAluno__53A266AC" FromRole="Turma" ToRole="TurmaDiscAluno" />
+          <NavigationProperty Name="TurmaDiscAluno" Relationship="dbSIACModel.FK__TurmaDiscAluno__53A266AC1" FromRole="Turma" ToRole="TurmaDiscAluno" />
           <NavigationProperty Name="TurmaDiscProfHorario" Relationship="Self.FK__TurmaDiscProfHor__63D8CE75" FromRole="Turma" ToRole="TurmaDiscProfHorario" />
           <NavigationProperty Name="AviPublico" Relationship="Self.AviPublicoTurma" FromRole="Turma" ToRole="AviPublico" />
         </EntityType>
@@ -4367,7 +4366,7 @@
           <Property Name="CodTurno" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Aluno" Relationship="Self.FK__TurmaDisc__CodAl__52AE4273" FromRole="TurmaDiscAluno" ToRole="Aluno" />
           <NavigationProperty Name="Disciplina" Relationship="Self.FK__TurmaDisc__CodDi__54968AE5" FromRole="TurmaDiscAluno" ToRole="Disciplina" />
-          <NavigationProperty Name="Turma" Relationship="Self.FK__TurmaDiscAluno__53A266AC" FromRole="TurmaDiscAluno" ToRole="Turma" />
+          <NavigationProperty Name="Turma" Relationship="dbSIACModel.FK__TurmaDiscAluno__53A266AC1" FromRole="TurmaDiscAluno" ToRole="Turma" />
         </EntityType>
         <EntityType Name="TurmaDiscProfHorario">
           <Key>
@@ -6441,7 +6440,29 @@
             <End Role="Disciplina" EntitySet="Disciplina" />
             <End Role="Professor" EntitySet="Professor" />
           </AssociationSet>
+          <AssociationSet Name="FK__TurmaDiscAluno__53A266AC1" Association="dbSIACModel.FK__TurmaDiscAluno__53A266AC1">
+            <End Role="Turma" EntitySet="Turma" />
+            <End Role="TurmaDiscAluno" EntitySet="TurmaDiscAluno" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK__TurmaDiscAluno__53A266AC1">
+          <End Type="dbSIACModel.Turma" Role="Turma" Multiplicity="1" />
+          <End Type="dbSIACModel.TurmaDiscAluno" Role="TurmaDiscAluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Turma">
+              <PropertyRef Name="NumTurma" />
+              <PropertyRef Name="Periodo" />
+              <PropertyRef Name="CodCurso" />
+              <PropertyRef Name="CodTurno" />
+            </Principal>
+            <Dependent Role="TurmaDiscAluno">
+              <PropertyRef Name="NumTurma" />
+              <PropertyRef Name="Periodo" />
+              <PropertyRef Name="CodCurso" />
+              <PropertyRef Name="CodTurno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

@@ -5,23 +5,88 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Scripts {
+    @Scripts.Render("~/bundles/signalR")
+    <script src="~/signalr/hubs"></script>
     <script>        
-        $('.ui.avaliacao.modal').modal();
+        var avalCodigo;
+        $('.ui.avaliacao.modal').modal({ closable: false });
         function Detalhe(strCodigo) {
-            $('.ui.global.loader').parent().addClass('active');
-            $.ajax({
-                url: '/Historico/Avaliacao/Academica/Agendada/' + strCodigo,
-                method: 'POST',
-                success: function (htmlModal) {
-                    $('.ui.avaliacao.modal').html('').append(htmlModal).modal('show');
-                    $('.ui.global.loader').parent().removeClass('active');
-                    $('.ui.avaliacao.modal .ui.accordion').accordion({
-                        onChange: function () { $('.ui.avaliacao.modal').modal('refresh'); }
-                    });
-                },
-                error: function (xhr) { Mensagem("Ocorreu um erro."); $('.ui.global.loader').parent().removeClass('active'); }
-            });
+            if ($('.ui.avaliacao.modal').prop('id') == strCodigo) {
+                $('.ui.avaliacao.modal').modal('show');
+            }
+            else {
+                $('.ui.global.loader').parent().addClass('active');
+                $.ajax({
+                    url: '/Historico/Avaliacao/Academica/Agendada/' + strCodigo,
+                    method: 'POST',
+                    success: function (htmlModal) {
+                        avalCodigo = strCodigo;
+                        $('.ui.avaliacao.modal').attr('id',strCodigo).html('').append(htmlModal).modal('show');
+                        $('.ui.global.loader').parent().removeClass('active');
+                        $('.ui.avaliacao.modal .ui.accordion').accordion({
+                            onChange: function () { $('.ui.avaliacao.modal').modal('refresh'); }
+                        });
+                        AbrirHub();
+                        ContagemRegressiva(1000);
+                    },
+                    error: function (xhr) { Mensagem("Ocorreu um erro."); $('.ui.global.loader').parent().removeClass('active'); }
+                });
+            }
         }
+
+        function ContagemRegressiva(intervalo) {
+            if (intervalo > 0) {
+                setTimeout(function()
+                {
+                    $.ajax({
+                        type:'GET',
+                        url:'/Historico/Avaliacao/Academica/ContagemRegressiva',
+                        data: { codAvaliacao: avalCodigo},
+                        success: function(data) {
+                            $('#contagem').text(data.Tempo).parent().transition('flash');
+                            ContagemRegressiva(data.Intervalo);
+                        }                        
+                    });
+                }, intervalo);
+            }
+        }
+
+        function AbrirHub() {
+            var usuarioCategoria = @(SIAC.Web.Helpers.Sessao.UsuarioCategoriaCodigo);
+            var acadHub = $.connection.academicaHub;
+            //SignalR           
+
+            if (usuarioCategoria == 1) {   
+                acadHub.client.liberar = function (strCodigo) {
+                    alert('Avaliação Liberada ['+strCodigo+']');
+                    var $modal = $('#'+strCodigo);
+                    $modal.find('.iniciar.button').removeClass('disabled').text('Iniciar');                    
+                    $modal.find('#mensagem').html('\
+                        <i class="checkmark icon"></i>\
+                        <div class="content">\
+                            Seu professor liberou a prova\
+                            <div class="sub header">Você já pode iniciar</div>\
+                        </div>');
+                };           
+                $.connection.hub.start().done(function () {
+                    acadHub.server.realizar(avalCodigo);
+                });
+            }
+            else if(usuarioCategoria == 2) {
+                $.connection.hub.start().done(function () {
+                    $('.liberar.button').click(function() { 
+                        $('.liberar.button').addClass('loading');
+                        $.ajax({
+                            url: '/Dashboard/Avaliacao/Academica/Liberar',
+                            type: 'POST',
+                            data: { codAvaliacao: avalCodigo },
+                            success: function () { acadHub.server.liberar(avalCodigo); $('.liberar.button').addClass('active').removeClass('loading').text('Liberada'); }
+                        });
+                    } );
+                });
+            }
+            
+        };
     </script>
 }
 <div class="ui fullscreen avaliacao modal">

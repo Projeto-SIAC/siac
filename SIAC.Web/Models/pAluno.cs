@@ -19,5 +19,10 @@ namespace SIAC.Web.Models
         {
             return contexto.Aluno.OrderBy(a => a.Usuario.PessoaFisica.Nome).ToList();
         }
+
+        public static Aluno ListarPorMatricula(string strMatricula)
+        {
+            return contexto.Aluno.FirstOrDefault(a => a.MatrAluno == strMatricula);
+        }        
     }
 }

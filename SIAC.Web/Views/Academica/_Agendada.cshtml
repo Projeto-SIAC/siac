@@ -2,20 +2,21 @@
 @model AvalAcademica
 
 @{
-    var FlagVencida = Model.Avaliacao.DtAplicacao.Value < DateTime.Now;
+    var CodCategoria = SIAC.Web.Helpers.Sessao.UsuarioCategoriaCodigo;
+    var totalMinutes = (DateTime.Now - Model.Avaliacao.DtAplicacao.Value).TotalMinutes;
+    var FlagAgora =  totalMinutes < (Model.Avaliacao.Duracao / 2) && totalMinutes > 0;
+    var FlagVencida = totalMinutes > (Model.Avaliacao.Duracao / 2);
 }
-
-<i class="icon close"></i>
 <div class="header">
     @Model.Avaliacao.CodAvaliacao
-    @if (!FlagVencida)
+    @if (!FlagVencida && !FlagAgora)
     {
         <div class="ui label">
-            Restante 
-            <div class="detail">@Model.Avaliacao.DtAplicacao.Value.ToLeftTimeString()</div>
+            @(CodCategoria == 2 ? "Restante" : "Aguarde") 
+            <div id="contagem" class="detail">@Model.Avaliacao.DtAplicacao.Value.ToLeftTimeString()</div>
         </div>
     }
-    else
+    else if(FlagVencida)
     {
         <div class="ui red label">
             <i class="warning icon"></i>Vencida
@@ -97,6 +98,9 @@
                 </tbody>
             </table>
         </div>
+        @if (CodCategoria == 2)
+        {
+        
         <div class="title"><i class="dropdown icon"></i>Questões</div>
         <div class="content">
             <div class="ui one cards" style="max-height: 25em; overflow-y: auto">
@@ -153,7 +157,7 @@
                                             }
                             </div>
                             @if (questao.QuestaoAnexo.Count > 0)
-                {
+                            {
                                 <div class="extra content">
                                     <div class="accordion">
                                         <div class="title"><i class="icon dropdown"></i>Anexos</div>
@@ -191,11 +195,71 @@
                 }
             </div>
         </div>
+        }
     </div>
+    @if (CodCategoria == 1)
+    {
+        if (!FlagVencida && !Model.Avaliacao.FlagLiberada)
+        {
+            <div id="mensagem" class="ui header">
+                <i class="clock icon"></i>
+                <div class="content">
+                    Seu professor não liberou a prova ainda
+                    <div class="sub header">Aguarde a liberação da avaliação para iniciar</div>
+                </div>
+            </div>
+        }
+        else if (!FlagVencida && Model.Avaliacao.FlagLiberada)
+        {
+            <div id="mensagem" class="ui header">
+                <i class="checkmark icon"></i>
+                <div class="content">
+                    Seu professor liberou a prova
+                    <div class="sub header">Você já pode iniciar</div>
+                </div>
+            </div>
+        }
+    }
 </div>
 <div class="actions">
     <div class="ui cancel button">Fechar</div>
+    @if (CodCategoria == 2)
+    {
     <div onclick="window.open('/Historico/Avaliacao/Academica/Imprimir/@Model.Avaliacao.CodAvaliacao', '_blank');" class="ui button">Imprimir</div>
-    <a href="/Dashboard/Avaliacao/Academica/Configurar/@Model.Avaliacao.CodAvaliacao" class="ui button">Configurar</a>
-    <div @(FlagVencida ? "onclick=window.location.replace('/Dashboard/Avaliacao/Academica/Agendar/"+Model.Avaliacao.CodAvaliacao+"')" : "") class="ui button">@(FlagVencida ? "Reagendar" : "Liberar")</div>
+    <div class="ui button">Arquivar</div>
+        if (FlagVencida)
+        {
+            <div onclick="window.location.replace('/Dashboard/Avaliacao/Academica/Agendar/@Model.Avaliacao.CodAvaliacao')" class="ui button">Reagendar</div>
+        }
+        else
+        {
+            if (!Model.Avaliacao.FlagLiberada)
+            {
+                if (!FlagAgora)
+                {
+                    <a href="/Dashboard/Avaliacao/Academica/Configurar/@Model.Avaliacao.CodAvaliacao" class="ui button">Configurar</a>
+                }
+                <div class="ui toggle liberar button">Liberar</div>
+            }
+            else
+            {
+                <div class="ui toggle active button">Liberada</div>
+                if (FlagAgora)
+                {
+                    <div class="ui acompanhar button">Acompanhar</div>
+                }
+            }
+        }
+    }
+    else if (CodCategoria == 1)
+    {
+        if (FlagAgora)
+        {
+            <div class="ui iniciar button">@(Model.Avaliacao.FlagLiberada ? "Iniciar" : "Aguarde")</div>
+        }
+        else if (!FlagVencida)
+        {
+            <div class="ui iniciar disabled button">Aguarde</div>
+        }
+    }
 </div>

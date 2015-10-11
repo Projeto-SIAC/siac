@@ -10,7 +10,7 @@
         var prof = Model.Professor.First();
         academica = prof.AvalAcademica.Where(a=>!a.NumTurma.HasValue).Count();
         certificacao = prof.AvalCertificacao.Where(a => a.PessoaFisica.Count == 0).Count();
-        agendada = prof.AvalAcademica.Where(a => a.NumTurma.HasValue).Count();
+        agendada = prof.AvalAcademica.Where(a => a.Avaliacao.DtAplicacao.HasValue).Count();
     }
     else if (Model.CodCategoria == 1)
     {
