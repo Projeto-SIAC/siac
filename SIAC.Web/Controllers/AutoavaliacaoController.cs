@@ -32,7 +32,6 @@ namespace SIAC.Web.Controllers
         // GET: Autoavaliacao/Minhas
         public ActionResult Minhas()
         {
-            Helpers.TimeLog.Iniciar("Gerar Autoavaliações");
             int codPessoaFisica = Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula);
             List<AvalAuto> lstAutos = AvalAuto.ListarPorPessoa(codPessoaFisica);
 
@@ -48,7 +47,6 @@ namespace SIAC.Web.Controllers
                              FlagPendente = a.Avaliacao.AvalPessoaResultado.Count > 0 || (a.FlagArquivo.HasValue && a.FlagArquivo.Value) ? false : true,
                              FlagArquivo = a.FlagArquivo.HasValue ? a.FlagArquivo.Value : false
                          };
-            Helpers.TimeLog.Parar();
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -113,9 +111,7 @@ namespace SIAC.Web.Controllers
                 string[] arrTemaCods = formCollection["ddlTemas" + strDisc].Split(',');
 
                 /* Questões */
-                //Helpers.TimeLog.Iniciar("Lista de Questões");
                 List<QuestaoTema> lstQuestoes = Questao.ListarPorDisciplina(int.Parse(strDisc), arrTemaCods, codDificuldade, qteObjetiva, qteDiscursiva);
-                //Helpers.TimeLog.Parar();
                 foreach (var strTemaCod in arrTemaCods)
                 {
                     AvaliacaoTema avalTema = new AvaliacaoTema();
@@ -289,7 +285,7 @@ namespace SIAC.Web.Controllers
 
                     auto.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
-                    DataContextSIAC.GetInstance().SaveChanges();
+                    Repositorio.GetInstance().SaveChanges();
 
                     ViewBag.Porcentagem = (avalPessoaResultado.QteAcertoObj / qteObjetiva) * 100;
                     ViewBag.Desempenho = new Dictionary<string, double>();

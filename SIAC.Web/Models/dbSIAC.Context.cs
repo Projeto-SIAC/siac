@@ -24,7 +24,14 @@ namespace SIAC.Web.Models
         {
             throw new UnintentionalCodeFirstException();
         }
-    
+
+        public override int SaveChanges()
+        {
+            Sistema.AlertarMudanca = Sistema.MatriculaAtivo;
+            Sistema.AlertarMudanca.Remove(Helpers.Sessao.UsuarioMatricula);
+            return base.SaveChanges();
+        }
+
         public virtual DbSet<Alternativa> Alternativa { get; set; }
         public virtual DbSet<Aluno> Aluno { get; set; }
         public virtual DbSet<Area> Area { get; set; }

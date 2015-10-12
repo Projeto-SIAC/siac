@@ -54,7 +54,7 @@ namespace SIAC.Web
         public static string GetIndiceAlternativa(this int i)
         {
             i++;
-            int tipo = DataContextSIAC.GetInstance().Parametro.First().NumeracaoAlternativa;
+            int tipo = Repositorio.GetInstance().Parametro.First().NumeracaoAlternativa;
 
             switch (tipo)
             {
@@ -74,7 +74,7 @@ namespace SIAC.Web
         public static string GetIndiceQuestao(this int i)
         {
             i++;
-            int tipo = DataContextSIAC.GetInstance().Parametro.First().NumeracaoQuestao;
+            int tipo = Repositorio.GetInstance().Parametro.First().NumeracaoQuestao;
 
             switch (tipo)
             {
@@ -334,7 +334,7 @@ namespace SIAC.Web
             List<AvalQuesPessoaResposta> lstResposta = new List<AvalQuesPessoaResposta>();
 
             lstResposta.AddRange(
-                    from r in DataContextSIAC.GetInstance().AvalQuesPessoaResposta
+                    from r in Repositorio.GetInstance().AvalQuesPessoaResposta
                     where r.CodQuestao == questao.CodQuestao
                     select r
                 );

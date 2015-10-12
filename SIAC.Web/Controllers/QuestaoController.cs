@@ -274,11 +274,9 @@ namespace SIAC.Web.Controllers
         {
             if (!String.IsNullOrEmpty(strQte))
             {
-                Helpers.TimeLog.Iniciar("Gerar Questões (" + strQte + ")");
                 int qte = int.Parse(strQte);
                 List<Questao> lstQuestao = Helpers.DevGerarQuestao.GerarQuestao(qte);
                 TempData["lstQuestao"] = lstQuestao;
-                Helpers.TimeLog.Parar();
                 return Json(lstQuestao
                     .Select(q=> new
                     {
@@ -306,8 +304,8 @@ namespace SIAC.Web.Controllers
             if (TempData.ContainsKey("lstQuestao"))
             {
                 List<Questao> lstQuestao = (List<Questao>)TempData["lstQuestao"];
-                DataContextSIAC.GetInstance().Questao.AddRange(lstQuestao);
-                DataContextSIAC.GetInstance().SaveChanges();
+                Repositorio.GetInstance().Questao.AddRange(lstQuestao);
+                Repositorio.GetInstance().SaveChanges();
             }
             return RedirectToAction("Index");
         }

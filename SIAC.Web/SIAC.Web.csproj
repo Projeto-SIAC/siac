@@ -403,7 +403,7 @@
     <Compile Include="Models\Curso.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DataContextSIAC.cs" />
+    <Compile Include="Models\Repositorio.cs" />
     <Compile Include="Models\dbSIAC.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
