@@ -293,7 +293,7 @@ namespace SIAC.Web.Controllers
                 int codDisciplina;
                 int.TryParse(formCollection["ddlTemaDisciplina"], out codDisciplina);
 
-                var codTemas = (from t in DataContextSIAC.GetInstance().Tema
+                var codTemas = (from t in Repositorio.GetInstance().Tema
                                 where t.CodDisciplina == codDisciplina
                                 select t.CodTema).ToList();
 

@@ -63,7 +63,7 @@ namespace SIAC.Web.Models
             }
         }
 
-        private static dbSIACEntities contexto { get { return DataContextSIAC.GetInstance(); } }
+        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         public static int ObterNumIdentificador(int codTipoAvaliacao)
         {

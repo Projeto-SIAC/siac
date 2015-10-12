@@ -7,7 +7,7 @@ namespace SIAC.Web.Models
 {
     public partial class Dificuldade
     {
-        private static dbSIACEntities contexto { get { return DataContextSIAC.GetInstance(); } }
+        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         public static List<Dificuldade> ListarOrdenadamente()
         {

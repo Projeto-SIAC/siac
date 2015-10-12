@@ -8,7 +8,7 @@ namespace SIAC.Web.Models
 {
     public partial class Parametro
     {
-        private static dbSIACEntities contexto { get { return DataContextSIAC.GetInstance(); } }
+        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         private static Parametro parametro;
 

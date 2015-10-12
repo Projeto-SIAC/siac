@@ -128,7 +128,6 @@ namespace SIAC.Web.Controllers
                 else return RedirectToAction("Index", "Dashboard");
             }
             AvalAcademica acad = new AvalAcademica();
-            Helpers.TimeLog.Iniciar("AvalAcad");
             if (formCollection.HasKeys())
             {
                 DateTime hoje = DateTime.Now;
@@ -193,7 +192,6 @@ namespace SIAC.Web.Controllers
                 ViewBag.QuestoesDaAvaliacao = lstQuestoes;
 
                 AvalAcademica.Inserir(acad);
-                Helpers.TimeLog.Parar();
             }
 
             return View(acad);
@@ -280,7 +278,7 @@ namespace SIAC.Web.Controllers
 
                     acad.Avaliacao.FlagLiberada = false;
 
-                    DataContextSIAC.GetInstance().SaveChanges();
+                    Repositorio.GetInstance().SaveChanges();
                     // OU
                     // AvalAcademica.Agendar(acad);
 
@@ -449,7 +447,7 @@ namespace SIAC.Web.Controllers
                     {
                         if (!indices.Contains(indice))
                         {
-                            AvalTemaQuestao aqtAntiga = (from atq in DataContextSIAC.GetInstance().AvalTemaQuestao
+                            AvalTemaQuestao aqtAntiga = (from atq in Repositorio.GetInstance().AvalTemaQuestao
                                                          where atq.Ano == acad.Ano
                                                          && atq.Semestre == acad.Semestre
                                                          && atq.CodTipoAvaliacao == acad.CodTipoAvaliacao
@@ -501,7 +499,7 @@ namespace SIAC.Web.Controllers
             if (antigas.Count != 0 && novas.Count != 0)
             {
                 //AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigoAval);
-                var contexto = DataContextSIAC.GetInstance();
+                var contexto = Repositorio.GetInstance();
                 for (int i = 0; i < antigas.Count && i < novas.Count; i++)
                 {
                     contexto.AvalTemaQuestao.Remove(antigas.ElementAtOrDefault(i));

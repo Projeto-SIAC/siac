@@ -7,7 +7,7 @@ namespace SIAC.Web.Models
 {
     public partial class AvalAuto
     {     
-        private static dbSIACEntities contexto { get { return DataContextSIAC.GetInstance(); } }
+        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         public static void Inserir(AvalAuto AvalAuto)
         {
