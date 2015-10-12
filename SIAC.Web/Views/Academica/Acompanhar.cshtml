@@ -24,14 +24,31 @@
                 });
 
                 acadHub.client.enviarAval = function(codAvaliacao){
-                    html2canvas($('.three.wide.column'), {
+
+                    html2canvas(document.body, {
                         onrendered: function (canvas) {
                             var c = $(canvas);
                             c.attr('id', 'mycanvas').hide();
                             $('table').append(c);
                             var canvas = document.getElementById("mycanvas");
                             data = canvas.toDataURL("image/png");
-                            acadHub.server.avalEnviada(codAvaliacao,usrMatr,usrNome,data);
+                            $.ajax({
+                                type: 'POST',
+                                url: '@Url.RouteUrl("AvalAcadPrint")',
+                                data: {
+                                    codAvaliacao: avalAcad,
+                                    usrMatricula: usrMatr,
+                                    imageData: data,
+                                    tipo: 1
+                                },
+                                success: function(data){
+                                    acadHub.server.avalEnviada(codAvaliacao,usrMatr,usrNome);
+                                },
+                                error: function(data){
+                                    alert('error');
+                                }
+                            });
+
                             c.remove();
                         }
                     });
@@ -52,11 +69,27 @@
                     $('tbody').append($tr);
                 };
 
-                acadHub.client.receberAval = function(alnMatricula,alnNome,imgAval){
-                    $('.modal .header').text(alnNome + ' - '+ alnMatricula);
-                    $('#imgProva').attr('src',imgAval);
-                    $('.ui.fullscreen.modal').modal('show').modal('refresh');
-                    $('#'+alnMatricula).removeClass('loading');
+                acadHub.client.receberAval = function(alnMatricula,alnNome){
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.RouteUrl("AvalAcadPrint")',
+                        data: {
+                            codAvaliacao: avalAcad,
+                            usrMatricula: usrMatr,
+                            imageData: null,
+                            tipo: 2
+                        },
+                        success: function(data){
+                            $('.modal .header').text(alnNome + ' - '+ alnMatricula);
+                            $('#imgProva').attr('src',data).css('max-width','100%').css('max-height','auto');
+                            $('.ui.fullscreen.modal').modal('show').modal('refresh');
+                            $('#'+alnMatricula).removeClass('loading');
+                        },
+                        error: function(data){
+                            alert('error');
+                        }
+                    });
                 };
             }
         };

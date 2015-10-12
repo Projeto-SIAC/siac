@@ -612,5 +612,23 @@ namespace SIAC.Web.Controllers
             }
             return View("Agendada");
         }
+
+        //POST: //Academica/Printar/CodAvaliacao/UsrMatricula
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Printar(string codAvaliacao, string usrMatricula,string imageData,int tipo)
+        {
+            if (tipo == 1)
+            {
+                Sistema.TempDataUrlImage = imageData;
+                return Json(true);
+            }
+            else if (tipo == 2)
+            {
+                string temp = Sistema.TempDataUrlImage;
+                Sistema.TempDataUrlImage = String.Empty;
+                return Json(temp);
+            }
+            else return Json(false);
+        }
     }
 }

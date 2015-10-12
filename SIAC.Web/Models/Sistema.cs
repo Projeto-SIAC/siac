@@ -10,5 +10,6 @@ namespace SIAC.Web.Models
         public static List<string> MatriculaAtivo = new List<string>();
         public static Dictionary<int, int> NumIdentificador = new Dictionary<int, int>();
         public static List<string> AlertarMudanca = new List<string>();
+        public static string TempDataUrlImage = String.Empty;
     }
 }

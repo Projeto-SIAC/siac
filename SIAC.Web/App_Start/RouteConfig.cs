@@ -14,6 +14,12 @@ namespace SIAC.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "AvalAcadPrint",
+                url: "Academica/Printar",
+                defaults: new { controller = "Academica",action = "Printar" }
+                );
+
+            routes.MapRoute(
                 name: "DesfazerAvalAcadTrocaQuestao",
                 url: "Historico/Avaliacao/Academica/Desfazer/{codigoAval}",
                 defaults: new { controller = "Academica", action = "Desfazer", codigoAval = UrlParameter.Optional }

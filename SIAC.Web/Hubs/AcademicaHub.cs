@@ -41,9 +41,9 @@ namespace SIAC.Web.Hubs
             Clients.Group("AVA" + codAvaliacao + "ALN" + usrMatricula).enviarAval(codAvaliacao);
         }
 
-        public void AvalEnviada(string codAvaliacao,string alnMatricula,string alnNome, string imgAval)
+        public void AvalEnviada(string codAvaliacao,string alnMatricula,string alnNome)
         {
-            Clients.Group("PRF" + codAvaliacao).receberAval(alnMatricula,alnNome, imgAval);
+            Clients.Group("PRF" + codAvaliacao).receberAval(alnMatricula,alnNome);
         }
     }
 }
