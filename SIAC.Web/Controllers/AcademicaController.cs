@@ -613,7 +613,7 @@ namespace SIAC.Web.Controllers
             return View("Agendada");
         }
 
-        //POST: //Academica/Printar/CodAvaliacao/UsrMatricula
+        //POST: Academica/Printar/CodAvaliacao/UsrMatricula
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Printar(string codAvaliacao, string usrMatricula,string imageData,int tipo)
         {
@@ -629,6 +629,19 @@ namespace SIAC.Web.Controllers
                 return Json(temp);
             }
             else return Json(false);
+        }
+
+        public ActionResult Realizar(string codigo)
+        {
+            if (Helpers.Sessao.UsuarioCategoriaCodigo == 1 && !String.IsNullOrEmpty(codigo))
+            {
+                AvalAcademica avalAcad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+                if (avalAcad.Avaliacao.AvalPessoaResultado.Count == 0 && avalAcad.Avaliacao.FlagLiberada && (DateTime.Now - avalAcad.Avaliacao.DtAplicacao.Value).TotalMinutes < (avalAcad.Avaliacao.Duracao/2))
+                {
+                    return View(avalAcad);
+                }
+            }
+            return RedirectToAction("Agendada");
         }
     }
 }

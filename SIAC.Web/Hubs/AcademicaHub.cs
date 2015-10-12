@@ -45,5 +45,10 @@ namespace SIAC.Web.Hubs
         {
             Clients.Group("PRF" + codAvaliacao).receberAval(alnMatricula,alnNome);
         }
+
+        public void AtualizarAlunoProgresso(string codAvaliacao, string usrMatricula, double percent)
+        {
+            Clients.Group("PRF" + codAvaliacao).atualizarProgresso(usrMatricula, percent);
+        }
     }
 }

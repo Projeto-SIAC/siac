@@ -90,7 +90,7 @@
                         url:'/Historico/Avaliacao/Academica/ContagemRegressiva',
                         data: { codAvaliacao: avalCodigo},
                         success: function(data) {
-                            if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
+                            if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == false) {
                                 $('.iniciar.button').addClass('disabled').text('Aguarde');
                             }
                         }                        

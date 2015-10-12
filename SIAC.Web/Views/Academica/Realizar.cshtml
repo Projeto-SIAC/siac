@@ -1,0 +1,297 @@
+﻿@using SIAC.Web.Models
+@model AvalAcademica
+
+@{
+    ViewBag.Title = "Realizar " + Model.Avaliacao.CodAvaliacao;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
+}
+
+<h2>@ViewBag.Title <div class="ui right floated button" onclick="$('.ui.informacoes.modal').modal('show')">Informações</div></h2>
+
+<div class="ui informacoes modal">
+    <i class="icon close"></i>
+    <div class="header">Informações sobre autoavaliação</div>
+    <div class="content">
+        <table class="ui striped table">
+            <thead>
+                <tr>
+                    <th>Disciplina</th>
+                    <th>Tema(s)</th>
+                    <th>Quantidade</th>
+                    <th>Dificuldade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <b>@Model.Disciplina.Descricao</b>
+                    </td>
+                    <td class="ui labels">
+                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema)
+                        {
+                            <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                        }
+                    </td>
+                    <td class="ui labels">
+                        <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(1)</div></div>
+                        <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(2)</div></div>
+                    </td>
+                    <td>
+                        @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(Model.Disciplina.CodDisciplina)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="ui small confirmar modal">
+    <div class="header">Você tem certeza?</div>
+    <div class="content">
+        <input id="txtRef" type="text" hidden />
+        Você está deixando a página. Isso será considerado como <b>cancelamento</b> e você perderá todos os dados.
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Voltar para avaliação</div>
+        <div class="ui approve button">Deixar a página</div>
+    </div>
+</div>
+
+<div class="ui anexo basic modal">
+    <i class="close icon"></i>
+    <div class="ui centered header"></div>
+    <div class="image content">
+        <img class="ui centered image">
+    </div>
+    <div class="description" style="text-align:center;"></div>
+</div>
+
+<div class="ui labels">
+    <div class="ui label">
+        Ínicio
+        <div id="lblHoraInicio" class="detail">@DateTime.Now.ToString("HH'h'mm'min'")</div>
+    </div>
+    <div class="ui label">
+        Término
+        <div id="lblHoraTermino" class="detail">@Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToString("HH'h'mm'min'")</div>
+    </div>
+    <div class="ui label">
+        Agora
+        <div id="lblHoraAgora" class="detail">13h30min</div>
+    </div>
+    <div class="ui label">
+        Restante
+        <div id="lblHoraRestante" class="detail">00h47min</div>
+    </div>
+</div>
+
+<form class="ui form" method="post">
+    <div class="ui message error">
+        <i class="icon close"></i>
+        <div class="header">
+            Responda todas as questões!
+        </div>
+    </div>
+    <div class="ui basic segment">
+        <div class="ui accordion">
+            @for (int i = 0; i < lstQuestao.Count; i++)
+            {
+                <div class="title">
+                    <input id="txtCodQuestao" value="@lstQuestao[i].CodQuestao" hidden />
+                    <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToShortString(80))
+                    <div class="ui small label teal" style="display:none">Respondida</div>
+                </div>
+                <div class="content">
+                    <div class="ui segment">
+                        <div class="ui dividing header" style="text-align:justify">
+                            @{
+                                var enunciado = (@i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).Split('\n', '\r');
+                                foreach (var strEnunciado in enunciado)
+                                {
+                                    if (!String.IsNullOrWhiteSpace(strEnunciado))
+                                    {
+                                        <p>@strEnunciado</p>
+                                    }
+                                }
+                            }
+                        </div>
+                        @if (lstQuestao[i].CodTipoQuestao == 1)
+                        {
+                            <div class="grouped fields">
+                                <label>Selecione a alternativa</label>
+                                @{ var lstAlternativa = lstQuestao[i].EmbaralharAlternativa(); }
+                                @for (int j = 0; j < lstAlternativa.Count; j++)
+                                {
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" name="rdoResposta@(lstQuestao[i].CodQuestao)" value="@lstAlternativa[j].CodOrdem" />
+                                            <label><b>@j.GetIndiceAlternativa()</b>) @lstAlternativa[j].Enunciado</label>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="field">
+                                            <label>Resposta</label>
+                                            <textarea name="txtResposta@(lstQuestao[i].CodQuestao)" id="txtResposta@(lstQuestao[i].CodQuestao)" placeholder="Resposta..." rows="3"></textarea>
+                                        </div>
+                                    }
+
+                        <div class="accordion">
+                            @if (lstQuestao[i].QuestaoAnexo.Count > 0)
+                            {
+                                <div class="title"><i class="icon dropdown"></i>Anexos</div>
+                                <div class="content">
+                                    @foreach (var anexo in lstQuestao[i].QuestaoAnexo)
+                                    {
+                                        switch (anexo.CodTipoAnexo)
+                                        {
+                                            case 1:
+                                                <a onclick="expandirImagem(this)" class="ui card">
+                                                    <div class="image">
+                                                        <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo, 0, anexo.Anexo.Length)" />
+                                                    </div>
+                                                    <div class="content">
+                                                        <div class="header">
+                                                            @anexo.Legenda
+                                                        </div>
+                                                        <div class="description">
+                                                            @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte não informada")
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                </div>
+                            }
+                            <div class="title"><i class="icon dropdown"></i>Comentário</div>
+                            <div class="content">
+                                <div class="field">
+                                    <label>Comentário</label>
+                                    <textarea name="txtComentario@(lstQuestao[i].CodQuestao)" id="txtComentario@(lstQuestao[i].CodQuestao)" placeholder="Comentário..." rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                    }
+        </div>
+    </div>
+    <div class="ui button">Desistir</div>
+    <div class="ui button">Finalizar</div>
+</form>
+
+@section Scripts{
+    <script>
+
+        $('a[href]').on('click', function () {
+                $('.ui.confirmar.modal').modal('show'); $('.ui.confirmar.modal #txtRef').val($(this).attr('href')); return false;
+            }
+        );
+
+        $('.ui.checkbox')
+            .checkbox()
+        ;
+
+        $('.ui.informacoes.modal')
+            .modal()
+        ;
+
+        $('.ui.confirmar.modal')
+            .modal({
+                onApprove: function () { window.onbeforeunload = function () { $('.ui.global.loader').parent().addClass('active'); }; window.location.href = $('.ui.confirmar.modal #txtRef').val(); },
+                onDeny: function () { $('.ui.segment.loading').removeClass('loading'); }
+            })
+        ;
+
+        $('.ui.anexo.modal')
+            .modal()
+        ;
+
+        $('.ui.accordion')
+            .accordion({ exclusive: false })
+        ;
+
+        var conectado = false;
+
+        function TesteConexao() {
+            $.ajax({
+                type: 'GET',
+                url: "/",
+                success: function () {
+                    conectado = true;
+                },
+                error: function () {
+                    conectado = false;
+                }
+            });
+        }
+
+        function expandirImagem(card) {
+            card = $(card);
+            src = card.find('img').attr('src');
+            legenda = card.find('.header').text();
+            fonte = card.find('.description').text();
+            modal = $('.ui.anexo.modal');
+
+            modal.find('.header').text(legenda);
+            modal.find('img.image').attr('src', src);
+            modal.find('.description').html(fonte);
+
+            modal.modal('show');
+        }
+
+        function Relogio() {
+            setInterval(function () {
+                date = new Date();
+                $('#lblHoraAgora')
+                    .text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
+                Temporizador('@(Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToString("yyyy-MM-dd HH:mm:ss"))');
+            }, 1000);
+        }
+
+        function minutesToTimeString(minutes) {
+            if (minutes > 59) {
+                var strHour = Math.floor(minutes / 60);
+                var strMinutes = (minutes % 60);
+                return ('0' + strHour).slice(-2) + 'h' + ('0' + strMinutes).slice(-2) + 'min';
+            }
+            else {
+                return '00h' + ('0' + minutes).slice(-2) + 'min';
+            }
+        }
+
+        function Temporizador(termino) {
+            var timeTermino = Date.parse(termino);
+            var dtTermino = new Date();
+            dtTermino.setTime(timeTermino);
+            var offset = dtTermino.getTimezoneOffset() * 60 * 1000;
+            var timeRestante = (dtTermino.getTime() + offset) - (new Date().getTime() + offset);
+                           
+            if (timeRestante > 0) {
+                //duracao = duracao - 1;
+                var date = new Date();
+                date.setTime(timeRestante);
+                var offsetDate = date.getTimezoneOffset() * 60 * 1000;
+                date.setTime(date.getTime()+offsetDate);
+                $('#lblHoraRestante')
+                    .text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
+                    //.parent()
+                    //.transition('flash');
+                //$('#lblHoraRestante').text(minutesToTimeString(duracao)).parent().transition('flash');
+                if (timeRestante < 60000 && !$('#lblHoraRestante').parent().hasClass('red')) {
+                    $('#lblHoraRestante').parent().addClass('red');
+                }
+            }
+        }
+
+        Relogio();
+        $('#lblHoraRestante').text(minutesToTimeString(@((Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value) - DateTime.Now).TotalMinutes)));
+    </script>
+}
