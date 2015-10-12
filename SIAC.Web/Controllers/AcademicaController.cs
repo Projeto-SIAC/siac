@@ -600,5 +600,19 @@ namespace SIAC.Web.Controllers
         {
             return Json(AvalAcademica.AlternarLiberar(codAvaliacao), JsonRequestBehavior.AllowGet);
         }
+
+        //GET: Avaliacao/Academica/Acompanhar/ACAD201520007
+        public ActionResult Acompanhar(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+                if (acad != null)
+                {
+                    return View(acad);
+                }
+            }
+            return View("Agendada");
+        }
     }
 }

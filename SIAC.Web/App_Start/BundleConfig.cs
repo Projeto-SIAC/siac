@@ -14,7 +14,9 @@ namespace SIAC.Web
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
                 "~/Resources/jquery.min.js",
                 "~/Resources/semantic.min.js",
-                "~/Resources/jquery.mask.min.js"
+                "~/Resources/jquery.mask.min.js",
+                "~/Resources/html2canvas.js"
+
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/signalR").Include(

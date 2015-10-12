@@ -1,0 +1,100 @@
+﻿@model SIAC.Web.Models.AvalAcademica
+@{
+    ViewBag.Title = "Acompanhar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/signalR")
+    <script src="~/signalr/hubs"></script>
+    <script>
+
+        var acadHub = $.connection.academicaHub;
+        var avalAcad = '@Model.Avaliacao.CodAvaliacao';
+        var usrCatCod = @SIAC.Web.Helpers.Sessao.UsuarioCategoriaCodigo;
+        var usrMatr = '@SIAC.Web.Helpers.Sessao.UsuarioMatricula';
+        var usrNome = '@SIAC.Web.Helpers.Sessao.UsuarioNome';
+
+        function conectarHUB() {
+
+            if( usrCatCod == 1){
+
+                $.connection.hub.start().done(function(){
+                    acadHub.server.alunoConectou(avalAcad,usrMatr,usrNome);
+                });
+
+                acadHub.client.enviarAval = function(codAvaliacao){
+                    html2canvas($('.three.wide.column'), {
+                        onrendered: function (canvas) {
+                            var c = $(canvas);
+                            c.attr('id', 'mycanvas').hide();
+                            $('table').append(c);
+                            var canvas = document.getElementById("mycanvas");
+                            data = canvas.toDataURL("image/png");
+                            acadHub.server.avalEnviada(codAvaliacao,usrMatr,usrNome,data);
+                            c.remove();
+                        }
+                    });
+                };
+            }
+            else if(usrCatCod == 2){
+                $.connection.hub.start().done(function(){
+                    acadHub.server.professorConectou(avalAcad,usrMatr);
+                });
+                acadHub.client.addAluno = function(usrMatricula,usrNome){
+                    $tdNome = $('<td></td>').text(usrNome);
+                    $tdMatr = $('<td></td>').text(usrMatricula);
+                    $tdCurs = $('<td></td>').text('Informática para Internet');
+                    $tdProv = $('<td></td>').append($('<div></div>').attr('id',usrMatricula).attr('onclick','verProva('+usrMatricula+')').addClass('ui button').text('Ver prova'));
+
+                    $tr = $('<tr></tr>').append($tdNome).append($tdMatr).append($tdCurs).append($tdProv);
+
+                    $('tbody').append($tr);
+                };
+
+                acadHub.client.receberAval = function(alnMatricula,alnNome,imgAval){
+                    $('.modal .header').text(alnNome + ' - '+ alnMatricula);
+                    $('#imgProva').attr('src',imgAval);
+                    $('.ui.fullscreen.modal').modal('show').modal('refresh');
+                    $('#'+alnMatricula).removeClass('loading');
+                };
+            }
+        };
+
+        conectarHUB();
+
+        function verProva(matr){
+            acadHub.server.requererAval(avalAcad,matr);
+            $('#'+matr).addClass('loading');
+        }
+
+    </script>
+}
+<h2>Acompanhar @Model.Avaliacao.CodAvaliacao</h2>
+<div class="ui fullscreen modal">
+    <div class="header">Deyvison Soares - 20120067</div>
+    <div class="image content">
+        <img class="image" id="imgProva" />
+    </div>
+</div>
+<table class="ui striped table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Matricula</th>
+            <th>Curso</th>
+            <th>Prova</th>
+        </tr>
+    </thead>
+    <tbody>
+        @*
+            <tr>
+                <td>João</td>
+                <td>2015202</td>
+                <td>INFONET</td>
+                <td><div id="btnMatr" class="ui button">Ver prova</div></td>
+            </tr>
+        *@
+    </tbody>
+</table>
+
