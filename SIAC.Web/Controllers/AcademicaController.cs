@@ -4,8 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SIAC.Web.Models;
-using System.Drawing;
-using System.Drawing.Imaging;
 
 namespace SIAC.Web.Controllers
 {
@@ -621,24 +619,11 @@ namespace SIAC.Web.Controllers
         {
             if (tipo == 1)
             {
-                System.Windows.Forms.Screen screen = System.Windows.Forms.Screen.PrimaryScreen;
-
-                Bitmap bitmap = new Bitmap(screen.Bounds.Width, screen.Bounds.Height, PixelFormat.Format32bppArgb);
-
-                using (Graphics graphics = Graphics.FromImage(bitmap))
-                {
-                    graphics.CopyFromScreen(screen.Bounds.X, screen.Bounds.Y, 0, 0, screen.Bounds.Size, CopyPixelOperation.SourceCopy);
-                }
-                
-                System.IO.MemoryStream stream = new System.IO.MemoryStream();
-                bitmap.Save(stream, ImageFormat.Png);
-                Sistema.TempDataUrlImage = "data:image/png;base64," + Convert.ToBase64String(stream.ToArray());
-
+                Sistema.TempDataUrlImage = imageData;
                 return Json(true);
             }
             else if (tipo == 2)
             {
-
                 string temp = Sistema.TempDataUrlImage;
                 Sistema.TempDataUrlImage = String.Empty;
                 return Json(temp);
