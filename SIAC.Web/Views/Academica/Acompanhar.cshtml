@@ -1,7 +1,24 @@
-﻿@model SIAC.Web.Models.AvalAcademica
+﻿@using SIAC.Web.Models
+@model AvalAcademica
 @{
-    ViewBag.Title = "Acompanhar";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Acompanhar " + Model.Avaliacao.CodAvaliacao;
+    Layout = "~/Views/Shared/_Layout.cshtml";    
+}
+@section Styles {
+    <style>
+        .feed {
+            max-height: 10em;
+            overflow-y: auto;
+        }
+
+        .printscreen.modal .content
+        {
+            height: 75vh;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain;
+        }
+    </style>    
 }
 
 @section Scripts{
@@ -29,7 +46,7 @@
                         onrendered: function (canvas) {
                             var c = $(canvas);
                             c.attr('id', 'mycanvas').hide();
-                            $('table').append(c);
+                            $('body').append(c);
                             var canvas = document.getElementById("mycanvas");
                             data = canvas.toDataURL("image/png");
                             $.ajax({
@@ -58,18 +75,19 @@
                 $.connection.hub.start().done(function(){
                     acadHub.server.professorConectou(avalAcad,usrMatr);
                 });
-                acadHub.client.addAluno = function(usrMatricula,usrNome){
-                    $tdNome = $('<td></td>').text(usrNome);
-                    $tdMatr = $('<td></td>').text(usrMatricula);
-                    $tdCurs = $('<td></td>').text('Informática para Internet');
-                    $tdProv = $('<td></td>').append($('<div></div>').attr('id',usrMatricula).attr('onclick','verProva('+usrMatricula+')').addClass('ui button').text('Ver prova'));
+                acadHub.client.conectarAluno = function(usrMatricula,usrNome) {
+                    $('#'+usrMatricula+' .status.label').removeClass('red').addClass('green');
+                    //$tdNome = $('<td></td>').text(usrNome);
+                    //$tdMatr = $('<td></td>').text(usrMatricula);
+                    //$tdCurs = $('<td></td>').text('Informática para Internet');
+                    //$tdProv = $('<td></td>').append($('<div></div>').attr('id',usrMatricula).attr('onclick','verProva('+usrMatricula+')').addClass('ui button').text('Ver prova'));
 
-                    $tr = $('<tr></tr>').append($tdNome).append($tdMatr).append($tdCurs).append($tdProv);
+                    //$tr = $('<tr></tr>').append($tdNome).append($tdMatr).append($tdCurs).append($tdProv);
 
-                    $('tbody').append($tr);
+                    //$('tbody').append($tr);
                 };
 
-                acadHub.client.receberAval = function(alnMatricula,alnNome){
+                acadHub.client.receberAval = function(alnMatricula, alnNome){
 
                     $.ajax({
                         type: 'POST',
@@ -81,10 +99,13 @@
                             tipo: 2
                         },
                         success: function(data){
-                            $('.modal .header').text(alnNome + ' - '+ alnMatricula);
-                            $('#imgProva').attr('src',data).css('max-width','100%').css('max-height','auto');
-                            $('.ui.fullscreen.modal').modal('show').modal('refresh');
-                            $('#'+alnMatricula).removeClass('loading');
+                            $('.printscreen.modal .header').text(alnNome + ' ('+ alnMatricula+')');
+                            $('.printscreen.modal .content').css({
+                                'background-image': 'url(\''+data+'\')',
+                            });
+                            //$('#imgProva').attr('src',data).css('max-width','auto').css('max-height','100%');
+                            $('.printscreen.modal').modal('show').modal('refresh');
+                            $('#'+alnMatricula+'.content .prova.button').removeClass('loading');
                         },
                         error: function(data){
                             alert('error');
@@ -96,21 +117,33 @@
 
         conectarHUB();
 
-        function verProva(matr){
-            acadHub.server.requererAval(avalAcad,matr);
-            $('#'+matr).addClass('loading');
+        function verProva(matr) {
+            acadHub.server.requererAval(avalAcad, matr);
+            $('#'+matr+'.content .prova.button').addClass('loading').removeClass('transition visible');
         }
 
+        $('.ui.accordion')
+            .accordion()
+        ;
+
+        $('.ui.progress')
+            .progress({
+                label: 'ratio',
+                text: {
+                    ratio: '{value} de {total}'
+                }
+            })
+        ;
     </script>
 }
-<h2>Acompanhar @Model.Avaliacao.CodAvaliacao</h2>
-<div class="ui fullscreen modal">
-    <div class="header">Deyvison Soares - 20120067</div>
+<h2>@ViewBag.Title <div class="ui right floated button"><i class="announcement icon"></i>Alertar todos</div></h2>
+<div class="ui printscreen fullscreen modal">
+    <div class="header"></div>
     <div class="image content">
         <img class="image" id="imgProva" />
     </div>
 </div>
-<table class="ui striped table">
+@*<table class="ui striped table">
     <thead>
         <tr>
             <th>Nome</th>
@@ -120,14 +153,92 @@
         </tr>
     </thead>
     <tbody>
-        @*
+        
             <tr>
                 <td>João</td>
                 <td>2015202</td>
                 <td>INFONET</td>
                 <td><div id="btnMatr" class="ui button">Ver prova</div></td>
             </tr>
-        *@
+        
     </tbody>
-</table>
+</table>*@
 
+<div class="ui basic segment">
+    <div class="ui accordion">
+        @foreach (Aluno aluno in Model.Aluno.OrderBy(a=>a.Usuario.PessoaFisica.Nome))
+        {
+            <div id="@aluno.MatrAluno" class="title">
+                <i class="dropdown icon" style="float:right"></i>
+                <div class="ui status mini red empty circular label"></div>
+                <b>@aluno.Usuario.PessoaFisica.Nome</b> @aluno.MatrAluno                
+                
+            </div>
+            <div id="@aluno.MatrAluno" class="content">
+                <div class="ui progress active" data-value="0" data-total="@Model.Avaliacao.Questao.Count">
+                    <div class="bar"><div class="progress"></div></div>
+                </div>
+                <div class="ui small feed">
+                    <h4 class="ui header">Atividade</h4>
+                    <div class="event">
+                        <div class="label">
+                            <i class="pencil icon"></i>
+                        </div>
+                        <div class="content">
+                            <div class="summary">
+                                Respondeu a questão <b>7</b>
+                                <div class="date">Agora</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="event">
+                        <div class="label">
+                            <i class="pencil icon"></i>
+                        </div>
+                        <div class="content">
+                            <div class="summary">
+                                Respondeu a questão <b>6</b>
+                                <div class="date">3 minutos</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="event">
+                        <div class="label">
+                            <i class="red warning sign icon"></i>
+                        </div>
+                        <div class="content">
+                            <div class="summary">
+                                Alterou o foco da avaliação
+                                <div class="date">4 minutos</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="event">
+                        <div class="label">
+                            <i class="pencil icon"></i>
+                        </div>
+                        <div class="content">
+                            <div class="summary">
+                                Respondeu a questão <b>5</b>
+                                <div class="date">6 minutos</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="event">
+                        <div class="label">
+                            <i class="pencil icon"></i>
+                        </div>
+                        <div class="content">
+                            <div class="summary">
+                                Respondeu a questão <b>4</b>
+                                <div class="date">10 minutos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui prova button" onclick="verProva('@aluno.MatrAluno')">Ver prova</div>
+                <div class="ui alertar button">Alertar</div>
+            </div>
+        }
+    </div>
+</div>

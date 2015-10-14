@@ -42,7 +42,7 @@ namespace SIAC.Web.Hubs
 
             //Clients.Group("PRF" + codAvaliacao).addAluno(usrMatricula,usrNome);
 
-            Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).addAluno(usrMatricula, usrNome);
+            Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).conectarAluno(usrMatricula);
         }
 
         public void RequererAval(string codAvaliacao,string usrMatricula)

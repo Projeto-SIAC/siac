@@ -7,6 +7,14 @@ namespace SIAC.Web.Models
 {
     public partial class AvalAcademica
     {
+        public List<Aluno> Aluno
+        {
+            get
+            {                
+                return this.Turma.TurmaDiscAluno.Select(t => t.Aluno).ToList();
+            }
+        }
+
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
         
         public static void Inserir(AvalAcademica avalAcademica)
