@@ -12,7 +12,8 @@ namespace SIAC.Web.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
+    using System.Linq;
+
     public partial class dbSIACEntities : DbContext
     {
         public dbSIACEntities()
@@ -28,6 +29,7 @@ namespace SIAC.Web.Models
         public override int SaveChanges()
         {
             Sistema.AlertarMudanca.AddRange(Sistema.MatriculaAtivo);
+            Sistema.AlertarMudanca = Sistema.AlertarMudanca.Distinct().ToList();
             Sistema.AlertarMudanca.Remove(Helpers.Sessao.UsuarioMatricula);
             return base.SaveChanges();
         }
