@@ -69,9 +69,10 @@ namespace SIAC.Web.Controllers
 
             if (valido)
             {
-                if (TempData["UrlReferrer"] != null)
+                if (
+                    != null)
                 {
-                    return Redirect(TempData["UrlReferrer"].ToString());
+                    return Redirect(Session["UrlReferrer"].ToString());
                 }
                 return RedirectToAction("Index", "Dashboard");
             }

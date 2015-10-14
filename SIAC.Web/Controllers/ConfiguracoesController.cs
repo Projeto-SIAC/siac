@@ -18,9 +18,9 @@ namespace SIAC.Web.Controllers
             }
             else if(Helpers.Sessao.UsuarioCategoriaCodigo != 3)
             {
-                if (TempData["UrlReferrer"] != null)
+                if (Session["UrlReferrer"] != null)
                 {
-                    filterContext.Result = Redirect(TempData["UrlReferrer"].ToString());
+                    filterContext.Result = Redirect(Session["UrlReferrer"].ToString());
                 }
                 else filterContext.Result = RedirectToAction("Index", "Dashboard");
             }

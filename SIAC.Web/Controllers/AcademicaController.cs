@@ -11,16 +11,16 @@ namespace SIAC.Web.Controllers
     {
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            TempData["UrlReferrer"] = Request.Url.ToString();
+            Session["UrlReferrer"] = Request.Url.ToString();
             if (!Helpers.Sessao.Autenticado)
             {
                 filterContext.Result = RedirectToAction("Entrar", "Acesso");
             }
             else if (Helpers.Sessao.UsuarioCategoriaCodigo > 2)
             {
-                if (TempData["UrlReferrer"] != null)
+                if (Session["UrlReferrer"] != null)
                 {
-                    filterContext.Result = Redirect(TempData["UrlReferrer"].ToString());
+                    filterContext.Result = Redirect(Session["UrlReferrer"].ToString());
                 }
                 else filterContext.Result = RedirectToAction("Index", "Dashboard");
             }
@@ -32,9 +32,9 @@ namespace SIAC.Web.Controllers
         {
             if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
             {
-                if (TempData["UrlReferrer"] != null)
+                if (Session["UrlReferrer"] != null)
                 {
-                    return Redirect(TempData["UrlReferrer"].ToString());
+                    return Redirect(Session["UrlReferrer"].ToString());
                 }
                 else return RedirectToAction("Index", "Dashboard");
             }
@@ -102,9 +102,9 @@ namespace SIAC.Web.Controllers
         {
             if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
             {
-                if (TempData["UrlReferrer"] != null)
+                if (Session["UrlReferrer"] != null)
                 {
-                    return Redirect(TempData["UrlReferrer"].ToString());
+                    return Redirect(Session["UrlReferrer"].ToString());
                 }
                 else return RedirectToAction("Index", "Dashboard");
             }
@@ -121,9 +121,9 @@ namespace SIAC.Web.Controllers
         {
             if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
             {
-                if (TempData["UrlReferrer"] != null)
+                if (Session["UrlReferrer"] != null)
                 {
-                    return Redirect(TempData["UrlReferrer"].ToString());
+                    return Redirect(Session["UrlReferrer"].ToString());
                 }
                 else return RedirectToAction("Index", "Dashboard");
             }
@@ -207,9 +207,9 @@ namespace SIAC.Web.Controllers
             }
             if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
             {
-                if (TempData["UrlReferrer"] != null)
+                if (Session["UrlReferrer"] != null)
                 {
-                    return Redirect(TempData["UrlReferrer"].ToString());
+                    return Redirect(Session["UrlReferrer"].ToString());
                 }
                 else return RedirectToAction("Index", "Dashboard");
             }
@@ -230,9 +230,9 @@ namespace SIAC.Web.Controllers
         {
             if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
             {
-                if (TempData["UrlReferrer"] != null)
+                if (Session["UrlReferrer"] != null)
                 {
-                    return Redirect(TempData["UrlReferrer"].ToString());
+                    return Redirect(Session["UrlReferrer"].ToString());
                 }
                 else return RedirectToAction("Index", "Dashboard");
             }
@@ -636,10 +636,10 @@ namespace SIAC.Web.Controllers
             if (Helpers.Sessao.UsuarioCategoriaCodigo == 1 && !String.IsNullOrEmpty(codigo))
             {
                 AvalAcademica avalAcad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (avalAcad.Avaliacao.AvalPessoaResultado.Count == 0 && avalAcad.Avaliacao.FlagLiberada && (DateTime.Now - avalAcad.Avaliacao.DtAplicacao.Value).TotalMinutes < (avalAcad.Avaliacao.Duracao/2))
-                {
+                //if (avalAcad.Avaliacao.AvalPessoaResultado.Count == 0 && avalAcad.Avaliacao.FlagLiberada && (DateTime.Now - avalAcad.Avaliacao.DtAplicacao.Value).TotalMinutes < (avalAcad.Avaliacao.Duracao/2))
+                //{
                     return View(avalAcad);
-                }
+                //}
             }
             return RedirectToAction("Agendada");
         }
