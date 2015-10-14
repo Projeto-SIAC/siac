@@ -615,20 +615,20 @@ namespace SIAC.Web.Controllers
 
         //POST: Academica/Printar/CodAvaliacao/UsrMatricula
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Printar(string codAvaliacao, string usrMatricula,string imageData,int tipo)
+        public ActionResult Printar(string codAvaliacao, string imageData)
         {
-            if (tipo == 1)
+            if (Helpers.Sessao.UsuarioCategoriaCodigo == 1)
             {
                 Sistema.TempDataUrlImage = imageData;
                 return Json(true);
             }
-            else if (tipo == 2)
+            else if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
             {
                 string temp = Sistema.TempDataUrlImage;
                 Sistema.TempDataUrlImage = String.Empty;
                 return Json(temp);
             }
-            else return Json(false);
+            return Json(false);
         }
 
         public ActionResult Realizar(string codigo)

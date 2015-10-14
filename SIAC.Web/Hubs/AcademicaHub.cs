@@ -31,18 +31,24 @@ namespace SIAC.Web.Hubs
         {
             avaliacoes.AddAcademica(codAvaliacao);
             avaliacoes.GetAcademica(codAvaliacao).AddProfessor(usrMatricula, Context.ConnectionId);
+            foreach (var alnMatricula in avaliacoes.GetAcademica(codAvaliacao).GetAtivoMatriculaAluno())
+            {
+                Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).conectarAluno(alnMatricula);
+            }
             //Groups.Add(Context.ConnectionId, "PRF" + codAvaliacao);
         }
 
-        public void AlunoConectou(string codAvaliacao,string usrMatricula,string usrNome)
+        public void AlunoConectou(string codAvaliacao,string usrMatricula)
         {
             avaliacoes.AddAcademica(codAvaliacao);
             avaliacoes.GetAcademica(codAvaliacao).AddAluno(usrMatricula, Context.ConnectionId);
             //Groups.Add(Context.ConnectionId, "AVA"+codAvaliacao+"ALN"+usrMatricula);
 
             //Clients.Group("PRF" + codAvaliacao).addAluno(usrMatricula,usrNome);
-
-            Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).conectarAluno(usrMatricula);
+            if (!String.IsNullOrEmpty(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()))
+            {
+                Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).conectarAluno(usrMatricula);
+            }
         }
 
         public void RequererAval(string codAvaliacao,string usrMatricula)
@@ -51,16 +57,31 @@ namespace SIAC.Web.Hubs
             Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdAluno(usrMatricula)).enviarAval(codAvaliacao);
         }
 
-        public void AvalEnviada(string codAvaliacao,string alnMatricula,string alnNome)
+        public void AvalEnviada(string codAvaliacao, string alnMatricula)
         {
             //Clients.Group("PRF" + codAvaliacao).receberAval(alnMatricula,alnNome);
-            Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).receberAval(alnMatricula, alnNome);
+            Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).receberAval(alnMatricula);
         }
 
-        public void AtualizarAlunoProgresso(string codAvaliacao, string usrMatricula, double percent)
+        public void AtualizarAlunoProgresso(string codAvaliacao, string usrMatricula, int value)
         {
             //Clients.Group("PRF" + codAvaliacao).atualizarProgresso(usrMatricula, percent);
-            Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).atualizarProgresso(usrMatricula, percent);            
+            Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).atualizarProgresso(usrMatricula, value);            
+        }
+
+        public void Alertar(string codAvaliacao, string mensagem, string alnMatricula)
+        {
+            if (!String.IsNullOrWhiteSpace(mensagem))
+            {
+                if (String.IsNullOrEmpty(alnMatricula))
+                {
+                    Clients.Clients(avaliacoes.GetAcademica(codAvaliacao).GetAtivoConnectionIdAluno()).alertar(mensagem);
+                }
+                else
+                {
+                    Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdAluno(alnMatricula)).alertar(mensagem);
+                }
+            }
         }
     }
 
@@ -131,6 +152,16 @@ namespace SIAC.Web.Hubs
                 return alunos[matricula];
             }
             return String.Empty;
+        }
+
+        public List<string> GetAtivoMatriculaAluno()
+        {            
+            return alunos.Keys.ToList();
+        }
+
+        public List<string> GetAtivoConnectionIdAluno()
+        {
+            return alunos.Values.ToList();
         }
 
         public void RemoveAluno(string matricula)

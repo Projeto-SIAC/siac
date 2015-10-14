@@ -188,8 +188,9 @@
 </form>
 
 @section Scripts{
+    @Scripts.Render("~/bundles/signalR")
+    <script src="~/signalr/hubs"></script>
     <script>
-
         $('a[href]').on('click', function () {
                 $('.ui.confirmar.modal').modal('show'); $('.ui.confirmar.modal #txtRef').val($(this).attr('href')); return false;
             }
@@ -273,7 +274,7 @@
             dtTermino.setTime(timeTermino);
             var offset = dtTermino.getTimezoneOffset() * 60 * 1000;
             var timeRestante = (dtTermino.getTime() + offset) - (new Date().getTime() + offset);
-                           
+
             if (timeRestante > 0) {
                 //duracao = duracao - 1;
                 var date = new Date();
@@ -293,5 +294,46 @@
 
         Relogio();
         $('#lblHoraRestante').text(minutesToTimeString(@((Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value) - DateTime.Now).TotalMinutes)));
+
+        // SignalR
+        var acadHub = $.connection.academicaHub;
+        var avalAcad = '@Model.Avaliacao.CodAvaliacao';
+        var usrMatr = '@SIAC.Web.Helpers.Sessao.UsuarioMatricula';
+
+        $.connection.hub.start().done(function () {
+            acadHub.server.alunoConectou(avalAcad, usrMatr);
+        });
+
+        acadHub.client.alertar = function (mensagem) {
+            alert(mensagem);
+        }
+
+        acadHub.client.enviarAval = function (codAvaliacao) {
+            html2canvas(document.body, {
+                onrendered: function (canvas) {
+                    var c = $(canvas);
+                    c.attr('id', 'mycanvas').hide();
+                    $('body').append(c);
+                    var canvas = document.getElementById("mycanvas");
+                    data = canvas.toDataURL("image/png");
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.RouteUrl("AvalAcadPrint")',
+                        data: {
+                            codAvaliacao: avalAcad,
+                            imageData: data
+                        },
+                        success: function () {
+                            acadHub.server.avalEnviada(codAvaliacao, usrMatr);
+                        },
+                        error: function () {
+                            // adicionar erro ao Feed do professor
+                        }
+                    });
+
+                    c.remove();
+                }
+            });
+        };
     </script>
 }

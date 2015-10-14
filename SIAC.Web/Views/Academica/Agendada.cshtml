@@ -7,7 +7,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/signalR")
     <script src="~/signalr/hubs"></script>
-    <script>        
+    <script>
         var avalCodigo;
         $('.ui.avaliacao.modal').modal({ closable: false });
         function Detalhe(strCodigo) {
@@ -21,7 +21,7 @@
                     method: 'POST',
                     success: function (htmlModal) {
                         avalCodigo = strCodigo;
-                        $('.ui.avaliacao.modal').attr('id',strCodigo).html('').append(htmlModal).modal('show');
+                        $('.ui.avaliacao.modal').attr('id', strCodigo).html('').append(htmlModal).modal('show');
                         $('.ui.global.loader').parent().removeClass('active');
                         $('.ui.avaliacao.modal .ui.accordion').accordion({
                             onChange: function () { $('.ui.avaliacao.modal').modal('refresh'); }
@@ -36,113 +36,122 @@
 
         function ContagemRegressiva(intervalo) {
             if (intervalo > 0) {
-                setTimeout(function()
-                {
+                setTimeout(function () {
                     $.ajax({
-                        type:'GET',
-                        url:'/Historico/Avaliacao/Academica/ContagemRegressiva',
-                        data: { codAvaliacao: avalCodigo},
-                        success: function(data) {
+                        type: 'GET',
+                        url: '/Historico/Avaliacao/Academica/ContagemRegressiva',
+                        data: { codAvaliacao: avalCodigo },
+                        success: function (data) {
                             $('#contagem').text(data.Tempo).parent().transition('flash');
                             if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
                                 $('.iniciar.button').removeClass('disabled').text('Iniciar');
                                 $('.acompanhar.button').removeClass('disabled');
                             }
-                            ContagemRegressiva(data.Intervalo);
-                        }                        
+                            else if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == false) {
+                                $('.iniciar.button').addClass('disabled').text('Aguarde');
+                                $('.acompanhar.button').addClass('disabled');
+                            }
+                            if (data.intervalo > 0) {
+                                ContagemRegressiva(data.Intervalo);
+                            }
+                        }
                     });
                 }, intervalo);
             }
         }
 
+        // SignalR
         function AbrirHub() {
-            var usuarioCategoria = @(SIAC.Web.Helpers.Sessao.UsuarioCategoriaCodigo);
-            var acadHub = $.connection.academicaHub;
-            //SignalR           
-
-            if (usuarioCategoria == 1) {   
-                acadHub.client.liberar = function (strCodigo) {
-                    alert('O professor liberou a avaliação.');
-                    var $modal = $('#'+strCodigo);
-                    $.ajax({
-                        type:'GET',
-                        url:'/Historico/Avaliacao/Academica/ContagemRegressiva',
-                        data: { codAvaliacao: avalCodigo},
-                        success: function(data) {
-                            if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
-                                $('.iniciar.button').removeClass('disabled').text('Iniciar');
+            var acadHub = $.connection.academicaHub;            
+            @{ 
+                if (SIAC.Web.Helpers.Sessao.UsuarioCategoriaCodigo == 1) {
+                <text>
+                    acadHub.client.liberar = function (strCodigo) {
+                        var $modal = $('#'+strCodigo);
+                        $.ajax({
+                            type:'GET',
+                            url:'/Historico/Avaliacao/Academica/ContagemRegressiva',
+                            data: { codAvaliacao: avalCodigo},
+                            success: function(data) {
+                                if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
+                                    alert('O professor liberou a avaliação.');
+                                    $('.iniciar.button').removeClass('disabled').text('Iniciar');
+                                    $modal.find('#mensagem').html('\
+                                        <i class="checkmark icon"></i>\
+                                        <div class="content">\
+                                            Seu professor liberou a prova\
+                                            <div class="sub header">Você já pode iniciar assim que chegar a hora de aplicação</div>\
+                                        </div>'
+                                    );
+                                }
                             }
-                        }                        
-                    });                                    
-                    $modal.find('#mensagem').html('\
-                        <i class="checkmark icon"></i>\
-                        <div class="content">\
-                            Seu professor liberou a prova\
-                            <div class="sub header">Você já pode iniciar assim que chegar a hora de aplicação</div>\
-                        </div>');
-                };  
-                acadHub.client.bloquear = function (strCodigo) {
-                    alert('O professor bloqueou a avaliação.');
-                    var $modal = $('#'+strCodigo);
-                    $modal.find('.iniciar.button').addClass('disabled').text('Aguarde'); 
-                    $.ajax({
-                        type:'GET',
-                        url:'/Historico/Avaliacao/Academica/ContagemRegressiva',
-                        data: { codAvaliacao: avalCodigo},
-                        success: function(data) {
-                            if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == false) {
-                                $('.iniciar.button').addClass('disabled').text('Aguarde');
+                        });
+                    };
+                    acadHub.client.bloquear = function (strCodigo) {
+                        var $modal = $('#'+strCodigo);
+                        $.ajax({
+                            type:'GET',
+                            url:'/Historico/Avaliacao/Academica/ContagemRegressiva',
+                            data: { codAvaliacao: avalCodigo},
+                            success: function(data) {
+                                if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == false) {
+                                    alert('O professor bloqueou a avaliação.');
+                                    $('.iniciar.button').addClass('disabled').text('Aguarde');
+                                    $modal.find('#mensagem').html('\
+                                        <i class="clock icon"></i>\
+                                        <div class="content">\
+                                            Seu professor não liberou a prova ainda\
+                                            <div class="sub header">Aguarde a liberação da avaliação para iniciar</div>\
+                                        </div>'
+                                    );
+                                }
                             }
-                        }                        
-                    }); 
-                    $modal.find('#mensagem').html('\
-                        <i class="clock icon"></i>\
-                        <div class="content">\
-                            Seu professor não liberou a prova ainda\
-                            <div class="sub header">Aguarde a liberação da avaliação para iniciar</div>\
-                        </div>');
-                }; 
+                        });
+                    };
+                    $.connection.hub.start().done(function () {
+                        acadHub.server.realizar(avalCodigo);
+                    });
+                </text>
+                }
+                else if(SIAC.Web.Helpers.Sessao.UsuarioCategoriaCodigo == 2) {
+                <text>
                 $.connection.hub.start().done(function () {
-                    acadHub.server.realizar(avalCodigo);
-                });
-            }
-            else if(usuarioCategoria == 2) {
-                $.connection.hub.start().done(function () {
-                    $('.liberar.button').click(function() { 
+                    $('.liberar.button').click(function() {
                         $('.liberar.button').addClass('loading');
                         $.ajax({
                             url: '/Dashboard/Avaliacao/Academica/AlternarLiberar',
                             type: 'POST',
                             data: { codAvaliacao: avalCodigo },
-                            success: function (data) { 
+                            success: function (data) {
                                 if (data == true) {
-                                    acadHub.server.liberar(avalCodigo, true); 
+                                    acadHub.server.liberar(avalCodigo, true);
                                     $('.liberar.button').addClass('active').removeClass('loading').text('Liberada');
                                     $.ajax({
-                                        type:'GET',
+                                    type:'GET',
                                         url:'/Historico/Avaliacao/Academica/ContagemRegressiva',
                                         data: { codAvaliacao: avalCodigo},
                                         success: function(data) {
                                             if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
                                                 $('.acompanhar.button').removeClass('disabled');
                                             }
-                                        }                        
+                                        }
                                     });
                                 }
                                 else {
                                     acadHub.server.liberar(avalCodigo, false);
-                                    $('.liberar.button').removeClass('active').removeClass('loading').text('Liberar'); 
+                                    $('.liberar.button').removeClass('active').removeClass('loading').text('Liberar');
                                 }
                             },
                             error: function() {
                                 $('.liberar.button').removeClass('loading');
-                                Mensagem('Ocorreu um erro inesperado.', 'Liberar avaliação');
+                                Mensagem('Ocorreu um erro inesperado durante o processo. Verifique sua internet e tente novamente.', 'Liberar avaliação');
                             }
                         });
-                    } );
+                    });
                 });
+                </text>
+                }
             }
-            
         };
     </script>
 }
@@ -166,11 +175,6 @@
                         <p><b>Quantidade de Questões</b>: @avalAcademica.Avaliacao.QteQuestoes()</p>
                     </div>
                 </div>
-                <!--
-                <div class="extra content">
-                    <div class="ui button">Arquivar</div>
-                </div>
-                -->
                 <span class="ui @(avalAcademica.Avaliacao.DtAplicacao.Value < DateTime.Now ? "red" : "") attached top right label">
                     <i class="@(avalAcademica.Avaliacao.DtAplicacao.Value < DateTime.Now ? "warning" : "clock") icon"></i>
                     @avalAcademica.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy HH:mm")

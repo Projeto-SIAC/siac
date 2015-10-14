@@ -13,7 +13,7 @@
 
         .printscreen.modal .content
         {
-            height: 75vh;
+            height: 55vh;
             background-repeat: no-repeat;
             background-position: center center;
             background-size: contain;
@@ -27,103 +27,64 @@
     <script>
 
         var acadHub = $.connection.academicaHub;
-        var avalAcad = '@Model.Avaliacao.CodAvaliacao';
-        var usrCatCod = @SIAC.Web.Helpers.Sessao.UsuarioCategoriaCodigo;
-        var usrMatr = '@SIAC.Web.Helpers.Sessao.UsuarioMatricula';
-        var usrNome = '@SIAC.Web.Helpers.Sessao.UsuarioNome';
+        //var avalAcad = '@Model.Avaliacao.CodAvaliacao';
+        //var usrCatCod = @SIAC.Web.Helpers.Sessao.UsuarioCategoriaCodigo;
+        //var usrMatr = '@SIAC.Web.Helpers.Sessao.UsuarioMatricula';
+        //var usrNome = '@SIAC.Web.Helpers.Sessao.UsuarioNome';
 
-        function conectarHUB() {
-
-            if( usrCatCod == 1){
-
-                $.connection.hub.start().done(function(){
-                    acadHub.server.alunoConectou(avalAcad,usrMatr,usrNome);
+        function ConectarHub(avalAcad, usrMatr) {
+            $.connection.hub.start().done(function(){
+                acadHub.server.professorConectou(avalAcad, usrMatr);
+                $('.prova.button').on('click', function() {
+                    matr = $(this).parent().attr('id');
+                    acadHub.server.requererAval(avalAcad, matr);
+                    $('#'+matr+'.content .prova.button').addClass('loading').removeClass('transition visible');
                 });
 
-                acadHub.client.enviarAval = function(codAvaliacao){
-
-                    html2canvas(document.body, {
-                        onrendered: function (canvas) {
-                            var c = $(canvas);
-                            c.attr('id', 'mycanvas').hide();
-                            $('body').append(c);
-                            var canvas = document.getElementById("mycanvas");
-                            data = canvas.toDataURL("image/png");
-                            $.ajax({
-                                type: 'POST',
-                                url: '@Url.RouteUrl("AvalAcadPrint")',
-                                data: {
-                                    codAvaliacao: avalAcad,
-                                    usrMatricula: usrMatr,
-                                    imageData: data,
-                                    tipo: 1
-                                },
-                                success: function(data){
-                                    acadHub.server.avalEnviada(codAvaliacao,usrMatr,usrNome);
-                                },
-                                error: function(data){
-                                    alert('error');
-                                }
-                            });
-
-                            c.remove();
-                        }
-                    });
-                };
-            }
-            else if(usrCatCod == 2){
-                $.connection.hub.start().done(function(){
-                    acadHub.server.professorConectou(avalAcad,usrMatr);
+                $('.alertar.button').on('click', function () {
+                    mensagem = $(this).prev().find('textarea').val();
+                    matr = $(this).parent().parent().parent().attr('id');
+                    acadHub.server.alertar(avalAcad, mensagem, matr);
+                    $(this).prev().find('textarea').val('');
+                    $(this).popup('hide all');
                 });
-                acadHub.client.conectarAluno = function(usrMatricula,usrNome) {
-                    $('#'+usrMatricula+' .status.label').removeClass('red').addClass('green');
-                    //$tdNome = $('<td></td>').text(usrNome);
-                    //$tdMatr = $('<td></td>').text(usrMatricula);
-                    //$tdCurs = $('<td></td>').text('Informática para Internet');
-                    //$tdProv = $('<td></td>').append($('<div></div>').attr('id',usrMatricula).attr('onclick','verProva('+usrMatricula+')').addClass('ui button').text('Ver prova'));
 
-                    //$tr = $('<tr></tr>').append($tdNome).append($tdMatr).append($tdCurs).append($tdProv);
+            });
 
-                    //$('tbody').append($tr);
-                };
+            acadHub.client.conectarAluno = function(usrMatricula) {
+                $('#' + usrMatricula + '.title .status.label').removeClass('red').addClass('green');
+                $('#' + usrMatricula + '.content .button').removeClass('disabled');
+            };
 
-                acadHub.client.receberAval = function(alnMatricula, alnNome){
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '@Url.RouteUrl("AvalAcadPrint")',
-                        data: {
-                            codAvaliacao: avalAcad,
-                            usrMatricula: usrMatr,
-                            imageData: null,
-                            tipo: 2
-                        },
-                        success: function(data){
-                            $('.printscreen.modal .header').text(alnNome + ' ('+ alnMatricula+')');
-                            $('.printscreen.modal .content').css({
-                                'background-image': 'url(\''+data+'\')',
-                            });
-                            //$('#imgProva').attr('src',data).css('max-width','auto').css('max-height','100%');
-                            $('.printscreen.modal').modal('show').modal('refresh');
-                            $('#'+alnMatricula+'.content .prova.button').removeClass('loading');
-                        },
-                        error: function(data){
-                            alert('error');
-                        }
-                    });
-                };
-            }
-        };
-
-        conectarHUB();
-
-        function verProva(matr) {
-            acadHub.server.requererAval(avalAcad, matr);
-            $('#'+matr+'.content .prova.button').addClass('loading').removeClass('transition visible');
-        }
+            acadHub.client.receberAval = function(alnMatricula) {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.RouteUrl("AvalAcadPrint")',
+                    data: {
+                        codAvaliacao: avalAcad
+                    },
+                    success: function(data){
+                        $('.printscreen.modal .header').text($('#'+alnMatricula+' .nome').text() + ' ('+ alnMatricula+')');
+                        $('.printscreen.modal .content').css({
+                            'background-image': 'url(\''+data+'\')',
+                        });
+                        $('.printscreen.modal .nova.guia.button').attr('href', data);
+                        $('.printscreen.modal').modal('show').modal('refresh');
+                        $('#'+alnMatricula+'.content .prova.button').removeClass('loading');
+                    },
+                    error: function(){
+                        Mensagem('Ocorreu um erro inesperado. Tente novamente mais tarde.');
+                    }
+                });
+            };           
+        }       
+        
+        ConectarHub('@Model.Avaliacao.CodAvaliacao', '@SIAC.Web.Helpers.Sessao.UsuarioMatricula');
 
         $('.ui.accordion')
-            .accordion()
+            .accordion({
+                animateChildren: false
+            })
         ;
 
         $('.ui.progress')
@@ -134,13 +95,38 @@
                 }
             })
         ;
+        $('.trigger.button')
+            .popup({
+                inline: true,
+                on: 'click'
+            })
+        ;
     </script>
 }
-<h2>@ViewBag.Title <div class="ui right floated button"><i class="announcement icon"></i>Alertar todos</div></h2>
+<h2>
+    @ViewBag.Title 
+    <div class="ui trigger right floated button">
+        Alertar Todos
+    </div>
+    <div class="ui special popup">
+        <div class='ui content form'>
+            <div class='field'>
+                <label>Mensagem</label>
+                <textarea placeholder='Mensagem...'></textarea>
+            </div>
+            <div class='ui small alertar button'>Enviar</div>
+        </div>
+    </div>
+</h2>
 <div class="ui printscreen fullscreen modal">
+    <i class="icon close"></i>
     <div class="header"></div>
     <div class="image content">
         <img class="image" id="imgProva" />
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Fechar</div>
+        <a href="" target="_blank" class="ui nova guia button">Abrir em Nova Guia</a>
     </div>
 </div>
 @*<table class="ui striped table">
@@ -166,13 +152,12 @@
 
 <div class="ui basic segment">
     <div class="ui accordion">
-        @foreach (Aluno aluno in Model.Aluno.OrderBy(a=>a.Usuario.PessoaFisica.Nome))
+        @foreach (Aluno aluno in Model.Aluno.OrderBy(a => a.Usuario.PessoaFisica.Nome))
         {
             <div id="@aluno.MatrAluno" class="title">
                 <i class="dropdown icon" style="float:right"></i>
                 <div class="ui status mini red empty circular label"></div>
-                <b>@aluno.Usuario.PessoaFisica.Nome</b> @aluno.MatrAluno                
-                
+                <b class="nome">@aluno.Usuario.PessoaFisica.Nome</b> @aluno.MatrAluno                
             </div>
             <div id="@aluno.MatrAluno" class="content">
                 <div class="ui progress active" data-value="0" data-total="@Model.Avaliacao.Questao.Count">
@@ -236,8 +221,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="ui prova button" onclick="verProva('@aluno.MatrAluno')">Ver prova</div>
-                <div class="ui alertar button">Alertar</div>
+                <div class="ui disabled prova button">Ver Prova</div>
+                <div class="ui disabled trigger button">Alertar</div>
+                <div class="ui special popup">
+                    <div class='ui content form'>
+                        <div class='field'>
+                            <label>Mensagem</label>
+                            <textarea placeholder='Mensagem...'></textarea>
+                        </div>
+                        <div class='ui small alertar button'>Enviar</div>
+                    </div>
+                </div>
             </div>
         }
     </div>

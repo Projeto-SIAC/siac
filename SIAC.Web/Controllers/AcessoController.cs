@@ -69,8 +69,7 @@ namespace SIAC.Web.Controllers
 
             if (valido)
             {
-                if (
-                    != null)
+                if (Session["UrlReferrer"] != null)
                 {
                     return Redirect(Session["UrlReferrer"].ToString());
                 }
