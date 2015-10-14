@@ -27,10 +27,6 @@
     <script>
 
         var acadHub = $.connection.academicaHub;
-        //var avalAcad = '@Model.Avaliacao.CodAvaliacao';
-        //var usrCatCod = @SIAC.Web.Helpers.Sessao.UsuarioCategoriaCodigo;
-        //var usrMatr = '@SIAC.Web.Helpers.Sessao.UsuarioMatricula';
-        //var usrNome = '@SIAC.Web.Helpers.Sessao.UsuarioNome';
 
         function ConectarHub(avalAcad, usrMatr) {
             $.connection.hub.start().done(function(){
@@ -49,7 +45,38 @@
                     $(this).popup('hide all');
                 });
 
+                setInterval(function () {
+                    lstMatr = $('.accordion')
+                                .find('.title')
+                                .map(function () {
+                                    acadHub.server.feed(avalAcad, this.id);
+                                });
+                    }, 3000);
             });
+
+            acadHub.client.atualizarFeed = function (alnMatricula, lstEvento) {
+                $feed = $('#' + alnMatricula + '.content .feed');
+                $feed.html('');
+                $feed.append('<h4 class="ui header">Atividade</h4>');
+                if (lstEvento) {
+                    for (var i = lstEvento.length-1; i > -1; i--) {
+                        $feed.append('\
+                        <div class="event">\
+                            <div class="label">\
+                                <i class="'+ lstEvento[i].Icone + ' icon"></i>\
+                            </div>\
+                            <div class="content">\
+                                <div class="summary">\
+                                    ' + lstEvento[i].Descricao + '\
+                                    <div class="date">' + lstEvento[i].Data + '</div>\
+                                </div>\
+                            </div>\
+                        </div>\
+                    ');
+                    }
+                }
+                console.log(alnMatricula, $feed);
+            }
 
             acadHub.client.conectarAluno = function(usrMatricula) {
                 $('#' + usrMatricula + '.title .status.label').removeClass('red').addClass('green');
@@ -165,61 +192,51 @@
                 </div>
                 <div class="ui small feed">
                     <h4 class="ui header">Atividade</h4>
-                    <div class="event">
-                        <div class="label">
-                            <i class="pencil icon"></i>
-                        </div>
-                        <div class="content">
-                            <div class="summary">
-                                Respondeu a questão <b>7</b>
-                                <div class="date">Agora</div>
+                        <div class="event">
+                            <div class="label">
+                                <i class="pencil icon"></i>
+                            </div>
+                            <div class="content">
+                                <div class="summary">
+                                    Respondeu a questão <b>7</b>
+                                    <div class="date">Agora</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="event">
-                        <div class="label">
-                            <i class="pencil icon"></i>
-                        </div>
-                        <div class="content">
-                            <div class="summary">
-                                Respondeu a questão <b>6</b>
-                                <div class="date">3 minutos</div>
+                        <div class="event">
+                            <div class="label">
+                                <i class="pencil icon"></i>
+                            </div>
+                            <div class="content">
+                                <div class="summary">
+                                    Respondeu a questão <b>6</b>
+                                    <div class="date">3 minutos</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="event">
-                        <div class="label">
-                            <i class="red warning sign icon"></i>
-                        </div>
-                        <div class="content">
-                            <div class="summary">
-                                Alterou o foco da avaliação
-                                <div class="date">4 minutos</div>
+                        
+                        <div class="event">
+                            <div class="label">
+                                <i class="pencil icon"></i>
+                            </div>
+                            <div class="content">
+                                <div class="summary">
+                                    Respondeu a questão <b>5</b>
+                                    <div class="date">6 minutos</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="event">
-                        <div class="label">
-                            <i class="pencil icon"></i>
-                        </div>
-                        <div class="content">
-                            <div class="summary">
-                                Respondeu a questão <b>5</b>
-                                <div class="date">6 minutos</div>
+                        <div class="event">
+                            <div class="label">
+                                <i class="pencil icon"></i>
+                            </div>
+                            <div class="content">
+                                <div class="summary">
+                                    Respondeu a questão <b>4</b>
+                                    <div class="date">10 minutos</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="event">
-                        <div class="label">
-                            <i class="pencil icon"></i>
-                        </div>
-                        <div class="content">
-                            <div class="summary">
-                                Respondeu a questão <b>4</b>
-                                <div class="date">10 minutos</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="ui disabled prova button">Ver Prova</div>
                 <div class="ui disabled trigger button">Alertar</div>

@@ -41,10 +41,11 @@ namespace SIAC.Web.Hubs
         public void AlunoConectou(string codAvaliacao,string usrMatricula)
         {
             avaliacoes.AddAcademica(codAvaliacao);
-            avaliacoes.GetAcademica(codAvaliacao).AddAluno(usrMatricula, Context.ConnectionId);
-            //Groups.Add(Context.ConnectionId, "AVA"+codAvaliacao+"ALN"+usrMatricula);
 
-            //Clients.Group("PRF" + codAvaliacao).addAluno(usrMatricula,usrNome);
+            avaliacoes.GetAcademica(codAvaliacao).AddAluno(usrMatricula, Context.ConnectionId);
+
+            avaliacoes.GetAcademica(codAvaliacao).AddEvento(usrMatricula, "sign in", "Conectou");
+
             if (!String.IsNullOrEmpty(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()))
             {
                 Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).conectarAluno(usrMatricula);
@@ -59,7 +60,8 @@ namespace SIAC.Web.Hubs
 
         public void AvalEnviada(string codAvaliacao, string alnMatricula)
         {
-            //Clients.Group("PRF" + codAvaliacao).receberAval(alnMatricula,alnNome);
+            avaliacoes.GetAcademica(codAvaliacao).AddEvento(alnMatricula, "send outline", "Enviou printscreen");
+
             Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).receberAval(alnMatricula);
         }
 
@@ -81,6 +83,15 @@ namespace SIAC.Web.Hubs
                 {
                     Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdAluno(alnMatricula)).alertar(mensagem);
                 }
+            }
+        }
+
+        public void Feed(string codAvaliacao, string alnMatricula)
+        {
+            if (avaliacoes.GetAcademica(codAvaliacao).GetAtivoMatriculaAluno().Contains(alnMatricula))
+            {
+                var lstEvento = avaliacoes.GetAcademica(codAvaliacao).GetFeed(alnMatricula).Select(e => new { Icone = e.Icone, Descricao = e.Descricao, Data = e.Data.ToElapsedTimeString() });
+                Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).atualizarFeed(alnMatricula, lstEvento);
             }
         }
     }
@@ -112,9 +123,9 @@ namespace SIAC.Web.Hubs
 
     public class Evento
     {
-        public string Icon { get; set; }
+        public string Icone { get; set; }
         public string Descricao { get; set; }
-        public DateTime dtOcorrencia { get; set; }
+        public DateTime Data { get; set; }
     }
 
     public class Academica
@@ -141,10 +152,11 @@ namespace SIAC.Web.Hubs
                     alunos.Remove(matricula);
                 }
                 alunos.Add(matricula, connectionId);
+                feed.Add(matricula, new List<Evento>());
             }
         }
 
-        public void AddEvento(string matricula, string icon, string descricao)
+        public void AddEvento(string matricula, string icone, string descricao)
         {
             lock(feed)
             {
@@ -154,9 +166,18 @@ namespace SIAC.Web.Hubs
                     {
                         feed.Add(matricula, new List<Evento>());
                     }
-                    feed[matricula].Add(new Evento() { Icon = icon, Descricao = descricao, dtOcorrencia = DateTime.Now });
+                    feed[matricula].Add(new Evento() { Icone = icone, Descricao = descricao, Data = DateTime.Now });
                 }
             }
+        }
+
+        public List<Evento> GetFeed(string matricula)
+        {
+            if (feed.ContainsKey(matricula))
+            {
+                return feed[matricula];
+            }
+            return null;
         }
 
         public string GetConnectionIdProfessor()
