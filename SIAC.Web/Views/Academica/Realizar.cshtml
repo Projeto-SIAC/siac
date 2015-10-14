@@ -297,43 +297,47 @@
 
         // SignalR
         var acadHub = $.connection.academicaHub;
-        var avalAcad = '@Model.Avaliacao.CodAvaliacao';
-        var usrMatr = '@SIAC.Web.Helpers.Sessao.UsuarioMatricula';
+        //var avalAcad = '@Model.Avaliacao.CodAvaliacao';
+        //var usrMatr = '@SIAC.Web.Helpers.Sessao.UsuarioMatricula';
 
-        $.connection.hub.start().done(function () {
-            acadHub.server.alunoConectou(avalAcad, usrMatr);
-        });
+        function ConectarHub(avalAcad, usrMatr) {
+            $.connection.hub.start().done(function () {
+                acadHub.server.alunoConectou(avalAcad, usrMatr);
+            });
 
-        acadHub.client.alertar = function (mensagem) {
-            alert(mensagem);
+            acadHub.client.alertar = function (mensagem) {
+                alert(mensagem);
+            }
+
+            acadHub.client.enviarAval = function (codAvaliacao) {
+                html2canvas(document.body, {
+                    onrendered: function (canvas) {
+                        var c = $(canvas);
+                        c.attr('id', 'mycanvas').hide();
+                        $('body').append(c);
+                        var canvas = document.getElementById("mycanvas");
+                        data = canvas.toDataURL("image/png");
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.RouteUrl("AvalAcadPrint")',
+                            data: {
+                                codAvaliacao: avalAcad,
+                                imageData: data
+                            },
+                            success: function () {
+                                acadHub.server.avalEnviada(codAvaliacao, usrMatr);
+                            },
+                            error: function () {
+                                // adicionar erro ao Feed do professor
+                            }
+                        });
+
+                        c.remove();
+                    }
+                });
+            };
         }
 
-        acadHub.client.enviarAval = function (codAvaliacao) {
-            html2canvas(document.body, {
-                onrendered: function (canvas) {
-                    var c = $(canvas);
-                    c.attr('id', 'mycanvas').hide();
-                    $('body').append(c);
-                    var canvas = document.getElementById("mycanvas");
-                    data = canvas.toDataURL("image/png");
-                    $.ajax({
-                        type: 'POST',
-                        url: '@Url.RouteUrl("AvalAcadPrint")',
-                        data: {
-                            codAvaliacao: avalAcad,
-                            imageData: data
-                        },
-                        success: function () {
-                            acadHub.server.avalEnviada(codAvaliacao, usrMatr);
-                        },
-                        error: function () {
-                            // adicionar erro ao Feed do professor
-                        }
-                    });
-
-                    c.remove();
-                }
-            });
-        };
+        ConectarHub('@Model.Avaliacao.CodAvaliacao', '@SIAC.Web.Helpers.Sessao.UsuarioMatricula');
     </script>
 }

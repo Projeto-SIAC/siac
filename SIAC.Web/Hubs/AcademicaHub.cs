@@ -110,10 +110,18 @@ namespace SIAC.Web.Hubs
         }
     }
 
+    public class Evento
+    {
+        public string Icon { get; set; }
+        public string Descricao { get; set; }
+        public DateTime dtOcorrencia { get; set; }
+    }
+
     public class Academica
     {
         private readonly Dictionary<string, string> alunos = new Dictionary<string, string>();
         private readonly string[,] professor = new string[1,2];
+        private readonly Dictionary<string, List<Evento>> feed = new Dictionary<string, List<Evento>>();
 
         public void AddProfessor(string matricula, string connectionId)
         {
@@ -133,6 +141,21 @@ namespace SIAC.Web.Hubs
                     alunos.Remove(matricula);
                 }
                 alunos.Add(matricula, connectionId);
+            }
+        }
+
+        public void AddEvento(string matricula, string icon, string descricao)
+        {
+            lock(feed)
+            {
+                if (alunos.ContainsKey(matricula))
+                {
+                    if (!feed.ContainsKey(matricula))
+                    {
+                        feed.Add(matricula, new List<Evento>());
+                    }
+                    feed[matricula].Add(new Evento() { Icon = icon, Descricao = descricao, dtOcorrencia = DateTime.Now });
+                }
             }
         }
 
