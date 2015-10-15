@@ -2,7 +2,20 @@
 @model AvalAcademica
 @{
     ViewBag.Title = "Acompanhar " + Model.Avaliacao.CodAvaliacao;
-    Layout = "~/Views/Shared/_Layout.cshtml";    
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // String html do gabarito para todos os alunos
+    string gabarito = "<table class=\"ui celled table\"><tbody><tr>";
+    for (int i = 0, count = Model.Avaliacao.Questao.Count, linebreak = 20, countPerRow = 20; i < count; i++)
+    {
+        if (i == linebreak)
+        {
+            gabarito += "</tr><tr>";
+            linebreak += countPerRow;
+        }
+        gabarito += "<td data-questao=\""+Model.Avaliacao.Questao[i].CodQuestao+"\">"+i.GetIndiceQuestao()+"</td>";
+    }
+    gabarito += "</tr></tbody></table>";
 }
 @section Styles {
     <style>
@@ -115,6 +128,15 @@
                     })
                 ;
             }
+
+            acadHub.client.respondeuQuestao = function (alnMatricula, questao, flag) {
+                console.log(alnMatricula, questao, flag);
+                $questao = $('#' + alnMatricula + '.content [data-questao="' + questao + '"]');
+                $questao.removeClass('positive').find('i').remove();
+                if (flag) {
+                    $questao.prepend('<i class="checkmark icon"></i>').addClass('positive');
+                }
+            }
         }       
         
         ConectarHub('@Model.Avaliacao.CodAvaliacao', '@SIAC.Web.Helpers.Sessao.UsuarioMatricula');
@@ -167,26 +189,6 @@
         <a href="" target="_blank" class="ui nova guia button">Abrir em Nova Guia</a>
     </div>
 </div>
-@*<table class="ui striped table">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>Matricula</th>
-            <th>Curso</th>
-            <th>Prova</th>
-        </tr>
-    </thead>
-    <tbody>
-        
-            <tr>
-                <td>João</td>
-                <td>2015202</td>
-                <td>INFONET</td>
-                <td><div id="btnMatr" class="ui button">Ver prova</div></td>
-            </tr>
-        
-    </tbody>
-</table>*@
 
 <div class="ui basic segment">
     <div class="ui accordion">
@@ -201,6 +203,7 @@
                 <div class="ui progress active" data-total="@Model.Avaliacao.Questao.Count">
                     <div class="bar"><div class="progress"></div></div>
                 </div>
+                @Html.Raw(gabarito)
                 <div class="ui small feed">
                     <h4 class="ui header">Atividade</h4>                       
                 </div>

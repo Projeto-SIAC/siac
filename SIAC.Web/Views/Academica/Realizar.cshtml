@@ -309,11 +309,25 @@
                         $label.removeClass('red');
                         $label.removeAttr('style');
                         $label.html('Respondida');
+                        var questao;
                         if ($(this).attr('name').indexOf('rdo') > -1) {
+                            questao = $(this).attr('name').split('rdoResposta')[1];
                             $label.append($('<div class="detail"></div>').text($('input[name="' + $(this).attr('name') + '"]:checked').next().find('b').text()));
                         }
+                        else {
+                            questao = $(this).attr('name').split('txtResposta')[1];
+                        }
+                        acadHub.server.responderQuestao(avalAcad, usrMatr, questao, true);
                     }
                     else {
+                        var questao;
+                        if ($(this).attr('name').indexOf('rdo') > -1) {
+                            questao = $(this).attr('name').split('rdoResposta')[1];
+                        }
+                        else {
+                            questao = $(this).attr('name').split('txtResposta')[1];
+                        }
+                        acadHub.server.responderQuestao(avalAcad, usrMatr, questao, false);
                         $label.attr('style', 'display:none');
                     }
                     var value = $('input[name^="rdoResposta"]:checked').length;

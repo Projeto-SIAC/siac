@@ -73,6 +73,22 @@ namespace SIAC.Web.Hubs
             }
         }
 
+        public void ResponderQuestao(string codAvaliacao, string usrMatricula, int questao, bool flag)
+        {
+            if (!String.IsNullOrEmpty(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()))
+            {
+                if (flag)
+                {
+                    avaliacoes.GetAcademica(codAvaliacao).AddEvento(usrMatricula, "write", "Respondeu questão");
+                }
+                else
+                {
+                    avaliacoes.GetAcademica(codAvaliacao).AddEvento(usrMatricula, "erase", "Retirou resposta questão");
+                }
+                Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).respondeuQuestao(usrMatricula, questao, flag);
+            }
+        }
+
         public void Alertar(string codAvaliacao, string mensagem, string alnMatricula)
         {
             if (!String.IsNullOrWhiteSpace(mensagem))
