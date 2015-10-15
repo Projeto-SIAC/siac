@@ -97,12 +97,11 @@
         <div class="ui accordion">
             @for (int i = 0; i < lstQuestao.Count; i++)
             {
-                <div class="title">
-                    <input id="txtCodQuestao" value="@lstQuestao[i].CodQuestao" hidden />
+                <div id="@lstQuestao[i].CodQuestao" class="title">
                     <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToShortString(80))
-                    <div class="ui small label teal" style="display:none">Respondida</div>
+                    <div class="ui small label" style="display:none">Respondida</div>
                 </div>
-                <div class="content">
+                <div id="@lstQuestao[i].CodQuestao" class="content">
                     <div class="ui segment">
                         <div class="ui dividing header" style="text-align:justify">
                             @{
@@ -305,6 +304,18 @@
                 acadHub.server.alunoConectou(avalAcad, usrMatr);
 
                 $('textarea[name^="txtResposta"], input[name^="rdoResposta"]').change(function () {
+                    $label = $(this).parents('.content').prev().find('.ui.label');
+                    if ($(this).val()) {
+                        $label.removeClass('red');
+                        $label.removeAttr('style');
+                        $label.html('Respondida');
+                        if ($(this).attr('name').indexOf('rdo') > -1) {
+                            $label.append($('<div class="detail"></div>').text($('input[name="' + $(this).attr('name') + '"]:checked').next().find('b').text()));
+                        }
+                    }
+                    else {
+                        $label.attr('style', 'display:none');
+                    }
                     var value = $('input[name^="rdoResposta"]:checked').length;
                     var lstTextarea = $('textarea[name^="txtResposta"]');
                     for (var i = 0; i < lstTextarea.length; i++) {
