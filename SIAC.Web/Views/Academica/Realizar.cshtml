@@ -314,6 +314,23 @@
                     }
                     acadHub.server.atualizarAlunoProgresso(avalAcad, usrMatr, value);
                 });
+
+                $(window).on("blur focus", function (e) {
+                    var prevType = $(this).data("prevType");
+
+                    if (prevType != e.type) {
+                        switch (e.type) {
+                            case "blur":
+                                acadHub.server.focoAvaliacao(avalAcad, usrMatr, false);
+                                break;
+                            case "focus":
+                                acadHub.server.focoAvaliacao(avalAcad, usrMatr, true);
+                                break;
+                        }
+                    }
+
+                    $(this).data("prevType", e.type);
+                })
             });
 
             acadHub.client.alertar = function (mensagem) {

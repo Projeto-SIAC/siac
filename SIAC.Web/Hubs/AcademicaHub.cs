@@ -44,7 +44,7 @@ namespace SIAC.Web.Hubs
 
             avaliacoes.GetAcademica(codAvaliacao).AddAluno(usrMatricula, Context.ConnectionId);
 
-            avaliacoes.GetAcademica(codAvaliacao).AddEvento(usrMatricula, "sign in", "Conectou");
+            avaliacoes.GetAcademica(codAvaliacao).AddEvento(usrMatricula, "green sign in", "Conectou");
 
             if (!String.IsNullOrEmpty(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()))
             {
@@ -79,10 +79,15 @@ namespace SIAC.Web.Hubs
             {
                 if (String.IsNullOrEmpty(alnMatricula))
                 {
+                    foreach (var matr in avaliacoes.GetAcademica(codAvaliacao).GetAtivoMatriculaAluno())
+                    {
+                        avaliacoes.GetAcademica(codAvaliacao).AddEvento(matr, "announcement", "Recebeu alerta geral");
+                    }
                     Clients.Clients(avaliacoes.GetAcademica(codAvaliacao).GetAtivoConnectionIdAluno()).alertar(mensagem);
                 }
                 else
                 {
+                    avaliacoes.GetAcademica(codAvaliacao).AddEvento(alnMatricula, "announcement", "Recebeu alerta específico");
                     Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdAluno(alnMatricula)).alertar(mensagem);
                 }
             }
@@ -92,9 +97,22 @@ namespace SIAC.Web.Hubs
         {
             if (avaliacoes.GetAcademica(codAvaliacao).GetAtivoMatriculaAluno().Contains(alnMatricula))
             {
-                var lstEvento = avaliacoes.GetAcademica(codAvaliacao).GetFeed(alnMatricula).Select(e => new { Icone = e.Icone, Descricao = e.Descricao, Data = e.Data.ToElapsedTimeString() });
+                var lstEvento = avaliacoes.GetAcademica(codAvaliacao).GetFeed(alnMatricula).Select(e => new { Icone = e.Icone, Descricao = e.Descricao, DataCompleta = e.Data.ToBrazilianString(), Data = e.Data.ToElapsedTimeString() });
                 Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).atualizarFeed(alnMatricula, lstEvento);
             }
+        }
+
+        public void FocoAvaliacao(string codAvaliacao, string alnMatricula, bool flag)
+        {
+            if (flag)
+            {
+                avaliacoes.GetAcademica(codAvaliacao).AddEvento(alnMatricula, "warning sign", "Estabeleceu o foco na avaliação");
+            }
+            else
+            {
+                avaliacoes.GetAcademica(codAvaliacao).AddEvento(alnMatricula, "red warning sign", "Perdeu o foco na avaliação");
+            }
+            Feed(codAvaliacao, alnMatricula);
         }
     }
 
@@ -156,7 +174,7 @@ namespace SIAC.Web.Hubs
                 alunos.Add(matricula, connectionId);
                 if (feed.ContainsKey(matricula))
                 {
-                    feed[matricula].Add(new Evento() { Icone = "sign in", Descricao = "Reconectou", Data = DateTime.Now });
+                    feed[matricula].Add(new Evento() { Icone = "green sign in", Descricao = "Reconectou", Data = DateTime.Now });
                 }
                 else { 
                     feed.Add(matricula, new List<Evento>());
