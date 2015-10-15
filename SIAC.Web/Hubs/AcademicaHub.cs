@@ -67,8 +67,10 @@ namespace SIAC.Web.Hubs
 
         public void AtualizarAlunoProgresso(string codAvaliacao, string usrMatricula, int value)
         {
-            //Clients.Group("PRF" + codAvaliacao).atualizarProgresso(usrMatricula, percent);
-            Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).atualizarProgresso(usrMatricula, value);            
+            if (!String.IsNullOrEmpty(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()))
+            {
+                Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).atualizarProgresso(usrMatricula, value);
+            }
         }
 
         public void Alertar(string codAvaliacao, string mensagem, string alnMatricula)
@@ -152,7 +154,13 @@ namespace SIAC.Web.Hubs
                     alunos.Remove(matricula);
                 }
                 alunos.Add(matricula, connectionId);
-                feed.Add(matricula, new List<Evento>());
+                if (feed.ContainsKey(matricula))
+                {
+                    feed[matricula].Add(new Evento() { Icone = "sign in", Descricao = "Reconectou", Data = DateTime.Now });
+                }
+                else { 
+                    feed.Add(matricula, new List<Evento>());
+                }
             }
         }
 

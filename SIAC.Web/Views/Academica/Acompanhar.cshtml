@@ -75,7 +75,6 @@
                     ');
                     }
                 }
-                console.log(alnMatricula, $feed);
             }
 
             acadHub.client.conectarAluno = function(usrMatricula) {
@@ -103,7 +102,19 @@
                         Mensagem('Ocorreu um erro inesperado. Tente novamente mais tarde.');
                     }
                 });
-            };           
+            };
+
+            acadHub.client.atualizarProgresso = function (alnMatricula, value) {
+                $('#'+alnMatricula+'.content .progress')
+                    .progress({
+                        value: value,
+                        label: 'ratio',
+                        text: {
+                            ratio: '{value} de {total}'
+                        }
+                    })
+                ;
+            }
         }       
         
         ConectarHub('@Model.Avaliacao.CodAvaliacao', '@SIAC.Web.Helpers.Sessao.UsuarioMatricula');
@@ -187,56 +198,11 @@
                 <b class="nome">@aluno.Usuario.PessoaFisica.Nome</b> @aluno.MatrAluno                
             </div>
             <div id="@aluno.MatrAluno" class="content">
-                <div class="ui progress active" data-value="0" data-total="@Model.Avaliacao.Questao.Count">
+                <div class="ui progress active" data-total="@Model.Avaliacao.Questao.Count">
                     <div class="bar"><div class="progress"></div></div>
                 </div>
                 <div class="ui small feed">
-                    <h4 class="ui header">Atividade</h4>
-                        <div class="event">
-                            <div class="label">
-                                <i class="pencil icon"></i>
-                            </div>
-                            <div class="content">
-                                <div class="summary">
-                                    Respondeu a questão <b>7</b>
-                                    <div class="date">Agora</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="event">
-                            <div class="label">
-                                <i class="pencil icon"></i>
-                            </div>
-                            <div class="content">
-                                <div class="summary">
-                                    Respondeu a questão <b>6</b>
-                                    <div class="date">3 minutos</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="event">
-                            <div class="label">
-                                <i class="pencil icon"></i>
-                            </div>
-                            <div class="content">
-                                <div class="summary">
-                                    Respondeu a questão <b>5</b>
-                                    <div class="date">6 minutos</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="event">
-                            <div class="label">
-                                <i class="pencil icon"></i>
-                            </div>
-                            <div class="content">
-                                <div class="summary">
-                                    Respondeu a questão <b>4</b>
-                                    <div class="date">10 minutos</div>
-                                </div>
-                            </div>
-                        </div>
+                    <h4 class="ui header">Atividade</h4>                       
                 </div>
                 <div class="ui disabled prova button">Ver Prova</div>
                 <div class="ui disabled trigger button">Alertar</div>

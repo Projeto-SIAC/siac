@@ -303,6 +303,17 @@
         function ConectarHub(avalAcad, usrMatr) {
             $.connection.hub.start().done(function () {
                 acadHub.server.alunoConectou(avalAcad, usrMatr);
+
+                $('textarea[name^="txtResposta"], input[name^="rdoResposta"]').change(function () {
+                    var value = $('input[name^="rdoResposta"]:checked').length;
+                    var lstTextarea = $('textarea[name^="txtResposta"]');
+                    for (var i = 0; i < lstTextarea.length; i++) {
+                        if (lstTextarea.eq(i).val()) {
+                            value++;
+                        }
+                    }
+                    acadHub.server.atualizarAlunoProgresso(avalAcad, usrMatr, value);
+                });
             });
 
             acadHub.client.alertar = function (mensagem) {
