@@ -72,15 +72,25 @@
                             type:'GET',
                             url:'/Historico/Avaliacao/Academica/ContagemRegressiva',
                             data: { codAvaliacao: avalCodigo},
-                            success: function(data) {
+                            success: function (data) {
+                                alert('O professor liberou a avaliação.');
                                 if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
-                                    alert('O professor liberou a avaliação.');
                                     $('.iniciar.button').removeClass('disabled').text('Iniciar');
                                     $modal.find('#mensagem').html('\
                                         <i class="checkmark icon"></i>\
                                         <div class="content">\
                                             Seu professor liberou a prova\
-                                            <div class="sub header">Você já pode iniciar assim que chegar a hora de aplicação</div>\
+                                            <div class="sub header">Você já pode iniciar</div>\
+                                        </div>'
+                                    );
+                                }
+                                else if (data.FlagLiberada == true) {
+                                    $('.iniciar.button').addClass('disabled').text('Aguarde');
+                                    $modal.find('#mensagem').html('\
+                                        <i class="checkmark icon"></i>\
+                                        <div class="content">\
+                                            Seu professor liberou a prova\
+                                            <div class="sub header">Você poderá iniciar assim que chegar a hora de aplicação</div>\
                                         </div>'
                                     );
                                 }
