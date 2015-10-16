@@ -604,10 +604,13 @@ namespace SIAC.Web.Controllers
         {
             if (!String.IsNullOrEmpty(codigo))
             {
-                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (acad != null)
+                if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
                 {
-                    return View(acad);
+                    AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+                    if (acad != null)
+                    {
+                        return View(acad);
+                    }
                 }
             }
             return View("Agendada");

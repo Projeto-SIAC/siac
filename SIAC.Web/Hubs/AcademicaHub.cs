@@ -35,7 +35,6 @@ namespace SIAC.Web.Hubs
             {
                 Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).conectarAluno(alnMatricula);
             }
-            //Groups.Add(Context.ConnectionId, "PRF" + codAvaliacao);
         }
 
         public void AlunoConectou(string codAvaliacao,string usrMatricula)
@@ -54,7 +53,6 @@ namespace SIAC.Web.Hubs
 
         public void RequererAval(string codAvaliacao,string usrMatricula)
         {
-            //Clients.Group("AVA" + codAvaliacao + "ALN" + usrMatricula).enviarAval(codAvaliacao);
             Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdAluno(usrMatricula)).enviarAval(codAvaliacao);
         }
 
@@ -130,6 +128,12 @@ namespace SIAC.Web.Hubs
             }
             Feed(codAvaliacao, alnMatricula);
         }
+
+        public void ChatProfessorEnvia(string codAvaliacao, string usrMatricula,string profMatr, string mensagem)
+        {
+            Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdAluno(usrMatricula)).ChatReceberMensagem(profMatr,mensagem);
+        }
+
     }
 
     public class AcademicaMapping

@@ -184,6 +184,29 @@
     </div>
     <div class="ui button">Desistir</div>
     <div class="ui button">Finalizar</div>
+
+    <div class="ui trigger icon right floated button"><i class="icon comments outline"></i></div>
+    <div class="ui content form flowing popup">
+        <div class="ui comments" style="overflow-y:scroll;">
+            <h3 class="ui dividing header">Chat</h3>
+            @*<div class="comment">
+                    <div class="content">
+                        <a class="author">Prof</a>
+                        <div class="metadata">
+                            <span class="date">4 Minutos</span>
+                        </div>
+                        <div class="ui left pointing label">
+                            How artistic!
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+        <div class="ui divider"></div>
+        <div class="field">
+            <input id="ChatMsg" type="text" placeholder="Mensagem..." maxlength="50" />
+        </div>
+        <div class='ui small enviar button'>Enviar</div>
+    </div>
 </form>
 
 @section Scripts{
@@ -216,6 +239,12 @@
 
         $('.ui.accordion')
             .accordion({ exclusive: false })
+        ;
+
+        $('.trigger.button')
+            .popup({
+                on: 'click'
+            })
         ;
 
         var conectado = false;
