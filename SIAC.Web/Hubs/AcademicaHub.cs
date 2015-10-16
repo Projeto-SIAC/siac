@@ -112,7 +112,10 @@ namespace SIAC.Web.Hubs
             if (avaliacoes.GetAcademica(codAvaliacao).GetAtivoMatriculaAluno().Contains(alnMatricula))
             {
                 var lstEvento = avaliacoes.GetAcademica(codAvaliacao).GetFeed(alnMatricula).Select(e => new { Icone = e.Icone, Descricao = e.Descricao, DataCompleta = e.Data.ToBrazilianString(), Data = e.Data.ToElapsedTimeString() });
-                Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).atualizarFeed(alnMatricula, lstEvento);
+                if (!String.IsNullOrEmpty(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()))
+                {
+                    Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).atualizarFeed(alnMatricula, lstEvento);
+                }
             }
         }
 
