@@ -245,7 +245,34 @@
 
             return text;
         }
-           
+
+        function quebrarLinhaEm(texto, indiceMaximo) {
+            texto = texto.trim();
+            if (texto.length > indiceMaximo) {
+                var tempMensagem = texto;
+                var qteLinha = Math.ceil(texto.length / indiceMaximo);
+                mensagem = '';
+                for (var i = 0; i <= qteLinha; i++) {                    
+                    tempMensagem = tempMensagem.trim();
+                    if (tempMensagem.length > indiceMaximo) {
+                        var indice = tempMensagem.substr(0, indiceMaximo).lastIndexOf(' ');
+                        if (indice == -1) {
+                            indice = indiceMaximo;
+                        }
+                        mensagem += tempMensagem.substr(0, indice) + '<br/>';
+                        tempMensagem = tempMensagem.substring(indice, tempMensagem.length);                        
+                    }
+                    else {
+                        mensagem += tempMensagem;
+                        break;
+                    }
+                }
+
+                return mensagem;
+            }
+            return texto;
+        }
+
         function leroLero() {
             
             $('.lero').addClass('loading');
@@ -262,6 +289,9 @@
                 }
             });
         }
+
+
+
     </script>
 </body>
 </html>
