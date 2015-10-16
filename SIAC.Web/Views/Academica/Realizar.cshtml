@@ -67,6 +67,17 @@
     <div class="description" style="text-align:center;"></div>
 </div>
 
+<div class="ui gabarito modal">
+    <div class="header">Verifique e confirme</div>
+    <div class="content">
+
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Voltar</div>
+        <div class="ui approve button">Confirmar</div>
+    </div>
+</div>
+
 <div class="ui labels">
     <div class="ui label">
         Ínicio
@@ -86,7 +97,7 @@
     </div>
 </div>
 
-<form class="ui form" method="post">
+<form class="ui form" action="/Historico/Avaliacao/Academica/@Model.Avaliacao.CodAvaliacao" method="post">
     <div class="ui message error">
         <i class="icon close"></i>
         <div class="header">
@@ -183,7 +194,7 @@
         </div>
     </div>
     <div class="ui button">Desistir</div>
-    <div class="ui button">Finalizar</div>
+    <div class="ui finalizar button">Finalizar</div>
 </form>
 
 @section Scripts{
@@ -294,10 +305,106 @@
         Relogio();
         $('#lblHoraRestante').text(minutesToTimeString(@((Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value) - DateTime.Now).TotalMinutes)));
 
+        $(function() { 
+            window.onbeforeunload = function () {
+                return 'Você está realizando uma avaliação.';
+            };
+        });
+
+        $('.ui.gabarito.modal')
+            .modal({
+                onApprove: function () {
+                    TesteConexao();
+                    if (conectado) {
+                        window.onbeforeunload = function () {
+                            $('.ui.global.loader').parent().addClass('active');
+                        };
+                        $('form').submit();
+                    }
+                    else {
+                        Mensagem('Conecte-se à internet antes de confirmar.')
+                        return false;
+                    }
+                }
+            })
+        ;
+
+        function Verificar() {
+            $Objects = $('textarea[name^="txtResposta"], input[name^="rdoResposta"]');
+            var retorno = true;
+            for (var i = 0, length = $Objects.length; i < length; i++) {
+                var _this = $Objects.eq(i);
+                $label = _this.parents('.content').prev().find('.ui.label');
+                if (_this.attr('name').indexOf('rdo') > -1) {
+                    if ($('input[name="' + _this.attr('name') + '"]:checked').length === 0) {
+                        $label.removeAttr('style').addClass('red').html('Não respondida').transition('tada');
+                        retorno = false;
+                    }
+                }
+                else if (!_this.val()) {
+                    $label.removeAttr('style').addClass('red').html('Não respondida').transition('tada');
+                    retorno = false;
+                }
+            }
+            return retorno;
+        }
+
+        function Confirmar() {
+            $modal = $('.ui.gabarito.modal');
+
+            $accordion = $('form .ui.accordion').clone();
+
+            $accordion.removeAttr('style');
+
+            $modal.find('.content').html($('<div class="ui form"></div>').append($accordion));
+
+            $modalAccordion = $modal.find('.ui.accordion');
+
+            $modalAccordion.accordion({
+                onChange: function () { $('.ui.gabarito.modal').modal('refresh'); }
+            });
+
+            $lstInput = $modalAccordion.find(':input,a');
+
+            for (var i = 0, length = $lstInput.length; i < length; i++) {
+                $lstInput.eq(i)
+                    .attr({
+                        'readonly': 'readonly'
+                    })
+                    .removeAttr('href')
+                    .removeAttr('onchange')
+                    .removeAttr('onclick')
+                    .off()
+                ;
+            }
+
+            $modal.modal('show');
+        }
+
+        $('.finalizar.button').click(function () {
+            if (Verificar()) {
+                Confirmar();
+            }
+            else {
+                $('form').addClass('error');
+                $('form .message').removeClass('hidden');
+                $('html, body').animate({
+                    scrollTop: $(".title .label.red").offset().top
+                }, 1000);
+            }
+        });
+
+        $('.message .close')
+          .on('click', function () {
+              $(this)
+                .closest('.message')
+                .transition('fade')
+              ;
+          })
+        ;
+        
         // SignalR
         var acadHub = $.connection.academicaHub;
-        //var avalAcad = '@Model.Avaliacao.CodAvaliacao';
-        //var usrMatr = '@SIAC.Web.Helpers.Sessao.UsuarioMatricula';
 
         function ConectarHub(avalAcad, usrMatr) {
             $.connection.hub.start().done(function () {
@@ -312,6 +419,7 @@
                         var questao;
                         if ($(this).attr('name').indexOf('rdo') > -1) {
                             questao = $(this).attr('name').split('rdoResposta')[1];
+                            $label.find('.detail').remove();
                             $label.append($('<div class="detail"></div>').text($('input[name="' + $(this).attr('name') + '"]:checked').next().find('b').text()));
                         }
                         else {
@@ -390,7 +498,7 @@
                 });
             };
         }
-
+        
         ConectarHub('@Model.Avaliacao.CodAvaliacao', '@SIAC.Web.Helpers.Sessao.UsuarioMatricula');
     </script>
 }

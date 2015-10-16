@@ -37,6 +37,7 @@
         $('.ui.checkbox')
             .checkbox()
         ;
+
         $('.ui.verificar.modal')
             .modal({
                 closable: false,
@@ -219,11 +220,12 @@
             for (var i = 0; i < $lstInput.length; i++) {
                 $lstInput.eq(i)
                     .attr({
-                        'readonly':'readonly',
-                        'disabled':'disabled'
+                        'readonly':'readonly'
                     })
+                    .removeAttr('href')
                     .removeAttr('onchange')
                     .removeAttr('onclick')
+                    .off()
                 ;
             }
 
