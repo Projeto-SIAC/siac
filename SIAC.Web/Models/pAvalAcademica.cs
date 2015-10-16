@@ -50,6 +50,15 @@ namespace SIAC.Web.Models
                 .ToList();
         }
 
+        public static List<AvalAcademica> ListarPendentePorProfessor(int codProfessor)
+        {
+            return contexto.AvalQuesPessoaResposta
+                .Where(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcademica.CodProfessor == codProfessor && !a.RespNota.HasValue)
+                .OrderBy(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.DtAplicacao)
+                .Select(a=>a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcademica)
+                .ToList();
+        }
+
         public static List<AvalAcademica> ListarPorAluno(int codAluno)
         {
             return contexto.AvalAcademica

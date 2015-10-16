@@ -643,6 +643,7 @@
     <Content Include="Views\Academica\Acompanhar.cshtml" />
     <Content Include="Views\Academica\Realizar.cshtml" />
     <Content Include="Views\Academica\Resultado.cshtml" />
+    <Content Include="Views\Academica\Pendente.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

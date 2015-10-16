@@ -1,0 +1,29 @@
+﻿@using SIAC.Web.Models
+@model List<AvalAcademica>
+@{
+    ViewBag.Title = "Correções Pendentes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="ui basic segment">
+    <div class="ui two stackable cards">
+        @foreach (AvalAcademica avalAcademica in Model)
+            {
+            <a href="/Dashboard/Avaliacao/Academica/Corrigir/@avalAcademica.Avaliacao.CodAvaliacao" class="card">
+                <div class="content">
+                    <div class="header">@avalAcademica.Avaliacao.CodAvaliacao</div>
+                    <div class="meta">
+                        <span title="@avalAcademica.Avaliacao.DtAplicacao.Value.ToBrazilianString()">@avalAcademica.Avaliacao.DtAplicacao.Value.ToElapsedTimeString()</span>
+                    </div>
+                    <div class="description">
+                        <p><b>Disciplina</b>: @avalAcademica.Disciplina.Descricao</p>
+                        <p><b>Turma</b>: @avalAcademica.Turma.Curso.Descricao (@avalAcademica.Turma.CodTurma)</p>
+                        <p><b>Quantidade de Questões</b>: @avalAcademica.Avaliacao.QteQuestoes()</p>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+</div>
+

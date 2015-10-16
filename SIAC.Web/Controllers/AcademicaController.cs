@@ -677,6 +677,7 @@ namespace SIAC.Web.Controllers
                                 avalQuesPessoaResposta.RespAlternativa = int.Parse(form["rdoResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]);
                                 if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q => q.FlagGabarito.HasValue && q.FlagGabarito.Value).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
                                 {
+                                    avalQuesPessoaResposta.RespNota = 10;
                                     avalPessoaResultado.QteAcertoObj++;
                                 }
                             }
@@ -700,6 +701,19 @@ namespace SIAC.Web.Controllers
                 return RedirectToAction("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao });
             }
             return RedirectToAction("Agendada");
+        }
+
+        // POST: Academica/Pendente
+        [HttpGet]
+        public ActionResult Pendente()
+        {
+            if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
+            {
+                string strMatr = Helpers.Sessao.UsuarioMatricula;
+                int codProfessor = Professor.ListarPorMatricula(strMatr).CodProfessor;
+                return View(AvalAcademica.ListarPendentePorProfessor(codProfessor));
+            }            
+            return RedirectToAction("Index");
         }
     }
 }

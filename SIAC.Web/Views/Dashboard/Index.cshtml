@@ -2,15 +2,17 @@
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
     int autoavaliacao = Model.PessoaFisica.AvalAuto.Where(a => a.Avaliacao.AvalPessoaResultado.Count == 0).Count();
-    int academica =0;
-    int certificacao=0;
-    int agendada=0;
+    int academica = 0;
+    int certificacao = 0;
+    int agendada = 0;
+    int pendente = 0;
     if (Model.CodCategoria == 2)
     {
         var prof = Model.Professor.First();
         academica = prof.AvalAcademica.Where(a=>!a.NumTurma.HasValue).Count();
         certificacao = prof.AvalCertificacao.Where(a => a.PessoaFisica.Count == 0).Count();
         agendada = prof.AvalAcademica.Where(a => a.Avaliacao.DtAplicacao.HasValue).Count();
+        pendente = prof.AvalAcademica.Where(a => a.Avaliacao.AvalPessoaResultado.Where(r => !r.Nota.HasValue).Count() > 0).Count();
     }
     else if (Model.CodCategoria == 1)
     {
@@ -109,6 +111,21 @@
                             <div class="ui floating small red label">@agendada</div>
                         }
                         Avaliações Agendadas
+                    </div>
+                </a>
+            </div>
+        }
+        @if (Model.CodCategoria == 2)
+        {
+            <div class="column aligned center">
+                <a href="/Historico/Avaliacao/Academica/Pendente" class="ui basic segment">
+                    <div class="ui icon header">
+                        <i class="edit icon"></i>
+                        @if (pendente > 0)
+                        {
+                            <div class="ui floating small red label">@pendente</div>
+                        }
+                        Correções Pendentes
                     </div>
                 </a>
             </div>
