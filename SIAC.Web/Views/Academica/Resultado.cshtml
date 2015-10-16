@@ -1,7 +1,7 @@
 ﻿@using SIAC.Web.Models
-@model AvalAuto
+@model AvalAcademica
 @{
-    ViewBag.Title = "Resultado "+Model.Avaliacao.CodAvaliacao;
+    ViewBag.Title = "Resultado " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<Questao> lstQuestao = Model.Avaliacao.Questao;
     List<AvalQuesPessoaResposta> lstPessoaResposta = Model.Avaliacao.PessoaResposta;
@@ -17,39 +17,36 @@
 <h2>@ViewBag.Title</h2>
 <div class="ui basic segment">
     <div class="ui dividing header" data-content="Note que os cálculos levem em conta somente as questões objetivas.">
-        Desempenho
-        <div class="ui label">Porcentagem de Acerto<div class="detail">@(ViewBag.Porcentagem.ToString("0.##'%'"))</div></div>
+        Desempenho        
     </div>
-    <div class="ui centered statistics">
-        @foreach (var key in ViewBag.Desempenho.Keys)
-            {
-            <div class="statistic @(ViewBag.Desempenho[key]>50 ? "green" : "red")">
-                <div class="value circular" style="border:1px">
-                    @ViewBag.Desempenho[key].ToString("0.##'%'")
-                </div>
-                <div class="label">@key</div>
-            </div>
-        }
+    <div class="ui horizontal statistic">
+        <div class="label">
+            Porcentagem de Acerto
+        </div>
+        <div class="value">
+            @(ViewBag.Porcentagem.ToString("0.##'%'"))
+        </div>
     </div>
 </div>
+@if (DateTime.Now > Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value))
+{
+    <div class="ui basic segment">
+        <div class="ui dividing header">
+            Resultado
+        </div>
+        <div class="ui accordion">
+            @for (int i = 0; i < lstQuestao.Count; i++)
+            {
+                var resposta = lstPessoaResposta.First(r => r.CodQuestao == lstQuestao[i].CodQuestao);
 
-<div class="ui basic segment">
-    <div class="ui dividing header">
-        Resultado
-    </div>
-    <div class="ui accordion">
-        @for (int i = 0; i < lstQuestao.Count; i++)
-        {
-            var resposta = lstPessoaResposta.First(r => r.CodQuestao == lstQuestao[i].CodQuestao);
-
-            <div class="title">
-                <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToShortString(80))
-                @if (lstQuestao[i].CodTipoQuestao == 1)
-                {
-                    var correta = lstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
-                    <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? Html.Raw("<i class=\"checkmark icon\"></i>Correta") : Html.Raw("<i class=\"remove icon\"></i>Incorreta") )</div>
-                }
-            </div>
+                <div class="title">
+                    <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToShortString(80))
+                    @if (lstQuestao[i].CodTipoQuestao == 1)
+                    {
+                        var correta = lstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
+                        <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? Html.Raw("<i class=\"checkmark icon\"></i>Correta") : Html.Raw("<i class=\"remove icon\"></i>Incorreta") )</div>
+                    }
+                </div>
                 <div class="content">
                     <div class="ui segment">
                         <div class="ui dividing header" style="text-align:justify">
@@ -68,17 +65,17 @@
                         {
                             <div class="ui list">
                                 @foreach (var alternativa in lstQuestao[i].Alternativa)
-                                {
+                        {
                                     <div class="item">
                                         <div class="middle aligned content">
                                             <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
                                             @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
                                             {
-                                                <a data-html="@((""+alternativa.Comentario).Replace("\n","<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
+                                                <a data-html="@(("" + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
                                             }
                                             @if (alternativa.CodOrdem == resposta.RespAlternativa)
                                             {
-                                                <a data-html="@((""+alternativa.Comentario).Replace("\n","<br>"))" data-variation="very wide" class="ui tag label">Marcada</a>
+                                                <a data-html="@(("" + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Marcada</a>
                                             }
                                         </div>
                                     </div>
@@ -88,7 +85,7 @@
                         else
                         {
                             <div>
-                                <a class="ui ribbon label" data-html="@lstQuestao[i].ChaveDeResposta.Replace("\n","<br>")" data-variation="very wide">Resposta</a>
+                                <a class="ui ribbon label" data-html="@lstQuestao[i].ChaveDeResposta.Replace("\n", "<br>")" data-variation="very wide">Resposta</a>
                                 @{
                                     var respDiscursiva = resposta.RespDiscursiva.Split('\n', '\r');
                                     foreach (var strRespDiscursiva in respDiscursiva)
@@ -113,7 +110,7 @@
                                             case 1:
                                                 <a onclick="expandirImagem(this)" class="ui card">
                                                     <div class="image">
-                                                        <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo,0, anexo.Anexo.Length)" />
+                                                        <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo, 0, anexo.Anexo.Length)" />
                                                     </div>
                                                     <div class="content">
                                                         <div class="header">
@@ -135,6 +132,12 @@
                     </div>
                 </div>
                                     }
+        </div>
     </div>
-</div>
-
+}
+else
+{
+    <div class="ui message"><p>Você poderá conferir seu resultado assim que o tempo de aplicação da prova acabar.</p></div>
+}
+<a href="/Historico/Avaliacao/Academica" class="ui button">Histórico</a>
+<a href="/Historico/Avaliacao/Academica/Detalhe/@Model.Avaliacao.CodAvaliacao" class="ui button">Detalhe</a>
