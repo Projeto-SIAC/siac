@@ -7,7 +7,24 @@
     List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
 }
 
-<h2>@ViewBag.Title <div class="ui right floated button" onclick="$('.ui.informacoes.modal').modal('show')">Informações</div></h2>
+<h2>
+    @ViewBag.Title
+    <div class="ui trigger icon right floated button"><i class="icon comments outline"></i></div>
+    <div class="ui chat popup wide">
+        <div class="header">
+            @Model.Professor.Usuario.PessoaFisica.Nome.Split(' ')[0]
+        </div>
+        <div class="content">
+            <div class="ui comments" style="height: 200px;width:300px; overflow-y:scroll;">
+            </div>
+            <div class="ui icon fluid input">
+                <input id="txtChatMensagem" type="text" placeholder="Aperte enter para enviar..." maxlength="500" />
+                <i class="send link icon enviar"></i>
+            </div>
+        </div>
+    </div>
+    <div class="ui right floated button" onclick="$('.ui.informacoes.modal').modal('show')">Informações</div>
+</h2>
 
 <div class="ui informacoes modal">
     <i class="icon close"></i>
@@ -194,28 +211,6 @@
         </div>
     </div>
     <div class="ui button">Desistir</div>
-    <div class="ui trigger icon right floated button"><i class="icon comments outline"></i></div>
-    <div class="ui content form flowing popup">
-        <div class="ui comments" style="overflow-y:scroll;">
-            <h3 class="ui dividing header">Chat</h3>
-            @*<div class="comment">
-                    <div class="content">
-                        <a class="author">Prof</a>
-                        <div class="metadata">
-                            <span class="date">4 Minutos</span>
-                        </div>
-                        <div class="ui left pointing label">
-                            How artistic!
-                        </div>
-                    </div>
-                </div>*@
-        </div>
-        <div class="ui divider"></div>
-        <div class="field">
-            <input id="ChatMsg" type="text" placeholder="Mensagem..." maxlength="50" />
-        </div>
-        <div class='ui small enviar button'>Enviar</div>
-    </div>
     <div class="ui finalizar button">Finalizar</div>
 </form>
 
@@ -253,6 +248,8 @@
 
         $('.trigger.button')
             .popup({
+                position: 'bottom right',
+                inline: true,
                 on: 'click'
             })
         ;
@@ -437,6 +434,39 @@
         function ConectarHub(avalAcad, usrMatr) {
             $.connection.hub.start().done(function () {
                 acadHub.server.alunoConectou(avalAcad, usrMatr);
+
+
+                enviarMsg = function enviarMsg(_this) {
+                    $content = $(_this).parents('.content[id]');
+                    //matr = $content.attr('id');
+                    $msg = $('#txtChatMensagem');
+                    if ($msg.val()) {
+                        var mensagem = $msg.val();
+                        mensagem = quebrarLinhaEm(mensagem, 30);
+                        acadHub.server.chatAlunoEnvia(avalAcad, usrMatr, $msg.val());
+                        $('.chat.popup .content .comments').append('\
+                            <div class="comment" style="float:right;clear:both;">\
+                                <div class="content">\
+                                <div class="ui right pointing label">\
+                                    '+ mensagem + '\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+                        $msg.val('');
+                        var $comments = $('.chat.popup .content .comments');
+                        $($comments).animate({
+                            scrollTop: $comments.children().last().offset().top
+                        }, 0);
+                    }
+                };
+                $('.enviar.icon').on('click', function () { enviarMsg(this) });
+                $('#txtChatMensagem').keypress(function (e) {
+                    if (e.which == 13) {
+                        enviarMsg(this);
+                        return false;
+                    }
+                });
 
                 $('textarea[name^="txtResposta"], input[name^="rdoResposta"]').change(function () {
                     $label = $(this).parents('.content').prev().find('.ui.label');

@@ -134,7 +134,12 @@ namespace SIAC.Web.Hubs
 
         public void ChatProfessorEnvia(string codAvaliacao, string usrMatricula,string profMatr, string mensagem)
         {
-            Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdAluno(usrMatricula)).ChatReceberMensagem(profMatr,mensagem);
+            Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdAluno(usrMatricula)).ChatAlunoRecebe(profMatr,mensagem);
+        }
+
+        public void ChatAlunoEnvia(string codAvaliacao, string usrMatricula, string mensagem)
+        {
+            Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).ChatProfessorRecebe(usrMatricula, mensagem);
         }
 
     }
