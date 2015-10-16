@@ -642,6 +642,7 @@
     <Content Include="Resources\siac.scrollbar.css" />
     <Content Include="Views\Academica\Acompanhar.cshtml" />
     <Content Include="Views\Academica\Realizar.cshtml" />
+    <Content Include="Views\Academica\Resultado.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
