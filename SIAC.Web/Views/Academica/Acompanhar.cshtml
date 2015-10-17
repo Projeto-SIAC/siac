@@ -127,7 +127,7 @@
                         $accordionChat = $('#' + usrMatricula + '.title');
                         $lblQteMsg = $('#' + usrMatricula + 'lblQteMsg');
                         $lblQteMsg.remove();
-                        $accordionChat.append($('<div></div>').attr('id', usrMatricula + 'lblQteMsg').addClass('ui blue label').append('<i class="ui comments icon"></i>'));
+                        $accordionChat.append($('<div></div>').attr('id', usrMatricula + 'lblQteMsg').addClass('ui small blue label').append('<i class="ui comments icon"></i>'));
                         ChatQteMensagem++;
                         $('#' + usrMatricula + 'lblQteMsg').data('qte',ChatQteMensagem).append(ChatQteMensagem);
                     }
@@ -168,7 +168,7 @@
             };
 
             acadHub.client.alunoFinalizou = function (usrMatricula) {
-                $('#' + usrMatricula + '.title').append('<div class="ui label">Finalizou</div>');
+                $('#' + usrMatricula + '.title').append('<div class="ui small label">Finalizou</div>');
                 $('#' + usrMatricula + '.title .status.label').removeClass('green').addClass('red');
                 $('#' + usrMatricula + '.content .button').addClass('disabled');
             };
