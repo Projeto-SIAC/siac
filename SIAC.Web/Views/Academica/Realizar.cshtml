@@ -9,7 +9,7 @@
 
 <h2>
     @ViewBag.Title
-    <div class="ui trigger icon right floated button"><i class="icon comments outline"></i></div>
+    <div class="ui trigger icon right floated chat button"><i class="icon comments outline"></i></div>
     <div class="ui chat popup wide">
         <div class="header">
             @Model.Professor.Usuario.PessoaFisica.Nome.Split(' ')[0]
@@ -439,9 +439,8 @@
                 });
 
                 enviarMsg = function enviarMsg(_this) {
-                    $content = $(_this).parents('.content[id]');
-                    //matr = $content.attr('id');
                     $msg = $('#txtChatMensagem');
+                    $msg.val($msg.val().trim())
                     if ($msg.val()) {
                         var mensagem = $msg.val();
                         mensagem = quebrarLinhaEm(mensagem, 30);
@@ -549,6 +548,40 @@
                     }
                 });
             };
+
+            var ChatQteMensagem = 0;
+            acadHub.client.chatAlunoRecebe = function (mensagem) {
+                if (mensagem) {
+                    mensagem = quebrarLinhaEm(mensagem, 30);
+                    $('.chat.popup .comments').append('\
+                            <div class="comment" style="float:left;clear:both;">\
+                                <div class="content">\
+                                <div class="ui left pointing label">\
+                                    '+ mensagem + '\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+                    var $comments = $('.chat.popup .comments');
+                    $($comments).animate({
+                        scrollTop: $comments.children().last().offset().top
+                    }, 0);
+
+                    if (!$('.chat.popup').hasClass('visible')) {
+                        $btnChat = $('.icon.chat.button');
+                        $lblQteMsg = $('#lblQteMsg');
+                        $lblQteMsg.remove();
+                        $btnChat.append($('<div></div>').attr('id', 'lblQteMsg').addClass('floating ui blue label'));
+                        ChatQteMensagem++;
+                        $('#lblQteMsg').html(ChatQteMensagem);
+                    }
+                }
+            };
+            $('.icon.chat.button').on('click', function () {
+                ChatQteMensagem = 0;
+                $('#lblQteMsg').remove();
+            });
+
         }
         
         ConectarHub('@Model.Avaliacao.CodAvaliacao', '@SIAC.Web.Helpers.Sessao.UsuarioMatricula');

@@ -313,13 +313,14 @@ namespace SIAC.Web.Hubs
 
         public void InserirAluno(string matricula, string connectionId)
         {
-            List<Evento> lstEvento = new List<Evento>();            
+            List<Evento> lstEvento = new List<Evento>();
+            List<Mensagem> lstMensagem = new List<Mensagem>();            
             if (_alunos.ContainsKey(matricula))
             {
                 lstEvento = _alunos[matricula].Feed;
                 _alunos.Remove(matricula);
             }
-            _alunos.Add(matricula, new Aluno { ConnectionId = connectionId, FlagFinalizou = false, Feed = lstEvento, Questoes = new Dictionary<int, bool>() });
+            _alunos.Add(matricula, new Aluno { ConnectionId = connectionId, FlagFinalizou = false, Feed = lstEvento, Chat = lstMensagem,  Questoes = new Dictionary<int, bool>() });
             for (int i = 0, length = _questaoMapa.Count; i < length; i++)
             {
                 _alunos[matricula].Questoes.Add(_questaoMapa.Keys.ElementAt(i), false);
