@@ -120,19 +120,24 @@
                     $($comments).animate({
                         scrollTop: $comments.children().last().offset().top
                     }, 0);
-                    /*ChatQteMensagem = 0;
-                    if($('#' + usrMatricula + '.content lblQteMsg').length){ ChatQteMensagem = $('#' + usrMatricula + ' lblQteMsg').html()}
-                    if (!$('#' + usrMatricula + '.content .chat.popup').hasClass('visible')) {
-                        $btnChat = $('#' + usrMatricula + '.content .icon.chat.button');
-                        $lblQteMsg = $('#' + usrMatricula + '.content lblQteMsg');
-                        $lblQteMsg.remove();
-                        $btnChat.append($('<div></div>').attr('id', usrMatricula+'lblQteMsg').addClass('floating ui blue label'));
-                        ChatQteMensagem++;
-                        $('#'+usrMatricula+'lblQteMsg').html(ChatQteMensagem);
-                    }*/
 
+                    ChatQteMensagem = 0;
+                    if($('#' + usrMatricula + 'lblQteMsg').length){ ChatQteMensagem = $('#' + usrMatricula + 'lblQteMsg').data('qte')}
+                    if (!$('#' + usrMatricula + '.content .chat.popup').hasClass('visible')) {
+                        $accordionChat = $('#' + usrMatricula + '.title');
+                        $lblQteMsg = $('#' + usrMatricula + 'lblQteMsg');
+                        $lblQteMsg.remove();
+                        $accordionChat.append($('<div></div>').attr('id', usrMatricula + 'lblQteMsg').addClass('ui blue label').append('<i class="ui comments icon"></i>'));
+                        ChatQteMensagem++;
+                        $('#' + usrMatricula + 'lblQteMsg').data('qte',ChatQteMensagem).append(ChatQteMensagem);
+                    }
                 }
             };
+
+            $('.icon.chat.button').on('click', function () {
+                matr = ($(this).parents('.content[id]').attr('id'));
+                $('#' + matr + 'lblQteMsg').remove();
+            });
 
             acadHub.client.atualizarFeed = function (alnMatricula, lstEvento) {
                 $feed = $('#' + alnMatricula + '.content .feed');
