@@ -20,7 +20,6 @@ namespace SIAC.Web.Models
         public int Ano { get; set; }
         public int CodDificuldade { get; set; }
         public int CodPessoaFisica { get; set; }
-        public Nullable<bool> FlagArquivo { get; set; }
     
         public virtual Avaliacao Avaliacao { get; set; }
         public virtual Dificuldade Dificuldade { get; set; }

@@ -30,6 +30,8 @@ namespace SIAC.Web.Models
         public Nullable<System.DateTime> DtAplicacao { get; set; }
         public Nullable<int> Duracao { get; set; }
         public bool FlagLiberada { get; set; }
+        public string Recomendacao { get; set; }
+        public bool FlagArquivo { get; set; }
     
         public virtual AvalAcademica AvalAcademica { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

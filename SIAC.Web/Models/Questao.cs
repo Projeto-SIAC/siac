@@ -32,6 +32,7 @@ namespace SIAC.Web.Models
         public string ChaveDeResposta { get; set; }
         public System.DateTime DtCadastro { get; set; }
         public Nullable<System.DateTime> DtUltimoUso { get; set; }
+        public bool FlagArquivo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Alternativa> Alternativa { get; set; }

@@ -82,7 +82,6 @@
           <Property Name="Ano" Type="int" Nullable="false" />
           <Property Name="CodDificuldade" Type="int" Nullable="false" />
           <Property Name="CodPessoaFisica" Type="int" Nullable="false" />
-          <Property Name="FlagArquivo" Type="bit" />
         </EntityType>
         <EntityType Name="AvalAvi">
           <Key>
@@ -145,6 +144,8 @@
           <Property Name="DtAplicacao" Type="datetime" />
           <Property Name="Duracao" Type="int" />
           <Property Name="FlagLiberada" Type="bit" Nullable="false" />
+          <Property Name="Recomendacao" Type="text" />
+          <Property Name="FlagArquivo" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="AvaliacaoTema">
           <Key>
@@ -813,6 +814,7 @@
           <Property Name="ChaveDeResposta" Type="text" />
           <Property Name="DtCadastro" Type="datetime" Nullable="false" />
           <Property Name="DtUltimoUso" Type="datetime" />
+          <Property Name="FlagArquivo" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="QuestaoAnexo">
           <Key>
@@ -3493,7 +3495,6 @@
           <Property Name="Ano" Type="Int32" Nullable="false" />
           <Property Name="CodDificuldade" Type="Int32" Nullable="false" />
           <Property Name="CodPessoaFisica" Type="Int32" Nullable="false" />
-          <Property Name="FlagArquivo" Type="Boolean" />
           <NavigationProperty Name="Avaliacao" Relationship="Self.FK__AvalAuto__00DF2177" FromRole="AvalAuto" ToRole="Avaliacao" />
           <NavigationProperty Name="Dificuldade" Relationship="Self.FK__AvalAuto__CodDif__02C769E9" FromRole="AvalAuto" ToRole="Dificuldade" />
           <NavigationProperty Name="PessoaFisica" Relationship="Self.FK__AvalAuto__CodPes__01D345B0" FromRole="AvalAuto" ToRole="PessoaFisica" />
@@ -3562,6 +3563,8 @@
           <NavigationProperty Name="TipoAvaliacao" Relationship="Self.FK__Avaliacao__CodTi__2739D489" FromRole="Avaliacao" ToRole="TipoAvaliacao" />
           <NavigationProperty Name="AvaliacaoTema" Relationship="Self.FK__AvaliacaoTema__5BAD9CC8" FromRole="Avaliacao" ToRole="AvaliacaoTema" />
           <NavigationProperty Name="AvalPessoaResultado" Relationship="Self.FK__AvalPessoaResult__6166761E" FromRole="Avaliacao" ToRole="AvalPessoaResultado" />
+          <Property Name="Recomendacao" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FlagArquivo" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="AvaliacaoTema">
           <Key>
@@ -4203,6 +4206,7 @@
           <NavigationProperty Name="TipoQuestao" Relationship="Self.FK__Questao__CodTipo__2334397B" FromRole="Questao" ToRole="TipoQuestao" />
           <NavigationProperty Name="QuestaoAnexo" Relationship="Self.FK__QuestaoAn__CodQu__44952D46" FromRole="Questao" ToRole="QuestaoAnexo" />
           <NavigationProperty Name="QuestaoTema" Relationship="Self.FK__QuestaoTe__CodQu__3EDC53F0" FromRole="Questao" ToRole="QuestaoTema" />
+          <Property Name="FlagArquivo" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="QuestaoAnexo">
           <Key>
@@ -6538,7 +6542,6 @@
                 <ScalarProperty Name="Ano" ColumnName="Ano" />
                 <ScalarProperty Name="CodDificuldade" ColumnName="CodDificuldade" />
                 <ScalarProperty Name="CodPessoaFisica" ColumnName="CodPessoaFisica" />
-                <ScalarProperty Name="FlagArquivo" ColumnName="FlagArquivo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6573,6 +6576,8 @@
           <EntitySetMapping Name="Avaliacao">
             <EntityTypeMapping TypeName="dbSIACModel.Avaliacao">
               <MappingFragment StoreEntitySet="Avaliacao">
+                <ScalarProperty Name="FlagArquivo" ColumnName="FlagArquivo" />
+                <ScalarProperty Name="Recomendacao" ColumnName="Recomendacao" />
                 <ScalarProperty Name="Ano" ColumnName="Ano" />
                 <ScalarProperty Name="Semestre" ColumnName="Semestre" />
                 <ScalarProperty Name="NumIdentificador" ColumnName="NumIdentificador" />
@@ -7039,6 +7044,7 @@
           <EntitySetMapping Name="Questao">
             <EntityTypeMapping TypeName="dbSIACModel.Questao">
               <MappingFragment StoreEntitySet="Questao">
+                <ScalarProperty Name="FlagArquivo" ColumnName="FlagArquivo" />
                 <ScalarProperty Name="CodQuestao" ColumnName="CodQuestao" />
                 <ScalarProperty Name="CodProfessor" ColumnName="CodProfessor" />
                 <ScalarProperty Name="CodDificuldade" ColumnName="CodDificuldade" />
