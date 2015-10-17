@@ -54,7 +54,7 @@ namespace SIAC.Web
         public static string GetIndiceAlternativa(this int i)
         {
             i++;
-            int tipo = Repositorio.GetInstance().Parametro.First().NumeracaoAlternativa;
+            int tipo = Parametro.Obter().NumeracaoAlternativa;
 
             switch (tipo)
             {
@@ -74,7 +74,7 @@ namespace SIAC.Web
         public static string GetIndiceQuestao(this int i)
         {
             i++;
-            int tipo = Repositorio.GetInstance().Parametro.First().NumeracaoQuestao;
+            int tipo = Parametro.Obter().NumeracaoQuestao;
 
             switch (tipo)
             {

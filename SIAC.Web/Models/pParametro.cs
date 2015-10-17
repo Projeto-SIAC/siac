@@ -18,7 +18,10 @@ namespace SIAC.Web.Models
         {
             if (parametro == null)
             {
-                parametro = contexto.Parametro.FirstOrDefault();
+                using (var e = new dbSIACEntities())
+                {
+                    parametro = e.Parametro.FirstOrDefault();
+                }
             }
             return parametro;
         }

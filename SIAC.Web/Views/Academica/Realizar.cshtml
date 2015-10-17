@@ -495,15 +495,7 @@
                         }
                         acadHub.server.responderQuestao(avalAcad, usrMatr, questao, false);
                         $label.attr('style', 'display:none');
-                    }
-                    var value = $('input[name^="rdoResposta"]:checked').length;
-                    var lstTextarea = $('textarea[name^="txtResposta"]');
-                    for (var i = 0; i < lstTextarea.length; i++) {
-                        if (lstTextarea.eq(i).val()) {
-                            value++;
-                        }
-                    }
-                    acadHub.server.atualizarAlunoProgresso(avalAcad, usrMatr, value);
+                    }                    
                 });
 
                 $(window).on("blur focus", function (e) {

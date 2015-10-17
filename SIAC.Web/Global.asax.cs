@@ -15,6 +15,7 @@ namespace SIAC.Web
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            Models.Parametro.Obter();
         }
 
         protected void Session_End(object sender, EventArgs e)

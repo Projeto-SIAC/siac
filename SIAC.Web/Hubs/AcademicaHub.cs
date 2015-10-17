@@ -29,61 +29,67 @@ namespace SIAC.Web.Hubs
 
         public void ProfessorConectou(string codAvaliacao, string usrMatricula)
         {
-            avaliacoes.AddAcademica(codAvaliacao);
-            avaliacoes.GetAcademica(codAvaliacao).AddProfessor(usrMatricula, Context.ConnectionId);
-            foreach (var alnMatricula in avaliacoes.GetAcademica(codAvaliacao).GetAtivoMatriculaAluno())
+            avaliacoes.InserirAcademica(codAvaliacao);
+            var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
+            mapping.InserirProfessor(usrMatricula, Context.ConnectionId);
+            
+            foreach (var alnMatricula in mapping.ListarMatriculaAlunos())
             {
-                Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).conectarAluno(alnMatricula);
+                foreach (var codQuestao in mapping.ListarQuestaoRespondidasPorAluno(alnMatricula))
+                {
+                    Clients.Client(mapping.SelecionarConnectionIdProfessor()).respondeuQuestao(alnMatricula, codQuestao, true);
+                }
+                // ListarChat()
+                Clients.Client(mapping.SelecionarConnectionIdProfessor()).atualizarProgresso(alnMatricula, mapping.ListarQuestaoRespondidasPorAluno(alnMatricula).Count);
+                Clients.Client(mapping.SelecionarConnectionIdProfessor()).conectarAluno(alnMatricula);
             }
         }
 
-        public void AlunoConectou(string codAvaliacao,string usrMatricula)
+        public void AlunoConectou(string codAvaliacao, string usrMatricula)
         {
-            avaliacoes.AddAcademica(codAvaliacao);
+            avaliacoes.InserirAcademica(codAvaliacao);
 
-            avaliacoes.GetAcademica(codAvaliacao).AddAluno(usrMatricula, Context.ConnectionId);
+            avaliacoes.SelecionarAcademica(codAvaliacao).InserirAluno(usrMatricula, Context.ConnectionId);
 
-            avaliacoes.GetAcademica(codAvaliacao).AddEvento(usrMatricula, "green sign in", "Conectou");
+            avaliacoes.SelecionarAcademica(codAvaliacao).InserirEvento(usrMatricula, "green sign in", "Conectou");
 
-            if (!String.IsNullOrEmpty(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()))
+            if (!String.IsNullOrEmpty(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdProfessor()))
             {
-                Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).conectarAluno(usrMatricula);
+                Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdProfessor()).conectarAluno(usrMatricula);
             }
         }
 
         public void RequererAval(string codAvaliacao,string usrMatricula)
         {
-            Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdAluno(usrMatricula)).enviarAval(codAvaliacao);
+            Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdPorAluno(usrMatricula)).enviarAval(codAvaliacao);
         }
 
         public void AvalEnviada(string codAvaliacao, string alnMatricula)
         {
-            avaliacoes.GetAcademica(codAvaliacao).AddEvento(alnMatricula, "send outline", "Enviou printscreen");
+            avaliacoes.SelecionarAcademica(codAvaliacao).InserirEvento(alnMatricula, "send outline", "Enviou printscreen");
 
-            Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).receberAval(alnMatricula);
-        }
-
-        public void AtualizarAlunoProgresso(string codAvaliacao, string usrMatricula, int value)
-        {
-            if (!String.IsNullOrEmpty(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()))
-            {
-                Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).atualizarProgresso(usrMatricula, value);
-            }
+            Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdProfessor()).receberAval(alnMatricula);
         }
 
         public void ResponderQuestao(string codAvaliacao, string usrMatricula, int questao, bool flag)
         {
-            if (!String.IsNullOrEmpty(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()))
+            var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
+
+            mapping.AlterarAlunoQuestao(usrMatricula, questao, flag);
+
+            if (flag)
             {
-                if (flag)
-                {
-                    avaliacoes.GetAcademica(codAvaliacao).AddEvento(usrMatricula, "write", "Respondeu questão");
-                }
-                else
-                {
-                    avaliacoes.GetAcademica(codAvaliacao).AddEvento(usrMatricula, "erase", "Retirou resposta questão");
-                }
-                Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).respondeuQuestao(usrMatricula, questao, flag);
+                mapping.InserirEvento(usrMatricula, "write", "Respondeu questão "+mapping.SelecionarIndiceQuestao(questao));
+            }
+            else
+            {
+               mapping.InserirEvento(usrMatricula, "erase", "Retirou resposta questão " + mapping.SelecionarIndiceQuestao(questao));
+            }
+
+            if (!string.IsNullOrEmpty(mapping.SelecionarConnectionIdProfessor()))
+            {
+                Clients.Client(mapping.SelecionarConnectionIdProfessor()).atualizarProgresso(usrMatricula, mapping.ListarQuestaoRespondidasPorAluno(usrMatricula).Count);
+                Clients.Client(mapping.SelecionarConnectionIdProfessor()).respondeuQuestao(usrMatricula, questao, flag);
             }
         }
 
@@ -93,28 +99,28 @@ namespace SIAC.Web.Hubs
             {
                 if (String.IsNullOrEmpty(alnMatricula))
                 {
-                    foreach (var matr in avaliacoes.GetAcademica(codAvaliacao).GetAtivoMatriculaAluno())
+                    foreach (var matr in avaliacoes.SelecionarAcademica(codAvaliacao).ListarMatriculaAlunos())
                     {
-                        avaliacoes.GetAcademica(codAvaliacao).AddEvento(matr, "announcement", "Recebeu alerta geral");
+                        avaliacoes.SelecionarAcademica(codAvaliacao).InserirEvento(matr, "announcement", "Recebeu alerta geral");
                     }
-                    Clients.Clients(avaliacoes.GetAcademica(codAvaliacao).GetAtivoConnectionIdAluno()).alertar(mensagem);
+                    Clients.Clients(avaliacoes.SelecionarAcademica(codAvaliacao).ListarConnectionIdAlunos()).alertar(mensagem);
                 }
                 else
                 {
-                    avaliacoes.GetAcademica(codAvaliacao).AddEvento(alnMatricula, "announcement", "Recebeu alerta específico");
-                    Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdAluno(alnMatricula)).alertar(mensagem);
+                    avaliacoes.SelecionarAcademica(codAvaliacao).InserirEvento(alnMatricula, "announcement", "Recebeu alerta específico");
+                    Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdPorAluno(alnMatricula)).alertar(mensagem);
                 }
             }
         }
 
         public void Feed(string codAvaliacao, string alnMatricula)
         {
-            if (avaliacoes.GetAcademica(codAvaliacao).GetAtivoMatriculaAluno().Contains(alnMatricula))
+            if (avaliacoes.SelecionarAcademica(codAvaliacao).ListarMatriculaAlunos().Contains(alnMatricula))
             {
-                var lstEvento = avaliacoes.GetAcademica(codAvaliacao).GetFeed(alnMatricula).Select(e => new { Icone = e.Icone, Descricao = e.Descricao, DataCompleta = e.Data.ToBrazilianString(), Data = e.Data.ToElapsedTimeString() });
-                if (!String.IsNullOrEmpty(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()))
+                var lstEvento = avaliacoes.SelecionarAcademica(codAvaliacao).ListarFeed(alnMatricula).Select(e => new { Icone = e.Icone, Descricao = e.Descricao, DataCompleta = e.Data.ToBrazilianString(), Data = e.Data.ToElapsedTimeString() });
+                if (!String.IsNullOrEmpty(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdProfessor()))
                 {
-                    Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).atualizarFeed(alnMatricula, lstEvento);
+                    Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdProfessor()).atualizarFeed(alnMatricula, lstEvento);
                 }
             }
         }
@@ -123,23 +129,25 @@ namespace SIAC.Web.Hubs
         {
             if (flag)
             {
-                avaliacoes.GetAcademica(codAvaliacao).AddEvento(alnMatricula, "warning sign", "Estabeleceu o foco na avaliação");
+                avaliacoes.SelecionarAcademica(codAvaliacao).InserirEvento(alnMatricula, "warning sign", "Estabeleceu o foco na avaliação");
             }
             else
             {
-                avaliacoes.GetAcademica(codAvaliacao).AddEvento(alnMatricula, "red warning sign", "Perdeu o foco na avaliação");
+                avaliacoes.SelecionarAcademica(codAvaliacao).InserirEvento(alnMatricula, "red warning sign", "Perdeu o foco na avaliação");
             }
             Feed(codAvaliacao, alnMatricula);
         }
 
-        public void ChatProfessorEnvia(string codAvaliacao, string usrMatricula,string profMatr, string mensagem)
+        public void ChatProfessorEnvia(string codAvaliacao, string usrMatricula, string mensagem)
         {
-            Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdAluno(usrMatricula)).ChatAlunoRecebe(profMatr,mensagem);
+            avaliacoes.SelecionarAcademica(codAvaliacao).InserirMensagem(usrMatricula, mensagem, false);
+            Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdPorAluno(usrMatricula)).chatAlunoRecebe(mensagem);
         }
 
         public void ChatAlunoEnvia(string codAvaliacao, string usrMatricula, string mensagem)
         {
-            Clients.Client(avaliacoes.GetAcademica(codAvaliacao).GetConnectionIdProfessor()).ChatProfessorRecebe(usrMatricula, mensagem);
+            avaliacoes.SelecionarAcademica(codAvaliacao).InserirMensagem(usrMatricula, mensagem, true);
+            Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdProfessor()).chatProfessorRecebe(usrMatricula, mensagem);
         }
 
     }
@@ -148,18 +156,50 @@ namespace SIAC.Web.Hubs
     {
         private readonly Dictionary<string, Academica> academicas = new Dictionary<string, Academica>();
 
-        public void AddAcademica(string codAvaliacao)
+        public void InserirAcademica(string codAvaliacao)
         {
             lock (academicas)
             {
                 if (!academicas.ContainsKey(codAvaliacao))
                 {
                     academicas.Add(codAvaliacao, new Academica());
+                    using (var e = new Models.dbSIACEntities()) {
+                        int numIdentificador = 0;
+                        int semestre = 0;
+                        int ano = 0;
+
+                        if (codAvaliacao.Length == 13)
+                        {
+                            string codigo = codAvaliacao;
+                            int.TryParse(codigo.Substring(codigo.Length - 4), out numIdentificador);
+                            codigo = codigo.Remove(codigo.Length - 4);
+                            int.TryParse(codigo.Substring(codigo.Length - 1), out semestre);
+                            codigo = codigo.Remove(codigo.Length - 1);
+                            int.TryParse(codigo.Substring(codigo.Length - 4), out ano);
+                            codigo = codigo.Remove(codigo.Length - 4);
+                            int codTipoAvaliacao = e.TipoAvaliacao.SingleOrDefault(t=>t.Sigla == codigo).CodTipoAvaliacao;
+
+                            Models.AvalAcademica avalAcademica = e.AvalAcademica.SingleOrDefault(acad => acad.Ano == ano && acad.Semestre == semestre && acad.NumIdentificador == numIdentificador && acad.CodTipoAvaliacao == codTipoAvaliacao);
+                            
+                            academicas[codAvaliacao].MapearQuestao(avalAcademica.Avaliacao.Questao.Select(q => q.CodQuestao).ToList());
+                        }
+                    }
                 }
             }
         }
 
-        public Academica GetAcademica(string codAvaliacao)
+        public void RemoverAcademica(string codAvaliacao)
+        {
+            lock(academicas)
+            {
+                if (academicas.ContainsKey(codAvaliacao))
+                {
+                    academicas.Remove(codAvaliacao);
+                }
+            }
+        }
+
+        public Academica SelecionarAcademica(string codAvaliacao)
         {
             if (academicas.ContainsKey(codAvaliacao))
             {
@@ -176,101 +216,164 @@ namespace SIAC.Web.Hubs
         public DateTime Data { get; set; }
     }
 
+    public class Mensagem
+    {
+        public string Texto { get; set; }
+        public bool FlagAutor { get; set; }
+    }
+
+    public class Aluno
+    {
+        public string ConnectionId { get; set; }
+        public List<Evento> Feed { get; set; }
+        public Dictionary<int, bool> Questoes { get; set; }
+        public List<Mensagem> Chat { get; set; }
+    }
+
+    public class Professor
+    {
+        public string ConnectionId { get; set; }
+    }
+
     public class Academica
     {
-        private readonly Dictionary<string, string> alunos = new Dictionary<string, string>();
-        private readonly string[,] professor = new string[1,2];
-        private readonly Dictionary<string, List<Evento>> feed = new Dictionary<string, List<Evento>>();
+        // _professor: key = Matricula, value = ConnectionId
+        // _alunos: key = Matricula, value = { ConnectionId, Feed, Questoes: key = CodQuestao, value = FlagRespondido, Chat = [{ Texto, FlagAutor }] }
+        // _questaoMapa: key = CodQuestao, value = Indice em Avaliacao.Questao
+        private KeyValuePair<string, Professor> _professor = new KeyValuePair<string, Professor>();
+        private Dictionary<string, Aluno> _alunos = new Dictionary<string, Aluno>();
+        private Dictionary<int, string> _questaoMapa = new Dictionary<int, string>();
 
-        public void AddProfessor(string matricula, string connectionId)
+        public void MapearQuestao(List<int> lstCodQuestao)
         {
-            lock (professor)
+            if (_questaoMapa.Count == 0)
             {
-                professor[0, 0] = matricula;
-                professor[0, 1] = connectionId;
-            }
-        }
-
-        public void AddAluno(string matricula, string connectionId)
-        {
-            lock(alunos)
-            {
-                if (alunos.ContainsKey(matricula))
+                for (int i = 0, length = lstCodQuestao.Count; i < length; i++)
                 {
-                    alunos.Remove(matricula);
-                }
-                alunos.Add(matricula, connectionId);
-                if (feed.ContainsKey(matricula))
-                {
-                    feed[matricula].Add(new Evento() { Icone = "green sign in", Descricao = "Reconectou", Data = DateTime.Now });
-                }
-                else { 
-                    feed.Add(matricula, new List<Evento>());
+                    _questaoMapa.Add(lstCodQuestao[i], i.GetIndiceQuestao());
                 }
             }
         }
 
-        public void AddEvento(string matricula, string icone, string descricao)
+        public string SelecionarIndiceQuestao(int codQuestao)
         {
-            lock(feed)
+            if (_questaoMapa.Count > 0)
             {
-                if (alunos.ContainsKey(matricula))
-                {
-                    if (!feed.ContainsKey(matricula))
-                    {
-                        feed.Add(matricula, new List<Evento>());
-                    }
-                    feed[matricula].Add(new Evento() { Icone = icone, Descricao = descricao, Data = DateTime.Now });
-                }
+                return _questaoMapa[codQuestao];
+            }
+            return null;
+        } 
+
+        public void InserirProfessor(string matricula, string connectionId)
+        {
+            _professor = new KeyValuePair<string, Professor>(matricula, new Professor { ConnectionId = connectionId });
+        }
+
+        public void InserirAluno(string matricula, string connectionId)
+        {
+            List<Evento> lstEvento = new List<Evento>();            
+            if (_alunos.ContainsKey(matricula))
+            {
+                lstEvento = _alunos[matricula].Feed;
+                _alunos.Remove(matricula);
+            }
+            _alunos.Add(matricula, new Aluno { ConnectionId = connectionId, Feed = lstEvento, Questoes = new Dictionary<int, bool>() });
+            for (int i = 0, length = _questaoMapa.Count; i < length; i++)
+            {
+                _alunos[matricula].Questoes.Add(_questaoMapa.Keys.ElementAt(i), false);
+            }                        
+        }
+
+        public void InserirEvento(string matricula, string icone, string descricao)
+        {
+            if (_alunos.ContainsKey(matricula))
+            {
+                _alunos[matricula].Feed.Add(new Evento() { Icone = icone, Descricao = descricao, Data = DateTime.Now });
             }
         }
 
-        public List<Evento> GetFeed(string matricula)
+        public void InserirMensagem(string matricula, string mensagem, bool flagAutor)
         {
-            if (feed.ContainsKey(matricula))
+            if (_alunos.ContainsKey(matricula))
             {
-                return feed[matricula];
+                _alunos[matricula].Chat.Add(new Mensagem() { Texto = mensagem, FlagAutor = flagAutor });
+            }
+        }
+
+        public List<Evento> ListarFeed(string matricula)
+        {
+            if (_alunos.ContainsKey(matricula))
+            {
+                return _alunos[matricula].Feed;
             }
             return null;
         }
 
-        public string GetConnectionIdProfessor()
+        public List<Mensagem> ListarChat(string matricula)
         {
-            if (!String.IsNullOrEmpty(professor[0,1]))
+            if (_alunos.ContainsKey(matricula))
             {
-                return professor[0, 1];
+                return _alunos[matricula].Chat;
             }
-            return String.Empty;
+            return null;
         }
 
-        public string GetConnectionIdAluno(string matricula)
+        public string SelecionarConnectionIdProfessor()
         {
-            if (alunos.ContainsKey(matricula))
+            if (_professor.Key != null)
             {
-                return alunos[matricula];
+                return _professor.Value.ConnectionId;
             }
-            return String.Empty;
+            return null;
         }
 
-        public List<string> GetAtivoMatriculaAluno()
+        public string SelecionarConnectionIdPorAluno(string matricula)
+        {
+            if (_alunos.ContainsKey(matricula))
+            {
+                return _alunos[matricula].ConnectionId;
+            }
+            return null;
+        }
+
+        public List<string> ListarMatriculaAlunos()
         {            
-            return alunos.Keys.ToList();
+            return _alunos.Keys.ToList();
         }
 
-        public List<string> GetAtivoConnectionIdAluno()
+        public List<string> ListarConnectionIdAlunos()
         {
-            return alunos.Values.ToList();
+            return _alunos.Values.Select(a=>a.ConnectionId).ToList();
         }
 
-        public void RemoveAluno(string matricula)
+        public void AlterarAlunoQuestao(string matricula, int codQuestao, bool flag)
         {
-            lock(alunos)
+            if (_alunos.ContainsKey(matricula))
             {
-                if (alunos.ContainsKey(matricula))
-                {
-                    alunos.Remove(matricula);
-                }
+                _alunos[matricula].Questoes[codQuestao] = flag;
             }
+        }
+
+        public List<int> ListarQuestaoRespondidasPorAluno(string matricula)
+        {
+            if (_alunos.ContainsKey(matricula))
+            {
+                return _alunos[matricula].Questoes.Where(q => q.Value == true).Select(q=>q.Key).ToList();
+            }
+            return null;
+        }
+
+        public bool ContemAluno(string matricula)
+        {
+            return _alunos.ContainsKey(matricula);
+        }
+
+        public void RemoverAluno(string matricula)
+        {
+            if (_alunos.ContainsKey(matricula))
+            {
+                _alunos.Remove(matricula);
+            }            
         }
     }
 }
