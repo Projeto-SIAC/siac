@@ -254,21 +254,6 @@
             })
         ;
 
-        var conectado = false;
-
-        function TesteConexao() {
-            $.ajax({
-                type: 'GET',
-                url: "/",
-                success: function () {
-                    conectado = true;
-                },
-                error: function () {
-                    conectado = false;
-                }
-            });
-        }
-
         function expandirImagem(card) {
             card = $(card);
             src = card.find('img').attr('src');
@@ -339,22 +324,30 @@
         $('.ui.gabarito.modal')
             .modal({
                 onApprove: function () {
-                    TesteConexao();
-                    if (conectado) {
-                        window.onbeforeunload = function () {
-                            $('.ui.global.loader').parent().addClass('active');
-                        };
-                        $('form').submit();
-                    }
-                    else {
-                        Mensagem('Conecte-se à internet antes de confirmar.')
-                        return false;
-                    }
+                    $.ajax({
+                        type: 'GET',
+                        url: "/Acesso/Conectado",
+                        success: function () {
+                            Finalizar();
+                        },
+                        error: function () {
+                            Mensagem('Conecte-se à internet antes de confirmar.');
+                        }
+                    });
+                    return false;
                 }
             })
         ;
 
+        function Finalizar() { 
+            window.onbeforeunload = function () {
+                $('.ui.global.loader').parent().addClass('active');
+            };
+            $('form').submit();
+        };
+
         function Verificar() {
+
             $Objects = $('textarea[name^="txtResposta"], input[name^="rdoResposta"]');
             var retorno = true;
             for (var i = 0, length = $Objects.length; i < length; i++) {
@@ -406,19 +399,6 @@
             $modal.modal('show');
         }
 
-        $('.finalizar.button').click(function () {
-            if (Verificar()) {
-                Confirmar();
-            }
-            else {
-                $('form').addClass('error');
-                $('form .message').removeClass('hidden');
-                $('html, body').animate({
-                    scrollTop: $(".title .label.red").offset().top
-                }, 1000);
-            }
-        });
-
         $('.message .close')
           .on('click', function () {
               $(this)
@@ -435,6 +415,28 @@
             $.connection.hub.start().done(function () {
                 acadHub.server.alunoConectou(avalAcad, usrMatr);
 
+                Finalizar = function () {
+                    window.onbeforeunload = function () {
+                        $('.ui.global.loader').parent().addClass('active');
+                    };
+                    acadHub.server.alunoFinalizou(avalAcad, usrMatr);
+                    $('form').submit();
+
+                };
+
+                $('.finalizar.button').click(function () {
+                    if (Verificar()) {
+                        acadHub.server.alunoVerificando(avalAcad, usrMatr);
+                        Confirmar();
+                    }
+                    else {
+                        $('form').addClass('error');
+                        $('form .message').removeClass('hidden');
+                        $('html, body').animate({
+                            scrollTop: $(".title .label.red").offset().top
+                        }, 1000);
+                    }
+                });
 
                 enviarMsg = function enviarMsg(_this) {
                     $content = $(_this).parents('.content[id]');

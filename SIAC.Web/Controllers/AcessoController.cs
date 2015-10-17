@@ -87,6 +87,12 @@ namespace SIAC.Web.Controllers
             }
         }
 
+        // GET: Acesso/Conectado
+        public ActionResult Conectado()
+        {
+            return null;
+        }
+
         // GET: Acesso/Sair
         public ActionResult Sair()
         {

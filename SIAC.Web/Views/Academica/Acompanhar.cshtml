@@ -130,6 +130,12 @@
                 $('#' + usrMatricula + '.content .button').removeClass('disabled');
             };
 
+            acadHub.client.alunoFinalizou = function (usrMatricula) {
+                $('#' + usrMatricula + '.title').append('<div class="ui label">Finalizou</div>');
+                $('#' + usrMatricula + '.title .status.label').removeClass('green').addClass('red');
+                $('#' + usrMatricula + '.content .button').addClass('disabled');
+            };
+
             acadHub.client.receberAval = function(alnMatricula) {
                 $.ajax({
                     type: 'POST',
@@ -165,7 +171,6 @@
             }
 
             acadHub.client.respondeuQuestao = function (alnMatricula, questao, flag) {
-                console.log(alnMatricula, questao, flag);
                 $questao = $('#' + alnMatricula + '.content [data-questao="' + questao + '"]');
                 $questao.removeClass('positive').find('i').remove();
                 if (flag) {
@@ -223,6 +228,14 @@
         <div class="ui cancel button">Fechar</div>
         <a href="" target="_blank" class="ui nova guia button">Abrir em Nova Guia</a>
     </div>
+</div>
+
+<div class="ui labels">
+    <div class="ui label">Disciplina<div class="detail">@Model.Disciplina.Descricao</div></div>
+    <div class="ui label">Curso<div class="detail">@Model.Turma.Curso.Descricao</div></div>
+    <div class="ui label">Turma<div class="detail">@Model.Turma.CodTurma</div></div>
+    <div class="ui label">Início<div class="detail">@Model.Avaliacao.DtAplicacao.Value.ToString("HH'h'mm'min'")</div></div>
+    <div class="ui label">Término<div class="detail">@Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToString("HH'h'mm'min'")</div></div>
 </div>
 
 <div class="ui basic segment">

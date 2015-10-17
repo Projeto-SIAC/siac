@@ -49,13 +49,29 @@ namespace SIAC.Web.Hubs
         {
             avaliacoes.InserirAcademica(codAvaliacao);
 
-            avaliacoes.SelecionarAcademica(codAvaliacao).InserirAluno(usrMatricula, Context.ConnectionId);
+            var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
 
-            avaliacoes.SelecionarAcademica(codAvaliacao).InserirEvento(usrMatricula, "green sign in", "Conectou");
-
-            if (!String.IsNullOrEmpty(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdProfessor()))
+            if (mapping.ListarMatriculaAlunos().Contains(usrMatricula))
             {
-                Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdProfessor()).conectarAluno(usrMatricula);
+                mapping.InserirEvento(usrMatricula, "sign in", "Reconectou");
+                mapping.InserirAluno(usrMatricula, Context.ConnectionId);
+            }
+            else
+            {
+                mapping.InserirAluno(usrMatricula, Context.ConnectionId);
+                mapping.InserirEvento(usrMatricula, "green sign in", "Conectou");
+            }
+
+
+            if (!String.IsNullOrEmpty(mapping.SelecionarConnectionIdProfessor()))
+            {
+                foreach (var codQuestao in mapping.ListarQuestoes())
+                {
+                    Clients.Client(mapping.SelecionarConnectionIdProfessor()).respondeuQuestao(usrMatricula, codQuestao, false);
+                }
+                // ListarChat()
+                Clients.Client(mapping.SelecionarConnectionIdProfessor()).atualizarProgresso(usrMatricula, mapping.ListarQuestaoRespondidasPorAluno(usrMatricula).Count);
+                Clients.Client(mapping.SelecionarConnectionIdProfessor()).conectarAluno(usrMatricula);
             }
         }
 
@@ -73,18 +89,25 @@ namespace SIAC.Web.Hubs
 
         public void ResponderQuestao(string codAvaliacao, string usrMatricula, int questao, bool flag)
         {
-            var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
-
-            mapping.AlterarAlunoQuestao(usrMatricula, questao, flag);
-
+            var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);        
+                        
             if (flag)
             {
-                mapping.InserirEvento(usrMatricula, "write", "Respondeu questão "+mapping.SelecionarIndiceQuestao(questao));
+                if (mapping.ListarQuestaoRespondidasPorAluno(usrMatricula).Contains(questao))
+                {
+                    mapping.InserirEvento(usrMatricula, "refresh", "Mudou a resposta da questão " + mapping.SelecionarIndiceQuestao(questao));
+                }
+                else
+                {
+                    mapping.InserirEvento(usrMatricula, "write", "Respondeu a questão " + mapping.SelecionarIndiceQuestao(questao));
+                }
             }
             else
             {
-               mapping.InserirEvento(usrMatricula, "erase", "Retirou resposta questão " + mapping.SelecionarIndiceQuestao(questao));
+               mapping.InserirEvento(usrMatricula, "erase", "Retirou resposta da questão " + mapping.SelecionarIndiceQuestao(questao));
             }
+
+            mapping.AlterarAlunoQuestao(usrMatricula, questao, flag);
 
             if (!string.IsNullOrEmpty(mapping.SelecionarConnectionIdProfessor()))
             {
@@ -150,6 +173,19 @@ namespace SIAC.Web.Hubs
             Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdProfessor()).chatProfessorRecebe(usrMatricula, mensagem);
         }
 
+        public void AlunoVerificando(string codAvaliacao, string usrMatricula)
+        {
+            var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
+            mapping.InserirEvento(usrMatricula, "write square", "Verificando respostas");
+        }
+
+        public void AlunoFinalizou(string codAvaliacao, string usrMatricula)
+        {
+            var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
+            mapping.AlterarAlunoFlagFinalizou(usrMatricula);
+            mapping.InserirEvento(usrMatricula, "red sign out", "Finalizou");
+            Clients.Client(mapping.SelecionarConnectionIdProfessor()).alunoFinalizou(usrMatricula);
+        }
     }
 
     public class AcademicaMapping
@@ -225,6 +261,7 @@ namespace SIAC.Web.Hubs
     public class Aluno
     {
         public string ConnectionId { get; set; }
+        public bool FlagFinalizou { get; set; }
         public List<Evento> Feed { get; set; }
         public Dictionary<int, bool> Questoes { get; set; }
         public List<Mensagem> Chat { get; set; }
@@ -238,11 +275,16 @@ namespace SIAC.Web.Hubs
     public class Academica
     {
         // _professor: key = Matricula, value = ConnectionId
-        // _alunos: key = Matricula, value = { ConnectionId, Feed, Questoes: key = CodQuestao, value = FlagRespondido, Chat = [{ Texto, FlagAutor }] }
+        // _alunos: key = Matricula, value = { ConnectionId, FlagFinalizou, Feed, Questoes: key = CodQuestao, value = FlagRespondido, Chat = [{ Texto, FlagAutor }] }
         // _questaoMapa: key = CodQuestao, value = Indice em Avaliacao.Questao
         private KeyValuePair<string, Professor> _professor = new KeyValuePair<string, Professor>();
         private Dictionary<string, Aluno> _alunos = new Dictionary<string, Aluno>();
         private Dictionary<int, string> _questaoMapa = new Dictionary<int, string>();
+
+        public List<int> ListarQuestoes()
+        {
+            return _questaoMapa.Keys.ToList();
+        }
 
         public void MapearQuestao(List<int> lstCodQuestao)
         {
@@ -277,7 +319,7 @@ namespace SIAC.Web.Hubs
                 lstEvento = _alunos[matricula].Feed;
                 _alunos.Remove(matricula);
             }
-            _alunos.Add(matricula, new Aluno { ConnectionId = connectionId, Feed = lstEvento, Questoes = new Dictionary<int, bool>() });
+            _alunos.Add(matricula, new Aluno { ConnectionId = connectionId, FlagFinalizou = false, Feed = lstEvento, Questoes = new Dictionary<int, bool>() });
             for (int i = 0, length = _questaoMapa.Count; i < length; i++)
             {
                 _alunos[matricula].Questoes.Add(_questaoMapa.Keys.ElementAt(i), false);
@@ -361,6 +403,14 @@ namespace SIAC.Web.Hubs
                 return _alunos[matricula].Questoes.Where(q => q.Value == true).Select(q=>q.Key).ToList();
             }
             return null;
+        }
+
+        public void AlterarAlunoFlagFinalizou(string matricula)
+        {
+            if (_alunos.ContainsKey(matricula))
+            {
+                _alunos[matricula].FlagFinalizou = true;
+            }
         }
 
         public bool ContemAluno(string matricula)
