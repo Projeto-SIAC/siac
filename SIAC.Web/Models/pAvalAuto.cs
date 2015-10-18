@@ -39,23 +39,6 @@ namespace SIAC.Web.Models
         public static List<AvalAuto> ListarNaoRealizadaPorPessoa(int codPessoaFisica)
         {
             return contexto.AvalAuto.Where(auto => auto.CodPessoaFisica == codPessoaFisica && auto.Avaliacao.AvalPessoaResultado.Count == 0 && (auto.Avaliacao.FlagArquivo) ).ToList();
-        }
-
-        public static void AlternarFlagArquivo(string codigo)
-        {
-            AvalAuto avalAuto = ListarPorCodigoAvaliacao(codigo);
-            if (avalAuto.Avaliacao.AvalPessoaResultado.Count == 0)
-            {
-                if (avalAuto.Avaliacao.FlagArquivo)
-                {
-                    avalAuto.Avaliacao.FlagArquivo = false;
-                }
-                else
-                {
-                    avalAuto.Avaliacao.FlagArquivo = true;
-                }
-                contexto.SaveChanges();
-            }
-        }
+        }        
     }
 }

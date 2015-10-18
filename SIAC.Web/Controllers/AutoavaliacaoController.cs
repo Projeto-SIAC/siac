@@ -307,7 +307,7 @@ namespace SIAC.Web.Controllers
         [HttpPost]
         public void Arquivar(string codigo)
         {
-            AvalAuto.AlternarFlagArquivo(codigo);
+            Avaliacao.AlternarFlagArquivo(codigo);
         } 
     }
 }

@@ -114,5 +114,32 @@ namespace SIAC.Web.Models
 
             //contexto.SaveChanges();
         }
+
+        public static Avaliacao ListarPorCodigoAvaliacao(string codigo)
+        {
+            int numIdentificador = int.Parse(codigo.Substring(codigo.Length - 4));
+            codigo = codigo.Remove(codigo.Length - 4);
+            int semestre = int.Parse(codigo.Substring(codigo.Length - 1));
+            codigo = codigo.Remove(codigo.Length - 1);
+            int ano = int.Parse(codigo.Substring(codigo.Length - 4));
+            codigo = codigo.Remove(codigo.Length - 4);
+
+            int codTipoAvaliacao = TipoAvaliacao.ListarPorSigla(codigo).CodTipoAvaliacao;
+
+            Avaliacao aval = contexto.Avaliacao.FirstOrDefault(a => a.Ano == ano && a.Semestre == semestre && a.NumIdentificador == numIdentificador && a.CodTipoAvaliacao == codTipoAvaliacao);
+
+            return aval;
+        }
+
+        public static bool AlternarFlagArquivo(string codigo)
+        {
+            Avaliacao aval = ListarPorCodigoAvaliacao(codigo);
+            if (aval.AvalPessoaResultado.Count == 0)
+            {
+                aval.FlagArquivo = !aval.FlagArquivo;
+                contexto.SaveChanges();
+            }
+            return aval.FlagArquivo;
+        }
     }
 }

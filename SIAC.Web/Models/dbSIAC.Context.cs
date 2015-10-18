@@ -12,7 +12,6 @@ namespace SIAC.Web.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using System.Linq;
 
     public partial class dbSIACEntities : DbContext
     {
@@ -24,15 +23,7 @@ namespace SIAC.Web.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
-        }
-
-        public override int SaveChanges()
-        {
-            Sistema.AlertarMudanca.AddRange(Sistema.MatriculaAtivo);
-            Sistema.AlertarMudanca = Sistema.AlertarMudanca.Distinct().ToList();
-            Sistema.AlertarMudanca.Remove(Helpers.Sessao.UsuarioMatricula);
-            return base.SaveChanges();
-        }
+        }        
 
         public virtual DbSet<Alternativa> Alternativa { get; set; }
         public virtual DbSet<Aluno> Aluno { get; set; }

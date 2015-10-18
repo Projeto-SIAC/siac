@@ -19,21 +19,41 @@
         .popup({
             on: 'click'
         })
-        ;
+        ;        
+        $('a.card').click(function () {
+            $card = $(this);
+            src = $card.find('img').attr('src');
+            legenda = $card.find('.header').text();
+            fonte = $card.find('.description').text();
 
-        function expandirImagem(card) {
-            card = $(card);
-            src = card.find('img').attr('src');
-            legenda = card.find('.header').text();
-            fonte = card.find('.description').text();
-            modal = $('.ui.anexo.modal');
+            $modal = $('.ui.anexo.modal');
 
-            modal.find('.header').text(legenda);
-            modal.find('img.image').attr('src', src);
-            modal.find('.description').html(fonte);
+            $modal.find('.header').text(legenda);
+            $modal.find('img.image').attr('src', src);
+            $modal.find('.description').html(fonte);
 
-            modal.modal('show');
-        }
+            $modal.modal('show');
+        });
+        $('.arquivar.button').click(function () {
+            var _this = this;
+            $(_this).addClass('loading');
+            $.ajax({
+                url: '/Historico/Questao/Arquivar/@Model.CodQuestao',
+                type: 'POST',
+                success: function (flag) {
+                    if (flag) {
+                        $(_this).addClass('active').text('Arquivada');
+                    }
+                    else {
+                        $(_this).removeClass('active').text('Arquivar');
+                    }
+                    $(_this).removeClass('loading');
+                },
+                error: function () {
+                    $(_this).removeClass('loading');
+                }
+            });
+        });
     </script>
 }
 
@@ -49,7 +69,6 @@
 </div>
 
 <div class="ui segment">
-    <a href="/Historico/Questao/Editar/@Model.CodQuestao" class="ui button" style="float: right">Editar</a>
     <div class="ui labels">
         <div class="ui label">
             Disciplina
@@ -122,7 +141,7 @@
                     switch (anexo.CodTipoAnexo)
                     {
                         case 1:
-                            <a onclick="expandirImagem(this)" class="ui card">
+                            <a class="ui card">
                                 <div class="image">
                                     <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo,0, anexo.Anexo.Length)" />
                                 </div>
@@ -144,38 +163,46 @@
         </div>
     }
 </div>
-<div class="ui secondary attached segment">
+@{ 
+    var lstResposta = Model.Resposta().Where(r=>!String.IsNullOrWhiteSpace(r.RespComentario)).ToList();
+}
+@if(lstResposta.Count > 0) { 
+<div class="ui secondary segment">
     <div class="ui dividing header">
         <p>Comentários</p>
     </div>
     @* Expor comentários dos usuários que já responderam essa questão *@
-    <div class="ui comments">
-        @foreach (var resp in Model.Resposta())
-        {
-            if (!String.IsNullOrEmpty(resp.RespComentario))
-            {
-                <div class="comment">
-                    <div class="content">
-                        <a class="author">@resp.PessoaFisica.Nome.Split(' ')[0]</a>
-                        <div class="metadata">
-                            <span class="date">@resp.AvalTemaQuestao.AvaliacaoTema.Avaliacao.DtCadastro.ToElapsedTimeString()</span>@* Continuar: pegar data da AvalPessoaResultado *@
-                        </div>
-                        <div class="text">
-                            @{
-                                var comentario = resp.RespComentario.Split('\n', '\r');
-                                foreach (var strComentario in comentario)
+    <div class="ui comments" style="max-height: 15em; overflow-y:auto">
+        @foreach (var resp in lstResposta)
+        {            
+            <div class="comment">
+                <div class="content">
+                    <a class="author">@resp.PessoaFisica.Nome.Split(' ')[0]</a>
+                    <div class="metadata">
+                        <span class="date">@resp.AvalTemaQuestao.AvaliacaoTema.Avaliacao.DtCadastro.ToElapsedTimeString()</span>@* Continuar: pegar data da AvalPessoaResultado *@
+                    </div>
+                    <div class="text">
+                        @{
+                            var comentario = resp.RespComentario.Split('\n', '\r');
+                            foreach (var strComentario in comentario)
+                            {
+                                if (!String.IsNullOrWhiteSpace(strComentario))
                                 {
-                                    if (!String.IsNullOrWhiteSpace(strComentario))
-                                    {
-                                        <p>@strComentario</p>
-                                    }
+                                    <p>@strComentario</p>
                                 }
                             }
-                        </div>
+                        }
                     </div>
                 </div>
-            }
+            </div>            
         }
     </div>
 </div>
+                            }
 
+<div class="ui arquivar toggle @(Model.FlagArquivo ? "active":"") button">
+    Arquiva@(Model.FlagArquivo ? "da":"r")
+</div>
+<a href="/Historico/Questao/Editar/@Model.CodQuestao" class="ui button">
+    Editar
+</a>

@@ -268,6 +268,22 @@ namespace SIAC.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        //POST: Historico/Questao/Arquivar/50
+        [HttpPost]
+        public ActionResult Arquivar(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                int codQuestao = 0;
+                int.TryParse(codigo, out codQuestao);
+                if (codQuestao>0)
+                {
+                    return Json(Questao.AlternarFlagArquivo(codQuestao));
+                }
+            }
+            return Json(false);
+        }
+
         //GET: Dashboard/Questao/Gerar/50
         [AcceptVerbs(HttpVerbs.Get)]
         public ActionResult Gerar(string strQte)
@@ -298,6 +314,8 @@ namespace SIAC.Web.Controllers
                 return View();
             }
         }
+
+        //POST: Dashboard/Questao/Gerar
         [HttpPost]
         public ActionResult Gerar()
         {

@@ -17,6 +17,14 @@ namespace SIAC.Web.Models
             contexto.SaveChanges();
         }
 
+        public static bool AlternarFlagArquivo(int codQuestao)
+        {
+            Questao questao = ListarPorCodigo(codQuestao);
+            questao.FlagArquivo = !questao.FlagArquivo;
+            contexto.SaveChanges();
+            return questao.FlagArquivo;
+        }
+
         public static bool PodeAtualizar(Questao questao)
         {
             AvalTemaQuestao temp = contexto.AvalTemaQuestao.FirstOrDefault(atq => atq.CodQuestao == questao.CodQuestao);
