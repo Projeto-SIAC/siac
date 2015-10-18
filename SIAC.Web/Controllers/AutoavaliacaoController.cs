@@ -44,7 +44,7 @@ namespace SIAC.Web.Controllers
                              Dificuldade = a.Dificuldade.Descricao,
                              QteQuestoes = a.Avaliacao.QteQuestoes(),
                              Disciplinas = a.Avaliacao.AvaliacaoTema.Select(at => at.Tema.Disciplina.Descricao).Distinct().ToList(),
-                             FlagPendente = a.Avaliacao.AvalPessoaResultado.Count > 0 || a.Avaliacao.FlagArquivo,
+                             FlagPendente = a.Avaliacao.AvalPessoaResultado.Count > 0 || a.Avaliacao.FlagArquivo ? false : true,
                              FlagArquivo = a.Avaliacao.FlagArquivo
                          };
             return Json(result, JsonRequestBehavior.AllowGet);

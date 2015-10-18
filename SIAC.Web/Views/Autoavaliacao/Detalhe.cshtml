@@ -29,7 +29,7 @@
     </script>
 }
 
-<h2>@ViewBag.Title@if (Model.FlagArquivo.HasValue && Model.FlagArquivo.Value) { <div class="ui label"><i class="icon archive"></i>Arquivo</div> }</h2>
+<h2>@ViewBag.Title@if (Model.Avaliacao.FlagArquivo) { <div class="ui label"><i class="icon archive"></i>Arquivo</div> }</h2>
 
 <div class="ui basic segment">
     <div class="ui dividing header">
@@ -77,7 +77,7 @@
 @if (Model.Avaliacao.AvalPessoaResultado.Count == 0)
 {
     <a onclick="window.open('/Dashboard/Autoavaliacao/Imprimir/@Model.Avaliacao.CodAvaliacao', '_blank');" class="ui button">Imprimir</a>
-    if (!Model.FlagArquivo.HasValue || !Model.FlagArquivo.Value)
+    if (!Model.Avaliacao.FlagArquivo)
     {
         <div onclick="Arquivar()" class="ui button">Arquivar</div>
         <a href="/Dashboard/Autoavaliacao/Realizar/@Model.Avaliacao.CodAvaliacao" class="ui button">Realizar agora</a>
