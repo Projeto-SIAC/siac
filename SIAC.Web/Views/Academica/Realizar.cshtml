@@ -10,7 +10,7 @@
 <h2>
     @ViewBag.Title
     <div class="ui trigger icon right floated chat button"><i class="icon comments outline"></i></div>
-    <div class="ui chat popup wide">
+    <div class="ui chat popup wide" data-position="top right">
         <div class="header">
             @Model.Professor.Usuario.PessoaFisica.Nome.Split(' ')[0]
         </div>
@@ -248,7 +248,6 @@
 
         $('.trigger.button')
             .popup({
-                position: 'bottom right',
                 inline: true,
                 on: 'click'
             })
@@ -571,15 +570,22 @@
                         $btnChat = $('.icon.chat.button');
                         $lblQteMsg = $('#lblQteMsg');
                         $lblQteMsg.remove();
-                        $btnChat.append($('<div></div>').attr('id', 'lblQteMsg').addClass('floating ui small blue label'));
+                        //$btnChat.append($('<div></div>').attr('id', 'lblQteMsg').addClass('floating ui small blue label'));
                         ChatQteMensagem++;
-                        $('#lblQteMsg').html(ChatQteMensagem);
+                        $btnChat.addClass('blue').html('<i class="icon comments outline"></i> ' + ChatQteMensagem);
+                        //$('#lblQteMsg').html(ChatQteMensagem);
+                        document.title = "Você recebeu uma mensagem";
+                        if (ChatQteMensagem > 1) {
+                            document.title = "Você recebeu "+ChatQteMensagem+" mensagens";
+                        }
                     }
                 }
             };
             $('.icon.chat.button').on('click', function () {
                 ChatQteMensagem = 0;
                 $('#lblQteMsg').remove();
+                $(this).removeClass('blue').html('<i class="icon comments outline"></i>');
+                document.title = 'Realizar '+'@Model.Avaliacao.CodAvaliacao';
             });
 
         }
