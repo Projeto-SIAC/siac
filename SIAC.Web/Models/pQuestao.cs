@@ -104,6 +104,7 @@ namespace SIAC.Web.Models
                                               && qt.Questao.CodDificuldade <= dificulDisc
                                               && qt.CodDisciplina == codDisciplina
                                               && qt.CodTema == codTema
+                                              && !qt.Questao.FlagArquivo
                                               select qt).ToList();
 
                     temp = Models.QuestaoTema.LimparRepeticao(temp, QuestoesTemas, QuestoesTotal);
@@ -256,6 +257,7 @@ namespace SIAC.Web.Models
                                               && qt.Questao.CodDificuldade <= dificulDisc
                                               && qt.CodDisciplina == codDisciplina
                                               && qt.CodTema == codTema
+                                              && !qt.Questao.FlagArquivo
                                               select qt).ToList();
 
                     temp = Models.QuestaoTema.LimparRepeticao(temp, QuestoesTemas, QuestoesTotal);
@@ -457,6 +459,7 @@ namespace SIAC.Web.Models
                                                  && qt.CodTema == codTema
                                                  && qt.Questao.CodDificuldade <= codDificuldade
                                                  && qt.Questao.CodTipoQuestao == codTipoQuestao
+                                                 && !qt.Questao.FlagArquivo
                                                  select qt).ToList();
 
                     qstTemp = Models.QuestaoTema.LimparRepeticao(qstTemp, QuestoesOriginais,questoes);
