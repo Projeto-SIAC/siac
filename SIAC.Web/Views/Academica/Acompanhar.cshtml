@@ -16,6 +16,19 @@
         gabarito += "<td data-questao=\""+Model.Avaliacao.Questao[i].CodQuestao+"\">"+i.GetIndiceQuestao()+"</td>";
     }
     gabarito += "</tr></tbody></table>";
+
+    // String html do gabarito para todos os alunos
+    string newGabarito = "<table class=\"ui celled table\"><tbody><tr>";
+    for (int i = 0, count = Model.Avaliacao.Questao.Count, linebreak = 5, countPerRow = 5; i < count; i++)
+    {
+        if (i == linebreak)
+        {
+            newGabarito += "</tr><tr>";
+            linebreak += countPerRow;
+        }
+        newGabarito += "<td data-questao=\"" + Model.Avaliacao.Questao[i].CodQuestao + "\">" + i.GetIndiceQuestao() + "</td>";
+    }
+    newGabarito += "</tr></tbody></table>";
 }
 @section Styles {
     <style>
@@ -159,8 +172,19 @@
                         </div>\
                     ');
                     }
+                    
+                    if (lstEvento[lstEvento.length-1].Icone == "red warning sign" && !$('#'+alnMatricula+'lblWarning').length && !$('#'+alnMatricula).hasClass('active')) {
+                        $accordionChat = $('#' + alnMatricula + '.title');
+                        $accordionChat.append($('<i></i>').attr('id', alnMatricula + 'lblWarning').addClass('red warning sign icon'));
+                    }
+        
                 }
             }
+
+            $('.accordion .title').on('click', function () {
+                matr = ($(this).attr('id'));
+                $('#' + matr + 'lblWarning').remove();
+            });
 
             acadHub.client.conectarAluno = function(usrMatricula) {
                 $('#' + usrMatricula + '.title .status.label').removeClass('red').addClass('green');
@@ -316,6 +340,16 @@
                             <input id="@(aluno.MatrAluno)msg" type="text" placeholder="Aperte enter para enviar..." maxlength="500" />
                             <i class="send link icon enviar"></i>
                         </div>
+                    </div>
+                </div>
+
+                <div class="ui disabled trigger icon right floated gabarito button"><i class="icon table"></i></div>
+                <div class="ui gabarito popup wide" data-position="top right">
+                    <div class="header">
+                        Gabarito
+                    </div>
+                    <div class="content">
+                        @Html.Raw(newGabarito)
                     </div>
                 </div>
             </div>

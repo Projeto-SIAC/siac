@@ -126,7 +126,7 @@
             @for (int i = 0; i < lstQuestao.Count; i++)
             {
                 <div id="@lstQuestao[i].CodQuestao" class="title">
-                    <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).siac.Utilitario.encurtarTextoEm(80))
+                    <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToShortString(80))
                     <div class="ui small label" style="display:none">Respondida</div>
                 </div>
                 <div id="@lstQuestao[i].CodQuestao" class="content">
