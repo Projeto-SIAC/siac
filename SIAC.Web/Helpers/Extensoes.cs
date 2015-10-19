@@ -37,6 +37,10 @@ namespace SIAC.Web
 
                     afterText += "...";
                 }
+                else
+                {
+                    afterText = "...";
+                }
 
                 text += afterText;
 

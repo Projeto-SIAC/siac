@@ -291,6 +291,7 @@
     <Content Include="Resources\jquery.mask.min.js" />
     <Content Include="Resources\jquery.min.js" />
     <Content Include="Resources\modernizr.js" />
+    <Content Include="Resources\modules\siac.questao.js" />
     <Content Include="Resources\semantic.min.css" />
     <Content Include="Resources\semantic.min.js" />
     <Content Include="Resources\themes\basic\assets\fonts\icons.svg" />

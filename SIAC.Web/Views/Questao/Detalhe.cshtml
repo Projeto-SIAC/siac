@@ -99,7 +99,7 @@
                                         @anexo.Legenda
                                     </div>
                                     <div class="description">
-                                        @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte não informada")
+                                        @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte.ToShortString(30) : "Fonte não informada")
                                     </div>
                                 </div> 
                             </a>
@@ -155,3 +155,7 @@
 <a href="/Historico/Questao/Editar/@Model.CodQuestao" class="ui button">
     Editar
 </a>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/questao")
+}
