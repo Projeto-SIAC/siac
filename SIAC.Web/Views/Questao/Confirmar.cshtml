@@ -110,7 +110,7 @@
                                             </div>
                                         </div>
                                         <div class="extra content">
-                                            @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte não informada")
+                                            @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte.ToShortString(30): "Fonte não informada")
                                         </div>
                                     </div>
                                     break;
@@ -126,4 +126,6 @@
 <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Dashboard' class='ui small button'>Sim, cancelar</a></div>" class="ui button">Cancelar</div>
 <a class="ui button" href="/Dashboard/Questao/Confirmar">Confirmar</a>
 
-
+@section Scripts {
+    @Scripts.Render("~/bundles/js/questao")
+}

@@ -195,7 +195,7 @@ else
                                                             @anexo.Legenda
                                                         </div>
                                                         <div class="description">
-                                                            @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte não informada")
+                                                            @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte.ToShortString(30): "Fonte não informada")
                                                         </div>
                                                     </div>
                                                 </a>

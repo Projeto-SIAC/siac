@@ -4,11 +4,16 @@
 }
 
 <h2>@ViewBag.Title <a class="ui right floated button" href="/Dashboard/Questao/Cadastrar">Cadastrar</a></h2>
-<div class="ui fluid icon input">
-    <input type="text" placeholder="Filtrar..." onkeyup="Filtro($(this).val())" />
+<div class="ui fluid icon filtro input">
+    <input type="text" placeholder="Filtrar..." />
     <i class="search icon"></i>
 </div>
 <div class="ui basic segment">
     <div class="ui two stackable cards"></div>
 </div>
+
 <div class="ui pagination menu"></div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/questao")    
+}

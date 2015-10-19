@@ -19,6 +19,10 @@ namespace SIAC.Web
                 "~/Resources/siac.js"
             ));
 
+            bundles.Add(new ScriptBundle("~/bundles/js/questao").Include(
+                "~/Resources/modules/siac.questao.js"
+            ));
+
             bundles.Add(new ScriptBundle("~/bundles/signalR").Include(
                 "~/Resources/jquery.signalR-2.2.0.min.js"
             ));
