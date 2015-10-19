@@ -438,7 +438,7 @@
         {
             <div class="title">
                 <input id="txtCodQuestao" value="@lstQuestao[i].CodQuestao" hidden />
-                <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).siac.Utilitario.encurtarTextoEm(80))
+                <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToShortString(80))
                 <div class="ui small label teal" style="display:none">Respondida</div>
             </div>
             <div class="content">
