@@ -22,7 +22,7 @@
                 MinhasAutos();
             },
             error: function () {
-                Mensagem("Erro ao recuperar as avaliações");
+                siac.mensagem("Erro ao recuperar as avaliações");
                 $('.ui.cards').parent().removeClass('loading');
             }
         });
@@ -148,7 +148,7 @@
                     window.location.href = '/Historico/Autoavaliacao';
                 },
                 error: function () {
-                    Mensagem('Não foi possível arquivar a autoavaliação.')
+                    siac.mensagem('Não foi possível arquivar a autoavaliação.')
                 }
             });
         }

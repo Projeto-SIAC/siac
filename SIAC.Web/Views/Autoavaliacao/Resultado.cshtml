@@ -43,7 +43,7 @@
             var resposta = lstPessoaResposta.First(r => r.CodQuestao == lstQuestao[i].CodQuestao);
 
             <div class="title">
-                <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToShortString(80))
+                <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).siac.Utilitario.encurtarTextoEm(80))
                 @if (lstQuestao[i].CodTipoQuestao == 1)
                 {
                     var correta = lstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
