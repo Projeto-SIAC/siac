@@ -56,6 +56,7 @@ namespace SIAC.Web.Models
                 .Where(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcademica.CodProfessor == codProfessor && !a.RespNota.HasValue)
                 .OrderBy(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.DtAplicacao)
                 .Select(a=>a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcademica)
+                .Distinct()
                 .ToList();
         }
 
