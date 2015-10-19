@@ -16,11 +16,11 @@ namespace SIAC.Web
                 "~/Resources/semantic.min.js",
                 "~/Resources/jquery.mask.min.js",
                 "~/Resources/html2canvas.js",
-                "~/Resources/siac.js"
+                "~/Resources/siac.min.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/js/questao").Include(
-                "~/Resources/modules/siac.questao.js"
+                "~/Resources/modules/siac.questao.min.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/signalR").Include(

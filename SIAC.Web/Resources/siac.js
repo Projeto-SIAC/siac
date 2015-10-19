@@ -77,13 +77,10 @@ siac.Utilitario = (function () {
 	}
 
 	// return true or false
-	function dataEFuturo(strDate) {
-		timeDateNow = new Date().getTime();
-		timeDate = Date.parse(strDate);
-		if (timeDate > timeDateNow) {
-			return true;
-		}
-		return false;
+	function dataEFuturo(strData) {
+		timeDataAgora = new Date().getTime();
+		timeData = Date.parse(strData);		
+	    return (timeData > timeDataAgora);
 	}
 
 	function encurtarTextoEm(str, length) {

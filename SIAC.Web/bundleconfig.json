@@ -1,0 +1,14 @@
+[
+  {
+    "outputFileName": "Resources/siac.js",
+    "inputFiles": [
+      "Resources/siac.js"
+    ]
+  },
+  {
+    "outputFileName": "Resources/modules/siac.questao.js",
+    "inputFiles": [
+      "Resources/modules/siac.questao.js"
+    ]
+  }
+]

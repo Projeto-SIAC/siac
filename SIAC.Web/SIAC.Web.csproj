@@ -292,8 +292,14 @@
     <Content Include="Resources\jquery.min.js" />
     <Content Include="Resources\modernizr.js" />
     <Content Include="Resources\modules\siac.questao.js" />
+    <Content Include="Resources\modules\siac.questao.min.js">
+      <DependentUpon>siac.questao.js</DependentUpon>
+    </Content>
     <Content Include="Resources\semantic.min.css" />
     <Content Include="Resources\semantic.min.js" />
+    <Content Include="Resources\siac.min.js">
+      <DependentUpon>siac.js</DependentUpon>
+    </Content>
     <Content Include="Resources\themes\basic\assets\fonts\icons.svg" />
     <Content Include="Resources\themes\default\assets\fonts\icons.svg" />
     <Content Include="Resources\themes\default\assets\images\flags.png" />
@@ -610,6 +616,7 @@
     <Content Include="Models\dbSIAC.edmx.diagram">
       <DependentUpon>dbSIAC.edmx</DependentUpon>
     </Content>
+    <None Include="bundleconfig.json" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
