@@ -156,7 +156,7 @@
                         $('form').addClass('loading').submit();
                     }
                     else {
-                        Mensagem('Conecte-se à internet antes de confirmar.')
+                        siac.mensagem('Conecte-se à internet antes de confirmar.')
                         return false;
                     }
                 }
@@ -242,7 +242,7 @@
                     window.location.href = '/Historico/Autoavaliacao';
                 },
                 error: function () {
-                    Mensagem('Não foi possível arquivar a autoavaliação.')
+                    siac.mensagem('Não foi possível arquivar a autoavaliação.')
                 }
             });
         }
@@ -438,7 +438,7 @@
         {
             <div class="title">
                 <input id="txtCodQuestao" value="@lstQuestao[i].CodQuestao" hidden />
-                <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToShortString(80))
+                <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).siac.Utilitario.encurtarTextoEm(80))
                 <div class="ui small label teal" style="display:none">Respondida</div>
             </div>
             <div class="content">

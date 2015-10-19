@@ -126,7 +126,7 @@
             @for (int i = 0; i < lstQuestao.Count; i++)
             {
                 <div id="@lstQuestao[i].CodQuestao" class="title">
-                    <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToShortString(80))
+                    <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).siac.Utilitario.encurtarTextoEm(80))
                     <div class="ui small label" style="display:none">Respondida</div>
                 </div>
                 <div id="@lstQuestao[i].CodQuestao" class="content">
@@ -330,7 +330,7 @@
                             Finalizar();
                         },
                         error: function () {
-                            Mensagem('Conecte-se à internet antes de confirmar.');
+                            siac.mensagem('Conecte-se à internet antes de confirmar.');
                         }
                     });
                     return false;
@@ -442,7 +442,7 @@
                     $msg.val($msg.val().trim())
                     if ($msg.val()) {
                         var mensagem = $msg.val();
-                        mensagem = quebrarLinhaEm(mensagem, 30);
+                        mensagem = siac.Utilitario.quebrarLinhaEm(mensagem, 30);
                         acadHub.server.chatAlunoEnvia(avalAcad, usrMatr, $msg.val());
                         $('.chat.popup .content .comments').append('\
                             <div class="comment" style="float:right;clear:both;">\
@@ -551,7 +551,7 @@
             var ChatQteMensagem = 0;
             acadHub.client.chatAlunoRecebe = function (mensagem) {
                 if (mensagem) {
-                    mensagem = quebrarLinhaEm(mensagem, 30);
+                    mensagem = siac.Utilitario.quebrarLinhaEm(mensagem, 30);
                     $('.chat.popup .comments').append('\
                             <div class="comment" style="float:left;clear:both;">\
                                 <div class="content">\

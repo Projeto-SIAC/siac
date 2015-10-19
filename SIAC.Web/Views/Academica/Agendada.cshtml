@@ -29,7 +29,7 @@
                         AbrirHub();
                         ContagemRegressiva(1000);
                     },
-                    error: function (xhr) { Mensagem("Ocorreu um erro."); $('.ui.global.loader').parent().removeClass('active'); }
+                    error: function (xhr) { siac.mensagem("Ocorreu um erro."); $('.ui.global.loader').parent().removeClass('active'); }
                 });
             }
         }
@@ -154,7 +154,7 @@
                             },
                             error: function() {
                                 $('.liberar.button').removeClass('loading');
-                                Mensagem('Ocorreu um erro inesperado durante o processo. Verifique sua internet e tente novamente.', 'Liberar avaliação');
+                                siac.mensagem('Ocorreu um erro inesperado durante o processo. Verifique sua internet e tente novamente.', 'Liberar avaliação');
                             }
                         });
                     });

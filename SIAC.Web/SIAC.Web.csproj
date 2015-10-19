@@ -645,6 +645,7 @@
     <Content Include="Views\Academica\Realizar.cshtml" />
     <Content Include="Views\Academica\Resultado.cshtml" />
     <Content Include="Views\Academica\Pendente.cshtml" />
+    <Content Include="Resources\siac.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

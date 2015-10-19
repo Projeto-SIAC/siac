@@ -12,7 +12,7 @@
                 <label>Palavras-chave (separados por ";")</label>
                 <div class="ui action input">
                     <input id="txtPalavraChave" type="text" class="ui input text" placeholder="Palavras-chave..." />
-                    <button tabindex="0" class="ui button pesquisar" onclick="palavraChave(txtPalavraChave.value); return false;">Pesquisar</button>
+                    <button tabindex="0" class="ui button pesquisar">Pesquisar</button>
                 </div>
             </div>
         </form>
@@ -41,7 +41,7 @@
     </div>
     <div class="actions">
         <a href="/Dashboard" class="ui cancel button">Cancelar</a>
-        <div class="ui approve button" onclick="$('#btnPesquisa').popup('show');" >Sim, continuar</div>
+        <div class="ui approve button">Sim, continuar</div>
     </div>
 </div>
 
@@ -75,7 +75,7 @@
         <div class="ui segment">
             <div class="ui form">
                 <div class="field required">
-                    <label>Prove que você não é uma máquina <i class="icon refresh" onclick="NovoCaptcha()"></i></label>
+                    <label>Prove que você não é uma máquina <i class="captcha icon blue refresh"></i></label>
                     <div class="ui small image">
                         <img id="imgCaptcha" class="image" src="data:image/png;base64,@ViewBag.Captcha" />
                     </div>
@@ -94,7 +94,7 @@
 </div>
  
 
-<h2>@ViewBag.Title <a id="btnPesquisa" class="ui right floated button" onclick="abrirPesquisaModal()"><i class="search icon"></i>Pesquisar</a></h2>
+<h2>@ViewBag.Title <a id="btnPesquisa" class="ui right floated button"><i class="search icon"></i>Pesquisar</a></h2>
  
 <form id="frmQuestao" action="/Dashboard/Questao/Confirmar" method="post" class="ui form" enctype="multipart/form-data">
     <div class="ui error message">
@@ -102,16 +102,16 @@
         <ul class="list"></ul>
     </div>
     <div class="ui top attached tabular menu">
-        <div class="active item" data-tab="tab-name">Gerais</div>
-        <div class="item" data-tab="tab-name2">Detalhes</div>
-        <div class="item questao objetiva" data-tab="tab-name3">Alternativas</div>
-        <div class="item anexos" data-tab="tab-name4">Anexos</div>
+        <div class="active item" data-tab="tab-geral">Gerais</div>
+        <div class="item" data-tab="tab-detalhe">Detalhes</div>
+        <div class="item questao objetiva" data-tab="tab-alternativa">Alternativas</div>
+        <div class="item anexos" data-tab="tab-anexo">Anexos</div>
     </div>
     @* Gerais da Questão *@
-    <div class="ui bottom attached active tab segment" data-tab="tab-name">
+    <div class="ui bottom attached active tab segment" data-tab="tab-geral">
         <div class="field required">
             <label>Disciplina</label>
-            <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" onchange="recuperarTemasPorCodDisciplina()" required>
+            <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" required>
                 <option value="">Disciplina</option>
                 @foreach (var obj in ViewBag.Disciplinas)
                 {
@@ -137,7 +137,7 @@
         </div>
         <div class="field required">
             <label>Tipo</label>
-            <select id="ddlTipo" name="ddlTipo" onchange="mostrarCamposPorTipo()" class="ui search dropdown" required>
+            <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" required>
                 <option value="">Tipo</option>
                 @foreach (var obj in ViewBag.Tipos)
                 {
@@ -148,14 +148,14 @@
         <div class="ui segment">
             <div class="field">
                 <div class="ui toggle checkbox">
-                    <input id="chkAnexos" name="chkAnexos" onchange="mostrarOpcaoAnexos()" type="checkbox" tabindex="0" class="hidden">
+                    <input id="chkAnexos" name="chkAnexos" type="checkbox" tabindex="0" class="hidden">
                     <label for="chkAnexos">Esta questão possui anexos</label>
                 </div>
             </div>
         </div>
     </div>
     @* Detalhes da Questão *@
-    <div class="ui bottom attached tab segment" data-tab="tab-name2">
+    <div class="ui bottom attached tab segment" data-tab="tab-detalhe">
         <div class="field required">
             <label for="txtEnunciado">Enunciado</label>
             <textarea id="txtEnunciado" name="txtEnunciado" rows="2" required placeholder="Enunciado..."></textarea>
@@ -174,14 +174,14 @@
         </div>
     </div>
     @* Alternativas da Questão *@
-    <div class="ui bottom attached tab segment questao objetiva" data-tab="tab-name3">
+    <div class="ui bottom attached tab segment questao objetiva" data-tab="tab-alternativa">
             <input id="txtQtdAlternativas" name="txtQtdAlternativas" type="number" hidden />
-            <div class="ui button" onclick="adicionarAlternativa()" style="float: right">Adicionar</div>
+            <div class="ui adicionar button" style="float: right">Adicionar</div>
         <div class="ui alternativas fluid accordion">
         </div>
     </div>   
      @* Anexos da Questão *@
-    <div class="ui bottom attached tab segment anexos" data-tab="tab-name4">
+    <div class="ui bottom attached tab segment anexos" data-tab="tab-anexo">
         <input id="txtQtdAnexos" name="txtQtdAnexos" type="number" hidden />
         @* Anexos *@
         <div class="ui segment">
@@ -196,7 +196,7 @@
                 </select>
             </div>
             <div class="field">
-                <div class="ui button" onclick="adicionarAnexo()">Adicionar</div>
+                <div class="ui adicionar button">Adicionar</div>
             </div>
         </div>
         <div class="ui anexos fluid accordion">
@@ -204,536 +204,5 @@
     </div>
     <br />
     <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Dashboard/Questao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
-    <div class="ui button" onclick="enviarForm()">Prosseguir</div>
+    <div class="ui prosseguir button">Prosseguir</div>
 </form>
-
-@section Scripts {
-    <script>
-        $('.ui.checkbox').checkbox();
-        $('.ui.accordion').accordion();
-        $('.ui.dropdown').dropdown();
-        $('.tabular.menu .item').tab();
-        $('.ui.termo.modal').modal('setting', 'closable', false).modal('show');
-
-        function recuperarTemasPorCodDisciplina() {
-            var selecionado = $('#ddlDisciplina :selected').val();
-            var ddlTema = $('#ddlTema');
-            ddlTema.parent().addClass('loading');
-            $.ajax({
-                cache: false,
-                type: 'GET',
-                url: '@(Url.RouteUrl("RecuperarTemasPorCodDisciplina"))',
-                data: { "codDisciplina": selecionado },
-                success: function (data) {
-                    ddlTema.html('');
-                    ddlTema.parent().find('.label').remove();
-                    $.each(data, function (id, option) {
-                        ddlTema.append($('<option></option>').val(option.CodTema).html(option.Descricao));
-                    });
-                    ddlTema.parent().removeClass('loading');
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    Mensagem('Falha ao recuperar temas.');
-                    ddlTema.parent().removeClass('loading');
-                }
-            });
-        }
-
-        function mostrarCamposPorTipo() {
-            var tipo = $('#ddlTipo :selected').val();
-            $('.questao').hide();
-            if (tipo == 1) {
-                $('.questao.objetiva').show();
-                $('.segment.questao.objetiva').attr('style', '');
-            }
-            else if (tipo == 2) {
-                $('.questao.discursiva').show();
-            }
-        }
-
-        function mostrarOpcaoAnexos() {
-            var chk = $('#chkAnexos');
-            if (chk.is(':checked')) {
-                $('.anexos').show();
-                $('.segment.anexos').attr('style', '');
-            }
-            else {
-                $('.anexos').hide();
-            }
-        }
-
-        function removerAlternativa(button) {
-            var i = $('.ui.alternativas.accordion .title').length;
-            if (i > 2) {
-                var content = $(button).parent().parent().parent().parent();
-                var title = $(content).prev();
-                title.remove();
-                content.remove();
-                renomearAlternativas();
-            }
-            $('#txtQtdAlternativas').val($('.ui.alternativas.accordion .title').length);
-        }
-
-        function marcarCorreta(chk) {
-            $chk = $(chk);
-            $lstCheckboxes = $('.ui.alternativas.accordion .content input[type="checkbox"]');
-            $('.ui.alternativas.accordion .title .label').attr('style', 'display:none');
-            for (var i = 0; i < $lstCheckboxes.length; i++) {
-                if ($chk.is(':checked')) {
-                    if ($chk.attr('id') == $lstCheckboxes.eq(i).attr('id')) {
-                        $('.ui.alternativas.accordion .title.active .label').removeAttr('style');
-                        continue;
-                    }
-                    $lstCheckboxes.eq(i).attr({'readonly':'readonly', 'disabled': 'disabled'});
-                    $lstCheckboxes.eq(i).parent().addClass('disabled');
-                }
-                else {
-                    $lstCheckboxes.eq(i).removeAttr('readonly disabled');
-                    $lstCheckboxes.eq(i).parent().removeClass('disabled');
-                }
-            }
-        }
-
-        function adicionarAlternativa() {
-            var i = $('.ui.alternativas.accordion .title').length + 1;
-            $('.ui.alternativas.accordion').append('\
-                        <div class="title">\
-                            <input id="txtAlternativaIndex" value="'+ i + '" hidden />\
-                            <i class="dropdown icon"></i>Alternativa ' + i + '\
-                            <div class="ui small label" style="display:none">Correta</div>\
-                        </div>\
-                        <div class="content ui segment">\
-                            <div class="field required">\
-                                <label for="txtAlternativaEnunciado' + i + '">Enunciado</label>\
-                                <textarea id="txtAlternativaEnunciado' + i + '" name="txtAlternativaEnunciado' + i + '" rows="2" placeholder="Enunciado..."></textarea>\
-                            </div>\
-                            <div class="field">\
-                                <label for="txtAlternativaComentario' + i + '">Comentário</label>\
-                                <textarea id="txtAlternativaComentario' + i + '" name="txtAlternativaComentario' + i + '" rows="2" placeholder="Comentário..."></textarea>\
-                            </div>\
-                            <div class="field">\
-                                <div class="ui toggle checkbox">\
-                                    <input onchange="marcarCorreta(this)" id="chkAlternativaCorreta' + i + '" name="chkAlternativaCorreta' + i + '" type="checkbox" tabindex="0" class="hidden">\
-                                    <label for="chkAlternativaCorreta' + i + '">Correta</label>\
-                                </div>\
-                            </div>\
-                            <div class="field">\
-                                <div class="ui button">\
-                                    Remover\
-                                </div>\
-                                <div class="ui special popup">\
-                                    <div class="header">Tem certeza?</div>\
-                                    <div class="content"><p>Essa ação não poderá ser desfeita.</p>\
-                                    <div class="ui right aligned button tiny" onclick="removerAlternativa(this)">Sim, remover</div>\
-                                </div>\
-                            </div>\
-                        </div>\
-                    </div>');
-            $('#txtQtdAlternativas').val($('.ui.alternativas.accordion .title').length);
-            $('.ui.checkbox').checkbox();
-            $('.ui.alternativas.accordion .button').popup({ inline: true, on: 'click', position: 'right center' });
-        }
-
-        function carregarImagem(file) {
-            var ind = $(file).parent().parent().parent().prev().find('#txtAnexoIndex').val();
-            var pre = $('#preImagem' + ind);
-            var arq = $('#fleAnexo' + ind)[0].files[0];
-            var reader = new FileReader();
-
-            if (arq.size < 1000000) {
-                reader.onloadend = function () {
-                    pre.attr('src', reader.result);
-                }
-
-                if (arq) {
-                    reader.readAsDataURL(arq);
-                } else {
-                    preview.attr('src', '');
-                }
-            }
-            else {
-                Mensagem("Selecione um arquivo menor.");
-            }
-        }
-
-        function renomearAlternativas() {
-            var list = $('.ui.alternativas.accordion .title');
-            var listContent = $('.ui.alternativas.accordion .content.segment');
-            for (var i = 0; i < list.length; i++) {
-                var j = list.eq(i).find('#txtAlternativaIndex').val();
-                list.eq(i).html('<input id="txtAlternativaIndex" value="' + (i + 1) + '" hidden /><i class="dropdown icon"></i>Alternativa ' + (i + 1) + '<div class="ui small label" style="display:none">Correta</div>');
-                if (listContent.eq(i).find('input[name="chkAlternativaCorreta' + j + '"]').is(':checked')) {
-                    console.log('entrou');
-                    list.eq(i).find('.label').removeAttr('style');
-                }
-                /* RENOMEAR LABELS, INPUTS e TEXTAREAS */
-                listContent.eq(i).find('label[for="txtAlternativaEnunciado' + j + '"]').attr('for', 'txtAlternativaEnunciado' + (i + 1));
-                listContent.eq(i).find('label[for="txtAlternativaComentario' + j + '"]').attr('for', 'txtAlternativaComentario' + (i + 1));
-                listContent.eq(i).find('label[for="chkAlternativaCorreta' + j + '"]').attr('for', 'chkAlternativaCorreta' + (i + 1));
-                listContent.eq(i).find('textarea[name="txtAlternativaEnunciado' + j + '"]').attr('name', 'txtAlternativaEnunciado' + (i + 1)).attr('id', 'txtAlternativaEnunciado' + (i + 1));
-                listContent.eq(i).find('textarea[name="txtAlternativaComentario' + j + '"]').attr('name', 'txtAlternativaComentario' + (i + 1)).attr('id', 'txtAlternativaComentario' + (i + 1));
-                listContent.eq(i).find('input[name="chkAlternativaCorreta' + j + '"]').attr('name', 'chkAlternativaCorreta' + (i + 1)).attr('id', 'chkAlternativaCorreta' + (i + 1));
-            }
-        }
-
-        function adicionarAnexo() {
-            var tipoAnexo = $('#ddlTiposAnexo').val();
-            var tipoAnexoDescricao = $('#ddlTiposAnexo :selected').text();
-            var i = $('.ui.anexos.accordion .title').length + 1;
-            if (tipoAnexo == 1) {
-                $('.ui.anexos.accordion').append('\
-                        <div class="title">\
-                            <input id="txtAnexoIndex" value="'+ i + '" class="disabled" readonly hidden/>\
-                            <input name="txtAnexoTipo' + i + '" id="txtAnexoTipo' + i + '" value="' + tipoAnexo + '" hidden />\
-                            <i class="dropdown icon"></i>Anexo ' + i + '\
-                            <span class="ui label" id="txtAnexoTipoDescricao">'+ tipoAnexoDescricao + '</span>\
-                        </div>\
-                        <div class="content ui segment">\
-                            <div class="field required">\
-                                <div class="ui card"><div class="image"><img name="preImagem' + i + '" id="preImagem' + i + '" alt="Previsualização" src="" /></div>\
-                                <input id="fleAnexo' + i + '" name="fleAnexo' + i + '"type="file" class="ui button" accept="image/*" onchange="carregarImagem(this)" /></div>\
-                            </div>\
-                            <div class="field required">\
-                                <label for="txtAnexoLegenda' + i + '">Legenda</label>\
-                                <textarea maxlength="250" id="txtAnexoLegenda' + i + '" name="txtAnexoLegenda' + i + '" rows="2" placeholder="Legenda..."></textarea>\
-                            </div>\
-                            <div class="field">\
-                                <label for="txtAnexoFonte' + i + '">Fonte</label>\
-                                <input maxlength="250" type="text" id="txtAnexoFonte' + i + '" name="txtAnexoFonte' + i + '" placeholder="Fonte..."></textarea>\
-                            </div>\
-                            <div class="field">\
-                                <div class="ui button">\
-                                    Remover\
-                                </div>\
-                                <div class="ui special popup">\
-                                    <div class="header">Tem certeza?</div>\
-                                    <div class="content"><p>Essa ação não poderá ser desfeita.</p>\
-                                    <div class="ui right aligned button tiny" onclick="removerAnexo(this)">Sim, remover</div>\
-                                </div>\
-                            </div>\
-                        </div>\
-                    </div>');
-            }
-            $('#txtQtdAnexos').val($('.ui.anexos.accordion .title').length);
-            $('.ui.anexos.accordion .button').popup({ inline: true, on: 'click', position: 'right center' });
-        }
-
-        function renomearAnexos() {
-            var list = $('.ui.anexos.accordion .title');
-            var listContent = $('.ui.anexos.accordion .content.segment');
-            for (var i = 0; i < list.length; i++) {
-                var j = list.eq(i).find('#txtAnexoIndex').val();
-                var tipoAnexo = list.eq(i).find('#txtAnexoTipo' + j).val();
-                var tipoAnexoDescricao = list.eq(i).find('#txtAnexoTipoDescricao').text();
-                list.eq(i).html('<input id="txtAnexoIndex" value="' + (i + 1) + '" class="disabled" readonly hidden/><i class="dropdown icon"></i>Anexo ' + (i + 1) + '<input name="txtAnexoTipo' + (i + 1) + '" id="txtAnexoTipo' + (i + 1) + '" value="' + tipoAnexo + '" hidden /><span class="ui label" id="txtAnexoTipoDescricao">' + tipoAnexoDescricao + '</span>');
-                listContent.eq(i).find('label[for="txtAnexoLegenda' + j + '"]').attr('for', 'txtAlternativaEnunciado' + (i + 1));
-                listContent.eq(i).find('label[for="txtAnexoFonte' + j + '"]').attr('for', 'txtAlternativaComentario' + (i + 1));
-                listContent.eq(i).find('textarea[name="txtAnexoLegenda' + j + '"]').attr('name', 'txtAnexoLegenda' + (i + 1)).attr('id', 'txtAnexoLegenda' + (i + 1));
-                listContent.eq(i).find('input[name="txtAnexoFonte' + j + '"]').attr('name', 'txtAnexoFonte' + (i + 1)).attr('id', 'txtAnexoFonte' + (i + 1));
-                listContent.eq(i).find('input[name="fleAnexo' + j + '"]').attr('name', 'fleAnexo' + (i + 1)).attr('id', 'fleAnexo' + (i + 1));
-                listContent.eq(i).find('img[name="preImagem' + j + '"]').attr('name', 'preImagem' + (i + 1)).attr('id', 'preImagem' + (i + 1));
-            }
-        }
-
-        function removerAnexo(button) {
-            var content = $(button).parent().parent().parent().parent();
-            var title = $(content).prev();
-            title.remove();
-            content.remove();
-            renomearAnexos();
-            $('#txtQtdAnexos').val($('.ui.anexos.accordion .title').length);
-        }
-
-        mostrarCamposPorTipo();
-        mostrarOpcaoAnexos();
-        for (var i = 0; i < 5; i++) {
-            adicionarAlternativa();
-        }
-
-        function enviarForm() {
-            $('.ui.error.message .list').html('');
-            var validado = false;
-            if (!$('#ddlDisciplina').val()) {
-                $('.ui.error.message .list').append('<li>É necessário selecionar uma disciplina</li>')
-            }
-
-            if (!$('#ddlTema :selected').length > 0) {
-                $('.ui.error.message .list').append('<li>É necessário selecionar pelo menos um tema</li>')
-            }
-            if (!$('#ddlDificuldade').val()) {
-                $('.ui.error.message .list').append('<li>É necessário selecionar uma dificuldade</li>')
-            }
-
-            if (!$('#ddlTipo').val()) {
-                $('.ui.error.message .list').append('<li>É necessário selecionar um tipo</li>')
-            }
-
-            if (!$('#txtEnunciado').val()) {
-                $('.ui.error.message .list').append('<li>É necessário preencher o enunciado</li>')
-            }
-
-            if ($('#ddlTipo').val()) {
-                var tipo = $('#ddlTipo').val();
-
-                if (tipo == 1) {
-                    var qteAlternativas = $('#txtQtdAlternativas').val();
-                    var ok = true;
-                    for (var i = 0; i < qteAlternativas; i++) {
-                        if ($('#txtAlternativaEnunciado' + (i + 1)).val() == '') {
-                            ok = false;
-                        }
-                    }
-                    if (ok) {
-                        ok = false;
-                        for (var i = 0; i < qteAlternativas; i++) {
-                            if ($('#chkAlternativaCorreta' + (i + 1)).is(':checked')) {
-                                ok = true;
-                            }
-                        }
-                        if (ok) {
-                            if ($('#chkAnexos').is(':checked')) {
-                                var qteAnexos = $('#txtQtdAnexos').val();
-                                for (var i = 0; i < qteAnexos; i++) {
-                                    if ($('#fleAnexo' + (i + 1))[0].files.length == 0) {
-                                        ok = false;
-                                    }
-                                }
-                                if (ok) {
-                                    validado = true;
-                                }
-                                else {
-                                    $('.ui.error.message .list').append('<li>É necessário selecionar os arquivos dos anexos</li>')
-                                }
-                            }
-                            else {
-                                validado = true;
-                            }
-                        }
-                        else {
-                            $('.ui.error.message .list').append('<li>É necessário selecionar pelo menos umas das alternativas como correta</li>')
-                        }
-                    }
-                    else {
-                        $('.ui.error.message .list').append('<li>É necessário preencher os enunciados de todas as alternativas</li>')
-                    }
-                }
-                else if (tipo == 2) {
-                    if ($('#txtChaveDeResposta').val() != '') {
-                        if ($('#chkAnexos').is(':checked')) {
-                            var ok = true;
-                            var qteAnexos = $('#txtQtdAnexos').val();
-                            for (var i = 0; i < qteAnexos; i++) {
-                                if ($('#fleAnexo' + (i + 1))[0].files.length == 0) {
-                                    ok = false;
-                                }
-                            }
-                            if (ok) {
-                                validado = true;
-                            }
-                            else {
-                                $('.ui.error.message .list').append('<li>É necessário selecionar os arquivos dos anexos</li>')
-                            }
-                        }
-                        else {
-                            validado = true;
-                        }
-                    }
-                    else {
-                        $('.ui.error.message .list').append('<li>É necessário preencher a chave de resposta</li>')
-                    }
-                }
-            }
-
-            if (validado) Confirmar();
-            else $('#frmQuestao').addClass('error');
-        }
-        $('.cancelar.button').popup({ on: 'click' });
-
-        $('.ui.confirmar.modal')
-          .modal({
-              onApprove: function () {
-                  $('.ui.confirmar.modal .approve').addClass('loading');
-                  ChecarCaptcha();
-                  return false;
-              }
-          });
-
-        $('.ui.confirmar.modal .ui.accordion').accordion({
-            onChange: function () { $('.ui.confirmar.modal').modal('refresh'); }
-        });
-
-        function Confirmar() {
-            $('#mdlDisciplina').text($('#ddlDisciplina :selected').text());
-            $('#mdlDificuldade').text($('#ddlDificuldade :selected').text());
-            var temas = $('#ddlTema :selected');
-            $('#mdlTagTemas').html('');
-            for (var i = 0; i < temas.length; i++) {
-                $('#mdlTagTemas').append('<div class="ui tag label">' + temas.eq(i).text() + '</div>');
-            }
-            $('#mdlEnunciado').text($('#txtEnunciado').val()).attr('data-html', '<b>Objetivo</b>: ' + $('#txtObjetivo').val());
-            var tipo = $('#ddlTipo').val();
-            if (tipo == 1) {
-                var qteAlternativas = $('#txtQtdAlternativas').val();
-                $('#mdlListAlternativas').html('');
-                for (var i = 0; i < qteAlternativas; i++) {
-                    if ($('#chkAlternativaCorreta' + (i + 1)).is(':checked')) {
-                        $('#mdlListAlternativas')
-                        .append('<div class="item">\
-                                    <div class="middle aligned content" data-html="<b>Comentário</b>: ' + $('#txtAlternativaComentario' + (i + 1)).val() + '">\
-                                        <b>' + (i + 1) + '</b>) ' + $('#txtAlternativaEnunciado' + (i + 1)).val() + '<a class="ui green label">Correta</a>\
-                                    </div>\
-                                </div>'
-                        );
-                        continue;
-                    }
-                    $('#mdlListAlternativas')
-                        .append('<div class="item">\
-                                    <div class="middle aligned content" data-html="<b>Comentário</b>: ' + $('#txtAlternativaComentario' + (i + 1)).val() + '">\
-                                        <b>' + (i + 1) + '</b>) ' + $('#txtAlternativaEnunciado' + (i + 1)).val() + '\
-                                    </div>\
-                                </div>'
-                        );
-                }
-                $('#mdlChaveDeResposta').attr('style', 'display:none');
-                $('#mdlListAlternativas').removeAttr('style');
-            }
-            else if (tipo == 2) {
-                $('#mdlChaveDeResposta').html('<i>' + $('#txtChaveDeResposta').val() + '</i><a class="ui green label">Chave de Resposta</a>').attr('data-html', '<b>Comentário</b>: ' + $('#txtComentario').val());
-                $('#mdlListAlternativas').attr('style', 'display:none');
-                $('#mdlChaveDeResposta').removeAttr('style');
-            }
-            if ($('#chkAnexos').is(':checked')) {
-                var qteAnexos = $('#txtQtdAnexos').val();
-                $('#mdlCardAnexos').html('');
-                for (var i = 0; i < qteAnexos; i++) {
-                    var tipoAnexo = $('#txtAnexoTipo' + (i + 1)).val();
-                    if (tipoAnexo == 1) {
-                        $('#mdlCardAnexos')
-                            .append('<div class="ui card">\
-                                        <div class="image">\
-                                            <img src="' + $('#preImagem' + (i + 1)).attr('src') + '" />\
-                                        </div>\
-                                        <div class="content">\
-                                            <div class="header">\
-                                                ' + $('#txtAnexoLegenda' + (i + 1)).val() + '\
-                                            </div>\
-                                            <div class="description">\
-                                                ' + $('#txtAnexoFonte' + (i + 1)).val() + '\
-                                            </div>\
-                                        </div>\
-                                    </div>'
-                        );
-                    }
-                }
-                $('#mdlAccordionAnexos').removeAttr('style');
-            }
-            else {
-                $('#mdlAccordionAnexos').attr('style', 'display:none');
-            }
-            $('.ui.confirmar.modal').modal('show');
-            $('.ui.confirmar.modal div').popup();
-        }
-
-        function abrirPesquisaModal() {
-            $('.ui.pesquisa.modal').modal('show');
-        }
-        function palavraChave(palavras) {
-            palavras = palavras.toLowerCase();
-
-            if (palavras.indexOf(";") > -1) {
-                palavras = palavras.split(';');
-            } else {
-                palavras[0] = palavras;
-            }
-            $('.ui.pesquisa.modal .pesquisar').addClass('loading');
-            $.ajax({
-                type: 'POST',
-                data: { "palavras": palavras },
-                url: '@Url.RouteUrl("PalavrasChave")',
-                success: function (data) {
-                    $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
-                    $('#divQuestoes').html('');
-                    if (data.length != 0) {
-                        $('#divQuestoes').append('<div class="ui label"> Resultado(s)<div class="detail">' + data.length + '</div></div>');
-                        for (var i = 0; i < data.length; i++) {
-                            $('#divQuestoes').append('\
-                        <div class="item">\
-                            <div class="content">\
-                                <a href="/Historico/Questao/' + data[i].CodQuestao + '" class="header">' + ToShortString(data[i].Enunciado, 140) + '</a>\
-                                <div class="description ui labels">\
-                                    <span class="ui label">' + data[i].Disciplina + '</span>\
-                                    <span class="ui label">' + data[i].Dificuldade + '</span>\
-                                    <span class="ui label">' + data[i].TipoQuestao + '</span>\
-                                    <span class="ui label">' + data[i].Professor + '</span>\
-                                </div>\
-                            </div>\
-                        </div>\
-                        ');
-                        }
-                    } else {
-                        $('#divQuestoes').append('\
-                        <div class="item">\
-                            <div class="content">\
-                            <div class="header">Nenhuma questão foi encontrada</div>\
-                            </div>\
-                        </div>\
-                        ');
-                    }
-                    $('.ui.pesquisa.modal').modal('refresh');
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    Mensagem('Erro na pesquisa');
-                }
-            });
-        }
-
-        $('#btnPesquisa').popup({
-            title: 'Pesquisar questão',
-            content: 'Clique aqui para descobrir se sua questão já foi cadastrada',
-            duration: 100
-        });
-
-        $('.ui.pesquisa.modal').modal();
-
-        function ChecarCaptcha() {
-            $.ajax({
-                type: 'GET',
-                data: { captcha: $('#txtCaptcha').val() },
-                url: "/Dashboard/Questao/ChequeCaptcha",
-                success: function (resp) {
-                    if (resp == "true") {
-                        $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
-                        $('.ui.confirmar.modal').modal('hide');
-                        $('#txtCaptcha').next().prop('class', 'checkmark green icon');
-                        $('#frmQuestao').addClass('loading').submit();
-                    }
-                    else {
-                        $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
-                        $('.ui.confirmar.modal').modal('show');
-                        $('#txtCaptcha').next().prop('class', 'remove red icon');
-                    }
-                },
-                error: function () {
-                    $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
-                    $('#txtCaptcha').next().prop('class', 'remove icon');
-                    Mensagem("Ocorreu um erro ao verificar o captcha.", "Resultado do Captcha");
-                }
-            });
-        }
-
-        function NovoCaptcha() {
-            $.ajax({
-                type: 'GET',
-                url: "/Dashboard/Questao/NovoCaptcha",
-                success: function (strBase64) {
-                    if (strBase64) {
-                        $('#imgCaptcha').attr('src', 'data:image/png;base64,' + strBase64);
-                    }
-                },
-                error: function () {
-                    Mensagem("Ocorreu um erro ao atualizar o captcha, tente novamente.", "Erro");
-                }
-            });
-        }
-    </script>
-}

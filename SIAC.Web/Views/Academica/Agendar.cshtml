@@ -46,7 +46,7 @@
 
             if ($('#txtData').val() && $('#txtHoraInicio').val()) {
                 strDate = $('#txtData').val() + ' ' + $('#txtHoraInicio').val();
-                if (!DateIsFuture(strDate)) {
+                if (!siac.Utilitario.dataEFuturo(strDate)) {
                     lstErro.append('<li>Especifique uma data de aplicação futura</li>');
                     retorno = false;
                 }
@@ -60,7 +60,7 @@
             if ($('#txtData').val() && $('#txtHoraInicio').val() && $('#txtHoraTermino').val()) {
                 strDateA = $('#txtData').val() + ' ' + $('#txtHoraInicio').val();
                 strDateB = $('#txtData').val() + ' ' + $('#txtHoraTermino').val();
-                if (DateCompare(strDateA, strDateB) >= 0) {
+                if (siac.Utilitario.compararData(strDateA, strDateB) >= 0) {
                     lstErro.append('<li>Especifique uma hora de término maior que a hora de início</li>');
                     retorno = false;
                 }

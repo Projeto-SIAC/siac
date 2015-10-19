@@ -116,9 +116,9 @@
                     ddlTemas.parent().removeClass('loading');
                 },
                 error: function (xhr) {
-                    Mensagem("Erro no carregamento de Temas","Erro");
+                    siac.mensagem("Erro no carregamento de Temas","Erro");
                     ddlTemas.parent().removeClass('loading');
-                    Mensagem(xhr.error);
+                    siac.mensagem(xhr.error);
                 }
             });
         }

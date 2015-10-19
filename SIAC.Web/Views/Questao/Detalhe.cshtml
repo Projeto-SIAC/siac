@@ -6,57 +6,6 @@
 
 @model SIAC.Web.Models.Questao
 
-@section Scripts {
-
-    <script>
-        $('.ui.accordion')
-            .accordion()
-        ;
-        $('div,p')
-            .popup()
-        ;
-        $('.button')
-        .popup({
-            on: 'click'
-        })
-        ;        
-        $('a.card').click(function () {
-            $card = $(this);
-            src = $card.find('img').attr('src');
-            legenda = $card.find('.header').text();
-            fonte = $card.find('.description').text();
-
-            $modal = $('.ui.anexo.modal');
-
-            $modal.find('.header').text(legenda);
-            $modal.find('img.image').attr('src', src);
-            $modal.find('.description').html(fonte);
-
-            $modal.modal('show');
-        });
-        $('.arquivar.button').click(function () {
-            var _this = this;
-            $(_this).addClass('loading');
-            $.ajax({
-                url: '/Historico/Questao/Arquivar/@Model.CodQuestao',
-                type: 'POST',
-                success: function (flag) {
-                    if (flag) {
-                        $(_this).addClass('active').text('Arquivada');
-                    }
-                    else {
-                        $(_this).removeClass('active').text('Arquivar');
-                    }
-                    $(_this).removeClass('loading');
-                },
-                error: function () {
-                    $(_this).removeClass('loading');
-                }
-            });
-        });
-    </script>
-}
-
 <h2>@ViewBag.Title</h2>
 
 <div class="ui anexo basic modal">
@@ -200,7 +149,7 @@
 </div>
                             }
 
-<div class="ui arquivar toggle @(Model.FlagArquivo ? "active":"") button">
+<div data-questao="@Model.CodQuestao" class="ui arquivar toggle @(Model.FlagArquivo ? "active":"") button">
     Arquiva@(Model.FlagArquivo ? "da":"r")
 </div>
 <a href="/Historico/Questao/Editar/@Model.CodQuestao" class="ui button">

@@ -6,142 +6,6 @@
 
 @model SIAC.Web.Models.Questao
 
-@section Scripts{
-    <script>
-        $('.disabled').parent().popup({
-            html: '<i class="icon red warning"></i>Este campo não pode ser modificado',
-            variation: 'wide'
-        });
-        $('.ui.checkbox').checkbox();
-        $('.ui.accordion').accordion();
-        $('.ui.modal .ui.accordion').accordion({
-            onChange: function() { $('.ui.confirmar.modal').modal('refresh'); }
-        });
-        $('.ui.dropdown').dropdown();
-        $('.tabular.menu .item').tab();
-        $('.cancelar.button').popup({ on: 'click' });
-        $('.ui.confirmar.modal')
-          .modal({
-              onApprove: function () {
-                  $('#frmQuestao').addClass('loading').submit();
-              }
-          });
-
-        function Confirmar() {
-            $('#mdlEnunciado').text($('#txtEnunciado').val()).attr('data-html', '<b>Objetivo</b>: ' + $('#txtObjetivo').val());
-            var tipo = @Model.CodTipoQuestao;
-            if (tipo == 1) {
-                var qteAlternativas = @Model.Alternativa.Count;
-                $('#mdlListAlternativas').html('');
-                for (var i = 0; i < qteAlternativas; i++) {
-                    if ($('#chkAlternativaCorreta' + (i + 1)).is(':checked')) {
-                        $('#mdlListAlternativas')
-                        .append('<div class="item">\
-                                    <div class="middle aligned content" data-html="<b>Comentário</b>: ' + $('#txtAlternativaComentario' + (i + 1)).val() + '">\
-                                        <b>' + (i + 1) + '</b>) ' + $('#txtAlternativaEnunciado' + (i + 1)).val() + '<a class="ui green label">Correta</a>\
-                                    </div>\
-                                </div>'
-                        );
-                        continue;
-                    }
-                    $('#mdlListAlternativas')
-                        .append('<div class="item">\
-                                    <div class="middle aligned content" data-html="<b>Comentário</b>: ' + $('#txtAlternativaComentario' + (i + 1)).val() + '">\
-                                        <b>' + (i + 1) + '</b>) ' + $('#txtAlternativaEnunciado' + (i + 1)).val() + '\
-                                    </div>\
-                                </div>'
-                        );
-                }
-                $('#mdlChaveDeResposta').attr('style', 'display:none');
-                $('#mdlListAlternativas').removeAttr('style');
-            }
-            else if (tipo == 2) {
-                $('#mdlChaveDeResposta').html('<i>' + $('#txtChaveDeResposta').val() + '</i><a class="ui green label">Chave de Resposta</a>').attr('data-html', '<b>Comentário</b>: ' + $('#txtComentario').val());
-                $('#mdlListAlternativas').attr('style', 'display:none');
-                $('#mdlChaveDeResposta').removeAttr('style');
-            }
-            var qteAnexos = @Model.QuestaoAnexo.Count;
-            if (qteAnexos > 0) {
-                $('#mdlCardAnexos').html('');
-                for (var i = 0; i < qteAnexos; i++) {
-                    var tipoAnexo = $('#txtAnexoTipo' + (i + 1)).val();
-                    if (tipoAnexo == 1) {
-                        $('#mdlCardAnexos')
-                            .append('<div class="ui card">\
-                                        <div class="image">\
-                                            <img src="' + $('#preImagem' + (i + 1)).attr('src') + '" />\
-                                        </div>\
-                                        <div class="content">\
-                                            <div class="header">\
-                                                ' + $('#txtAnexoLegenda' + (i + 1)).val() + '\
-                                            </div>\
-                                            <div class="description">\
-                                            ' + $('#txtAnexoFonte' + (i + 1)).val() + '\
-                                            </div>\
-                                        </div>\
-                                    </div>'
-                        );
-                    }
-                }
-                $('#mdlAccordionAnexos').removeAttr('style');
-            }
-            else {
-                $('#mdlAccordionAnexos').attr('style', 'display:none');
-            }
-            $('.ui.confirmar.modal').modal('show');
-            $('.ui.confirmar.modal div').popup();
-        }
-
-        function enviarForm() {
-            $('.ui.error.message .list').html('');
-            var validado = false;
-            var tipo = @Model.CodTipoQuestao;
-            if ($('#txtEnunciado').val() != '') {
-                if (tipo == 1) {
-                    var qteAlternativas = @Model.Alternativa.Count;
-                    var ok = true;
-                    for (var i = 0; i < qteAlternativas; i++) {
-                        if ($('#txtAlternativaEnunciado' + (i + 1)).val() == '') {
-                            ok = false;
-                        }
-                    }
-                    if (ok) {
-                        ok = false;
-                        for (var i = 0; i < qteAlternativas; i++) {
-                            if ($('#chkAlternativaCorreta' + (i + 1)).is(':checked')) {
-                                ok = true;
-                            }
-                        }
-                        if (ok) {
-                            validado = true;
-                        }
-                        else {
-                            $('.ui.error.message .list').append('<li>É necessário selecionar pelo menos umas das alternativas como correta</li>')
-                        }
-                    }
-                    else {
-                        $('.ui.error.message .list').append('<li>É necessário preencher os enunciados de todas as alternativas</li>')
-                    }
-                }
-                else if (tipo == 2) {
-                    if ($('#txtChaveDeResposta').val() != '') {
-                        validado = true;
-                    }
-                    else {
-                        $('.ui.error.message .list').append('<li>É necessário preencher a chave de resposta</li>')
-                    }
-                }
-            }
-            else {
-                $('.ui.error.message .list').append('<li>É necessário preencher o enunciado</li>')
-            }
-
-            if (validado) Confirmar();
-            else $('#frmQuestao').addClass('error');
-        }
-    </script>
-}
-
 <div class="ui confirmar modal">
     <div class="header">Verificação e confirmação</div>
     <div class="content">
@@ -183,7 +47,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<form id="frmQuestao" method="post" class="ui form">
+<form id="frmQuestao" method="post" class="ui form" data-questao-tipo="@Model.CodTipoQuestao" data-questao-anexo="@Model.QuestaoAnexo.Count">
     <div class="ui error message">
         <div class="header">Verifique</div>
         <ul class="list"></ul>
@@ -318,5 +182,5 @@
     </div>
     <br />
     <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todas as alterações</p><a href='/Historico/Questao/@Model.CodQuestao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
-    <div class="ui button" onclick="enviarForm()">Prosseguir</div>
+    <div class="ui prosseguir button">Prosseguir</div>
 </form>
