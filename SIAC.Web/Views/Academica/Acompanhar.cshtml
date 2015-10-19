@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     // String html do gabarito para todos os alunos
-    string gabarito = "<table class=\"ui celled table\"><tbody><tr>";
+    @*string gabarito = "<table class=\"ui celled table\"><tbody><tr>";
     for (int i = 0, count = Model.Avaliacao.Questao.Count, linebreak = 20, countPerRow = 20; i < count; i++)
     {
         if (i == linebreak)
@@ -16,19 +16,19 @@
         gabarito += "<td data-questao=\""+Model.Avaliacao.Questao[i].CodQuestao+"\">"+i.GetIndiceQuestao()+"</td>";
     }
     gabarito += "</tr></tbody></table>";
-
+    *@
     // String html do gabarito para todos os alunos
-    string newGabarito = "<table class=\"ui celled table\"><tbody><tr>";
+    string gabarito = "<table style='border:0!important' class=\"ui table\"><tbody><tr class='ui circular labels'>";
     for (int i = 0, count = Model.Avaliacao.Questao.Count, linebreak = 5, countPerRow = 5; i < count; i++)
     {
         if (i == linebreak)
         {
-            newGabarito += "</tr><tr>";
+            gabarito += "</tr><tr class='ui circular labels'>";
             linebreak += countPerRow;
         }
-        newGabarito += "<td data-questao=\"" + Model.Avaliacao.Questao[i].CodQuestao + "\">" + i.GetIndiceQuestao() + "</td>";
+        gabarito += "<td style='padding: 5px!important;box-sizing:border-box;' class='ui label' data-questao=\"" + Model.Avaliacao.Questao[i].CodQuestao + "\">" + i.GetIndiceQuestao() + "</td>";
     }
-    newGabarito += "</tr></tbody></table>";
+    gabarito += "</tr></tbody></table>";
 }
 @section Styles {
     <style>
@@ -173,11 +173,16 @@
                     ');
                     }
                     
-                    if (lstEvento[lstEvento.length-1].Icone == "red warning sign" && !$('#'+alnMatricula+'lblWarning').length && !$('#'+alnMatricula).hasClass('active')) {
+                    $('#' + alnMatricula + 'lblInfo').remove();
+                    if (lstEvento[lstEvento.length - 1].Icone == "red warning sign" && !$('#' + alnMatricula + 'lblWarning').length && !$('#' + alnMatricula).hasClass('active')) {
                         $accordionChat = $('#' + alnMatricula + '.title');
                         $accordionChat.append($('<i></i>').attr('id', alnMatricula + 'lblWarning').addClass('red warning sign icon'));
                     }
-        
+
+                    else if (!$('#' + alnMatricula + 'lblWarning').length) {
+                        $accordionChat = $('#' + alnMatricula + '.title');
+                        $accordionChat.append($('<i></i>').attr('id', alnMatricula + 'lblInfo').addClass(lstEvento[lstEvento.length - 1].Icone+' icon'));
+                    }
                 }
             }
 
@@ -186,9 +191,16 @@
                 $('#' + matr + 'lblWarning').remove();
             });
 
-            acadHub.client.conectarAluno = function(usrMatricula) {
+            acadHub.client.conectarAluno = function (usrMatricula) {
+                $('#' + usrMatricula + '.title .small.label').remove();
                 $('#' + usrMatricula + '.title .status.label').removeClass('red').addClass('green');
                 $('#' + usrMatricula + '.content .button').removeClass('disabled');
+            };
+
+            acadHub.client.desconectarAluno = function (usrMatricula) {
+                $('#' + usrMatricula + '.title').append('<div class="ui small label">Desconectado</div>');
+                $('#' + usrMatricula + '.title .status.label').removeClass('green');
+                $('#' + usrMatricula + '.content .button').addClass('disabled');
             };
 
             acadHub.client.alunoFinalizou = function (usrMatricula) {
@@ -220,22 +232,24 @@
             };
 
             acadHub.client.atualizarProgresso = function (alnMatricula, value) {
-                $('#'+alnMatricula+'.content .progress')
-                    .progress({
-                        value: value,
-                        label: 'ratio',
-                        text: {
-                            ratio: '{value} de {total}'
-                        }
-                    })
-                ;
+                if (value > 0) {
+                    $('#' + alnMatricula + '.content .progress')
+                        .progress({
+                            value: value,
+                            label: 'ratio',
+                            text: {
+                                ratio: '{value} de {total}'
+                            }
+                        })
+                    ;
+                }
             }
 
             acadHub.client.respondeuQuestao = function (alnMatricula, questao, flag) {
                 $questao = $('#' + alnMatricula + '.content [data-questao="' + questao + '"]');
                 $questao.removeClass('positive').find('i').remove();
                 if (flag) {
-                    $questao.prepend('<i class="checkmark icon"></i>').addClass('positive');
+                    $questao.addClass('green');
                 }
             }
         }       
@@ -312,7 +326,7 @@
                 <div class="ui progress active" data-total="@Model.Avaliacao.Questao.Count">
                     <div class="bar"><div class="progress"></div></div>
                 </div>
-                @Html.Raw(gabarito)
+               @* @Html.Raw(gabarito) *@
                 <div class="ui small feed">
                     <h4 class="ui header">Atividade</h4>                       
                 </div>
@@ -337,7 +351,7 @@
                         <div class="ui comments" style="height: 200px;width:300px; overflow-y:scroll;">
                         </div>
                         <div class="ui icon fluid input">
-                            <input id="@(aluno.MatrAluno)msg" type="text" placeholder="Aperte enter para enviar..." maxlength="500" />
+                            <input autofocus id="@(aluno.MatrAluno)msg" type="text" placeholder="Aperte enter para enviar..." maxlength="500" />
                             <i class="send link icon enviar"></i>
                         </div>
                     </div>
@@ -349,7 +363,7 @@
                         Gabarito
                     </div>
                     <div class="content">
-                        @Html.Raw(newGabarito)
+                        @Html.Raw(gabarito)
                     </div>
                 </div>
             </div>
