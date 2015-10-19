@@ -35,10 +35,14 @@ namespace SIAC.Web.Hubs
 
                 if (!String.IsNullOrEmpty(matr))
                 {
-                    mapping.InserirEvento(matr, "red power", "Desconectou");
-                    if (!String.IsNullOrEmpty(mapping.SelecionarConnectionIdProfessor()))
+                    if (mapping.SeAlunoFinalizou(matr))
                     {
-                        Clients.Client(mapping.SelecionarConnectionIdProfessor()).desconectarAluno(matr);
+                        mapping.InserirEvento(matr, "red power", "Desconectou");
+
+                        if (!String.IsNullOrEmpty(mapping.SelecionarConnectionIdProfessor()))
+                        {
+                            Clients.Client(mapping.SelecionarConnectionIdProfessor()).desconectarAluno(matr);
+                        }
                     }
                 }
             }
@@ -373,8 +377,8 @@ namespace SIAC.Web.Hubs
 
         public void InserirEvento(string matricula, string icone, string descricao)
         {
-            if (_alunos.ContainsKey(matricula))
-            {
+            if (_alunos.ContainsKey(matricula) && !SeAlunoFinalizou(matricula))
+            { 
                 _alunos[matricula].Feed.Add(new Evento() { Icone = icone, Descricao = descricao, Data = DateTime.Now });
             }
         }
@@ -421,6 +425,15 @@ namespace SIAC.Web.Hubs
                 return _alunos[matricula].ConnectionId;
             }
             return null;
+        }
+
+        public bool SeAlunoFinalizou(string matricula)
+        {
+            if (_alunos.ContainsKey(matricula))
+            {
+                return _alunos[matricula].FlagFinalizou;
+            }
+            return false;
         }
 
         public string SelecionarMatriculaPorAluno(string connectionId)
