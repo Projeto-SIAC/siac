@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 
@@ -8,6 +9,44 @@ namespace SIAC.Web.Hubs
 {
     public class AcademicaHub : Hub
     {
+        #region Override
+
+        public override Task OnDisconnected(bool stopCalled)
+        {
+            var connId = Context.ConnectionId;
+
+            var acads = avaliacoes.ListarAcademicas();
+
+            var aval = String.Empty;
+
+            foreach (var key in acads.Keys)
+            {
+                if (acads[key].ListarConnectionIdAlunos().Contains(connId))
+                {
+                    aval = key;
+                    break;
+                }
+            }
+            if (!String.IsNullOrEmpty(aval))
+            {
+                var mapping = avaliacoes.SelecionarAcademica(aval);
+                
+                var matr = mapping.SelecionarMatriculaPorAluno(connId);
+
+                if (!String.IsNullOrEmpty(matr))
+                {
+                    mapping.InserirEvento(matr, "red power", "Desconectou");
+                    if (!String.IsNullOrEmpty(mapping.SelecionarConnectionIdProfessor()))
+                    {
+                        Clients.Client(mapping.SelecionarConnectionIdProfessor()).desconectarAluno(matr);
+                    }
+                }
+            }
+            return base.OnDisconnected(stopCalled);
+        }
+
+        #endregion
+
         private readonly static AcademicaMapping avaliacoes = new AcademicaMapping();
 
         public void Realizar(string codAvaliacao)
@@ -192,6 +231,11 @@ namespace SIAC.Web.Hubs
     {
         private readonly Dictionary<string, Academica> academicas = new Dictionary<string, Academica>();
 
+        public Dictionary<string, Academica> ListarAcademicas()
+        {
+            return academicas;
+        }
+
         public void InserirAcademica(string codAvaliacao)
         {
             lock (academicas)
@@ -375,6 +419,18 @@ namespace SIAC.Web.Hubs
             if (_alunos.ContainsKey(matricula))
             {
                 return _alunos[matricula].ConnectionId;
+            }
+            return null;
+        }
+
+        public string SelecionarMatriculaPorAluno(string connectionId)
+        {
+            foreach (var key in _alunos.Keys)
+            {
+                if (_alunos[key].ConnectionId == connectionId)
+                {
+                    return key;
+                }
             }
             return null;
         }

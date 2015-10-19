@@ -186,9 +186,16 @@
                 $('#' + matr + 'lblWarning').remove();
             });
 
-            acadHub.client.conectarAluno = function(usrMatricula) {
+            acadHub.client.conectarAluno = function (usrMatricula) {
+                $('#' + usrMatricula + '.title .small.label').remove();
                 $('#' + usrMatricula + '.title .status.label').removeClass('red').addClass('green');
                 $('#' + usrMatricula + '.content .button').removeClass('disabled');
+            };
+
+            acadHub.client.desconectarAluno = function (usrMatricula) {
+                $('#' + usrMatricula + '.title').append('<div class="ui small label">Desconectado</div>');
+                $('#' + usrMatricula + '.title .status.label').removeClass('green');
+                $('#' + usrMatricula + '.content .button').addClass('disabled');
             };
 
             acadHub.client.alunoFinalizou = function (usrMatricula) {
