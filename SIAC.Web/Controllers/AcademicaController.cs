@@ -656,7 +656,7 @@ namespace SIAC.Web.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAcademica aval = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (aval.Avaliacao.AvalPessoaResultado.Count == 0 && aval.Aluno.SingleOrDefault(a=>a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null)
+                if (aval.Aluno.SingleOrDefault(a=>a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null)
                 {
                     AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
                     avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
@@ -680,6 +680,10 @@ namespace SIAC.Web.Controllers
                                     avalQuesPessoaResposta.RespNota = 10;
                                     avalPessoaResultado.QteAcertoObj++;
                                 }
+                                else
+                                {
+                                    avalQuesPessoaResposta.RespNota = 0;
+                                }
                             }
                             else
                             {
@@ -693,7 +697,7 @@ namespace SIAC.Web.Controllers
 
                     aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
-                    //Repositorio.GetInstance().SaveChanges();
+                    Repositorio.GetInstance().SaveChanges();
 
                     ViewBag.Porcentagem = (avalPessoaResultado.QteAcertoObj / qteObjetiva) * 100;
                     return View(aval);
