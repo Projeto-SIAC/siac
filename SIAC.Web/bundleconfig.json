@@ -10,5 +10,11 @@
     "inputFiles": [
       "Resources/modules/siac.questao.js"
     ]
+  },
+  {
+    "outputFileName": "Resources/modules/siac.configuracoes.js",
+    "inputFiles": [
+      "Resources/modules/siac.configuracoes.js"
+    ]
   }
 ]

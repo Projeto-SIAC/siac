@@ -9,9 +9,7 @@
     @Styles.Render("~/bundles/css")
     @RenderSection("styles", required: false)
     @Scripts.Render("~/bundles/modernizr")
-    <style>
-        
-
+    <style>       
         .vertical.menu .item {
             padding-top: 1.2em !important;
             padding-bottom: 1.2em !important;
@@ -110,8 +108,8 @@
             <div class="ui segment">
                 <div class="ui header">
                     <i class="icon user"></i>
-                    <div class="content">
-                        @SIAC.Web.Helpers.Sessao.UsuarioNome
+                    <div class="content" data-matricula="@SIAC.Web.Helpers.Sessao.UsuarioMatricula">
+                        @SIAC.Web.Helpers.Sessao.UsuarioNome                        
                         <div class="sub header">
                             @SIAC.Web.Helpers.Sessao.UsuarioCategoria
                         </div>

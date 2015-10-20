@@ -291,6 +291,10 @@
     <Content Include="Resources\jquery.mask.min.js" />
     <Content Include="Resources\jquery.min.js" />
     <Content Include="Resources\modernizr.js" />
+    <Content Include="Resources\modules\siac.configuracoes.js" />
+    <Content Include="Resources\modules\siac.configuracoes.min.js">
+      <DependentUpon>siac.configuracoes.js</DependentUpon>
+    </Content>
     <Content Include="Resources\modules\siac.questao.js" />
     <Content Include="Resources\modules\siac.questao.min.js">
       <DependentUpon>siac.questao.js</DependentUpon>

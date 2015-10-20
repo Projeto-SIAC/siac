@@ -8,86 +8,7 @@
 
 @model SIAC.Web.Models.Parametro
 
-@section Scripts
-{
-    <script>
-        $('.menu .item').tab();
-        $('.ui.dropdown').dropdown();
-        $('.ui.accordion').accordion();
-
-        function atualizarParametros() {
-            $('#btnAtualizar').addClass('loading');
-            var form = $(':input');
-            $.ajax({
-                type: 'POST',
-                data: form,
-                url: "/Configuracoes",
-                success: function () {
-                    $('#btnAtualizar').addClass('green').text('Atualizado');
-                    $('#btnAtualizar').removeClass('loading');
-                },
-                error: function () {
-                    $('.ui.erro.modal').modal('show');
-                    $('#btnAtualizar').removeClass('loading');
-                }
-            });
-            return false;
-        };
-
-        function parametroModificado() {
-            $('#btnAtualizar').removeClass('green').text('Atualizar');
-        }
-
-        function cadastrar(itemFormId)
-        {
-            $(itemFormId).addClass('ui form loading');
-        }
-
-        var MatrizCount = 2;
-        var HorarioCount = 2;
-
-        function adicionarDisciplinaMatriz() {
-            var copia = $('[name="ddlDisciplina1"').clone();
-            $tr = $('<tr></tr>');
-            $td1 = $('<td></td>').append('\
-                        <div class="field required">\
-                            <input type="number" name="txtPeriodo' + MatrizCount + '" placeholder="Periodo..." required/>\
-                        </div>');
-            $td2 = $('<td></td>').append(copia.attr('name','ddlDisciplina'+MatrizCount).addClass('ui dropdown search fluid'));
-            $td3 = $('<td></td>').append('\
-                        <div class="field required">\
-                            <input type="number" name="txtCH' + MatrizCount + '" placeholder="Carga Horária..." required />\
-                        </div>');
-            $tr.append($td1).append($td2).append($td3);
-            $('.table.body').append($tr);
-            $('#matrizQte').val(MatrizCount);
-            $('.ui.dropdown').dropdown();
-            MatrizCount++;
-        }
-
-        function adicionarHorario() {
-            var horario = $('[name="txtHorario1"').clone();
-            var inicio = $('[name="txtInicio1"').clone();
-            var termino = $('[name="txtTermino1"').clone();
-
-            $tr = $('<tr></tr>');
-            $td1 = $('<td></td>').append(horario.attr('name', 'txtHorario' + HorarioCount).val(HorarioCount));
-            $td2 = $('<td></td>').append(inicio.attr('name', 'txtInicio' + HorarioCount));
-            $td3 = $('<td></td>').append(termino.attr('name', 'txtTermino' + HorarioCount));
-
-            $tr.append($td1).append($td2).append($td3);
-            $('.table.body.horario').append($tr);
-            $('#horarioQte').val(HorarioCount);
-            HorarioCount++;
-        }
-
-
-    </script>
-
-
-}
 <h2>@ViewBag.Title</h2>
-
 
 <div class="ui form">
     @* Modal de Conclusão *@
@@ -111,11 +32,11 @@
 
         <div class="field required">
             <label>Tempo de Inatividade (em dias)</label>
-            <input type="number" value="@Model.TempoInatividade" name="txtTempoInatividade" placeholder="Tempo de Inatividade" required onchange="parametroModificado()" />
+            <input type="number" value="@Model.TempoInatividade" name="txtTempoInatividade" placeholder="Tempo de Inatividade" required />
         </div>
         <div class="field required">
             <label>Tipo de Numeração das Questões</label>
-            <select name="ddlNumeracaoQuestao" class="ui dropdown" required onchange="parametroModificado()">
+            <select name="ddlNumeracaoQuestao" class="ui dropdown" required>
                 <option value="1" @(@Model.NumeracaoQuestao == 1 ? "selected" : "")>Algarismos indo-arábicos</option>
                 <option value="2" @(@Model.NumeracaoQuestao == 2 ? "selected" : "")>Algarismos romanos</option>
                 <option value="3" @(@Model.NumeracaoQuestao == 3 ? "selected" : "")>Letras em caixa baixa</option>
@@ -124,7 +45,7 @@
         </div>
         <div class="field required">
             <label>Tipo de Numeração das Alternativas</label>
-            <select name="ddlNumeracaoAlternativa" class="ui dropdown" required onchange="parametroModificado()">
+            <select name="ddlNumeracaoAlternativa" class="ui dropdown" required>
                 <option value="1" @(@Model.NumeracaoAlternativa == 1 ? "selected" : "")>Algarismos indo-arábicos</option>
                 <option value="2" @(@Model.NumeracaoAlternativa == 2 ? "selected" : "")>Algarismos romanos</option>
                 <option value="3" @(@Model.NumeracaoAlternativa == 3 ? "selected" : "")>Letras em caixa baixa</option>
@@ -133,18 +54,18 @@
         </div>
         <div class="field required">
             <label>Quantidade de Semestres</label>
-            <input name="txtQteSemestre" type="number" value="@Model.QteSemestres" placeholder="Quantidade de Semestres" required onchange="parametroModificado()" />
+            <input name="txtQteSemestre" type="number" value="@Model.QteSemestres" placeholder="Quantidade de Semestres" required />
         </div>
     </div>
     @* Termo *@
     <div class="ui bottom attached tab segment termo" data-tab="tab-termo">
         <div class="field required">
             <label>Termo de Responsabilidade</label>
-            <textarea rows="20" name="txtTermoResponsabilidade" placeholder="Digite aqui o Termo de Responsabilidade..." required onchange="parametroModificado()">@Model.TermoResponsabilidade</textarea>
+            <textarea rows="20" name="txtTermoResponsabilidade" placeholder="Digite aqui o Termo de Responsabilidade..." required >@Model.TermoResponsabilidade</textarea>
         </div>
         <div class="field required">
             <label>Nota de Uso</label>
-            <textarea rows="20" name="txtNotaUso" placeholder="Digite aqui a Nota de Uso..." required onchange="parametroModificado()">@Model.NotaUso</textarea>
+            <textarea rows="20" name="txtNotaUso" placeholder="Digite aqui a Nota de Uso..." required >@Model.NotaUso</textarea>
         </div>
     </div>
 
@@ -213,7 +134,7 @@
                     </select>
                 </div>
                 <br />
-                <input type="submit" onclick="cadastrar('#alunoForm')" class="ui button" value="Cadastrar" />
+                <input type="submit" class="ui button" value="Cadastrar" />
             </form>
         </div>
 
@@ -270,7 +191,7 @@
                     </select>
                 </div>
                 <br />
-                <input type="submit" onclick="cadastrar('#professorForm')" class="ui button" value="Cadastrar" />
+                <input type="submit" class="ui button" value="Cadastrar" />
             </form>
         </div>
 
@@ -309,7 +230,7 @@
                     <input type="text" name="txtColaboradorMatricula" placeholder="Matrícula..." required />
                 </div>
                 <br />
-                <input type="submit" onclick="cadastrar('#colaboradorForm')" class="ui button" value="Cadastrar" />
+                <input type="submit" class="ui button" value="Cadastrar" />
             </form>
         </div>
 
@@ -376,7 +297,7 @@
                     </select>
                 </div>
                 <br />
-                <input type="submit" onclick="cadastrar('#campusForm')" class="ui button" value="Cadastrar" />
+                <input type="submit" class="ui button" value="Cadastrar" />
             </form>
         </div>
 
@@ -445,7 +366,7 @@
                     </select>
                 </div>
                 <br />
-                <input type="submit" onclick="cadastrar('#diretoriaForm')" class="ui button" value="Cadastrar" />
+                <input type="submit" class="ui button" value="Cadastrar" />
             </form>
         </div>
 
@@ -514,7 +435,7 @@
                     </select>
                 </div>
                 <br />
-                <input type="submit" onclick="cadastrar('#cursoForm')" class="ui button" value="Cadastrar" />
+                <input type="submit" class="ui button" value="Cadastrar" />
             </form>
         </div>
 
@@ -573,7 +494,7 @@
                     <input type="text" name="txtTurmaNome" placeholder="Nome..." required />
                 </div>
                 <br />
-                <input type="submit" onclick="cadastrar('#turmaForm')" class="ui button" value="Cadastrar" />
+                <input type="submit" class="ui button" value="Cadastrar" />
             </form>
         </div>
 
@@ -626,7 +547,7 @@
                     <label>Temas (use ' ; ' para separar cada tema)</label>
                     <input type="text" name="txtTema" placeholder="Temas..." required />
                 </div>
-                <input type="submit" class="ui button" onclick="cadastrar('#disciplinaForm')" value="Cadastrar" />
+                <input type="submit" class="ui button" value="Cadastrar" />
             </form>
         </div>
 
@@ -726,7 +647,7 @@
                     <label>Sigla</label>
                     <input type="text" name="txtSalaSigla" maxlength="15" placeholder="Sigla..." required />
                 </div>
-                <input type="submit" onclick="cadastrar('#salaForm')" class="ui button" value="Cadastrar" />
+                <input type="submit" class="ui button" value="Cadastrar" />
             </form>
         </div>
 
@@ -811,8 +732,8 @@
                     </tbody>
                 </table>
                 <input id="matrizQte" name="matrizQte" value="" hidden/>
-                <div class="ui floated right button" onclick="adicionarDisciplinaMatriz()">Adicionar Disciplina</div>
-                <input type="submit" class="ui button" onclick="cadastrar('#matrizForm')" value="Cadastrar" />
+                <div class="ui floated right button adicionar disciplina">Adicionar Disciplina</div>
+                <input type="submit" class="ui button" value="Cadastrar" />
             </form>
         </div>
 
@@ -892,14 +813,19 @@
                     </tbody>
                 </table>
                 <input id="horarioQte" name="horarioQte" value="" hidden />
-                <div class="ui floated right button" onclick="adicionarHorario()">Adicionar Horário</div>
-                <input type="submit" class="ui button" onclick="cadastrar('#horarioForm')" value="Cadastrar" />
+                <div class="ui floated right button adicionar horario">Adicionar Horário</div>
+                <input type="submit" class="ui button" value="Cadastrar" />
             </form>
         </div>
 
     </div> 
     
     <br />
-    <div id="btnAtualizar" onclick="atualizarParametros()" type="button" class="ui button">Atualizar</div>
+    <div id="btnAtualizar" type="button" class="ui button">Atualizar</div>
 
 </div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/configuracoes")    
+}

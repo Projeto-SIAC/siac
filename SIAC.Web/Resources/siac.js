@@ -36,6 +36,9 @@
 	    else if (/\/historico\/questao\/editar\/[0-9]+$/.test(pathname)) {
 	        siac.Questao.Editar.iniciar();
 	    }
+	    else if (pathname == '/configuracoes') {
+	        siac.Configuracoes.iniciar();
+	    }
 	}
 
 	function mensagem(mensagem, titulo) {
