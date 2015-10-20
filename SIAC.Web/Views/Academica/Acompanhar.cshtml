@@ -18,7 +18,7 @@
     gabarito += "</tr></tbody></table>";
     *@
     // String html do gabarito para todos os alunos
-    string gabarito = "<table style='border:0!important' class=\"ui table\"><tbody><tr class='ui circular labels'>";
+    string gabarito = "<table style='border:0!important' class=\"ui unstackable table\"><tbody><tr class='ui circular labels'>";
     for (int i = 0, count = Model.Avaliacao.Questao.Count, linebreak = 5, countPerRow = 5; i < count; i++)
     {
         if (i == linebreak)

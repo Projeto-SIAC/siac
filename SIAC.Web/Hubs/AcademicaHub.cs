@@ -85,6 +85,10 @@ namespace SIAC.Web.Hubs
                 // ListarChat()
                 Clients.Client(mapping.SelecionarConnectionIdProfessor()).atualizarProgresso(alnMatricula, mapping.ListarQuestaoRespondidasPorAluno(alnMatricula).Count);
                 Clients.Client(mapping.SelecionarConnectionIdProfessor()).conectarAluno(alnMatricula);
+                if (mapping.SeAlunoFinalizou(alnMatricula))
+                {
+                    Clients.Client(mapping.SelecionarConnectionIdProfessor()).alunoFinalizou(alnMatricula);
+                }
             }
         }
 
@@ -225,9 +229,12 @@ namespace SIAC.Web.Hubs
         public void AlunoFinalizou(string codAvaliacao, string usrMatricula)
         {
             var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
-            mapping.AlterarAlunoFlagFinalizou(usrMatricula);
             mapping.InserirEvento(usrMatricula, "red sign out", "Finalizou");
-            Clients.Client(mapping.SelecionarConnectionIdProfessor()).alunoFinalizou(usrMatricula);
+            mapping.AlterarAlunoFlagFinalizou(usrMatricula);
+            if (!String.IsNullOrEmpty(mapping.SelecionarConnectionIdProfessor()))
+            {
+                Clients.Client(mapping.SelecionarConnectionIdProfessor()).alunoFinalizou(usrMatricula);
+            }
         }
     }
 
