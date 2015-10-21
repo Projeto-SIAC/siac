@@ -26,22 +26,35 @@ namespace SIAC.Web.Hubs
                     aval = key;
                     break;
                 }
+                else if (acads[key].SelecionarConnectionIdProfessor() == connId)
+                {
+                    aval = key;
+                    break;
+                }
             }
             if (!String.IsNullOrEmpty(aval))
             {
                 var mapping = avaliacoes.SelecionarAcademica(aval);
-                
-                var matr = mapping.SelecionarMatriculaPorAluno(connId);
+                mapping.DesconectarPorConnectionId(connId);
 
-                if (!String.IsNullOrEmpty(matr))
+                if (mapping.SeTodosDesconectados())
                 {
-                    if (!mapping.SeAlunoFinalizou(matr))
-                    {
-                        mapping.InserirEvento(matr, "red power", "Desconectou");
+                    avaliacoes.RemoverAcademica(aval);
+                }
+                else
+                {
+                    var matr = mapping.SelecionarMatriculaPorAluno(connId);
 
-                        if (!String.IsNullOrEmpty(mapping.SelecionarConnectionIdProfessor()))
+                    if (!String.IsNullOrEmpty(matr))
+                    {
+                        if (!mapping.SeAlunoFinalizou(matr))
                         {
-                            Clients.Client(mapping.SelecionarConnectionIdProfessor()).desconectarAluno(matr);
+                            mapping.InserirEvento(matr, "red power", "Desconectou");
+
+                            if (!String.IsNullOrEmpty(mapping.SelecionarConnectionIdProfessor()))
+                            {
+                                Clients.Client(mapping.SelecionarConnectionIdProfessor()).desconectarAluno(matr);
+                            }
                         }
                     }
                 }
@@ -116,7 +129,6 @@ namespace SIAC.Web.Hubs
                 {
                     Clients.Client(mapping.SelecionarConnectionIdProfessor()).respondeuQuestao(usrMatricula, codQuestao, false);
                 }
-                // ListarChat()
                 Clients.Client(mapping.SelecionarConnectionIdProfessor()).atualizarProgresso(usrMatricula, mapping.ListarQuestaoRespondidasPorAluno(usrMatricula).Count);
                 Clients.Client(mapping.SelecionarConnectionIdProfessor()).conectarAluno(usrMatricula);
             }
@@ -316,6 +328,7 @@ namespace SIAC.Web.Hubs
     public class Aluno
     {
         public string ConnectionId { get; set; }
+        public bool FlagConectado { get; set; }
         public bool FlagFinalizou { get; set; }
         public List<Evento> Feed { get; set; }
         public Dictionary<int, bool> Questoes { get; set; }
@@ -325,12 +338,13 @@ namespace SIAC.Web.Hubs
     public class Professor
     {
         public string ConnectionId { get; set; }
+        public bool FlagConectado { get; set; }
     }
 
     public class Academica
     {
-        // _professor: key = Matricula, value = ConnectionId
-        // _alunos: key = Matricula, value = { ConnectionId, FlagFinalizou, Feed, Questoes: key = CodQuestao, value = FlagRespondido, Chat = [{ Texto, FlagAutor }] }
+        // _professor: key = Matricula, value = { ConnectionId, FlagConectado }
+        // _alunos: key = Matricula, value = { ConnectionId, FlagConectado, FlagFinalizou, Feed, Questoes: key = CodQuestao, value = FlagRespondido, Chat = [{ Texto, FlagAutor }] }
         // _questaoMapa: key = CodQuestao, value = Indice em Avaliacao.Questao
         private KeyValuePair<string, Professor> _professor = new KeyValuePair<string, Professor>();
         private Dictionary<string, Aluno> _alunos = new Dictionary<string, Aluno>();
@@ -363,7 +377,7 @@ namespace SIAC.Web.Hubs
 
         public void InserirProfessor(string matricula, string connectionId)
         {
-            _professor = new KeyValuePair<string, Professor>(matricula, new Professor { ConnectionId = connectionId });
+            _professor = new KeyValuePair<string, Professor>(matricula, new Professor { ConnectionId = connectionId, FlagConectado = true });
         }
 
         public void InserirAluno(string matricula, string connectionId)
@@ -375,7 +389,7 @@ namespace SIAC.Web.Hubs
                 lstEvento = _alunos[matricula].Feed;
                 _alunos.Remove(matricula);
             }
-            _alunos.Add(matricula, new Aluno { ConnectionId = connectionId, FlagFinalizou = false, Feed = lstEvento, Chat = lstMensagem,  Questoes = new Dictionary<int, bool>() });
+            _alunos.Add(matricula, new Aluno { ConnectionId = connectionId, FlagConectado = true, FlagFinalizou = false, Feed = lstEvento, Chat = lstMensagem,  Questoes = new Dictionary<int, bool>() });
             for (int i = 0, length = _questaoMapa.Count; i < length; i++)
             {
                 _alunos[matricula].Questoes.Add(_questaoMapa.Keys.ElementAt(i), false);
@@ -488,6 +502,38 @@ namespace SIAC.Web.Hubs
             {
                 _alunos[matricula].FlagFinalizou = true;
             }
+        }
+
+        public void DesconectarPorConnectionId(string connectionId)
+        {
+            foreach (var key in _alunos.Keys)
+            {
+                if (_alunos[key].ConnectionId == connectionId)
+                {
+                    _alunos[key].FlagConectado = false;
+                    return;
+                }
+            }
+            if (_professor.Value.ConnectionId == connectionId)
+            {
+                _professor.Value.FlagConectado = false;
+            }
+        }
+
+        public bool SeTodosDesconectados()
+        {
+            if (_professor.Value.FlagConectado == true)
+            {
+                return false;
+            }
+            foreach (var key in _alunos.Keys)
+            {
+                if (_alunos[key].FlagConectado == true)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public bool ContemAluno(string matricula)
