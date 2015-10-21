@@ -60,11 +60,13 @@
                     success: function (data) {
                         $('#contagem').text(data.Tempo).parent().transition('flash');
                         if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
-                            $('.iniciar.button').removeClass('disabled').text('Iniciar');
+                            $('.reagendar.button').hide();
+                            $('.iniciar.button').removeClass('disabled');
                             $('.acompanhar.button').removeClass('disabled');
                         }
                         else if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == false) {
-                            $('.iniciar.button').addClass('disabled').text('Aguarde');
+                            $('.reagendar.button').show();
+                            $('.iniciar.button').addClass('disabled');
                             $('.acompanhar.button').addClass('disabled');
                         }
                         if (data.Intervalo > 0) {
@@ -159,7 +161,12 @@
                                         data: { codAvaliacao: avalCodigo},
                                         success: function(data) {
                                             if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
+                                                $('.reagendar.button').hide();
                                                 $('.acompanhar.button').removeClass('disabled');
+                                            }
+                                            else {
+                                                $('.reagendar.button').show();
+                                                $('.acompanhar.button').addClass('disabled');
                                             }
                                         }
                                     });

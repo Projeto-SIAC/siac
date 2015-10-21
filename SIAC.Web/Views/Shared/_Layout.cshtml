@@ -53,7 +53,7 @@
         }
     </style>
 </head>
-<body>
+<body>    
     <div class="ui menu" style="border-radius:0">
             <a href="~/" class="item">
                 <img src="~/Resources/images/layout/logo-black.png" />
@@ -155,10 +155,7 @@
         <div class="actions">
             <div class="ui cancel button">Fechar</div>
         </div>
-    </div>
-    <div class="ui dimmer">
-        <div class="ui large text global loader">Carregando</div>
-    </div>
+    </div>    
     <div class="ui lero icon button" onmouseover="selecionarFocado()" onclick="leroLero()" style="position: fixed; right:.5em; bottom:.5em; z-index: 1003"><i class="icon write"></i></div>
     @Scripts.Render("~/bundles/js")
     @RenderSection("scripts", required: false)
@@ -186,5 +183,8 @@
             });
         }
     </script>
+    <div class="ui dimmer">
+        <div class="ui large text global loader">Carregando</div>
+    </div>
 </body>
 </html>

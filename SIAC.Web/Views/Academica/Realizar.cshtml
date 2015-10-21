@@ -26,6 +26,18 @@
     <div class="ui right floated button" onclick="$('.ui.informacoes.modal').modal('show')">Informações</div>
 </h2>
 
+<div class="ui continuar small modal">
+    <div class="header">Atenção</div>
+    <div class="content">
+        <p>Você ainda tem tempo para responder as questões restantes.</p>
+        <p><b>Essa ação não poderá ser desfeita</b>.</p>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Cancelar</div>
+        <div class="ui approve button">Confirmar</div>
+    </div>
+</div>
+
 <div class="ui informacoes modal">
     <i class="icon close"></i>
     <div class="header">Informações sobre autoavaliação</div>
@@ -245,6 +257,8 @@
             })
         ;
 
+        
+
         $('.ui.anexo.modal')
             .modal()
         ;
@@ -258,7 +272,16 @@
                 inline: true,
                 on: 'click'
             })
-        ;        
+        ;
+
+        (function () {
+            setInterval(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/Acesso/Conectado'
+                });
+            }, 1000 * 60 * 15);
+        })();
 
         function expandirImagem(card) {
             card = $(card);
@@ -455,17 +478,29 @@
 
                 };
 
+                $('.ui.continuar.modal')
+                    .modal({
+                        onApprove: function () {
+                            acadHub.server.alunoVerificando(avalAcad, usrMatr);
+                            Confirmar();
+                        },
+                        onDeny: function () {
+                            $('form').addClass('error');
+                            $('form .message').removeClass('hidden');
+                            $('html, body').animate({
+                                scrollTop: $(".title .label.red").offset().top
+                            }, 1000);
+                        }
+                    })
+                ;
+
                 $('.finalizar.button').click(function () {
                     if (Verificar()) {
                         acadHub.server.alunoVerificando(avalAcad, usrMatr);
                         Confirmar();
                     }
                     else {
-                        $('form').addClass('error');
-                        $('form .message').removeClass('hidden');
-                        $('html, body').animate({
-                            scrollTop: $(".title .label.red").offset().top
-                        }, 1000);
+                        $('.continuar.modal').modal('show');                        
                     }
                 });
 

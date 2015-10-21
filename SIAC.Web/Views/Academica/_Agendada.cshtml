@@ -226,11 +226,9 @@
     @if (CodCategoria == 2)
     {
     <div onclick="window.open('/Historico/Avaliacao/Academica/Imprimir/@Model.Avaliacao.CodAvaliacao', '_blank');" class="ui button">Imprimir</div>
-    <div class="ui arquivar button">Arquivar</div>
-        if (!FlagAgora)
-        {
-            <div onclick="window.location.href='/Dashboard/Avaliacao/Academica/Agendar/@Model.Avaliacao.CodAvaliacao'" class="ui button">Reagendar</div>
-        }
+    <div class="ui arquivar button">Arquivar</div>        
+    <div onclick="window.location.href='/Dashboard/Avaliacao/Academica/Agendar/@Model.Avaliacao.CodAvaliacao'" class="ui reagendar button" @(!Model.Avaliacao.FlagLiberada || !FlagAgora ? "" : "style=\"display:none\"")>Reagendar</div>
+        
         if(!FlagVencida)
         {
             if (!Model.Avaliacao.FlagLiberada)
