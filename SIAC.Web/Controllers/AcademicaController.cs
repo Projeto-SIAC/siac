@@ -674,9 +674,13 @@ namespace SIAC.Web.Controllers
                             if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1)
                             {
                                 qteObjetiva++;
-                                int resposta = -1;
-                                int.TryParse(form["rdoResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao], out resposta);
-                                avalQuesPessoaResposta.RespAlternativa = resposta;
+                                int respAlternativa = -1;
+                                string strRespAlternativa = form["rdoResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao];
+                                if (!String.IsNullOrEmpty(strRespAlternativa))
+                                {
+                                    int.TryParse(strRespAlternativa, out respAlternativa);
+                                }
+                                avalQuesPessoaResposta.RespAlternativa = respAlternativa;
                                 if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q => q.FlagGabarito.HasValue && q.FlagGabarito.Value).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
                                 {
                                     avalQuesPessoaResposta.RespNota = 10;
@@ -695,6 +699,12 @@ namespace SIAC.Web.Controllers
                             avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
                         }
 
+                    }
+
+                    var lstAvalQuesPessoaResposta =  aval.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == codPessoaFisica);
+                    if (lstAvalQuesPessoaResposta.Where(r => !r.RespNota.HasValue).Count() == 0)
+                    {
+                        avalPessoaResultado.Nota = lstAvalQuesPessoaResposta.Average(r => r.RespNota);
                     }
 
                     aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);

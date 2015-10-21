@@ -523,7 +523,7 @@ namespace SIAC.Web.Hubs
 
         public bool SeTodosDesconectados()
         {
-            if (_professor.Value.FlagConectado == true)
+            if (_professor.Key != null && _professor.Value.FlagConectado == true)
             {
                 return false;
             }
