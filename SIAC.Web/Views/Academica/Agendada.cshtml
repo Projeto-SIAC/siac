@@ -26,6 +26,23 @@
                         $('.ui.avaliacao.modal .ui.accordion').accordion({
                             onChange: function () { $('.ui.avaliacao.modal').modal('refresh'); }
                         });
+                        $('.arquivar.button').click(function () {
+                            var _this = this;
+                            $(_this).addClass('loading');
+                            $.ajax({
+                                url: '/Dashboard/Avaliacao/Academica/Arquivar/' + avalCodigo,
+                                type: 'POST',
+                                success: function (data) {
+                                    if (data) {
+                                        window.location.href = '/Dashboard/Avaliacao/Academica/Detalhe/' + avalCodigo;
+                                    }
+                                },
+                                error: function () {
+                                    $(_this).removeClass('loading');
+                                    siac.mensagem('Ocorreu um erro inesperado na tentativa de arquivar a avaliação.', 'Tente novamente')
+                                }
+                            });
+                        });
                         AbrirHub();
                         ContagemRegressiva(1000);
                     },
@@ -35,30 +52,30 @@
         }
 
         function ContagemRegressiva(intervalo) {
-            if (intervalo > 0) {
-                setTimeout(function () {
-                    $.ajax({
-                        type: 'GET',
-                        url: '/Historico/Avaliacao/Academica/ContagemRegressiva',
-                        data: { codAvaliacao: avalCodigo },
-                        success: function (data) {
-                            $('#contagem').text(data.Tempo).parent().transition('flash');
-                            if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
-                                $('.iniciar.button').removeClass('disabled').text('Iniciar');
-                                $('.acompanhar.button').removeClass('disabled');
-                            }
-                            else if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == false) {
-                                $('.iniciar.button').addClass('disabled').text('Aguarde');
-                                $('.acompanhar.button').addClass('disabled');
-                            }
-                            if (data.intervalo > 0) {
-                                ContagemRegressiva(data.Intervalo);
-                            }
+            setTimeout(function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/Historico/Avaliacao/Academica/ContagemRegressiva',
+                    data: { codAvaliacao: avalCodigo },
+                    success: function (data) {
+                        $('#contagem').text(data.Tempo).parent().transition('flash');
+                        if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
+                            $('.iniciar.button').removeClass('disabled').text('Iniciar');
+                            $('.acompanhar.button').removeClass('disabled');
                         }
-                    });
-                }, intervalo);
-            }
+                        else if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == false) {
+                            $('.iniciar.button').addClass('disabled').text('Aguarde');
+                            $('.acompanhar.button').addClass('disabled');
+                        }
+                        if (data.Intervalo > 0) {
+                            ContagemRegressiva(data.Intervalo);
+                        }
+                    }
+                });
+            }, intervalo);
         }
+
+        
 
         // SignalR
         function AbrirHub() {

@@ -67,7 +67,7 @@
     <div class="header">Você tem certeza?</div>
     <div class="content">
         <input id="txtRef" type="text" hidden />
-        Você está deixando a página. Isso será considerado como <b>cancelamento</b> e você perderá todos os dados.
+        Você está deixando a página. Isso será considerado como <b>desistência</b> e você perderá todos os dados.
     </div>
     <div class="actions">
         <div class="ui cancel button">Voltar para avaliação</div>
@@ -210,7 +210,12 @@
                                     }
         </div>
     </div>
-    <div class="ui button">Desistir</div>
+    <div class="ui trigger button">Desistir</div>
+    <div class="ui popup">
+        <div class="header">Desistir</div>
+        <div class="content">Tem certeza que deseja desistir da avaliação? <b>Essa ação não poderá ser desfeita</b>.</div>
+        <div class="content"><div class="ui right floated small button" onclick="desistir()">Confirmar</div></div>
+    </div>
     <div class="ui finalizar button">Finalizar</div>
 </form>
 
@@ -233,7 +238,9 @@
 
         $('.ui.confirmar.modal')
             .modal({
-                onApprove: function () { window.onbeforeunload = function () { $('.ui.global.loader').parent().addClass('active'); }; window.location.href = $('.ui.confirmar.modal #txtRef').val(); },
+                onApprove: function () {                    
+                    desistir($('.ui.confirmar.modal #txtRef').val());
+                },
                 onDeny: function () { $('.ui.segment.loading').removeClass('loading'); }
             })
         ;
@@ -251,7 +258,7 @@
                 inline: true,
                 on: 'click'
             })
-        ;
+        ;        
 
         function expandirImagem(card) {
             card = $(card);
@@ -266,12 +273,11 @@
 
             modal.modal('show');
         }
-
+        var interval;
         function Relogio() {
-            setInterval(function () {
+            interval = setInterval(function () {
                 date = new Date();
-                $('#lblHoraAgora')
-                    .text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
+                $('#lblHoraAgora').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
                 Temporizador('@(Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToString("yyyy-MM-dd HH:mm:ss"))');
             }, 1000);
         }
@@ -295,7 +301,6 @@
             var timeRestante = (dtTermino.getTime() + offset) - (new Date().getTime() + offset);
 
             if (timeRestante > 0) {
-                //duracao = duracao - 1;
                 var date = new Date();
                 date.setTime(timeRestante);
                 var offsetDate = date.getTimezoneOffset() * 60 * 1000;
@@ -308,6 +313,12 @@
                 if (timeRestante < 60000 && !$('#lblHoraRestante').parent().hasClass('red')) {
                     $('#lblHoraRestante').parent().addClass('red');
                 }
+            }
+            else {
+                clearInterval(interval);
+                alert('O tempo de aplicação acabou, sua prova será enviada automaticamente.');
+                $('.ui.global.loader').parent().addClass('active');
+                Finalizar();
             }
         }
 
@@ -407,6 +418,27 @@
           })
         ;
         
+        function desistir(url) {
+            $('.ui.global.loader').parent().addClass('active');
+            $.ajax({
+                url: '/Dashboard/Avaliacao/Academica/Desistir/@Model.Avaliacao.CodAvaliacao',
+                type: 'POST',
+                success: function () {
+                    window.onbeforeunload = function () {
+                        $('.ui.global.loader').parent().addClass('active');
+                    };
+                    if (!url) {
+                        url = '/Dashboard';
+                    }
+                    window.location.href = url;
+                },
+                error: function () {
+                    $('.ui.global.loader').parent().removeClass('active');
+                    siac.mensagem('Ocorreu um erro na tentativa de desistência');
+                }
+            });
+        }
+
         // SignalR
         var acadHub = $.connection.academicaHub;
 
@@ -517,7 +549,12 @@
             });
 
             acadHub.client.alertar = function (mensagem) {
+                var timeAntes = new Date();
                 alert(mensagem);
+                var timeDepois = new Date();
+                if ((timeDepois-timeAntes)<350) {
+                    siac.mensagem(mensagem, 'O professor disse...');
+                }
             }
 
             acadHub.client.enviarAval = function (codAvaliacao) {

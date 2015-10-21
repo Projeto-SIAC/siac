@@ -10,7 +10,7 @@
     <i class="icon checkmark"></i>
     <div class="content">
         <div class="header">Avaliação gerada com sucesso.</div>
-        <p>Sua avaliação acadêmica encontra-se no seu <b><a href="/Historico/Autoavaliacao">Histórico</a></b> e você poderá realizá-la quando bem entender.
+        <p>Sua avaliação acadêmica encontra-se no seu <b><a href="/Historico/Avaliacao/Academica">Histórico</a></b> e você poderá realizá-la quando bem entender.
     </div>
 </div>
 <div class="ui segment">
@@ -56,7 +56,7 @@
     </table>
 </div>
 
-<div class="ui very relaxed items">
+@*<div class="ui very relaxed items">
     <span class="ui label">@ViewBag.QteQuestoes Questões</span>
     @{
         List<int> cods = new List<int>();
@@ -87,8 +87,8 @@
             <span class="ui label">@item</span>
         }
     }
-</div>
+</div>*@
 
 <a href="/Dashboard" class="ui button">Voltar para Dashboard</a>
-<a href="/Historico/Autoavaliacao" class="ui button">Autoavaliações Salvas</a>
-<a href="/Dashboard/Autoavaliacao/Realizar/@Model.Avaliacao.CodAvaliacao" class="ui button">Realizar agora</a>
+<a href="/Historico/Avaliacao/Academica" class="ui button">Avaliações Acadêmicas</a>
+<a href="/Dashboard/Avaliacao/Academica/Agendar/@Model.Avaliacao.CodAvaliacao" class="ui button">Agendar agora</a>
