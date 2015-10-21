@@ -10,6 +10,12 @@
         function entrar() {
             $('.ui.accordion').accordion({
             });
+
+            $('.ui.modal').modal();
+
+            $('.ui.button.informacoes').click(function () {
+                $('.modal.informacoes').modal('show');
+            })
         }
 
         entrar();
@@ -18,74 +24,143 @@
 
 <h2>
     @ViewBag.Title
-<div class="ui right floated button">Corrigir</div>
+    <div class="ui right floated button corrigir">Corrigir</div>
+    <div class="ui right floated button informacoes">Informações</div>
 </h2>
 
-<div class="informacoes">
+<div class="ui modal informacoes">
+    <div class="header">
+        @Model.Avaliacao.CodAvaliacao
+    </div>
     <div class="content">
-        <div class="ui labels">
-            <div class="ui label">Disciplina<div class="detail">@Model.Disciplina.Descricao</div></div>
-            <div class="ui label">Curso<div class="detail">@Model.Turma.Curso.Descricao</div></div>
-            <div class="ui label">Turma<div class="detail">@Model.Turma.CodTurma</div></div>
-            <div class="ui label">Início<div class="detail">@Model.Avaliacao.DtAplicacao.Value.ToString("HH'h'mm'min'")</div></div>
-            <div class="ui label">Término<div class="detail">@Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToString("HH'h'mm'min'")</div></div>
-        </div>
-        <table class="ui striped table">
-            <thead>
-                <tr>
-                    <th>Disciplina</th>
-                    <th>Tema(s)</th>
-                    <th>Quantidade</th>
-                    <th>Dificuldade</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <b>@Model.Disciplina.Descricao</b>
-                    </td>
-                    <td class="ui labels">
-                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema)
+        <div class="ui fluid styled accordion">
+            <div class="active title"><i class="dropdown icon"></i>Detalhes</div>
+            <div class="active content">
+                <table class="ui striped table">
+                    <thead>
+                        <tr>
+                            <th>Disciplina</th>
+                            <th>Tema(s)</th>
+                            <th>Quantidade</th>
+                            <th>Dificuldade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
                         {
-                            <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                            <tr>
+                                <td>
+                                    @* disciplina *@
+                                    <b>@disc.Descricao</b>
+                                </td>
+                                <td class="ui labels">
+                                    @* temas *@
+                                    @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                                    {
+                                        <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                                    }
+                                </td>
+                                <td class="ui labels">
+                                    @* qte de questões *@
+                                    <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
+                                    <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
+                                </td>
+                                <td>
+                                    @* dificuldade *@
+                                    @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
+                                </td>
+                            </tr>
                         }
-                    </td>
-                    <td class="ui labels">
-                        <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(1)</div></div>
-                        <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(2)</div></div>
-                    </td>
-                    <td>
-                        @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(Model.Disciplina.CodDisciplina)
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+            <div class="title"><i class="dropdown icon"></i>Agendamento</div>
+            <div class="content">
+                <table class="ui striped table">
+                    <thead>
+                        <tr>
+                            <th>Turma</th>
+                            <th>Data</th>
+                            <th>Horário</th>
+                            <th>Sala</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @* Turma *@
+                                @Model.Turma.Curso.Descricao (@Model.Turma.CodTurma)
+                            </td>
+                            <td>
+                                @* Data *@
+                                @Model.Avaliacao.DtAplicacao.Value.ToString("ddd, dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @* Horário *@
+                                Das @Model.Avaliacao.DtAplicacao.Value.ToShortTimeString() até @Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToShortTimeString()
+                            </td>
+                            <td>
+                                @* Sala *@
+                                @Model.Sala.Descricao
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
-
 <div class="ui basic segment">
     <div class="ui accordion">
         @foreach (Aluno aluno in Model.Aluno.OrderBy(a => a.Usuario.PessoaFisica.Nome))
         {
+            var lstResposta = Model.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == aluno.Usuario.CodPessoaFisica);
+
+            bool realizou = lstResposta.Count() != 0;
+
             <div id="@aluno.MatrAluno" class="title">
                 <i class="dropdown icon" style="float:right"></i>
-                <div class="ui status mini empty circular label"></div>
                 <b class="nome">@aluno.Usuario.PessoaFisica.Nome</b> @aluno.MatrAluno
+                @if (!realizou)
+                {
+                    <div class="ui small label">Ausente</div>
+                }
             </div>
             <div id="@aluno.MatrAluno" class="content">
-                <div style="height: 200px; background-color: teal;">
-                    <table class="ui celled table">
-                        <tr>
-                            @foreach (AvalQuesPessoaResposta resp in aluno.Usuario.PessoaFisica.AvalQuesPessoaResposta.OrderBy(aqpr=>aqpr.CodQuestao))
+                <table class="ui very basic table">
+                    @{
+                            int indice = 0;
+                            int qteColunas = 10;
+
+                            foreach (AvalQuesPessoaResposta resp in lstResposta.OrderBy(aqpr => aqpr.CodQuestao))
                             {
-                                if (@resp.RespAlternativa.HasValue)
+                                if (resp.RespAlternativa.HasValue)
                                 {
-                                <td>@resp.CodQuestao - @resp.RespAlternativa.Value</td>
-                                }
+                                //if (resp.RespNota == 10)
+                                //{
+                                    <td>
+                                        <div class="ui label">
+                                            <i class="@(resp.RespNota == 10 ? "checkmark green" : "remove red") icon"></i>
+                                            @indice.GetIndiceQuestao()
+                                            <div class="detail">@resp.RespAlternativa.Value.GetIndiceAlternativa()</div>
+                                        </div>
+                                    </td>
+                                @*}
+                                else
+                                {
+                                    <td class="negative">
+                                        <div class="ui label">
+                                            <i class="close red icon"></i>
+                                            @indice.GetIndiceQuestao() 
+                                            <div class="detail">@resp.RespAlternativa.Value.GetIndiceAlternativa()</div>
+                                        </div>
+                                    </td>
+                                }*@
                             }
-                        </tr>
-                    </table>
-                </div>
+                            indice++;
+                        }
+                    }
+                </table>
             </div>
         }
     </div>
