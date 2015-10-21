@@ -95,7 +95,8 @@ namespace SIAC.Web.Hubs
                 {
                     Clients.Client(mapping.SelecionarConnectionIdProfessor()).respondeuQuestao(alnMatricula, codQuestao, true);
                 }
-                // ListarChat()
+                Clients.Client(mapping.SelecionarConnectionIdProfessor()).listarChat(alnMatricula, mapping.ListarChat(alnMatricula));
+                
                 Clients.Client(mapping.SelecionarConnectionIdProfessor()).atualizarProgresso(alnMatricula, mapping.ListarQuestaoRespondidasPorAluno(alnMatricula).Count);
                 Clients.Client(mapping.SelecionarConnectionIdProfessor()).conectarAluno(alnMatricula);
                 if (mapping.SeAlunoFinalizou(alnMatricula))
