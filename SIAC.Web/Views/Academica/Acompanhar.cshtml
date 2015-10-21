@@ -252,6 +252,32 @@
                     $questao.addClass('green');
                 }
             }
+
+            acadHub.client.listarChat = function (alnMatricula, mensagens) {
+                for (var i = 0, length = mensagens.length; i < length; i++) {
+                    if(mensagens[i].FlagAutor){
+                        acadHub.client.chatProfessorRecebe(alnMatricula, mensagens[i].Texto);
+                    }
+                    else {
+                        var mensagem = mensagens[i].Texto;
+                        mensagem = siac.Utilitario.quebrarLinhaEm(mensagem, 30);
+                        $('#' + alnMatricula + '.content .chat.popup .comments').append('\
+                        <div class="comment" style="float:right;clear:both;">\
+                            <div class="content">\
+                            <div class="ui right pointing label">\
+                                '+ mensagem + '\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+                        
+                        var $comments = $('#'+alnMatricula+'.content .comments');
+                        $($comments).animate({
+                            scrollTop: $comments.children().last().offset().top
+                        }, 0);
+                    }
+                }
+            }
         }       
         
         ConectarHub('@Model.Avaliacao.CodAvaliacao', '@SIAC.Web.Helpers.Sessao.UsuarioMatricula');
