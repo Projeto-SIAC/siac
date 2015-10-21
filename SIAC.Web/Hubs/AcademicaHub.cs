@@ -35,7 +35,7 @@ namespace SIAC.Web.Hubs
 
                 if (!String.IsNullOrEmpty(matr))
                 {
-                    if (mapping.SeAlunoFinalizou(matr))
+                    if (!mapping.SeAlunoFinalizou(matr))
                     {
                         mapping.InserirEvento(matr, "red power", "Desconectou");
 

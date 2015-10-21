@@ -6,7 +6,7 @@
 }
 
 
-<h2>@ViewBag.Title@if (Model.Avaliacao.FlagLiberada)
+<h2>@ViewBag.Title@if (Model.Avaliacao.AvalPessoaResultado.Count > 0)
 { <div class="ui label"><i class="icon checkmark"></i>Realizada</div> }</h2>
 
 <div class="ui basic segment">
@@ -95,3 +95,33 @@ else
     <a href="/Dashboard/Avaliacao/Academica/Agendar/@Model.Avaliacao.CodAvaliacao" class="ui button">Agendar</a>
 }
 <a href="/Historico/Avaliacao/Academica" class="ui button">Histórico</a>
+@if (Model.Avaliacao.FlagArquivo || Model.Avaliacao.AvalPessoaResultado.Count == 0)
+{
+    <div class="ui arquivar toggle @(Model.Avaliacao.FlagArquivo ? "active" : "") button">Arquiva@(Model.Avaliacao.FlagArquivo ? "da" : "r")</div>
+}
+
+@section Scripts {
+    <script>
+        $('.arquivar.button').click(function () {
+            var _this = this;
+            $(_this).addClass('loading');
+            $.ajax({
+                url: '/Dashboard/Avaliacao/Academica/Arquivar/@Model.Avaliacao.CodAvaliacao',
+                type: 'POST',
+                success: function (data) {
+                    if (data) {
+                        $(_this).addClass('active').text('Arquivada');
+                    }
+                    else {
+                        $(_this).removeClass('active').text('Arquivar');
+                    }
+                    $(_this).removeClass('loading');
+                },
+                error: function () {
+                    $(_this).removeClass('loading');
+                    siac.mensagem('Ocorreu um erro inesperado na tentativa de arquivar a avaliação.', 'Tente novamente')
+                }
+            });
+        });
+    </script>
+    }

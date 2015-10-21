@@ -45,7 +45,10 @@ namespace SIAC.Web.Models
         public static List<AvalAcademica> ListarAgendadaPorProfessor(int codProfessor)
         {
             return contexto.AvalAcademica
-                .Where(a => a.CodProfessor == codProfessor && a.Avaliacao.DtAplicacao.HasValue && a.Avaliacao.AvalPessoaResultado.Count == 0)
+                .Where(a => a.CodProfessor == codProfessor
+                    && a.Avaliacao.DtAplicacao.HasValue
+                    && a.Avaliacao.AvalPessoaResultado.Count == 0
+                    && !a.Avaliacao.FlagArquivo)
                 .OrderBy(a => a.Avaliacao.DtAplicacao)
                 .ToList();
         }
@@ -71,7 +74,10 @@ namespace SIAC.Web.Models
         public static List<AvalAcademica> ListarAgendadaPorAluno(int codAluno)
         {          
             return contexto.AvalAcademica
-                .Where(a => a.Turma.TurmaDiscAluno.Where(t => t.CodAluno == codAluno).Count() > 0 && a.Avaliacao.DtAplicacao.HasValue && a.Avaliacao.AvalPessoaResultado.Count == 0)
+                .Where(a => a.Turma.TurmaDiscAluno.Where(t => t.CodAluno == codAluno).Count() > 0 
+                    && a.Avaliacao.DtAplicacao.HasValue 
+                    && a.Avaliacao.AvalPessoaResultado.Count == 0
+                    && !a.Avaliacao.FlagArquivo)
                 .OrderBy(a => a.Avaliacao.DtAplicacao)
                 .ToList();
         }

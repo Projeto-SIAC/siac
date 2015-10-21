@@ -226,10 +226,10 @@
     @if (CodCategoria == 2)
     {
     <div onclick="window.open('/Historico/Avaliacao/Academica/Imprimir/@Model.Avaliacao.CodAvaliacao', '_blank');" class="ui button">Imprimir</div>
-    <div class="ui button">Arquivar</div>
+    <div class="ui arquivar button">Arquivar</div>
         if (!FlagAgora)
         {
-            <div onclick="window.location.replace('/Dashboard/Avaliacao/Academica/Agendar/@Model.Avaliacao.CodAvaliacao')" class="ui button">Reagendar</div>
+            <div onclick="window.location.href='/Dashboard/Avaliacao/Academica/Agendar/@Model.Avaliacao.CodAvaliacao'" class="ui button">Reagendar</div>
         }
         if(!FlagVencida)
         {
@@ -245,18 +245,18 @@
             {
                 <div class="ui toggle active liberar button">Liberada</div>
             }
+            <div onclick="window.location.href= '/Dashboard/Avaliacao/Academica/Acompanhar/@Model.Avaliacao.CodAvaliacao'" class="ui @(!FlagAgora || (FlagAgora && !Model.Avaliacao.FlagLiberada) ? "disabled" : "") acompanhar button">Acompanhar</div>
         }
-        <div onclick="window.location.replace('/Dashboard/Avaliacao/Academica/Acompanhar/@Model.Avaliacao.CodAvaliacao')" class="ui @(!FlagAgora || (FlagAgora && !Model.Avaliacao.FlagLiberada) ? "disabled" : "") acompanhar button">Acompanhar</div>
     }
     else if (CodCategoria == 1)
     {
         if (FlagAgora)
         {
-            <div onclick="window.location.replace('/Dashboard/Avaliacao/Academica/Realizar/@Model.Avaliacao.CodAvaliacao')" class="ui iniciar button">@(Model.Avaliacao.FlagLiberada ? "Iniciar" : "Aguarde")</div>
+            <div onclick="window.location.href='/Dashboard/Avaliacao/Academica/Realizar/@Model.Avaliacao.CodAvaliacao'" class="ui iniciar button">Iniciar</div>
         }
         else if (!FlagVencida)
         {
-            <div class="ui iniciar disabled button">Aguarde</div>
+            <div onclick="window.location.href ='/Dashboard/Avaliacao/Academica/Realizar/@Model.Avaliacao.CodAvaliacao'" class="ui iniciar disabled button">Iniciar</div>
         }
     }
 </div>

@@ -567,7 +567,7 @@ namespace SIAC.Web.Controllers
             AvalAcademica avalAcad = AvalAcademica.ListarPorCodigoAvaliacao(codAvaliacao);
             string strTempo = avalAcad.Avaliacao.DtAplicacao.Value.ToLeftTimeString();
             int qteMilissegundo = 0;
-            bool flagLiberada = avalAcad.Avaliacao.FlagLiberada;
+            bool flagLiberada = avalAcad.Avaliacao.FlagLiberada && avalAcad.Avaliacao.DtAplicacao.Value.AddMinutes(avalAcad.Avaliacao.Duracao.Value) > DateTime.Now;
             if (strTempo != "Agora")
             {
                 char tipo = strTempo[(strTempo.IndexOf(' '))+1];
@@ -607,13 +607,13 @@ namespace SIAC.Web.Controllers
                 if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
                 {
                     AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                    if (acad != null)
+                    if (acad != null && acad.Avaliacao.DtAplicacao.HasValue && acad.Avaliacao.DtAplicacao.Value.AddMinutes(acad.Avaliacao.Duracao.Value) > DateTime.Now)
                     {
                         return View(acad);
                     }
                 }
             }
-            return View("Agendada");
+            return RedirectToAction("Agendada");
         }
 
         //POST: Academica/Printar/CodAvaliacao/UsrMatricula
@@ -640,15 +640,15 @@ namespace SIAC.Web.Controllers
             if (Helpers.Sessao.UsuarioCategoriaCodigo == 1 && !String.IsNullOrEmpty(codigo))
             {
                 AvalAcademica avalAcad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                //if (avalAcad.Avaliacao.AvalPessoaResultado.Count == 0 && avalAcad.Avaliacao.FlagLiberada && (DateTime.Now - avalAcad.Avaliacao.DtAplicacao.Value).TotalMinutes < (avalAcad.Avaliacao.Duracao/2))
-                //{
+                if (avalAcad.Avaliacao.AvalPessoaResultado.Count == 0 && avalAcad.Avaliacao.FlagLiberada && (DateTime.Now - avalAcad.Avaliacao.DtAplicacao.Value).TotalMinutes < (avalAcad.Avaliacao.Duracao/2))
+                {
                     return View(avalAcad);
-                //}
+                }
             }
             return RedirectToAction("Agendada");
         }
 
-        // POST: Academica/Resultado/AUTO201520001
+        // POST: Academica/Resultado/ACAD201520001
         [HttpPost]
         public ActionResult Resultado(string codigo, FormCollection form)
         {
@@ -656,7 +656,7 @@ namespace SIAC.Web.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAcademica aval = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (aval.Aluno.SingleOrDefault(a=>a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null)
+                if (aval.Aluno.SingleOrDefault(a=>a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null && aval.Avaliacao.AvalPessoaResultado.SingleOrDefault(a => a.CodPessoaFisica == codPessoaFisica) == null)
                 {
                     AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
                     avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
@@ -674,7 +674,9 @@ namespace SIAC.Web.Controllers
                             if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1)
                             {
                                 qteObjetiva++;
-                                avalQuesPessoaResposta.RespAlternativa = int.Parse(form["rdoResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]);
+                                int resposta = -1;
+                                int.TryParse(form["rdoResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao], out resposta);
+                                avalQuesPessoaResposta.RespAlternativa = resposta;
                                 if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q => q.FlagGabarito.HasValue && q.FlagGabarito.Value).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
                                 {
                                     avalQuesPessoaResposta.RespNota = 10;
@@ -683,7 +685,7 @@ namespace SIAC.Web.Controllers
                                 else
                                 {
                                     avalQuesPessoaResposta.RespNota = 0;
-                                }
+                                }                                
                             }
                             else
                             {
@@ -707,6 +709,40 @@ namespace SIAC.Web.Controllers
             return RedirectToAction("Agendada");
         }
 
+        // POST: Academica/Desistir/ACAD201520016
+        [HttpPost]
+        public void Desistir(string codigo)
+        {
+            int codPessoaFisica = Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula);
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAcademica aval = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+                if (aval.Aluno.SingleOrDefault(a => a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null && aval.Avaliacao.AvalPessoaResultado.SingleOrDefault(a=>a.CodPessoaFisica == codPessoaFisica) == null)
+                {
+                    AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
+                    avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
+                    avalPessoaResultado.HoraTermino = DateTime.Now;
+                    avalPessoaResultado.QteAcertoObj = 0;
+
+                    foreach (var avaliacaoTema in aval.Avaliacao.AvaliacaoTema)
+                    {
+                        foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                        {
+                            AvalQuesPessoaResposta avalQuesPessoaResposta = new AvalQuesPessoaResposta();
+                            avalQuesPessoaResposta.CodPessoaFisica = codPessoaFisica;
+                            if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1) avalQuesPessoaResposta.RespAlternativa = -1;
+                            avalQuesPessoaResposta.RespNota = 0;                            
+                            avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
+                        }
+                    }
+
+                    aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
+
+                    Repositorio.GetInstance().SaveChanges();
+                }
+            }
+        }
+
         // POST: Academica/Pendente
         [HttpGet]
         public ActionResult Pendente()
@@ -718,6 +754,17 @@ namespace SIAC.Web.Controllers
                 return View(AvalAcademica.ListarPendentePorProfessor(codProfessor));
             }            
             return RedirectToAction("Index");
+        }
+
+        // POST: Academica/Arquivar
+        [HttpPost]
+        public ActionResult Arquivar(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                return Json(Avaliacao.AlternarFlagArquivo(codigo));                
+            }
+            return Json(false);
         }
     }
 }
