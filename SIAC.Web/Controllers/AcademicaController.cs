@@ -719,5 +719,21 @@ namespace SIAC.Web.Controllers
             }            
             return RedirectToAction("Index");
         }
+
+        // GET: Avaliacao/Academica/Corrigir/ACAD201520016
+        [HttpGet]
+        public ActionResult Corrigir(string codigo)
+        {
+            if(!String.IsNullOrEmpty(codigo))
+            {
+                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+
+                if (acad != null)
+                {
+                    return View(acad);
+                }
+            }
+            return View("Index");
+        }
     }
 }
