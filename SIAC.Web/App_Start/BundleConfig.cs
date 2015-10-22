@@ -15,7 +15,7 @@ namespace SIAC.Web
                 "~/Resources/jquery.min.js",
                 "~/Resources/semantic.min.js",
                 "~/Resources/jquery.mask.min.js",
-                "~/Resources/html2canvas.js",
+                "~/Resources/html2canvas.min.js",
                 "~/Resources/siac.min.js"
             ));
 
@@ -33,7 +33,7 @@ namespace SIAC.Web
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                 "~/Resources/semantic.min.css",
-                "~/Resources/siac.scrollbar.css"
+                "~/Resources/siac.min.css"
             ));
         }
     }

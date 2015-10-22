@@ -151,6 +151,9 @@
       <LastGenOutput>dbSIAC.cs</LastGenOutput>
     </Content>
     <Content Include="Resources\html2canvas.js" />
+    <Content Include="Resources\html2canvas.min.js">
+      <DependentUpon>html2canvas.js</DependentUpon>
+    </Content>
     <Content Include="Resources\images\content\login\amostra.jpg" />
     <Content Include="Resources\images\content\login\avatar.jpg" />
     <Content Include="Resources\images\layout\background.jpg" />
@@ -301,6 +304,10 @@
     </Content>
     <Content Include="Resources\semantic.min.css" />
     <Content Include="Resources\semantic.min.js" />
+    <Content Include="Resources\siac.css" />
+    <Content Include="Resources\siac.min.css">
+      <DependentUpon>siac.css</DependentUpon>
+    </Content>
     <Content Include="Resources\siac.min.js">
       <DependentUpon>siac.js</DependentUpon>
     </Content>
@@ -652,7 +659,6 @@
     <Content Include="Views\Academica\Agendada.cshtml" />
     <Content Include="Views\Academica\_Agendada.cshtml" />
     <Content Include="Views\Academica\_Questao.cshtml" />
-    <Content Include="Resources\siac.scrollbar.css" />
     <Content Include="Views\Academica\Acompanhar.cshtml" />
     <Content Include="Views\Academica\Realizar.cshtml" />
     <Content Include="Views\Academica\Resultado.cshtml" />

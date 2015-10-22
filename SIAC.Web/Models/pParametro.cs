@@ -28,7 +28,7 @@ namespace SIAC.Web.Models
 
         public static void Atualizar(Parametro parametro)
         {
-            Parametro temp = Parametro.Obter();
+            Parametro temp = contexto.Parametro.FirstOrDefault();
 
             temp.TempoInatividade = parametro.TempoInatividade;
             temp.NumeracaoQuestao = parametro.NumeracaoQuestao;

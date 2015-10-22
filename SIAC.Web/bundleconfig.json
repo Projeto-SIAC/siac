@@ -16,5 +16,23 @@
     "inputFiles": [
       "Resources/modules/siac.configuracoes.js"
     ]
+  },
+  {
+    "outputFileName": "Resources/siac.css",
+    "inputFiles": [
+      "Resources/siac.css"
+    ]
+  },
+  {
+    "outputFileName": "Resources/siac.css",
+    "inputFiles": [
+      "Resources/siac.css"
+    ]
+  },
+  {
+    "outputFileName": "Resources/html2canvas.js",
+    "inputFiles": [
+      "Resources/html2canvas.js"
+    ]
   }
 ]
