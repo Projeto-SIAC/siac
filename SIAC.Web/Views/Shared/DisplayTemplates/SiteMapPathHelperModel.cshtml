@@ -1,0 +1,24 @@
+﻿@model MvcSiteMapProvider.Web.Html.Models.SiteMapPathHelperModel
+@using System.Web.Mvc.Html
+@using System.Linq
+@using MvcSiteMapProvider.Web.Html.Models
+<div class="ui breadcrumb">
+    @foreach (var node in Model)
+    {
+        if (node == Model.First())
+        {
+            <a href="~/" class="section"><i class="icon home"></i></a>
+            <i class="right angle icon divider"></i>
+            continue;
+        }
+        if (node != Model.Last())
+        {
+            <a href="@node.Url" class="section">@node.Title</a>
+            <i class="right angle icon divider"></i>
+        }
+        else
+        {
+            <div class="active section">@node.Title</div>
+        }
+    }
+</div>

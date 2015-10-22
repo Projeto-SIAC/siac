@@ -77,7 +77,7 @@
 
     <div class="ui stackable grid" style="margin: auto 1em">
         <div class="sixteen wide column" style="padding-top: 0; padding-bottom: 0">
-                <div class="ui breadcrumb">
+                @*<div class="ui breadcrumb">
                     @{
                         string url = Request.Url.ToString();
                         url = !(url.IndexOf('?') < 0) ? url.Remove(url.IndexOf('?')) : url;
@@ -102,7 +102,8 @@
                         }
                     }
                     <div class="active section">@ViewBag.Title</div>
-                </div>
+                </div>*@
+            @Html.MvcSiteMap().SiteMapPath()
         </div>
         <div class="three wide column">
             <div class="ui segment">

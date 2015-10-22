@@ -48,14 +48,14 @@ namespace SIAC.Web
                 name: "HistoricoAvaliacao",
                 url: "Historico/Avaliacao/{controller}/{action}/{codigo}",
                 defaults: new { controller = "Historico", action = "Index", codigo = UrlParameter.Optional },
-                constraints: new { controller = @"^(Academica|Reposicao|Certificacao|Institucional)$" }
+                constraints: new { controller = @"^(Academica|Reposicao|Certificacao|Institucional)$", action = @"^(Index|Minhas|Detalhe|Agendada|Pendente|Corrigir)$" }
             );
 
             routes.MapRoute(
                 name: "Historico",
                 url: "Historico/{controller}/{action}/{codigo}",
                 defaults: new { controller = "Historico", action = "Index", codigo = UrlParameter.Optional },
-                constraints: new { controller = @"^(Questao|Autoavaliacao)$" }
+                constraints: new { controller = @"^(Questao|Autoavaliacao)$", action = @"^(Index|Detalhe|Editar|Minhas)$" }
             );
 
 
@@ -89,7 +89,7 @@ namespace SIAC.Web
                 name: "Default",
                 url: "{controller}/{action}",
                 defaults: new { controller = "Acesso", action = "Index" },
-                constraints: new { controller = @"^(Dashboard|Acesso|Erro|Configuracoes)$" }
+                constraints: new { controller = @"^(Dashboard|Historico|Acesso|Erro|Configuracoes)$" }
             );
 
             routes.MapRoute(

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
+
+  <mvcSiteMapNode title="Acesso" controller="Acesso" action="Index">
+    <mvcSiteMapNode title="Entrar" controller="Acesso" action="Entrar"/>
+    <mvcSiteMapNode title="Sair" controller="Acesso" action="Sair"/>
+    <mvcSiteMapNode title="Dashboard" controller="Dashboard" action="Index">
+      <mvcSiteMapNode title="Questão" url="~/Historico/Questao">
+        <mvcSiteMapNode title="Cadastrar" controller="Questao" action="Cadastrar">
+          <mvcSiteMapNode title="Confirmação" controller="Questao" action="Confirmar"/>
+        </mvcSiteMapNode>
+        <mvcSiteMapNode title="Gerar" controller="Questao" action="Gerar"/>
+      </mvcSiteMapNode>      
+      <mvcSiteMapNode title="Autoavaliação" url="~/Historico/Autoavaliacao">
+        <mvcSiteMapNode title="Gerar" controller="Autoavaliacao" action="Gerar">
+          <mvcSiteMapNode title="Confirmação" controller="Autoavaliacao" action="Confirmar"/>
+        </mvcSiteMapNode>
+        <mvcSiteMapNode title="Realizar" controller="Autoavaliacao" action="Realizar" preservedRouteParameters="codigo">
+          <mvcSiteMapNode title="Resultado" controller="Autoavaliacao" action="Resultado" preservedRouteParameters="codigo"/>
+        </mvcSiteMapNode>
+      </mvcSiteMapNode>      
+      <mvcSiteMapNode title="Avaliação" controller="Dashboard" action="Avaliacao">
+        <mvcSiteMapNode title="Acadêmica" url="~/Historico/Avaliacao/Academica">
+          <mvcSiteMapNode title="Gerar" controller="Academica" action="Gerar">
+            <mvcSiteMapNode title="Confirmação" controller="Academica" action="Confirmar"/>
+          </mvcSiteMapNode>
+          <mvcSiteMapNode title="Agendar" controller="Academica" action="Agendar" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Configurar" controller="Academica" action="Configurar" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Acompanhar" controller="Academica" action="Acompanhar" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Realizar" controller="Academica" action="Realizar" preservedRouteParameters="codigo">
+            <mvcSiteMapNode title="Resultado" controller="Academica" action="Resultado" preservedRouteParameters="codigo"/>
+          </mvcSiteMapNode>
+        </mvcSiteMapNode>
+      </mvcSiteMapNode>
+    </mvcSiteMapNode>    
+    <mvcSiteMapNode title="Histórico" controller="Historico" action="Index">
+      <mvcSiteMapNode title="Questão" controller="Questao" action="Index">
+        <mvcSiteMapNode title="Detalhe" controller="Questao" action="Detalhe" preservedRouteParameters="codigo"/>
+        <mvcSiteMapNode title="Editar" controller="Questao" action="Editar" preservedRouteParameters="codigo"/>
+      </mvcSiteMapNode>      
+      <mvcSiteMapNode title="Autoavaliação" controller="Autoavaliacao" action="Index">
+        <mvcSiteMapNode title="Detalhe" controller="Autoavaliacao" action="Detalhe" preservedRouteParameters="codigo"/>
+      </mvcSiteMapNode>      
+      <mvcSiteMapNode title="Avaliação" controller="Historico" action="Avaliacao">
+        <mvcSiteMapNode title="Acadêmica" controller="Academica" action="Index">
+          <mvcSiteMapNode title="Agendada" controller="Academica" action="Agendada"/>
+          <mvcSiteMapNode title="Detalhe" controller="Academica" action="Detalhe" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Pendente" controller="Academica" action="Pendente">
+            <mvcSiteMapNode title="Corrigir" controller="Academica" action="Corrigir" preservedRouteParameters="codigo"/>
+          </mvcSiteMapNode>
+        </mvcSiteMapNode>
+      </mvcSiteMapNode>
+    </mvcSiteMapNode>
+  </mvcSiteMapNode>
+</mvcSiteMap>
