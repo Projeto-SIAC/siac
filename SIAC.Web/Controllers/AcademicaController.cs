@@ -656,7 +656,7 @@ namespace SIAC.Web.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAcademica aval = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (aval.Aluno.SingleOrDefault(a=>a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null && aval.Avaliacao.AvalPessoaResultado.SingleOrDefault(a => a.CodPessoaFisica == codPessoaFisica) == null)
+                if (aval.Alunos.SingleOrDefault(a=>a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null && aval.Avaliacao.AvalPessoaResultado.SingleOrDefault(a => a.CodPessoaFisica == codPessoaFisica) == null)
                 {
                     AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
                     avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
@@ -727,7 +727,7 @@ namespace SIAC.Web.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAcademica aval = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (aval.Aluno.SingleOrDefault(a => a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null && aval.Avaliacao.AvalPessoaResultado.SingleOrDefault(a=>a.CodPessoaFisica == codPessoaFisica) == null)
+                if (aval.Alunos.SingleOrDefault(a => a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null && aval.Avaliacao.AvalPessoaResultado.SingleOrDefault(a=>a.CodPessoaFisica == codPessoaFisica) == null)
                 {
                     AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
                     avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
@@ -790,6 +790,51 @@ namespace SIAC.Web.Controllers
                 return Json(Avaliacao.AlternarFlagArquivo(codigo));                
             }
             return Json(false);
+        }
+
+        //POST: Academica/Avaliacao/CarregarAlunos/{codigo}
+        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
+        public ActionResult CarregarAlunos(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+                var result = from alunos in acad.AlunosRealizaram
+                             select new
+                             {
+                                 Matricula = alunos.MatrAluno,
+                                 Nome = alunos.Usuario.PessoaFisica.Nome
+                             };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            return Json(null);
+        }
+
+        //POST: Academica/Avaliacao/CarregarRespostasDiscursivas/{codigo}/{matrAluno}
+        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
+        public ActionResult CarregarRespostasDiscursivas(string codigo,string matrAluno)
+        {
+            if (!String.IsNullOrEmpty(codigo) && !String.IsNullOrEmpty(matrAluno))
+            {
+                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+                Aluno aluno = Aluno.ListarPorMatricula(matrAluno);
+                int codPessoaFisica = aluno.Usuario.PessoaFisica.CodPessoa;
+
+                var result = from alunoResposta in acad.Avaliacao.PessoaResposta
+                             where alunoResposta.CodPessoaFisica == codPessoaFisica
+                                && alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 2
+                             select new
+                             {
+                                 codQuestao = alunoResposta.CodQuestao,
+                                 questaoEnunciado = alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.Enunciado,
+                                 questaoChaveResposta = alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.ChaveDeResposta,
+                                 alunoResposta = alunoResposta.RespDiscursiva
+                             };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            return Json(null);
         }
     }
 }
