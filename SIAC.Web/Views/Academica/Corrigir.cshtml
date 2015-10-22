@@ -7,18 +7,82 @@
 
 @section Scripts{
     <script>
-        function entrar() {
-            $('.ui.accordion').accordion({
-            });
-
+        function entrar(codAvaliacao) {
+            $('.ui.accordion').accordion();
             $('.ui.modal').modal();
+            $('.ui.dropdown').dropdown();
 
             $('.ui.button.informacoes').click(function () {
                 $('.modal.informacoes').modal('show');
             })
+            $('.ui.button.corrigir').click(function () {
+                $('.modal.corrigir').modal('show');
+            })
+
+            $('#ddlCorrecaoModo').change(function () {
+                var modo = $(this).val();
+                $ddlCorrecaoValor = $('#ddlCorrecaoValor');
+                $ddlCorrecaoValor.parent().addClass('loading');
+                if (modo == 'aluno') {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Dashboard/Avaliacao/Academica/CarregarAlunos/'+codAvaliacao,
+                        success: function (data) {
+                            $ddlCorrecaoValor.parents('.field').find('label').text('Selecione o Aluno');
+                            $ddlCorrecaoValor.html('');
+                            for (i = 0, length = data.length; i < length; i++)
+                            {
+                                $ddlCorrecaoValor.append('<option value="'+data[i].Matricula+'">'+data[i].Nome+'</option>');
+                            }
+                            $ddlCorrecaoValor.parent().removeClass('loading').removeClass('disabled');
+                        },
+                        error:function(data){
+                            alert('error' + data);
+                            $ddlCorrecaoValor.parent().removeClass('loading');
+                        }
+                    });
+                }
+                else if (modo == 'questao') {
+
+                }
+            });
+
+            $('#ddlCorrecaoValor').change(function () {
+                $modal = $(this).parents('.modal')
+                var modo = $('#ddlCorrecaoModo').val();
+                var valor = $(this).val();
+                $conteudo = $('.correcao.conteudo');
+                if (modo == 'aluno') {
+                    $conteudoQuestao = $('.corrigir.questoes.aluno');
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Dashboard/Avaliacao/Academica/CarregarRespostasDiscursivas/'+codAvaliacao,
+                        data: {
+                            matrAluno: valor
+                        },
+                        success: function (data) {
+                            console.log(data[0].codQuestao);
+                            //ERROR
+                            $('.correcao.conteudo').html('');
+                            for (i = 0, length = data.length; i < length; i++) {
+                                $conteudoQuestao.html().replace('{matrAluno}', valor);
+                                $conteudo.append($conteudoQuestao);
+                            }
+                        },
+                        error: function (data) {
+                            alert('error' + data);
+                        }
+                    });
+                }
+                else if (modo == 'questao') {
+
+                }
+            });
         }
 
-        entrar();
+        entrar('@Model.Avaliacao.CodAvaliacao');
+        //RETIRAVEL
+        $('.ui.modal.corrigir').modal('show');
     </script>
 }
 
@@ -110,9 +174,78 @@
         </div>
     </div>
 </div>
+
+@* Placeholder da opção de Correção por Aluno *@
+
+
+<div class="ui modal corrigir">
+    <div class="header">
+        Corrigir Avaliação
+    </div>
+    <div class="content">
+        <form class="ui form">
+            <div class="field required">
+                <label for="">Corrigir por...</label>
+                <select id="ddlCorrecaoModo" name="ddlCorrecaoModo" class="ui dropdown">
+                    <option value="">Corrigir por...</option>
+                    <option value="questao">Questão</option>
+                    <option value="aluno">Aluno</option>
+                </select>
+            </div>
+            <div class="field required">
+                <label for="">Selecione </label>
+                <select id="ddlCorrecaoValor" name="ddlCorrecaoValor" class="ui dropdown disabled">
+                </select>
+            </div>
+            <div class="correcao conteudo">
+                <div class="corrigir questoes aluno">
+                    <div id="{matrAluno} {codQuestao}" class="ui fluid card">
+                        <div class="content">
+                            <div class="header">
+                                <p>{questaoIndice}. {questaoEnunciado}
+                                    1. Pensando mais a longo prazo, a hegemonia do ambiente político promove a alavancagem do retorno esperado a longo prazo.</p>
+                            </div>
+                            <a class="ui tiny green ribbon label">Chave de Resposta</a>
+                            <p><i>{questaoChaveResposta}</i></p>    
+                        </div>
+                        <table class="ui striped table">
+                            <thead>
+                                <tr>
+                                    <th>Resposta do Aluno</th>
+                                    <th>Nota Obtida</th>
+                                    <th>Comentário de Correção</th>
+                                    <th>Corrigir</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{alunoResposta}</td>
+                                    <td>
+                                        <div class="field required">
+                                            <input type="number" maxlength="2" max="10" id="{matrAluno}_{codQuestao}notaObtida" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="field required">
+                                            <textarea id="{matrAluno}_{codQuestao}correcaoComentario" rows="5"></textarea>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div id="{matrAluno}_{codQuestao}btnCorrigir" class="ui button">Corrigir</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="ui basic segment">
     <div class="ui accordion">
-        @foreach (Aluno aluno in Model.Aluno.OrderBy(a => a.Usuario.PessoaFisica.Nome))
+        @foreach (Aluno aluno in Model.Alunos.OrderBy(a => a.Usuario.PessoaFisica.Nome))
         {
             var lstResposta = Model.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == aluno.Usuario.CodPessoaFisica);
 
@@ -127,40 +260,44 @@
                 }
             </div>
             <div id="@aluno.MatrAluno" class="content">
+                
                 <table class="ui very basic table">
                     @{
-                            int indice = 0;
-                            int qteColunas = 10;
-
-                            foreach (AvalQuesPessoaResposta resp in lstResposta.OrderBy(aqpr => aqpr.CodQuestao))
-                            {
-                                if (resp.RespAlternativa.HasValue)
-                                {
-                                //if (resp.RespNota == 10)
-                                //{
-                                    <td>
-                                        <div class="ui label">
-                                            <i class="@(resp.RespNota == 10 ? "checkmark green" : "remove red") icon"></i>
-                                            @indice.GetIndiceQuestao()
-                                            <div class="detail">@resp.RespAlternativa.Value.GetIndiceAlternativa()</div>
-                                        </div>
-                                    </td>
-                                @*}
-                                else
-                                {
-                                    <td class="negative">
-                                        <div class="ui label">
-                                            <i class="close red icon"></i>
-                                            @indice.GetIndiceQuestao() 
-                                            <div class="detail">@resp.RespAlternativa.Value.GetIndiceAlternativa()</div>
-                                        </div>
-                                    </td>
-                                }*@
-                            }
-                            indice++;
-                        }
+                        int questaoIndice = 0;
+                        int qteColunas = 10;
+                        int colunaIndice = 1;
                     }
+                    
+                    <tr>
+                        @foreach (AvalQuesPessoaResposta resp in lstResposta.OrderBy(aqpr => aqpr.CodQuestao))
+                        {
+                            if (colunaIndice == qteColunas)
+                            {
+                                @:</tr><tr>
+                                colunaIndice = 1;
+                            }
+                            <td style="border:none!important;">
+                                <a class="ui label">
+                                    @if (resp.RespAlternativa.HasValue) {
+                                    <i class="@(resp.RespNota == 10 ? "checkmark green" : "remove red") icon"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="write icon"></i>
+                                    }
+                                    @questaoIndice.GetIndiceQuestao()
+                                    @if (resp.RespAlternativa.HasValue) {
+                                    <div class="detail">@resp.RespAlternativa.Value.GetIndiceAlternativa()
+                                    </div>
+                                    }
+                                </a>
+                            </td>
+                            questaoIndice+=1;
+                            colunaIndice++;
+                        }
+                    </tr>
                 </table>
+
             </div>
         }
     </div>

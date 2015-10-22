@@ -7,11 +7,26 @@ namespace SIAC.Web.Models
 {
     public partial class AvalAcademica
     {
-        public List<Aluno> Aluno
+        public List<Aluno> Alunos
         {
             get
             {                
                 return this.Turma.TurmaDiscAluno.Select(t => t.Aluno).ToList();
+            }
+        }
+
+        public List<Aluno> AlunosRealizaram
+        {
+            get
+            {
+                List<Aluno> result = new List<Aluno>();
+                foreach (Aluno a in this.Alunos)
+                {
+                    var lstRespostas = this.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == a.Usuario.CodPessoaFisica);
+                    if (lstRespostas.Count() > 0)
+                        result.Add(a);
+                }
+                return result;
             }
         }
 
