@@ -134,5 +134,26 @@ namespace SIAC.Models
         {
             contexto.SaveChanges();
         }
+
+        public static bool CorrigirQuestaoAluno(string codAvaliacao, string matrAluno, int codQuestao,double notaObtida,string profObservacao)
+        {
+            if (!String.IsNullOrEmpty(codAvaliacao) && !String.IsNullOrEmpty(matrAluno) && codQuestao != 0)
+            {
+                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codAvaliacao);
+                Aluno aluno = Aluno.ListarPorMatricula(matrAluno);
+                int codPessoaFisica = aluno.Usuario.PessoaFisica.CodPessoa;
+
+                AvalQuesPessoaResposta resposta = acad.Avaliacao.PessoaResposta.FirstOrDefault(pr => pr.CodQuestao == codQuestao && pr.CodPessoaFisica == codPessoaFisica);
+
+                resposta.RespNota = notaObtida;
+                resposta.ProfObservacao = profObservacao;
+
+                contexto.SaveChanges();
+
+                return true;
+            }
+
+            return false;
+        }
     }
 }

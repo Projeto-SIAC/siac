@@ -1,38 +1,38 @@
 [
   {
-    "outputFileName": "Resources/siac.js",
+    "outputFileName": "Scripts/siac.js",
     "inputFiles": [
-      "Resources/siac.js"
+      "Scripts/siac.js"
     ]
   },
   {
-    "outputFileName": "Resources/modules/siac.questao.js",
+    "outputFileName": "Scripts/modules/siac.configuracoes.js",
     "inputFiles": [
-      "Resources/modules/siac.questao.js"
+      "Scripts/modules/siac.configuracoes.js"
     ]
   },
   {
-    "outputFileName": "Resources/modules/siac.configuracoes.js",
+    "outputFileName": "Scripts/modules/siac.questao.js",
     "inputFiles": [
-      "Resources/modules/siac.configuracoes.js"
+      "Scripts/modules/siac.questao.js"
     ]
   },
   {
-    "outputFileName": "Resources/siac.css",
+    "outputFileName": "Scripts/libs/html2canvas.js",
     "inputFiles": [
-      "Resources/siac.css"
+      "Scripts/libs/html2canvas.js"
     ]
   },
   {
-    "outputFileName": "Resources/html2canvas.js",
+    "outputFileName": "Styles/siac.acesso.css",
     "inputFiles": [
-      "Resources/html2canvas.js"
+      "Styles/siac.acesso.css"
     ]
   },
   {
-    "outputFileName": "Resources/siac.acesso.css",
+    "outputFileName": "Styles/siac.css",
     "inputFiles": [
-      "Resources/siac.acesso.css"
+      "Styles/siac.css"
     ]
   }
 ]

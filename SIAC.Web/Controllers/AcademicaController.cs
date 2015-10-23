@@ -837,5 +837,22 @@ namespace SIAC.Controllers
             }
             return Json(null);
         }
+
+        //POST: Academica/Avaliacao/CorrigirQuestaoAluno/{codigo}/{matrAluno}/{codQuestao}
+        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
+        public ActionResult CorrigirQuestaoAluno(string codigo, string matrAluno,string codQuestao,string notaObtida,string profObservacao)
+        {
+            if (!String.IsNullOrEmpty(codigo) && !String.IsNullOrEmpty(matrAluno) && !String.IsNullOrEmpty(codQuestao))
+            {
+                int codQuesTemp = int.Parse(codQuestao);
+                double nota = Double.Parse(notaObtida.Replace('.', ','));
+
+                bool result = AvalAcademica.CorrigirQuestaoAluno(codigo, matrAluno, codQuesTemp, nota, profObservacao);
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            return Json(false);
+        }
     }
 }
