@@ -13,9 +13,9 @@
         {
             <div class="card">
                 <div class="content">
-                    <a href="/Dashboard/Autoavaliacao/Realizar/@(((SIAC.Web.Models.AvalAuto)auto).Avaliacao.CodAvaliacao)" class="header">@(((SIAC.Web.Models.Avaliacao)auto.Avaliacao).CodAvaliacao)</a>
+                    <a href="/Dashboard/Autoavaliacao/Realizar/@(((SIAC.Models.AvalAuto)auto).Avaliacao.CodAvaliacao)" class="header">@(((SIAC.Models.Avaliacao)auto.Avaliacao).CodAvaliacao)</a>
                     <div class="meta">
-                        <span>@(((SIAC.Web.Models.AvalAuto)auto).Avaliacao.DtCadastro.ToElapsedTimeString())</span>
+                        <span>@(((SIAC.Models.AvalAuto)auto).Avaliacao.DtCadastro.ToElapsedTimeString())</span>
                     </div>
 
                     <div class="description">
@@ -23,20 +23,20 @@
                             <b>Dificuldade</b>: @auto.Dificuldade.Descricao
                         </p>
                         <p>
-                            <b>Quantidade de Questões</b>: @(((SIAC.Web.Models.AvalAuto)auto).Avaliacao.QteQuestoes())
+                            <b>Quantidade de Questões</b>: @(((SIAC.Models.AvalAuto)auto).Avaliacao.QteQuestoes())
                         </p>
                     </div>
                     
                 </div>
                 <div class="extra content">
                     <div class="ui labels">
-                        @foreach (var disc in ((SIAC.Web.Models.AvalAuto)auto).Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+                        @foreach (var disc in ((SIAC.Models.AvalAuto)auto).Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
                     {
                             <div class="ui tag label">@disc.Descricao</div>
                         }
                     </div>
                 </div>
-                <a href="/Dashboard/Autoavaliacao/Realizar/@(((SIAC.Web.Models.AvalAuto)auto).Avaliacao.CodAvaliacao)" class="ui button">
+                <a href="/Dashboard/Autoavaliacao/Realizar/@(((SIAC.Models.AvalAuto)auto).Avaliacao.CodAvaliacao)" class="ui button">
                     Realizar
                 </a>
             </div>

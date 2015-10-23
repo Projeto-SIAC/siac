@@ -109,10 +109,10 @@
             <div class="ui segment">
                 <div class="ui header">
                     <i class="icon user"></i>
-                    <div class="content" data-matricula="@SIAC.Web.Helpers.Sessao.UsuarioMatricula">
-                        @SIAC.Web.Helpers.Sessao.UsuarioNome                        
+                    <div class="content" data-matricula="@SIAC.Helpers.Sessao.UsuarioMatricula">
+                        @SIAC.Helpers.Sessao.UsuarioNome                        
                         <div class="sub header">
-                            @SIAC.Web.Helpers.Sessao.UsuarioCategoria
+                            @SIAC.Helpers.Sessao.UsuarioCategoria
                         </div>
                     </div>
                 </div>
@@ -130,7 +130,7 @@
                         <i class="user icon"></i><span class="content">Perfil</span>
                     </a>
 
-                    @if (SIAC.Web.Helpers.Sessao.UsuarioCategoriaCodigo == 3)
+                    @if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 3)
                     {
                         <a href="~/Configuracoes" class="@(Request.Url.ToString().Contains("Configuracoes")? "active blue" : "") item">
                             <i class="setting icon"></i><span class="content">Configurações</span>

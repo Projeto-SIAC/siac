@@ -1,4 +1,4 @@
-﻿@using SIAC.Web.Models
+﻿@using SIAC.Models
 @model AvalAcademica
 
 @{
@@ -662,6 +662,6 @@
 
         }
         
-        ConectarHub('@Model.Avaliacao.CodAvaliacao', '@SIAC.Web.Helpers.Sessao.UsuarioMatricula');
+        ConectarHub('@Model.Avaliacao.CodAvaliacao', '@SIAC.Helpers.Sessao.UsuarioMatricula');
     </script>
 }

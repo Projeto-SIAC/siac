@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using SIAC.Web.Models;
+using SIAC.Models;
 
-namespace SIAC.Web
+namespace SIAC
 {
     public static class Extensoes
     {

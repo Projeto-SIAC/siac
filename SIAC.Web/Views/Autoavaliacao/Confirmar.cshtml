@@ -1,4 +1,4 @@
-﻿@model SIAC.Web.Models.AvalAuto
+﻿@model SIAC.Models.AvalAuto
 
 @{
     ViewBag.Title = "Autoavaliação " + @Model.Avaliacao.CodAvaliacao;
@@ -59,7 +59,7 @@
 
         @{
             List<int> cods = new List<int>();
-            foreach (SIAC.Web.Models.QuestaoTema questao in ViewBag.QuestoesDaAvaliacao)
+            foreach (SIAC.Models.QuestaoTema questao in ViewBag.QuestoesDaAvaliacao)
             {
                 cods.Add(questao.CodQuestao);
                 if (questao != null)

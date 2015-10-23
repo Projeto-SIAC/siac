@@ -4,19 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace SIAC.Web.Controllers
+namespace SIAC.Controllers
 {
     public class ErroController : Controller
     {
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            if (!Helpers.Sessao.Autenticado)
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }            
-            base.OnActionExecuting(filterContext);
-        }
-
         // GET: Erro
         public ActionResult Index(int code = 0)
         {

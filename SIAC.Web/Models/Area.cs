@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SIAC.Web.Models
+namespace SIAC.Models
 {
     using System;
     using System.Collections.Generic;

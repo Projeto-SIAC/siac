@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 
-namespace SIAC.Web.Hubs
+namespace SIAC.Hubs
 {
     public class AcademicaHub : Hub
     {

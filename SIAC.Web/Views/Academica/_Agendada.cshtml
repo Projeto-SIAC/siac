@@ -1,8 +1,8 @@
-﻿@using SIAC.Web.Models
+﻿@using SIAC.Models
 @model AvalAcademica
 
 @{
-    var CodCategoria = SIAC.Web.Helpers.Sessao.UsuarioCategoriaCodigo;
+    var CodCategoria = SIAC.Helpers.Sessao.UsuarioCategoriaCodigo;
     var totalMinutes = (DateTime.Now - Model.Avaliacao.DtAplicacao.Value).TotalMinutes;
     var FlagAgora =  totalMinutes < (Model.Avaliacao.Duracao / 2) && totalMinutes > 0;
     var FlagVencida = totalMinutes > (Model.Avaliacao.Duracao / 2);

@@ -1,43 +1,43 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace SIAC.Web
+namespace SIAC
 {
     public class BundleConfig
     {
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                "~/Resources/modernizr.js"
+                "~/Scripts/libs/modernizr.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
-                "~/Resources/jquery.min.js",
-                "~/Resources/semantic.min.js",
-                "~/Resources/jquery.mask.min.js",
-                "~/Resources/html2canvas.min.js",
-                "~/Resources/siac.min.js"
+                "~/Scripts/libs/jquery.min.js",
+                "~/Scripts/libs/semantic.min.js",
+                "~/Scripts/libs/html2canvas.min.js",
+                "~/Scripts/plugins/jquery.mask-1.13.4.min.js",
+                "~/Scripts/siac.min.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/js/questao").Include(
-                "~/Resources/modules/siac.questao.min.js"
+                "~/Scripts/modules/siac.questao.min.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/js/configuracoes").Include(
-                "~/Resources/modules/siac.configuracoes.min.js"
+                "~/Scripts/modules/siac.configuracoes.min.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/signalR").Include(
-                "~/Resources/jquery.signalR-2.2.0.min.js"
+                "~/Scripts/plugins/jquery.signalR-2.2.0.min.js"
             ));
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
-                "~/Resources/semantic.min.css",
-                "~/Resources/siac.min.css"
+                "~/Styles/semantic.min.css",
+                "~/Styles/siac.min.css"
             ));
 
             bundles.Add(new StyleBundle("~/bundles/css/acesso").Include(
-                "~/Resources/siac.acesso.min.css"
+                "~/Styles/siac.acesso.min.css"
             ));
         }
     }

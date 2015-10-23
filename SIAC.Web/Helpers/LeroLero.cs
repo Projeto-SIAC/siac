@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 
-namespace SIAC.Web.Helpers
+namespace SIAC.Helpers
 {
     public class LeroLero
     {
