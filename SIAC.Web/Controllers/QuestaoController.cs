@@ -9,6 +9,13 @@ namespace SIAC.Controllers
 {
     public class QuestaoController : Controller
     {
+        public List<Questao> Questoes {
+            get
+            {
+                return Questao.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula);
+            }
+        } 
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             Session["UrlReferrer"] = Request.Url.ToString();
@@ -30,27 +37,34 @@ namespace SIAC.Controllers
             {
                 return Redirect("~/Historico/Questao");
             }
-
             return View();
         }
 
         // GET: Questao/Minhas
-        public ActionResult Minhas()
+        public ActionResult Minhas(int? pagina)
         {
-            var lstQuestoes = Questao.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula);
-            var result = from q in lstQuestoes
-                         select new
-                         {
-                             CodQuestao = q.CodQuestao,
-                             Enunciado = q.Enunciado,
-                             DtCadastro = q.DtCadastro.ToBrazilianString(),
-                             DtCadastroTempo = q.DtCadastro.ToElapsedTimeString(),
-                             Disciplina = q.QuestaoTema.First().Tema.Disciplina.Descricao,
-                             Temas = q.QuestaoTema.Select(qt => qt.Tema.Descricao).ToList(),
-                             TipoQuestao = q.TipoQuestao.Descricao,
-                             Dificuldade = q.Dificuldade.Descricao,
-                         };
-            return Json(result, JsonRequestBehavior.AllowGet);
+            //var lstQuestoes = Questao.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula);
+            //var result = from q in lstQuestoes
+            //             select new
+            //             {
+            //                 CodQuestao = q.CodQuestao,
+            //                 Enunciado = q.Enunciado,
+            //                 DtCadastro = q.DtCadastro.ToBrazilianString(),
+            //                 DtCadastroTempo = q.DtCadastro.ToElapsedTimeString(),
+            //                 Disciplina = q.QuestaoTema.First().Tema.Disciplina.Descricao,
+            //                 Temas = q.QuestaoTema.Select(qt => qt.Tema.Descricao).ToList(),
+            //                 TipoQuestao = q.TipoQuestao.Descricao,
+            //                 Dificuldade = q.Dificuldade.Descricao,
+            //             };
+            //return Json(result, JsonRequestBehavior.AllowGet);
+            if (!pagina.HasValue || !(pagina.Value > 0))
+            {
+                pagina = 1;
+            }
+            //ViewBag.Paginacao = new { };
+            //ViewBag.Paginacao.Add(new { Pagina = 1, Ativo = true });
+            //ViewBag.Paginacao.Add(new { Pagina = 2 });
+            return PartialView("_ListaQuestao", Questoes.Skip((20*pagina.Value)-20).Take(20).ToList());
         }
 
         //POST: /PalavrasChave

@@ -1,32 +1,66 @@
 ﻿siac.Questao = siac.Questao || {};
 
 siac.Questao.Index = (function () {
+    var pagina = 1;
     var jsnQuestoesGeral, jsnQuestoesFiltro;
 
     function iniciar() {
-        $('.ui.cards').parent().addClass('loading');
+        //$('.ui.cards').parent().addClass('loading');
 
-        window.onbeforeunload = function () { $ajax.abort(); $('.ui.global.loader').parent().addClass('active'); };
+        //window.onbeforeunload = function () { $ajax.abort(); $('.ui.global.loader').parent().addClass('active'); };
 
-        $ajax = $.ajax({
+        //$ajax = $.ajax({
+        //    url: '/Historico/Questao/Minhas',
+        //    method: 'GET',
+        //    success: function (questoes) {
+        //        jsnQuestoesGeral = questoes;
+        //        jsnQuestoesFiltro = questoes;
+        //        minhasQuestoes();
+        //    },
+        //    error: function () {
+        //        siac.mensagem("Erro ao recuperar as questões");
+        //        $('.ui.cards').parent().removeClass('loading');
+        //    }
+        //});
+
+        //$('.filtro input').keyup(function () {
+        //    var _this = this;
+        //    filtro($(_this).val());
+        //});
+        $('.ui.global.loader').parent().addClass('active');
+        $.ajax({
             url: '/Historico/Questao/Minhas',
+            data: { pagina: pagina },
             method: 'GET',
-            success: function (questoes) {
-                jsnQuestoesGeral = questoes;
-                jsnQuestoesFiltro = questoes;
-                minhasQuestoes();
+            success: function (partial) {
+                $('.ui.cards').append(partial);
             },
-            error: function () {
-                siac.mensagem("Erro ao recuperar as questões");
-                $('.ui.cards').parent().removeClass('loading');
+            complete: function () {
+                $('.ui.global.loader').parent().removeClass('active');
             }
         });
 
-        $('.filtro input').keyup(function () {
+        $('.button.mais').click(function () {
             var _this = this;
-            filtro($(_this).val());
+            $(_this).addClass('loading');
+            mais(_this);
         });
     };
+
+    function mais(button) {
+        pagina++;
+        $.ajax({
+            url: '/Historico/Questao/Minhas',
+            data: { pagina: pagina },
+            method: 'GET',
+            success: function (partial) {
+                $('.ui.cards').append(partial);
+            },
+            complete: function () {
+                $(button).removeClass('loading');
+            }
+        });
+    }
 
     function topo() {
         $("html, body").animate({

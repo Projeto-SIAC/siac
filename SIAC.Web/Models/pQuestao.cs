@@ -8,6 +8,14 @@ namespace SIAC.Models
 {
     public partial class Questao
     {
+        public Disciplina Disciplina
+        {
+            get
+            {
+                return this.QuestaoTema.First().Tema.Disciplina;
+            }
+        }
+
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         public static void Inserir(Questao questao)
