@@ -9,6 +9,7 @@ namespace SIAC.Web
     public static class Extensoes
     {
         // String
+        #region String
         public static string RemoveSpaces(this string aText)
         {
             aText = aText.Replace("\t", " ");
@@ -52,9 +53,10 @@ namespace SIAC.Web
 
             return text;
         }
-
+        #endregion
 
         // Int
+        #region Int
         public static string GetIndiceAlternativa(this int i)
         {
             i++;
@@ -135,9 +137,10 @@ namespace SIAC.Web
         {
             return paraCaixaBaixa(number).ToUpper();
         }
-
+        #endregion
 
         // DateTime
+        #region DateTime
         public static string ToBrazilianString(this DateTime dateTime)
         {
             return dateTime.ToString("dddd, dd 'de' MMMM 'de' yyyy 'às' HH'h'mm", new System.Globalization.CultureInfo("pt-BR"));
@@ -213,8 +216,10 @@ namespace SIAC.Web
             }
             return s;
         }
+        #endregion
 
         // List<AvaliacaoTema>
+        #region List<AvaliacaoTema>
         public static int QteQuestoesPorTipo(this List<AvaliacaoTema> lstAvaliacaoTema, int codDisciplina, int codTipoQuestao)
         {
             int qteQuestoes = 0;
@@ -258,9 +263,10 @@ namespace SIAC.Web
 
             return dificuldade.Descricao;
         }
-
+        #endregion
 
         // Avaliacao
+        #region Avaliacao
         public static int QteQuestoes(this Avaliacao avaliacao)
         {
             int qte = 0;
@@ -294,8 +300,10 @@ namespace SIAC.Web
 
             return lstQuestaoEmbalharada;
         }
+        #endregion
 
         // Questao
+        #region Questao
         public static bool TemUmaCorreta(this Questao questao)
         {
             bool unica = false;
@@ -344,6 +352,17 @@ namespace SIAC.Web
                 );
 
             return lstResposta;
-        }        
+        }
+
+        #endregion
+
+        //Double
+        #region Double
+        public static string ToValueHtml(this double value)
+        {
+            string s = value.ToString();
+            return s.Replace(',', '.');
+        }
+        #endregion
     }
 }

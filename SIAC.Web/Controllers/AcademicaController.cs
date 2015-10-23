@@ -823,6 +823,7 @@ namespace SIAC.Web.Controllers
                 int codPessoaFisica = aluno.Usuario.PessoaFisica.CodPessoa;
 
                 var result = from alunoResposta in acad.Avaliacao.PessoaResposta
+                             orderby alunoResposta.CodQuestao
                              where alunoResposta.CodPessoaFisica == codPessoaFisica
                                 && alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 2
                              select new
