@@ -12,7 +12,7 @@ namespace SIAC.Web.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-
+    
     public partial class dbSIACEntities : DbContext
     {
         public dbSIACEntities()
@@ -23,8 +23,8 @@ namespace SIAC.Web.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
-        }        
-
+        }
+    
         public virtual DbSet<Alternativa> Alternativa { get; set; }
         public virtual DbSet<Aluno> Aluno { get; set; }
         public virtual DbSet<Area> Area { get; set; }

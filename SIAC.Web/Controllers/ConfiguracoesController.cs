@@ -66,6 +66,7 @@ namespace SIAC.Web.Controllers
                 temp.QteSemestres = int.Parse(formCollection["txtQteSemestre"]);
                 temp.TermoResponsabilidade = formCollection["txtTermoResponsabilidade"];
                 temp.NotaUso = formCollection["txtNotaUso"];
+                temp.ValorNotaMedia = double.Parse(formCollection["txtValorNotaMedia"].Replace('.', ','));
                 Parametro.Atualizar(temp);
             }
 

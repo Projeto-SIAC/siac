@@ -622,13 +622,13 @@ namespace SIAC.Web.Controllers
         {
             if (Helpers.Sessao.UsuarioCategoriaCodigo == 1)
             {
-                Sistema.TempDataUrlImage = imageData;
+                Sistema.TempDataUrlImage[codAvaliacao] = imageData;
                 return Json(true);
             }
             else if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
             {
-                string temp = Sistema.TempDataUrlImage;
-                Sistema.TempDataUrlImage = String.Empty;
+                string temp = Sistema.TempDataUrlImage[codAvaliacao];
+                Sistema.TempDataUrlImage[codAvaliacao] = String.Empty;
                 return Json(temp);
             }
             return Json(false);
@@ -710,7 +710,7 @@ namespace SIAC.Web.Controllers
                     aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
                     Repositorio.GetInstance().SaveChanges();
-
+                    
                     ViewBag.Porcentagem = (avalPessoaResultado.QteAcertoObj / qteObjetiva) * 100;
                     return View(aval);
                 }

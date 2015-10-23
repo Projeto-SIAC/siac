@@ -126,7 +126,7 @@
             })
         ;
         $('.ui.accordion')
-            .accordion({ exclusive: false })
+            .accordion({ exclusive: false, animateChildren: false })
         ;
         function expandirImagem(card) {
             card = $(card);
@@ -437,7 +437,7 @@
     </div>
 </div>
 
-<form class="ui form" action="/Historico/Autoavaliacao/Resultado/@Model.Avaliacao.CodAvaliacao" method="post">
+<form class="ui form" action="/Dashboard/Autoavaliacao/Resultado/@Model.Avaliacao.CodAvaliacao" method="post">
     <div class="ui message error">
         <i class="icon close"></i>
             <div class="header">

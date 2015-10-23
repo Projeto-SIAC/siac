@@ -5,11 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<Questao> lstQuestao = Model.Avaliacao.Questao;
     List<AvalQuesPessoaResposta> lstPessoaResposta = Model.Avaliacao.PessoaResposta;
+    AvalPessoaResultado avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.First();
 }
 
 @section Scripts {
     <script>
-        $('.ui.accordion').accordion();
+        $('.ui.accordion').accordion({ animateChildren: false });
         $('.label, div').popup();
     </script>
 }
@@ -19,12 +20,13 @@
     <div class="ui dividing header" data-content="Note que os cálculos levem em conta somente as questões objetivas.">
         Desempenho
         <div class="ui label">Porcentagem de Acerto<div class="detail">@(ViewBag.Porcentagem.ToString("0.##'%'"))</div></div>
+        <div class="ui label">Quantidade de Acerto<div class="detail">@avalPessoaResultado.QteAcertoObj</div></div>
     </div>
-    <div class="ui centered statistics">
+    <div class="ui statistics">
         @foreach (var key in ViewBag.Desempenho.Keys)
-            {
+        {
             <div class="statistic @(ViewBag.Desempenho[key]>50 ? "green" : "red")">
-                <div class="value circular" style="border:1px">
+                <div class="value">
                     @ViewBag.Desempenho[key].ToString("0.##'%'")
                 </div>
                 <div class="label">@key</div>
@@ -48,6 +50,10 @@
                 {
                     var correta = lstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
                     <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? Html.Raw("<i class=\"checkmark icon\"></i>Correta") : Html.Raw("<i class=\"remove icon\"></i>Incorreta") )</div>
+                }
+                else
+                {
+                    <div class="ui label"><i class="write icon"></i>Discursiva</div>
                 }
             </div>
                 <div class="content">

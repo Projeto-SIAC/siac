@@ -3,13 +3,15 @@
 @{
     ViewBag.Title = "Resultado " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int codPessoaFisica = Usuario.ObterPessoaFisica(SIAC.Web.Helpers.Sessao.UsuarioMatricula);
     List<Questao> lstQuestao = Model.Avaliacao.Questao;
-    List<AvalQuesPessoaResposta> lstPessoaResposta = Model.Avaliacao.PessoaResposta;
+    List<AvalQuesPessoaResposta> lstPessoaResposta = Model.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == codPessoaFisica).ToList();
+    AvalPessoaResultado avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.First(r => r.CodPessoaFisica == codPessoaFisica);
 }
 
 @section Scripts {
     <script>
-        $('.ui.accordion').accordion();
+        $('.ui.accordion').accordion({ animateChildren: false });
         $('.label, div').popup();
     </script>
 }
@@ -17,14 +19,32 @@
 <h2>@ViewBag.Title</h2>
 <div class="ui basic segment">
     <div class="ui dividing header" data-content="Note que os cálculos levem em conta somente as questões objetivas.">
-        Desempenho        
+        Desempenho
     </div>
-    <div class="ui horizontal statistic">
-        <div class="label">
-            Porcentagem de Acerto
+    <div class="ui statistics">
+        <div class="statistic">
+            <div class="value">
+                @(ViewBag.Porcentagem.ToString("0.##'%'"))
+            </div>
+            <div class="label">
+                Porcentagem de Acerto
+            </div>
         </div>
-        <div class="value">
-            @(ViewBag.Porcentagem.ToString("0.##'%'"))
+        <div class="statistic">
+            <div class="value">
+                @avalPessoaResultado.QteAcertoObj
+            </div>
+            <div class="label">
+                Quantidade de Acerto
+            </div>
+        </div>
+        <div class="statistic @(avalPessoaResultado.Nota > Parametro.Obter().ValorNotaMedia ? "green" : "red")">
+            <div class="value">
+                @avalPessoaResultado.Nota
+            </div>
+            <div class="label">
+                Nota @(lstPessoaResposta.Where(r => !r.RespNota.HasValue).Count() == 0 ? "" : "Parcial")
+            </div>
         </div>
     </div>
 </div>
@@ -46,6 +66,10 @@
                         var correta = lstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
                         <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? Html.Raw("<i class=\"checkmark icon\"></i>Correta") : Html.Raw("<i class=\"remove icon\"></i>Incorreta") )</div>
                     }
+                    else
+                    {
+                        <div class="ui label"><i class="write icon"></i>Discursiva</div>
+                    }
                 </div>
                 <div class="content">
                     <div class="ui segment">
@@ -57,20 +81,20 @@
                                     if (!String.IsNullOrWhiteSpace(strEnunciado))
                                     {
                                         <p>@strEnunciado</p>
-                                    }
+    }
                                 }
                             }
                         </div>
                         @if (lstQuestao[i].CodTipoQuestao == 1)
-                        {
+    {
                             <div class="ui list">
                                 @foreach (var alternativa in lstQuestao[i].Alternativa)
-                        {
+    {
                                     <div class="item">
                                         <div class="middle aligned content">
                                             <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
                                             @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
-                                            {
+    {
                                                 <a data-html="@(("" + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
                                             }
                                             @if (alternativa.CodOrdem == resposta.RespAlternativa)

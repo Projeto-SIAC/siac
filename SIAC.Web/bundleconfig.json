@@ -34,5 +34,11 @@
     "inputFiles": [
       "Resources/html2canvas.js"
     ]
+  },
+  {
+    "outputFileName": "Resources/modules/siac.questao.js",
+    "inputFiles": [
+      "Resources/modules/siac.questao.js"
+    ]
   }
 ]

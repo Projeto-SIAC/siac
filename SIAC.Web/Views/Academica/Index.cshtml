@@ -96,10 +96,10 @@
                 else {
                     if (jsnAvalAcadFiltro[i].Turma) {
                         $card.append('<span class="ui attached top right label"><i class="clock icon"></i>Agendada</span>');
-                        $card.append('<a href="/Historico/Avaliacao/Academica/Configurar/' + jsnAvalAcadFiltro[i].CodAvaliacao + '" class="ui button">Configurar</a>');
+                        $card.append('<a href="/Dashboard/Avaliacao/Academica/Configurar/' + jsnAvalAcadFiltro[i].CodAvaliacao + '" class="ui button">Configurar</a>');
                     }
                     else {
-                        $card.append('<a href="/Historico/Avaliacao/Academica/Agendar/' + jsnAvalAcadFiltro[i].CodAvaliacao + '" class="ui button">Agendar</a>');
+                        $card.append('<a href="/Dashboard/Avaliacao/Academica/Agendar/' + jsnAvalAcadFiltro[i].CodAvaliacao + '" class="ui button">Agendar</a>');
                     }
                 }
                 $('.ui.cards').append($card);

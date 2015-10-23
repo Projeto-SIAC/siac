@@ -56,6 +56,10 @@
             <label>Quantidade de Semestres</label>
             <input name="txtQteSemestre" type="number" value="@Model.QteSemestres" placeholder="Quantidade de Semestres" required />
         </div>
+        <div class="field required">
+            <label>Valor da Nota Média</label>
+            <input name="txtValorNotaMedia" type="number" min="1" max="10" step="0.1" value="@Model.ValorNotaMedia" placeholder="Valor da Nota Média" required />
+        </div>
     </div>
     @* Termo *@
     <div class="ui bottom attached tab segment termo" data-tab="tab-termo">

@@ -205,7 +205,7 @@ siac.Questao.Cadastrar = (function () {
     function iniciar() {
         $('.ui.checkbox').checkbox();
 
-        $('.ui.accordion').accordion();
+        $('.ui.accordion').accordion({animateChildren: false});
 
         $('.ui.dropdown').dropdown();
 
@@ -231,6 +231,7 @@ siac.Questao.Cadastrar = (function () {
           });
 
         $('.ui.confirmar.modal .ui.accordion').accordion({
+            animateChildren: false,
             onChange: function () {
                 $('.ui.confirmar.modal').modal('refresh');
             }
@@ -801,7 +802,7 @@ siac.Questao.Cadastrar = (function () {
 siac.Questao.Detalhe = (function () {
     function iniciar() {
         $('.ui.accordion')
-            .accordion()
+            .accordion({ animateChildren: false })
         ;
         $('div,p')
             .popup()
@@ -859,8 +860,9 @@ siac.Questao.Editar = (function () {
             variation: 'wide'
         });
         $('.ui.checkbox').checkbox();
-        $('.ui.accordion').accordion();
+        $('.ui.accordion').accordion({ animateChildren: false });
         $('.ui.modal .ui.accordion').accordion({
+            animateChildren: false,
             onChange: function () { $('.ui.confirmar.modal').modal('refresh'); }
         });
         $('.ui.dropdown').dropdown();

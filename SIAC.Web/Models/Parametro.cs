@@ -21,5 +21,6 @@ namespace SIAC.Web.Models
         public int QteSemestres { get; set; }
         public string TermoResponsabilidade { get; set; }
         public string NotaUso { get; set; }
+        public double ValorNotaMedia { get; set; }
     }
 }

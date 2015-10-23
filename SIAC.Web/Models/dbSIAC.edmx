@@ -203,6 +203,7 @@
           <Property Name="RespDiscursiva" Type="text" />
           <Property Name="RespComentario" Type="varchar" MaxLength="250" />
           <Property Name="RespNota" Type="float" />
+          <Property Name="ProfObservacao" Type="varchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="AvalTemaQuestao">
           <Key>
@@ -716,6 +717,7 @@
           <Property Name="QteSemestres" Type="int" Nullable="false" />
           <Property Name="TermoResponsabilidade" Type="text" Nullable="false" />
           <Property Name="NotaUso" Type="text" Nullable="false" />
+          <Property Name="ValorNotaMedia" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="Pessoa">
           <Key>
@@ -3630,6 +3632,7 @@
           <Property Name="RespNota" Type="Double" />
           <NavigationProperty Name="PessoaFisica" Relationship="Self.FK__AvalQuesP__CodPe__55BFB948" FromRole="AvalQuesPessoaResposta" ToRole="PessoaFisica" />
           <NavigationProperty Name="AvalTemaQuestao" Relationship="Self.FK__AvalQuesPessoaRe__54CB950F" FromRole="AvalQuesPessoaResposta" ToRole="AvalTemaQuestao" />
+          <Property Name="ProfObservacao" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="AvalTemaQuestao">
           <Key>
@@ -4090,6 +4093,7 @@
           <Property Name="QteSemestres" Type="Int32" Nullable="false" />
           <Property Name="TermoResponsabilidade" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="NotaUso" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ValorNotaMedia" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="Pessoa">
           <Key>
@@ -6618,6 +6622,7 @@
           <EntitySetMapping Name="AvalQuesPessoaResposta">
             <EntityTypeMapping TypeName="dbSIACModel.AvalQuesPessoaResposta">
               <MappingFragment StoreEntitySet="AvalQuesPessoaResposta">
+                <ScalarProperty Name="ProfObservacao" ColumnName="ProfObservacao" />
                 <ScalarProperty Name="CodPessoaFisica" ColumnName="CodPessoaFisica" />
                 <ScalarProperty Name="CodTema" ColumnName="CodTema" />
                 <ScalarProperty Name="CodDisciplina" ColumnName="CodDisciplina" />
@@ -6970,6 +6975,7 @@
           <EntitySetMapping Name="Parametro">
             <EntityTypeMapping TypeName="dbSIACModel.Parametro">
               <MappingFragment StoreEntitySet="Parametro">
+                <ScalarProperty Name="ValorNotaMedia" ColumnName="ValorNotaMedia" />
                 <ScalarProperty Name="CodParametro" ColumnName="CodParametro" />
                 <ScalarProperty Name="TempoInatividade" ColumnName="TempoInatividade" />
                 <ScalarProperty Name="NumeracaoQuestao" ColumnName="NumeracaoQuestao" />

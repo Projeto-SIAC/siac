@@ -233,10 +233,7 @@
         {
             if (!Model.Avaliacao.FlagLiberada)
             {
-                if (!FlagAgora)
-                {
-                    <a href="/Dashboard/Avaliacao/Academica/Configurar/@Model.Avaliacao.CodAvaliacao" class="ui button">Configurar</a>
-                }
+                <a href="/Dashboard/Avaliacao/Academica/Configurar/@Model.Avaliacao.CodAvaliacao" class="ui configurar button"@(!FlagAgora ? "" : "style=\"display:none\"")>Configurar</a>
                 <div class="ui toggle liberar button">Liberar</div>
             } 
             else

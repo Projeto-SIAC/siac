@@ -10,7 +10,7 @@
         $('div').popup();
         $('.cancelar.button').popup({ on: 'click' });
         $('.right.floated.button').popup({ on: 'click' });
-        $('.ui.accordion').accordion();
+        $('.ui.accordion').accordion({ animateChildren: false });
 
         function obterNovaQuestao(codQuestao, indice, codTipoQuestao) {
             var card = $('#CardQuestao' + indice);
@@ -29,7 +29,7 @@
                 success: function (data) {
                     if (data) {
                         card.html(data);
-                        $('.ui.accordion').accordion();
+                        $('.ui.accordion').accordion({ animateChildren: false });
                         $('.right.floated.button').popup({ on: 'click' });
                         $('.ui.button.disabled').removeClass('disabled');
                         $('#CardQuestao' + indice+' .ui.desfazer.button').show();
@@ -60,7 +60,7 @@
                 success: function (data) {
                     if (data) {
                         card.html(data);
-                        $('.ui.accordion').accordion();
+                        $('.ui.accordion').accordion({ animateChildren: false });
                         $('.right.floated.button').popup({ on: 'click' });
                         $('#CardQuestao' + indice + ' .ui.desfazer.button').hide();
                     }

@@ -7,7 +7,7 @@ siac.Configuracoes = (function () {
     function iniciar() {
         $('.menu .item').tab();
         $('.ui.dropdown').dropdown();
-        $('.ui.accordion').accordion();
+        $('.ui.accordion').accordion({ animateChildren: false });
 
         $('.tab.geral :input, .tab.termo :input').change(function () {
             parametroModificado();

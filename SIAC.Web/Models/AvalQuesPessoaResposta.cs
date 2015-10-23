@@ -26,6 +26,7 @@ namespace SIAC.Web.Models
         public string RespDiscursiva { get; set; }
         public string RespComentario { get; set; }
         public Nullable<double> RespNota { get; set; }
+        public string ProfObservacao { get; set; }
     
         public virtual PessoaFisica PessoaFisica { get; set; }
         public virtual AvalTemaQuestao AvalTemaQuestao { get; set; }

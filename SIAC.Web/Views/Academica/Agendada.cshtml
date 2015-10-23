@@ -24,6 +24,7 @@
                         $('.ui.avaliacao.modal').attr('id', strCodigo).html('').append(htmlModal).modal('show');
                         $('.ui.global.loader').parent().removeClass('active');
                         $('.ui.avaliacao.modal .ui.accordion').accordion({
+                            animateChildren: false,
                             onChange: function () { $('.ui.avaliacao.modal').modal('refresh'); }
                         });
                         $('.arquivar.button').click(function () {
@@ -55,16 +56,18 @@
             setTimeout(function () {
                 $.ajax({
                     type: 'GET',
-                    url: '/Historico/Avaliacao/Academica/ContagemRegressiva',
+                    url: '/Dashboard/Avaliacao/Academica/ContagemRegressiva',
                     data: { codAvaliacao: avalCodigo },
                     success: function (data) {
                         $('#contagem').text(data.Tempo).parent().transition('flash');
                         if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
+                            $('.configurar.button').hide();
                             $('.reagendar.button').hide();
                             $('.iniciar.button').removeClass('disabled');
                             $('.acompanhar.button').removeClass('disabled');
                         }
                         else if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == false) {
+                            $('.configurar.button').show();
                             $('.reagendar.button').show();
                             $('.iniciar.button').addClass('disabled');
                             $('.acompanhar.button').addClass('disabled');
@@ -89,7 +92,7 @@
                         var $modal = $('#'+strCodigo);
                         $.ajax({
                             type:'GET',
-                            url:'/Historico/Avaliacao/Academica/ContagemRegressiva',
+                            url: '/Dashboard/Avaliacao/Academica/ContagemRegressiva',
                             data: { codAvaliacao: avalCodigo},
                             success: function (data) {
                                 alert('O professor liberou a avaliação.');
@@ -104,7 +107,7 @@
                                     );
                                 }
                                 else if (data.FlagLiberada == true) {
-                                    $('.iniciar.button').addClass('disabled').text('Aguarde');
+                                    $('.iniciar.button').addClass('disabled');
                                     $modal.find('#mensagem').html('\
                                         <i class="checkmark icon"></i>\
                                         <div class="content">\
@@ -120,12 +123,12 @@
                         var $modal = $('#'+strCodigo);
                         $.ajax({
                             type:'GET',
-                            url:'/Historico/Avaliacao/Academica/ContagemRegressiva',
+                            url: '/Dashboard/Avaliacao/Academica/ContagemRegressiva',
                             data: { codAvaliacao: avalCodigo},
                             success: function(data) {
                                 if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == false) {
                                     alert('O professor bloqueou a avaliação.');
-                                    $('.iniciar.button').addClass('disabled').text('Aguarde');
+                                    $('.iniciar.button').addClass('disabled');
                                     $modal.find('#mensagem').html('\
                                         <i class="clock icon"></i>\
                                         <div class="content">\
@@ -157,14 +160,16 @@
                                     $('.liberar.button').addClass('active').removeClass('loading').text('Liberada');
                                     $.ajax({
                                     type:'GET',
-                                        url:'/Historico/Avaliacao/Academica/ContagemRegressiva',
+                                    url: '/Dashboard/Avaliacao/Academica/ContagemRegressiva',
                                         data: { codAvaliacao: avalCodigo},
                                         success: function(data) {
                                             if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
                                                 $('.reagendar.button').hide();
+                                                $('.configurar.button').hide();                                                
                                                 $('.acompanhar.button').removeClass('disabled');
                                             }
                                             else {
+                                                $('.configurar.button').show();
                                                 $('.reagendar.button').show();
                                                 $('.acompanhar.button').addClass('disabled');
                                             }
@@ -173,6 +178,8 @@
                                 }
                                 else {
                                     acadHub.server.liberar(avalCodigo, false);
+                                    $('.configurar.button').show();
+                                    $('.reagendar.button').show();
                                     $('.liberar.button').removeClass('active').removeClass('loading').text('Liberar');
                                 }
                             },
