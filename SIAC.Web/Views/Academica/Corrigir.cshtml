@@ -25,19 +25,21 @@
                 $ddlCorrecaoValor.parent().addClass('loading');
                 if (modo == 'aluno') {
                     $.ajax({
+                        cache: true,
                         type: 'POST',
                         url: '/Dashboard/Avaliacao/Academica/CarregarAlunos/'+codAvaliacao,
                         success: function (data) {
                             $ddlCorrecaoValor.parents('.field').find('label').text('Selecione o Aluno');
                             $ddlCorrecaoValor.html('');
+                            $ddlCorrecaoValor.append('<option value="">Selecione o Aluno</option>');
                             for (i = 0, length = data.length; i < length; i++)
                             {
                                 $ddlCorrecaoValor.append('<option value="'+data[i].Matricula+'">'+data[i].Nome+'</option>');
                             }
                             $ddlCorrecaoValor.parent().removeClass('loading').removeClass('disabled');
                         },
-                        error:function(data){
-                            alert('error' + data);
+                        error: function () {
+                            siac.mensagem('Ocorreu um erro.');
                             $ddlCorrecaoValor.parent().removeClass('loading');
                         }
                     });
@@ -48,12 +50,13 @@
             });
 
             $('#ddlCorrecaoValor').change(function () {
-                $modal = $(this).parents('.modal')
+                var _this = this;
+                $modal = $(_this).parents('.modal')
                 var modo = $('#ddlCorrecaoModo').val();
-                var valor = $(this).val();
+                var valor = $(_this).val();
                 $conteudo = $('.correcao.conteudo');
                 if (modo == 'aluno') {
-                    $conteudoQuestao = $('.corrigir.questoes.aluno');
+                    $conteudoQuestao = $('#template');
                     $.ajax({
                         type: 'POST',
                         url: '/Dashboard/Avaliacao/Academica/CarregarRespostasDiscursivas/'+codAvaliacao,
@@ -61,16 +64,27 @@
                             matrAluno: valor
                         },
                         success: function (data) {
-                            console.log(data[0].codQuestao);
-                            //ERROR
                             $('.correcao.conteudo').html('');
                             for (i = 0, length = data.length; i < length; i++) {
-                                $conteudoQuestao.html().replace('{matrAluno}', valor);
-                                $conteudo.append($conteudoQuestao);
+                                $conteudoQuestaoClone = $conteudoQuestao.clone();
+                                $conteudoQuestaoClone.removeAttr('id').removeAttr('hidden');
+                                $conteudoQuestaoClone.html(
+                                    $conteudoQuestao.html()
+                                    .replace('{matrAluno}', valor)
+                                    .replace('{codQuestao}', data[i].codQuestao)
+                                    .replace('{questaoEnunciado}', data[i].questaoEnunciado)
+                                    .replace('{questaoIndice}', (i+1))
+                                    .replace('{questaoChaveResposta}', data[i].questaoChaveResposta)
+                                    .replace('{alunoResposta}', data[i].alunoResposta)
+                                );
+                                $conteudo.append($conteudoQuestaoClone);
                             }
+                            $modal
+                                .modal('refresh')
+                            ;
                         },
-                        error: function (data) {
-                            alert('error' + data);
+                        error: function () {
+                            siac.mensagem('Ocorreu um erro.');
                         }
                     });
                 }
@@ -198,45 +212,45 @@
                 </select>
             </div>
             <div class="correcao conteudo">
-                <div class="corrigir questoes aluno">
-                    <div id="{matrAluno} {codQuestao}" class="ui fluid card">
-                        <div class="content">
-                            <div class="header">
-                                <p>{questaoIndice}. {questaoEnunciado}
-                                    1. Pensando mais a longo prazo, a hegemonia do ambiente político promove a alavancagem do retorno esperado a longo prazo.</p>
-                            </div>
-                            <a class="ui tiny green ribbon label">Chave de Resposta</a>
-                            <p><i>{questaoChaveResposta}</i></p>    
+                
+            </div>
+            <div id="template" class="ui basic segment corrigir questoes aluno" hidden>
+                <div id="{matrAluno}_{codQuestao}" class="ui fluid card">
+                    <div class="content">
+                        <div class="header">
+                            <p>{questaoIndice}. {questaoEnunciado}
                         </div>
-                        <table class="ui striped table">
-                            <thead>
-                                <tr>
-                                    <th>Resposta do Aluno</th>
-                                    <th>Nota Obtida</th>
-                                    <th>Comentário de Correção</th>
-                                    <th>Corrigir</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{alunoResposta}</td>
-                                    <td>
-                                        <div class="field required">
-                                            <input type="number" maxlength="2" max="10" id="{matrAluno}_{codQuestao}notaObtida" />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="field required">
-                                            <textarea id="{matrAluno}_{codQuestao}correcaoComentario" rows="5"></textarea>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div id="{matrAluno}_{codQuestao}btnCorrigir" class="ui button">Corrigir</div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <a class="ui tiny green ribbon label">Chave de Resposta</a>
+                        <p><i>{questaoChaveResposta}</i></p>
                     </div>
+                    <table class="ui striped table">
+                        <thead>
+                            <tr>
+                                <th>Resposta do Aluno</th>
+                                <th>Nota Obtida</th>
+                                <th>Comentário de Correção</th>
+                                <th>Corrigir</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{alunoResposta}</td>
+                                <td>
+                                    <div class="field required">
+                                        <input type="number" min="0" step="0.1" max="10" id="{matrAluno}_{codQuestao}notaObtida" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="field required">
+                                        <textarea id="{matrAluno}_{codQuestao}correcaoComentario" rows="3"></textarea>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="{matrAluno}_{codQuestao}btnCorrigir" class="ui button">Corrigir</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </form>
