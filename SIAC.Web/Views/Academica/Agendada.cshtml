@@ -1,4 +1,4 @@
-﻿@using SIAC.Web.Models
+﻿@using SIAC.Models
 @model List<AvalAcademica>
 @{
     ViewBag.Title = "Avaliações Agendadas";
@@ -86,7 +86,7 @@
         function AbrirHub() {
             var acadHub = $.connection.academicaHub;            
             @{ 
-                if (SIAC.Web.Helpers.Sessao.UsuarioCategoriaCodigo == 1) {
+                if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 1) {
                 <text>
                     acadHub.client.liberar = function (strCodigo) {
                         var $modal = $('#'+strCodigo);
@@ -145,7 +145,7 @@
                     });
                 </text>
                 }
-                else if(SIAC.Web.Helpers.Sessao.UsuarioCategoriaCodigo == 2) {
+                else if(SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 2) {
                 <text>
                 $.connection.hub.start().done(function () {
                     $('.liberar.button').click(function() {

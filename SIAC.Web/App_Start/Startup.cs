@@ -1,8 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
-using SIAC.Web;
+using SIAC;
 
-namespace SIAC.Web
+namespace SIAC
 {
     public class Startup
     {

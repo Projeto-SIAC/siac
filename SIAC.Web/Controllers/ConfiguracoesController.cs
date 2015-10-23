@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using SIAC.Web.Models;
-using SIAC.Web.Helpers;
+using SIAC.Models;
+using SIAC.Helpers;
 
-namespace SIAC.Web.Controllers
+namespace SIAC.Controllers
 {
     public class ConfiguracoesController : Controller
     {

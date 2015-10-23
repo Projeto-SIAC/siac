@@ -1,4 +1,4 @@
-﻿@using SIAC.Web.Models
+﻿@using SIAC.Models
 @model AvalAcademica
 @{
     ViewBag.Title = "Acompanhar " + Model.Avaliacao.CodAvaliacao;
@@ -280,7 +280,7 @@
             }
         }       
         
-        ConectarHub('@Model.Avaliacao.CodAvaliacao', '@SIAC.Web.Helpers.Sessao.UsuarioMatricula');
+        ConectarHub('@Model.Avaliacao.CodAvaliacao', '@SIAC.Helpers.Sessao.UsuarioMatricula');
 
         $('.ui.accordion')
             .accordion({

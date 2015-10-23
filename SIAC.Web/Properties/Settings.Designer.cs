@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SIAC.Web.Properties {
+namespace SIAC.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

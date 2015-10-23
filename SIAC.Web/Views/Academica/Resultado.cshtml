@@ -1,9 +1,9 @@
-﻿@using SIAC.Web.Models
+﻿@using SIAC.Models
 @model AvalAcademica
 @{
     ViewBag.Title = "Resultado " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int codPessoaFisica = Usuario.ObterPessoaFisica(SIAC.Web.Helpers.Sessao.UsuarioMatricula);
+    int codPessoaFisica = Usuario.ObterPessoaFisica(SIAC.Helpers.Sessao.UsuarioMatricula);
     List<Questao> lstQuestao = Model.Avaliacao.Questao;
     List<AvalQuesPessoaResposta> lstPessoaResposta = Model.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == codPessoaFisica).ToList();
     AvalPessoaResultado avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.First(r => r.CodPessoaFisica == codPessoaFisica);

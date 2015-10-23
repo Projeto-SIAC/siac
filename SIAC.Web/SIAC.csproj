@@ -13,8 +13,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SIAC.Web</RootNamespace>
-    <AssemblyName>SIAC.Web</AssemblyName>
+    <RootNamespace>SIAC</RootNamespace>
+    <AssemblyName>SIAC</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -163,8 +163,8 @@
       <LastGenOutput>dbSIAC.cs</LastGenOutput>
     </Content>
     <Content Include="Mvc.sitemap" />
-    <Content Include="Resources\html2canvas.js" />
-    <Content Include="Resources\html2canvas.min.js">
+    <Content Include="Scripts\libs\html2canvas.js" />
+    <Content Include="Scripts\libs\html2canvas.min.js">
       <DependentUpon>html2canvas.js</DependentUpon>
     </Content>
     <Content Include="Resources\images\content\login\amostra.jpg" />
@@ -172,168 +172,36 @@
     <Content Include="Resources\images\layout\background.jpg" />
     <Content Include="Resources\images\layout\logo-black.png" />
     <Content Include="Resources\images\layout\logo.png" />
-    <Content Include="Resources\components\accordion.css" />
-    <Content Include="Resources\components\accordion.js" />
-    <Content Include="Resources\components\accordion.min.css" />
-    <Content Include="Resources\components\accordion.min.js" />
-    <Content Include="Resources\components\ad.css" />
-    <Content Include="Resources\components\ad.min.css" />
-    <Content Include="Resources\components\api.js" />
-    <Content Include="Resources\components\api.min.js" />
-    <Content Include="Resources\components\breadcrumb.css" />
-    <Content Include="Resources\components\breadcrumb.min.css" />
-    <Content Include="Resources\components\button.css" />
-    <Content Include="Resources\components\button.min.css" />
-    <Content Include="Resources\components\card.css" />
-    <Content Include="Resources\components\card.min.css" />
-    <Content Include="Resources\components\checkbox.css" />
-    <Content Include="Resources\components\checkbox.js" />
-    <Content Include="Resources\components\checkbox.min.css" />
-    <Content Include="Resources\components\checkbox.min.js" />
-    <Content Include="Resources\components\comment.css" />
-    <Content Include="Resources\components\comment.min.css" />
-    <Content Include="Resources\components\container.css" />
-    <Content Include="Resources\components\container.min.css" />
-    <Content Include="Resources\components\dimmer.css" />
-    <Content Include="Resources\components\dimmer.js" />
-    <Content Include="Resources\components\dimmer.min.css" />
-    <Content Include="Resources\components\dimmer.min.js" />
-    <Content Include="Resources\components\divider.css" />
-    <Content Include="Resources\components\divider.min.css" />
-    <Content Include="Resources\components\dropdown.css" />
-    <Content Include="Resources\components\dropdown.js" />
-    <Content Include="Resources\components\dropdown.min.css" />
-    <Content Include="Resources\components\dropdown.min.js" />
-    <Content Include="Resources\components\embed.css" />
-    <Content Include="Resources\components\embed.js" />
-    <Content Include="Resources\components\embed.min.css" />
-    <Content Include="Resources\components\embed.min.js" />
-    <Content Include="Resources\components\feed.css" />
-    <Content Include="Resources\components\feed.min.css" />
-    <Content Include="Resources\components\flag.css" />
-    <Content Include="Resources\components\flag.min.css" />
-    <Content Include="Resources\components\form.css" />
-    <Content Include="Resources\components\form.js" />
-    <Content Include="Resources\components\form.min.css" />
-    <Content Include="Resources\components\form.min.js" />
-    <Content Include="Resources\components\grid.css" />
-    <Content Include="Resources\components\grid.min.css" />
-    <Content Include="Resources\components\header.css" />
-    <Content Include="Resources\components\header.min.css" />
-    <Content Include="Resources\components\icon.css" />
-    <Content Include="Resources\components\icon.min.css" />
-    <Content Include="Resources\components\image.css" />
-    <Content Include="Resources\components\image.min.css" />
-    <Content Include="Resources\components\input.css" />
-    <Content Include="Resources\components\input.min.css" />
-    <Content Include="Resources\components\item.css" />
-    <Content Include="Resources\components\item.min.css" />
-    <Content Include="Resources\components\label.css" />
-    <Content Include="Resources\components\label.min.css" />
-    <Content Include="Resources\components\list.css" />
-    <Content Include="Resources\components\list.min.css" />
-    <Content Include="Resources\components\loader.css" />
-    <Content Include="Resources\components\loader.min.css" />
-    <Content Include="Resources\components\menu.css" />
-    <Content Include="Resources\components\menu.min.css" />
-    <Content Include="Resources\components\message.css" />
-    <Content Include="Resources\components\message.min.css" />
-    <Content Include="Resources\components\modal.css" />
-    <Content Include="Resources\components\modal.js" />
-    <Content Include="Resources\components\modal.min.css" />
-    <Content Include="Resources\components\modal.min.js" />
-    <Content Include="Resources\components\nag.css" />
-    <Content Include="Resources\components\nag.js" />
-    <Content Include="Resources\components\nag.min.css" />
-    <Content Include="Resources\components\nag.min.js" />
-    <Content Include="Resources\components\popup.css" />
-    <Content Include="Resources\components\popup.js" />
-    <Content Include="Resources\components\popup.min.css" />
-    <Content Include="Resources\components\popup.min.js" />
-    <Content Include="Resources\components\progress.css" />
-    <Content Include="Resources\components\progress.js" />
-    <Content Include="Resources\components\progress.min.css" />
-    <Content Include="Resources\components\progress.min.js" />
-    <Content Include="Resources\components\rail.css" />
-    <Content Include="Resources\components\rail.min.css" />
-    <Content Include="Resources\components\rating.css" />
-    <Content Include="Resources\components\rating.js" />
-    <Content Include="Resources\components\rating.min.css" />
-    <Content Include="Resources\components\rating.min.js" />
-    <Content Include="Resources\components\reset.css" />
-    <Content Include="Resources\components\reset.min.css" />
-    <Content Include="Resources\components\reveal.css" />
-    <Content Include="Resources\components\reveal.min.css" />
-    <Content Include="Resources\components\search.css" />
-    <Content Include="Resources\components\search.js" />
-    <Content Include="Resources\components\search.min.css" />
-    <Content Include="Resources\components\search.min.js" />
-    <Content Include="Resources\components\segment.css" />
-    <Content Include="Resources\components\segment.min.css" />
-    <Content Include="Resources\components\shape.css" />
-    <Content Include="Resources\components\shape.js" />
-    <Content Include="Resources\components\shape.min.css" />
-    <Content Include="Resources\components\shape.min.js" />
-    <Content Include="Resources\components\sidebar.css" />
-    <Content Include="Resources\components\sidebar.js" />
-    <Content Include="Resources\components\sidebar.min.css" />
-    <Content Include="Resources\components\sidebar.min.js" />
-    <Content Include="Resources\components\site.css" />
-    <Content Include="Resources\components\site.js" />
-    <Content Include="Resources\components\site.min.css" />
-    <Content Include="Resources\components\site.min.js" />
-    <Content Include="Resources\components\state.js" />
-    <Content Include="Resources\components\state.min.js" />
-    <Content Include="Resources\components\statistic.css" />
-    <Content Include="Resources\components\statistic.min.css" />
-    <Content Include="Resources\components\step.css" />
-    <Content Include="Resources\components\step.min.css" />
-    <Content Include="Resources\components\sticky.css" />
-    <Content Include="Resources\components\sticky.js" />
-    <Content Include="Resources\components\sticky.min.css" />
-    <Content Include="Resources\components\sticky.min.js" />
-    <Content Include="Resources\components\tab.css" />
-    <Content Include="Resources\components\tab.js" />
-    <Content Include="Resources\components\tab.min.css" />
-    <Content Include="Resources\components\tab.min.js" />
-    <Content Include="Resources\components\table.css" />
-    <Content Include="Resources\components\table.min.css" />
-    <Content Include="Resources\components\transition.css" />
-    <Content Include="Resources\components\transition.js" />
-    <Content Include="Resources\components\transition.min.css" />
-    <Content Include="Resources\components\transition.min.js" />
-    <Content Include="Resources\components\visibility.js" />
-    <Content Include="Resources\components\visibility.min.js" />
-    <Content Include="Resources\jquery.mask.min.js" />
-    <Content Include="Resources\jquery.min.js" />
-    <Content Include="Resources\modernizr.js" />
-    <Content Include="Resources\modules\siac.configuracoes.js" />
-    <Content Include="Resources\modules\siac.configuracoes.min.js">
+    <Content Include="Scripts\plugins\jquery.mask-1.13.4.min.js" />
+    <Content Include="Scripts\libs\jquery.min.js" />
+    <Content Include="Scripts\libs\modernizr.js" />
+    <Content Include="Scripts\modules\siac.configuracoes.js" />
+    <Content Include="Scripts\modules\siac.configuracoes.min.js">
       <DependentUpon>siac.configuracoes.js</DependentUpon>
     </Content>
-    <Content Include="Resources\modules\siac.questao.js" />
-    <Content Include="Resources\modules\siac.questao.min.js">
+    <Content Include="Scripts\modules\siac.questao.js" />
+    <Content Include="Scripts\modules\siac.questao.min.js">
       <DependentUpon>siac.questao.js</DependentUpon>
     </Content>
-    <Content Include="Resources\semantic.min.css" />
-    <Content Include="Resources\semantic.min.js" />
-    <Content Include="Resources\siac.acesso.css" />
-    <Content Include="Resources\siac.acesso.min.css">
+    <Content Include="Styles\semantic.min.css" />
+    <Content Include="Scripts\libs\semantic.min.js" />
+    <Content Include="Styles\siac.acesso.css" />
+    <Content Include="Styles\siac.acesso.min.css">
       <DependentUpon>siac.acesso.css</DependentUpon>
     </Content>
-    <Content Include="Resources\siac.css" />
-    <Content Include="Resources\siac.min.css">
+    <Content Include="Styles\siac.css" />
+    <Content Include="Styles\siac.min.css">
       <DependentUpon>siac.css</DependentUpon>
     </Content>
-    <Content Include="Resources\siac.min.js">
+    <Content Include="Scripts\siac.min.js">
       <DependentUpon>siac.js</DependentUpon>
     </Content>
-    <Content Include="Resources\themes\basic\assets\fonts\icons.svg" />
-    <Content Include="Resources\themes\default\assets\fonts\icons.svg" />
-    <Content Include="Resources\themes\default\assets\images\flags.png" />
+    <Content Include="Styles\themes\basic\assets\fonts\icons.svg" />
+    <Content Include="Styles\themes\default\assets\fonts\icons.svg" />
+    <Content Include="Styles\themes\default\assets\images\flags.png" />
     <Content Include="Global.asax" />
     <Content Include="Resources\videos\background.mp4" />
-    <Content Include="Resources\jquery.signalR-2.2.0.min.js" />
+    <Content Include="Scripts\plugins\jquery.signalR-2.2.0.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -627,13 +495,13 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
-    <Content Include="Resources\themes\basic\assets\fonts\icons.eot" />
-    <Content Include="Resources\themes\basic\assets\fonts\icons.ttf" />
-    <Content Include="Resources\themes\basic\assets\fonts\icons.woff" />
-    <Content Include="Resources\themes\default\assets\fonts\icons.eot" />
-    <Content Include="Resources\themes\default\assets\fonts\icons.ttf" />
-    <Content Include="Resources\themes\default\assets\fonts\icons.woff" />
-    <Content Include="Resources\themes\default\assets\fonts\icons.woff2" />
+    <Content Include="Styles\themes\basic\assets\fonts\icons.eot" />
+    <Content Include="Styles\themes\basic\assets\fonts\icons.ttf" />
+    <Content Include="Styles\themes\basic\assets\fonts\icons.woff" />
+    <Content Include="Styles\themes\default\assets\fonts\icons.eot" />
+    <Content Include="Styles\themes\default\assets\fonts\icons.ttf" />
+    <Content Include="Styles\themes\default\assets\fonts\icons.woff" />
+    <Content Include="Styles\themes\default\assets\fonts\icons.woff2" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Acesso\Index.cshtml" />
@@ -684,7 +552,7 @@
     <Content Include="Views\Academica\Realizar.cshtml" />
     <Content Include="Views\Academica\Resultado.cshtml" />
     <Content Include="Views\Academica\Pendente.cshtml" />
-    <Content Include="Resources\siac.js" />
+    <Content Include="Scripts\siac.js" />
     <Content Include="Views\Academica\Corrigir.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SiteMapTitleHelperModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SiteMapPathHelperModel.cshtml" />

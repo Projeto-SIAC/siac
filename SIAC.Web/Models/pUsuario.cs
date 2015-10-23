@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using SIAC.Web.Helpers;
+using SIAC.Helpers;
 
-namespace SIAC.Web.Models
+namespace SIAC.Models
 {
     public partial class Usuario
     {

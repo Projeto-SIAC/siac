@@ -20,7 +20,7 @@
         agendada = aluno.TurmaDiscAluno.Sum(t => t.Turma.AvalAcademica.Where(c=> c.Avaliacao.AvalPessoaResultado.Count == 0).Count());
     }
 }
-@model SIAC.Web.Models.Usuario
+@model SIAC.Models.Usuario
 
 <h2>@ViewBag.Title</h2>
 

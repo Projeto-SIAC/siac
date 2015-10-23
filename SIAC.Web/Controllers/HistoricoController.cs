@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace SIAC.Web.Controllers
+namespace SIAC.Controllers
 {
     public class HistoricoController : Controller
     {

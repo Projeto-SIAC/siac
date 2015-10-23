@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace SIAC.Web.Models
+namespace SIAC.Models
 {
     public partial class Parametro
     {

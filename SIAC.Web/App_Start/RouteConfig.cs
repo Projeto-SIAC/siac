@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace SIAC.Web
+namespace SIAC
 {
     public class RouteConfig
     {
@@ -96,28 +96,28 @@ namespace SIAC.Web
                 name: "RecuperarTemasPorCodDisciplina",
                 url: "Tema/RecuperarTemasPorCodDisciplina/",
                 defaults: new { controller = "Tema", action = "RecuperarTemasPorCodDisciplina" },
-                namespaces: new[] { "SIAC.Web.Controllers" }
+                namespaces: new[] { "SIAC.Controllers" }
             );
 
             routes.MapRoute(
                 name: "RecuperarTemasPorCodDisciplinaTemQuestao",
                 url: "Tema/RecuperarTemasPorCodDisciplinaTemQuestao/",
                 defaults: new { controller = "Tema", action = "RecuperarTemasPorCodDisciplinaTemQuestao" },
-                namespaces: new[] { "SIAC.Web.Controllers" }
+                namespaces: new[] { "SIAC.Controllers" }
             );
 
             routes.MapRoute(
                 name: "LeroLero",
                 url: "LeroLero",
                 defaults: new { controller = "LeroLero", action = "Index" },
-                namespaces: new[] { "SIAC.Web.Controllers" }
+                namespaces: new[] { "SIAC.Controllers" }
             );
 
             routes.MapRoute(
                 name: "PalavrasChave",
                 url: "PalavrasChave",
                 defaults: new { controller = "Questao", action = "PalavrasChave" },
-                namespaces: new[] { "SIAC.Web.Controllers" }
+                namespaces: new[] { "SIAC.Controllers" }
             );
 
             routes.MapRoute(
