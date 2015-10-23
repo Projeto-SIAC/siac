@@ -35,6 +35,10 @@ namespace SIAC.Web
                 "~/Resources/semantic.min.css",
                 "~/Resources/siac.min.css"
             ));
+
+            bundles.Add(new StyleBundle("~/bundles/css/acesso").Include(
+                "~/Resources/siac.acesso.min.css"
+            ));
         }
     }
 }

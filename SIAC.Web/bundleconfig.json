@@ -24,21 +24,15 @@
     ]
   },
   {
-    "outputFileName": "Resources/siac.css",
-    "inputFiles": [
-      "Resources/siac.css"
-    ]
-  },
-  {
     "outputFileName": "Resources/html2canvas.js",
     "inputFiles": [
       "Resources/html2canvas.js"
     ]
   },
   {
-    "outputFileName": "Resources/modules/siac.questao.js",
+    "outputFileName": "Resources/siac.acesso.css",
     "inputFiles": [
-      "Resources/modules/siac.questao.js"
+      "Resources/siac.acesso.css"
     ]
   }
 ]

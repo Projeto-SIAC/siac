@@ -317,6 +317,10 @@
     </Content>
     <Content Include="Resources\semantic.min.css" />
     <Content Include="Resources\semantic.min.js" />
+    <Content Include="Resources\siac.acesso.css" />
+    <Content Include="Resources\siac.acesso.min.css">
+      <DependentUpon>siac.acesso.css</DependentUpon>
+    </Content>
     <Content Include="Resources\siac.css" />
     <Content Include="Resources\siac.min.css">
       <DependentUpon>siac.css</DependentUpon>
