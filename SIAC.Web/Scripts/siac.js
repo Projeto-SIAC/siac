@@ -132,11 +132,20 @@ siac.Utilitario = (function () {
 		return texto;
 	}
 
+	function substituirTodos(texto, valorVelho,valorNovo) {
+	    var _texto = texto;
+	    while (_texto.indexOf(valorVelho) > -1) {
+	        _texto = _texto.replace(valorVelho, valorNovo);
+	    };
+	    return _texto;
+	}
+
 	return {
 		compararData: compararData,
 		dataEFuturo: dataEFuturo,
 		encurtarTextoEm: encurtarTextoEm,
-		quebrarLinhaEm: quebrarLinhaEm
+		quebrarLinhaEm: quebrarLinhaEm,
+		substituirTodos: substituirTodos
 	}
 })();
 

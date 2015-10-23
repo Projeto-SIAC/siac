@@ -823,6 +823,7 @@ namespace SIAC.Controllers
                 int codPessoaFisica = aluno.Usuario.PessoaFisica.CodPessoa;
 
                 var result = from alunoResposta in acad.Avaliacao.PessoaResposta
+                             orderby alunoResposta.CodQuestao
                              where alunoResposta.CodPessoaFisica == codPessoaFisica
                                 && alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 2
                              select new
@@ -835,6 +836,23 @@ namespace SIAC.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             return Json(null);
+        }
+
+        //POST: Academica/Avaliacao/CorrigirQuestaoAluno/{codigo}/{matrAluno}/{codQuestao}
+        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
+        public ActionResult CorrigirQuestaoAluno(string codigo, string matrAluno,string codQuestao,string notaObtida,string profObservacao)
+        {
+            if (!String.IsNullOrEmpty(codigo) && !String.IsNullOrEmpty(matrAluno) && !String.IsNullOrEmpty(codQuestao))
+            {
+                int codQuesTemp = int.Parse(codQuestao);
+                double nota = Double.Parse(notaObtida.Replace('.', ','));
+
+                bool result = AvalAcademica.CorrigirQuestaoAluno(codigo, matrAluno, codQuesTemp, nota, profObservacao);
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            return Json(false);
         }
     }
 }

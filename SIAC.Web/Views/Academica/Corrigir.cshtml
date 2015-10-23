@@ -7,7 +7,7 @@
 
 @section Scripts{
     <script>
-        function entrar(codAvaliacao) {
+        function entrar(codAvaliacao,arrayQuestoes) {
             $('.ui.accordion').accordion({ animateChildren: false });
             $('.ui.modal').modal();
             $('.ui.dropdown').dropdown();
@@ -19,30 +19,34 @@
                 $('.modal.corrigir').modal('show');
             })
 
+            function getIndiceQuestao(codQuestao) {
+                return jQuery.inArray(codQuestao, arrayQuestoes);
+            }
+
             $('#ddlCorrecaoModo').change(function () {
-                var modo = $(this).val();
+                            var modo = $(this).val();
                 $ddlCorrecaoValor = $('#ddlCorrecaoValor');
                 $ddlCorrecaoValor.parent().addClass('loading');
-                if (modo == 'aluno') {
+                            if (modo == 'aluno') {
                     $.ajax({
-                        cache: true,
+                                    cache: true,
                         type: 'POST',
                         url: '/Dashboard/Avaliacao/Academica/CarregarAlunos/'+codAvaliacao,
                         success: function (data) {
                             $ddlCorrecaoValor.parents('.field').find('label').text('Selecione o Aluno');
                             $ddlCorrecaoValor.html('');
                             $ddlCorrecaoValor.append('<option value="">Selecione o Aluno</option>');
-                            for (i = 0, length = data.length; i < length; i++)
-                            {
+                                        for (i = 0, length = data.length; i < length; i++)
+                                        {
                                 $ddlCorrecaoValor.append('<option value="'+data[i].Matricula+'">'+data[i].Nome+'</option>');
-                            }
+                                        }
                             $ddlCorrecaoValor.parent().removeClass('loading').removeClass('disabled');
-                        },
+                                    },
                         error: function () {
-                            siac.mensagem('Ocorreu um erro.');
+                                        siac.mensagem('Ocorreu um erro.');
                             $ddlCorrecaoValor.parent().removeClass('loading');
-                        }
-                    });
+                                    }
+                                });
                 }
                 else if (modo == 'questao') {
 
@@ -55,6 +59,7 @@
                 var modo = $('#ddlCorrecaoModo').val();
                 var valor = $(_this).val();
                 $conteudo = $('.correcao.conteudo');
+                $(_this).parent().addClass('loading');
                 if (modo == 'aluno') {
                     $conteudoQuestao = $('#template');
                     $.ajax({
@@ -68,23 +73,27 @@
                             for (i = 0, length = data.length; i < length; i++) {
                                 $conteudoQuestaoClone = $conteudoQuestao.clone();
                                 $conteudoQuestaoClone.removeAttr('id').removeAttr('hidden');
-                                $conteudoQuestaoClone.html(
-                                    $conteudoQuestao.html()
-                                    .replace('{matrAluno}', valor)
-                                    .replace('{codQuestao}', data[i].codQuestao)
-                                    .replace('{questaoEnunciado}', data[i].questaoEnunciado)
-                                    .replace('{questaoIndice}', (i+1))
-                                    .replace('{questaoChaveResposta}', data[i].questaoChaveResposta)
-                                    .replace('{alunoResposta}', data[i].alunoResposta)
-                                );
+                                $conteudoQuestaoClone.html($conteudoQuestao.html());
+
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{matrAluno}', valor));
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{codQuestao}', data[i].codQuestao));
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoEnunciado}', data[i].questaoEnunciado));
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoIndice}', getIndiceQuestao(data[i].codQuestao)));
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoChaveResposta}', data[i].questaoChaveResposta));
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{alunoResposta}', data[i].alunoResposta));
                                 $conteudo.append($conteudoQuestaoClone);
                             }
-                            $modal
-                                .modal('refresh')
-                            ;
+
+                            $modal.modal('refresh');
+                            $(_this).parent().removeClass('loading');
+
+                            $('.button.corrigir.aluno').click(function () {
+                                corrigirQuestao(this);
+                            });
                         },
                         error: function () {
                             siac.mensagem('Ocorreu um erro.');
+                            $(_this).parent().removeClass('loading');
                         }
                     });
                 }
@@ -92,9 +101,43 @@
 
                 }
             });
+
+            function corrigirQuestao(_this) {
+                matrAluno = $('#ddlCorrecaoValor').val();
+                codQuestao = $(_this).parents('[id]').attr('id');
+
+                notaObtida = $('#' + codQuestao + ' .notaObtida').val();
+                correcaoComentario = $('#' + codQuestao + ' .correcaoComentario').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Dashboard/Avaliacao/Academica/CorrigirQuestaoAluno/' + codAvaliacao,
+                    data: {
+                        matrAluno: matrAluno,
+                        codQuestao: codQuestao,
+                        notaObtida: notaObtida,
+                        profObservacao:correcaoComentario
+                    },
+                    success:function(data){
+                        $('#' + codQuestao + ' .button.corrigir.aluno').addClass('green').text('Questão Corrigida!');
+                        $('#' + codQuestao).dimmer('show');
+                    },
+                    error: function (data) {
+                        siac.mensagem(data);
+                    }
+                });
+            }
         }
 
-        entrar('@Model.Avaliacao.CodAvaliacao');
+        var arrayQuestoes = [];
+        var contadorQuestoes = 1;
+        @foreach(Questao q in Model.Avaliacao.Questao.OrderBy(q=>q.CodQuestao))
+        {<text>
+            arrayQuestoes[contadorQuestoes] = @q.CodQuestao
+            contadorQuestoes++;
+        </text>}
+
+        entrar('@Model.Avaliacao.CodAvaliacao',arrayQuestoes);
         //RETIRAVEL
         $('.ui.modal.corrigir').modal('show');
     </script>
@@ -190,9 +233,57 @@
 </div>
 
 @* Placeholder da opção de Correção por Aluno *@
+<div id="template" class="ui basic segment questoes aluno" hidden>
+    <div id="{codQuestao}" class="ui fluid card">
+        <div class="content">
+            <div class="header">
+                <p>{questaoIndice}. {questaoEnunciado}
+            </div>
+            <a class="ui tiny green ribbon label">Chave de Resposta</a>
+            <p><i>{questaoChaveResposta}</i></p>
+        </div>
+        <table class="ui striped table">
+            <thead>
+                <tr>
+                    <th class="six wide">Resposta do Aluno</th>
+                    <th class="two wide">Nota Obtida</th>
+                    <th class="six wide">Comentário de Correção</th>
+                    <th class="three wide"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{alunoResposta}</td>
+                    <td>
+                        <div class="field required">
+                            <input type="number" value="@Parametro.Obter().ValorNotaMedia.ToValueHtml()" min="0" step="0.1" max="10" class="notaObtida" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="field required">
+                            <textarea class="correcaoComentario" rows="3"></textarea>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ui button corrigir aluno">Salvar</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="ui dimmer">
+            <div class="content">
+                <div class="center">
+                    <h2 class="ui inverted icon header">
+                        <i class="checkmark green icon"></i>
+                        Questão Corrigida!
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-
-<div class="ui modal corrigir">
+<div class="ui modal fullscreen corrigir">
     <div class="header">
         Corrigir Avaliação
     </div>
@@ -213,45 +304,6 @@
             </div>
             <div class="correcao conteudo">
                 
-            </div>
-            <div id="template" class="ui basic segment corrigir questoes aluno" hidden>
-                <div id="{matrAluno}_{codQuestao}" class="ui fluid card">
-                    <div class="content">
-                        <div class="header">
-                            <p>{questaoIndice}. {questaoEnunciado}
-                        </div>
-                        <a class="ui tiny green ribbon label">Chave de Resposta</a>
-                        <p><i>{questaoChaveResposta}</i></p>
-                    </div>
-                    <table class="ui striped table">
-                        <thead>
-                            <tr>
-                                <th>Resposta do Aluno</th>
-                                <th>Nota Obtida</th>
-                                <th>Comentário de Correção</th>
-                                <th>Corrigir</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{alunoResposta}</td>
-                                <td>
-                                    <div class="field required">
-                                        <input type="number" min="0" step="0.1" max="10" id="{matrAluno}_{codQuestao}notaObtida" />
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="field required">
-                                        <textarea id="{matrAluno}_{codQuestao}correcaoComentario" rows="3"></textarea>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div id="{matrAluno}_{codQuestao}btnCorrigir" class="ui button">Corrigir</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
             </div>
         </form>
     </div>
