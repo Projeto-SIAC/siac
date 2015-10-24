@@ -1,63 +1,126 @@
 ﻿siac.Questao = siac.Questao || {};
 
 siac.Questao.Index = (function () {
+    var controleTimeout;
+
     var pagina = 1;
-    var jsnQuestoesGeral, jsnQuestoesFiltro;
+    var ordenar = "data";
+    var dificuldade = ""; 
+    var disciplina = "";
+    var tema = "";
+    var tipos = []; 
+    var pesquisa = ""; 
 
     function iniciar() {
-        //$('.ui.cards').parent().addClass('loading');
+        $('.ui.dropdown').dropdown();
+        $('.ui.cards').parent().addClass('loading');        
 
-        //window.onbeforeunload = function () { $ajax.abort(); $('.ui.global.loader').parent().addClass('active'); };
+        $('.pesquisa input').keyup(function () {
+            var _this = this;
+            if (controleTimeout) {
+                clearTimeout(controleTimeout);
+            }
+            controleTimeout = setTimeout(function () {
+                pesquisa = _this.value;
+                listar();
+            }, 500);
+        });
 
-        //$ajax = $.ajax({
-        //    url: '/Historico/Questao/Minhas',
-        //    method: 'GET',
-        //    success: function (questoes) {
-        //        jsnQuestoesGeral = questoes;
-        //        jsnQuestoesFiltro = questoes;
-        //        minhasQuestoes();
-        //    },
-        //    error: function () {
-        //        siac.mensagem("Erro ao recuperar as questões");
-        //        $('.ui.cards').parent().removeClass('loading');
-        //    }
-        //});
+        listar();
 
-        //$('.filtro input').keyup(function () {
-        //    var _this = this;
-        //    filtro($(_this).val());
-        //});
-        $('.ui.global.loader').parent().addClass('active');
-        $.ajax({
-            url: '/Historico/Questao/Minhas',
-            data: { pagina: pagina },
-            method: 'GET',
-            success: function (partial) {
-                $('.ui.cards').append(partial);
-            },
-            complete: function () {
-                $('.ui.global.loader').parent().removeClass('active');
+        $('.button.topo').click(function () {
+            topo();
+        });
+
+        $('.tipo.item').click(function () {
+            var $_this = $(this);
+            pagina = 1;
+            var _tipo = $_this.attr('data-tipo');
+            if ($_this.hasClass('active')) {
+                var _tempTipos = tipos;
+                tipos = [];
+                for (var i = 0, length = _tempTipos.length; i < length; i++) {
+                    if (_tempTipos[i] != _tipo) {
+                        tipos.push(_tempTipos[i]);
+                    }
+                }
+                $_this.removeClass('active');
+            }
+            else {
+                tipos.push(_tipo);
+                $_this.addClass('active');
+            }
+            listar();
+        });
+
+        $('.dificuldade.item').click(function () {
+            var $_this = $(this);
+            pagina = 1;
+            dificuldade = $_this.attr('data-dificuldade');
+            listar();
+        });
+
+        $('.disciplina.item').click(function () {
+            var $_this = $(this);
+            pagina = 1;
+            disciplina = $_this.attr('data-disciplina');
+            if (!disciplina) {
+                tema = "";
+            }
+            listar();
+        });
+
+
+        $('.tema.item').click(function () {
+            var $_this = $(this);
+            pagina = 1;
+            disciplina = $_this.parents('[data-disciplina]').attr('data-disciplina');
+            tema = $_this.attr('data-tema');
+            listar();
+        });
+
+        $('.ordenar.item').click(function () {
+            var $_this = $(this);
+            pagina = 1;
+            ordenar = $_this.attr('data-ordenar');
+            listar();
+            $('.ordenar.item').removeClass('active');
+            $_this.addClass('active');
+        });
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+                pagina++;
+                listar();
             }
         });
-
-        $('.button.mais').click(function () {
-            var _this = this;
-            $(_this).addClass('loading');
-            mais(_this);
-        });
     };
-
-    function mais(button) {
-        pagina++;
+    
+    function listar() {
+        $cards = $('.ui.cards');
+        $cards.parent().addClass('loading');
         $.ajax({
-            url: '/Historico/Questao/Minhas',
-            data: { pagina: pagina },
-            method: 'GET',
+            url: '/Historico/Questao/Listar',
+            data: { 
+                pagina: pagina,
+                ordenar: ordenar,
+                dificuldade: dificuldade,
+                disciplina: disciplina,
+                tema: tema,
+                tipos: tipos,
+                pesquisa: pesquisa
+            },
+            method: 'POST',
             success: function (partial) {
-                $('.ui.cards').append(partial);
+                if (pagina == 1) {
+                    $cards.html(partial);
+                }
+                else {
+                    $cards.append(partial);
+                }
             },
             complete: function () {
-                $(button).removeClass('loading');
+                $cards.parent().removeClass('loading');
             }
         });
     }
@@ -69,169 +132,8 @@ siac.Questao.Index = (function () {
         return false;
     }
 
-    function filtro(strTexto) {
-        if (strTexto) {
-            strTexto = strTexto.toLowerCase().split(';');
-            jsnQuestoesFiltro = [];
-            for (var j = 0; j < strTexto.length; j++) {
-                strTexto[j] = strTexto[j].trim();
-                if (strTexto[j].indexOf('+') > -1) {
-                    lstFiltro = jsnQuestoesGeral;
-                    termos = strTexto[j].split('+');
-                    for (var k = 0; k < termos.length; k++) {
-                        termos[k] = termos[k].trim();
-                        if (termos[k]) {
-                            var lstFiltroAnd = [];
-                            for (var i = 0; i < lstFiltro.length; i++) {
-                                if (lstFiltro[i].Enunciado.toLowerCase().indexOf(termos[k]) > -1) {
-                                    lstFiltroAnd.push(lstFiltro[i]);
-                                }
-                                else if (lstFiltro[i].Disciplina.toLowerCase().indexOf(termos[k]) > -1) {
-                                    lstFiltroAnd.push(lstFiltro[i]);
-                                }
-                                else if (lstFiltro[i].TipoQuestao.toLowerCase().indexOf(termos[k]) > -1) {
-                                    lstFiltroAnd.push(lstFiltro[i]);
-                                }
-                                else if (lstFiltro[i].Dificuldade.toLowerCase().indexOf(termos[k]) > -1) {
-                                    lstFiltroAnd.push(lstFiltro[i]);
-                                }
-                                else if (lstFiltro[i].DtCadastro.toLowerCase().indexOf(termos[k]) > -1) {
-                                    lstFiltroAnd.push(lstFiltro[i]);
-                                }
-                                else {
-                                    for (var l = 0; l < lstFiltro[i].Temas.length; l++) {
-                                        if (lstFiltro[i].Temas[l].toLowerCase().indexOf(termos[k]) > -1) {
-                                            lstFiltroAnd.push(lstFiltro[i]);
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            lstFiltro = lstFiltroAnd;
-                        }
-                    }
-                    jsnQuestoesFiltro = jsnQuestoesFiltro.concat(lstFiltro);
-                }
-                else if (strTexto[j]) {
-                    for (var i = 0; i < jsnQuestoesGeral.length; i++) {
-                        if (jsnQuestoesGeral[i].Enunciado.toLowerCase().indexOf(strTexto[j]) > -1) {
-                            jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
-                        }
-                        else if (jsnQuestoesGeral[i].Disciplina.toLowerCase().indexOf(strTexto[j]) > -1) {
-                            jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
-                        }
-                        else if (jsnQuestoesGeral[i].TipoQuestao.toLowerCase().indexOf(strTexto[j]) > -1) {
-                            jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
-                        }
-                        else if (jsnQuestoesGeral[i].Dificuldade.toLowerCase().indexOf(strTexto[j]) > -1) {
-                            jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
-                        }
-                        else if (jsnQuestoesGeral[i].DtCadastro.toLowerCase().indexOf(strTexto[j]) > -1) {
-                            jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
-                        }
-                        else {
-                            for (var k = 0; k < jsnQuestoesGeral[i].Temas.length; k++) {
-                                if (jsnQuestoesGeral[i].Temas[k].toLowerCase().indexOf(strTexto[j]) > -1) {
-                                    jsnQuestoesFiltro.push(jsnQuestoesGeral[i]);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            var strCod = '';
-            for (var i = 0; i < jsnQuestoesFiltro.length; i++) {
-                if (strCod.indexOf(jsnQuestoesFiltro[i].CodQuestao) == -1) {
-                    strCod += jsnQuestoesFiltro[i].CodQuestao + ';';
-                    continue;
-                }
-            }
-            var lstQuestoesTemp = jsnQuestoesFiltro;
-            var strCodTemp = '';
-            jsnQuestoesFiltro = [];
-            for (var i = 0; i < lstQuestoesTemp.length; i++) {
-                if (strCodTemp.indexOf(lstQuestoesTemp[i].CodQuestao) == -1) {
-                    if (strCod.indexOf(lstQuestoesTemp[i].CodQuestao) > -1) {
-                        jsnQuestoesFiltro.push(lstQuestoesTemp[i]);
-                        strCodTemp += lstQuestoesTemp[i].CodQuestao + ';';
-                    }
-                }
-            }
-        }
-        else {
-            jsnQuestoesFiltro = jsnQuestoesGeral;
-        }
-        minhasQuestoes();
-    }
-
-    function minhasQuestoes(pagina) {
-        $('.ui.cards').parent().addClass('loading');
-        var qtePorPagina = 20;
-        var qtePaginacao = 7;
-        var length = jsnQuestoesFiltro.length;
-        if (pagina == null) {
-            pagina = 1;
-        }
-        var count = pagina * qtePorPagina;
-        if (count > length) {
-            count = length;
-        }
-        $('.ui.cards').html('');
-        for (var i = ((qtePorPagina * pagina) - qtePorPagina) ; i < count; i++) {
-            $('.ui.cards').append('\
-                        <a class="ui card" href="/Historico/Questao/' + jsnQuestoesFiltro[i].CodQuestao + '">\
-                            <div class="content">\
-                                <div class="header">' + siac.Utilitario.encurtarTextoEm(jsnQuestoesFiltro[i].Enunciado, 140) + '</div>\
-                                <div class="meta"><span title="' + jsnQuestoesFiltro[i].DtCadastro + '">' + jsnQuestoesFiltro[i].DtCadastroTempo + '</span></div>\
-                                <div class="description ui labels">\
-                                    <span class="ui label">' + jsnQuestoesFiltro[i].Disciplina + '</span>\
-                                    <span class="ui label">' + jsnQuestoesFiltro[i].Dificuldade + '</span>\
-                                    <span class="ui label">' + jsnQuestoesFiltro[i].TipoQuestao + '</span>\
-                                </div>\
-                            </div>\
-                        </a>\
-                        ');
-        }
-
-        $('.ui.pagination.menu').html('');
-        var i = pagina - 3;
-        for (i; i <= (Math.ceil(length / qtePorPagina)) - 3 && $('.ui.pagination.menu .item').length < 5; i++) {
-            if (i < 1) {
-                continue;
-            }
-            if (i == pagina) {
-                $('.ui.pagination.menu').append('<a class="active item" onclick="siac.Questao.Index.topo(); siac.Questao.Index.minhasQuestoes(' + i + ')">' + i + '</a>');
-                continue;
-            }
-            $('.ui.pagination.menu').append('<a class="item" onclick="siac.Questao.Index.topo(); siac.Questao.Index.minhasQuestoes(' + i + ')">' + i + '</a>');
-        }
-        if ($('.ui.pagination.menu .item').length < 5) {
-            for (i; $('.ui.pagination.menu .item').length < 5 && i <= (Math.ceil(length / qtePorPagina)) ; i++) {
-                if (i < 1) {
-                    continue;
-                }
-                if (i == pagina) {
-                    $('.ui.pagination.menu').append('<a class="active item" onclick="siac.Questao.Index.topo(); siac.Questao.Index.minhasQuestoes(' + i + ')">' + i + '</a>');
-                    continue;
-                }
-                $('.ui.pagination.menu').append('<a class="item" onclick="siac.Questao.Index.topo(); siac.Questao.Index.minhasQuestoes(' + i + ')">' + i + '</a>');
-            }
-            if (pagina == (Math.ceil(length / qtePorPagina))) {
-                if (!((i - 5) < 1)) {
-                    $('.ui.pagination.menu').prepend('<a class="item" onclick="siac.Questao.Index.topo(); siac.Questao.Index.minhasQuestoes(' + (i - 5) + ')">' + (i - 5) + '</a>');
-                }
-            }
-        }
-        $('.ui.cards').parent().removeClass('loading');
-    }
-
     return {
-        iniciar: iniciar,
-        topo: topo,
-        filtro: filtro,
-        minhasQuestoes: minhasQuestoes
+        iniciar: iniciar
     }
 })();
 

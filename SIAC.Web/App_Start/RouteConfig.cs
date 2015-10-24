@@ -55,7 +55,7 @@ namespace SIAC
                 name: "Historico",
                 url: "Historico/{controller}/{action}/{codigo}",
                 defaults: new { controller = "Historico", action = "Index", codigo = UrlParameter.Optional },
-                constraints: new { controller = @"^(Questao|Autoavaliacao)$", action = @"^(Index|Detalhe|Editar|Minhas)$" }
+                constraints: new { controller = @"^(Questao|Autoavaliacao)$", action = @"^(Index|Detalhe|Editar|Listar)$" }
             );
 
 

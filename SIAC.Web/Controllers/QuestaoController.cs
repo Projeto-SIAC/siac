@@ -37,34 +37,67 @@ namespace SIAC.Controllers
             {
                 return Redirect("~/Historico/Questao");
             }
+            ViewBag.Disciplinas = Questoes.Select(q => q.Disciplina).Distinct().ToList();
+            ViewBag.Dificuldades = Questoes.Select(q => q.Dificuldade).Distinct().ToList();
             return View();
         }
 
-        // GET: Questao/Minhas
-        public ActionResult Minhas(int? pagina)
+        // POST: Questao/Listar
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] tipos, string disciplina, string tema, string dificuldade)
         {
-            //var lstQuestoes = Questao.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula);
-            //var result = from q in lstQuestoes
-            //             select new
-            //             {
-            //                 CodQuestao = q.CodQuestao,
-            //                 Enunciado = q.Enunciado,
-            //                 DtCadastro = q.DtCadastro.ToBrazilianString(),
-            //                 DtCadastroTempo = q.DtCadastro.ToElapsedTimeString(),
-            //                 Disciplina = q.QuestaoTema.First().Tema.Disciplina.Descricao,
-            //                 Temas = q.QuestaoTema.Select(qt => qt.Tema.Descricao).ToList(),
-            //                 TipoQuestao = q.TipoQuestao.Descricao,
-            //                 Dificuldade = q.Dificuldade.Descricao,
-            //             };
-            //return Json(result, JsonRequestBehavior.AllowGet);
-            if (!pagina.HasValue || !(pagina.Value > 0))
+            var qte = 10;
+            var questoes = Questoes;
+            pagina = pagina ?? 1;
+
+            if (!String.IsNullOrWhiteSpace(pesquisa))
             {
-                pagina = 1;
+                questoes = questoes.Where(q => q.Enunciado.ToLower().Contains(pesquisa)).ToList();
+            }
+
+            if (!String.IsNullOrWhiteSpace(disciplina))
+            {
+                questoes = questoes.Where(q => q.Disciplina.CodDisciplina == int.Parse(disciplina)).ToList();
+            }
+
+            if (!String.IsNullOrWhiteSpace(tema))
+            {
+                questoes = questoes.Where(q => q.QuestaoTema.Where(t=>t.CodTema == int.Parse(tema)).Count() > 0).ToList();
+            }
+
+            if (!String.IsNullOrWhiteSpace(dificuldade))
+            {
+                questoes = questoes.Where(q => q.CodDificuldade == int.Parse(dificuldade)).ToList();
+            }
+
+            if (tipos != null)
+            {
+                if (tipos.Contains("objetiva") && !tipos.Contains("discursiva"))
+                {
+                    questoes = questoes.Where(q => q.CodTipoQuestao == 1).ToList();
+                }
+                else if (!tipos.Contains("objetiva") && tipos.Contains("discursiva"))
+                {
+                    questoes = questoes.Where(q => q.CodTipoQuestao == 2).ToList();
+                }
+            }            
+
+            switch (ordenar)
+            {
+                case "data":
+                    questoes = questoes.OrderByDescending(q => q.DtCadastro).ToList();
+                    break;
+                case "data_desc":
+                    questoes = questoes.OrderBy(q => q.DtCadastro).ToList();
+                    break;
+                default:
+                    questoes = questoes.OrderByDescending(q => q.DtCadastro).ToList();
+                    break;
             }
             //ViewBag.Paginacao = new { };
             //ViewBag.Paginacao.Add(new { Pagina = 1, Ativo = true });
             //ViewBag.Paginacao.Add(new { Pagina = 2 });
-            return PartialView("_ListaQuestao", Questoes.Skip((20*pagina.Value)-20).Take(20).ToList());
+            return PartialView("_ListaQuestao", questoes.Skip((qte*pagina.Value)-qte).Take(qte).ToList());
         }
 
         //POST: /PalavrasChave
