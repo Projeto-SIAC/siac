@@ -4,7 +4,7 @@ siac.Questao.Index = (function () {
     var controleTimeout;
 
     var pagina = 1;
-    var ordenar = "data";
+    var ordenar = "data_desc";
     var dificuldade = ""; 
     var disciplina = "";
     var tema = "";
@@ -12,8 +12,7 @@ siac.Questao.Index = (function () {
     var pesquisa = ""; 
 
     function iniciar() {
-        $('.ui.dropdown').dropdown();
-        $('.ui.cards').parent().addClass('loading');        
+        $('.ui.dropdown').dropdown();       
 
         $('.pesquisa input').keyup(function () {
             var _this = this;
@@ -25,8 +24,6 @@ siac.Questao.Index = (function () {
                 listar();
             }, 500);
         });
-
-        listar();
 
         $('.button.topo').click(function () {
             topo();
@@ -93,6 +90,8 @@ siac.Questao.Index = (function () {
                 listar();
             }
         });
+
+        listar();
     };
     
     function listar() {

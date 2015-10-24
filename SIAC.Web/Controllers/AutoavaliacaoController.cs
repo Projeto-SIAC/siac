@@ -34,60 +34,78 @@ namespace SIAC.Controllers
             {
                 return Redirect("~/Historico/Autoavaliacao");
             }
+            ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
+            List<Disciplina> tempLstDisciplina = new List<Disciplina>();
+            foreach (var auto in Autoavaliacoes)
+            {
+                tempLstDisciplina.AddRange(auto.Disciplina);
+            }
+            ViewBag.Disciplinas = tempLstDisciplina.Distinct().ToList();
             return View();
         }
 
         // POST: Questao/Listar
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] tipos, string disciplina, string tema, string dificuldade)
+        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina, string dificuldade)
         {
             var qte = 10;
             var autoavaliacoes = Autoavaliacoes;
             pagina = pagina ?? 1;
-            //if (!String.IsNullOrWhiteSpace(pesquisa))
-            //{
-            //    autoavaliacoes = autoavaliacoes.Where(q => q.Enunciado.ToLower().Contains(pesquisa)).ToList();
-            //}
+            if (!String.IsNullOrWhiteSpace(pesquisa))
+            {
+                autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.CodAvaliacao.ToLower().Contains(pesquisa.ToLower())).ToList();
+            }
 
-            //if (!String.IsNullOrWhiteSpace(disciplina))
-            //{
-            //    autoavaliacoes = autoavaliacoes.Where(q => q.Disciplina.CodDisciplina == int.Parse(disciplina)).ToList();
-            //}
+            if (!String.IsNullOrWhiteSpace(disciplina))
+            {
+                autoavaliacoes = autoavaliacoes.Where(a => a.Disciplina.Where(d=>d.CodDisciplina == int.Parse(disciplina)).Count()>0).ToList();
+            }
 
-            //if (!String.IsNullOrWhiteSpace(tema))
-            //{
-            //    autoavaliacoes = autoavaliacoes.Where(q => q.QuestaoTema.Where(t=>t.CodTema == int.Parse(tema)).Count() > 0).ToList();
-            //}
+            if (!String.IsNullOrWhiteSpace(dificuldade))
+            {
+                autoavaliacoes = autoavaliacoes.Where(a => a.CodDificuldade == int.Parse(dificuldade)).ToList();
+            }
 
-            //if (!String.IsNullOrWhiteSpace(dificuldade))
-            //{
-            //    autoavaliacoes = autoavaliacoes.Where(q => q.CodDificuldade == int.Parse(dificuldade)).ToList();
-            //}
+            if (categorias != null)
+            {
+                if (categorias.Contains("pendente") && !categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.FlagPendente).ToList();
+                }
+                else if (!categorias.Contains("pendente") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.FlagArquivo).ToList();
+                }
+                else if (!categorias.Contains("pendente") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.AvalPessoaResultado.Count > 0).ToList();
+                }
+                else if (!categorias.Contains("pendente") && categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.AvalPessoaResultado.Count > 0 || a.Avaliacao.FlagArquivo).ToList();
+                }
+                else if (categorias.Contains("pendente") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.AvalPessoaResultado.Count > 0 || a.Avaliacao.FlagPendente).ToList();
+                }
+                else if (categorias.Contains("pendente") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.FlagArquivo || a.Avaliacao.FlagPendente).ToList();
+                }
+            }
 
-            //if (tipos != null)
-            //{
-            //    if (tipos.Contains("objetiva") && !tipos.Contains("discursiva"))
-            //    {
-            //        autoavaliacoes = autoavaliacoes.Where(q => q.CodTipoQuestao == 1).ToList();
-            //    }
-            //    else if (!tipos.Contains("objetiva") && tipos.Contains("discursiva"))
-            //    {
-            //        autoavaliacoes = autoavaliacoes.Where(q => q.CodTipoQuestao == 2).ToList();
-            //    }
-            //}            
-
-            //switch (ordenar)
-            //{
-            //    case "data":
-            //        autoavaliacoes = autoavaliacoes.OrderByDescending(q => q.DtCadastro).ToList();
-            //        break;
-            //    case "data_desc":
-            //        autoavaliacoes = autoavaliacoes.OrderBy(q => q.DtCadastro).ToList();
-            //        break;
-            //    default:
-            //        autoavaliacoes = autoavaliacoes.OrderByDescending(q => q.DtCadastro).ToList();
-            //        break;
-            //}
+            switch (ordenar)
+            {
+                case "data_desc":
+                    autoavaliacoes = autoavaliacoes.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+                case "data":
+                    autoavaliacoes = autoavaliacoes.OrderBy(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+                default:
+                    autoavaliacoes = autoavaliacoes.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+            }
             return PartialView("_ListaAutoavaliacao", autoavaliacoes.Skip((qte*pagina.Value)-qte).Take(qte).ToList());
         }        
 

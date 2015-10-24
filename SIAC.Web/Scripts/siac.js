@@ -39,6 +39,9 @@
 	    else if (pathname == '/configuracoes') {
 	        siac.Configuracoes.iniciar();
 	    }
+	    else if (pathname == '/historico/autoavaliacao') {
+	        siac.Autoavaliacao.Index.iniciar();
+	    }
 	}
 
 	function mensagem(mensagem, titulo) {

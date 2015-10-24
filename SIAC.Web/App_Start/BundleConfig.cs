@@ -27,6 +27,10 @@ namespace SIAC
                 "~/Scripts/modules/siac.configuracoes.min.js"
             ));
 
+            bundles.Add(new ScriptBundle("~/bundles/js/autoavaliacao").Include(
+                "~/Scripts/modules/siac.autoavaliacao.min.js"
+            ));
+
             bundles.Add(new ScriptBundle("~/bundles/signalR").Include(
                 "~/Scripts/plugins/jquery.signalR-2.2.0.min.js"
             ));

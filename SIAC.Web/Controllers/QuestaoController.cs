@@ -52,7 +52,7 @@ namespace SIAC.Controllers
 
             if (!String.IsNullOrWhiteSpace(pesquisa))
             {
-                questoes = questoes.Where(q => q.Enunciado.ToLower().Contains(pesquisa)).ToList();
+                questoes = questoes.Where(q => q.Enunciado.ToLower().Contains(pesquisa.ToLower())).ToList();
             }
 
             if (!String.IsNullOrWhiteSpace(disciplina))
@@ -84,10 +84,10 @@ namespace SIAC.Controllers
 
             switch (ordenar)
             {
-                case "data":
+                case "data_desc":
                     questoes = questoes.OrderByDescending(q => q.DtCadastro).ToList();
                     break;
-                case "data_desc":
+                case "data":
                     questoes = questoes.OrderBy(q => q.DtCadastro).ToList();
                     break;
                 default:

@@ -34,5 +34,11 @@
     "inputFiles": [
       "Styles/siac.css"
     ]
+  },
+  {
+    "outputFileName": "Scripts/modules/siac.autoavaliacao.js",
+    "inputFiles": [
+      "Scripts/modules/siac.autoavaliacao.js"
+    ]
   }
 ]
