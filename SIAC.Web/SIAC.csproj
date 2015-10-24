@@ -564,6 +564,7 @@
     <Content Include="Views\Shared\DisplayTemplates\CanonicalHelperModel.cshtml" />
     <Content Include="Views\Historico\Index.cshtml" />
     <Content Include="Views\Questao\_ListaQuestao.cshtml" />
+    <Content Include="Views\Autoavaliacao\_ListaAutoavaliacao.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

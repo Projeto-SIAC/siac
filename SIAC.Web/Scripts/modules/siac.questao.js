@@ -70,7 +70,6 @@ siac.Questao.Index = (function () {
             listar();
         });
 
-
         $('.tema.item').click(function () {
             var $_this = $(this);
             pagina = 1;

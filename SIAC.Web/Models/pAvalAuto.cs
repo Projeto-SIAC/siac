@@ -7,6 +7,14 @@ namespace SIAC.Models
 {
     public partial class AvalAuto
     {     
+        public List<Disciplina> Disciplina
+        {
+            get
+            {
+                return Avaliacao.AvaliacaoTema.Select(at => at.Tema.Disciplina).Distinct().ToList();
+            }
+        }
+
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         public static void Inserir(AvalAuto AvalAuto)

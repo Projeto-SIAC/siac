@@ -94,9 +94,6 @@ namespace SIAC.Controllers
                     questoes = questoes.OrderByDescending(q => q.DtCadastro).ToList();
                     break;
             }
-            //ViewBag.Paginacao = new { };
-            //ViewBag.Paginacao.Add(new { Pagina = 1, Ativo = true });
-            //ViewBag.Paginacao.Add(new { Pagina = 2 });
             return PartialView("_ListaQuestao", questoes.Skip((qte*pagina.Value)-qte).Take(qte).ToList());
         }
 

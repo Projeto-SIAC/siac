@@ -9,6 +9,14 @@ namespace SIAC.Controllers
 {
     public class AutoavaliacaoController : Controller
     {
+        public List<AvalAuto> Autoavaliacoes
+        {
+            get
+            {
+                return AvalAuto.ListarPorPessoa(Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula));
+            }
+        }
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             Session["UrlReferrer"] = Request.Url.ToString();
@@ -29,26 +37,59 @@ namespace SIAC.Controllers
             return View();
         }
 
-        // GET: Autoavaliacao/Minhas
-        public ActionResult Minhas()
+        // POST: Questao/Listar
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] tipos, string disciplina, string tema, string dificuldade)
         {
-            int codPessoaFisica = Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula);
-            List<AvalAuto> lstAutos = AvalAuto.ListarPorPessoa(codPessoaFisica);
+            var qte = 10;
+            var autoavaliacoes = Autoavaliacoes;
+            pagina = pagina ?? 1;
+            //if (!String.IsNullOrWhiteSpace(pesquisa))
+            //{
+            //    autoavaliacoes = autoavaliacoes.Where(q => q.Enunciado.ToLower().Contains(pesquisa)).ToList();
+            //}
 
-            var result = from a in lstAutos
-                         select new
-                         {
-                             CodAvaliacao = a.Avaliacao.CodAvaliacao,
-                             DtCadastro = a.Avaliacao.DtCadastro.ToBrazilianString(),
-                             DtCadastroTempo = a.Avaliacao.DtCadastro.ToElapsedTimeString(),
-                             Dificuldade = a.Dificuldade.Descricao,
-                             QteQuestoes = a.Avaliacao.QteQuestoes(),
-                             Disciplinas = a.Avaliacao.AvaliacaoTema.Select(at => at.Tema.Disciplina.Descricao).Distinct().ToList(),
-                             FlagPendente = a.Avaliacao.AvalPessoaResultado.Count > 0 || a.Avaliacao.FlagArquivo ? false : true,
-                             FlagArquivo = a.Avaliacao.FlagArquivo
-                         };
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
+            //if (!String.IsNullOrWhiteSpace(disciplina))
+            //{
+            //    autoavaliacoes = autoavaliacoes.Where(q => q.Disciplina.CodDisciplina == int.Parse(disciplina)).ToList();
+            //}
+
+            //if (!String.IsNullOrWhiteSpace(tema))
+            //{
+            //    autoavaliacoes = autoavaliacoes.Where(q => q.QuestaoTema.Where(t=>t.CodTema == int.Parse(tema)).Count() > 0).ToList();
+            //}
+
+            //if (!String.IsNullOrWhiteSpace(dificuldade))
+            //{
+            //    autoavaliacoes = autoavaliacoes.Where(q => q.CodDificuldade == int.Parse(dificuldade)).ToList();
+            //}
+
+            //if (tipos != null)
+            //{
+            //    if (tipos.Contains("objetiva") && !tipos.Contains("discursiva"))
+            //    {
+            //        autoavaliacoes = autoavaliacoes.Where(q => q.CodTipoQuestao == 1).ToList();
+            //    }
+            //    else if (!tipos.Contains("objetiva") && tipos.Contains("discursiva"))
+            //    {
+            //        autoavaliacoes = autoavaliacoes.Where(q => q.CodTipoQuestao == 2).ToList();
+            //    }
+            //}            
+
+            //switch (ordenar)
+            //{
+            //    case "data":
+            //        autoavaliacoes = autoavaliacoes.OrderByDescending(q => q.DtCadastro).ToList();
+            //        break;
+            //    case "data_desc":
+            //        autoavaliacoes = autoavaliacoes.OrderBy(q => q.DtCadastro).ToList();
+            //        break;
+            //    default:
+            //        autoavaliacoes = autoavaliacoes.OrderByDescending(q => q.DtCadastro).ToList();
+            //        break;
+            //}
+            return PartialView("_ListaAutoavaliacao", autoavaliacoes.Skip((qte*pagina.Value)-qte).Take(qte).ToList());
+        }        
 
         // GET: Autoavaliacao/Gerar
         public ActionResult Gerar()

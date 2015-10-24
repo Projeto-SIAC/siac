@@ -7,25 +7,67 @@
 @section Scripts {
     <script>
         $('.ui.cards').parent().addClass('loading');
-        var jsnAutosGeral;
-        var jsnAutosFiltro;
+        //var jsnAutosGeral;
+        //var jsnAutosFiltro;
         
-        $(document).ready(function () {
-            window.onbeforeunload = function () { $ajax.abort(); $('.ui.global.loader').parent().addClass('active'); };
-        });
-        $ajax = $.ajax({
-            url: '/Historico/Autoavaliacao/Minhas',
-            method: 'GET',
-            success: function (autos) {
-                jsnAutosGeral = autos;
-                jsnAutosFiltro = autos;
-                MinhasAutos();
-            },
-            error: function () {
-                siac.mensagem("Erro ao recuperar as avaliações");
-                $('.ui.cards').parent().removeClass('loading');
+        //$(document).ready(function () {
+        //    window.onbeforeunload = function () { $ajax.abort(); $('.ui.global.loader').parent().addClass('active'); };
+        //});
+        //$ajax = $.ajax({
+        //    url: '/Historico/Autoavaliacao/Minhas',
+        //    method: 'GET',
+        //    success: function (autos) {
+        //        jsnAutosGeral = autos;
+        //        jsnAutosFiltro = autos;
+        //        MinhasAutos();
+        //    },
+        //    error: function () {
+        //        siac.mensagem("Erro ao recuperar as avaliações");
+        //        $('.ui.cards').parent().removeClass('loading');
+        //    }
+        //});
+        var pagina = 1;
+        var ordenar = "data";
+        var dificuldade = "";
+        var disciplina = "";
+        var tema = "";
+        var tipos = [];
+        var pesquisa = "";
+        function listar() {
+            $cards = $('.ui.cards');
+            $cards.parent().addClass('loading');
+            $.ajax({
+                url: '/Historico/Autoavaliacao/Listar',
+                data: {
+                    pagina: pagina,
+                    ordenar: ordenar,
+                    dificuldade: dificuldade,
+                    disciplina: disciplina,
+                    tema: tema,
+                    tipos: tipos,
+                    pesquisa: pesquisa
+                },
+                method: 'POST',
+                success: function (partial) {
+                    if (pagina == 1) {
+                        $cards.html(partial);
+                    }
+                    else {
+                        $cards.append(partial);
+                    }
+                },
+                complete: function () {
+                    $cards.parent().removeClass('loading');
+                }
+            });
+        }
+        $(window).scroll(function () {
+            if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+                pagina++;
+                listar();
             }
         });
+        listar();
 
         function Topo() {
             $("html, body").animate({
@@ -34,110 +76,109 @@
             return false;
         }
 
-        function Filtro(strTexto) {
-            if (strTexto) {
-                strTexto = strTexto.toLowerCase().split(';');
-                jsnAutosFiltro = [];
-                for (var j = 0; j < strTexto.length; j++) {
-                    strTexto[j] = strTexto[j].trim();
-                    if (strTexto[j].indexOf('+') > -1) {
-                        lstFiltro = jsnAutosGeral;
-                        termos = strTexto[j].split('+');
-                        for (var k = 0; k < termos.length; k++) {
-                            termos[k] = termos[k].trim();
-                            if (termos[k]) {
-                                var lstFiltroAnd = [];
-                                for (var i = 0; i < lstFiltro.length; i++) {
-                                    if (lstFiltro[i].CodAvaliacao.toLowerCase().indexOf(termos[k]) > -1) {
-                                        lstFiltroAnd.push(lstFiltro[i]);
-                                    }
-                                    else if (lstFiltro[i].DtCadastro.toLowerCase().indexOf(termos[k]) > -1) {
-                                        lstFiltroAnd.push(lstFiltro[i]);
-                                    }
-                                    else if (lstFiltro[i].Dificuldade.toLowerCase().indexOf(termos[k]) > -1) {
-                                        lstFiltroAnd.push(lstFiltro[i]);
-                                    }
-                                    else if (termos[k] == 'pendente') {
-                                        if (jsnAutosGeral[i].FlagPendente == true) {
-                                            lstFiltroAnd.push(lstFiltro[i]);
-                                        }
-                                    }
-                                    else if (termos[k] == 'arquivo') {
-                                        if (jsnAutosGeral[i].FlagArquivo == true) {
-                                            lstFiltroAnd.push(lstFiltro[i]);
-                                        }
-                                    }
-                                    else {
-                                        for (var l = 0; l < lstFiltro[i].Disciplinas.length; l++) {
-                                            if (lstFiltro[i].Disciplinas[l].toLowerCase().indexOf(termos[k]) > -1) {
-                                                lstFiltroAnd.push(lstFiltro[i]);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                                lstFiltro = lstFiltroAnd;
-                            }
-                        }
-                        jsnAutosFiltro = jsnAutosFiltro.concat(lstFiltro);
-                    }
-                    else if (strTexto[j]) {
-                        for (var i = 0; i < jsnAutosGeral.length; i++) {
-                            if (jsnAutosGeral[i].CodAvaliacao.toLowerCase().indexOf(strTexto[j]) > -1) {
-                                jsnAutosFiltro.push(jsnAutosGeral[i]);
-                            }
-                            else if (jsnAutosGeral[i].DtCadastro.toLowerCase().indexOf(strTexto[j]) > -1) {
-                                jsnAutosFiltro.push(jsnAutosGeral[i]);
-                            }
-                            else if (jsnAutosGeral[i].Dificuldade.toLowerCase().indexOf(strTexto[j]) > -1) {
-                                jsnAutosFiltro.push(jsnAutosGeral[i]);
-                            }
-                            else if (strTexto[j] == 'arquivo') {
-                                if (jsnAutosGeral[i].FlagArquivo == true) {
-                                    jsnAutosFiltro.push(jsnAutosGeral[i]);
-                                }
-                            }
-                            else if (strTexto[j] == 'pendente') {
-                                if (jsnAutosGeral[i].FlagPendente == true) {
-                                    jsnAutosFiltro.push(jsnAutosGeral[i]);
-                                }
-                            }
-                            else {
-                                for (var l = 0; l < jsnAutosGeral[i].Disciplinas.length; l++) {
-                                    if (jsnAutosGeral[i].Disciplinas[l].toLowerCase().indexOf(strTexto[j]) > -1) {
-                                        jsnAutosFiltro.push(jsnAutosGeral[i]);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                var strCod = '';
-                for (var i = 0; i < jsnAutosFiltro.length; i++) {
-                    if (strCod.indexOf(jsnAutosFiltro[i].CodAvaliacao) == -1) {
-                        strCod += jsnAutosFiltro[i].CodAvaliacao + ';';
-                        continue;
-                    }
-                }
-                var lstAutosTemp = jsnAutosFiltro;
-                var strCodTemp = '';
-                jsnAutosFiltro = [];
-                for (var i = 0; i < lstAutosTemp.length; i++) {
-                    if (strCodTemp.indexOf(lstAutosTemp[i].CodAvaliacao) == -1) {
-                        if (strCod.indexOf(lstAutosTemp[i].CodAvaliacao) > -1) {
-                            jsnAutosFiltro.push(lstAutosTemp[i]);
-                            strCodTemp += lstAutosTemp[i].CodAvaliacao + ';';
-                        }
-                    }
-                }
-            }        
-            else {
-                jsnAutosFiltro = jsnAutosGeral;
-            }
-            MinhasAutos();
-        }
+        //function Filtro(strTexto) {
+        //    if (strTexto) {
+        //        strTexto = strTexto.toLowerCase().split(';');
+        //        jsnAutosFiltro = [];
+        //        for (var j = 0; j < strTexto.length; j++) {
+        //            strTexto[j] = strTexto[j].trim();
+        //            if (strTexto[j].indexOf('+') > -1) {
+        //                lstFiltro = jsnAutosGeral;
+        //                termos = strTexto[j].split('+');
+        //                for (var k = 0; k < termos.length; k++) {
+        //                    termos[k] = termos[k].trim();
+        //                    if (termos[k]) {
+        //                        var lstFiltroAnd = [];
+        //                        for (var i = 0; i < lstFiltro.length; i++) {
+        //                            if (lstFiltro[i].CodAvaliacao.toLowerCase().indexOf(termos[k]) > -1) {
+        //                                lstFiltroAnd.push(lstFiltro[i]);
+        //                            }
+        //                            else if (lstFiltro[i].DtCadastro.toLowerCase().indexOf(termos[k]) > -1) {
+        //                                lstFiltroAnd.push(lstFiltro[i]);
+        //                            }
+        //                            else if (lstFiltro[i].Dificuldade.toLowerCase().indexOf(termos[k]) > -1) {
+        //                                lstFiltroAnd.push(lstFiltro[i]);
+        //                            }
+        //                            else if (termos[k] == 'pendente') {
+        //                                if (jsnAutosGeral[i].FlagPendente == true) {
+        //                                    lstFiltroAnd.push(lstFiltro[i]);
+        //                                }
+        //                            }
+        //                            else if (termos[k] == 'arquivo') {
+        //                                if (jsnAutosGeral[i].FlagArquivo == true) {
+        //                                    lstFiltroAnd.push(lstFiltro[i]);
+        //                                }
+        //                            }
+        //                            else {
+        //                                for (var l = 0; l < lstFiltro[i].Disciplinas.length; l++) {
+        //                                    if (lstFiltro[i].Disciplinas[l].toLowerCase().indexOf(termos[k]) > -1) {
+        //                                        lstFiltroAnd.push(lstFiltro[i]);
+        //                                        break;
+        //                                    }
+        //                                }
+        //                            }
+        //                        }
+        //                        lstFiltro = lstFiltroAnd;
+        //                    }
+        //                }
+        //                jsnAutosFiltro = jsnAutosFiltro.concat(lstFiltro);
+        //            }
+        //            else if (strTexto[j]) {
+        //                for (var i = 0; i < jsnAutosGeral.length; i++) {
+        //                    if (jsnAutosGeral[i].CodAvaliacao.toLowerCase().indexOf(strTexto[j]) > -1) {
+        //                        jsnAutosFiltro.push(jsnAutosGeral[i]);
+        //                    }
+        //                    else if (jsnAutosGeral[i].DtCadastro.toLowerCase().indexOf(strTexto[j]) > -1) {
+        //                        jsnAutosFiltro.push(jsnAutosGeral[i]);
+        //                    }
+        //                    else if (jsnAutosGeral[i].Dificuldade.toLowerCase().indexOf(strTexto[j]) > -1) {
+        //                        jsnAutosFiltro.push(jsnAutosGeral[i]);
+        //                    }
+        //                    else if (strTexto[j] == 'arquivo') {
+        //                        if (jsnAutosGeral[i].FlagArquivo == true) {
+        //                            jsnAutosFiltro.push(jsnAutosGeral[i]);
+        //                        }
+        //                    }
+        //                    else if (strTexto[j] == 'pendente') {
+        //                        if (jsnAutosGeral[i].FlagPendente == true) {
+        //                            jsnAutosFiltro.push(jsnAutosGeral[i]);
+        //                        }
+        //                    }
+        //                    else {
+        //                        for (var l = 0; l < jsnAutosGeral[i].Disciplinas.length; l++) {
+        //                            if (jsnAutosGeral[i].Disciplinas[l].toLowerCase().indexOf(strTexto[j]) > -1) {
+        //                                jsnAutosFiltro.push(jsnAutosGeral[i]);
+        //                                break;
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        var strCod = '';
+        //        for (var i = 0; i < jsnAutosFiltro.length; i++) {
+        //            if (strCod.indexOf(jsnAutosFiltro[i].CodAvaliacao) == -1) {
+        //                strCod += jsnAutosFiltro[i].CodAvaliacao + ';';
+        //                continue;
+        //            }
+        //        }
+        //        var lstAutosTemp = jsnAutosFiltro;
+        //        var strCodTemp = '';
+        //        jsnAutosFiltro = [];
+        //        for (var i = 0; i < lstAutosTemp.length; i++) {
+        //            if (strCodTemp.indexOf(lstAutosTemp[i].CodAvaliacao) == -1) {
+        //                if (strCod.indexOf(lstAutosTemp[i].CodAvaliacao) > -1) {
+        //                    jsnAutosFiltro.push(lstAutosTemp[i]);
+        //                    strCodTemp += lstAutosTemp[i].CodAvaliacao + ';';
+        //                }
+        //            }
+        //        }
+        //    }        
+        //    else {
+        //        jsnAutosFiltro = jsnAutosGeral;
+        //    }
+        //    MinhasAutos();
+        //}
 
         function Arquivar(strCodigo) {
             $.ajax({
@@ -153,87 +194,87 @@
             });
         }
 
-        function MinhasAutos(pagina) {
-            $('.ui.cards').parent().addClass('loading');
-            var qtePorPagina = 9;
-            var qtePaginacao = 7;
-            var length = jsnAutosFiltro.length;
-            if (pagina == null) {
-                pagina = 1;
-            }
-            var count = pagina * qtePorPagina;
-            if (count > length) {
-                count = length;
-            }
-            $('.ui.cards').html('');
-            for (var i = ((qtePorPagina * pagina) - qtePorPagina) ; i < count; i++) {
-                $card = $('<div class="card"></div>').html('\
-                            <div class="content">\
-                                <a href="/Historico/Autoavaliacao/Detalhe/'+jsnAutosFiltro[i].CodAvaliacao+'" class="header">'+jsnAutosFiltro[i].CodAvaliacao+'</a>\
-                                <div class="meta">\
-                                    <span title="'+jsnAutosFiltro[i].DtCadastro+'">'+jsnAutosFiltro[i].DtCadastroTempo+'</span>\
-                                </div>\
-                                <div class="description">\
-                                    <p><b>Dificuldade</b>: '+jsnAutosFiltro[i].Dificuldade+'</p>\
-                                    <p><b>Quantidade de Questões</b>: '+jsnAutosFiltro[i].QteQuestoes+'</p>\
-                                </div>\
-                            </div>\
-                        ');
-                $labelsDisc = $('<div class="ui labels"></div>');
-                for (var j = 0; j < jsnAutosFiltro[i].Disciplinas.length; j++) {
-                    $labelsDisc.append('<div class="ui tag label">'+jsnAutosFiltro[i].Disciplinas[j]+'</div>');
-                }
-                $extraContent = $('<div class="extra content"></div>').append($labelsDisc);
-                $card.append($extraContent);
-                if (jsnAutosFiltro[i].FlagPendente == true) {
-                    $card.append('<span class="ui attached top right label"><i class="clock icon"></i>Pendente</span>');
-                    $buttons = $('<div class="ui two buttons"></div>')
-                    $buttons.append('<a onclick="Arquivar(\'' + jsnAutosFiltro[i].CodAvaliacao + '\')" class="ui button">Arquivar</a>');
-                    $buttons.append('<a href="/Dashboard/Autoavaliacao/Realizar/' + jsnAutosFiltro[i].CodAvaliacao + '" class="ui button">Realizar</a>');
-                    $card.append($buttons);
-                }
-                else {
-                    if (jsnAutosFiltro[i].FlagArquivo == true) {
-                        $card.append('<span class="ui attached top right label"><i class="archive icon"></i>Arquivo</span>');
-                        $card.append('<a href="/Historico/Autoavaliacao/Detalhe/' + jsnAutosFiltro[i].CodAvaliacao + '" class="ui button">Detalhe</a>');
-                    }
-                    else {
-                        $card.append('<a href="/Historico/Autoavaliacao/Detalhe/' + jsnAutosFiltro[i].CodAvaliacao + '" class="ui button">Desempenho</a>');
-                    }
-                }
-                $('.ui.cards').append($card);
-            }
-            $('.ui.pagination.menu').html('');
-            var i = pagina - 3;
-            for (i; i <= (Math.ceil(length / qtePorPagina)) - 3 && $('.ui.pagination.menu .item').length < 5; i++) {
-                if (i < 1) {
-                    continue;
-                }
-                if (i == pagina) {
-                    $('.ui.pagination.menu').append('<a class="active item" onclick="Topo(); MinhasAutos(' + i + ')">' + i + '</a>');
-                    continue;
-                }
-                $('.ui.pagination.menu').append('<a class="item" onclick="Topo(); MinhasAutos(' + i + ')">' + i + '</a>');
-            }
-            if ($('.ui.pagination.menu .item').length < 5) {
-                for (i; $('.ui.pagination.menu .item').length < 5 && i <= (Math.ceil(length / qtePorPagina)) ; i++) {
-                    if (i < 1) {
-                        continue;
-                    }
-                    if (i == pagina) {
-                        $('.ui.pagination.menu').append('<a class="active item" onclick="Topo(); MinhasAutos(' + i + ')">' + i + '</a>');
-                        continue;
-                    }
-                    $('.ui.pagination.menu').append('<a class="item" onclick="Topo(); MinhasAutos(' + i + ')">' + i + '</a>');
-                }
-                if (pagina == (Math.ceil(length / qtePorPagina))) {
-                    if (!((i - 5) < 1)) {
-                        $('.ui.pagination.menu').prepend('<a class="item" onclick="Topo(); MinhasAutos(' + (i - 5) + ')">' + (i - 5) + '</a>');
-                    }
-                }
-            }
-            $('.ui.cards').parent().removeClass('loading');
-        }
+        //function MinhasAutos(pagina) {
+        //    $('.ui.cards').parent().addClass('loading');
+        //    var qtePorPagina = 9;
+        //    var qtePaginacao = 7;
+        //    var length = jsnAutosFiltro.length;
+        //    if (pagina == null) {
+        //        pagina = 1;
+        //    }
+        //    var count = pagina * qtePorPagina;
+        //    if (count > length) {
+        //        count = length;
+        //    }
+        //    $('.ui.cards').html('');
+        //    for (var i = ((qtePorPagina * pagina) - qtePorPagina) ; i < count; i++) {
+        //        $card = $('<div class="card"></div>').html('\
+        //                    <div class="content">\
+        //                        <a href="/Historico/Autoavaliacao/Detalhe/'+jsnAutosFiltro[i].CodAvaliacao+'" class="header">'+jsnAutosFiltro[i].CodAvaliacao+'</a>\
+        //                        <div class="meta">\
+        //                            <span title="'+jsnAutosFiltro[i].DtCadastro+'">'+jsnAutosFiltro[i].DtCadastroTempo+'</span>\
+        //                        </div>\
+        //                        <div class="description">\
+        //                            <p><b>Dificuldade</b>: '+jsnAutosFiltro[i].Dificuldade+'</p>\
+        //                            <p><b>Quantidade de Questões</b>: '+jsnAutosFiltro[i].QteQuestoes+'</p>\
+        //                        </div>\
+        //                    </div>\
+        //                ');
+        //        $labelsDisc = $('<div class="ui labels"></div>');
+        //        for (var j = 0; j < jsnAutosFiltro[i].Disciplinas.length; j++) {
+        //            $labelsDisc.append('<div class="ui tag label">'+jsnAutosFiltro[i].Disciplinas[j]+'</div>');
+        //        }
+        //        $extraContent = $('<div class="extra content"></div>').append($labelsDisc);
+        //        $card.append($extraContent);
+        //        if (jsnAutosFiltro[i].FlagPendente == true) {
+        //            $card.append('<span class="ui attached top right label"><i class="clock icon"></i>Pendente</span>');
+        //            $buttons = $('<div class="ui two buttons"></div>')
+        //            $buttons.append('<a onclick="Arquivar(\'' + jsnAutosFiltro[i].CodAvaliacao + '\')" class="ui button">Arquivar</a>');
+        //            $buttons.append('<a href="/Dashboard/Autoavaliacao/Realizar/' + jsnAutosFiltro[i].CodAvaliacao + '" class="ui button">Realizar</a>');
+        //            $card.append($buttons);
+        //        }
+        //        else {
+        //            if (jsnAutosFiltro[i].FlagArquivo == true) {
+        //                $card.append('<span class="ui attached top right label"><i class="archive icon"></i>Arquivo</span>');
+        //                $card.append('<a href="/Historico/Autoavaliacao/Detalhe/' + jsnAutosFiltro[i].CodAvaliacao + '" class="ui button">Detalhe</a>');
+        //            }
+        //            else {
+        //                $card.append('<a href="/Historico/Autoavaliacao/Detalhe/' + jsnAutosFiltro[i].CodAvaliacao + '" class="ui button">Desempenho</a>');
+        //            }
+        //        }
+        //        $('.ui.cards').append($card);
+        //    }
+        //    $('.ui.pagination.menu').html('');
+        //    var i = pagina - 3;
+        //    for (i; i <= (Math.ceil(length / qtePorPagina)) - 3 && $('.ui.pagination.menu .item').length < 5; i++) {
+        //        if (i < 1) {
+        //            continue;
+        //        }
+        //        if (i == pagina) {
+        //            $('.ui.pagination.menu').append('<a class="active item" onclick="Topo(); MinhasAutos(' + i + ')">' + i + '</a>');
+        //            continue;
+        //        }
+        //        $('.ui.pagination.menu').append('<a class="item" onclick="Topo(); MinhasAutos(' + i + ')">' + i + '</a>');
+        //    }
+        //    if ($('.ui.pagination.menu .item').length < 5) {
+        //        for (i; $('.ui.pagination.menu .item').length < 5 && i <= (Math.ceil(length / qtePorPagina)) ; i++) {
+        //            if (i < 1) {
+        //                continue;
+        //            }
+        //            if (i == pagina) {
+        //                $('.ui.pagination.menu').append('<a class="active item" onclick="Topo(); MinhasAutos(' + i + ')">' + i + '</a>');
+        //                continue;
+        //            }
+        //            $('.ui.pagination.menu').append('<a class="item" onclick="Topo(); MinhasAutos(' + i + ')">' + i + '</a>');
+        //        }
+        //        if (pagina == (Math.ceil(length / qtePorPagina))) {
+        //            if (!((i - 5) < 1)) {
+        //                $('.ui.pagination.menu').prepend('<a class="item" onclick="Topo(); MinhasAutos(' + (i - 5) + ')">' + (i - 5) + '</a>');
+        //            }
+        //        }
+        //    }
+        //    $('.ui.cards').parent().removeClass('loading');
+        //}
 
     </script>
 }

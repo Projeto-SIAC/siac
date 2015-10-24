@@ -63,6 +63,14 @@ namespace SIAC.Models
             }
         }
 
+        public bool FlagPendente
+        {
+            get
+            {
+                return this.AvalPessoaResultado.Count > 0 || this.FlagArquivo ? false : true;
+            }
+        }
+
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         public static int ObterNumIdentificador(int codTipoAvaliacao)
