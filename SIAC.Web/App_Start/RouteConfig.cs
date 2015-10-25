@@ -38,13 +38,6 @@ namespace SIAC
             );
             
             routes.MapRoute(
-                name: "QuestaoDetalhe",
-                url: "Historico/Questao/{codigo}",
-                defaults: new { controller = "Questao", action = "Detalhe", codigo = UrlParameter.Optional },
-                constraints: new { controller = @"^(Questao)$", codigo = @"^[0-9]+$" }
-            );
-            
-            routes.MapRoute(
                 name: "HistoricoAvaliacao",
                 url: "Historico/Avaliacao/{controller}/{action}/{codigo}",
                 defaults: new { controller = "Historico", action = "Index", codigo = UrlParameter.Optional },

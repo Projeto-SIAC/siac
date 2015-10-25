@@ -1,25 +1,16 @@
 ﻿@model List<SIAC.Models.Questao>
-@*<div class="ui basic segment">
-    <div class="ui two stackable cards">*@
-        @foreach (var questao in Model)
-        {
-            <a class="card" href="/Historico/Questao/Detalhe/@questao.CodQuestao">
-                <div class="content">
-                    <div class="header">@questao.Enunciado.ToShortString(140)</div>
-                    <div class="meta"><span title="@questao.DtCadastro.ToBrazilianString()">@questao.DtCadastro.ToElapsedTimeString()</span></div>
-                    <div class="description ui labels">
-                        <span class="ui label">@questao.Disciplina.Descricao</span>
-                        <span class="ui label">@questao.Dificuldade.Descricao</span>
-                        <span class="ui label">@questao.TipoQuestao.Descricao</span>
-                    </div>
-                </div>
-            </a>
-        }
-@*    </div>
-    </div>
-        <div class="ui pagination menu">
-        @foreach (var item in ViewBag.Paginacao)
-        {
-            <a class="item @(item.Ativo ? "active" : "")" data-pagina="@item.Pagina">@item.Pagina</a>
-        }
-    </div>*@
+
+@foreach (var questao in Model)
+{
+    <a class="card" href="/Historico/Questao/Detalhe/@questao.CodQuestao">
+        <div class="content">
+            <div class="header">@questao.Enunciado.ToShortString(140)</div>
+            <div class="meta"><span title="@questao.DtCadastro.ToBrazilianString()">@questao.DtCadastro.ToElapsedTimeString()</span></div>
+            <div class="description ui labels">
+                <span class="ui label">@questao.Disciplina.Descricao</span>
+                <span class="ui label">@questao.Dificuldade.Descricao</span>
+                <span class="ui label">@questao.TipoQuestao.Descricao</span>
+            </div>
+        </div>
+    </a>
+}

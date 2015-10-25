@@ -363,9 +363,13 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
-        public void Arquivar(string codigo)
+        public ActionResult Arquivar(string codigo)
         {
-            Avaliacao.AlternarFlagArquivo(codigo);
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                return Json(Avaliacao.AlternarFlagArquivo(codigo));
+            }
+            return Json(false);
         } 
     }
 }

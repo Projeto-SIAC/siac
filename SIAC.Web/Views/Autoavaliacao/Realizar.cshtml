@@ -6,270 +6,7 @@
     List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
 }
 
-@section Scripts {
-    <script>
-
-        (function () {
-            setInterval(function () {
-                $.ajax({
-                    type: 'GET',
-                    url: '/Acesso/Conectado'
-                });
-            }, 1000 * 60 * 15);
-        })();
-
-
-        var conectado = false;
-
-        function TesteConexao() {
-            $.ajax({
-                type: 'GET',
-                url: "/Acesso/Conectado",
-                success: function () {
-                    conectado = true;
-                },
-                error: function () {
-                    conectado = false;
-                }
-            });
-        }
-
-        function definirTamanhoDiv() {
-            var tamTela = $(window).height();
-            var tamDesejado = tamTela * 0.6;
-            $('.ui.accordion').
-                css('max-height', tamDesejado + 'px').
-                css('overflow-y','scroll');
-        }
-        definirTamanhoDiv();
-
-        $('a[href]').on('click', function () { $('.ui.confirmar.modal').modal('show'); $('.ui.confirmar.modal #txtRef').val($(this).attr('href')); return false; });
-        
-        $('.ui.checkbox')
-            .checkbox()
-        ;
-
-        $('.ui.verificar.modal')
-            .modal({
-                closable: false,
-                transition: 'vertical flip',
-                blurring: true
-            })
-            .modal('show')
-        ;
-        var date;
-        var duracao;
-        function minutesToTimeString(minutes) {
-            if (minutes > 59) {
-                var strHour = Math.floor(minutes/60);
-                var strMinutes = (minutes%60);
-                return ('0'+strHour).slice(-2)+'h'+('0'+strMinutes).slice(-2)+'min';
-            }
-            else {
-                return '00h'+('0'+minutes).slice(-2)+'min';
-            }            
-        }
-        $('.ui.cronometrar.modal')
-            .modal({
-                closable: false,
-                onApprove: function () {
-                    date = new Date()
-                    $('#lblHoraInicio').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
-                    $('#lblHoraAgora').text(date.getHours() + 'h' + ('0' + (date.getMinutes())).slice(-2) + 'min');
-                    setTimeout(Relogio(), ((60 - date.getSeconds())*1000));
-                    if ($('#chkCronometrar').is(':checked')) {                        
-                        duracao = $('#txtDuracao').val();
-                        $('#lblHoraDuracao').text(minutesToTimeString(duracao));
-                        $('#lblHoraRestante').text(minutesToTimeString(duracao));
-                        Temporizador();
-                    }
-                    else {
-                        $('#lblHoraRestante').parent().remove();
-                        $('#lblHoraDuracao').parent().remove();
-                    }
-                    window.onbeforeunload = function () {
-                        return 'Você está realizando uma autoavaliação.';
-                    };
-                }
-            })
-            .modal('attach events', '.ui.verificar.modal .iniciar.button')
-        ;
-        function Relogio() {
-            setInterval(function(){ date = new Date(); $('#lblHoraAgora').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min'); }, 1000);
-        }
-        var timerId;
-        function Temporizador() {
-            timerId = setInterval(function () {
-                if (duracao > 0) {
-                    duracao = duracao - 1;
-                    $('#lblHoraRestante').text(minutesToTimeString(duracao)).parent().transition('flash');
-                    if (duracao < 6 && !$('#lblHoraRestante').parent().hasClass('red')) {
-                        $('#lblHoraRestante').parent().addClass('red');
-                    }
-                }
-                else {
-                    clearInterval(timerId);
-                }
-            }, 60000);
-        }
-        
-        $('.ui.informacoes.modal')
-            .modal()
-        ;
-        $('.ui.anexo.modal')
-            .modal()
-        ;
-        $('.ui.confirmar.modal')
-            .modal({
-                onApprove: function () { window.onbeforeunload = function () { $('.ui.global.loader').parent().addClass('active'); }; window.location.href = $('.ui.confirmar.modal #txtRef').val(); },
-                onDeny: function () { $('.ui.segment.loading').removeClass('loading');}
-            })
-        ;
-        $('.ui.accordion')
-            .accordion({ exclusive: false, animateChildren: false })
-        ;
-        function expandirImagem(card) {
-            card = $(card);
-            src = card.find('img').attr('src');
-            legenda = card.find('.header').text();
-            fonte = card.find('.description').text();
-            modal = $('.ui.anexo.modal');
-
-            modal.find('.header').text(legenda);
-            modal.find('img.image').attr('src', src);
-            modal.find('.description').html(fonte);
-
-            modal.modal('show');
-        }
-        function gabarito(codQuestao, resposta, obj, multi) {
-            $label = $('.ui.accordion').find('#txtCodQuestao[value="' + codQuestao + '"]').parent().find('.ui.label');
-            if (resposta != '') {
-                $label.removeClass('red');
-                $label.removeAttr('style');
-                $label.addClass('teal');
-                $label.html('Respondida');
-                if (obj) {
-                        $label.append($('<div class="detail"></div>').text(resposta));
-                }
-            }
-            else {
-                $label.attr('style', 'display:none')
-            }
-            definirTamanhoDiv();
-        }
-        
-        $('.ui.gabarito.modal')
-            .modal({
-                onApprove: function () {
-                    TesteConexao();
-                    if (conectado) {
-                        window.onbeforeunload = null;
-                        $('form').addClass('loading').submit();
-                    }
-                    else {
-                        siac.mensagem('Conecte-se à internet antes de confirmar.')
-                        return false;
-                    }
-                }
-            })
-        ;
-
-        function submitForm() {
-            $('form').removeClass('error');
-            var finalizada = true;
-            var lstNaoRespondidas = [];
-            $lstTitle = $('.ui.accordion > .title');
-            for (var i = 0; i < $lstTitle.length; i++) {
-                var codQuestao = $lstTitle.eq(i).find('#txtCodQuestao').val();
-                var txtResposta = $lstTitle.eq(i).next().find('#txtResposta'+codQuestao).val();
-                if (txtResposta == '') {
-                    finalizada = false;
-                    lstNaoRespondidas.push(codQuestao);
-                }
-                else if (!txtResposta) {
-                    if (!$lstTitle.eq(i).next().find('input[name="rdoResposta'+codQuestao+'"]').is(':checked')) {
-                        finalizada = false;
-                        lstNaoRespondidas.push(codQuestao);
-                    }
-                }
-            }
-            if (finalizada) {
-                VerificarConfirmar();
-            }
-            else {
-                for (var i = 0; i < lstNaoRespondidas.length; i++) {
-                    for (var j = 0; j < $lstTitle.length; j++) {
-                        if ($lstTitle.eq(j).find('#txtCodQuestao').val() == lstNaoRespondidas[i]) {
-                            $lstTitle.eq(j).find('.ui.label').removeAttr('style').removeClass('teal').addClass('red').html('Não respondida').transition('tada');
-                            
-                        }
-                    }
-                }
-                $('form').addClass('error');
-                $('form .message').removeClass('hidden');
-                definirTamanhoDiv();
-            }
-        }
-
-        function VerificarConfirmar() {
-            $modal = $('.ui.gabarito.modal');
-
-            $accordion = $('form .ui.accordion').clone();
-
-            $accordion.removeAttr('style');
-                        
-            $modal.find('.content').html($('<div class="ui form"></div>').append($accordion));
-                                        
-            $modalAccordion = $modal.find('.ui.accordion');
-
-            $modalAccordion.accordion({
-                onChange: function () { $('.ui.gabarito.modal').modal('refresh'); }
-            });
-
-            $lstInput = $modalAccordion.find(':input,a');
-
-            for (var i = 0; i < $lstInput.length; i++) {
-                $lstInput.eq(i)
-                    .attr({
-                        'readonly':'readonly'
-                    })
-                    .removeAttr('href')
-                    .removeAttr('onchange')
-                    .removeAttr('onclick')
-                    .off()
-                ;
-            }
-
-            $modal.modal('show');
-        }
-
-        function Arquivar() {
-            $.ajax({
-                type: 'POST',
-                data: {codigo: '@Model.Avaliacao.CodAvaliacao'},
-                url: "/Dashboard/Autoavaliacao/Arquivar",
-                success: function () {
-                    window.onbeforeunload = null;
-                    window.location.href = '/Historico/Autoavaliacao';
-                },
-                error: function () {
-                    siac.mensagem('Não foi possível arquivar a autoavaliação.')
-                }
-            });
-        }
-
-        $('.message .close')
-          .on('click', function () {
-              $(this)
-                .closest('.message')
-                .transition('fade')
-              ;
-          })
-        ;
-    </script>
-}
-
-<h2>@ViewBag.Title <div class="ui right floated button" onclick="$('.ui.informacoes.modal').modal('show')">Informações</div></h2>
+<h2 data-avaliacao="@Model.Avaliacao.CodAvaliacao">@ViewBag.Title <div class="ui right floated button" onclick="$('.ui.informacoes.modal').modal('show')">Informações</div></h2>
 
 <div class="ui small confirmar modal">
     <div class="header">Você tem certeza?</div>
@@ -327,7 +64,7 @@
     <div class="actions">
         <a onclick="window.location.href = '/Dashboard';" class="ui button">Voltar para Dashboard</a>
         <a onclick="window.location.href = '/Historico/Autoavaliacao';" class="ui button">Voltar para Histórico</a>
-        <div onclick="Arquivar()" class="ui button">Arquivar</div>
+        <div class="ui arquivar button">Arquivar</div>
         <a onclick="window.open('/Dashboard/Autoavaliacao/Imprimir/@Model.Avaliacao.CodAvaliacao', '_blank');" class="ui button">Imprimir</a>
         <div class="ui iniciar button">Realizar</div>
     </div>
@@ -475,7 +212,7 @@
                             {
                                 <div class="field">
                                     <div class="ui radio checkbox">
-                                        <input onchange="gabarito(@lstQuestao[i].CodQuestao,'@j.GetIndiceAlternativa()', true)" type="radio" name="rdoResposta@(lstQuestao[i].CodQuestao)" value="@lstAlternativa[j].CodOrdem" />
+                                        <input onchange="siac.Autoavaliacao.Realizar.gabarito(@lstQuestao[i].CodQuestao,'@j.GetIndiceAlternativa()', true)" type="radio" name="rdoResposta@(lstQuestao[i].CodQuestao)" value="@lstAlternativa[j].CodOrdem" />
                                         <label><b>@j.GetIndiceAlternativa()</b>) @lstAlternativa[j].Enunciado</label>
                                     </div>
                                 </div>
@@ -486,7 +223,7 @@
                     {
                         <div class="field">
                             <label>Resposta</label>
-                            <textarea onchange="gabarito(@lstQuestao[i].CodQuestao, $(this).val())" name="txtResposta@(lstQuestao[i].CodQuestao)" id="txtResposta@(lstQuestao[i].CodQuestao)" placeholder="Resposta..." rows="3"></textarea>
+                            <textarea onchange="siac.Autoavaliacao.Realizar.gabarito(@lstQuestao[i].CodQuestao, $(this).val())" name="txtResposta@(lstQuestao[i].CodQuestao)" id="txtResposta@(lstQuestao[i].CodQuestao)" placeholder="Resposta..." rows="3"></textarea>
                         </div>
                     }
                     
@@ -500,7 +237,7 @@
                                     switch (anexo.CodTipoAnexo)
                                     {
                                         case 1:
-                                            <a onclick="expandirImagem(this)" class="ui card">
+                                            <a onclick="siac.Autoavaliacao.Realizar.expandirImagem(this)" class="ui card">
                                                 <div class="image">
                                                     <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo, 0, anexo.Anexo.Length)" />
                                                 </div>
@@ -533,6 +270,10 @@
                             }
     </div>
     <br />
-    <div class="ui right floated button green" onclick="submitForm()">Finalizar</div>
+    <div class="ui right floated finalizar button green">Finalizar</div>
     <a href="/Dashboard/Autoavaliacao/Realizar" class="ui button">Cancelar</a>
 </form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/autoavaliacao")
+}

@@ -30,7 +30,7 @@
 	    else if (pathname == '/historico/questao/gerar') {
 	        siac.Questao.Gerar.iniciar();
 	    }
-	    else if (/\/historico\/questao\/[0-9]+$/.test(pathname)) {
+	    else if (/\/historico\/questao\/detalhe\/[0-9]+$/.test(pathname)) {
 	        siac.Questao.Detalhe.iniciar();
 	    }
 	    else if (/\/historico\/questao\/editar\/[0-9]+$/.test(pathname)) {
@@ -41,6 +41,15 @@
 	    }
 	    else if (pathname == '/historico/autoavaliacao') {
 	        siac.Autoavaliacao.Index.iniciar();
+	    }
+	    else if (/\/historico\/autoavaliacao\/detalhe\/auto[0-9]+$/.test(pathname)) {
+	        siac.Autoavaliacao.Detalhe.iniciar();
+	    }
+	    else if (/\/dashboard\/autoavaliacao\/realizar\/auto[0-9]+$/.test(pathname)) {
+	        siac.Autoavaliacao.Realizar.iniciar();
+	    }
+	    else if (/\/dashboard\/autoavaliacao\/resultado\/auto[0-9]+$/.test(pathname)) {
+	        siac.Autoavaliacao.Resultado.iniciar();
 	    }
 	}
 
@@ -143,12 +152,24 @@ siac.Utilitario = (function () {
 	    return _texto;
 	}
 
+	function minutosParaStringTempo(minutos) {
+	    if (minutos > 59) {
+	        var strHoras = Math.floor(minutos / 60);
+	        var strMinutos = (minutos % 60);
+	        return ('0' + strHoras).slice(-2) + 'h' + ('0' + strMinutos).slice(-2) + 'min';
+	    }
+	    else {
+	        return '00h' + ('0' + minutos).slice(-2) + 'min';
+	    }
+	}
+
 	return {
 		compararData: compararData,
 		dataEFuturo: dataEFuturo,
 		encurtarTextoEm: encurtarTextoEm,
 		quebrarLinhaEm: quebrarLinhaEm,
-		substituirTodos: substituirTodos
+		substituirTodos: substituirTodos,
+        minutosParaStringTempo: minutosParaStringTempo
 	}
 })();
 

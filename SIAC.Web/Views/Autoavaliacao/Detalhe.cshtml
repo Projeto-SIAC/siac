@@ -6,30 +6,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<Questao> lstQuestao = Model.Avaliacao.Questao;
     List<AvalQuesPessoaResposta> lstPessoaResposta = Model.Avaliacao.PessoaResposta;
+    AvalPessoaResultado avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.FirstOrDefault();
 }
 
-@section Scripts {
-    <script>
-        $('.ui.accordion').accordion({ animateChildren: false });
-        $('.label, div').popup();
-
-        function Arquivar() {
-            $.ajax({
-                type: 'POST',
-                data: { codigo: '@Model.Avaliacao.CodAvaliacao' },
-                url: "/Dashboard/Autoavaliacao/Arquivar",
-                success: function () {
-                    window.location.href = '/Historico/Autoavaliacao/Detalhe/@Model.Avaliacao.CodAvaliacao';
-                },
-                error: function () {
-                    siac.mensagem('Não foi possível arquivar a autoavaliação.')
-                }
-            });
-        }
-    </script>
-}
-
-<h2>@ViewBag.Title@if (Model.Avaliacao.FlagArquivo) { <div class="ui label"><i class="icon archive"></i>Arquivo</div> }</h2>
+<h2 data-avaliacao="@Model.Avaliacao.CodAvaliacao">
+    @ViewBag.Title
+    @if (Model.Avaliacao.FlagArquivo) {
+        <div class="ui label">
+            <i class="icon archive"></i>
+            Arquivo
+        </div> 
+    }
+</h2>
 
 <div class="ui basic segment">
     <div class="ui dividing header">
@@ -79,12 +67,12 @@
     <a onclick="window.open('/Dashboard/Autoavaliacao/Imprimir/@Model.Avaliacao.CodAvaliacao', '_blank');" class="ui button">Imprimir</a>
     if (!Model.Avaliacao.FlagArquivo)
     {
-        <div onclick="Arquivar()" class="ui button">Arquivar</div>
-        <a href="/Dashboard/Autoavaliacao/Realizar/@Model.Avaliacao.CodAvaliacao" class="ui button">Realizar agora</a>
+        <div class="ui arquivar button">Arquivar</div>
+        <a href="/Dashboard/Autoavaliacao/Realizar/@Model.Avaliacao.CodAvaliacao" class="ui button">Realizar</a>
     }
     else
     {
-        <div onclick="Arquivar()" class="ui button">Desarquivar</div>
+        <div class="ui arquivar button">Desarquivar</div>
     }
 }
 else
@@ -93,13 +81,24 @@ else
     <div class="ui basic segment">
         <div class="ui dividing header" data-content="Note que os cálculos levem em conta somente as questões objetivas.">
             Desempenho
-            <div class="ui label">Porcentagem de Acerto<div class="detail">@(ViewBag.Porcentagem.ToString("0.##'%'"))</div></div>
+            <div class="ui label">
+                Porcentagem de Acerto
+                <div class="detail">
+                    @(ViewBag.Porcentagem.ToString("0.##'%'"))
+                </div>
+            </div>
+            <div class="ui label">
+                Quantidade de Acerto
+                <div class="detail">
+                    @avalPessoaResultado.QteAcertoObj
+                </div>
+            </div>
         </div>
-        <div class="ui centered statistics">
+        <div class="ui statistics">
             @foreach (var key in ViewBag.Desempenho.Keys)
             {
                 <div class="statistic @(ViewBag.Desempenho[key]>50 ? "green" : "red")">
-                        <div class="value circular" style="border:1px">
+                        <div class="value">
                             @ViewBag.Desempenho[key].ToString("0.##'%'")
                         </div>
                         <div class="label">@key</div>
@@ -212,4 +211,8 @@ else
             }
         </div>        
     </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/autoavaliacao")
 }

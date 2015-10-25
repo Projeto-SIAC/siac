@@ -761,22 +761,24 @@ siac.Questao.Detalhe = (function () {
             $modal.modal('show');
         });
         $('.arquivar.button').click(function () {
-            var _this = this;
-            $(_this).addClass('loading');
+            var $_this = $(this);
+            $_this.addClass('loading');
             $.ajax({
-                url: '/Historico/Questao/Arquivar/' + $(_this).attr('data-questao'),
+                url: '/Historico/Questao/Arquivar/' + $_this.attr('data-questao'),
                 type: 'POST',
                 success: function (flag) {
                     if (flag) {
-                        $(_this).addClass('active').text('Arquivada');
+                        $_this.addClass('active').text('Arquivada');
                     }
                     else {
-                        $(_this).removeClass('active').text('Arquivar');
+                        $_this.removeClass('active').text('Arquivar');
                     }
-                    $(_this).removeClass('loading');
                 },
                 error: function () {
-                    $(_this).removeClass('loading');
+                    siac.mensagem("Ocorreu um erro na tentativa de arquivar.", "Erro inesperado");
+                },
+                complete: function () {
+                    $_this.removeClass('loading');
                 }
             });
         });
