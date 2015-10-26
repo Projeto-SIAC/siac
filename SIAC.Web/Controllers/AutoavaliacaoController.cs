@@ -113,7 +113,7 @@ namespace SIAC.Controllers
         public ActionResult Gerar()
         {
             ViewBag.Disciplinas = Disciplina.ListarTemQuestoes();
-            ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
+            ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente().Select(d=>new {Codigo = d.CodDificuldade, Descricao = d.Descricao });
             return View();
         }
 

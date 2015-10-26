@@ -51,6 +51,9 @@
 	    else if (/\/dashboard\/autoavaliacao\/resultado\/auto[0-9]+$/.test(pathname)) {
 	        siac.Autoavaliacao.Resultado.iniciar();
 	    }
+	    else if (pathname == '/dashboard/autoavaliacao/gerar') {
+	        siac.Autoavaliacao.Gerar.iniciar();
+	    }
 	}
 
 	function mensagem(mensagem, titulo) {

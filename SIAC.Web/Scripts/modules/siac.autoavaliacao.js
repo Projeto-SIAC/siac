@@ -377,7 +377,7 @@ siac.Autoavaliacao.Realizar = (function () {
             }
         }, 1000);
     }
-   
+
     function expandirImagem(card) {
         card = $(card);
         src = card.find('img').attr('src');
@@ -461,6 +461,241 @@ siac.Autoavaliacao.Realizar = (function () {
                 siac.mensagem('Não foi possível arquivar a autoavaliação.')
             }
         });
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();
+
+siac.Autoavaliacao.Gerar = (function () {
+    var _jsonDificuldades;
+
+    function iniciar() {
+        $json = $('code.json');
+        _jsonDificuldades = JSON.parse($json.html());
+        $json.remove();
+
+        $('.ui.dropdown').dropdown();
+
+        $('.ui.accordion').accordion({
+            animateChildren: false
+        });
+        
+        $('.prosseguir.button').click(function () {
+            prosseguir();
+        });
+        
+        $('.ui.confirmar.modal')
+          .modal({
+              onApprove: function () {
+                  $('form').submit();
+              }
+          })
+        ;
+
+        $('#ddlTipo').change(function () {
+            mostrarOpcoesPorTipo();
+        });
+
+        $('#ddlDisciplinas').parent().mouseout(function () {
+            $('.ui.dropdown').dropdown();
+        });
+
+        $('#ddlDisciplinas').change(function () {
+            ajustarFormulario();            
+        });
+
+        $('.cancelar.button').popup({
+            on: 'click'
+        });
+    }
+
+    function prosseguir() {
+        var validado = false;
+        $list = $('form .error.message .list');
+        $list.html('');
+
+        if ($('#ddlDisciplinas :selected').length > 0) {
+            var discs = $('#ddlDisciplinas').val();
+            var ok = true;
+            for (var i = 0; i < discs.length; i++) {
+                if (!$('#ddlTemas' + discs[i] + ' :selected').length > 0) {
+                    $list.append('<li>Selecione pelo menos um tema para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
+                    validado = false;
+                }
+
+                if (!$('#ddlDificuldade' + discs[i]).val()) {
+                    $list.append('<li>Selecione a dificuldade para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
+                    validado = false;
+                }
+
+                if (!$('#ddlTipo').val()) {
+                    $list.html('<li>Selecione o tipo das questões</li>');
+                    ok = false;
+                    validado = false;
+                }
+                else {
+                    ok = true;
+                    if ($('#ddlTipo').val() == '1') {
+                        if (!$('#txtQteObjetiva' + discs[i]).val()) {
+                            ok = false;
+                            validado = false;
+                            $list.append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
+                        }
+                    }
+                    else if ($('#ddlTipo').val() == '2') {
+                        if (!$('#txtQteDiscursiva' + discs[i]).val()) {
+                            ok = false;
+                            validado = false;
+                            $list.append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
+                        }
+                    }
+                    else if ($('#ddlTipo').val() == '3') {
+                        if (!$('#txtQteDiscursiva' + discs[i]).val() || !$('#txtQteObjetiva' + discs[i]).val()) {
+                            ok = false;
+                            validado = false;
+                            $list.append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
+                        }
+                    }
+                }
+
+                if (ok == true) {
+                    validado = true;
+                }
+                else {
+                    validado = false;
+                }
+            }
+        }
+        else {
+            $list.append('<li>Selecione pelo menos uma disciplina</li>');
+            validado = false;
+        }
+
+        if (validado) {
+            confirmar()
+        }
+        else {
+            $('form').addClass('error');
+            $('html, body').animate({
+                scrollTop: $('form .error.message').offset().top
+            }, 1000);
+        }
+    }
+
+    function recuperarTemasPorDisciplina(selecionado) {
+        var ddlTema = $('#ddlTemas' + selecionado);
+        $.ajax({
+            cache: false,
+            type: 'POST',
+            url: '/Tema/RecuperarTemasPorCodDisciplinaTemQuestao',
+            data: { "codDisciplina": selecionado },
+            success: function (data) {
+                ddlTema.html('');
+                ddlTema.parent().find('.label').remove();
+                for (var i = 0, length = data.length; i < length; i++) {
+                    ddlTema.append($('<option></option>').val(data[i].CodTema).html(data[i].Descricao));
+                }
+            },
+            error: function () {
+                siac.mensagem('Falha ao recuperar temas.');
+            }
+        });
+    }
+
+    function ajustarFormulario() {
+        var discs = $('#ddlDisciplinas').val();
+        $('.ui.accordion').html('');
+        var temAccordion = $('.ui.tema.accordion');
+        var difAccordion = $('.ui.dificuldade.accordion');
+        var qteAccordion = $('.ui.quantidade.accordion');
+        var dificuldades;
+        for (var j = 0, length = _jsonDificuldades.length; j < length; j++) {
+            dificuldades += '<option value="' + _jsonDificuldades[j].Codigo + '">' + _jsonDificuldades[j].Descricao + '</option>';
+        }
+        for (var i = 0; i < discs.length; i++) {
+            var disciplina = $('#ddlDisciplinas option[value="' + discs[i] + '"]').text();
+            temAccordion.append('<div class="title"><i class="icon dropdown"></i>' + disciplina + '</div>'+
+                                '<div class="content">'+
+                                    '<div class="field">'+
+                                        '<select required name="ddlTemas' + discs[i] + '" id="ddlTemas' + discs[i] + '" class="ui search dropdown" multiple>'+
+                                            '<option value="">Tema</option>'+
+                                        '</select>'+
+                                    '</div>'+
+                                '</div>');
+            recuperarTemasPorDisciplina(discs[i]);
+            
+            difAccordion.append('<div class="title">'+
+                                    '<i class="icon dropdown"></i>' + disciplina +
+                                '</div>' +
+                                '<div class="content">'+
+                                    '<div class="field">'+
+                                        '<select required id="ddlDificuldade' + discs[i] + '" name="ddlDificuldade' + discs[i] + '" class="ui search dropdown">'+
+                                            '<option value="">Dificuldade</option>'+dificuldades+
+                                        '</select>' +
+                                    '</div>' +
+                                '</div>');
+            qteAccordion.append('<div class="title"><i class="icon dropdown"></i>' + disciplina + '</div>'+
+                                '<div class="content">'+
+                                    '<div class="two fields">'+
+                                        '<div class="field objetiva"><label>Objetivas</label>'+
+                                            '<input required id="txtQteObjetiva' + discs[i] + '" name="txtQteObjetiva' + discs[i] + '" data-mask="0#" type="number" placeholder="Quantidade de objetivas" min="1" />'+
+                                        '</div>'+
+                                        '<div class="field discursiva"><label>Discursivas</label>'+
+                                            '<input required id="txtQteDiscursiva' + discs[i] + '" name="txtQteDiscursiva' + discs[i] + '" data-mask="0#" type="number" placeholder="Quantidade de discursivas" min="1" />'+
+                                        '</div>'+
+                                    '</div>'+
+                                '</div>');
+        };
+        mostrarOpcoesPorTipo();
+    }
+
+    function mostrarOpcoesPorTipo() {
+        var tipo = $('#ddlTipo').val();
+        switch (tipo) {
+            case '1':
+                $('.discursiva').addClass('disabled').attr('style', 'pointer-events: none');
+                $('.objetiva').removeClass('disabled').removeAttr('style');
+                break;
+            case '2':
+                $('.discursiva').removeClass('disabled').removeAttr('style');
+                $('.objetiva').addClass('disabled').attr('style', 'pointer-events: none');
+                break;
+            case '3':
+                $('.discursiva').removeClass('disabled').removeAttr('style');
+                $('.objetiva').removeClass('disabled').removeAttr('style');
+                break;
+            default:
+                $('.discursiva').addClass('disabled').attr('style', 'pointer-events: none');
+                $('.objetiva').addClass('disabled').attr('style', 'pointer-events: none');
+        }
+    }
+
+    function confirmar() {
+        $modal = $('.ui.confirmar.modal');
+        $ddlDisciplinas = $('#ddlDisciplinas :selected');
+        $ddlTipo = $('#ddlTipo');
+        $table = $modal.find('tbody').html('');
+        for (var i = 0; i < $ddlDisciplinas.length; i++) {
+            $tr = $('<tr></tr>');
+            $tdDisciplina = $('<td></td>').html('<b>' + $ddlDisciplinas.eq(i).text() + '</b>');
+            $tdTemas = $('<td class="ui labels"></td>');
+            $ddlTemas = $('#ddlTemas' + $ddlDisciplinas.eq(i).val() + ' :selected');
+            for (var j = 0; j < $ddlTemas.length; j++) {
+                $tdTemas.append($('<div class="ui tag label"></div>').text($ddlTemas.eq(j).text()));
+            }
+            $tdQteQuestoes = $('<td class="ui labels"></td>');
+            if ($ddlTipo.val() == 1 || $ddlTipo.val() == 3) {
+                $tdQteQuestoes.append($('<div class="ui label"></div>').html('Objetiva<div class="detail">' + $('#txtQteObjetiva' + $ddlDisciplinas.eq(i).val()).val() + '</div>'));
+            }
+            if ($ddlTipo.val() == 2 || $ddlTipo.val() == 3) {
+                $tdQteQuestoes.append($('<div class="ui label"></div>').html('Discursiva<div class="detail">' + $('#txtQteDiscursiva' + $ddlDisciplinas.eq(i).val()).val() + '</div>'));
+            }
+            $tdDificuldade = $('<td></td>').text($('#ddlDificuldade' + $ddlDisciplinas.eq(i).val() + ' :selected').text());
+            $table.append($tr.append($tdDisciplina).append($tdTemas).append($tdQteQuestoes).append($tdDificuldade));
+        }
+        $modal.modal('show');
     }
 
     return {

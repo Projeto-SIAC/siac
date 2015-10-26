@@ -103,7 +103,7 @@
 
             ddlTemas.parent().addClass('loading');
             $.ajax({
-                type: 'GET',
+                type: 'POST',
                 url: '@(Url.RouteUrl("RecuperarTemasPorCodDisciplinaTemQuestao"))',
                 data: { 'codDisciplina': codDisciplina },
                 success: function (data) {

@@ -21,10 +21,10 @@ namespace SIAC.Controllers
         // GET: Tema
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Acesso");
         }
 
-        [AcceptVerbs(HttpVerbs.Get)]
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult RecuperarTemasPorCodDisciplina(string codDisciplina)
         {
             if (!String.IsNullOrEmpty(codDisciplina))
@@ -40,7 +40,7 @@ namespace SIAC.Controllers
             return Json(null);
         }
 
-        [AcceptVerbs(HttpVerbs.Get)]
+        [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult RecuperarTemasPorCodDisciplinaTemQuestao(string codDisciplina)
         {
             if (!String.IsNullOrEmpty(codDisciplina))

@@ -4,210 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section Scripts{
-    <script>
-        $('.ui.dropdown').dropdown();
-        $('.ui.accordion').accordion({ animateChildren: false });
-
-        function submitForm() {
-            var validado = false;
-            $('form .error.message .list').html('');
-
-            if ($('#ddlDisciplinas :selected').length > 0) {
-                var discs = $('#ddlDisciplinas').val();
-                var ok = true;
-                for (var i = 0; i < discs.length; i++) {
-                    if (!$('#ddlTemas' + discs[i] + ' :selected').length > 0) {
-                        $('form .error.message .list').append('<li>Selecione pelo menos um tema para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
-                        validado = false;
-                    }
-
-                    if (!$('#ddlDificuldade' + discs[i]).val()) {
-                        $('form .error.message .list').append('<li>Selecione a dificuldade para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
-                        validado = false;
-                    }
-
-                    if (!$('#ddlTipo').val()) {
-                        $('form .error.message .list').html('<li>Selecione o tipo das questões</li>');
-                        ok = false;
-                        validado = false;
-                    }
-                    else {
-                        ok = true;
-                        if ($('#ddlTipo').val() == '1') {
-                            if (!$('#txtQteObjetiva' + discs[i]).val()) {
-                                ok = false;
-                                validado = false;
-                                $('form .error.message .list').append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
-                            }
-                        }
-                        else if ($('#ddlTipo').val() == '2') {
-                            if (!$('#txtQteDiscursiva' + discs[i]).val()) {
-                                ok = false;
-                                validado = false;
-                                $('form .error.message .list').append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
-                            }
-                        }
-                        else if ($('#ddlTipo').val() == '3') {
-                            if (!$('#txtQteDiscursiva' + discs[i]).val() || !$('#txtQteObjetiva' + discs[i]).val()) {
-                                ok = false;
-                                validado = false;
-                                $('form .error.message .list').append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
-                            }
-                        }
-                    }
-
-                    if (ok == true) {
-                        validado = true;
-                    }
-                    else {
-                        validado = false;
-                    }
-                }
-            }
-            else {
-                $('form .error.message .list').append('<li>Selecione pelo menos uma disciplina</li>');
-                validado = false;
-            }
-
-            if (validado) {
-                Confirmar()
-            }
-            else {
-                $('form').addClass('error');
-                $('html, body').animate({
-                    scrollTop: $('form .error.message').offset().top
-                }, 100);
-            }
-        }
-
-        function recuperarTemasPorCodDisciplina(selecionado) {
-            var ddlTema = $('#ddlTemas' + selecionado);
-            $.ajax({
-                cache: false,
-                type: 'GET',
-                url: '@(Url.RouteUrl("RecuperarTemasPorCodDisciplinaTemQuestao"))',
-                data: { "codDisciplina": selecionado },
-                success: function (data) {
-                    ddlTema.html('');
-                    ddlTema.parent().find('.label').remove();
-                    $.each(data, function (id, option) {
-                        ddlTema.append($('<option></option>').val(option.CodTema).html(option.Descricao));
-                    });
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    siac.mensagem('Falha ao recuperar temas.');
-                }
-            });
-        }
-
-        function EscolhaDisciplina() {
-            var discs = $('#ddlDisciplinas').val();
-            $('.ui.accordion').html('');
-            var temAccordion = $('.ui.tema.accordion');
-            var difAccordion = $('.ui.dificuldade.accordion');
-            var qteAccordion = $('.ui.quantidade.accordion');
-            for (var i = 0; i < discs.length; i++) {
-                var disciplina = $('#ddlDisciplinas option[value="' + discs[i] + '"]').text();
-                temAccordion.append('\
-                    <div class="title"><i class="icon dropdown"></i>' + disciplina + '</div>\
-                    <div class="content">\
-                        <div class="field">\
-                            <select required name="ddlTemas' + discs[i] + '" id="ddlTemas' + discs[i] + '" class="ui search dropdown" multiple>\
-                                <option value="">Tema</option>\
-                            </select>\
-                        </div>\
-                    </div>\
-                ');
-                recuperarTemasPorCodDisciplina(discs[i]);
-                difAccordion.append('\
-                    <div class="title">\
-                        <i class="icon dropdown"></i>' + disciplina + '</div>\
-                    <div class="content">\
-                        <div class="field">\
-                            <select required id="ddlDificuldade' + discs[i] + '" name="ddlDificuldade' + discs[i] + '" class="ui search dropdown">\
-                                <option value="">Dificuldade</option>@foreach (var dif in ViewBag.Dificuldades) { <option value="@dif.CodDificuldade">@dif.Descricao</option>  }</select></div></div>');
-                qteAccordion.append('\
-                    <div class="title"><i class="icon dropdown"></i>' + disciplina + '</div>\
-                    <div class="content">\
-                        <div class="two fields">\
-                            <div class="field objetiva"><label>Objetivas</label>\
-                                <input required id="txtQteObjetiva' + discs[i] + '" name="txtQteObjetiva' + discs[i] + '" data-mask="0#" type="number" placeholder="Quantidade de objetivas" min="1" />\
-                            </div>\
-                            <div class="field discursiva"><label>Discursivas</label>\
-                                <input required id="txtQteDiscursiva' + discs[i] + '" name="txtQteDiscursiva' + discs[i] + '" data-mask="0#" type="number" placeholder="Quantidade de discursivas" min="1" />\
-                            </div>\
-                        </div>\
-                    </div>\
-                ');
-            };
-            OpcoesPorTipo();
-        }
-
-        function OpcoesPorTipo() {
-            var tipo = $('#ddlTipo').val();
-            switch (tipo) {
-                case '1':
-                    //$('.objetiva').attr('style', '');
-                    //$('.discursiva').attr('style', 'display:none');
-                    $('.discursiva').addClass('disabled').attr('style', 'pointer-events: none');
-                    $('.objetiva').removeClass('disabled').removeAttr('style');
-                    break;
-                case '2':
-                    //$('.discursiva').attr('style', '');
-                    //$('.objetiva').attr('style', 'display:none');
-                    $('.discursiva').removeClass('disabled').removeAttr('style');
-                    $('.objetiva').addClass('disabled').attr('style', 'pointer-events: none');
-                    break;
-                case '3':
-                    //$('.objetiva, .discursiva').attr('style', '');
-                    $('.discursiva').removeClass('disabled').removeAttr('style');
-                    $('.objetiva').removeClass('disabled').removeAttr('style');
-                    break;
-                default:
-                    $('.discursiva').addClass('disabled').attr('style', 'pointer-events: none');
-                    $('.objetiva').addClass('disabled').attr('style', 'pointer-events: none');
-            }
-        }
-
-        function Confirmar() {
-            $modal = $('.ui.confirmar.modal');
-            $ddlDisciplinas = $('#ddlDisciplinas :selected');
-            $ddlTipo = $('#ddlTipo');
-            $table = $modal.find('tbody').html('');
-            for (var i = 0; i < $ddlDisciplinas.length; i++) {
-                $tr = $('<tr></tr>');
-                $tdDisciplina = $('<td></td>').html('<b>' + $ddlDisciplinas.eq(i).text() + '</b>');
-                $tdTemas = $('<td class="ui labels"></td>');
-                $ddlTemas = $('#ddlTemas'+$ddlDisciplinas.eq(i).val() + ' :selected');
-                for (var j = 0; j < $ddlTemas.length; j++) {
-                    $tdTemas.append($('<div class="ui tag label"></div>').text($ddlTemas.eq(j).text()));
-                }
-                $tdQteQuestoes = $('<td class="ui labels"></td>');
-                if ($ddlTipo.val() == 1 || $ddlTipo.val() == 3) {
-                    $tdQteQuestoes.append($('<div class="ui label"></div>').html('Objetiva<div class="detail">' + $('#txtQteObjetiva' + $ddlDisciplinas.eq(i).val()).val() + '</div>'));
-                }
-                if ($ddlTipo.val() == 2 || $ddlTipo.val() == 3) {
-                    $tdQteQuestoes.append($('<div class="ui label"></div>').html('Discursiva<div class="detail">' + $('#txtQteDiscursiva' + $ddlDisciplinas.eq(i).val()).val() + '</div>'));
-                }
-                $tdDificuldade = $('<td></td>').text($('#ddlDificuldade' + $ddlDisciplinas.eq(i).val() + ' :selected').text());
-                $table.append($tr.append($tdDisciplina).append($tdTemas).append($tdQteQuestoes).append($tdDificuldade));
-            }
-            $modal.modal('show');
-        }
-
-        $('.ui.confirmar.modal')
-          .modal({
-              onApprove: function () {
-                  $('form').addClass('loading').submit();
-              }
-          });
-
-        $('.cancelar.button').popup({ on: 'click' });
-        $('.prosseguir.button').popup({ on: 'click' });
-    </script>
-}
-
 <div class="ui confirmar modal">
     <div class="header">Verificação e confirmação</div>
     <div class="content">
@@ -238,9 +34,9 @@
         <ul class="list"></ul>
     </div>
     @* Disciplinas *@
-    <div class="field required" onmouseout="$('.ui.dropdown').dropdown();">
+    <div class="field required">
         <label for="ddlDisciplinas">Disciplina (s)</label>
-        <select id="ddlDisciplinas" name="ddlDisciplinas" class="ui search dropdown" multiple onchange="EscolhaDisciplina()" required>
+        <select id="ddlDisciplinas" name="ddlDisciplinas" class="ui search dropdown" multiple required>
             <option value="">Disciplina</option>
             @foreach (var disc in ViewBag.Disciplinas)
             {
@@ -258,7 +54,7 @@
     @* Tipo das Questões *@
     <div class="field required">
         <label>Tipo das Questões</label>
-        <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" onchange="OpcoesPorTipo()" required>
+        <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" required>
             <option value="">Tipo</option>
             <option value="2">Somente discursivas</option>
             <option value="1">Somente objetivas</option>
@@ -275,11 +71,16 @@
     <div class="field required">
         <label>Quantidade das Questões</label>
         <div class="ui styled fluid quantidade accordion">
-
         </div>
     </div>
     <div class="field">
         <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Historico/Autoavaliacao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
-        <div onclick="submitForm()" class="ui prosseguir button">Prosseguir</div>
+        <div class="ui prosseguir button">Prosseguir</div>
     </div>
 </form>
+
+<code class="json" hidden>@Html.Raw(Json.Encode(ViewBag.Dificuldades))</code>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/autoavaliacao")
+}

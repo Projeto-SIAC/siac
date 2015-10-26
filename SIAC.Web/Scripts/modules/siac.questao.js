@@ -232,7 +232,7 @@ siac.Questao.Cadastrar = (function () {
         ddlTema.parent().addClass('loading');
         $.ajax({
             cache: false,
-            type: 'GET',
+            type: 'POST',
             url: '/Tema/RecuperarTemasPorCodDisciplina',
             data: { "codDisciplina": selecionado },
             success: function (data) {
