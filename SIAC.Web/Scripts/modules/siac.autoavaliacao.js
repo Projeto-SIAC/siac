@@ -191,10 +191,8 @@ siac.Autoavaliacao.Resultado = (function () {
 
 siac.Autoavaliacao.Realizar = (function () {
     var _codAvaliacao;
-    var date;
-    var duracao;
-    var timerId;
-    var conectado = false;
+    var _controleInterval;
+    var _controleRestante;
 
     function iniciar() {
         _codAvaliacao = $('[data-avaliacao]').attr('data-avaliacao');
@@ -208,7 +206,7 @@ siac.Autoavaliacao.Realizar = (function () {
             }, 1000 * 60 * 15);
         })();
 
-        definirTamanhoDiv();
+        definirAlturaDiv();
 
         $('a[href]').on('click', function () {
             $('.ui.confirmar.modal').modal('show');
@@ -246,7 +244,7 @@ siac.Autoavaliacao.Realizar = (function () {
                         duracao = $('#txtDuracao').val();
                         $('#lblHoraDuracao').text(siac.Utilitario.minutosParaStringTempo(duracao));
                         $('#lblHoraRestante').text(siac.Utilitario.minutosParaStringTempo(duracao));
-                        temporizador();
+                        temporizador(new Date(date.getTime() + duracao * 60 * 1000));
                     }
                     else {
                         $('#lblHoraRestante').parent().remove();
@@ -286,82 +284,100 @@ siac.Autoavaliacao.Realizar = (function () {
             })
         ;
 
-        $('.ui.gabarito.modal')
-            .modal({
-                onShow: function () {
-                    testeConexao();
-                },
-                onApprove: function () {
-                    if (conectado) {
-                        window.onbeforeunload = null;
-                        $('form').addClass('loading').submit();
-                    }
-                    else {
-                        siac.mensagem('Conecte-se à internet antes de confirmar.')
-                        return false;
-                    }
-                }
-            })
-        ;
-
-        $('.message .close')
-          .on('click', function () {
-              $(this)
-                .closest('.message')
-                .transition('fade')
-              ;
-          })
-        ;
-
         $('.arquivar.button').click(function () {
             arquivar();
         });
 
         $('.finalizar.button').click(function () {
-            submitForm();
+            finalizar();
+        });
+
+        $('.card.anexo.imagem').click(function () {
+            expandirImagem(this);
+        });
+
+        $('textarea[name^="txtResposta"], input[name^="rdoResposta"]').change(function () {
+            var $_this = $(this);
+            $label = $_this.parents('.content').prev().find('.ui.label');
+            if ($_this.val()) {
+                $label.removeClass('red');
+                $label.removeAttr('style');
+                $label.html('Respondida');
+                if ($_this.attr('name').indexOf('rdo') > -1) {
+                    $label.find('.detail').remove();
+                    $label.append($('<div class="detail"></div>').text($('input[name="' + $_this.attr('name') + '"]:checked').next().find('b').text()));
+                }
+            }
+            else {
+                $label.attr('style', 'display:none');
+            }
+        });
+
+        $('.ui.gabarito.modal')
+            .modal({
+                onApprove: function () {
+                    $.ajax({
+                        type: 'GET',
+                        url: "/Acesso/Conectado",
+                        success: function () {
+                            window.onbeforeunload = function () {
+                                $('.ui.global.loader').parent().addClass('active');
+                            };
+                            $('form').submit();
+                        },
+                        error: function () {
+                            siac.mensagem('Conecte-se à internet antes de confirmar.')
+                        }
+                    });
+                    return false;
+                }
+            })
+        ;
+    }
+
+    function definirAlturaDiv() {
+        var tamTela = $(window).height();
+        var tamDesejado = tamTela * 0.6;
+        $('.ui.accordion').css({
+            'max-height': tamDesejado + 'px',
+            'overflow-y': 'auto'
         });
     }
 
-    function definirTamanhoDiv() {
-        var tamTela = $(window).height();
-        var tamDesejado = tamTela * 0.6;
-        $('.ui.accordion').
-            css('max-height', tamDesejado + 'px').
-            css('overflow-y', 'scroll');
-    }
-
     function relogio() {
-        setInterval(function () { date = new Date(); $('#lblHoraAgora').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min'); }, 1000);
+        setInterval(function () {
+            var date = new Date();
+            $('#lblHoraAgora').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
+        }, 1000);
     }
 
-    function temporizador() {
-        timerId = setInterval(function () {
-            if (duracao > 0) {
-                duracao = duracao - 1;
-                $('#lblHoraRestante').text(siac.Utilitario.minutosParaStringTempo(duracao)).parent().transition('flash');
-                if (duracao < 6 && !$('#lblHoraRestante').parent().hasClass('red')) {
+    function temporizador(dtTermino) {
+        _controleInterval = setInterval(function () {
+            var offset = dtTermino.getTimezoneOffset() * 60 * 1000;
+            var timeRestante = (dtTermino.getTime() + offset) - (new Date().getTime() + offset);
+
+            if (timeRestante > 0) {
+                var date = new Date();
+                date.setTime(timeRestante);
+                var offsetDate = date.getTimezoneOffset() * 60 * 1000;
+                date.setTime(date.getTime() + offsetDate);
+                var txtRestante = date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min';
+                $('#lblHoraRestante').text(txtRestante);
+                if (txtRestante != _controleRestante) {
+                    $('#lblHoraRestante').parent().transition('flash');
+                }
+                _controleRestante = txtRestante;
+                if (timeRestante < 1000 * 60 * 5 && !$('#lblHoraRestante').parent().hasClass('red')) {
                     $('#lblHoraRestante').parent().addClass('red');
                 }
             }
             else {
-                clearInterval(timerId);
+                siac.mensagem('O tempo definido por você acabou.', 'O tempo acabou.');
+                clearInterval(_controleInterval);
             }
-        }, 60000);
+        }, 1000);
     }
-
-    function testeConexao() {
-        $.ajax({
-            type: 'GET',
-            url: "/Acesso/Conectado",
-            success: function () {
-                conectado = true;
-            },
-            error: function () {
-                conectado = false;
-            }
-        });
-    }
-
+   
     function expandirImagem(card) {
         card = $(card);
         src = card.find('img').attr('src');
@@ -376,78 +392,48 @@ siac.Autoavaliacao.Realizar = (function () {
         modal.modal('show');
     }
 
-    function gabarito(codQuestao, resposta, obj, multi) {
-        $label = $('.ui.accordion').find('#txtCodQuestao[value="' + codQuestao + '"]').parent().find('.ui.label');
-        if (resposta != '') {
-            $label.removeClass('red');
-            $label.removeAttr('style');
-            $label.addClass('teal');
-            $label.html('Respondida');
-            if (obj) {
-                $label.append($('<div class="detail"></div>').text(resposta));
-            }
-        }
-        else {
-            $label.attr('style', 'display:none')
-        }
-        definirTamanhoDiv();
-    }
-
-    function submitForm() {
-        $('form').removeClass('error');
+    function finalizar() {
         var finalizada = true;
-        var lstNaoRespondidas = [];
-        $lstTitle = $('.ui.accordion > .title');
-        for (var i = 0; i < $lstTitle.length; i++) {
-            var codQuestao = $lstTitle.eq(i).find('#txtCodQuestao').val();
-            var txtResposta = $lstTitle.eq(i).next().find('#txtResposta' + codQuestao).val();
-            if (txtResposta == '') {
-                finalizada = false;
-                lstNaoRespondidas.push(codQuestao);
-            }
-            else if (!txtResposta) {
-                if (!$lstTitle.eq(i).next().find('input[name="rdoResposta' + codQuestao + '"]').is(':checked')) {
+        $objects = $('textarea[name^="txtResposta"], input[name^="rdoResposta"]');
+        for (var i = 0, length = $objects.length; i < length; i++) {
+            var _this = $objects.eq(i);
+            $label = _this.parents('.content').prev().find('.ui.label');
+            if (_this.attr('name').indexOf('rdo') > -1) {
+                if ($('input[name="' + _this.attr('name') + '"]:checked').length === 0) {
+                    $label.removeAttr('style').addClass('red').html('Não respondida').transition('tada');
                     finalizada = false;
-                    lstNaoRespondidas.push(codQuestao);
                 }
             }
+            else if (!_this.val()) {
+                $label.removeAttr('style').addClass('red').html('Não respondida').transition('tada');
+                finalizada = false;
+            }
         }
+
         if (finalizada) {
-            verificarConfirmar();
+            confirmar();
         }
         else {
-            for (var i = 0; i < lstNaoRespondidas.length; i++) {
-                for (var j = 0; j < $lstTitle.length; j++) {
-                    if ($lstTitle.eq(j).find('#txtCodQuestao').val() == lstNaoRespondidas[i]) {
-                        $lstTitle.eq(j).find('.ui.label').removeAttr('style').removeClass('teal').addClass('red').html('Não respondida').transition('tada');
-
-                    }
-                }
-            }
-            $('form').addClass('error');
-            $('form .message').removeClass('hidden');
-            definirTamanhoDiv();
+            definirAlturaDiv();
+            $('html, body').animate({
+                scrollTop: $(".title .label.red").offset().top
+            }, 1000);
         }
     }
 
-    function verificarConfirmar() {
+    function confirmar() {
         $modal = $('.ui.gabarito.modal');
-
         $accordion = $('form .ui.accordion').clone();
-
         $accordion.removeAttr('style');
-
         $modal.find('.content').html($('<div class="ui form"></div>').append($accordion));
-
         $modalAccordion = $modal.find('.ui.accordion');
-
         $modalAccordion.accordion({
-            onChange: function () { $('.ui.gabarito.modal').modal('refresh'); },
+            onChange: function () {
+                $('.ui.gabarito.modal').modal('refresh');
+            },
             animateChildren: false
         });
-
         $lstInput = $modalAccordion.find(':input,a');
-
         for (var i = 0; i < $lstInput.length; i++) {
             $lstInput.eq(i)
                 .attr({
@@ -459,7 +445,6 @@ siac.Autoavaliacao.Realizar = (function () {
                 .off()
             ;
         }
-
         $modal.modal('show');
     }
 
@@ -479,8 +464,6 @@ siac.Autoavaliacao.Realizar = (function () {
     }
 
     return {
-        iniciar: iniciar,
-        gabarito: gabarito,
-        expandirImagem: expandirImagem
+        iniciar: iniciar
     }
 })();

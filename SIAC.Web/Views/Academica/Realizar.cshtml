@@ -257,8 +257,6 @@
             })
         ;
 
-        
-
         $('.ui.anexo.modal')
             .modal()
         ;
@@ -297,6 +295,7 @@
             modal.modal('show');
         }
         var interval;
+
         function Relogio() {
             interval = setInterval(function () {
                 date = new Date();
@@ -330,9 +329,6 @@
                 date.setTime(date.getTime()+offsetDate);
                 $('#lblHoraRestante')
                     .text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
-                    //.parent()
-                    //.transition('flash');
-                //$('#lblHoraRestante').text(minutesToTimeString(duracao)).parent().transition('flash');
                 if (timeRestante < 60000 && !$('#lblHoraRestante').parent().hasClass('red')) {
                     $('#lblHoraRestante').parent().addClass('red');
                 }
@@ -380,7 +376,6 @@
         };
 
         function Verificar() {
-
             $Objects = $('textarea[name^="txtResposta"], input[name^="rdoResposta"]');
             var retorno = true;
             for (var i = 0, length = $Objects.length; i < length; i++) {
@@ -412,7 +407,10 @@
             $modalAccordion = $modal.find('.ui.accordion');
 
             $modalAccordion.accordion({
-                onChange: function () { $('.ui.gabarito.modal').modal('refresh'); }
+                onChange: function () {
+                    $('.ui.gabarito.modal').modal('refresh');
+                },
+                animateChildren: false
             });
 
             $lstInput = $modalAccordion.find(':input,a');

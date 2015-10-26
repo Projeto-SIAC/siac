@@ -368,7 +368,6 @@ siac.Questao.Cadastrar = (function () {
             var j = list.eq(i).find('#txtAlternativaIndex').val();
             list.eq(i).html('<input id="txtAlternativaIndex" value="' + (i + 1) + '" hidden /><i class="dropdown icon"></i>Alternativa ' + (i + 1) + '<div class="ui small label" style="display:none">Correta</div>');
             if (listContent.eq(i).find('input[name="chkAlternativaCorreta' + j + '"]').is(':checked')) {
-                console.log('entrou');
                 list.eq(i).find('.label').removeAttr('style');
             }
             /* RENOMEAR LABELS, INPUTS e TEXTAREAS */
@@ -949,7 +948,6 @@ siac.Questao.Gerar = (function () {
             url: '/Dashboard/Questao/Gerar',
             data: { "strQte": strQte },
             success: function (data) {
-                console.log(data);
                 $questoes = $('div.questoes');
                 $questoes.html('');
                 for (var i = 0; i < data.length; i++) {

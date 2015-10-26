@@ -175,12 +175,6 @@
 </div>
 
 <form class="ui form" action="/Dashboard/Autoavaliacao/Resultado/@Model.Avaliacao.CodAvaliacao" method="post">
-    <div class="ui message error">
-        <i class="icon close"></i>
-            <div class="header">
-                Responda todas as questões!
-            </div>
-    </div>
     <div class="ui accordion">
         @for (int i = 0; i < lstQuestao.Count; i++)
         {
@@ -212,7 +206,7 @@
                             {
                                 <div class="field">
                                     <div class="ui radio checkbox">
-                                        <input onchange="siac.Autoavaliacao.Realizar.gabarito(@lstQuestao[i].CodQuestao,'@j.GetIndiceAlternativa()', true)" type="radio" name="rdoResposta@(lstQuestao[i].CodQuestao)" value="@lstAlternativa[j].CodOrdem" />
+                                        <input type="radio" name="rdoResposta@(lstQuestao[i].CodQuestao)" value="@lstAlternativa[j].CodOrdem" />
                                         <label><b>@j.GetIndiceAlternativa()</b>) @lstAlternativa[j].Enunciado</label>
                                     </div>
                                 </div>
@@ -223,7 +217,7 @@
                     {
                         <div class="field">
                             <label>Resposta</label>
-                            <textarea onchange="siac.Autoavaliacao.Realizar.gabarito(@lstQuestao[i].CodQuestao, $(this).val())" name="txtResposta@(lstQuestao[i].CodQuestao)" id="txtResposta@(lstQuestao[i].CodQuestao)" placeholder="Resposta..." rows="3"></textarea>
+                            <textarea name="txtResposta@(lstQuestao[i].CodQuestao)" id="txtResposta@(lstQuestao[i].CodQuestao)" placeholder="Resposta..." rows="3"></textarea>
                         </div>
                     }
                     
@@ -237,7 +231,7 @@
                                     switch (anexo.CodTipoAnexo)
                                     {
                                         case 1:
-                                            <a onclick="siac.Autoavaliacao.Realizar.expandirImagem(this)" class="ui card">
+                                            <a class="ui anexo imagem card">
                                                 <div class="image">
                                                     <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo, 0, anexo.Anexo.Length)" />
                                                 </div>
