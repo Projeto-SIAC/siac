@@ -52,7 +52,7 @@ namespace SIAC.Controllers
 
             if (!String.IsNullOrWhiteSpace(pesquisa))
             {
-                questoes = questoes.Where(q => q.Enunciado.ToLower().Contains(pesquisa.ToLower())).ToList();
+                questoes = questoes.Where(q => q.Enunciado.ToLower().Contains(pesquisa.Trim().ToLower())).ToList();
             }
 
             if (!String.IsNullOrWhiteSpace(disciplina))

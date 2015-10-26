@@ -506,7 +506,7 @@
     <Content Include="Styles\themes\default\assets\fonts\icons.ttf" />
     <Content Include="Styles\themes\default\assets\fonts\icons.woff" />
     <Content Include="Styles\themes\default\assets\fonts\icons.woff2" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_Layout2.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Acesso\Index.cshtml" />
     <Content Include="Resources\videos\background.webm" />
@@ -569,6 +569,7 @@
     <Content Include="Views\Historico\Index.cshtml" />
     <Content Include="Views\Questao\_ListaQuestao.cshtml" />
     <Content Include="Views\Autoavaliacao\_ListaAutoavaliacao.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
