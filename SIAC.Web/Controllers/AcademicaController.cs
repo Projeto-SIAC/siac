@@ -7,26 +7,9 @@ using SIAC.Models;
 
 namespace SIAC.Controllers
 {
+    [Filters.CategoriaFilter(Categorias = new[] { 1, 2 })]
     public class AcademicaController : Controller
-    {
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            Session["UrlReferrer"] = Request.Url.ToString();
-            if (!Helpers.Sessao.Autenticado)
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }
-            else if (Helpers.Sessao.UsuarioCategoriaCodigo > 2)
-            {
-                if (Session["UrlReferrer"] != null)
-                {
-                    filterContext.Result = Redirect(Session["UrlReferrer"].ToString());
-                }
-                else filterContext.Result = RedirectToAction("Index", "Dashboard");
-            }
-            base.OnActionExecuting(filterContext);
-        }
-
+    {      
         //GET: Historico/Avaliacao/Academica/Minhas <- Ajax 
         public ActionResult Minhas()
         {
@@ -96,7 +79,7 @@ namespace SIAC.Controllers
             }
             return View();
         }
-
+        
         //GET: Dashboard/Avaliacao/Academica/Gerar
         public ActionResult Gerar()
         {

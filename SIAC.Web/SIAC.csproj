@@ -213,6 +213,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AutoavaliacaoController.cs" />
     <Compile Include="Controllers\AcademicaController.cs" />
+    <Compile Include="Controllers\CategoriaFilterAttribute.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\AcessoController.cs" />
     <Compile Include="Controllers\ErroController.cs" />

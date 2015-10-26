@@ -7,17 +7,9 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
+    [CategoriaFilter]
     public class DashboardController : Controller
     {
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            if (!Helpers.Sessao.Autenticado)
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }
-            base.OnActionExecuting(filterContext);
-        }
-
         // GET: Dashboard
         public ActionResult Index()
         {

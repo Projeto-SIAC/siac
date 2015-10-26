@@ -7,6 +7,7 @@ using SIAC.Models;
 
 namespace SIAC.Controllers
 {
+    [CategoriaFilter]
     public class AutoavaliacaoController : Controller
     {
         public List<AvalAuto> Autoavaliacoes
@@ -15,16 +16,6 @@ namespace SIAC.Controllers
             {
                 return AvalAuto.ListarPorPessoa(Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula));
             }
-        }
-
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            Session["UrlReferrer"] = Request.Url.ToString();
-            if (!Helpers.Sessao.Autenticado)
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }
-            base.OnActionExecuting(filterContext);
         }
 
         // GET: Autoavaliacao

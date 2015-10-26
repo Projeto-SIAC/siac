@@ -7,17 +7,9 @@ using SIAC.Models;
 
 namespace SIAC.Controllers
 {
+    [CategoriaFilter]
     public class TemaController : Controller
     {
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            if (!Helpers.Sessao.Autenticado)
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }
-            base.OnActionExecuting(filterContext);
-        }
-
         // GET: Tema
         public ActionResult Index()
         {

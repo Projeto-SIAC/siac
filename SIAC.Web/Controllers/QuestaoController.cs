@@ -7,6 +7,7 @@ using SIAC.Models;
 
 namespace SIAC.Controllers
 {
+    [CategoriaFilter(Categorias = new[] { 2 })]
     public class QuestaoController : Controller
     {
         public List<Questao> Questoes {
@@ -14,21 +15,7 @@ namespace SIAC.Controllers
             {
                 return Questao.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula);
             }
-        } 
-
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            Session["UrlReferrer"] = Request.Url.ToString();
-            if (!Helpers.Sessao.Autenticado)
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }
-            else if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
-            {
-                filterContext.Result = RedirectToAction("Entrar", "Acesso");
-            }
-            base.OnActionExecuting(filterContext);
-        }
+        }         
 
         // GET: Questao
         public ActionResult Index()

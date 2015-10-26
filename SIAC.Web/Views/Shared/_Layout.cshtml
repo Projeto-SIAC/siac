@@ -9,49 +9,6 @@
     @Styles.Render("~/bundles/css")
     @RenderSection("styles", required: false)
     @Scripts.Render("~/bundles/modernizr")
-    <style>       
-        .vertical.menu .item {
-            padding-top: 1.2em !important;
-            padding-bottom: 1.2em !important;
-        }
-
-        .breadcrumb .section {
-            text-transform: capitalize;
-        }
-
-        .ui.segment {
-            border-radius: 0;
-        }
-        
-        @@media only screen and (max-width: 700px) {
-            .vertical.menu {
-                -webkit-box-orient: horizontal!important;
-                -webkit-box-direction: row!important;
-                -webkit-flex-direction: row!important;
-                -ms-flex-direction: row!important;
-                flex-direction: row!important;
-            }
-            
-            .vertical.menu .item {
-                display: inline-flex!important;
-                height: auto!important;
-                text-align: center!important;
-            }
-            
-            
-            .vertical.menu .item .icon {
-                margin: 0!important;
-            }
-            
-            .vertical.menu .item .content {
-                display: none!important;
-            }
-            
-            .menu .item.text {
-                display: none!important;
-            }
-        }
-    </style>
 </head>
 <body>    
     <div class="ui menu" style="border-radius:0">
