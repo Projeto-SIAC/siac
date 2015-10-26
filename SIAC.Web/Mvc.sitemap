@@ -12,7 +12,7 @@
           <mvcSiteMapNode title="Confirmação" controller="Questao" action="Confirmar"/>
         </mvcSiteMapNode>
         <mvcSiteMapNode title="Gerar" controller="Questao" action="Gerar"/>
-      </mvcSiteMapNode>      
+      </mvcSiteMapNode>
       <mvcSiteMapNode title="Autoavaliação" url="~/Historico/Autoavaliacao">
         <mvcSiteMapNode title="Gerar" controller="Autoavaliacao" action="Gerar">
           <mvcSiteMapNode title="Confirmação" controller="Autoavaliacao" action="Confirmar"/>
@@ -20,7 +20,7 @@
         <mvcSiteMapNode title="Realizar" controller="Autoavaliacao" action="Realizar" preservedRouteParameters="codigo">
           <mvcSiteMapNode title="Resultado" controller="Autoavaliacao" action="Resultado" preservedRouteParameters="codigo"/>
         </mvcSiteMapNode>
-      </mvcSiteMapNode>      
+      </mvcSiteMapNode>
       <mvcSiteMapNode title="Avaliação" controller="Dashboard" action="Avaliacao">
         <mvcSiteMapNode title="Acadêmica" url="~/Historico/Avaliacao/Academica">
           <mvcSiteMapNode title="Gerar" controller="Academica" action="Gerar">
@@ -33,16 +33,21 @@
             <mvcSiteMapNode title="Resultado" controller="Academica" action="Resultado" preservedRouteParameters="codigo"/>
           </mvcSiteMapNode>
         </mvcSiteMapNode>
+        <mvcSiteMapNode title="Certificação" url="~/Historico/Avaliacao/Certificacao">
+          <mvcSiteMapNode title="Gerar" controller="Certificacao" action="Gerar">
+            <mvcSiteMapNode title="Confirmação" controller="Certificacao" action="Confirmar"/>
+          </mvcSiteMapNode>
+        </mvcSiteMapNode>
       </mvcSiteMapNode>
-    </mvcSiteMapNode>    
+    </mvcSiteMapNode>
     <mvcSiteMapNode title="Histórico" controller="Historico" action="Index">
       <mvcSiteMapNode title="Questão" controller="Questao" action="Index">
         <mvcSiteMapNode title="Detalhe" controller="Questao" action="Detalhe" preservedRouteParameters="codigo"/>
         <mvcSiteMapNode title="Editar" controller="Questao" action="Editar" preservedRouteParameters="codigo"/>
-      </mvcSiteMapNode>      
+      </mvcSiteMapNode>
       <mvcSiteMapNode title="Autoavaliação" controller="Autoavaliacao" action="Index">
         <mvcSiteMapNode title="Detalhe" controller="Autoavaliacao" action="Detalhe" preservedRouteParameters="codigo"/>
-      </mvcSiteMapNode>      
+      </mvcSiteMapNode>
       <mvcSiteMapNode title="Avaliação" controller="Historico" action="Avaliacao">
         <mvcSiteMapNode title="Acadêmica" controller="Academica" action="Index">
           <mvcSiteMapNode title="Agendada" controller="Academica" action="Agendada"/>
@@ -51,6 +56,7 @@
             <mvcSiteMapNode title="Corrigir" controller="Academica" action="Corrigir" preservedRouteParameters="codigo"/>
           </mvcSiteMapNode>
         </mvcSiteMapNode>
+        <mvcSiteMapNode title="Certificação" controller="Certificacao" action="Index"/>
       </mvcSiteMapNode>
     </mvcSiteMapNode>
   </mvcSiteMapNode>

@@ -213,7 +213,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AutoavaliacaoController.cs" />
     <Compile Include="Controllers\AcademicaController.cs" />
-    <Compile Include="Controllers\CategoriaFilterAttribute.cs" />
+    <Compile Include="Controllers\CertificacaoController.cs" />
+    <Compile Include="Filters\CategoriaFilterAttribute.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\AcessoController.cs" />
     <Compile Include="Controllers\ErroController.cs" />
@@ -312,23 +313,6 @@
     <Compile Include="Models\Curso.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\pdbSIACEntities.cs" />
-    <Compile Include="Models\Repositorio.cs" />
-    <Compile Include="Models\dbSIAC.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dbSIAC.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\dbSIAC.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dbSIAC.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\dbSIAC.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dbSIAC.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\DiaSemana.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -377,22 +361,11 @@
     <Compile Include="Models\Pais.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\pAluno.cs" />
-    <Compile Include="Models\pAnexo.cs" />
     <Compile Include="Models\Parametro.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\pAvalAcademica.cs" />
-    <Compile Include="Models\pAvalAuto.cs" />
-    <Compile Include="Models\pAvaliacao.cs" />
-    <Compile Include="Models\pAvalPessoaResultado.cs" />
-    <Compile Include="Models\pCampus.cs" />
-    <Compile Include="Models\pCategoria.cs" />
-    <Compile Include="Models\pColaborador.cs" />
-    <Compile Include="Models\pCurso.cs" />
-    <Compile Include="Models\pDificuldade.cs" />
-    <Compile Include="Models\pDiretoria.cs" />
-    <Compile Include="Models\pDisciplina.cs" />
+    <Compile Include="Models\pAvalCertificacao.cs" />
+    <Compile Include="Models\pdbSIACEntities.cs" />
     <Compile Include="Models\Pessoa.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -405,29 +378,12 @@
     <Compile Include="Models\PessoaJuridica.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\pHorario.cs" />
-    <Compile Include="Models\pInstituicao.cs" />
-    <Compile Include="Models\pMatrizCurricular.cs" />
-    <Compile Include="Models\pNivelEnsino.cs" />
-    <Compile Include="Models\pParametro.cs" />
-    <Compile Include="Models\pPessoa.cs" />
-    <Compile Include="Models\pPessoaFisica.cs" />
-    <Compile Include="Models\pProfessor.cs" />
-    <Compile Include="Models\pQuestao.cs" />
-    <Compile Include="Models\pQuestaoTema.cs" />
     <Compile Include="Models\Professor.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProReitoria.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\pSala.cs" />
-    <Compile Include="Models\pTema.cs" />
-    <Compile Include="Models\pTipoAvaliacao.cs" />
-    <Compile Include="Models\pTipoQuestao.cs" />
-    <Compile Include="Models\pTurma.cs" />
-    <Compile Include="Models\pTurno.cs" />
-    <Compile Include="Models\pUsuario.cs" />
     <Compile Include="Models\Questao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -440,6 +396,52 @@
     <Compile Include="Models\Reitoria.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Repositorio.cs" />
+    <Compile Include="Models\dbSIAC.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbSIAC.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\dbSIAC.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\dbSIAC.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbSIAC.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\pAluno.cs" />
+    <Compile Include="Models\pAnexo.cs" />
+    <Compile Include="Models\pAvalAcademica.cs" />
+    <Compile Include="Models\pAvalAuto.cs" />
+    <Compile Include="Models\pAvaliacao.cs" />
+    <Compile Include="Models\pAvalPessoaResultado.cs" />
+    <Compile Include="Models\pCampus.cs" />
+    <Compile Include="Models\pCategoria.cs" />
+    <Compile Include="Models\pColaborador.cs" />
+    <Compile Include="Models\pCurso.cs" />
+    <Compile Include="Models\pDificuldade.cs" />
+    <Compile Include="Models\pDiretoria.cs" />
+    <Compile Include="Models\pDisciplina.cs" />
+    <Compile Include="Models\pHorario.cs" />
+    <Compile Include="Models\pInstituicao.cs" />
+    <Compile Include="Models\pMatrizCurricular.cs" />
+    <Compile Include="Models\pNivelEnsino.cs" />
+    <Compile Include="Models\pParametro.cs" />
+    <Compile Include="Models\pPessoa.cs" />
+    <Compile Include="Models\pPessoaFisica.cs" />
+    <Compile Include="Models\pProfessor.cs" />
+    <Compile Include="Models\pQuestao.cs" />
+    <Compile Include="Models\pQuestaoTema.cs" />
+    <Compile Include="Models\pSala.cs" />
+    <Compile Include="Models\pTema.cs" />
+    <Compile Include="Models\pTipoAvaliacao.cs" />
+    <Compile Include="Models\pTipoQuestao.cs" />
+    <Compile Include="Models\pTurma.cs" />
+    <Compile Include="Models\pTurno.cs" />
+    <Compile Include="Models\pUsuario.cs" />
     <Compile Include="Models\Sala.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -571,6 +573,9 @@
     <Content Include="Views\Questao\_ListaQuestao.cshtml" />
     <Content Include="Views\Autoavaliacao\_ListaAutoavaliacao.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Certificacao\Index.cshtml" />
+    <Content Include="Views\Certificacao\Gerar.cshtml" />
+    <Content Include="Views\Certificacao\Confirmar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

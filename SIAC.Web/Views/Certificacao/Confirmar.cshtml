@@ -1,16 +1,17 @@
-﻿@using SIAC.Models;
-@model AvalAcademica
+﻿@using SIAC.Models
+@model AvalCertificacao
 @{
-    ViewBag.Title = "Avaliação "+ @Model.Avaliacao.CodAvaliacao;
+    ViewBag.Title = "Certificação "+ Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <h2>@ViewBag.Title</h2>
 
 <div class="ui icon message positive">
     <i class="icon checkmark"></i>
     <div class="content">
         <div class="header">Avaliação gerada com sucesso.</div>
-        <p>Sua avaliação acadêmica encontra-se no seu <b><a href="/Historico/Avaliacao/Academica">Histórico</a></b> e você poderá agendá-la quando bem entender.
+        <p>Sua avaliação de certificação encontra-se no seu <b><a href="/Historico/Avaliacao/Certificacao">Histórico</a></b> e você poderá configurá-la quando bem entender.
     </div>
 </div>
 <div class="ui segment">
@@ -56,39 +57,6 @@
     </table>
 </div>
 
-@*<div class="ui very relaxed items">
-    <span class="ui label">@ViewBag.QteQuestoes Questões</span>
-    @{
-        List<int> cods = new List<int>();
-        foreach (QuestaoTema questao in ViewBag.QuestoesDaAvaliacao)
-        {
-            cods.Add(questao.CodQuestao);
-            if (questao != null)
-            {
-                <div class="item">
-                    <div class="content">
-                        <a href="/Historico/Questao/@questao.CodQuestao" class="header">@questao.Questao.Enunciado.ToShortString(140)</a>
-                        <div class="meta ui labels">
-                            <span class="ui label">@questao.Tema.Disciplina.Descricao</span>
-                            @foreach (QuestaoTema t in questao.Questao.QuestaoTema)
-                            {
-                                <span class="ui tag label">@t.Tema.Descricao</span>
-                            }
-                            <span class="ui label">@questao.Questao.Dificuldade.Descricao - @questao.Questao.CodDificuldade</span>
-                            <span class="ui label">@questao.Questao.TipoQuestao.Descricao</span>
-                        </div>
-                    </div>
-                </div>
-            }
-        }
-        cods.Sort();
-        foreach (var item in cods)
-        {
-            <span class="ui label">@item</span>
-        }
-    }
-</div>*@
-
 <a href="/Dashboard" class="ui button">Voltar para Dashboard</a>
-<a href="/Historico/Avaliacao/Academica" class="ui button">Avaliações Acadêmicas</a>
-<a href="/Dashboard/Avaliacao/Academica/Agendar/@Model.Avaliacao.CodAvaliacao" class="ui button">Agendar agora</a>
+<a href="/Historico/Avaliacao/Certificação" class="ui button">Avaliações de Certificação</a>
+<a href="/Dashboard/Avaliacao/Certificacao/Configurar/@Model.Avaliacao.CodAvaliacao" class="ui button">Configurar agora</a>

@@ -24,7 +24,7 @@ namespace SIAC.Models
         public int CodTipoAvaliacao { get; set; }
         public int Semestre { get; set; }
         public int Ano { get; set; }
-        public int CodSala { get; set; }
+        public Nullable<int> CodSala { get; set; }
         public int CodProfessor { get; set; }
         public int CodDisciplina { get; set; }
         public Nullable<double> Valor { get; set; }

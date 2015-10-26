@@ -7,7 +7,7 @@ using SIAC.Models;
 
 namespace SIAC.Controllers
 {
-    [CategoriaFilter]
+    [Filters.CategoriaFilter]
     public class TemaController : Controller
     {
         // GET: Tema

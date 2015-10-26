@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [CategoriaFilter]
+    [Filters.CategoriaFilter]
     public class DashboardController : Controller
     {
         // GET: Dashboard

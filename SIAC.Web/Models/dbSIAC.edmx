@@ -110,7 +110,7 @@
           <Property Name="CodTipoAvaliacao" Type="int" Nullable="false" />
           <Property Name="Semestre" Type="int" Nullable="false" />
           <Property Name="Ano" Type="int" Nullable="false" />
-          <Property Name="CodSala" Type="int" Nullable="false" />
+          <Property Name="CodSala" Type="int" />
           <Property Name="CodProfessor" Type="int" Nullable="false" />
           <Property Name="CodDisciplina" Type="int" Nullable="false" />
           <Property Name="Valor" Type="float" />
@@ -1283,7 +1283,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__AvalCerti__CodSa__038683F8">
-          <End Role="Sala" Type="Self.Sala" Multiplicity="1" />
+          <End Role="Sala" Type="Self.Sala" Multiplicity="0..1" />
           <End Role="AvalCertificacao" Type="Self.AvalCertificacao" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sala">
@@ -3532,13 +3532,13 @@
           <Property Name="CodTipoAvaliacao" Type="Int32" Nullable="false" />
           <Property Name="Semestre" Type="Int32" Nullable="false" />
           <Property Name="Ano" Type="Int32" Nullable="false" />
-          <Property Name="CodSala" Type="Int32" Nullable="false" />
+          <Property Name="CodSala" Type="Int32" />
           <Property Name="CodProfessor" Type="Int32" Nullable="false" />
           <Property Name="CodDisciplina" Type="Int32" Nullable="false" />
           <Property Name="Valor" Type="Double" />
           <NavigationProperty Name="Disciplina" Relationship="Self.FK__AvalCerti__CodDi__019E3B86" FromRole="AvalCertificacao" ToRole="Disciplina" />
           <NavigationProperty Name="Professor" Relationship="Self.FK__AvalCerti__CodPr__00AA174D" FromRole="AvalCertificacao" ToRole="Professor" />
-          <NavigationProperty Name="Sala" Relationship="Self.FK__AvalCerti__CodSa__038683F8" FromRole="AvalCertificacao" ToRole="Sala" />
+          <NavigationProperty Name="Sala" Relationship="dbSIACModel.FK__AvalCerti__CodSa__038683F8" FromRole="AvalCertificacao" ToRole="Sala" />
           <NavigationProperty Name="Avaliacao" Relationship="Self.FK__AvalCertificacao__02925FBF" FromRole="AvalCertificacao" ToRole="Avaliacao" />
           <NavigationProperty Name="PessoaFisica" Relationship="Self.AvalCertPessoa" FromRole="AvalCertificacao" ToRole="PessoaFisica" />
         </EntityType>
@@ -4791,7 +4791,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__AvalCerti__CodSa__038683F8">
-          <End Role="Sala" Type="Self.Sala" Multiplicity="1" />
+          <End Role="Sala" Type="Self.Sala" Multiplicity="0..1" />
           <End Role="AvalCertificacao" Type="Self.AvalCertificacao" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sala">

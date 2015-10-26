@@ -7,7 +7,7 @@ using SIAC.Models;
 
 namespace SIAC.Controllers
 {
-    [CategoriaFilter(Categorias = new[] { 2 })]
+    [Filters.CategoriaFilter(Categorias = new[] { 2 })]
     public class QuestaoController : Controller
     {
         public List<Questao> Questoes {
