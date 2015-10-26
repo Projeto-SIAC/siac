@@ -814,7 +814,10 @@ namespace SIAC.Controllers
                                  codQuestao = alunoResposta.CodQuestao,
                                  questaoEnunciado = alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.Enunciado,
                                  questaoChaveResposta = alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.ChaveDeResposta,
-                                 alunoResposta = alunoResposta.RespDiscursiva
+                                 alunoResposta = alunoResposta.RespDiscursiva,
+                                 notaObtida = alunoResposta.RespNota.HasValue ? alunoResposta.RespNota.Value.ToValueHtml() : "",
+                                 correcaoComentario = alunoResposta.ProfObservacao != null ? alunoResposta.ProfObservacao : "",
+                                 flagCorrigida = alunoResposta.RespNota != null ? true : false
                              };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

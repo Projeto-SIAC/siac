@@ -81,7 +81,14 @@
                                 $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoIndice}', getIndiceQuestao(data[i].codQuestao)));
                                 $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoChaveResposta}', data[i].questaoChaveResposta));
                                 $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{alunoResposta}', data[i].alunoResposta));
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{correcaoComentario}', data[i].correcaoComentario));
+
                                 $conteudo.append($conteudoQuestaoClone);
+
+                                if (data[i].flagCorrigida) {
+                                    $conteudo.find('.dimmer').dimmer('show');
+                                    $conteudo.find('.notaObtida').val(data[i].notaObtida);
+                                }
                             }
 
                             $modal.modal('refresh');
@@ -109,6 +116,7 @@
                 notaObtida = $('#' + codQuestao + ' .notaObtida').val();
                 correcaoComentario = $('#' + codQuestao + ' .correcaoComentario').val();
 
+                $('#' + codQuestao + ' .button.corrigir.aluno').addClass('loading');
                 $.ajax({
                     type: 'POST',
                     url: '/Dashboard/Avaliacao/Academica/CorrigirQuestaoAluno/' + codAvaliacao,
@@ -119,11 +127,12 @@
                         profObservacao:correcaoComentario
                     },
                     success:function(data){
-                        $('#' + codQuestao + ' .button.corrigir.aluno').addClass('green').text('Questão Corrigida!');
-                        $('#' + codQuestao).dimmer('show');
+                        $('#' + codQuestao + ' .button.corrigir.aluno').removeClass('loading').addClass('disabled');
+                        $('#' + codQuestao).dimmer({ closable: false,on: 'click' }).dimmer('show');
                     },
                     error: function (data) {
                         siac.mensagem(data);
+                        $('#' + codQuestao + ' .button.corrigir.aluno').removeClass('loading');
                     }
                 });
             }
@@ -261,7 +270,7 @@
                     </td>
                     <td>
                         <div class="field required">
-                            <textarea class="correcaoComentario" rows="3"></textarea>
+                            <textarea class="correcaoComentario" rows="3">{correcaoComentario}</textarea>
                         </div>
                     </td>
                     <td>
@@ -270,13 +279,15 @@
                 </tr>
             </tbody>
         </table>
-        <div class="ui dimmer">
+        <div class="ui dimmer" onclick="console.log('exe'); return false;">
             <div class="content">
                 <div class="center">
                     <h2 class="ui inverted icon header">
-                        <i class="checkmark green icon"></i>
+                        <i class="checkmark icon"></i>
                         Questão Corrigida!
                     </h2>
+                    <br />
+                    <p class="detail">Clique para recorrigir</p>
                 </div>
             </div>
         </div>
@@ -299,7 +310,7 @@
             </div>
             <div class="field required">
                 <label for="">Selecione </label>
-                <select id="ddlCorrecaoValor" name="ddlCorrecaoValor" class="ui dropdown disabled">
+                <select id="ddlCorrecaoValor" name="ddlCorrecaoValor" class="ui dropdown disabled" style="z-index:1005;">
                 </select>
             </div>
             <div class="correcao conteudo">
