@@ -794,6 +794,28 @@ namespace SIAC.Controllers
             return Json(null);
         }
 
+        //POST: Academica/Avaliacao/CarregarQuestoesDiscursivas/{codigo}
+        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
+        public ActionResult CarregarQuestoesDiscursivas(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+                var result = from questao in acad.Avaliacao.Questao
+                             where questao.CodTipoQuestao == 2
+                             orderby questao.CodQuestao
+                             select new
+                             {
+                                 codQuestao = questao.CodQuestao,
+                                 questaoEnunciado = questao.Enunciado,
+                                 questaoChaveResposta = questao.ChaveDeResposta
+                             };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            return Json(null);
+        }
+
         //POST: Academica/Avaliacao/CarregarRespostasDiscursivas/{codigo}/{matrAluno}
         [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
@@ -818,6 +840,37 @@ namespace SIAC.Controllers
                                  notaObtida = alunoResposta.RespNota.HasValue ? alunoResposta.RespNota.Value.ToValueHtml() : "",
                                  correcaoComentario = alunoResposta.ProfObservacao != null ? alunoResposta.ProfObservacao : "",
                                  flagCorrigida = alunoResposta.RespNota != null ? true : false
+                             };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            return Json(null);
+        }
+
+        //POST: Academica/Avaliacao/CarregarRespostasPorQuestao/{codigo}/{codQuestao}
+        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
+        public ActionResult CarregarRespostasPorQuestao(string codigo, string codQuestao)
+        {
+            if (!String.IsNullOrEmpty(codigo) && !String.IsNullOrEmpty(codQuestao))
+            {
+                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+                int codQuestaoTemp = int.Parse(codQuestao);
+
+                var result = from questao in acad.Avaliacao.PessoaResposta
+                             orderby questao.PessoaFisica.Nome
+                             where questao.CodQuestao == codQuestaoTemp
+                                && questao.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 2
+                             select new
+                             {
+                                 alunoMatricula = acad.AlunosRealizaram.FirstOrDefault(a=>a.Usuario.CodPessoaFisica == questao.CodPessoaFisica).Usuario.Matricula,
+                                 alunoNome = questao.PessoaFisica.Nome,
+                                 codQuestao = questao.CodQuestao,
+                                 questaoEnunciado = questao.AvalTemaQuestao.QuestaoTema.Questao.Enunciado,
+                                 questaoChaveResposta = questao.AvalTemaQuestao.QuestaoTema.Questao.ChaveDeResposta,
+                                 alunoResposta = questao.RespDiscursiva,
+                                 notaObtida = questao.RespNota.HasValue ? questao.RespNota.Value.ToValueHtml() : "",
+                                 correcaoComentario = questao.ProfObservacao != null ? questao.ProfObservacao : "",
+                                 flagCorrigida = questao.RespNota != null ? true : false
                              };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
