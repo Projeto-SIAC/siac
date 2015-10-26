@@ -664,13 +664,10 @@ siac.Academica.Realizar = (function () {
         _matriculaUsuario = $elemento.attr('data-usuario');
         $elemento.removeAttr('data-avaliacao data-usuario');
         
-        // Parei aqui
         $elemento = $('[data-termino]');
-        var timeTermino = Date.parse($elemento.attr('data-termino'));
         _dtTermino = new Date();
-        _dtTermino.setTime(timeTermino);
+        _dtTermino.setTime(Date.parse($elemento.attr('data-termino')));
         $elemento.removeAttr('data-termino');
-        // Corrigir
 
         window.onbeforeunload = function () {
             return 'Você está realizando uma avaliação.';
@@ -795,29 +792,31 @@ siac.Academica.Realizar = (function () {
     }
 
     function temporizador(dtTermino) {
-        var offset = dtTermino.getTimezoneOffset() * 60 * 1000;
-        var timeRestante = (dtTermino.getTime() + offset) - (new Date().getTime() + offset);
+        setInterval(function () {
+            var offset = dtTermino.getTimezoneOffset() * 60 * 1000;
+            var timeRestante = (dtTermino.getTime() + offset) - (new Date().getTime() + offset);
 
-        if (timeRestante > 0) {
-            var date = new Date();
-            date.setTime(timeRestante);
-            var offsetDate = date.getTimezoneOffset() * 60 * 1000;
-            date.setTime(date.getTime() + offsetDate);
-            var txtRestante = date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min';
-            $('#lblHoraRestante').text(txtRestante);
-            if (txtRestante != _controleRestante) {
-                $('#lblHoraRestante').parent().transition('flash');
+            if (timeRestante > 0) {
+                var date = new Date();
+                date.setTime(timeRestante);
+                var offsetDate = date.getTimezoneOffset() * 60 * 1000;
+                date.setTime(date.getTime() + offsetDate);
+                var txtRestante = ("0" + date.getHours()).slice(-2) + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min';
+                $('#lblHoraRestante').text(txtRestante);
+                if (txtRestante != _controleRestante) {
+                    $('#lblHoraRestante').parent().transition('flash');
+                }
+                _controleRestante = txtRestante;
+                if (timeRestante < 1000 * 60 * 5 && !$('#lblHoraRestante').parent().hasClass('red')) {
+                    $('#lblHoraRestante').parent().addClass('red');
+                }
             }
-            _controleRestante = txtRestante;
-            if (timeRestante < 1000 * 60 * 5 && !$('#lblHoraRestante').parent().hasClass('red')) {
-                $('#lblHoraRestante').parent().addClass('red');
+            else {
+                alert('O tempo de aplicação acabou, sua prova será enviada automaticamente.');
+                $('.ui.global.loader').parent().addClass('active');
+                finalizar();
             }
-        }
-        else {
-            alert('O tempo de aplicação acabou, sua prova será enviada automaticamente.');
-            $('.ui.global.loader').parent().addClass('active');
-            finalizar();
-        }
+        }, 1000);
     }
 
     function finalizar() { 
