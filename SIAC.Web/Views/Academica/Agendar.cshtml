@@ -4,107 +4,13 @@
     ViewBag.Title = "Agendar " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section Scripts{
-    <script>
-        $('.ui.informacoes.modal')
-            .modal()
-        ;
-        $('.ui.dropdown')
-            .dropdown()
-        ;
 
-        $('.cancelar.button').popup({ on: 'click' });
 
-        $('.ui.confirmar.modal')
-            .modal({
-                onApprove: function () {
-                    $('form').addClass('loading').submit();
-                }
-            })
-        ;
-        function Validar() {
-            retorno = true;
-
-            lstErro = $('form .error.message .list');
-            lstErro.html('');
-            $('form').removeClass('error');
-
-            if (!$('#ddlTurma').val()) {
-                lstErro.append('<li>Selecione uma turma</li>');
-                retorno = false;
-            }
-
-            if (!$('#txtData').val()) {
-                lstErro.append('<li>Especifique a data de aplicação</li>');
-                retorno = false;
-            }
-
-            if (!$('#txtHoraInicio').val()) {
-                lstErro.append('<li>Especifique a hora de ínicio</li>');
-                retorno = false;
-            }
-
-            if ($('#txtData').val() && $('#txtHoraInicio').val()) {
-                strDate = $('#txtData').val() + ' ' + $('#txtHoraInicio').val();
-                if (!siac.Utilitario.dataEFuturo(strDate)) {
-                    lstErro.append('<li>Especifique uma data de aplicação futura</li>');
-                    retorno = false;
-                }
-            }
-
-            if (!$('#txtHoraTermino').val()) {
-                lstErro.append('<li>Especifique a hora de término</li>');
-                retorno = false;
-            }
-
-            if ($('#txtData').val() && $('#txtHoraInicio').val() && $('#txtHoraTermino').val()) {
-                strDateA = $('#txtData').val() + ' ' + $('#txtHoraInicio').val();
-                strDateB = $('#txtData').val() + ' ' + $('#txtHoraTermino').val();
-                if (siac.Utilitario.compararData(strDateA, strDateB) >= 0) {
-                    lstErro.append('<li>Especifique uma hora de término maior que a hora de início</li>');
-                    retorno = false;
-                }
-            }
-
-            if (!$('#ddlSala').val()) {
-                lstErro.append('<li>Selecione uma sala</li>');
-                retorno = false;
-            }
-
-            
-
-            return retorno;
-        }
-        function Confirmar() {
-            if (Validar()) {
-                $form = $('form');
-                $div = $('<div class="ui form"></div>');
-                $div.append($form.html());
-                lstInput = $div.find(':input');
-                $div.find('.button').remove();
-                $div.find('#txtData').attr('value', $form.find('#txtData').val());
-                $div.find('#txtHoraInicio').attr('value', $form.find('#txtHoraInicio').val());
-                $div.find('#txtHoraTermino').attr('value', $form.find('#txtHoraTermino').val());
-                for (var i = 0; i < lstInput.length; i++) {
-                    lstInput.eq(i)
-                        .removeAttr('id')
-                        .removeAttr('name')
-                        .removeAttr('required')
-                        .prop('readonly', true)
-                    ;
-                }
-                $('.ui.confirmar.modal .content').html('').append($div);
-                $('.ui.confirmar.modal')
-                    .modal('show')
-                ;
-            }
-            else {
-                $('form').addClass('error');
-            }
-        }
-    </script>    
-}
-<h2>@ViewBag.Title <div class="ui right floated button" onclick="$('.ui.informacoes.modal').modal('show')">Informações</div></h2>
+<h2>@ViewBag.Title 
+    <div class="ui right floated informacoes button">
+        Informações
+    </div>
+</h2>
 
 <div class="ui confirmar modal">
     <div class="header">
@@ -201,5 +107,9 @@
         </select>
     </div>
     <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Historico/Avaliacao/Academica' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
-    <div class="ui button" onclick="Confirmar()">Avançar</div>
+    <button class="ui confirmar button" tabindex="0">Avançar</button>
 </form>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/academica")
+}

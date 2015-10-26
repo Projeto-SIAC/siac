@@ -300,7 +300,7 @@ namespace SIAC.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (acad != null)
+                if (acad != null && acad.Avaliacao.AvalPessoaResultado.Count == 0)
                 {
                     string strMatr = Helpers.Sessao.UsuarioMatricula;
                     Professor prof = Professor.ListarPorMatricula(strMatr);

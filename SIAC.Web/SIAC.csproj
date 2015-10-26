@@ -172,6 +172,10 @@
     <Content Include="Resources\images\layout\background.jpg" />
     <Content Include="Resources\images\layout\logo-black.png" />
     <Content Include="Resources\images\layout\logo.png" />
+    <Content Include="Scripts\modules\siac.academica.js" />
+    <Content Include="Scripts\modules\siac.academica.min.js">
+      <DependentUpon>siac.academica.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\modules\siac.autoavaliacao.js" />
     <Content Include="Scripts\modules\siac.autoavaliacao.min.js">
       <DependentUpon>siac.autoavaliacao.js</DependentUpon>

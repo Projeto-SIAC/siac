@@ -7,7 +7,7 @@
     List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
 }
 
-<h2>
+<h2 data-avaliacao="@Model.Avaliacao.CodAvaliacao" data-usuario="@SIAC.Helpers.Sessao.UsuarioMatricula">
     @ViewBag.Title
     <div class="ui trigger icon right floated chat button"><i class="icon comments outline"></i></div>
     <div class="ui chat popup wide" data-position="top right">
@@ -23,7 +23,7 @@
             </div>
         </div>
     </div>
-    <div class="ui right floated button" onclick="$('.ui.informacoes.modal').modal('show')">Informações</div>
+    <div class="ui right floated informacoes button">Informações</div>
 </h2>
 
 <div class="ui continuar small modal">
@@ -112,17 +112,17 @@
         Ínicio
         <div id="lblHoraInicio" class="detail">@DateTime.Now.ToString("HH'h'mm'min'")</div>
     </div>
-    <div class="ui label">
+    <div class="ui label" data-termino="@Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToString("yyyy-MM-dd hh:mm")">
         Término
-        <div id="lblHoraTermino" class="detail">@Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToString("HH'h'mm'min'")</div>
+        <div id="lblHoraTermino" class="detail"></div>
     </div>
     <div class="ui label">
         Agora
-        <div id="lblHoraAgora" class="detail">13h30min</div>
+        <div id="lblHoraAgora" class="detail">00h00min</div>
     </div>
     <div class="ui label">
         Restante
-        <div id="lblHoraRestante" class="detail">00h47min</div>
+        <div id="lblHoraRestante" class="detail">00h00min</div>
     </div>
 </div>
 
@@ -189,7 +189,7 @@
                                         switch (anexo.CodTipoAnexo)
                                         {
                                             case 1:
-                                                <a onclick="expandirImagem(this)" class="ui card">
+                                                <a class="ui anexo imagem card">
                                                     <div class="image">
                                                         <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo, 0, anexo.Anexo.Length)" />
                                                     </div>
@@ -226,440 +226,13 @@
     <div class="ui popup">
         <div class="header">Desistir</div>
         <div class="content">Tem certeza que deseja desistir da avaliação? <b>Essa ação não poderá ser desfeita</b>.</div>
-        <div class="content"><div class="ui right floated small button" onclick="desistir()">Confirmar</div></div>
+        <div class="content"><div class="ui right floated small desistir button">Confirmar</div></div>
     </div>
     <div class="ui finalizar button">Finalizar</div>
 </form>
 
 @section Scripts{
+@Scripts.Render("~/bundles/js/academica")
     @Scripts.Render("~/bundles/signalR")
     <script src="~/signalr/hubs"></script>
-    <script>
-        $('a[href]').on('click', function () {
-                $('.ui.confirmar.modal').modal('show'); $('.ui.confirmar.modal #txtRef').val($(this).attr('href')); return false;
-            }
-        );
-
-        $('.ui.checkbox')
-            .checkbox()
-        ;
-
-        $('.ui.informacoes.modal')
-            .modal()
-        ;
-
-        $('.ui.confirmar.modal')
-            .modal({
-                onApprove: function () {                    
-                    desistir($('.ui.confirmar.modal #txtRef').val());
-                },
-                onDeny: function () { $('.ui.segment.loading').removeClass('loading'); }
-            })
-        ;
-
-        $('.ui.anexo.modal')
-            .modal()
-        ;
-
-        $('.ui.accordion')
-            .accordion({ exclusive: false, animateChildren: false })
-        ;
-
-        $('.trigger.button')
-            .popup({
-                inline: true,
-                on: 'click'
-            })
-        ;
-
-        (function () {
-            setInterval(function () {
-                $.ajax({
-                    type: 'GET',
-                    url: '/Acesso/Conectado'
-                });
-            }, 1000 * 60 * 15);
-        })();
-
-        function expandirImagem(card) {
-            card = $(card);
-            src = card.find('img').attr('src');
-            legenda = card.find('.header').text();
-            fonte = card.find('.description').text();
-            modal = $('.ui.anexo.modal');
-
-            modal.find('.header').text(legenda);
-            modal.find('img.image').attr('src', src);
-            modal.find('.description').html(fonte);
-
-            modal.modal('show');
-        }
-        var interval;
-
-        function Relogio() {
-            interval = setInterval(function () {
-                date = new Date();
-                $('#lblHoraAgora').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
-                Temporizador('@(Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToString("yyyy-MM-dd HH:mm:ss"))');
-            }, 1000);
-        }
-
-        function minutesToTimeString(minutes) {
-            if (minutes > 59) {
-                var strHour = Math.floor(minutes / 60);
-                var strMinutes = (minutes % 60);
-                return ('0' + strHour).slice(-2) + 'h' + ('0' + strMinutes).slice(-2) + 'min';
-            }
-            else {
-                return '00h' + ('0' + minutes).slice(-2) + 'min';
-            }
-        }
-
-        function Temporizador(termino) {
-            var timeTermino = Date.parse(termino);
-            var dtTermino = new Date();
-            dtTermino.setTime(timeTermino);
-            var offset = dtTermino.getTimezoneOffset() * 60 * 1000;
-            var timeRestante = (dtTermino.getTime() + offset) - (new Date().getTime() + offset);
-
-            if (timeRestante > 0) {
-                var date = new Date();
-                date.setTime(timeRestante);
-                var offsetDate = date.getTimezoneOffset() * 60 * 1000;
-                date.setTime(date.getTime()+offsetDate);
-                $('#lblHoraRestante')
-                    .text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
-                if (timeRestante < 60000 && !$('#lblHoraRestante').parent().hasClass('red')) {
-                    $('#lblHoraRestante').parent().addClass('red');
-                }
-            }
-            else {
-                clearInterval(interval);
-                alert('O tempo de aplicação acabou, sua prova será enviada automaticamente.');
-                $('.ui.global.loader').parent().addClass('active');
-                Finalizar();
-            }
-        }
-
-        Relogio();
-        $('#lblHoraRestante').text(minutesToTimeString(@((Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value) - DateTime.Now).TotalMinutes)));
-
-        $(function() { 
-            window.onbeforeunload = function () {
-                return 'Você está realizando uma avaliação.';
-            };
-        });
-
-        $('.ui.gabarito.modal')
-            .modal({
-                onApprove: function () {
-                    $.ajax({
-                        type: 'GET',
-                        url: "/Acesso/Conectado",
-                        success: function () {
-                            Finalizar();
-                        },
-                        error: function () {
-                            siac.mensagem('Conecte-se à internet antes de confirmar.');
-                        }
-                    });
-                    return false;
-                }
-            })
-        ;
-
-        function Finalizar() { 
-            window.onbeforeunload = function () {
-                $('.ui.global.loader').parent().addClass('active');
-            };
-            $('form').submit();
-        };
-
-        function Verificar() {
-            $Objects = $('textarea[name^="txtResposta"], input[name^="rdoResposta"]');
-            var retorno = true;
-            for (var i = 0, length = $Objects.length; i < length; i++) {
-                var _this = $Objects.eq(i);
-                $label = _this.parents('.content').prev().find('.ui.label');
-                if (_this.attr('name').indexOf('rdo') > -1) {
-                    if ($('input[name="' + _this.attr('name') + '"]:checked').length === 0) {
-                        $label.removeAttr('style').addClass('red').html('Não respondida').transition('tada');
-                        retorno = false;
-                    }
-                }
-                else if (!_this.val()) {
-                    $label.removeAttr('style').addClass('red').html('Não respondida').transition('tada');
-                    retorno = false;
-                }
-            }
-            return retorno;
-        }
-
-        function Confirmar() {
-            $modal = $('.ui.gabarito.modal');
-
-            $accordion = $('form .ui.accordion').clone();
-
-            $accordion.removeAttr('style');
-
-            $modal.find('.content').html($('<div class="ui form"></div>').append($accordion));
-
-            $modalAccordion = $modal.find('.ui.accordion');
-
-            $modalAccordion.accordion({
-                onChange: function () {
-                    $('.ui.gabarito.modal').modal('refresh');
-                },
-                animateChildren: false
-            });
-
-            $lstInput = $modalAccordion.find(':input,a');
-
-            for (var i = 0, length = $lstInput.length; i < length; i++) {
-                $lstInput.eq(i)
-                    .attr({
-                        'readonly': 'readonly'
-                    })
-                    .removeAttr('href')
-                    .removeAttr('onchange')
-                    .removeAttr('onclick')
-                    .off()
-                ;
-            }
-
-            $modal.modal('show');
-        }
-
-        $('.message .close')
-          .on('click', function () {
-              $(this)
-                .closest('.message')
-                .transition('fade')
-              ;
-          })
-        ;
-        
-        function desistir(url) {
-            $('.ui.global.loader').parent().addClass('active');
-            $.ajax({
-                url: '/Dashboard/Avaliacao/Academica/Desistir/@Model.Avaliacao.CodAvaliacao',
-                type: 'POST',
-                success: function () {
-                    window.onbeforeunload = function () {
-                        $('.ui.global.loader').parent().addClass('active');
-                    };
-                    if (!url) {
-                        url = '/Dashboard';
-                    }
-                    window.location.href = url;
-                },
-                error: function () {
-                    $('.ui.global.loader').parent().removeClass('active');
-                    siac.mensagem('Ocorreu um erro na tentativa de desistência');
-                }
-            });
-        }
-
-        // SignalR
-        var acadHub = $.connection.academicaHub;
-
-        function ConectarHub(avalAcad, usrMatr) {
-            $.connection.hub.start().done(function () {
-                acadHub.server.alunoConectou(avalAcad, usrMatr);
-
-                Finalizar = function () {
-                    window.onbeforeunload = function () {
-                        $('.ui.global.loader').parent().addClass('active');
-                    };
-                    acadHub.server.alunoFinalizou(avalAcad, usrMatr);
-                    $('form').submit();
-
-                };
-
-                $('.ui.continuar.modal')
-                    .modal({
-                        onApprove: function () {
-                            acadHub.server.alunoVerificando(avalAcad, usrMatr);
-                            Confirmar();
-                        },
-                        onDeny: function () {
-                            $('form').addClass('error');
-                            $('form .message').removeClass('hidden');
-                            $('html, body').animate({
-                                scrollTop: $(".title .label.red").offset().top
-                            }, 1000);
-                        }
-                    })
-                ;
-
-                $('.finalizar.button').click(function () {
-                    if (Verificar()) {
-                        acadHub.server.alunoVerificando(avalAcad, usrMatr);
-                        Confirmar();
-                    }
-                    else {
-                        $('.continuar.modal').modal('show');                        
-                    }
-                });
-
-                enviarMsg = function enviarMsg(_this) {
-                    $msg = $('#txtChatMensagem');
-                    $msg.val($msg.val().trim())
-                    if ($msg.val()) {
-                        var mensagem = $msg.val();
-                        mensagem = siac.Utilitario.quebrarLinhaEm(mensagem, 30);
-                        acadHub.server.chatAlunoEnvia(avalAcad, usrMatr, $msg.val());
-                        $('.chat.popup .content .comments').append('\
-                            <div class="comment" style="float:right;clear:both;">\
-                                <div class="content">\
-                                <div class="ui right pointing label">\
-                                    '+ mensagem + '\
-                                </div>\
-                            </div>\
-                        </div>\
-                        ');
-                        $msg.val('');
-                        var $comments = $('.chat.popup .content .comments');
-                        $($comments).animate({
-                            scrollTop: $comments.children().last().offset().top
-                        }, 0);
-                    }
-                };
-                $('.enviar.icon').on('click', function () { enviarMsg(this) });
-                $('#txtChatMensagem').keypress(function (e) {
-                    if (e.which == 13) {
-                        enviarMsg(this);
-                        return false;
-                    }
-                });
-
-                $('textarea[name^="txtResposta"], input[name^="rdoResposta"]').change(function () {
-                    $label = $(this).parents('.content').prev().find('.ui.label');
-                    if ($(this).val()) {
-                        $label.removeClass('red');
-                        $label.removeAttr('style');
-                        $label.html('Respondida');
-                        var questao;
-                        if ($(this).attr('name').indexOf('rdo') > -1) {
-                            questao = $(this).attr('name').split('rdoResposta')[1];
-                            $label.find('.detail').remove();
-                            $label.append($('<div class="detail"></div>').text($('input[name="' + $(this).attr('name') + '"]:checked').next().find('b').text()));
-                        }
-                        else {
-                            questao = $(this).attr('name').split('txtResposta')[1];
-                        }
-                        acadHub.server.responderQuestao(avalAcad, usrMatr, questao, true);
-                    }
-                    else {
-                        var questao;
-                        if ($(this).attr('name').indexOf('rdo') > -1) {
-                            questao = $(this).attr('name').split('rdoResposta')[1];
-                        }
-                        else {
-                            questao = $(this).attr('name').split('txtResposta')[1];
-                        }
-                        acadHub.server.responderQuestao(avalAcad, usrMatr, questao, false);
-                        $label.attr('style', 'display:none');
-                    }                    
-                });
-
-                $(window).on("blur focus", function (e) {
-                    var prevType = $(this).data("prevType");
-
-                    if (prevType != e.type) {
-                        switch (e.type) {
-                            case "blur":
-                                acadHub.server.focoAvaliacao(avalAcad, usrMatr, false);
-                                break;
-                            case "focus":
-                                acadHub.server.focoAvaliacao(avalAcad, usrMatr, true);
-                                break;
-                        }
-                    }
-
-                    $(this).data("prevType", e.type);
-                })
-            });
-
-            acadHub.client.alertar = function (mensagem) {
-                var timeAntes = new Date();
-                alert(mensagem);
-                var timeDepois = new Date();
-                if ((timeDepois-timeAntes)<350) {
-                    siac.mensagem(mensagem, 'O professor disse...');
-                }
-            }
-
-            acadHub.client.enviarAval = function (codAvaliacao) {
-                html2canvas(document.body, {
-                    onrendered: function (canvas) {
-                        var c = $(canvas);
-                        c.attr('id', 'mycanvas').hide();
-                        $('body').append(c);
-                        var canvas = document.getElementById("mycanvas");
-                        data = canvas.toDataURL("image/png");
-                        $.ajax({
-                            type: 'POST',
-                            url: '@Url.RouteUrl("AvalAcadPrint")',
-                            data: {
-                                codAvaliacao: avalAcad,
-                                imageData: data
-                            },
-                            success: function () {
-                                acadHub.server.avalEnviada(codAvaliacao, usrMatr);
-                            },
-                            error: function () {
-                                // adicionar erro ao Feed do professor
-                            }
-                        });
-
-                        c.remove();
-                    }
-                });
-            };
-
-            var ChatQteMensagem = 0;
-            acadHub.client.chatAlunoRecebe = function (mensagem) {
-                if (mensagem) {
-                    mensagem = siac.Utilitario.quebrarLinhaEm(mensagem, 30);
-                    $('.chat.popup .comments').append('\
-                            <div class="comment" style="float:left;clear:both;">\
-                                <div class="content">\
-                                <div class="ui left pointing label">\
-                                    '+ mensagem + '\
-                                </div>\
-                            </div>\
-                        </div>\
-                        ');
-                    var $comments = $('.chat.popup .comments');
-                    $($comments).animate({
-                        scrollTop: $comments.children().last().offset().top
-                    }, 0);
-
-                    if (!$('.chat.popup').hasClass('visible')) {
-                        $btnChat = $('.icon.chat.button');
-                        $lblQteMsg = $('#lblQteMsg');
-                        $lblQteMsg.remove();
-                        //$btnChat.append($('<div></div>').attr('id', 'lblQteMsg').addClass('floating ui small blue label'));
-                        ChatQteMensagem++;
-                        $btnChat.addClass('blue').html('<i class="icon comments outline"></i> ' + ChatQteMensagem);
-                        //$('#lblQteMsg').html(ChatQteMensagem);
-                        document.title = "Você recebeu uma mensagem";
-                        if (ChatQteMensagem > 1) {
-                            document.title = "Você recebeu "+ChatQteMensagem+" mensagens";
-                        }
-                    }
-                }
-            };
-            $('.icon.chat.button').on('click', function () {
-                ChatQteMensagem = 0;
-                $('#lblQteMsg').remove();
-                $(this).removeClass('blue').html('<i class="icon comments outline"></i>');
-                document.title = 'Realizar '+'@Model.Avaliacao.CodAvaliacao';
-            });
-
-        }
-        
-        ConectarHub('@Model.Avaliacao.CodAvaliacao', '@SIAC.Helpers.Sessao.UsuarioMatricula');
-    </script>
 }

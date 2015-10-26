@@ -31,6 +31,10 @@ namespace SIAC
                 "~/Scripts/modules/siac.autoavaliacao.min.js"
             ));
 
+            bundles.Add(new ScriptBundle("~/bundles/js/academica").Include(
+                "~/Scripts/modules/siac.academica.min.js"
+            ));
+
             bundles.Add(new ScriptBundle("~/bundles/signalR").Include(
                 "~/Scripts/plugins/jquery.signalR-2.2.0.min.js"
             ));

@@ -9,13 +9,6 @@
     AvalPessoaResultado avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.First(r => r.CodPessoaFisica == codPessoaFisica);
 }
 
-@section Scripts {
-    <script>
-        $('.ui.accordion').accordion({ animateChildren: false });
-        $('.label, div').popup();
-    </script>
-}
-
 <h2>@ViewBag.Title</h2>
 <div class="ui basic segment">
     <div class="ui dividing header" data-content="Note que os cálculos levem em conta somente as questões objetivas.">
@@ -165,3 +158,7 @@ else
 }
 <a href="/Historico/Avaliacao/Academica" class="ui button">Histórico</a>
 <a href="/Historico/Avaliacao/Academica/Detalhe/@Model.Avaliacao.CodAvaliacao" class="ui button">Detalhe</a>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/academica")
+}

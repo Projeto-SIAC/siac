@@ -4,87 +4,11 @@
     ViewBag.Title = "Configurar " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section Scripts{
-    <script>
-        $('.ui.informacoes.modal').modal();
-        $('div').popup();
-        $('.cancelar.button').popup({ on: 'click' });
-        $('.right.floated.button').popup({ on: 'click' });
-        $('.ui.accordion').accordion({ animateChildren: false });
 
-        function obterNovaQuestao(codQuestao, indice, codTipoQuestao) {
-            var card = $('#CardQuestao' + indice);
-            console.log("inicio");
-            card.addClass('ui form loading');
-            $('#CardQuestao' + indice + ' div').popup('hide');
-            $.ajax({
-                type: "POST",
-                url: '@Url.RouteUrl("AvalAcadTrocarQuestao")',
-                data: {
-                    codigoAvaliacao: '@Model.Avaliacao.CodAvaliacao',
-                    tipo: codTipoQuestao,
-                    indice: indice,
-                    codQuestao: codQuestao
-                },
-                success: function (data) {
-                    if (data) {
-                        card.html(data);
-                        $('.ui.accordion').accordion({ animateChildren: false });
-                        $('.right.floated.button').popup({ on: 'click' });
-                        $('.ui.button.disabled').removeClass('disabled');
-                        $('#CardQuestao' + indice+' .ui.desfazer.button').show();
-                    }
-                    card.removeClass('ui form loading');
-                    console.log("fim");
-                },
-                error: function () {
-                    card.removeClass('ui form loading');
-                    siac.mensagem('Ocorreu um erro não esperado.');
-                }
-            });
-        }
-
-        function desfazer(codQuestao, indice, codTipoQuestao) {
-            var card = $('#CardQuestao' + indice);
-            card.addClass('ui form loading');
-            $('#CardQuestao' + indice + ' div').popup('hide');
-            $.ajax({
-                type: 'POST',
-                url: '@Url.RouteUrl("DesfazerAvalAcadTrocaQuestao")',
-                data: {
-                    codigoAvaliacao: '@Model.Avaliacao.CodAvaliacao',
-                    tipo: codTipoQuestao,
-                    indice: indice,
-                    codQuestao: codQuestao
-                },
-                success: function (data) {
-                    if (data) {
-                        card.html(data);
-                        $('.ui.accordion').accordion({ animateChildren: false });
-                        $('.right.floated.button').popup({ on: 'click' });
-                        $('#CardQuestao' + indice + ' .ui.desfazer.button').hide();
-                    }
-                    card.removeClass('ui form loading');
-                },
-                error: function () {
-                    card.removeClass('ui form loading');
-                    siac.mensagem('Ocorreu um erro não esperado.');
-                }
-            });
-        }
-
-        function salvar()
-        {
-            $('.button.salvar').addClass('loading');
-            $('form').submit();
-        }
-    </script>
-    }
-
-<h2>
+<h2 data-avaliacao="@Model.Avaliacao.CodAvaliacao">
     @ViewBag.Title 
-    <div class="ui right floated button" onclick="$('.ui.informacoes.modal').modal('show')">Informações</div>
-    <a onclick="window.open('/Historico/Avaliacao/Academica/Imprimir/@Model.Avaliacao.CodAvaliacao', '_blank');" class="ui right floated button">Visualizar impressão</a>
+    <div class="ui right floated informacoes button">Informações</div>
+    <a class="ui right floated imprimir button">Visualizar impressão</a>
 </h2>
 
 <div class="ui informacoes modal">
@@ -130,20 +54,22 @@
 
 <div class="ui basic segment">
     <h3 class="ui dividing header">Questões</h3>
-    <div class="ui one cards" style="max-height: 25em; overflow-y: auto">
+    <div class="ui one cards" @*style="max-height: 25em; overflow-y: auto"*@>
         @{ 
-            //int contador = 0;
             for (int i = 0; i < Model.Avaliacao.Questao.Count; i++)
             {                
                 <div id="CardQuestao@(i)" class="card">
                     @Html.Partial("_Questao", Model.Avaliacao.Questao[i], new ViewDataDictionary { { "Index", i } })
                 </div>
-            //contador++;
             }
         }
     </div>
 </div>
 <form method="post" action="@(Url.RouteUrl("SalvarAvalAcad"))/@Model.Avaliacao.CodAvaliacao">
     <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Historico/Avaliacao/Academica/Detalhe/@Model.Avaliacao.CodAvaliacao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
-    <div class="ui button disabled salvar" onclick="salvar()">Salvar</div>
+    <div class="ui button disabled salvar">Salvar</div>
 </form>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/academica")
+}

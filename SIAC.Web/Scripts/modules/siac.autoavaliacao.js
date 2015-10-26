@@ -139,7 +139,9 @@ siac.Autoavaliacao.Detalhe = (function () {
     var _codAvaliacao;
 
     function iniciar() {
-        _codAvaliacao = $('[data-avaliacao]').attr('data-avaliacao');
+        $elemento = $('[data-avaliacao]');
+        _codAvaliacao = $elemento.attr('data-avaliacao');
+        $elemento.removeAttr('data-avaliacao');
 
         $('.ui.accordion').accordion({
             animateChildren: false
@@ -195,7 +197,9 @@ siac.Autoavaliacao.Realizar = (function () {
     var _controleRestante;
 
     function iniciar() {
-        _codAvaliacao = $('[data-avaliacao]').attr('data-avaliacao');
+        $elemento = $('[data-avaliacao]');
+        _codAvaliacao = $elemento.attr('data-avaliacao');
+        $elemento.removeAttr('data-avaliacao');
 
         (function () {
             setInterval(function () {
@@ -279,7 +283,6 @@ siac.Autoavaliacao.Realizar = (function () {
 
         $('.ui.accordion')
             .accordion({
-                exclusive: false,
                 animateChildren: false
             })
         ;
