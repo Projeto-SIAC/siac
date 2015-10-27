@@ -1,7 +1,7 @@
 ﻿siac.Questao = siac.Questao || {};
 
 siac.Questao.Index = (function () {
-    var controleTimeout;
+    var _controleTimeout, _controlePartial, _controleQte = 10;
 
     var pagina = 1;
     var ordenar = "data_desc";
@@ -16,11 +16,12 @@ siac.Questao.Index = (function () {
 
         $('.pesquisa input').keyup(function () {
             var _this = this;
-            if (controleTimeout) {
-                clearTimeout(controleTimeout);
+            if (_controleTimeout) {
+                clearTimeout(_controleTimeout);
             }
-            controleTimeout = setTimeout(function () {
+            _controleTimeout = setTimeout(function () {
                 pesquisa = _this.value;
+                pagina = 1;
                 listar();
             }, 500);
         });
@@ -86,8 +87,10 @@ siac.Questao.Index = (function () {
 
         $(window).scroll(function () {
             if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-                pagina++;
-                listar();
+                if ($('.cards .card').length == (_controleQte * pagina)) {
+                    pagina++;
+                    listar();
+                }
             }
         });
 
@@ -110,11 +113,14 @@ siac.Questao.Index = (function () {
             },
             method: 'POST',
             success: function (partial) {
-                if (pagina == 1) {
-                    $cards.html(partial);
-                }
-                else {
-                    $cards.append(partial);
+                if (partial != _controlePartial) {
+                    if (pagina == 1) {
+                        $cards.html(partial);
+                    }
+                    else {
+                        $cards.append(partial);
+                    }
+                    _controlePartial = partial;
                 }
             },
             complete: function () {

@@ -1369,7 +1369,7 @@ siac.Academica.Acompanhar = (function () {
 })();
 
 siac.Academica.Index = (function () {
-    var _controleTimeout;
+    var _controleTimeout, _controlePartial, _controleQte = 12;
 
     var pagina = 1;
     var ordenar = "data_desc";
@@ -1380,8 +1380,10 @@ siac.Academica.Index = (function () {
     function iniciar() {
         $(window).scroll(function () {
             if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-                pagina++;
-                listar();
+                if ($('.cards .card').length == (_controleQte*pagina)) {
+                    pagina++;
+                    listar();
+                }
             }
         });
         $('.ui.dropdown').dropdown();
@@ -1393,6 +1395,7 @@ siac.Academica.Index = (function () {
             }
             _controleTimeout = setTimeout(function () {
                 pesquisa = _this.value;
+                pagina = 1;
                 listar();
             }, 500);
         });
@@ -1455,14 +1458,18 @@ siac.Academica.Index = (function () {
             },
             method: 'POST',
             success: function (partial) {
-                if (pagina == 1) {
-                    $cards.html(partial);
-                }
-                else {
-                    $cards.append(partial);
+                if (partial != _controlePartial) {
+                    if (pagina == 1) {
+                        $cards.html(partial);
+                    }
+                    else {
+                        $cards.append(partial);
+                    }
+                    _controlePartial = partial;
                 }
             },
             complete: function () {
+                console.log(pesquisa);
                 $cards.parent().removeClass('loading');
             }
         });

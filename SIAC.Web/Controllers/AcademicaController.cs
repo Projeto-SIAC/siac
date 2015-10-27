@@ -31,7 +31,7 @@ namespace SIAC.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina)
         {
-            var qte = 10;
+            var qte = 12;
             var academicas = Academicas;
             pagina = pagina ?? 1;
             if (!String.IsNullOrWhiteSpace(pesquisa))
@@ -84,6 +84,7 @@ namespace SIAC.Controllers
                     academicas = academicas.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
                     break;
             }
+            
             return PartialView("_ListaAcademica", academicas.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
         }
 
