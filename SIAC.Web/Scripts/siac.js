@@ -54,6 +54,9 @@
         else if (pathname == '/dashboard/autoavaliacao/gerar') {
             siac.Autoavaliacao.Gerar.iniciar();
         }
+        else if (pathname == '/historico/avaliacao/academica') {
+            siac.Academica.Index.iniciar();
+        }
         else if (pathname == '/dashboard/avaliacao/academica/gerar') {
             siac.Academica.Gerar.iniciar();
         }

@@ -1,0 +1,48 @@
+﻿@model List<SIAC.Models.AvalAcademica>
+
+@foreach (var acad in Model)
+{
+    <div class="card">
+        <div class="content">
+            <a href="/Historico/Avaliacao/Academica/Detalhe/@acad.Avaliacao.CodAvaliacao" class="header">
+                @acad.Avaliacao.CodAvaliacao
+            </a>
+            <div class="meta">
+                <span title="@acad.Avaliacao.DtCadastro.ToBrazilianString()">@acad.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
+            </div>
+            <div class="description">
+                @if (acad.NumTurma.HasValue)
+                {
+                <p><b>Turma</b>: @acad.Turma.Curso.Descricao (@acad.Turma.CodTurma)</p>
+                }
+                <p><b>Quantidade de Questões</b>: @acad.Avaliacao.QteQuestoes()</p>
+            </div>
+        </div>
+        <div class="extra content">
+            <div class="ui tag label">
+                @acad.Disciplina.Descricao
+            </div>
+        </div>
+        @if (acad.Avaliacao.FlagRealizada)
+        {
+            <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
+            <a href="/Historico/Avaliacao/Academica/Detalhe/@acad.Avaliacao.CodAvaliacao" class="ui button">Resultados</a>
+        }
+        else
+        {            
+            if (acad.Avaliacao.FlagArquivo)
+            {
+                <span class="ui attached top right label"><i class="archive icon"></i>Arquivo</span>
+            }
+            else if (acad.Avaliacao.FlagAgendada)
+            {
+                <span class="ui attached top right label"><i class="clock icon"></i>Agendada</span>
+                <a href="/Dashboard/Avaliacao/Academica/Configurar/@acad.Avaliacao.CodAvaliacao" class="ui button">Configurar</a>
+            }
+            else
+            {
+                <a href="/Dashboard/Avaliacao/Academica/Agendar/@acad.Avaliacao.CodAvaliacao" class="ui button">Agendar</a>
+            }
+        }
+    </div>
+}

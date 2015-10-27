@@ -10,6 +10,23 @@ namespace SIAC.Controllers
     [Filters.CategoriaFilter(Categorias = new[] { 1, 2 })]
     public class AcademicaController : Controller
     {      
+        public List<AvalAcademica> Academicas
+        {
+            get
+            {
+                if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
+                {
+                    int codProfessor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodProfessor;
+                    return AvalAcademica.ListarPorProfessor(codProfessor);
+                }
+                else
+                {
+                    int codAluno = Aluno.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodAluno;
+                    return AvalAcademica.ListarPorAluno(codAluno);
+                }
+            }
+        }
+
         //GET: Historico/Avaliacao/Academica/Minhas <- Ajax 
         public ActionResult Minhas()
         {
@@ -56,6 +73,66 @@ namespace SIAC.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        // POST: Academica/Listar
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina)
+        {
+            var qte = 10;
+            var academicas = Academicas;
+            pagina = pagina ?? 1;
+            if (!String.IsNullOrWhiteSpace(pesquisa))
+            {
+                academicas = academicas.Where(a => a.Avaliacao.CodAvaliacao.ToLower().Contains(pesquisa.ToLower())).ToList();
+            }
+
+            if (!String.IsNullOrWhiteSpace(disciplina))
+            {
+                academicas = academicas.Where(a => a.CodDisciplina == int.Parse(disciplina)).ToList();
+            }
+
+            if (categorias != null)
+            {
+                if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    academicas = academicas.Where(a => a.Avaliacao.FlagAgendada).ToList();
+                }
+                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    academicas = academicas.Where(a => a.Avaliacao.FlagArquivo).ToList();
+                }
+                else if (!categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    academicas = academicas.Where(a => a.Avaliacao.FlagRealizada).ToList();
+                }
+                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    academicas = academicas.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagArquivo).ToList();
+                }
+                else if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    academicas = academicas.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagAgendada).ToList();
+                }
+                else if (categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    academicas = academicas.Where(a => a.Avaliacao.FlagArquivo || a.Avaliacao.FlagAgendada).ToList();
+                }
+            }
+
+            switch (ordenar)
+            {
+                case "data_desc":
+                    academicas = academicas.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+                case "data":
+                    academicas = academicas.OrderBy(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+                default:
+                    academicas = academicas.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+            }
+            return PartialView("_ListaAcademica", academicas.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
+        }
+
         // GET: Historico/Avaliacao/Academica
         public ActionResult Index()
         {
@@ -63,20 +140,21 @@ namespace SIAC.Controllers
             {
                 return Redirect("~/Historico/Academica");
             }
-            if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
-            {
-                int codProfessor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodProfessor;
-                List<AvalAcademica> avaliacoes = AvalAcademica.ListarPorProfessor(codProfessor);
-                TempData["lstAvalAcademica"] = avaliacoes;
-                return View(avaliacoes.Take(9).ToList());
-            }
-            else if (Helpers.Sessao.UsuarioCategoriaCodigo == 1)
-            {
-                int codAluno = Aluno.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodAluno;
-                List<AvalAcademica> avaliacoes = AvalAcademica.ListarPorAluno(codAluno);
-                TempData["lstAvalAcademica"] = avaliacoes;
-                return View(avaliacoes.Take(9).ToList());
-            }
+            //if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
+            //{
+            //    int codProfessor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodProfessor;
+            //    List<AvalAcademica> avaliacoes = AvalAcademica.ListarPorProfessor(codProfessor);
+            //    TempData["lstAvalAcademica"] = avaliacoes;
+            //    return View(avaliacoes.Take(9).ToList());
+            //}
+            //else if (Helpers.Sessao.UsuarioCategoriaCodigo == 1)
+            //{
+            //    int codAluno = Aluno.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodAluno;
+            //    List<AvalAcademica> avaliacoes = AvalAcademica.ListarPorAluno(codAluno);
+            //    TempData["lstAvalAcademica"] = avaliacoes;
+            //    return View(avaliacoes.Take(9).ToList());
+            //}
+            ViewBag.Disciplinas = Academicas.Select(a=>a.Disciplina).Distinct().ToList();
             return View();
         }
 

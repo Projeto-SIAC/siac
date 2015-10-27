@@ -35,7 +35,7 @@ namespace SIAC.Controllers
             return View();
         }
 
-        // POST: Questao/Listar
+        // POST: Autoavaliacao/Listar
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina, string dificuldade)
         {
