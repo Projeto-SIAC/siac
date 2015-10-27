@@ -224,33 +224,33 @@
     <div class="ui cancel button">Fechar</div>
     @if (CodCategoria == 2)
     {
-    <div onclick="window.open('/Historico/Avaliacao/Academica/Imprimir/@Model.Avaliacao.CodAvaliacao', '_blank');" class="ui button">Imprimir</div>
+    <div onclick="window.open('@Url.Action("Imprimir", new { codigo = Model.Avaliacao.CodAvaliacao })', '_blank');" class="ui button">Imprimir</div>
     <div class="ui arquivar button">Arquivar</div>        
-    <div onclick="window.location.href='/Dashboard/Avaliacao/Academica/Agendar/@Model.Avaliacao.CodAvaliacao'" class="ui reagendar button" @(!Model.Avaliacao.FlagLiberada || !FlagAgora ? "" : "style=\"display:none\"")>Reagendar</div>
+    <div onclick="window.location.href='@Url.Action("Agendar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui reagendar button" @(!Model.Avaliacao.FlagLiberada || !FlagAgora ? "" : "style=\"display:none\"")>Reagendar</div>
         
         if(!FlagVencida)
         {
             if (!Model.Avaliacao.FlagLiberada)
             {
-                <a href="/Dashboard/Avaliacao/Academica/Configurar/@Model.Avaliacao.CodAvaliacao" class="ui configurar button"@(!FlagAgora ? "" : "style=\"display:none\"")>Configurar</a>
+                <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui configurar button"@(!FlagAgora ? "" : "style=\"display:none\"")>Configurar</a>
                 <div class="ui toggle liberar button">Liberar</div>
             } 
             else
             {
                 <div class="ui toggle active liberar button">Liberada</div>
             }
-            <div onclick="window.location.href= '/Dashboard/Avaliacao/Academica/Acompanhar/@Model.Avaliacao.CodAvaliacao'" class="ui @(!FlagAgora || (FlagAgora && !Model.Avaliacao.FlagLiberada) ? "disabled" : "") acompanhar button">Acompanhar</div>
+            <div onclick="window.location.href= '@Url.Action("Acompanhar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui @(!FlagAgora || (FlagAgora && !Model.Avaliacao.FlagLiberada) ? "disabled" : "") acompanhar button">Acompanhar</div>
         }
     }
     else if (CodCategoria == 1)
     {
         if (FlagAgora)
         {
-            <div onclick="window.location.href='/Dashboard/Avaliacao/Academica/Realizar/@Model.Avaliacao.CodAvaliacao'" class="ui iniciar button">Iniciar</div>
+            <div onclick="window.location.href='@Url.Action("Realizar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui iniciar button">Iniciar</div>
         }
         else if (!FlagVencida)
         {
-            <div onclick="window.location.href ='/Dashboard/Avaliacao/Academica/Realizar/@Model.Avaliacao.CodAvaliacao'" class="ui iniciar disabled button">Iniciar</div>
+            <div onclick="window.location.href ='@Url.Action("Realizar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui iniciar disabled button">Iniciar</div>
         }
     }
 </div>

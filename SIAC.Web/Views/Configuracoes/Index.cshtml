@@ -22,13 +22,13 @@
 
     @* Menu das Abas *@
     <div class="ui top attached tabular menu">
-        <a class="active item" data-tab="tab-gerais">Gerais</a>
-        <a class="item" data-tab="tab-termo">Termo de Responsabilidade</a>
-        <a class="item" data-tab="tab-cadastro">Cadastros</a>
+        <a class="active item" data-tab="gerais">Gerais</a>
+        <a class="item" data-tab="termo">Termo de Responsabilidade</a>
+        <a class="item" data-tab="cadastro">Cadastros</a>
     </div>
 
     @* Tab Geral *@
-    <div class="ui bottom attached active tab segment geral" data-tab="tab-gerais">
+    <div class="ui bottom attached active tab segment geral" data-tab="gerais">
 
         <div class="field required">
             <label>Tempo de Inatividade (em dias)</label>
@@ -62,36 +62,36 @@
         </div>
     </div>
     @* Termo *@
-    <div class="ui bottom attached tab segment termo" data-tab="tab-termo">
+    <div class="ui bottom attached tab segment termo" data-tab="termo">
         <div class="field required">
             <label>Termo de Responsabilidade</label>
-            <textarea rows="20" name="txtTermoResponsabilidade" placeholder="Digite aqui o Termo de Responsabilidade..." required >@Model.TermoResponsabilidade</textarea>
+            <textarea rows="10" name="txtTermoResponsabilidade" placeholder="Digite aqui o Termo de Responsabilidade..." required >@Model.TermoResponsabilidade</textarea>
         </div>
         <div class="field required">
             <label>Nota de Uso</label>
-            <textarea rows="20" name="txtNotaUso" placeholder="Digite aqui a Nota de Uso..." required >@Model.NotaUso</textarea>
+            <textarea rows="10" name="txtNotaUso" placeholder="Digite aqui a Nota de Uso..." required >@Model.NotaUso</textarea>
         </div>
     </div>
 
     @* Cadastros *@
-    <div class="ui bottom attached tab segment cadastro" data-tab="tab-cadastro">
+    <div class="ui bottom attached tab segment cadastro" data-tab="cadastro">
         <div class="ui top attached tabular menu">
-            <a class="active item" data-tab="tab-aluno">Aluno</a> 
-            <a class="item" data-tab="tab-professor">Professor</a>
-            <a class="item" data-tab="tab-colaborador">Colaborador</a>
-            <a class="item" data-tab="tab-campus">Campus</a>
-            <a class="item" data-tab="tab-diretoria">Diretoria</a>
-            <a class="item" data-tab="tab-curso">Curso</a>
-            <a class="item" data-tab="tab-turma">Turma</a>
-            <a class="item" data-tab="tab-disciplina">Disciplina</a>
-            <a class="item" data-tab="tab-tema">Tema</a>
-            <a class="item" data-tab="tab-sala">Sala</a>
-            <a class="item" data-tab="tab-matriz">Matriz</a>
-            <a class="item" data-tab="tab-horario">Horário</a>
+            <a class="active item" data-tab="aluno">Aluno</a> 
+            <a class="item" data-tab="professor">Professor</a>
+            <a class="item" data-tab="colaborador">Colaborador</a>
+            <a class="item" data-tab="campus">Campus</a>
+            <a class="item" data-tab="diretoria">Diretoria</a>
+            <a class="item" data-tab="curso">Curso</a>
+            <a class="item" data-tab="turma">Turma</a>
+            <a class="item" data-tab="disciplina">Disciplina</a>
+            <a class="item" data-tab="tema">Tema</a>
+            <a class="item" data-tab="sala">Sala</a>
+            <a class="item" data-tab="matriz">Matriz</a>
+            <a class="item" data-tab="horario">Horário</a>
         </div>
 
         @* Aluno *@
-        <div class="ui bottom attached active tab segment aluno" data-tab="tab-aluno">
+        <div class="ui bottom attached active tab segment aluno" data-tab="aluno">
             <div class="ui styled fluid accordion">
                 <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
                 <div class="content">
@@ -143,7 +143,7 @@
         </div>
 
         @* Professor *@
-        <div class="ui bottom attached tab segment professor" data-tab="tab-professor">
+        <div class="ui bottom attached tab segment professor" data-tab="professor">
             <div class="ui styled fluid accordion">
                 <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
                 <div class="content">
@@ -200,7 +200,7 @@
         </div>
 
         @* Colaborador *@
-        <div class="ui bottom attached tab segment colaborador" data-tab="tab-colaborador">
+        <div class="ui bottom attached tab segment colaborador" data-tab="colaborador">
             <div class="ui styled fluid accordion">
                 <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
                 <div class="content">
@@ -239,7 +239,7 @@
         </div>
 
         @* Campus *@
-        <div class="ui bottom attached tab segment campus" data-tab="tab-campus">
+        <div class="ui bottom attached tab segment campus" data-tab="campus">
             <div class="ui styled fluid accordion">
                 <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
                 <div class="content">
@@ -306,7 +306,7 @@
         </div>
 
         @* Diretoria *@
-        <div class="ui bottom attached tab segment diretoria" data-tab="tab-diretoria">
+        <div class="ui bottom attached tab segment diretoria" data-tab="diretoria">
             <div class="ui styled fluid accordion">
                 <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
                 <div class="content">
@@ -375,7 +375,7 @@
         </div>
 
         @* Curso *@
-        <div class="ui bottom attached tab segment curso" data-tab="tab-curso">
+        <div class="ui bottom attached tab segment curso" data-tab="curso">
             <div class="ui styled fluid accordion">
                 <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
                 <div class="content">
@@ -444,7 +444,7 @@
         </div>
 
         @* Turma *@
-        <div class="ui bottom attached tab segment turma" data-tab="tab-turma">
+        <div class="ui bottom attached tab segment turma" data-tab="turma">
             <div class="ui styled fluid accordion">
                 <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
                 <div class="content">
@@ -503,7 +503,7 @@
         </div>
 
         @* Disciplina *@
-        <div class="ui bottom attached tab segment disciplina" data-tab="tab-disciplina">
+        <div class="ui bottom attached tab segment disciplina" data-tab="disciplina">
             <div class="ui styled fluid accordion">
                 <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
                 <div class="content">
@@ -556,7 +556,7 @@
         </div>
 
         @* Tema *@
-        <div class="ui bottom attached tab segment tema" data-tab="tab-tema">
+        <div class="ui bottom attached tab segment tema" data-tab="tema">
             <div class="ui styled fluid accordion">
                 <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
                 <div class="content">
@@ -608,7 +608,7 @@
         </div>
 
         @* Sala *@
-        <div class="ui bottom attached tab segment sala" data-tab="tab-sala">
+        <div class="ui bottom attached tab segment sala" data-tab="sala">
             <div class="ui styled fluid accordion">
                 <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
                 <div class="content">
@@ -656,7 +656,7 @@
         </div>
 
         @* Matriz Curricular *@
-        <div class="ui bottom attached tab segment matriz" data-tab="tab-matriz">
+        <div class="ui bottom attached tab segment matriz" data-tab="matriz">
             <div class="ui styled fluid accordion">
                 <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
                 <div class="content">
@@ -742,7 +742,7 @@
         </div>
 
         @* Horario *@
-        <div class="ui bottom attached tab segment horario" data-tab="tab-horario">
+        <div class="ui bottom attached tab segment horario" data-tab="horario">
             <div class="ui styled fluid accordion">
                 <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
                 <div class="content">

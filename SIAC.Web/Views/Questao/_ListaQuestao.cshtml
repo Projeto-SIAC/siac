@@ -2,7 +2,7 @@
 
 @foreach (var questao in Model)
 {
-    <a class="card" href="/Historico/Questao/Detalhe/@questao.CodQuestao">
+    <a class="card" href="@Url.Action("Detalhe", new { codigo = questao.CodQuestao })">
         <div class="content">
             <div class="header">@questao.Enunciado.ToShortString(140)</div>
             <div class="meta"><span title="@questao.DtCadastro.ToBrazilianString()">@questao.DtCadastro.ToElapsedTimeString()</span></div>

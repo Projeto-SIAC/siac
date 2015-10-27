@@ -16,7 +16,8 @@ siac.Autoavaliacao.Index = (function () {
                 pagina++;
                 listar();
             }
-        });
+        });        
+
         $('.ui.dropdown').dropdown();
 
         $('.pesquisa input').keyup(function () {
@@ -105,6 +106,7 @@ siac.Autoavaliacao.Index = (function () {
             },
             complete: function () {
                 $cards.parent().removeClass('loading');
+                adicionarEventoArquivar();
             }
         });
     }
@@ -116,17 +118,23 @@ siac.Autoavaliacao.Index = (function () {
         return false;
     }
 
-    function arquivar(strCodigo) {
-        $.ajax({
-            type: 'POST',
-            data: { codigo: strCodigo },
-            url: "/Dashboard/Autoavaliacao/Arquivar",
-            success: function () {
-                window.location.href = '/Historico/Autoavaliacao';
-            },
-            error: function () {
-                siac.mensagem('Não foi possível arquivar a autoavaliação.')
-            }
+    function adicionarEventoArquivar() {
+        $('.arquivar.button').click(function () {
+            var $this = $(this);
+            var codAvaliacao = $this.parents('[data-avaliacao]').attr('data-avaliacao');
+            $this.addClass('loading');
+            $.ajax({
+                type: 'POST',
+                data: { codigo: codAvaliacao },
+                url: '/Dashboard/Autoavaliacao/Arquivar',
+                success: function () {
+                    window.location.href = '/historico/autoavaliacao/detalhe/' + codAvaliacao;
+                },
+                error: function () {
+                    siac.mensagem('Não foi possível arquivar a autoavaliação.')
+                    $this.removeClass('loading');
+                }
+            });
         });
     }
 
@@ -157,7 +165,7 @@ siac.Autoavaliacao.Detalhe = (function () {
                 data: { codigo: _codAvaliacao },
                 url: '/Dashboard/Autoavaliacao/Arquivar',
                 success: function () {
-                    window.location.href = '/Historico/Autoavaliacao/Detalhe/' + _codAvaliacao;
+                    window.location.href = '/historico/autoavaliacao/detalhe/' + _codAvaliacao;
                 },
                 error: function () {
                     siac.mensagem('Não foi possível arquivar a autoavaliação.')
@@ -458,7 +466,7 @@ siac.Autoavaliacao.Realizar = (function () {
             url: "/Dashboard/Autoavaliacao/Arquivar",
             success: function () {
                 window.onbeforeunload = function () { $('.ui.global.loader').parent().addClass('active'); };
-                window.location.href = '/Historico/Autoavaliacao/Detalhe/' + _codAvaliacao;
+                window.location.href = '/historico/autoavaliacao/detalhe/' + _codAvaliacao;
             },
             error: function () {
                 siac.mensagem('Não foi possível arquivar a autoavaliação.')

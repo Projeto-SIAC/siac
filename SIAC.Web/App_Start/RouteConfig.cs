@@ -11,8 +11,9 @@ namespace SIAC
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
-            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");  
-                        
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.LowercaseUrls = true;
+
             routes.MapRoute(
                 name: "HistoricoAvaliacao",
                 url: "Historico/Avaliacao/{controller}/{action}/{codigo}",

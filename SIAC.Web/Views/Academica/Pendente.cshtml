@@ -10,7 +10,7 @@
     <div class="ui two stackable cards">
         @foreach (AvalAcademica avalAcademica in Model)
             {
-            <a href="/Dashboard/Avaliacao/Academica/Corrigir/@avalAcademica.Avaliacao.CodAvaliacao" class="card">
+            <a href="@Url.Action("Corrigir", new { codigo = avalAcademica.Avaliacao.CodAvaliacao })" class="card">
                 <div class="content">
                     <div class="header">@avalAcademica.Avaliacao.CodAvaliacao</div>
                     <div class="meta">

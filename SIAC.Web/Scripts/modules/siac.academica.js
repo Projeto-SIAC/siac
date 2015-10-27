@@ -508,7 +508,7 @@ siac.Academica.Agendada = (function () {
                             type: 'POST',
                             success: function (data) {
                                 if (data) {
-                                    window.location.href = '/Dashboard/Avaliacao/Academica/Detalhe/' + _codAvaliacao;
+                                    window.location.href = '/dashboard/avaliacao/academica/detalhe/' + _codAvaliacao;
                                 }
                             },
                             error: function () {
@@ -756,15 +756,6 @@ siac.Academica.Realizar = (function () {
             })
         ;
 
-        $('.message .close')
-          .click(function () {
-              $(this)
-                .closest('.message')
-                .transition('fade')
-              ;
-          })
-        ;
-
         $('.anexo.imagem.card').click(function () {
             expandirImagem(this);
         });
@@ -933,8 +924,6 @@ siac.Academica.Realizar = (function () {
                         confirmar();
                     },
                     onDeny: function () {
-                        $('form').addClass('error');
-                        $('form .message').removeClass('hidden');
                         $('html, body').animate({
                             scrollTop: $(".title .label.red").offset().top
                         }, 1000);

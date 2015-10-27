@@ -54,7 +54,7 @@
         }
     </div>
     <div class="actions">
-        <a href="/Dashboard" class="ui cancel button">Cancelar</a>
+        <a href="@Url.Action("Index", "Dashboard")" class="ui cancel button">Cancelar</a>
         <div class="ui approve button">Sim, continuar</div>
     </div>
 </div>
@@ -110,19 +110,19 @@
 
 <h2>@ViewBag.Title <a id="btnPesquisa" class="ui right floated button"><i class="search icon"></i>Pesquisar</a></h2>
  
-<form id="frmQuestao" action="/Dashboard/Questao/Confirmar" method="post" class="ui form" enctype="multipart/form-data">
+<form id="frmQuestao" action="@Url.Action("Confirmar")" method="post" class="ui form" enctype="multipart/form-data">
     <div class="ui error message">
         <div class="header">Verifique</div>
         <ul class="list"></ul>
     </div>
     <div class="ui top attached tabular menu">
-        <div class="active item" data-tab="tab-geral">Gerais</div>
-        <div class="item" data-tab="tab-detalhe">Detalhes</div>
-        <div class="item questao objetiva" data-tab="tab-alternativa">Alternativas</div>
-        <div class="item anexos" data-tab="tab-anexo">Anexos</div>
+        <div class="active item" data-tab="gerais">Gerais</div>
+        <div class="item" data-tab="detalhes">Detalhes</div>
+        <div class="item questao objetiva" data-tab="alternativas">Alternativas</div>
+        <div class="item anexos" data-tab="anexos">Anexos</div>
     </div>
     @* Gerais da Questão *@
-    <div class="ui bottom attached active tab segment" data-tab="tab-geral">
+    <div class="ui bottom attached active tab segment" data-tab="gerais">
         <div class="field required">
             <label>Disciplina</label>
             <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" required>
@@ -169,7 +169,7 @@
         </div>
     </div>
     @* Detalhes da Questão *@
-    <div class="ui bottom attached tab segment" data-tab="tab-detalhe">
+    <div class="ui bottom attached tab segment" data-tab="detalhes">
         <div class="field required">
             <label for="txtEnunciado">Enunciado</label>
             <textarea id="txtEnunciado" name="txtEnunciado" rows="2" required placeholder="Enunciado..."></textarea>
@@ -188,14 +188,14 @@
         </div>
     </div>
     @* Alternativas da Questão *@
-    <div class="ui bottom attached tab segment questao objetiva" data-tab="tab-alternativa">
+    <div class="ui bottom attached tab segment questao objetiva" data-tab="alternativas">
             <input id="txtQtdAlternativas" name="txtQtdAlternativas" type="number" hidden />
             <div class="ui adicionar button" style="float: right">Adicionar</div>
         <div class="ui alternativas fluid accordion">
         </div>
     </div>   
      @* Anexos da Questão *@
-    <div class="ui bottom attached tab segment anexos" data-tab="tab-anexo">
+    <div class="ui bottom attached tab segment anexos" data-tab="anexos">
         <input id="txtQtdAnexos" name="txtQtdAnexos" type="number" hidden />
         @* Anexos *@
         <div class="ui segment">
@@ -217,7 +217,7 @@
         </div>
     </div>
     <br />
-    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Dashboard/Questao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("Index")' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
     <div class="ui prosseguir button">Prosseguir</div>
 </form>
 

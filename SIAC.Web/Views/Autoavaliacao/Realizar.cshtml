@@ -65,7 +65,7 @@
         <a onclick="window.location.href = '/Dashboard';" class="ui button">Voltar para Dashboard</a>
         <a onclick="window.location.href = '/Historico/Autoavaliacao';" class="ui button">Voltar para Histórico</a>
         <div class="ui arquivar button">Arquivar</div>
-        <a onclick="window.open('/Dashboard/Autoavaliacao/Imprimir/@Model.Avaliacao.CodAvaliacao', '_blank');" class="ui button">Imprimir</a>
+        <a onclick="window.open('@Url.Action("Imprimir", new { codigo = Model.Avaliacao.CodAvaliacao })', '_blank');" class="ui button">Imprimir</a>
         <div class="ui iniciar button">Realizar</div>
     </div>
 </div>
@@ -174,7 +174,7 @@
     </div>
 </div>
 
-<form class="ui form" action="/Dashboard/Autoavaliacao/Resultado/@Model.Avaliacao.CodAvaliacao" method="post">
+<form class="ui form" action="@Url.Action("Resultado", new { codigo = auto.Avaliacao.CodAvaliacao })" method="post">
     <div class="ui accordion">
         @for (int i = 0; i < lstQuestao.Count; i++)
         {
@@ -265,7 +265,7 @@
     </div>
     <br />
     <div class="ui right floated finalizar button green">Finalizar</div>
-    <a href="/Dashboard/Autoavaliacao/Realizar" class="ui button">Cancelar</a>
+    <a href="@Url.Action("Realizar")" class="ui button">Cancelar</a>
 </form>
 
 @section Scripts {

@@ -126,13 +126,7 @@
     </div>
 </div>
 
-<form class="ui form" action="/Dashboard/Avaliacao/Academica/Resultado/@Model.Avaliacao.CodAvaliacao" method="post">
-    <div class="ui message error">
-        <i class="icon close"></i>
-        <div class="header">
-            Responda todas as questões!
-        </div>
-    </div>
+<form class="ui form" action="@Url.Action("Resultado", new { codigo = Model.Avaliacao.CodAvaliacao })" method="post">
     <div class="ui basic segment">
         <div class="ui accordion">
             @for (int i = 0; i < lstQuestao.Count; i++)

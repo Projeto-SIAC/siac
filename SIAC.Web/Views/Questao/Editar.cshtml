@@ -47,25 +47,25 @@
 
 <h2>@ViewBag.Title</h2>
 
-<form id="frmQuestao" method="post" class="ui form" data-questao-tipo="@Model.CodTipoQuestao" data-questao-anexo="@Model.QuestaoAnexo.Count">
+<form id="frmQuestao" action="@Url.Action()" method="post" class="ui form" data-questao-tipo="@Model.CodTipoQuestao" data-questao-anexo="@Model.QuestaoAnexo.Count">
     <div class="ui error message">
         <div class="header">Verifique</div>
         <ul class="list"></ul>
     </div>
     <div class="ui top attached tabular menu">
-        <div class="active item" data-tab="tab-name">Gerais</div>
-        <div class="item" data-tab="tab-name2">Detalhes</div>
+        <div class="active item" data-tab="gerais">Gerais</div>
+        <div class="item" data-tab="detalhes">Detalhes</div>
         @if (Model.CodTipoQuestao == 1)
         {
-            <div class="item questao objetiva" data-tab="tab-name3">Alternativas</div>
+            <div class="item questao objetiva" data-tab="alternativas">Alternativas</div>
         }
         @if (Model.QuestaoAnexo.Count > 0)
         {
-            <div class="item anexos" data-tab="tab-name4">Anexos</div>
+            <div class="item anexos" data-tab="anexos">Anexos</div>
         }
     </div>
     @* Gerais da Questão *@
-    <div class="ui bottom attached active tab segment" data-tab="tab-name">
+    <div class="ui bottom attached active tab segment" data-tab="gerais">
         <div class="field required">
             <label>Disciplina</label>
             <select class="ui dropdown disabled" readonly disabled>
@@ -103,7 +103,7 @@
         </div>
     </div>
     @* Detalhes da Questão *@
-    <div class="ui bottom attached tab segment" data-tab="tab-name2">
+    <div class="ui bottom attached tab segment" data-tab="detalhes">
         <div class="field required">
             <label for="txtEnunciado">Enunciado</label>
             <textarea id="txtEnunciado" name="txtEnunciado" rows="2" required placeholder="Enunciado...">@Model.Enunciado</textarea>
@@ -125,7 +125,7 @@
         }
     </div>
     @* Alternativas da Questão *@
-    <div class="ui bottom attached tab segment questao objetiva" data-tab="tab-name3">
+    <div class="ui bottom attached tab segment questao objetiva" data-tab="alternativas">
         <div class="ui alternativas fluid accordion">
             @foreach (var alt in Model.Alternativa)
             {
@@ -152,7 +152,7 @@
         </div>
     </div>
     @* Anexos da Questão *@
-    <div class="ui bottom attached tab segment anexos" data-tab="tab-name4">
+    <div class="ui bottom attached tab segment anexos" data-tab="anexos">
         @* Anexos *@
         <div class="ui anexos fluid accordion">
             @foreach (var ane in Model.QuestaoAnexo)
@@ -181,7 +181,7 @@
         </div>
     </div>
     <br />
-    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todas as alterações</p><a href='/Historico/Questao/@Model.CodQuestao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todas as alterações</p><a href='@Url.Action("Detalhe", new { codigo = Model.CodQuestao})' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
     <div class="ui prosseguir button">Prosseguir</div>
 </form>
 

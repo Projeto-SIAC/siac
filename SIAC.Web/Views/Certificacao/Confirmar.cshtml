@@ -11,7 +11,7 @@
     <i class="icon checkmark"></i>
     <div class="content">
         <div class="header">Avaliação gerada com sucesso.</div>
-        <p>Sua avaliação de certificação encontra-se no seu <b><a href="/Historico/Avaliacao/Certificacao">Histórico</a></b> e você poderá configurá-la quando bem entender.
+        <p>Sua avaliação de certificação encontra-se no seu <b><a href="@Url.Action("Index")">Histórico</a></b> e você poderá configurá-la quando bem entender.
     </div>
 </div>
 <div class="ui segment">
@@ -57,6 +57,6 @@
     </table>
 </div>
 
-<a href="/Dashboard" class="ui button">Voltar para Dashboard</a>
-<a href="/Historico/Avaliacao/Certificação" class="ui button">Avaliações de Certificação</a>
-<a href="/Dashboard/Avaliacao/Certificacao/Configurar/@Model.Avaliacao.CodAvaliacao" class="ui button">Configurar agora</a>
+<a href="@Url.Action("Index", "Dashboard")" class="ui button">Voltar para Dashboard</a>
+<a href="@Url.Action("Index")" class="ui button">Avaliações de Certificação</a>
+<a href="@Url.Action("Configurar", "Certificacao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Configurar agora</a>

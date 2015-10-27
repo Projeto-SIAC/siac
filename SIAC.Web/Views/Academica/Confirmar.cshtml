@@ -10,7 +10,7 @@
     <i class="icon checkmark"></i>
     <div class="content">
         <div class="header">Avaliação gerada com sucesso.</div>
-        <p>Sua avaliação acadêmica encontra-se no seu <b><a href="/Historico/Avaliacao/Academica">Histórico</a></b> e você poderá agendá-la quando bem entender.
+        <p>Sua avaliação acadêmica encontra-se no seu <b><a href="@Url.Action("Index")">Histórico</a></b> e você poderá agendá-la quando bem entender.
     </div>
 </div>
 <div class="ui segment">
@@ -56,6 +56,6 @@
     </table>
 </div>
 
-<a href="/Dashboard" class="ui button">Voltar para Dashboard</a>
-<a href="/Historico/Avaliacao/Academica" class="ui button">Avaliações Acadêmicas</a>
-<a href="/Dashboard/Avaliacao/Academica/Agendar/@Model.Avaliacao.CodAvaliacao" class="ui button">Agendar agora</a>
+<a href="@Url.Action("Index", "Dashboard")" class="ui button">Voltar para Dashboard</a>
+<a href="@Url.Action("Index")" class="ui button">Avaliações Acadêmicas</a>
+<a href="@Url.Action("Agendar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Agendar agora</a>

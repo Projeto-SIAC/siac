@@ -64,11 +64,11 @@
 
 @if (Model.Avaliacao.AvalPessoaResultado.Count == 0)
 {
-    <a onclick="window.open('/Dashboard/Autoavaliacao/Imprimir/@Model.Avaliacao.CodAvaliacao', '_blank');" class="ui button">Imprimir</a>
+    <a onclick="window.open('@Url.Action("Imprimir", new { codigo = Model.Avaliacao.CodAvaliacao })', '_blank');" class="ui button">Imprimir</a>
     if (!Model.Avaliacao.FlagArquivo)
     {
         <div class="ui arquivar button">Arquivar</div>
-        <a href="/Dashboard/Autoavaliacao/Realizar/@Model.Avaliacao.CodAvaliacao" class="ui button">Realizar</a>
+        <a href="@Url.Action("Realizar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Realizar</a>
     }
     else
     {
@@ -128,7 +128,7 @@ else
                     <div class="ui segment">
                         <div class="ui dividing header" style="text-align:justify">
                             @{
-                                var enunciado = (@i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).Split('\n', '\r');
+                                var enunciado = (i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).Split('\n', '\r');
                                 foreach (var strEnunciado in enunciado)
                                 {
                                     if (!String.IsNullOrWhiteSpace(strEnunciado))

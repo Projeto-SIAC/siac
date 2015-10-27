@@ -21,7 +21,7 @@
         }
     </div>
     <div class="actions">
-        <a href="/Dashboard" class="ui cancel button">Cancelar</a>
+        <a href="@Url.Action("Index", "Dashboard")" class="ui cancel button">Cancelar</a>
         <div class="ui approve button">Sim, continuar</div>
     </div>
 </div>
@@ -104,7 +104,7 @@
         </div>
     </div>
     <div class="field">
-        <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Historico/Avaliacao/Certificacao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+        <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("Index")' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
         <div onclick="prosseguir()" class="ui prosseguir button">Prosseguir</div>
     </div>
 </form>
@@ -209,7 +209,7 @@
             ddlTemas.parent().addClass('loading');
             $.ajax({
                 type: 'POST',
-                url: '@(Url.RouteUrl("RecuperarTemasPorCodDisciplinaTemQuestao"))',
+                url: '/Tema/RecuperarTemasPorCodDisciplinaTemQuestao',
                 data: { 'codDisciplina': codDisciplina },
                 success: function (data) {
                     ddlTemas.html('');

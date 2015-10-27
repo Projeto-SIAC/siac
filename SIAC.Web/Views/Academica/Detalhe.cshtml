@@ -156,9 +156,9 @@ else if (Model.Avaliacao.FlagRealizada)
 }
 else
 {
-    <a href="/Dashboard/Avaliacao/Academica/Agendar/@Model.Avaliacao.CodAvaliacao" class="ui button">Agendar</a>
+    <a href="@Url.Action("Agendar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
 }
-<a href="/Historico/Avaliacao/Academica" class="ui button">Histórico</a>
+<a href="@Url.Action("Index")" class="ui button">Histórico</a>
 @if (Model.Avaliacao.FlagArquivo || !Model.Avaliacao.FlagRealizada)
 {
     <div class="ui arquivar toggle @(Model.Avaliacao.FlagArquivo ? "active" : "") button">Arquiva@(Model.Avaliacao.FlagArquivo ? "da" : "r")</div>

@@ -9,6 +9,12 @@ siac.Configuracoes = (function () {
         $('.ui.dropdown').dropdown();
         $('.ui.accordion').accordion({ animateChildren: false });
 
+        $('.tabular.menu .item').tab({
+            history: true,
+            historyType: 'state',
+            path: window.location.pathname
+        });
+
         $('.tab.geral :input, .tab.termo :input').change(function () {
             parametroModificado();
         });

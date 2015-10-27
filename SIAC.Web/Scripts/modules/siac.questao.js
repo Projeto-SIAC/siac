@@ -179,6 +179,12 @@ siac.Questao.Cadastrar = (function () {
 
         $('.ui.pesquisa.modal').modal();
 
+        $('.tabular.menu .item').tab({
+            history: true,
+            historyType: 'state',
+            path: window.location.pathname
+        });
+
         mostrarCamposPorTipo();
 
         mostrarOpcaoAnexos();
@@ -837,7 +843,14 @@ siac.Questao.Detalhe = (function () {
 })();
 
 siac.Questao.Editar = (function () {
+    var _tipo, _qteAnexo;
+
     function iniciar() {
+        $elemento = $('#frmQuestao');
+        _tipo = $elemento.attr('data-questao-tipo');
+        _qteAnexo = $elemento.attr('data-questao-anexo');
+        $elemento.removeAttr('data-questao-tipo data-questao-anexo');
+
         $('.disabled').parent().popup({
             html: '<i class="icon red warning"></i>Este campo não pode ser modificado',
             variation: 'wide'
@@ -849,7 +862,11 @@ siac.Questao.Editar = (function () {
             onChange: function () { $('.ui.confirmar.modal').modal('refresh'); }
         });
         $('.ui.dropdown').dropdown();
-        $('.tabular.menu .item').tab();
+        $('.tabular.menu .item').tab({
+            history: true,
+            historyType: 'state',
+            path: window.location.pathname
+        });
         $('.cancelar.button').popup({ on: 'click' });
         $('.ui.confirmar.modal')
           .modal({
@@ -865,8 +882,7 @@ siac.Questao.Editar = (function () {
 
     function confirmar() {
         $('#mdlEnunciado').text($('#txtEnunciado').val()).attr('data-html', '<b>Objetivo</b>: ' + $('#txtObjetivo').val());
-        var tipo = $('#frmQuestao').attr('data-questao-tipo');
-        if (tipo == 1) {
+        if (_tipo == 1) {
             var qteAlternativas = $('.alternativas .title').length;
             $('#mdlListAlternativas').html('');
             for (var i = 0; i < qteAlternativas; i++) {
@@ -891,15 +907,14 @@ siac.Questao.Editar = (function () {
             $('#mdlChaveDeResposta').attr('style', 'display:none');
             $('#mdlListAlternativas').removeAttr('style');
         }
-        else if (tipo == 2) {
+        else if (_tipo == 2) {
             $('#mdlChaveDeResposta').html('<i>' + $('#txtChaveDeResposta').val() + '</i><a class="ui green label">Chave de Resposta</a>').attr('data-html', '<b>Comentário</b>: ' + $('#txtComentario').val());
             $('#mdlListAlternativas').attr('style', 'display:none');
             $('#mdlChaveDeResposta').removeAttr('style');
         }
-        var qteAnexos = $('#frmQuestao').attr('data-questao-anexo');
-        if (qteAnexos > 0) {
+        if (_qteAnexo > 0) {
             $('#mdlCardAnexos').html('');
-            for (var i = 0; i < qteAnexos; i++) {
+            for (var i = 0; i < _qteAnexo; i++) {
                 var tipoAnexo = $('#txtAnexoTipo' + (i + 1)).val();
                 if (tipoAnexo == 1) {
                     $('#mdlCardAnexos')
@@ -931,9 +946,8 @@ siac.Questao.Editar = (function () {
     function verificar() {
         $('.ui.error.message .list').html('');
         var validado = false;
-        var tipo = $('#frmQuestao').attr('data-questao-tipo');
         if ($('#txtEnunciado').val() != '') {
-            if (tipo == 1) {
+            if (_tipo == 1) {
                 var qteAlternativas = $('.alternativas .title').length;
                 var ok = true;
                 for (var i = 0; i < qteAlternativas; i++) {
@@ -959,7 +973,7 @@ siac.Questao.Editar = (function () {
                     $('.ui.error.message .list').append('<li>É necessário preencher os enunciados de todas as alternativas</li>')
                 }
             }
-            else if (tipo == 2) {
+            else if (_tipo == 2) {
                 if ($('#txtChaveDeResposta').val() != '') {
                     validado = true;
                 }

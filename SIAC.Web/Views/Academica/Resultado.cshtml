@@ -156,8 +156,8 @@ else
 {
     <div class="ui message"><p>Você poderá conferir seu resultado assim que o tempo de aplicação da prova acabar.</p></div>
 }
-<a href="/Historico/Avaliacao/Academica" class="ui button">Histórico</a>
-<a href="/Historico/Avaliacao/Academica/Detalhe/@Model.Avaliacao.CodAvaliacao" class="ui button">Detalhe</a>
+<a href="@Url.Action("Index")" class="ui button">Histórico</a>
+<a href="@Url.Action("Detalhe", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/academica")

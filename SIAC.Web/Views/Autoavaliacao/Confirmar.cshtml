@@ -12,7 +12,7 @@
     <i class="icon checkmark"></i>
     <div class="content">        
         <div class="header">Avaliação gerada com sucesso.</div>
-        <p>Sua autoavalicao encontra-se no seu <b><a href="/Historico/Autoavaliacao">Histórico</a></b> e você poderá realizá-la quando bem entender.</div>
+        <p>Sua autoavalicao encontra-se no seu <b><a href="@Url.Action("Index")">Histórico</a></b> e você poderá realizá-la quando bem entender.</div>
 </div>
 <div class="ui segment">
     <div class="ui dividing header">
@@ -53,42 +53,6 @@
     </table>
 </div>
 
-@*
-    <div class="ui very relaxed items">
-        <span class="ui label">@ViewBag.QteQuestoes Questões</span>
-
-        @{
-            List<int> cods = new List<int>();
-            foreach (SIAC.Models.QuestaoTema questao in ViewBag.QuestoesDaAvaliacao)
-            {
-                cods.Add(questao.CodQuestao);
-                if (questao != null)
-                {
-                    <div class="item">
-                        <div class="content">
-                            <a href="/Historico/Questao/@questao.CodQuestao" class="header">@questao.Questao.Enunciado.ToShortString(140)</a>
-                            <div class="meta ui labels">
-                                <span class="ui label">@questao.Tema.Disciplina.Descricao</span>
-                                @foreach (QuestaoTema t in questao.Questao.QuestaoTema)
-                                {
-                                    <span class="ui tag label">@t.Tema.Descricao</span>
-                                }
-                                <span class="ui label">@questao.Questao.Dificuldade.Descricao - @questao.Questao.CodDificuldade</span>
-                                <span class="ui label">@questao.Questao.TipoQuestao.Descricao</span>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
-            cods.Sort();
-            foreach (var item in cods)
-            {
-                <span class="ui label">@item</span>
-            }
-        }
-    </div>
-*@
-
-<a href="/Dashboard" class="ui button">Voltar para Dashboard</a>
-<a href="/Historico/Autoavaliacao" class="ui button">Autoavaliações Salvas</a>
-<a href="/Dashboard/Autoavaliacao/Realizar/@Model.Avaliacao.CodAvaliacao" class="ui button">Realizar agora</a>
+<a href="@Url.Action("Index", "Dashboard")" class="ui button">Voltar para Dashboard</a>
+<a href="@Url.Action("Index")" class="ui button">Autoavaliações Salvas</a>
+<a href="@Url.Action("Realizar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Realizar agora</a>

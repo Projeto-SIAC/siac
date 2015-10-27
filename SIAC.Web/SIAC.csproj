@@ -181,6 +181,7 @@
     <Content Include="Scripts\modules\siac.autoavaliacao.min.js">
       <DependentUpon>siac.autoavaliacao.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\plugins\jquery.address-1.6.min.js" />
     <Content Include="Scripts\plugins\jquery.mask-1.13.4.min.js" />
     <Content Include="Scripts\libs\jquery.min.js" />
     <Content Include="Scripts\libs\modernizr.js" />

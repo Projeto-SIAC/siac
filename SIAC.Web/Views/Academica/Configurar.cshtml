@@ -65,8 +65,8 @@
         }
     </div>
 </div>
-<form method="post" action="/Dashboard/Avaliacao/Academica/Salvar/@Model.Avaliacao.CodAvaliacao">
-    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='/Historico/Avaliacao/Academica/Detalhe/@Model.Avaliacao.CodAvaliacao' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+<form method="post" action="@Url.Action("Salvar", new { codigo = acad.Avaliacao.CodAvaliacao })">
+    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
     <div class="ui button disabled salvar">Salvar</div>
 </form>
 

@@ -4,7 +4,7 @@
 {
     <div class="card">
         <div class="content">
-            <a href="/Historico/Avaliacao/Academica/Detalhe/@acad.Avaliacao.CodAvaliacao" class="header">
+            <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="header">
                 @acad.Avaliacao.CodAvaliacao
             </a>
             <div class="meta">
@@ -26,7 +26,7 @@
         @if (acad.Avaliacao.FlagRealizada)
         {
             <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
-            <a href="/Historico/Avaliacao/Academica/Detalhe/@acad.Avaliacao.CodAvaliacao" class="ui button">Resultados</a>
+            <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
         }
         else
         {            
@@ -37,11 +37,11 @@
             else if (acad.Avaliacao.FlagAgendada)
             {
                 <span class="ui attached top right label"><i class="clock icon"></i>Agendada</span>
-                <a href="/Dashboard/Avaliacao/Academica/Configurar/@acad.Avaliacao.CodAvaliacao" class="ui button">Configurar</a>
+                <a href="@Url.Action("Configurar", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
             }
             else
             {
-                <a href="/Dashboard/Avaliacao/Academica/Agendar/@acad.Avaliacao.CodAvaliacao" class="ui button">Agendar</a>
+                <a href="@Url.Action("Agendar", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
             }
         }
     </div>

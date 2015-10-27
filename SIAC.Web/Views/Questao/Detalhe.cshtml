@@ -60,7 +60,7 @@
 <div data-questao="@Model.CodQuestao" class="ui arquivar toggle @(Model.FlagArquivo ? "active":"") button">
     Arquiva@(Model.FlagArquivo ? "da":"r")
 </div>
-<a href="/Historico/Questao/Editar/@Model.CodQuestao" class="ui button">
+<a href="@Url.Action("Editar", new { codigo = Model.CodQuestao })" class="ui button">
     Editar
 </a>
 

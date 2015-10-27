@@ -1,9 +1,9 @@
 ﻿@model List<SIAC.Models.AvalAuto>
 @foreach (var autoavaliacao in Model)
 {
-    <div class="card">
+    <div class="card" data-avaliacao="@autoavaliacao.Avaliacao.CodAvaliacao">
         <div class="content">
-            <a href="/Historico/Autoavaliacao/Detalhe/@autoavaliacao.Avaliacao.CodAvaliacao" class="header">@autoavaliacao.Avaliacao.CodAvaliacao</a>
+            <a href="@Url.Action("Detalhe", new { codigo = autoavaliacao.Avaliacao.CodAvaliacao })" class="header">@autoavaliacao.Avaliacao.CodAvaliacao</a>
             <div class="meta">
                 <span title="@autoavaliacao.Avaliacao.DtCadastro.ToBrazilianString()">@autoavaliacao.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
             </div>
@@ -24,8 +24,8 @@
         {
             <span class="ui attached top right label"><i class="clock icon"></i>Pendente</span>
             <div class="ui two buttons">
-                <a onclick="Arquivar('@autoavaliacao.Avaliacao.CodAvaliacao')" class="ui button">Arquivar</a>
-                <a href="/Dashboard/Autoavaliacao/Realizar/@autoavaliacao.Avaliacao.CodAvaliacao" class="ui button">Realizar</a>
+                <a class="ui arquivar button">Arquivar</a>
+                <a href="@Url.Action("Realizar", new { codigo = autoavaliacao.Avaliacao.CodAvaliacao })" class="ui button">Realizar</a>
             </div>
         }
         else
@@ -33,11 +33,11 @@
             if (autoavaliacao.Avaliacao.FlagArquivo)
             {
                 <span class="ui attached top right label"><i class="archive icon"></i>Arquivo</span>
-                <a href="/Historico/Autoavaliacao/Detalhe/@autoavaliacao.Avaliacao.CodAvaliacao" class="ui button">Detalhe</a>
+                <a href="@Url.Action("Detalhe", new { codigo = autoavaliacao.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
             }
             else
             {
-                <a href="/Historico/Autoavaliacao/Detalhe/@autoavaliacao.Avaliacao.CodAvaliacao" class="ui button">Desempenho</a>
+                <a href="@Url.Action("Detalhe", new { codigo = autoavaliacao.Avaliacao.CodAvaliacao })" class="ui button">Desempenho</a>
             }
         }
     </div>
