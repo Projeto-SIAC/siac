@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
+    [Filters.CategoriaFilter]
     public class HistoricoController : Controller
     {
         // GET: Historico

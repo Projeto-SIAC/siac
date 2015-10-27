@@ -8,26 +8,9 @@ using SIAC.Helpers;
 
 namespace SIAC.Controllers
 {
+    [Filters.CategoriaFilter(Categorias = new[] { 3 })]
     public class ConfiguracoesController : Controller
     {
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            if (!Helpers.Sessao.Autenticado)
-            {
-                filterContext.Result = RedirectToAction("Index", "Dashboard");
-            }
-            else if(Helpers.Sessao.UsuarioCategoriaCodigo != 3)
-            {
-                if (Session["UrlReferrer"] != null)
-                {
-                    filterContext.Result = Redirect(Session["UrlReferrer"].ToString());
-                }
-                else filterContext.Result = RedirectToAction("Index", "Dashboard");
-            }
-
-            base.OnActionExecuting(filterContext);
-        }
-
         // GET: /Configuracoes
         public ActionResult Index()
         {
