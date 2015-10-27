@@ -27,52 +27,6 @@ namespace SIAC.Controllers
             }
         }
 
-        //GET: Historico/Avaliacao/Academica/Minhas <- Ajax 
-        public ActionResult Minhas()
-        {
-            if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
-            {
-                if (Session["UrlReferrer"] != null)
-                {
-                    return Redirect(Session["UrlReferrer"].ToString());
-                }
-                else return RedirectToAction("Index", "Dashboard");
-            }
-            List<AvalAcademica> avaliacoes = new List<AvalAcademica>();
-            if (TempData["lstAvalAcademica"] == null)
-            {
-                if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
-                {
-                    int codProfessor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodProfessor;
-                    avaliacoes = AvalAcademica.ListarPorProfessor(codProfessor);
-                    TempData["lstAvalAcademica"] = avaliacoes;
-                }
-                else if (Helpers.Sessao.UsuarioCategoriaCodigo == 1)
-                {
-                    int codAluno = Aluno.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodAluno;
-                    avaliacoes = AvalAcademica.ListarPorAluno(codAluno);
-                    TempData["lstAvalAcademica"] = avaliacoes;
-                }
-            }
-            else
-            {
-                avaliacoes = TempData["lstAvalAcademica"] as List<AvalAcademica>;
-            }
-            var result = from a in avaliacoes
-                            select new
-                            {
-                                CodAvaliacao = a.Avaliacao.CodAvaliacao,
-                                DtCadastro = a.Avaliacao.DtCadastro.ToBrazilianString(),
-                                DtCadastroTempo = a.Avaliacao.DtCadastro.ToElapsedTimeString(),
-                                Turma = a.NumTurma.HasValue ? a.Turma.CodTurma : null,
-                                Curso = a.NumTurma.HasValue ? a.Turma.Curso.Descricao : "Curso",
-                                QteQuestoes = a.Avaliacao.QteQuestoes(),
-                                Disciplina = a.Disciplina.Descricao,
-                                FlagLiberada = a.Avaliacao.FlagLiberada
-                            };
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
-
         // POST: Academica/Listar
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina)
@@ -679,7 +633,7 @@ namespace SIAC.Controllers
                 if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
                 {
                     AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                    if (acad != null && acad.Avaliacao.DtAplicacao.HasValue && acad.Avaliacao.DtAplicacao.Value.AddMinutes(acad.Avaliacao.Duracao.Value) > DateTime.Now)
+                    if (acad != null && acad.Avaliacao.FlagAgendada && acad.Avaliacao.FlagAgora)
                     {
                         return View(acad);
                     }
@@ -713,7 +667,7 @@ namespace SIAC.Controllers
             if (Helpers.Sessao.UsuarioCategoriaCodigo == 1 && !String.IsNullOrEmpty(codigo))
             {
                 AvalAcademica avalAcad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (avalAcad.Avaliacao.AvalPessoaResultado.Count == 0 && avalAcad.Avaliacao.FlagLiberada && (DateTime.Now - avalAcad.Avaliacao.DtAplicacao.Value).TotalMinutes < (avalAcad.Avaliacao.Duracao/2))
+                if (avalAcad.Avaliacao.FlagPendente && avalAcad.Avaliacao.FlagLiberada && avalAcad.Avaliacao.FlagAgora)
                 {
                     return View(avalAcad);
                 }

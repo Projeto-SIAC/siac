@@ -3,9 +3,8 @@
 
 @{
     var CodCategoria = SIAC.Helpers.Sessao.UsuarioCategoriaCodigo;
-    var totalMinutes = (DateTime.Now - Model.Avaliacao.DtAplicacao.Value).TotalMinutes;
-    var FlagAgora =  totalMinutes < (Model.Avaliacao.Duracao / 2) && totalMinutes > 0;
-    var FlagVencida = totalMinutes > (Model.Avaliacao.Duracao / 2);
+    var FlagAgora =  Model.Avaliacao.FlagAgora;
+    var FlagVencida = Model.Avaliacao.FlagVencida;
 }
 <div class="header">
     @Model.Avaliacao.CodAvaliacao

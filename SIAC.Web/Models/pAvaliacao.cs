@@ -87,6 +87,23 @@ namespace SIAC.Models
             }
         }
 
+        public bool FlagAgora
+        {
+            get
+            {
+                var total = (DateTime.Now - DtAplicacao.Value).TotalMinutes;
+                return total < (Duracao / 2) && total > 0;
+            }
+        }
+
+        public bool FlagVencida
+        {
+            get
+            {
+                return (DateTime.Now - DtAplicacao.Value).TotalMinutes > (Duracao / 2);
+            }
+        }
+
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         public static int ObterNumIdentificador(int codTipoAvaliacao)

@@ -58,7 +58,7 @@ namespace SIAC
                 name: "Default",
                 url: "{controller}/{action}",
                 defaults: new { controller = "Acesso", action = "Index" },
-                constraints: new { controller = @"^(Dashboard|Historico|Acesso|Erro|Configuracoes)$" }
+                constraints: new { controller = @"^(Dashboard|Historico|Acesso|Erro|Configuracoes|Tema)$" }
             );           
 
             routes.MapRoute(
