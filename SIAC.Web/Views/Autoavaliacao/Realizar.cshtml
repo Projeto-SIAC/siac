@@ -174,7 +174,7 @@
     </div>
 </div>
 
-<form class="ui form" action="@Url.Action("Resultado", new { codigo = auto.Avaliacao.CodAvaliacao })" method="post">
+<form class="ui form" action="@Url.Action("Resultado", new { codigo = Model.Avaliacao.CodAvaliacao })" method="post">
     <div class="ui accordion">
         @for (int i = 0; i < lstQuestao.Count; i++)
         {
