@@ -134,7 +134,7 @@ siac.Academica.Detalhe = (function () {
                     var chart = new Chart(ctx).Doughnut(data);
                 }
             }
-        });        
+        });
 
         $('.arquivar.button').click(function () {
             var $_this = $(this);
@@ -1380,7 +1380,7 @@ siac.Academica.Index = (function () {
     function iniciar() {
         $(window).scroll(function () {
             if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-                if ($('.cards .card').length == (_controleQte*pagina)) {
+                if ($('.cards .card').length == (_controleQte * pagina)) {
                     pagina++;
                     listar();
                 }
@@ -1480,6 +1480,244 @@ siac.Academica.Index = (function () {
             scrollTop: 0
         }, 500);
         return false;
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();
+
+siac.Academica.Corrigir = (function () {
+    var _dicQuestoes = {};
+    var _codAvaliacao;
+
+    function iniciar() {
+        var $elemento = $('[data-avaliacao]');
+        _codAvaliacao = $elemento.attr('data-avaliacao');
+        $elemento.removeAttr('data-avaliacao');
+
+        var $elementoJson = $('code.questoes');
+        _dicQuestoes = JSON.parse($elementoJson.html());
+        $elementoJson.remove();
+
+        $('.ui.accordion').accordion({ animateChildren: false });
+        $('.ui.modal').modal();
+        $('.ui.dropdown').dropdown();
+
+        $('.ui.button.informacoes').click(function () {
+            $('.modal.informacoes').modal('show');
+        });
+
+        $('.ui.button.corrigir').click(function () {
+            $('.modal.corrigir').modal('show');
+        });
+
+        $('.ui.dimmer').css('z-index', 1);
+
+        $('#ddlCorrecaoModo').change(function () {
+            var modo = $(this).val();
+            $ddlCorrecaoValor = $('#ddlCorrecaoValor');
+            $ddlCorrecaoValor.parent().addClass('loading');
+            $('.correcao.conteudo').html('');
+            $ddlCorrecaoValor.dropdown('set placeholder text', 'Selecione...');
+
+            if (modo == 'aluno') {
+                $.ajax({
+                    cache: true,
+                    type: 'POST',
+                    url: '/Dashboard/Avaliacao/Academica/CarregarAlunos/' + _codAvaliacao,
+                    success: function (data) {
+                        $ddlCorrecaoValor.html('<option value="">Selecione o aluno</option>');
+                        $ddlCorrecaoValor.parents('.field').find('label').text('Selecione o aluno');
+                        for (i = 0, length = data.length; i < length; i++) {
+                            $ddlCorrecaoValor.append('<option value="' + data[i].Matricula + '">' + data[i].Nome + '</option>');
+                        }
+                        $ddlCorrecaoValor.parent().removeClass('loading').removeClass('disabled');
+                        $ddlCorrecaoValor.dropdown('set selected', -1);
+
+                    },
+                    error: function () {
+                        siac.mensagem('Ocorreu um erro.');
+                        $ddlCorrecaoValor.parent().removeClass('loading');
+                    }
+                });
+            }
+            else if (modo == 'questao') {
+                $.ajax({
+                    cache: true,
+                    type: 'POST',
+                    url: '/Dashboard/Avaliacao/Academica/CarregarQuestoesDiscursivas/' + _codAvaliacao,
+                    success: function (data) {
+                        $ddlCorrecaoValor.parents('.field').find('label').text('Selecione a questão');
+                        $ddlCorrecaoValor.html('');
+                        $ddlCorrecaoValor.append('<option value="">Selecione a questão</option>');
+                        for (i = 0, length = data.length; i < length; i++) {
+                            $ddlCorrecaoValor.append('<option value="' + data[i].codQuestao + '">' + getIndiceQuestao(data[i].codQuestao) + '. ' + siac.Utilitario.encurtarTextoEm(data[i].questaoEnunciado, 80) + '</option>');
+                        }
+                        $ddlCorrecaoValor.parent().removeClass('loading').removeClass('disabled');
+                    },
+                    error: function () {
+                        siac.mensagem('Ocorreu um erro.');
+                        $ddlCorrecaoValor.parent().removeClass('loading');
+                    }
+                });
+            }
+        });
+
+        $('#ddlCorrecaoValor').change(function () {
+            var _this = this;
+            $modal = $(_this).parents('.modal')
+            var modo = $('#ddlCorrecaoModo').val();
+            var valor = $(_this).val();
+            if (valor) {
+                $conteudo = $('.correcao.conteudo');
+                $(_this).parent().addClass('loading');
+                if (modo == 'aluno') {
+                    $conteudoQuestao = $('#templateCorrecaoAluno');
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Dashboard/Avaliacao/Academica/CarregarRespostasDiscursivas/' + _codAvaliacao,
+                        data: {
+                            matrAluno: valor
+                        },
+                        success: function (data) {
+                            $('.correcao.conteudo').html('');
+                            for (i = 0, length = data.length; i < length; i++) {
+                                $conteudoQuestaoClone = $conteudoQuestao.clone();
+                                $conteudoQuestaoClone.removeAttr('id').removeAttr('hidden');
+                                $conteudoQuestaoClone.html($conteudoQuestao.html());
+
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{matrAluno}', valor));
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{codQuestao}', data[i].codQuestao));
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoEnunciado}', data[i].questaoEnunciado));
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoIndice}', getIndiceQuestao(data[i].codQuestao)));
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoChaveResposta}', data[i].questaoChaveResposta));
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{alunoResposta}', data[i].alunoResposta));
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{correcaoComentario}', data[i].correcaoComentario));
+
+                                $conteudo.append($conteudoQuestaoClone);
+
+                                if (data[i].flagCorrigida) {
+                                    $conteudo.append($conteudoQuestaoClone);
+                                    $conteudoQuestaoClone.find('.dimmer').dimmer('show');
+                                    $conteudoQuestaoClone.find('.notaObtida').val(data[i].notaObtida);
+                                }
+                                else {
+                                    $conteudo.prepend($conteudoQuestaoClone);
+                                }
+                            }
+
+                            $modal.modal('refresh');
+                            $(_this).parent().removeClass('loading');
+
+                            $('.button.corrigir.aluno').click(function () {
+                                corrigirQuestao(this);
+                            });
+                        },
+                        error: function () {
+                            siac.mensagem('Ocorreu um erro.');
+                            $(_this).parent().removeClass('loading');
+                        }
+                    });
+                }
+                else if (modo == 'questao') {
+                    $conteudoQuestao = $('#templateCorrecaoQuestao');
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Dashboard/Avaliacao/Academica/CarregarRespostasPorQuestao/' + _codAvaliacao,
+                        data: {
+                            codQuestao: valor
+                        },
+                        success: function (data) {
+                            $('.correcao.conteudo').html('');
+                            if (data) {
+                                $conteudoQuestaoClone = $conteudoQuestao.clone().removeAttr('id').removeAttr('hidden');;
+                                $conteudoQuestaoClone.find('table').remove();
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoEnunciado}', data[0].questaoEnunciado));
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoIndice}', getIndiceQuestao(data[0].codQuestao)));
+                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoChaveResposta}', data[0].questaoChaveResposta));
+                                var $conteudoQuestaoTemp = $conteudoQuestaoClone;
+
+                                for (i = 0, length = data.length; i < length; i++) {
+                                    $conteudoQuestaoClone = $conteudoQuestao.clone();
+                                    $conteudoQuestaoClone.removeAttr('id').removeAttr('hidden');
+                                    $conteudoQuestaoClone.html($conteudoQuestaoClone.find('table').parent()).attr('id', 'aln' + data[i].alunoMatricula);
+
+                                    $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{matrAluno}', valor));
+                                    $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{alunoNome}', data[i].alunoNome));
+                                    $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{codQuestao}', data[i].codQuestao));
+                                    $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{alunoResposta}', data[i].alunoResposta));
+                                    $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{correcaoComentario}', data[i].correcaoComentario));
+
+                                    if (data[i].flagCorrigida) {
+                                        $conteudo.append($conteudoQuestaoClone);
+                                        $conteudoQuestaoClone.find('.dimmer').dimmer('show');
+                                        $conteudoQuestaoClone.find('.notaObtida').val(data[i].notaObtida);
+                                    }
+                                    else {
+                                        $conteudo.prepend($conteudoQuestaoClone);
+                                    }
+                                }
+
+                                $conteudo.prepend($conteudoQuestaoTemp);
+
+                                $modal.modal('refresh');
+                                $(_this).parent().removeClass('loading');
+
+                                $('.button.corrigir.aluno').click(function () {
+                                    corrigirQuestao(this);
+                                });
+                            }
+                        },
+                        error: function () {
+                            siac.mensagem('Ocorreu um erro.');
+                            $(_this).parent().removeClass('loading');
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    function getIndiceQuestao(codQuestao) {
+        return _dicQuestoes[codQuestao];
+    }
+
+    function corrigirQuestao(_this) {
+        modo = $('#ddlCorrecaoModo').val();
+
+        matrAluno = $('#ddlCorrecaoValor').val();
+        codQuestao = $(_this).parents('[id]').attr('id');
+        id = codQuestao;
+
+        if (modo == "questao") {
+            matrAluno = $(_this).parents('[id]').attr('id');;
+            codQuestao = $('#ddlCorrecaoValor').val();
+            id = matrAluno;
+            matrAluno = matrAluno.split('aln')[1];
+        }
+        notaObtida = $('#' + id + ' .notaObtida').val();
+        correcaoComentario = $('#' + id + ' .correcaoComentario').val();
+        $('#' + id + ' .button.corrigir.aluno').addClass('loading');
+
+        $.ajax({
+            type: 'POST',
+            url: '/Dashboard/Avaliacao/Academica/CorrigirQuestaoAluno/' + _codAvaliacao,
+            data: {
+                matrAluno: matrAluno,
+                codQuestao: codQuestao,
+                notaObtida: notaObtida,
+                profObservacao: correcaoComentario
+            },
+            success: function (data) {
+                $('#' + id + ' .button.corrigir.aluno').removeClass('loading').addClass('disabled');
+                $('#' + id).find('.segment').dimmer('show');
+            },
+            error: function (data) {
+                siac.mensagem(data);
+                $('#' + id + ' .button.corrigir.aluno').removeClass('loading');
+            }
+        });
     }
 
     return {

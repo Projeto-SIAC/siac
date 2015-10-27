@@ -81,6 +81,9 @@
         else if (/\/dashboard\/avaliacao\/academica\/acompanhar\/acad[0-9]+$/.test(pathname)) {
             siac.Academica.Acompanhar.iniciar();
         }
+        else if (/\/historico\/avaliacao\/academica\/corrigir\/acad[0-9]+$/.test(pathname)) {
+            siac.Academica.Corrigir.iniciar();
+        }
     }
 
     function mensagem(mensagem, titulo) {
