@@ -84,7 +84,7 @@ namespace SIAC.Controllers
             return PartialView("_ListaQuestao", questoes.Skip((qte*pagina.Value)-qte).Take(qte).ToList());
         }
 
-        //POST: /PalavrasChave
+        //POST: Questao/PalavrasChave
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult PalavrasChave(string[] palavras)
         {
@@ -97,7 +97,8 @@ namespace SIAC.Controllers
                 Enunciado = q.Enunciado,
                 TipoQuestao = q.TipoQuestao.Descricao,
                 Professor = q.Professor.Usuario.PessoaFisica.Nome,
-                DtCadastro = q.DtCadastro.ToBrazilianString()
+                DtCadastro = q.DtCadastro.ToBrazilianString(),
+                FlagProprietario = q.Professor.MatrProfessor == Helpers.Sessao.UsuarioMatricula
             });
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -357,6 +358,24 @@ namespace SIAC.Controllers
                 Repositorio.GetInstance().SaveChanges();
             }
             return RedirectToAction("Index");
+        }
+
+        // POST: Questao/Apresentar
+        [HttpPost]
+        public ActionResult Apresentar(string codigo)
+        {
+            int codQuestao = 0;
+            int.TryParse(codigo, out codQuestao);
+            Questao model = null;
+            if (codQuestao > 0)
+            {
+                model = Questao.ListarPorCodigo(codQuestao);
+            }
+            if (model != null)
+            {
+                return PartialView("_Questao", model);
+            }
+            return null;
         }
     }
 }

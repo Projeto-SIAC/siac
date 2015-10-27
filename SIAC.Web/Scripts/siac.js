@@ -75,6 +75,9 @@
         else if (/\/dashboard\/avaliacao\/academica\/realizar\/acad[0-9]+$/.test(pathname)) {
             siac.Academica.Realizar.iniciar();
         }
+        else if (/\/dashboard\/avaliacao\/academica\/acompanhar\/acad[0-9]+$/.test(pathname)) {
+            siac.Academica.Acompanhar.iniciar();
+        }
     }
 
     function mensagem(mensagem, titulo) {

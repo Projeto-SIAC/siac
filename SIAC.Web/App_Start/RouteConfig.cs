@@ -11,32 +11,8 @@ namespace SIAC
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
-            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-            routes.MapRoute(
-                name: "AvalAcadPrint",
-                url: "Academica/Printar",
-                defaults: new { controller = "Academica",action = "Printar" }
-                );
-
-            routes.MapRoute(
-                name: "DesfazerAvalAcadTrocaQuestao",
-                url: "Historico/Avaliacao/Academica/Desfazer/{codigoAval}",
-                defaults: new { controller = "Academica", action = "Desfazer", codigoAval = UrlParameter.Optional }
-            );
-
-            routes.MapRoute(
-                name: "SalvarAvalAcad",
-                url: "Historico/Avaliacao/Academica/Salvar/{codigoAval}",
-                defaults: new { controller = "Academica", action = "Salvar", codigoAval = UrlParameter.Optional }
-            );
-
-            routes.MapRoute(
-                name: "AvalAcadTrocarQuestao",
-                url: "Avaliacao/Academica/TrocarQuestao/{codigo}",
-                defaults: new { controller = "Academica", action = "TrocarQuestao", codigo = UrlParameter.Optional}
-            );
-            
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");  
+                        
             routes.MapRoute(
                 name: "HistoricoAvaliacao",
                 url: "Historico/Avaliacao/{controller}/{action}/{codigo}",
@@ -83,33 +59,12 @@ namespace SIAC
                 url: "{controller}/{action}",
                 defaults: new { controller = "Acesso", action = "Index" },
                 constraints: new { controller = @"^(Dashboard|Historico|Acesso|Erro|Configuracoes)$" }
-            );
-
-            routes.MapRoute(
-                name: "RecuperarTemasPorCodDisciplina",
-                url: "Tema/RecuperarTemasPorCodDisciplina/",
-                defaults: new { controller = "Tema", action = "RecuperarTemasPorCodDisciplina" },
-                namespaces: new[] { "SIAC.Controllers" }
-            );
-
-            routes.MapRoute(
-                name: "RecuperarTemasPorCodDisciplinaTemQuestao",
-                url: "Tema/RecuperarTemasPorCodDisciplinaTemQuestao/",
-                defaults: new { controller = "Tema", action = "RecuperarTemasPorCodDisciplinaTemQuestao" },
-                namespaces: new[] { "SIAC.Controllers" }
-            );
+            );           
 
             routes.MapRoute(
                 name: "LeroLero",
                 url: "LeroLero",
                 defaults: new { controller = "LeroLero", action = "Index" },
-                namespaces: new[] { "SIAC.Controllers" }
-            );
-
-            routes.MapRoute(
-                name: "PalavrasChave",
-                url: "PalavrasChave",
-                defaults: new { controller = "Questao", action = "PalavrasChave" },
                 namespaces: new[] { "SIAC.Controllers" }
             );
 

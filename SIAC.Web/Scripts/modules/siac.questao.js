@@ -224,6 +224,12 @@ siac.Questao.Cadastrar = (function () {
         $('.anexos .adicionar.button').click(function () {
             adicionarAnexo();
         });
+
+        $('.ui.shape').shape({
+            onChange: function () {
+                $('.pesquisa.modal').modal('refresh');
+            }
+        });
     }
 
     function recuperarTemasPorCodDisciplina() {
@@ -648,17 +654,19 @@ siac.Questao.Cadastrar = (function () {
         $.ajax({
             type: 'POST',
             data: { "palavras": palavras },
-            url: '/PalavrasChave',
+            url: '/Dashboard/Questao/PalavrasChave',
             success: function (data) {
                 $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
                 $('#divQuestoes').html('');
                 if (data.length != 0) {
-                    $('#divQuestoes').append('<div class="ui label"> Resultado(s)<div class="detail">' + data.length + '</div></div>');
-                    for (var i = 0; i < data.length; i++) {
-                        $('#divQuestoes').append('\
+                    var $div = $('#divQuestoes');
+                    $div.parent().find('.ui.resultado.label').remove();
+                    $div.parent().append('<div class="ui resultado label"> Resultado(s)<div class="detail">' + data.length + '</div></div>');
+                    for (var i = 0, length = data.length; i < length; i++) {
+                        $div.append('\
                         <div class="item">\
                             <div class="content">\
-                                <a href="/Historico/Questao/' + data[i].CodQuestao + '" class="header">' + siac.Utilitario.encurtarTextoEm(data[i].Enunciado, 140) + '</a>\
+                                <a data-questao="'+ data[i].CodQuestao + '" class="header">' + siac.Utilitario.encurtarTextoEm(data[i].Enunciado, 140) + '</a>\
                                 <div class="description ui labels">\
                                     <span class="ui label">' + data[i].Disciplina + '</span>\
                                     <span class="ui label">' + data[i].Dificuldade + '</span>\
@@ -668,6 +676,12 @@ siac.Questao.Cadastrar = (function () {
                             </div>\
                         </div>\
                         ');
+                        if (i < (length - 1)) {
+                            $div.append('\
+                            <div class="ui horizontal divider">\
+                                <i class="icon folder open"></i>\
+                              </div>');
+                        }
                     }
                 } else {
                     $('#divQuestoes').append('\
@@ -679,11 +693,43 @@ siac.Questao.Cadastrar = (function () {
                         ');
                 }
                 $('.ui.pesquisa.modal').modal('refresh');
+                $('a[data-questao]').click(function () {
+                    var cod = $(this).attr('data-questao');
+                    apresentarQuestao(cod);
+                    $('.shape').shape('flip right');
+                });
             },
-            error: function (xhr, ajaxOptions, thrownError) {
+            error: function () {
                 siac.mensagem('Erro na pesquisa. Por favor, tente novamente.');
             }
         });
+    }
+
+    function apresentarQuestao(codQuestao) {
+        if (codQuestao) {
+            $.ajax({
+                url: '/Dashboard/Questao/Apresentar',
+                type: 'POST',
+                data: { codigo: codQuestao },
+                success: function (partial) {
+                    $segment = $('.questao.segment');
+                    $segment.html(partial);
+                    $segment.removeAttr('style');
+                    $segment.find('.ui.accordion').accordion({
+                        onChange: function () {
+                            $segment.parents('.modal').modal('refresh');
+                        }
+                    });
+                    $segment.parents('.modal').modal('refresh');
+                    $segment.parent().find('.voltar.button').off().click(function () {
+                        $('.shape').shape('flip left');
+                    });
+                },
+                complete: function () {
+                    $('.questao.segment').removeClass('loading');
+                }
+            });
+        }
     }
 
     function checarCaptcha() {
@@ -737,9 +783,11 @@ siac.Questao.Detalhe = (function () {
         $('.ui.accordion')
             .accordion({ animateChildren: false })
         ;
+
         $('div,p')
             .popup()
         ;
+
         $('.button')
         .popup({
             on: 'click'

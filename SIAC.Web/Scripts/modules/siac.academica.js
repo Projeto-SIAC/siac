@@ -663,7 +663,7 @@ siac.Academica.Realizar = (function () {
         _codAvaliacao = $elemento.attr('data-avaliacao');
         _matriculaUsuario = $elemento.attr('data-usuario');
         $elemento.removeAttr('data-avaliacao data-usuario');
-        
+
         $elemento = $('[data-termino]');
         _dtTermino = new Date();
         _dtTermino.setTime(Date.parse($elemento.attr('data-termino')));
@@ -681,8 +681,8 @@ siac.Academica.Realizar = (function () {
         }, 1000 * 60 * 15);
 
         $('a[href]').on('click', function () {
-            $('.ui.confirmar.modal').modal('show'); 
-            $('.ui.confirmar.modal #txtRef').val($(this).attr('href')); 
+            $('.ui.confirmar.modal').modal('show');
+            $('.ui.confirmar.modal #txtRef').val($(this).attr('href'));
             return false;
         });
 
@@ -694,17 +694,17 @@ siac.Academica.Realizar = (function () {
             .modal()
         ;
 
-        $('.informacoes.button').click(function(){
+        $('.informacoes.button').click(function () {
             $('.ui.informacoes.modal').modal('show');
         });
 
         $('.ui.confirmar.modal')
             .modal({
-                onApprove: function () {                    
+                onApprove: function () {
                     desistir($('.ui.confirmar.modal #txtRef').val());
                 },
-                onDeny: function () { 
-                    $('.ui.segment.loading').removeClass('loading'); 
+                onDeny: function () {
+                    $('.ui.segment.loading').removeClass('loading');
                 }
             })
         ;
@@ -714,8 +714,8 @@ siac.Academica.Realizar = (function () {
         ;
 
         $('.ui.accordion')
-            .accordion({ 
-                animateChildren: false 
+            .accordion({
+                animateChildren: false
             })
         ;
 
@@ -725,7 +725,7 @@ siac.Academica.Realizar = (function () {
                 on: 'click'
             })
         ;
-        
+
         $('.ui.gabarito.modal')
             .modal({
                 onApprove: function () {
@@ -756,7 +756,7 @@ siac.Academica.Realizar = (function () {
         $('.anexo.imagem.card').click(function () {
             expandirImagem(this);
         });
-        
+
         $('.desistir.button').click(function () {
             desistir();
         });
@@ -764,7 +764,7 @@ siac.Academica.Realizar = (function () {
         var date = new Date();
         $('#lblHoraInicio').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
         $('#lblHoraTermino').text(_dtTermino.getHours() + 'h' + ("0" + (_dtTermino.getMinutes())).slice(-2) + 'min');
-        
+
         relogio();
         temporizador(_dtTermino);
         conectarHub(_codAvaliacao, _matriculaUsuario);
@@ -819,7 +819,7 @@ siac.Academica.Realizar = (function () {
         }, 1000);
     }
 
-    function finalizar() { 
+    function finalizar() {
         window.onbeforeunload = function () {
             $('.ui.global.loader').parent().addClass('active');
         };
@@ -871,9 +871,7 @@ siac.Academica.Realizar = (function () {
                 .attr({
                     'readonly': 'readonly'
                 })
-                .removeAttr('href')
-                .removeAttr('onchange')
-                .removeAttr('onclick')
+                .removeAttr('href onchange onclick')
                 .off()
             ;
         }
@@ -884,7 +882,7 @@ siac.Academica.Realizar = (function () {
     function desistir(url) {
         $('.ui.global.loader').parent().addClass('active');
         $.ajax({
-            url: '/Dashboard/Avaliacao/Academica/Desistir/'+_codAvaliacao,
+            url: '/Dashboard/Avaliacao/Academica/Desistir/' + _codAvaliacao,
             type: 'POST',
             success: function () {
                 window.onbeforeunload = function () {
@@ -920,7 +918,7 @@ siac.Academica.Realizar = (function () {
                 .modal({
                     onApprove: function () {
                         acadHub.server.alunoVerificando(avalAcad, usrMatr);
-                        Confirmar();
+                        confirmar();
                     },
                     onDeny: function () {
                         $('form').addClass('error');
@@ -938,7 +936,7 @@ siac.Academica.Realizar = (function () {
                     confirmar();
                 }
                 else {
-                    $('.continuar.modal').modal('show');                        
+                    $('.continuar.modal').modal('show');
                 }
             });
 
@@ -1000,7 +998,7 @@ siac.Academica.Realizar = (function () {
                     }
                     acadHub.server.responderQuestao(avalAcad, usrMatr, questao, false);
                     $label.attr('style', 'display:none');
-                }                    
+                }
             });
 
             $(window).on("blur focus", function (e) {
@@ -1025,7 +1023,7 @@ siac.Academica.Realizar = (function () {
             var timeAntes = new Date();
             alert(mensagem);
             var timeDepois = new Date();
-            if ((timeDepois-timeAntes)<350) {
+            if ((timeDepois - timeAntes) < 350) {
                 siac.mensagem(mensagem, 'O professor disse...');
             }
         }
@@ -1040,7 +1038,7 @@ siac.Academica.Realizar = (function () {
                     data = canvas.toDataURL("image/png");
                     $.ajax({
                         type: 'POST',
-                        url: '@Url.RouteUrl("AvalAcadPrint")',
+                        url: '/Dashboard/Avaliacao/Academica/Printar',
                         data: {
                             codAvaliacao: avalAcad,
                             imageData: data
@@ -1084,7 +1082,7 @@ siac.Academica.Realizar = (function () {
                     $btnChat.addClass('blue').html('<i class="icon comments outline"></i> ' + chatQteMensagem);
                     document.title = "Você recebeu uma mensagem - SIAC";
                     if (chatQteMensagem > 1) {
-                        document.title = "Você recebeu "+chatQteMensagem+" mensagens - SIAC";
+                        document.title = "Você recebeu " + chatQteMensagem + " mensagens - SIAC";
                     }
                 }
             }
@@ -1093,12 +1091,278 @@ siac.Academica.Realizar = (function () {
             chatQteMensagem = 0;
             $('#lblQteMsg').remove();
             $(this).removeClass('blue').html('<i class="icon comments outline"></i>');
-            document.title = 'Realizar '+_codAvaliacao;
+            document.title = 'Realizar ' + _codAvaliacao;
         });
 
     }
 
     return {
-        iniciar:iniciar
+        iniciar: iniciar
+    }
+})();
+
+siac.Academica.Acompanhar = (function () {
+    var _codAvaliacao, _matriculaUsuario;
+
+    function iniciar() {
+        $elemento = $('[data-avaliacao][data-usuario]');
+        _codAvaliacao = $elemento.attr('data-avaliacao');
+        _matriculaUsuario = $elemento.attr('data-usuario');
+        $elemento.removeAttr('data-avaliacao data-usuario');
+
+        conectarHub(_codAvaliacao, _matriculaUsuario);
+
+        $('.ui.accordion')
+            .accordion({
+                animateChildren: false
+            })
+        ;
+
+        $('.ui.progress')
+            .progress({
+                label: 'ratio',
+                text: {
+                    ratio: '{value} de {total}'
+                }
+            })
+        ;
+
+        $('.trigger.button')
+            .popup({
+                inline: true,
+                on: 'click'
+            })
+        ;
+    }
+
+    function conectarHub(avalAcad, usrMatr) {
+        var acadHub = $.connection.academicaHub;
+        $.connection.hub.start().done(function () {
+
+            enviarMsg = function enviarMsg(_this) {
+                $content = $(_this).parents('.content[id]');
+                matr = $content.attr('id');
+                $msg = $('#' + matr + 'msg');
+                $msg.val($msg.val().trim());
+                if ($msg.val()) {
+                    var mensagem = $msg.val();
+                    mensagem = siac.Utilitario.quebrarLinhaEm(mensagem, 30);
+                    acadHub.server.chatProfessorEnvia(avalAcad, matr, $msg.val());
+                    $('#' + matr + '.content .chat.popup .comments').append('\
+                            <div class="comment" style="float:right;clear:both;">\
+                                <div class="content">\
+                                <div class="ui right pointing label">\
+                                    '+ mensagem + '\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+                    $msg.val('');
+                    var $comments = $content.find('.comments');
+                    $($comments).animate({
+                        scrollTop: $comments.children().last().offset().top
+                    }, 0);
+                }
+            };
+
+            acadHub.server.professorConectou(avalAcad, usrMatr);
+            $('.prova.button').on('click', function () {
+                matr = $(this).parent().attr('id');
+                acadHub.server.requererAval(avalAcad, matr);
+                $('#' + matr + '.content .prova.button').addClass('loading').removeClass('transition visible');
+            });
+
+            $('.alertar.button').on('click', function () {
+                mensagem = $(this).prev().find('textarea').val();
+                matr = $(this).parent().parent().parent().attr('id');
+                acadHub.server.alertar(avalAcad, mensagem, matr);
+                $(this).prev().find('textarea').val('');
+                $(this).popup('hide all');
+            });
+
+            $('.enviar.icon').on('click', function () { enviarMsg(this) });
+            $('.chat input').keypress(function (e) {
+                if (e.which == 13) {
+                    enviarMsg(this);
+                    return false;
+                }
+            });
+
+
+            setInterval(function () {
+                lstMatr = $('.accordion')
+                            .find('.title')
+                            .map(function () {
+                                acadHub.server.feed(avalAcad, this.id);
+                            });
+            }, 3000);
+        });
+
+        acadHub.client.chatProfessorRecebe = function (usrMatricula, mensagem) {
+            $content = $('#' + usrMatricula + '.content[id]');
+            if (mensagem) {
+                mensagem = siac.Utilitario.quebrarLinhaEm(mensagem, 30);
+                $('#' + usrMatricula + '.content .chat.popup .comments').append('\
+                            <div class="comment" style="float:left;clear:both;">\
+                                <div class="content">\
+                                <div class="ui left pointing label">\
+                                    '+ mensagem + '\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+                var $comments = $content.find('.comments');
+                $($comments).animate({
+                    scrollTop: $comments.children().last().offset().top
+                }, 0);
+
+                chatQteMensagem = 0;
+                if ($('#' + usrMatricula + 'lblQteMsg').length) { chatQteMensagem = $('#' + usrMatricula + 'lblQteMsg').data('qte') }
+                if (!$('#' + usrMatricula + '.content .chat.popup').hasClass('visible')) {
+                    $accordionChat = $('#' + usrMatricula + '.title');
+                    $lblQteMsg = $('#' + usrMatricula + 'lblQteMsg');
+                    $lblQteMsg.remove();
+                    $accordionChat.append($('<div></div>').attr('id', usrMatricula + 'lblQteMsg').addClass('ui small blue label').append('<i class="ui comments icon"></i>'));
+                    chatQteMensagem++;
+                    $('#' + usrMatricula + 'lblQteMsg').data('qte', chatQteMensagem).append(chatQteMensagem);
+                }
+            }
+        };
+
+        $('.icon.chat.button').on('click', function () {
+            matr = ($(this).parents('.content[id]').attr('id'));
+            $('#' + matr + 'lblQteMsg').remove();
+        });
+
+        acadHub.client.atualizarFeed = function (alnMatricula, lstEvento) {
+            $feed = $('#' + alnMatricula + '.content .feed');
+            $feed.html('');
+            $feed.append('<h4 class="ui header">Atividade</h4>');
+            if (lstEvento) {
+                for (var i = lstEvento.length - 1; i > -1; i--) {
+                    $feed.append('\
+                        <div class="event">\
+                            <div class="label">\
+                                <i class="'+ lstEvento[i].Icone + ' icon"></i>\
+                            </div>\
+                            <div class="content">\
+                                <div class="summary">\
+                                    ' + lstEvento[i].Descricao + '\
+                                    <div class="date" title="'+ lstEvento[i].DataCompleta + '">' + lstEvento[i].Data + '</div>\
+                                </div>\
+                            </div>\
+                        </div>\
+                    ');
+                }
+
+                $('#' + alnMatricula + 'lblInfo').remove();
+                if (lstEvento[lstEvento.length - 1].Icone == "red warning sign" && !$('#' + alnMatricula + 'lblWarning').length && !$('#' + alnMatricula).hasClass('active')) {
+                    $accordionChat = $('#' + alnMatricula + '.title');
+                    $accordionChat.append($('<i></i>').attr('id', alnMatricula + 'lblWarning').addClass('red warning sign icon'));
+                }
+
+                else if (!$('#' + alnMatricula + 'lblWarning').length) {
+                    $accordionChat = $('#' + alnMatricula + '.title');
+                    $accordionChat.append($('<i></i>').attr('id', alnMatricula + 'lblInfo').addClass(lstEvento[lstEvento.length - 1].Icone + ' icon'));
+                }
+            }
+        }
+
+        $('.accordion .title').on('click', function () {
+            matr = ($(this).attr('id'));
+            $('#' + matr + 'lblWarning').remove();
+        });
+
+        acadHub.client.conectarAluno = function (usrMatricula) {
+            $('#' + usrMatricula + '.title .small.label').remove();
+            $('#' + usrMatricula + '.title .status.label').removeClass('red').addClass('green');
+            $('#' + usrMatricula + '.content .button').removeClass('disabled');
+        };
+
+        acadHub.client.desconectarAluno = function (usrMatricula) {
+            $('#' + usrMatricula + '.title').append('<div class="ui small label">Desconectado</div>');
+            $('#' + usrMatricula + '.title .status.label').removeClass('green');
+            $('#' + usrMatricula + '.content .button').addClass('disabled');
+        };
+
+        acadHub.client.alunoFinalizou = function (usrMatricula) {
+            $('#' + usrMatricula + '.title').append('<div class="ui small label">Finalizou</div>');
+            $('#' + usrMatricula + '.title .status.label').removeClass('green').addClass('red');
+            $('#' + usrMatricula + '.content .button').addClass('disabled');
+        };
+
+        acadHub.client.receberAval = function (alnMatricula) {
+            $.ajax({
+                type: 'POST',
+                url: '/Dashboard/Avaliacao/Academica/Printar',
+                data: {
+                    codAvaliacao: avalAcad
+                },
+                success: function (data) {
+                    $('.printscreen.modal .header').text($('#' + alnMatricula + ' .nome').text() + ' (' + alnMatricula + ')');
+                    $('.printscreen.modal .content').css({
+                        'background-image': 'url(\'' + data + '\')'
+                    });
+                    $('.printscreen.modal .nova.guia.button').attr('href', data);
+                    $('.printscreen.modal').modal('show').modal('refresh');
+                    $('#' + alnMatricula + '.content .prova.button').removeClass('loading');
+                },
+                error: function () {
+                    siac.mensagem('Ocorreu um erro inesperado. Tente novamente mais tarde.');
+                }
+            });
+        };
+
+        acadHub.client.atualizarProgresso = function (alnMatricula, value) {
+            if (value > 0) {
+                $('#' + alnMatricula + '.content .progress')
+                    .progress({
+                        value: value,
+                        label: 'ratio',
+                        text: {
+                            ratio: '{value} de {total}'
+                        }
+                    })
+                ;
+            }
+        }
+
+        acadHub.client.respondeuQuestao = function (alnMatricula, questao, flag) {
+            $questao = $('#' + alnMatricula + '.content [data-questao="' + questao + '"]');
+            $questao.removeClass('positive').find('i').remove();
+            if (flag) {
+                $questao.addClass('green');
+            }
+        }
+
+        acadHub.client.listarChat = function (alnMatricula, mensagens) {
+            for (var i = 0, length = mensagens.length; i < length; i++) {
+                if (mensagens[i].FlagAutor) {
+                    acadHub.client.chatProfessorRecebe(alnMatricula, mensagens[i].Texto);
+                }
+                else {
+                    var mensagem = mensagens[i].Texto;
+                    mensagem = siac.Utilitario.quebrarLinhaEm(mensagem, 30);
+                    $('#' + alnMatricula + '.content .chat.popup .comments').append('\
+                        <div class="comment" style="float:right;clear:both;">\
+                            <div class="content">\
+                            <div class="ui right pointing label">\
+                                '+ mensagem + '\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+
+                    var $comments = $('#' + alnMatricula + '.content .comments');
+                    $($comments).animate({
+                        scrollTop: $comments.children().last().offset().top
+                    }, 0);
+                }
+            }
+        }
+    }
+
+    return {
+        iniciar: iniciar
     }
 })();
