@@ -27,7 +27,8 @@
                 var modo = $(this).val();
                 $ddlCorrecaoValor = $('#ddlCorrecaoValor');
                 $ddlCorrecaoValor.parent().addClass('loading');
-
+                $('.correcao.conteudo').html('');
+                $ddlCorrecaoValor.html('');
                 if (modo == 'aluno') {
                     $.ajax({
                     cache: true,
@@ -135,7 +136,7 @@
                             if (data) {
                                 $conteudoQuestaoClone = $conteudoQuestao.clone().removeAttr('id').removeAttr('hidden');;
                                 $conteudoQuestaoClone.find('table').remove();
-                                $conteudoQuestaoClone.find('.dimmer').remove();
+                                //$conteudoQuestaoClone.find('.dimmer').remove();
                                 $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoEnunciado}', data[0].questaoEnunciado));
                                 $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoIndice}', getIndiceQuestao(data[0].codQuestao)));
                                 $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoChaveResposta}', data[0].questaoChaveResposta));
@@ -144,7 +145,7 @@
                                 for (i = 0, length = data.length; i < length; i++) {
                                     $conteudoQuestaoClone = $conteudoQuestao.clone();
                                     $conteudoQuestaoClone.removeAttr('id').removeAttr('hidden');
-                                    $conteudoQuestaoClone.html($conteudoQuestaoClone.find('table')).attr('id','aln'+ data[i].alunoMatricula);
+                                    $conteudoQuestaoClone.html($conteudoQuestaoClone.find('table').parent()).attr('id','aln'+ data[i].alunoMatricula);
 
                                     $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{matrAluno}', valor));
                                     $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{alunoNome}', data[i].alunoNome));
@@ -187,13 +188,12 @@
                     matrAluno = $(_this).parents('[id]').attr('id');;
                     codQuestao = $('#ddlCorrecaoValor').val();
                     id = matrAluno;
+                    matrAluno = matrAluno.split('aln')[1];
                 }
-
                 notaObtida = $('#' + id + ' .notaObtida').val();
                 correcaoComentario = $('#' + id + ' .correcaoComentario').val();
-                matrAluno = matrAluno.split('aln')[1];
-
                 $('#' + id + ' .button.corrigir.aluno').addClass('loading');
+
                 $.ajax({
                     type: 'POST',
                     url: '/Dashboard/Avaliacao/Academica/CorrigirQuestaoAluno/' + codAvaliacao,
@@ -356,7 +356,7 @@
                 </tr>
             </tbody>
         </table>
-        <div class="ui dimmer" onclick="console.log('exe'); return false;">
+        <div class="ui dimmer">
             <div class="content">
                 <div class="center">
                     <h2 class="ui inverted icon header">
@@ -370,7 +370,7 @@
         </div>
     </div>
 </div>
-
+@* Placeholder da opção de Correção por Questão *@
 <div id="templateCorrecaoQuestao" class="ui basic segment questoes aluno" hidden>
     <div id="{codQuestao}" class="ui fluid card">
         <div class="content">
@@ -380,43 +380,45 @@
             <a class="ui tiny green ribbon label">Chave de Resposta</a>
             <p><i>{questaoChaveResposta}</i></p>
         </div>
-        <table class="ui striped table">
-            <thead>
-                <tr>
-                    <th class="six wide">{alunoNome}</th>
-                    <th class="two wide">Nota Obtida</th>
-                    <th class="six wide">Comentário de Correção</th>
-                    <th class="three wide"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{alunoResposta}</td>
-                    <td>
-                        <div class="field required">
-                            <input type="number" value="@Parametro.Obter().ValorNotaMedia.ToValueHtml()" min="0" step="0.1" max="10" class="notaObtida" />
-                        </div>
-                    </td>
-                    <td>
-                        <div class="field required">
-                            <textarea class="correcaoComentario" rows="3">{correcaoComentario}</textarea>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="ui button corrigir aluno">Salvar</div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="ui dimmer" onclick="console.log('exe'); return false;">
-            <div class="content">
-                <div class="center">
-                    <h2 class="ui inverted icon header">
-                        <i class="checkmark icon"></i>
-                        Questão Corrigida!
-                    </h2>
-                    <br />
-                    <p class="detail">Clique para recorrigir</p>
+        <div class="segment">
+            <table class="ui striped table">
+                <thead>
+                    <tr>
+                        <th class="six wide">{alunoNome}</th>
+                        <th class="two wide">Nota Obtida</th>
+                        <th class="six wide">Comentário de Correção</th>
+                        <th class="three wide"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{alunoResposta}</td>
+                        <td>
+                            <div class="field required">
+                                <input type="number" value="@Parametro.Obter().ValorNotaMedia.ToValueHtml()" min="0" step="0.1" max="10" class="notaObtida" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field required">
+                                <textarea class="correcaoComentario" rows="3">{correcaoComentario}</textarea>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui button corrigir aluno">Salvar</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="ui dimmer">
+                <div class="content">
+                    <div class="center">
+                        <h2 class="ui inverted small icon header">
+                            <i class="checkmark icon"></i>
+                            Questão Corrigida!
+                        </h2>
+                        <br />
+                        <p class="detail">Clique para recorrigir</p>
+                    </div>
                 </div>
             </div>
         </div>
