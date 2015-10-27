@@ -110,8 +110,12 @@
                                     $conteudo.append($conteudoQuestaoClone);
 
                                     if (data[i].flagCorrigida) {
+                                        $conteudo.append($conteudoQuestaoClone);
                                         $conteudoQuestaoClone.find('.dimmer').dimmer('show');
                                         $conteudoQuestaoClone.find('.notaObtida').val(data[i].notaObtida);
+                                    }
+                                    else {
+                                        $conteudo.prepend($conteudoQuestaoClone);
                                     }
                                 }
 
@@ -144,7 +148,7 @@
                                     $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoEnunciado}', data[0].questaoEnunciado));
                                     $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoIndice}', getIndiceQuestao(data[0].codQuestao)));
                                     $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoChaveResposta}', data[0].questaoChaveResposta));
-                                    $conteudo.append($conteudoQuestaoClone);
+                                    var $conteudoQuestaoTemp = $conteudoQuestaoClone;
 
                                     for (i = 0, length = data.length; i < length; i++) {
                                         $conteudoQuestaoClone = $conteudoQuestao.clone();
@@ -156,14 +160,18 @@
                                         $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{codQuestao}', data[i].codQuestao));
                                         $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{alunoResposta}', data[i].alunoResposta));
                                         $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{correcaoComentario}', data[i].correcaoComentario));
-
-                                        $conteudo.append($conteudoQuestaoClone);
-
+                                        
                                         if (data[i].flagCorrigida) {
+                                            $conteudo.append($conteudoQuestaoClone);
                                             $conteudoQuestaoClone.find('.dimmer').dimmer('show');
                                             $conteudoQuestaoClone.find('.notaObtida').val(data[i].notaObtida);
                                         }
+                                        else {
+                                            $conteudo.prepend($conteudoQuestaoClone);
+                                        }
                                     }
+
+                                    $conteudo.prepend($conteudoQuestaoTemp);
 
                                     $modal.modal('refresh');
                                     $(_this).parent().removeClass('loading');
@@ -500,9 +508,26 @@
                                         <i class="write icon"></i>
                                     }
                                     @questaoIndice.GetIndiceQuestao()
-                                    @if (resp.RespAlternativa.HasValue) {
-                                    <div class="detail">@resp.RespAlternativa.Value.GetIndiceAlternativa()
-                                    </div>
+                                    @if (resp.RespAlternativa.HasValue)
+                                    {
+                                        if (resp.RespAlternativa.Value > -1)
+                                        {
+                                            <div class="detail">
+                                                @resp.RespAlternativa.Value.GetIndiceAlternativa()
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="detail">
+                                                <i class="icon thumbs down"></i>
+                                            </div>
+                                        }
+                                    }
+                                    else if (String.IsNullOrEmpty(resp.RespDiscursiva))
+                                    {
+                                        <div class="detail">
+                                            <i class="icon thumbs down"></i>
+                                        </div>
                                     }
                                 </a>
                             </td>
