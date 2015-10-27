@@ -124,6 +124,18 @@ siac.Academica.Detalhe = (function () {
         _codAvaliacao = $elemento.attr('data-avaliacao');
         $elemento.removeAttr('data-avaliacao');
 
+        $('.ui.accordion').accordion({
+            animateChildren: false,
+            onOpen: function () {
+                $content = $('.questao.content.active');
+                if ($content) {
+                    var ctx = $content.find('canvas').get(0).getContext("2d");
+                    var data = JSON.parse($content.find('code.dados').html());
+                    var chart = new Chart(ctx).Doughnut(data);
+                }
+            }
+        });        
+
         $('.arquivar.button').click(function () {
             var $_this = $(this);
             $_this.addClass('loading');

@@ -39,6 +39,10 @@ namespace SIAC
                 "~/Scripts/plugins/jquery.signalR-2.2.0.min.js"
             ));
 
+            bundles.Add(new ScriptBundle("~/bundles/chart").Include(
+                "~/Scripts/libs/chart.min.js"
+            ));
+
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                 "~/Styles/semantic.min.css",
                 "~/Styles/siac.min.css"

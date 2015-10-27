@@ -163,6 +163,7 @@
       <LastGenOutput>dbSIAC.cs</LastGenOutput>
     </Content>
     <Content Include="Mvc.sitemap" />
+    <Content Include="Scripts\libs\chart.min.js" />
     <Content Include="Scripts\libs\html2canvas.js" />
     <Content Include="Scripts\libs\html2canvas.min.js">
       <DependentUpon>html2canvas.js</DependentUpon>

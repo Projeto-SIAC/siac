@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Avaliação Acadêmica " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var LstQuestao = Model.Avaliacao.Questao;
+    var LstResposta = Model.Avaliacao.PessoaResposta;
 }
 
 
@@ -52,7 +54,7 @@
     </table>
 </div>
 
-@if (Model.NumTurma.HasValue)
+@if (Model.Avaliacao.FlagAgendada)
 {
     <div class="ui basic segment">
         <div class="ui dividing header">
@@ -90,16 +92,79 @@
         </table>
     </div>
 }
+else if (Model.Avaliacao.FlagRealizada)
+{
+    if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 2)
+    {
+    <div class="ui basic segment">
+        <div class="ui dividing header">
+            Desempenho
+        </div>
+        <div class="ui accordion">
+            @for (int i = 0, length = LstQuestao.Count; i < length; i++)
+            {
+                var lstResposta = LstResposta
+                    .Where(r => r.CodQuestao == LstQuestao[i].CodQuestao);
+
+                <div class="title">
+                    <i class="dropdown icon"></i>
+                    @((i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).ToShortString(80))
+                </div>
+                <div id="@LstQuestao[i].CodQuestao" class="questao content">
+                    <div class="ui segment">
+                        <div class="ui dividing header" style="text-align:justify">
+                            @{
+                                var enunciado = (@i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).Split('\n', '\r');
+                                foreach (var strEnunciado in enunciado)
+                                {
+                                    if (!String.IsNullOrWhiteSpace(strEnunciado))
+                                    {
+                                        <p>@strEnunciado</p>
+                                    }
+                                }
+                            }
+                        </div>
+                        @if (LstQuestao[i].CodTipoQuestao == 1)
+                        {
+                            <div style="text-align:center">
+                                <canvas style="display:inline" width="200" height="200"></canvas>
+                            </div>
+                            <code class="dados" hidden>
+                                [@for (int j = 0, quant = LstQuestao[i].Alternativa.Count; j < quant; j++)
+                                {
+                                    <text>
+                                    { 
+                                        "value": "@lstResposta.Where(r=>r.RespAlternativa == j).Count()" , 
+                                        "label": "Alternativa @j.GetIndiceAlternativa()",
+                                        "color": "#F7464A",
+                                        "highlight": "#FF5A5E"
+                                    }
+                                    </text>
+                                    if (j < (quant-1))
+                                    {
+                                        @:,
+                                    }
+                                }]
+                            </code>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    }
+}
 else
 {
     <a href="/Dashboard/Avaliacao/Academica/Agendar/@Model.Avaliacao.CodAvaliacao" class="ui button">Agendar</a>
 }
 <a href="/Historico/Avaliacao/Academica" class="ui button">Histórico</a>
-@if (Model.Avaliacao.FlagArquivo || Model.Avaliacao.AvalPessoaResultado.Count == 0)
+@if (Model.Avaliacao.FlagArquivo || !Model.Avaliacao.FlagRealizada)
 {
     <div class="ui arquivar toggle @(Model.Avaliacao.FlagArquivo ? "active" : "") button">Arquiva@(Model.Avaliacao.FlagArquivo ? "da" : "r")</div>
 }
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/academica")
+    @Scripts.Render("~/bundles/chart")
 }
