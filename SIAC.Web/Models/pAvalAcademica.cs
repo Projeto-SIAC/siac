@@ -148,12 +148,46 @@ namespace SIAC.Models
                 resposta.RespNota = notaObtida;
                 resposta.ProfObservacao = profObservacao;
 
+                acad.Avaliacao.AvalPessoaResultado
+                    .Single(r => r.CodPessoaFisica == codPessoaFisica)
+                    .Nota = acad.Avaliacao.PessoaResposta
+                                .Where(pr => pr.CodPessoaFisica == codPessoaFisica)
+                                .Average(pr => pr.RespNota);
+
                 contexto.SaveChanges();
 
                 return true;
             }
 
             return false;
+        }
+
+        public static void RecalcularResultados()
+        {
+            foreach (var acad in contexto.AvalAcademica.ToList())
+            {
+                foreach (var avalPessoaResultado in acad.Avaliacao.AvalPessoaResultado)
+                {
+                    foreach (var pessoaResposta in acad.Avaliacao.PessoaResposta.Where(r=>r.CodPessoaFisica == avalPessoaResultado.CodPessoaFisica).ToList())
+                    {
+                        if (pessoaResposta.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1)
+                        {
+                            if (pessoaResposta.RespAlternativa == pessoaResposta.AvalTemaQuestao.QuestaoTema.Questao.Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value).CodOrdem)
+                            {
+                                pessoaResposta.RespNota = 10;
+                            }
+                            else
+                            {
+                                pessoaResposta.RespNota = 0;
+                            }
+                        }
+                    }
+                    avalPessoaResultado.Nota = acad.Avaliacao.PessoaResposta
+                                .Where(pr => pr.CodPessoaFisica == avalPessoaResultado.CodPessoaFisica)
+                                .Average(pr => pr.RespNota);
+                }
+            }
+            contexto.SaveChanges();
         }
     }
 }

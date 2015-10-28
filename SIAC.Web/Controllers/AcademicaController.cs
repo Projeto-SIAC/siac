@@ -731,11 +731,8 @@ namespace SIAC.Controllers
                     }
 
                     var lstAvalQuesPessoaResposta =  aval.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == codPessoaFisica);
-                    if (lstAvalQuesPessoaResposta.Where(r => !r.RespNota.HasValue).Count() == 0)
-                    {
-                        avalPessoaResultado.Nota = lstAvalQuesPessoaResposta.Average(r => r.RespNota);
-                    }
-
+                    
+                    avalPessoaResultado.Nota = lstAvalQuesPessoaResposta.Average(r => r.RespNota);
                     aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
                     Repositorio.GetInstance().SaveChanges();
@@ -763,6 +760,7 @@ namespace SIAC.Controllers
                     avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
                     avalPessoaResultado.HoraTermino = DateTime.Now;
                     avalPessoaResultado.QteAcertoObj = 0;
+                    avalPessoaResultado.Nota = 0;
 
                     foreach (var avaliacaoTema in aval.Avaliacao.AvaliacaoTema)
                     {
@@ -788,13 +786,9 @@ namespace SIAC.Controllers
         [Filters.CategoriaFilter(Categorias = new[] { 2 })]
         public ActionResult Pendente()
         {
-            if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
-            {
-                string strMatr = Helpers.Sessao.UsuarioMatricula;
-                int codProfessor = Professor.ListarPorMatricula(strMatr).CodProfessor;
-                return View(AvalAcademica.ListarPendentePorProfessor(codProfessor));
-            }            
-            return RedirectToAction("Index");
+            string strMatr = Helpers.Sessao.UsuarioMatricula;
+            int codProfessor = Professor.ListarPorMatricula(strMatr).CodProfessor;
+            return View(AvalAcademica.ListarPendentePorProfessor(codProfessor));
         }
 
         // GET: Avaliacao/Academica/Corrigir/ACAD201520016

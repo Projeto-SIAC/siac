@@ -1,10 +1,11 @@
-﻿
+﻿@using SIAC.Models
 @model SIAC.Models.AvalAcademica
 @{
     ViewBag.Title = "Avaliação Acadêmica " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
     var LstQuestao = Model.Avaliacao.Questao;
     var LstResposta = Model.Avaliacao.PessoaResposta;
+    var LstResultado = Model.Avaliacao.AvalPessoaResultado;
 }
 
 
@@ -98,6 +99,33 @@ else if (Model.Avaliacao.FlagRealizada)
     {
     <div class="ui basic segment">
         <div class="ui dividing header">
+            Desempenho
+        </div>
+        <div class="ui statistics">
+            <div class="statistic">
+                <div class="value">@LstResultado.Where(r=>r.Nota == 0).Count()</div>
+                <div class="label">Nota mínima</div>
+            </div>
+            <div class="statistic">
+                <div class="value">@LstResultado.Where(r => r.Nota == 10).Count()</div>
+                <div class="label">Nota máxima</div>
+            </div>
+            <div class="statistic">
+                <div class="value">@LstResultado.Where(r => r.Nota >= Parametro.Obter().ValorNotaMedia).Count()</div>
+                <div class="label">Acima da média</div>
+            </div>
+            <div class="statistic">
+                <div class="value">@LstResultado.Where(r => r.Nota < Parametro.Obter().ValorNotaMedia).Count()</div>
+                <div class="label">Abaixo da média</div>
+            </div>
+            <div class="statistic">
+                <div class="value">@LstResultado.Average(r => r.Nota).Value.ToString("0.0")</div>
+                <div class="label">Nota média</div>
+            </div>
+        </div>
+    </div>
+    <div class="ui basic segment">
+        <div class="ui dividing header">
             Resultados
         </div>
         <div class="ui accordion">
@@ -186,9 +214,12 @@ else if (Model.Avaliacao.FlagRealizada)
                                     </div>
                                 </div>
                                 <div class="four wide column" style="text-align:center">
+                                    @{ 
+                                        var media = lstResposta.Average(r => r.RespNota);
+                                    }
                                     <div class="ui statistic" style="display:inline">
                                         <div class="value">
-                                            @lstResposta.Average(r => r.RespNota).Value.ToString("0.0")
+                                            @(media != null ? media.Value.ToString("0.0") : "0")
                                         </div>
                                         <div class="label">
                                             Nota Média

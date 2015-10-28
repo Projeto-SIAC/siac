@@ -261,7 +261,11 @@
             <div id="@aluno.MatrAluno" class="title">
                 <i class="dropdown icon" style="float:right"></i>
                 <b class="nome">@aluno.Usuario.PessoaFisica.Nome</b> @aluno.MatrAluno
-                @if (!realizou)
+                @if (realizou)
+                {
+                    <div class="ui small label">Nota Parcial<div class="detail">@Model.Avaliacao.AvalPessoaResultado.Single(r=>r.CodPessoaFisica == aluno.Usuario.CodPessoaFisica).Nota.Value.ToString("0.0")</div></div>
+                }
+                else
                 {
                     <div class="ui small label">Ausente</div>
                 }
