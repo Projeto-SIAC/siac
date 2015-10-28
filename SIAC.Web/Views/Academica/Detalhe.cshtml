@@ -98,7 +98,7 @@ else if (Model.Avaliacao.FlagRealizada)
     {
     <div class="ui basic segment">
         <div class="ui dividing header">
-            Desempenho
+            Resultados
         </div>
         <div class="ui accordion">
             @for (int i = 0, length = LstQuestao.Count; i < length; i++)
@@ -126,26 +126,76 @@ else if (Model.Avaliacao.FlagRealizada)
                         </div>
                         @if (LstQuestao[i].CodTipoQuestao == 1)
                         {
-                            <div style="text-align:center">
-                                <canvas style="display:inline" width="200" height="200"></canvas>
-                            </div>
+                            <div class="ui stackable grid">
+                                <div class="twelve wide column">
+                                    <div class="ui relaxed list">
+                                        @foreach (var alternativa in LstQuestao[i].Alternativa)
+                                        {
+                                            <div class="item">
+                                                <div class="middle aligned content">
+                                                    <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
+                                                    @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
+                                                    {
+                                                        <a data-html="@(("" + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="four wide column" style="text-align:center">
+                                    <canvas style="display:inline" width="200" height="200"></canvas>
+                                </div>  
+                            </div> 
                             <code class="dados" hidden>
+                                @{ var random = new Random(); }
                                 [@for (int j = 0, quant = LstQuestao[i].Alternativa.Count; j < quant; j++)
                                 {
+                                    string rgba = SIAC.Helpers.CorDinamica.Rgba(random);
                                     <text>
-                                    { 
-                                        "value": "@lstResposta.Where(r=>r.RespAlternativa == j).Count()" , 
+                                        {
+                                        "value": "@lstResposta.Where(r => r.RespAlternativa == j).Count()" ,
                                         "label": "Alternativa @j.GetIndiceAlternativa()",
-                                        "color": "#F7464A",
-                                        "highlight": "#FF5A5E"
-                                    }
+                                        "color": "@rgba",
+                                        "highlight": "@rgba.Replace("1)", "0.8)")"
+                                        }
                                     </text>
-                                    if (j < (quant-1))
+                                    if (j < (quant - 1))
                                     {
                                         @:,
                                     }
                                 }]
                             </code>
+                        }
+                        else if (LstQuestao[i].CodTipoQuestao == 2)
+                        {
+                            <div class="ui stackable grid">
+                                <div class="twelve wide column">
+                                    <div>
+                                        <a class="ui ribbon label">Chave de Resposta</a>
+                                        @{
+                                            var chaveDeResposta = LstQuestao[i].ChaveDeResposta.Split('\n', '\r');
+                                            foreach (var strChaveDeResposta in chaveDeResposta)
+                                            {
+                                                if (!String.IsNullOrWhiteSpace(strChaveDeResposta))
+                                                {
+                                                    <p><i>@strChaveDeResposta</i></p>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                                <div class="four wide column" style="text-align:center">
+                                    <div class="ui statistic" style="display:inline">
+                                        <div class="value">
+                                            @lstResposta.Average(r => r.RespNota).Value.ToString("0.0")
+                                        </div>
+                                        <div class="label">
+                                            Nota Média
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         }
                     </div>
                 </div>
