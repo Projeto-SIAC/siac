@@ -832,7 +832,8 @@ namespace SIAC.Controllers
                              select new
                              {
                                  Matricula = alunos.MatrAluno,
-                                 Nome = alunos.Usuario.PessoaFisica.Nome
+                                 Nome = alunos.Usuario.PessoaFisica.Nome,
+                                 FlagCorrecaoPendente = acad.Avaliacao.AvalPessoaResultado.Single(r=>r.CodPessoaFisica == alunos.Usuario.CodPessoaFisica).FlagParcial
                              };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -855,7 +856,8 @@ namespace SIAC.Controllers
                              {
                                  codQuestao = questao.CodQuestao,
                                  questaoEnunciado = questao.Enunciado,
-                                 questaoChaveResposta = questao.ChaveDeResposta
+                                 questaoChaveResposta = questao.ChaveDeResposta,
+                                 flagCorrecaoPendente = acad.Avaliacao.PessoaResposta.Where(r => r.CodQuestao == questao.CodQuestao && !r.RespNota.HasValue).Count() > 0
                              };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

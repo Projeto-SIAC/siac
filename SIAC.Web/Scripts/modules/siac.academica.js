@@ -1533,11 +1533,15 @@ siac.Academica.Corrigir = (function () {
                         $ddlCorrecaoValor.html('<option value="">Selecione o aluno</option>');
                         $ddlCorrecaoValor.parents('.field').find('label').text('Selecione o aluno');
                         for (i = 0, length = data.length; i < length; i++) {
-                            $ddlCorrecaoValor.append('<option value="' + data[i].Matricula + '">' + data[i].Nome + '</option>');
+                            if (data[i].FlagCorrecaoPendente) {
+                                $ddlCorrecaoValor.append('<option value="' + data[i].Matricula + '">' + data[i].Nome + '</option>');
+                            }
+                            else {
+                                $ddlCorrecaoValor.append('<option value="' + data[i].Matricula + '">' + data[i].Nome + ' (corrigido)</option>');
+                            }
                         }
                         $ddlCorrecaoValor.parent().removeClass('loading').removeClass('disabled');
                         $ddlCorrecaoValor.dropdown('set selected', -1);
-
                     },
                     error: function () {
                         siac.mensagem('Ocorreu um erro.');
@@ -1555,7 +1559,12 @@ siac.Academica.Corrigir = (function () {
                         $ddlCorrecaoValor.html('');
                         $ddlCorrecaoValor.append('<option value="">Selecione a questão</option>');
                         for (i = 0, length = data.length; i < length; i++) {
-                            $ddlCorrecaoValor.append('<option value="' + data[i].codQuestao + '">' + getIndiceQuestao(data[i].codQuestao) + '. ' + siac.Utilitario.encurtarTextoEm(data[i].questaoEnunciado, 80) + '</option>');
+                            if (data[i].flagCorrecaoPendente) {
+                                $ddlCorrecaoValor.append('<option value="' + data[i].codQuestao + '">' + getIndiceQuestao(data[i].codQuestao) + '. ' + siac.Utilitario.encurtarTextoEm(data[i].questaoEnunciado, 80) + '</option>');
+                            }
+                            else {
+                                $ddlCorrecaoValor.append('<option value="' + data[i].codQuestao + '">' + getIndiceQuestao(data[i].codQuestao) + '. ' + siac.Utilitario.encurtarTextoEm(data[i].questaoEnunciado, 80) + ' (corrigida)</option>');
+                            }
                         }
                         $ddlCorrecaoValor.parent().removeClass('loading').removeClass('disabled');
                     },

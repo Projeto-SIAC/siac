@@ -11,7 +11,7 @@ namespace SIAC.Models
         {
             get
             {
-                return Avaliacao.PessoaResposta.Where(r=>!r.RespNota.HasValue).Count() > 0;
+                return Avaliacao.PessoaResposta.Where(r=>!r.RespNota.HasValue && r.CodPessoaFisica == CodPessoaFisica).Count() > 0;
             }
         }
 
