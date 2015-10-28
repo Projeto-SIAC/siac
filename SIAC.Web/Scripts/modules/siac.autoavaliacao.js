@@ -1,7 +1,7 @@
 ﻿siac.Autoavaliacao = siac.Autoavaliacao || {};
 
 siac.Autoavaliacao.Index = (function () {
-    var _controleTimeout, _controlePartial, _controleQte = 10;
+    var _controleTimeout, _controlePartial, _controleQte = 10, _controleAjax;
 
     var pagina = 1;
     var ordenar = "data_desc";
@@ -86,9 +86,12 @@ siac.Autoavaliacao.Index = (function () {
     }
 
     function listar() {
+        if (_controleAjax && _controleAjax.readyState != 4) {
+            _controleAjax.abort();
+        }
         $cards = $('.ui.cards');
         $cards.parent().addClass('loading');
-        $.ajax({
+        _controleAjax = $.ajax({
             url: '/Historico/Autoavaliacao/Listar',
             data: {
                 pagina: pagina,
