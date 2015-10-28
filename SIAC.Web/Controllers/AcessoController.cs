@@ -22,20 +22,20 @@ namespace SIAC.Controllers
         }
 
         // GET: Acesso/Entrar
-        [HttpGet]
-        public ActionResult Entrar()
-        {
-            if (Helpers.Sessao.Autenticado)
-            {
-                return RedirectToAction("Index", "Dashboard");
-            }
-            ViewBag.Acao = "$('.modal').modal('show')";
-            return View("Index");
-        }
+        //[HttpGet]
+        //public ActionResult Entrar()
+        //{
+        //    if (Helpers.Sessao.Autenticado)
+        //    {
+        //        return RedirectToAction("Index", "Dashboard");
+        //    }
+        //    ViewBag.Acao = "$('.modal').modal('show')";
+        //    return View("Index");
+        //}
 
         // POST: Acesso/Entrar
         [HttpPost]
-        public ActionResult Entrar(FormCollection formCollection)
+        public ActionResult Index(FormCollection formCollection)
         {
             if (Helpers.Sessao.Autenticado)
             {
@@ -69,9 +69,9 @@ namespace SIAC.Controllers
 
             if (valido)
             {
-                if (Session["UrlReferrer"] != null)
+                if (Request.QueryString["continuar"] != null)
                 {
-                    return Redirect(Session["UrlReferrer"].ToString());
+                    return Redirect(Request.QueryString["continuar"].ToString());
                 }
                 return RedirectToAction("Index", "Dashboard");
             }

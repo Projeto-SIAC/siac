@@ -136,6 +136,8 @@ siac.Academica.Detalhe = (function () {
             }
         });
 
+        $('.ui.dropdown').dropdown();
+
         $('.arquivar.button').click(function () {
             var $_this = $(this);
             $_this.addClass('loading');
