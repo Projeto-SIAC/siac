@@ -46,5 +46,11 @@
     "inputFiles": [
       "Scripts/modules/siac.autoavaliacao.js"
     ]
+  },
+  {
+    "outputFileName": "Scripts/modules/siac.certificacao.js",
+    "inputFiles": [
+      "Scripts/modules/siac.certificacao.js"
+    ]
   }
 ]

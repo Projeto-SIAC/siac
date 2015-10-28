@@ -14,11 +14,11 @@ namespace SIAC.Filters
         {
             if (!Helpers.Sessao.Autenticado)
             {
-                filterContext.Result = new RedirectResult("~/Acesso");
+                filterContext.Result = new RedirectResult("~/");
             }
             else if (Categorias != null && !Categorias.Contains(Helpers.Sessao.UsuarioCategoriaCodigo))
             {
-                filterContext.Result = new RedirectResult("~/Acesso");
+                filterContext.Result = new RedirectResult("~/");
             }
             base.OnActionExecuting(filterContext);
         }

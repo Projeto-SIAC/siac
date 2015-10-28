@@ -36,6 +36,10 @@ namespace SIAC
                 "~/scripts/modules/siac.academica.min.js"
             ));
 
+            bundles.Add(new ScriptBundle("~/bundles/js/certificacao").Include(
+                "~/scripts/modules/siac.certificacao.min.js"
+            ));
+
             bundles.Add(new ScriptBundle("~/bundles/signalR").Include(
                 "~/scripts/plugins/jquery.signalR-2.2.0.min.js"
             ));

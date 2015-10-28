@@ -84,6 +84,9 @@
         else if (/\/historico\/avaliacao\/academica\/corrigir\/acad[0-9]+$/.test(pathname)) {
             siac.Academica.Corrigir.iniciar();
         }
+        else if (pathname == '/dashboard/avaliacao/certificacao/gerar') {
+            siac.Certificacao.Gerar.iniciar();
+        }
     }
 
     function mensagem(mensagem, titulo) {

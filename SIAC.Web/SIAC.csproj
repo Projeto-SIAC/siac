@@ -181,6 +181,9 @@
     <Content Include="Scripts\modules\siac.autoavaliacao.min.js">
       <DependentUpon>siac.autoavaliacao.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\modules\siac.certificacao.min.js">
+      <DependentUpon>siac.certificacao.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\plugins\jquery.address-1.6.min.js" />
     <Content Include="Scripts\plugins\jquery.mask-1.13.4.min.js" />
     <Content Include="Scripts\libs\jquery.min.js" />
@@ -585,6 +588,7 @@
     <Content Include="Views\Certificacao\Confirmar.cshtml" />
     <Content Include="Views\Questao\_Questao.cshtml" />
     <Content Include="Views\Academica\_ListaAcademica.cshtml" />
+    <Content Include="Scripts\modules\siac.certificacao.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
