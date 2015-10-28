@@ -589,6 +589,7 @@
     <Content Include="Views\Questao\_Questao.cshtml" />
     <Content Include="Views\Academica\_ListaAcademica.cshtml" />
     <Content Include="Scripts\modules\siac.certificacao.js" />
+    <Content Include="Views\Certificacao\Configurar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

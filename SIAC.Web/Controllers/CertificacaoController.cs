@@ -16,8 +16,8 @@ namespace SIAC.Controllers
             return View();
         }
 
-        [Filters.CategoriaFilter(Categorias = new[] { 2/*, 3*/ })]
         // GET: Certificacao/Gerar
+        [Filters.CategoriaFilter(Categorias = new[] { 2/*, 3*/ })]
         public ActionResult Gerar()
         {
             ViewBag.Disciplinas = /*Helpers.Sessao.UsuarioCategoriaCodigo == 2 ? */Disciplina.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula)/*: Disciplina.ListarOrdenadamente()*/;
@@ -26,7 +26,7 @@ namespace SIAC.Controllers
             return View();
         }
 
-        //POST: Certificacao/Confirmar
+        // POST: Certificacao/Confirmar
         [HttpPost]
         [Filters.CategoriaFilter(Categorias = new[] { 2/*, 3*/ })]
         public ActionResult Confirmar(FormCollection formCollection)
@@ -99,6 +99,24 @@ namespace SIAC.Controllers
             }
 
             return View(cert);
+        }
+
+        // GET: Certificacao/Configurar/CERT201520001
+        public ActionResult Configurar(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
+                if (!cert.Avaliacao.FlagRealizada)
+                {
+                    Professor prof = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
+                    if (prof != null && prof.CodProfessor == cert.Professor.CodProfessor)
+                    {
+                        return View(cert);
+                    }
+                }
+            }
+            return RedirectToAction("Index");
         }
     }
 }
