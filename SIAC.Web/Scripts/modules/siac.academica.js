@@ -1583,6 +1583,7 @@ siac.Academica.Corrigir = (function () {
             var valor = $(_this).val();
             if (valor) {
                 $conteudo = $('.correcao.conteudo');
+                $('.modal.corrigir form').addClass('loading');
                 $(_this).parent().addClass('loading');
                 if (modo == 'aluno') {
                     $conteudoQuestao = $('#templateCorrecaoAluno');
@@ -1629,7 +1630,11 @@ siac.Academica.Corrigir = (function () {
                         error: function () {
                             siac.mensagem('Ocorreu um erro.');
                             $(_this).parent().removeClass('loading');
+                        },
+                        complete: function () {
+                            $('.modal.corrigir form').removeClass('loading');
                         }
+
                     });
                 }
                 else if (modo == 'questao') {
@@ -1684,10 +1689,34 @@ siac.Academica.Corrigir = (function () {
                         error: function () {
                             siac.mensagem('Ocorreu um erro.');
                             $(_this).parent().removeClass('loading');
+                        },
+                        complete: function () {
+                            $('.modal.corrigir form').removeClass('loading');
                         }
                     });
                 }
             }
+        });
+
+        $('.label[data-questao]').click(function () {
+            var $this = $(this);
+            var codQuestao = $this.data('questao');
+            var matr = $this.parents('[id]').attr('id');
+            
+            $('.modal.corrigir').modal('show');
+            $('.modal.corrigir form').addClass('loading');
+            $('#ddlCorrecaoModo').dropdown('set selected', 'aluno').change();
+            window.setTimeout(function () {
+                $('#ddlCorrecaoValor').dropdown('set selected', matr);
+                //$conteudo = $('.correcao.conteudo');
+                //$conteudo.animate({
+                //    scrollTop: $conteudo.find('#'+codQuestao).offset().top <===== FALTA REALIZAR O SCROLL DO MODAL!!!!!!
+                //}, 0);
+                //$('.modal.corrigir form').removeClass('loading');
+            }, 1000);
+
+
+
         });
     }
 

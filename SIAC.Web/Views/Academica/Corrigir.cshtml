@@ -288,7 +288,7 @@
                                 colunaIndice = 1;
                             }
                             <td style="border:none!important;">
-                                <a class="ui label">
+                                <a @((resp.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 2)? "data-questao="+resp.CodQuestao:"") class="ui label">
                                     @if (resp.RespAlternativa.HasValue) {
                                     <i class="@(resp.RespNota == 10 ? "checkmark green" : "remove red") icon"></i>
                                     }
