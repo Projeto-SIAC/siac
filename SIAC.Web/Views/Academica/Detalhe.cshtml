@@ -9,8 +9,13 @@
 }
 
 
-<h2 data-avaliacao="@Model.Avaliacao.CodAvaliacao">@ViewBag.Title@if (Model.Avaliacao.AvalPessoaResultado.Count > 0)
-{ <div class="ui label"><i class="icon checkmark"></i>Realizada</div> }</h2>
+<h2 data-avaliacao="@Model.Avaliacao.CodAvaliacao">
+    @ViewBag.Title
+    @if (Model.Avaliacao.FlagRealizada)
+    {
+        <div class="ui label"><i class="icon checkmark"></i>Realizada</div>         
+    }
+</h2>
 
 <div class="ui basic segment">
     <div class="ui dividing header">
@@ -127,7 +132,7 @@ else if (Model.Avaliacao.FlagRealizada)
     <div class="ui basic segment">
         <div class="ui dividing header">
             Resultados
-        </div>
+        </div>        
         <div class="ui accordion">
             @for (int i = 0, length = LstQuestao.Count; i < length; i++)
             {
@@ -232,6 +237,24 @@ else if (Model.Avaliacao.FlagRealizada)
                 </div>
             }
         </div>
+    </div>
+    <div class="ui basic segment">
+        <div class="ui dividing header">
+            Individual
+        </div>
+        <div class="ui form">
+            <div class="field inline">
+                <label>Aluno</label>
+                <select class="ui search dropdown">
+                    <option value="">Selecione</option>
+                    @foreach (var aluno in Model.AlunosRealizaram)
+                    {
+                        <option value="@aluno.MatrAluno">@aluno.Usuario.PessoaFisica.Nome</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="ui partial accordion"></div>
     </div>
     }
 }
