@@ -1560,7 +1560,7 @@ siac.Academica.Corrigir = (function () {
 
             if (modo == 'aluno') {
                 $.ajax({
-                    cache: true,
+                    cache: false,
                     type: 'POST',
                     url: '/Dashboard/Avaliacao/Academica/CarregarAlunos/' + _codAvaliacao,
                     success: function (data) {
@@ -1585,7 +1585,7 @@ siac.Academica.Corrigir = (function () {
             }
             else if (modo == 'questao') {
                 $.ajax({
-                    cache: true,
+                    cache: false,
                     type: 'POST',
                     url: '/Dashboard/Avaliacao/Academica/CarregarQuestoesDiscursivas/' + _codAvaliacao,
                     success: function (data) {
@@ -1791,6 +1791,27 @@ siac.Academica.Corrigir = (function () {
             error: function (data) {
                 siac.mensagem(data);
                 $('#' + id + ' .button.corrigir.aluno').removeClass('loading');
+            },
+            complete: function () {
+                var questoesQteTotal = $('.corrigir .correcao.conteudo .dimmer').length;
+                var questoesQteCorrigidas = $('.corrigir .correcao.conteudo .dimmer.active').length;
+
+                if(modo == "aluno"){
+                    if (questoesQteCorrigidas == questoesQteTotal - 1) {
+                        var itemAtual = $('#ddlCorrecaoValor').dropdown('get text')[0];
+                        
+                        $('#ddlCorrecaoValor').dropdown('set text', itemAtual + ' (corrigido)');
+                        $('#ddlCorrecaoValor option[value="' + matrAluno + '"]').text(itemAtual + ' (corrigido)');
+                    }
+                }
+                else if (modo == "questao") {
+                    if (questoesQteCorrigidas == questoesQteTotal - 2) {
+                        var itemAtual = $('#ddlCorrecaoValor').dropdown('get text')[0];
+                        
+                        $('#ddlCorrecaoValor').dropdown('set text', itemAtual + ' (corrigida)');
+                        $('#ddlCorrecaoValor option[value="' + codQuestao + '"]').text(itemAtual + ' (corrigida)');
+                    }
+                }
             }
         });
     }
