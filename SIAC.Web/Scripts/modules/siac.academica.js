@@ -1753,7 +1753,7 @@ siac.Academica.Corrigir = (function () {
                 profObservacao: correcaoComentario
             },
             success: function (data) {
-                $('#' + id + ' .button.corrigir.aluno').removeClass('loading').addClass('disabled');
+                $('#' + id + ' .button.corrigir.aluno').removeClass('loading');
                 $('#' + id).find('.segment').dimmer('show');
             },
             error: function (data) {
@@ -1767,17 +1767,19 @@ siac.Academica.Corrigir = (function () {
                 if(modo == "aluno"){
                     if (questoesQteCorrigidas == questoesQteTotal - 1) {
                         var itemAtual = $('#ddlCorrecaoValor').dropdown('get text')[0];
-                        
-                        $('#ddlCorrecaoValor').dropdown('set text', itemAtual + ' (corrigido)');
-                        $('#ddlCorrecaoValor option[value="' + matrAluno + '"]').text(itemAtual + ' (corrigido)');
+                        if (itemAtual.indexOf('(corrigido)') < 0) {
+                            $('#ddlCorrecaoValor').dropdown('set text', itemAtual + ' (corrigido)');
+                            $('#ddlCorrecaoValor option[value="' + matrAluno + '"]').text(itemAtual + ' (corrigido)');
+                        }
                     }
                 }
                 else if (modo == "questao") {
                     if (questoesQteCorrigidas == questoesQteTotal - 2) {
                         var itemAtual = $('#ddlCorrecaoValor').dropdown('get text')[0];
-                        
-                        $('#ddlCorrecaoValor').dropdown('set text', itemAtual + ' (corrigida)');
-                        $('#ddlCorrecaoValor option[value="' + codQuestao + '"]').text(itemAtual + ' (corrigida)');
+                        if (itemAtual.indexOf('(corrigida)') < 0) {
+                            $('#ddlCorrecaoValor').dropdown('set text', itemAtual + ' (corrigida)');
+                            $('#ddlCorrecaoValor option[value="' + codQuestao + '"]').text(itemAtual + ' (corrigida)');
+                        }
                     }
                 }
             }

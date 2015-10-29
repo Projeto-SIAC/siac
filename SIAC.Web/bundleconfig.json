@@ -36,12 +36,6 @@
     ]
   },
   {
-    "outputFileName": "Scripts/modules/siac.academica.js",
-    "inputFiles": [
-      "Scripts/modules/siac.academica.js"
-    ]
-  },
-  {
     "outputFileName": "Scripts/modules/siac.autoavaliacao.js",
     "inputFiles": [
       "Scripts/modules/siac.autoavaliacao.js"
@@ -51,6 +45,12 @@
     "outputFileName": "Scripts/modules/siac.certificacao.js",
     "inputFiles": [
       "Scripts/modules/siac.certificacao.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/modules/siac.academica.js",
+    "inputFiles": [
+      "Scripts/modules/siac.academica.js"
     ]
   }
 ]
