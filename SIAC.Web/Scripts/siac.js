@@ -180,8 +180,8 @@ siac.Utilitario = (function () {
         return texto;
     }
 
-    function substituirTodos(texto, valorVelho, valorNovo) {
-        var _texto = texto;
+    String.prototype.substituirTodos = function (valorVelho, valorNovo) {
+        var _texto = this;
         while (_texto.indexOf(valorVelho) > -1) {
             _texto = _texto.replace(valorVelho, valorNovo);
         };
@@ -204,7 +204,6 @@ siac.Utilitario = (function () {
         dataEFuturo: dataEFuturo,
         encurtarTextoEm: encurtarTextoEm,
         quebrarLinhaEm: quebrarLinhaEm,
-        substituirTodos: substituirTodos,
         minutosParaStringTempo: minutosParaStringTempo
     }
 })();

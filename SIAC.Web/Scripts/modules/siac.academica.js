@@ -1602,13 +1602,13 @@ siac.Academica.Corrigir = (function () {
                                 $conteudoQuestaoClone.removeAttr('id').removeAttr('hidden');
                                 $conteudoQuestaoClone.html($conteudoQuestao.html());
 
-                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{matrAluno}', valor));
-                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{codQuestao}', data[i].codQuestao));
-                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoEnunciado}', data[i].questaoEnunciado));
-                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoIndice}', getIndiceQuestao(data[i].codQuestao)));
-                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoChaveResposta}', data[i].questaoChaveResposta));
-                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{alunoResposta}', data[i].alunoResposta));
-                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{correcaoComentario}', data[i].correcaoComentario));
+                                $conteudoQuestaoClone.html($conteudoQuestaoClone.html().substituirTodos('{matrAluno}', valor));
+                                $conteudoQuestaoClone.html($conteudoQuestaoClone.html().substituirTodos('{codQuestao}', data[i].codQuestao));
+                                $conteudoQuestaoClone.html($conteudoQuestaoClone.html().substituirTodos('{questaoEnunciado}', data[i].questaoEnunciado));
+                                $conteudoQuestaoClone.html($conteudoQuestaoClone.html().substituirTodos('{questaoIndice}', getIndiceQuestao(data[i].codQuestao)));
+                                $conteudoQuestaoClone.html($conteudoQuestaoClone.html().substituirTodos('{questaoChaveResposta}', data[i].questaoChaveResposta));
+                                $conteudoQuestaoClone.html($conteudoQuestaoClone.html().substituirTodos('{alunoResposta}', data[i].alunoResposta));
+                                $conteudoQuestaoClone.html($conteudoQuestaoClone.html().substituirTodos('{correcaoComentario}', data[i].correcaoComentario));
 
                                 $conteudo.append($conteudoQuestaoClone);
 
@@ -1652,9 +1652,9 @@ siac.Academica.Corrigir = (function () {
                             if (data) {
                                 $conteudoQuestaoClone = $conteudoQuestao.clone().removeAttr('id').removeAttr('hidden');;
                                 $conteudoQuestaoClone.find('table').remove();
-                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoEnunciado}', data[0].questaoEnunciado));
-                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoIndice}', getIndiceQuestao(data[0].codQuestao)));
-                                $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{questaoChaveResposta}', data[0].questaoChaveResposta));
+                                $conteudoQuestaoClone.html($conteudoQuestaoClone.html().substituirTodos('{questaoEnunciado}', data[0].questaoEnunciado));
+                                $conteudoQuestaoClone.html($conteudoQuestaoClone.html().substituirTodos('{questaoIndice}', getIndiceQuestao(data[0].codQuestao)));
+                                $conteudoQuestaoClone.html($conteudoQuestaoClone.html().substituirTodos('{questaoChaveResposta}', data[0].questaoChaveResposta));
                                 var $conteudoQuestaoTemp = $conteudoQuestaoClone;
 
                                 for (i = 0, length = data.length; i < length; i++) {
@@ -1662,11 +1662,11 @@ siac.Academica.Corrigir = (function () {
                                     $conteudoQuestaoClone.removeAttr('id').removeAttr('hidden');
                                     $conteudoQuestaoClone.html($conteudoQuestaoClone.find('table').parent()).attr('id', 'aln' + data[i].alunoMatricula);
 
-                                    $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{matrAluno}', valor));
-                                    $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{alunoNome}', data[i].alunoNome));
-                                    $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{codQuestao}', data[i].codQuestao));
-                                    $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{alunoResposta}', data[i].alunoResposta));
-                                    $conteudoQuestaoClone.html(siac.Utilitario.substituirTodos($conteudoQuestaoClone.html(), '{correcaoComentario}', data[i].correcaoComentario));
+                                    $conteudoQuestaoClone.html($conteudoQuestaoClone.html().substituirTodos('{matrAluno}', valor));
+                                    $conteudoQuestaoClone.html($conteudoQuestaoClone.html().substituirTodos('{alunoNome}', data[i].alunoNome));
+                                    $conteudoQuestaoClone.html($conteudoQuestaoClone.html().substituirTodos('{codQuestao}', data[i].codQuestao));
+                                    $conteudoQuestaoClone.html($conteudoQuestaoClone.html().substituirTodos('{alunoResposta}', data[i].alunoResposta));
+                                    $conteudoQuestaoClone.html($conteudoQuestaoClone.html().substituirTodos('{correcaoComentario}', data[i].correcaoComentario));
 
                                     if (data[i].flagCorrigida) {
                                         $conteudo.append($conteudoQuestaoClone);
