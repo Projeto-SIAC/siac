@@ -13,10 +13,10 @@ namespace SIAC.Helpers
             {
                 if (String.IsNullOrEmpty(strs[i]))
                 {
-                    return false;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
 
         public static bool IsNullOrWhiteSpace(params string[] strs)
@@ -25,10 +25,10 @@ namespace SIAC.Helpers
             {
                 if (String.IsNullOrWhiteSpace(strs[i]))
                 {
-                    return false;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
     }
 }

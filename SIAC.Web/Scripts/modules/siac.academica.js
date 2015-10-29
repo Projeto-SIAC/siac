@@ -117,7 +117,7 @@ siac.Academica.Agendar = (function () {
 })();
 
 siac.Academica.Detalhe = (function () {
-    var _codAvaliacao;
+    var _codAvaliacao, _controleAjax;
 
     function iniciar() {
         $elemento = $('[data-avaliacao]');
@@ -157,6 +157,38 @@ siac.Academica.Detalhe = (function () {
                 },
                 complete: function () {
                     $_this.removeClass('loading');
+                }
+            });
+        });
+
+        $('div,a').popup();
+
+        $('.aluno.dropdown').change(function () {
+            var $this = $(this);
+            var matricula = $this.find(':selected').val();
+            if (_controleAjax && _controleAjax.readyState != 4) {
+                _controleAjax.abort();
+            }
+            var $partial = $('div.partial');
+
+            $('.loader.global').parent().addClass('active');
+
+            _controleAjax = $.ajax({
+                url: '/Dashboard/Avaliacao/Academica/DetalheIndividual/' + _codAvaliacao,
+                data: {
+                    matricula: matricula
+                },
+                type: 'POST',
+                success: function (partial) {
+                    $partial.html(partial);
+                },
+                error: function () {
+                    siac.mensagem('Ocorreu um erro inesperado.');
+                },
+                complete: function () {
+                    $('.ui.accordion').accordion();
+                    $('div,a').popup();
+                    $('.loader.global').parent().removeClass('active');
                 }
             });
         });

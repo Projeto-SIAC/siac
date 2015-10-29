@@ -13,7 +13,21 @@
     @ViewBag.Title
     @if (Model.Avaliacao.FlagRealizada)
     {
-        <div class="ui label"><i class="icon checkmark"></i>Realizada</div>         
+        if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 1)
+        {
+            if (Model.AlunosRealizaram.Where(a => a.MatrAluno == SIAC.Helpers.Sessao.UsuarioMatricula).Count() > 0)
+            {
+                <span class="ui label"><i class="checkmark icon"></i>Realizada</span>
+            }
+            else
+            {
+                <span class="ui label"><i class="remove icon"></i>Ausente</span>
+            }
+        }
+        else
+        {
+            <span class="ui label"><i class="checkmark icon"></i>Realizada</span>
+        }
     }
 </h2>
 
@@ -169,7 +183,7 @@ else if (Model.Avaliacao.FlagRealizada)
                                                     <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
                                                     @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
                                                     {
-                                                        <a data-html="@(("" + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
+                                                        <a data-html="@(("<b>Comentário</b>: " + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
                                                     }
                                                 </div>
                                             </div>
@@ -205,7 +219,7 @@ else if (Model.Avaliacao.FlagRealizada)
                             <div class="ui stackable grid">
                                 <div class="twelve wide column">
                                     <div>
-                                        <a class="ui ribbon label">Chave de Resposta</a>
+                                        <a data-html="@(("<b>Comentário</b>: " + LstQuestao[i].Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui ribbon label">Chave de Resposta</a>
                                         @{
                                             var chaveDeResposta = LstQuestao[i].ChaveDeResposta.Split('\n', '\r');
                                             foreach (var strChaveDeResposta in chaveDeResposta)
@@ -245,7 +259,7 @@ else if (Model.Avaliacao.FlagRealizada)
         <div class="ui form">
             <div class="field inline">
                 <label>Aluno</label>
-                <select class="ui search dropdown">
+                <select class="ui search aluno dropdown">
                     <option value="">Selecione</option>
                     @foreach (var aluno in Model.AlunosRealizaram)
                     {
@@ -254,15 +268,51 @@ else if (Model.Avaliacao.FlagRealizada)
                 </select>
             </div>
         </div>
-        <div class="ui partial accordion"></div>
+        <div class="partial"></div>
     </div>
-    }
-    else
-    {
-        
-            int codPessoaFisica = Usuario.ObterPessoaFisica(SIAC.Helpers.Sessao.UsuarioMatricula);
-            var lstPessoaResposta = LstResposta.Where(p => p.CodPessoaFisica == codPessoaFisica).ToList();
-         
+                                        }
+                                        else
+                                        {
+                                            int codPessoaFisica = Usuario.ObterPessoaFisica(SIAC.Helpers.Sessao.UsuarioMatricula);
+                                            var lstPessoaResposta = LstResposta.Where(p => p.CodPessoaFisica == codPessoaFisica).ToList();
+                                            var avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.FirstOrDefault(r=>r.CodPessoaFisica == codPessoaFisica);
+                                            int qteAcerto = lstPessoaResposta.Where(p=>p.RespNota.HasValue && p.RespNota.Value == 10).Count();
+                                            var percent = qteAcerto / LstQuestao.Count;
+                                            if (avalPessoaResultado != null)
+                                            {
+
+
+    <div class="ui basic segment">
+        <div class="ui dividing header">
+            Desempenho
+        </div>
+        <div class="ui statistics">
+            <div class="statistic">
+                <div class="value">
+                    @((((double)qteAcerto / (double)LstQuestao.Count) * 100).ToString("0.##'%'"))
+                </div>
+                <div class="label">
+                    Porcentagem de Acerto
+                </div>
+            </div>
+            <div class="statistic">
+                <div class="value">
+                    @qteAcerto/@LstQuestao.Count
+                </div>
+                <div class="label">
+                    Quantidade de Acerto
+                </div>
+            </div>
+            <div class="statistic @(avalPessoaResultado.Nota.Value >= Parametro.Obter().ValorNotaMedia ? "green" : "red")">
+                <div class="value">
+                    @avalPessoaResultado.Nota.Value.ToString("0.0")
+                </div>
+                <div class="label">
+                    Nota @(lstPessoaResposta.Where(r => !r.RespNota.HasValue).Count() == 0 ? "" : "Parcial")
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="ui basic segment">
         <div class="ui dividing header">
             Resultado
@@ -278,6 +328,10 @@ else if (Model.Avaliacao.FlagRealizada)
                     {
                         var correta = LstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
                         <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? Html.Raw("<i class=\"checkmark icon\"></i>Correta") : Html.Raw("<i class=\"remove icon\"></i>Incorreta") )</div>
+                    }
+                    else if (resposta.RespNota.HasValue)
+                    {
+                        <div data-html="@(("<b>Observação</b>: " + resposta.ProfObservacao).Replace("\n", "<br>"))" data-variation="very wide" class="ui @(resposta.RespNota.Value > Parametro.Obter().ValorNotaMedia ? "green" : "red" ) label"><i class="icon write"></i><div class="detail">@resposta.RespNota.Value.ToString("0.0")</div></div>
                     }
                 </div>
                 <div class="content">
@@ -304,11 +358,11 @@ else if (Model.Avaliacao.FlagRealizada)
                                             <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
                                             @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
                                             {
-                                                <a data-html="@((""+alternativa.Comentario).Replace("\n","<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
+                                                <a data-html="@(("<b>Comentário</b>: " + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
                                             }
                                             @if (alternativa.CodOrdem == resposta.RespAlternativa)
                                             {
-                                                <a data-html="@((""+alternativa.Comentario).Replace("\n","<br>"))" data-variation="very wide" class="ui tag label">Marcada</a>
+                                                <a data-html="@(("<b>Comentário</b>: " + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Marcada</a>
                                             }
                                         </div>
                                     </div>
@@ -318,7 +372,7 @@ else if (Model.Avaliacao.FlagRealizada)
                         else
                         {
                             <div>
-                                <a class="ui ribbon label" data-html="@LstQuestao[i].ChaveDeResposta.Replace("\n","<br>")" data-variation="very wide">Resposta</a>
+                                <a class="ui ribbon label" data-html="@(("<b>Chave de Resposta</b>: "+LstQuestao[i].ChaveDeResposta).Replace("\n", "<br>"))" data-variation="very wide">Resposta</a>
                                 @{
                                     var respDiscursiva = resposta.RespDiscursiva.Split('\n', '\r');
                                     foreach (var strRespDiscursiva in respDiscursiva)
@@ -341,9 +395,9 @@ else if (Model.Avaliacao.FlagRealizada)
                                         switch (anexo.CodTipoAnexo)
                                         {
                                             case 1:
-                                                <a onclick="expandirImagem(this)" class="ui card">
+                                                <a class="ui card">
                                                     <div class="image">
-                                                        <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo,0, anexo.Anexo.Length)" />
+                                                        <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo, 0, anexo.Anexo.Length)" />
                                                     </div>
                                                     <div class="content">
                                                         <div class="header">
@@ -367,16 +421,21 @@ else if (Model.Avaliacao.FlagRealizada)
                                     }
         </div> 
     </div>  
-    }
-}
-else
-{
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
     <a href="@Url.Action("Agendar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
-}
+                                    }
 <a href="@Url.Action("Index")" class="ui button">Histórico</a>
 @if (Model.Avaliacao.FlagArquivo || !Model.Avaliacao.FlagRealizada)
 {
     <div class="ui arquivar toggle @(Model.Avaliacao.FlagArquivo ? "active" : "") button">Arquiva@(Model.Avaliacao.FlagArquivo ? "da" : "r")</div>
+}
+@if (Model.Avaliacao.FlagAgendada)
+{
+    <a href="@Url.Action("Agendada")" class="ui button">Agendadas</a>
 }
 
 @section Scripts {
