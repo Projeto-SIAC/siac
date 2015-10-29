@@ -29,8 +29,8 @@
                         <p><b>Quantidade de Questões</b>: @avalAcademica.Avaliacao.QteQuestoes()</p>
                     </div>
                 </div>
-                <span class="ui @(avalAcademica.Avaliacao.DtAplicacao.Value < DateTime.Now ? "red" : "") attached top right label">
-                    <i class="@(avalAcademica.Avaliacao.DtAplicacao.Value < DateTime.Now ? "warning" : "clock") icon"></i>
+                <span class="ui @(avalAcademica.Avaliacao.FlagAgora ? "green" : avalAcademica.Avaliacao.FlagVencida ? "red" : "") attached top right label">
+                    <i class="@(avalAcademica.Avaliacao.FlagAgora ? "alarm" : avalAcademica.Avaliacao.FlagVencida ? "warning sign" : "clock") icon"></i>
                     @avalAcademica.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy HH:mm")
                 </span>
             </a>

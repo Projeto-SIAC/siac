@@ -25,11 +25,27 @@
         </div>
         @if (acad.Avaliacao.FlagRealizada)
         {
-            <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
-            <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+            if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 1)
+            {
+                if (acad.AlunosRealizaram.Where(a => a.MatrAluno == SIAC.Helpers.Sessao.UsuarioMatricula).Count() > 0)
+                {
+                    <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
+                    <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+                }
+                else
+                {
+                    <span class="ui attached top right label"><i class="remove icon"></i>Ausente</span>
+                    <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
+                }
+            }
+            else
+            {
+                <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
+                <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+            }
         }
         else
-        {            
+        {
             if (acad.Avaliacao.FlagArquivo)
             {
                 <span class="ui attached top right label"><i class="archive icon"></i>Arquivo</span>
@@ -37,11 +53,18 @@
             else if (acad.Avaliacao.FlagAgendada)
             {
                 <span class="ui attached top right label"><i class="clock icon"></i>Agendada</span>
-                <a href="@Url.Action("Configurar", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
+                if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 2)
+                {
+                    <a href="@Url.Action("Configurar", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
+                }
             }
-            else
-            {
+            else if(SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 2)
+            {                
                 <a href="@Url.Action("Agendar", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
+            }
+            if(SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 1)
+            {
+                <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
             }
         }
     </div>

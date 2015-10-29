@@ -261,7 +261,7 @@ namespace SIAC.Controllers
             string strData = form["txtData"];
             string strHoraInicio = form["txtHoraInicio"];
             string strHoraTermino = form["txtHoraTermino"];
-            if (Helpers.StringExt.IsNullOrWhiteSpace(strCodTurma, strCodSala, strData, strHoraInicio, strHoraTermino))
+            if (!Helpers.StringExt.IsNullOrWhiteSpace(strCodTurma, strCodSala, strData, strHoraInicio, strHoraTermino))
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
 
@@ -943,6 +943,27 @@ namespace SIAC.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             return Json(false);
+        }
+        
+        //[AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
+        [Filters.CategoriaFilter(Categorias =new[] { 2 })]
+        public ActionResult DetalheIndividual(string codigo, string matricula)
+        {
+            if (!Helpers.StringExt.IsNullOrEmpty(codigo, matricula))
+            {
+                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
+                if (acad != null)
+                {
+                    int codPessoaFisica = Usuario.ObterPessoaFisica(matricula);
+                    AvalPessoaResultado model = acad.Avaliacao.AvalPessoaResultado.SingleOrDefault(r => r.CodPessoaFisica == codPessoaFisica);
+                    if (model != null)
+                    {
+                        return PartialView("_Individual", model);
+                    }
+                }
+            }
+            return null;
         }
     }
 }
