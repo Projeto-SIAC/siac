@@ -108,7 +108,7 @@ else if (Model.Avaliacao.FlagRealizada)
         </div>
         <div class="ui statistics">
             <div class="statistic">
-                <div class="value">@LstResultado.Where(r=>r.Nota == 0).Count()</div>
+                <div class="value">@LstResultado.Where(r => r.Nota == 0).Count()</div>
                 <div class="label">Nota mínima</div>
             </div>
             <div class="statistic">
@@ -199,9 +199,9 @@ else if (Model.Avaliacao.FlagRealizada)
                                     }
                                 }]
                             </code>
-                        }
-                        else if (LstQuestao[i].CodTipoQuestao == 2)
-                        {
+                                    }
+                                    else if (LstQuestao[i].CodTipoQuestao == 2)
+                                    {
                             <div class="ui stackable grid">
                                 <div class="twelve wide column">
                                     <div>
@@ -232,10 +232,10 @@ else if (Model.Avaliacao.FlagRealizada)
                                     </div>
                                 </div>
                             </div>
-                        }
+                                        }
                     </div>
                 </div>
-            }
+                                        }
         </div>
     </div>
     <div class="ui basic segment">
@@ -256,6 +256,117 @@ else if (Model.Avaliacao.FlagRealizada)
         </div>
         <div class="ui partial accordion"></div>
     </div>
+    }
+    else
+    {
+        
+            int codPessoaFisica = Usuario.ObterPessoaFisica(SIAC.Helpers.Sessao.UsuarioMatricula);
+            var lstPessoaResposta = LstResposta.Where(p => p.CodPessoaFisica == codPessoaFisica).ToList();
+         
+    <div class="ui basic segment">
+        <div class="ui dividing header">
+            Resultado
+        </div>
+        <div class="ui accordion">
+            @for (int i = 0; i < LstQuestao.Count; i++)
+            {
+                var resposta = lstPessoaResposta.First(r => r.CodQuestao == LstQuestao[i].CodQuestao);
+
+                <div class="title">
+                    <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).ToShortString(80))
+                    @if (LstQuestao[i].CodTipoQuestao == 1)
+                    {
+                        var correta = LstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
+                        <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? Html.Raw("<i class=\"checkmark icon\"></i>Correta") : Html.Raw("<i class=\"remove icon\"></i>Incorreta") )</div>
+                    }
+                </div>
+                <div class="content">
+                    <div class="ui segment">
+                        <div class="ui dividing header" style="text-align:justify">
+                            @{
+                                var enunciado = (i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).Split('\n', '\r');
+                                foreach (var strEnunciado in enunciado)
+                                {
+                                    if (!String.IsNullOrWhiteSpace(strEnunciado))
+                                    {
+                                        <p>@strEnunciado</p>
+                                    }
+                                }
+                            }
+                        </div>
+                        @if (LstQuestao[i].CodTipoQuestao == 1)
+                        {
+                            <div class="ui list">
+                                @foreach (var alternativa in LstQuestao[i].Alternativa)
+                                {
+                                    <div class="item">
+                                        <div class="middle aligned content">
+                                            <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
+                                            @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
+                                            {
+                                                <a data-html="@((""+alternativa.Comentario).Replace("\n","<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
+                                            }
+                                            @if (alternativa.CodOrdem == resposta.RespAlternativa)
+                                            {
+                                                <a data-html="@((""+alternativa.Comentario).Replace("\n","<br>"))" data-variation="very wide" class="ui tag label">Marcada</a>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <a class="ui ribbon label" data-html="@LstQuestao[i].ChaveDeResposta.Replace("\n","<br>")" data-variation="very wide">Resposta</a>
+                                @{
+                                    var respDiscursiva = resposta.RespDiscursiva.Split('\n', '\r');
+                                    foreach (var strRespDiscursiva in respDiscursiva)
+                                    {
+                                        if (!String.IsNullOrWhiteSpace(strRespDiscursiva))
+                                        {
+                                            <p><i>@strRespDiscursiva</i></p>
+                                        }
+                                    }
+                                }
+                            </div>
+                                    }
+                        @if (LstQuestao[i].QuestaoAnexo.Count > 0)
+                        {
+                            <div class="accordion">
+                                <div class="title"><i class="icon dropdown"></i>Anexos</div>
+                                <div class="content">
+                                    @foreach (var anexo in LstQuestao[i].QuestaoAnexo)
+                                    {
+                                        switch (anexo.CodTipoAnexo)
+                                        {
+                                            case 1:
+                                                <a onclick="expandirImagem(this)" class="ui card">
+                                                    <div class="image">
+                                                        <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo,0, anexo.Anexo.Length)" />
+                                                    </div>
+                                                    <div class="content">
+                                                        <div class="header">
+                                                            @anexo.Legenda
+                                                        </div>
+                                                        <div class="description">
+                                                            @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte.ToShortString(30) : "Fonte não informada")
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                                    }
+        </div> 
+    </div>  
     }
 }
 else
