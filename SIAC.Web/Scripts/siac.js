@@ -188,7 +188,8 @@ siac.Utilitario = (function () {
         return _texto;
     }
 
-    function minutosParaStringTempo(minutos) {
+    String.prototype.minutosParaStringTempo = function () {
+        var minutos = this;
         if (minutos > 59) {
             var strHoras = Math.floor(minutos / 60);
             var strMinutos = (minutos % 60);
@@ -202,8 +203,7 @@ siac.Utilitario = (function () {
     return {
         compararData: compararData,
         dataEFuturo: dataEFuturo,
-        quebrarLinhaEm: quebrarLinhaEm,
-        minutosParaStringTempo: minutosParaStringTempo
+        quebrarLinhaEm: quebrarLinhaEm
     }
 })();
 

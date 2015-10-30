@@ -263,8 +263,8 @@ siac.Autoavaliacao.Realizar = (function () {
                     setTimeout(relogio(), ((60 - date.getSeconds()) * 1000));
                     if ($('#chkCronometrar').is(':checked')) {
                         duracao = $('#txtDuracao').val();
-                        $('#lblHoraDuracao').text(siac.Utilitario.minutosParaStringTempo(duracao));
-                        $('#lblHoraRestante').text(siac.Utilitario.minutosParaStringTempo(duracao));
+                        $('#lblHoraDuracao').text(duracao.minutosParaStringTempo());
+                        $('#lblHoraRestante').text(duracao.minutosParaStringTempo());
                         temporizador(new Date(date.getTime() + duracao * 60 * 1000));
                     }
                     else {
