@@ -681,7 +681,7 @@ siac.Questao.Cadastrar = (function () {
                         $div.append('\
                         <div class="item">\
                             <div class="content">\
-                                <a data-questao="'+ data[i].CodQuestao + '" class="header">' + siac.Utilitario.encurtarTextoEm(data[i].Enunciado, 140) + '</a>\
+                                <a data-questao="' + data[i].CodQuestao + '" class="header">' + data[i].Enunciado.encurtarTextoEm(140) + '</a>\
                                 <div class="description ui labels">\
                                     <span class="ui label">' + data[i].Disciplina + '</span>\
                                     <span class="ui label">' + data[i].Dificuldade + '</span>\

@@ -3,54 +3,56 @@
     "outputFileName": "Scripts/modules/siac.configuracoes.js",
     "inputFiles": [
       "Scripts/modules/siac.configuracoes.js"
-    ]
-  },
-  {
-    "outputFileName": "Scripts/modules/siac.questao.js",
-    "inputFiles": [
-      "Scripts/modules/siac.questao.js"
-    ]
+    ],
+    "sourceMap": false
   },
   {
     "outputFileName": "Scripts/libs/html2canvas.js",
     "inputFiles": [
       "Scripts/libs/html2canvas.js"
-    ]
+    ],
+    "sourceMap": false
   },
   {
     "outputFileName": "Styles/siac.acesso.css",
     "inputFiles": [
       "Styles/siac.acesso.css"
-    ]
+    ],
+    "sourceMap": false
   },
   {
     "outputFileName": "Styles/siac.css",
     "inputFiles": [
       "Styles/siac.css"
-    ]
-  },
-  {
-    "outputFileName": "Scripts/siac.js",
-    "inputFiles": [
-      "Scripts/siac.js"
-    ]
+    ],
+    "sourceMap": false
   },
   {
     "outputFileName": "Scripts/modules/siac.autoavaliacao.js",
     "inputFiles": [
       "Scripts/modules/siac.autoavaliacao.js"
-    ]
+    ],
+    "sourceMap": false
   },
   {
     "outputFileName": "Scripts/modules/siac.certificacao.js",
     "inputFiles": [
       "Scripts/modules/siac.certificacao.js"
-    ]
+    ],
+    "sourceMap": false
   },
   {
     "outputFileName": "Scripts/modules/siac.academica.js",
     "inputFiles": [
       "Scripts/modules/siac.academica.js"
-    ]
+    ],
+    "sourceMap": false
+  },
+  {
+    "outputFileName": "Scripts/modules/siac.questao.js",
+    "inputFiles": [
+      "Scripts/modules/siac.questao.js"
+    ],
+    "sourceMap": false
   }
 ]

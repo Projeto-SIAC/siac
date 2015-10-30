@@ -134,9 +134,9 @@ siac.Utilitario = (function () {
         return (timeData > timeDataAgora);
     }
 
-    function encurtarTextoEm(str, length) {
+    String.prototype.encurtarTextoEm = function(length) {
         var text = '';
-
+        var str = this;
         if (str.length > length) {
             text = str.substring(0, length);
             var afterText = str.substring(length);
@@ -202,7 +202,6 @@ siac.Utilitario = (function () {
     return {
         compararData: compararData,
         dataEFuturo: dataEFuturo,
-        encurtarTextoEm: encurtarTextoEm,
         quebrarLinhaEm: quebrarLinhaEm,
         minutosParaStringTempo: minutosParaStringTempo
     }

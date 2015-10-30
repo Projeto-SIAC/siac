@@ -1594,10 +1594,10 @@ siac.Academica.Corrigir = (function () {
                         $ddlCorrecaoValor.append('<option value="">Selecione a questão</option>');
                         for (i = 0, length = data.length; i < length; i++) {
                             if (data[i].flagCorrecaoPendente) {
-                                $ddlCorrecaoValor.append('<option value="' + data[i].codQuestao + '">' + getIndiceQuestao(data[i].codQuestao) + '. ' + siac.Utilitario.encurtarTextoEm(data[i].questaoEnunciado, 80) + '</option>');
+                                $ddlCorrecaoValor.append('<option value="' + data[i].codQuestao + '">' + getIndiceQuestao(data[i].codQuestao) + '. ' + data[i].questaoEnunciado.encurtarTextoEm(80) + '</option>');
                             }
                             else {
-                                $ddlCorrecaoValor.append('<option value="' + data[i].codQuestao + '">' + getIndiceQuestao(data[i].codQuestao) + '. ' + siac.Utilitario.encurtarTextoEm(data[i].questaoEnunciado, 80) + ' (corrigida)</option>');
+                                $ddlCorrecaoValor.append('<option value="' + data[i].codQuestao + '">' + getIndiceQuestao(data[i].codQuestao) + '. ' + data[i].questaoEnunciado.encurtarTextoEm(80) + ' (corrigida)</option>');
                             }
                         }
                         $ddlCorrecaoValor.parent().removeClass('loading').removeClass('disabled');
