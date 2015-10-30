@@ -98,7 +98,7 @@ namespace SIAC.Controllers
         {
             Sistema.MatriculaAtivo.Remove(Helpers.Sessao.UsuarioMatricula);
             Helpers.Sessao.Limpar();
-            return RedirectToAction("Index");
+            return Redirect("~/");
         }
     }
 }

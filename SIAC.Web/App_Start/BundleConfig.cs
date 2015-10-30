@@ -54,6 +54,7 @@ namespace SIAC
             ));
 
             bundles.Add(new StyleBundle("~/bundles/css/acesso").Include(
+                "~/styles/semantic.min.css",
                 "~/styles/siac.acesso.min.css"
             ));
         }

@@ -163,13 +163,13 @@
       <LastGenOutput>dbSIAC.cs</LastGenOutput>
     </Content>
     <Content Include="Mvc.sitemap" />
+    <Content Include="Resources\images\content\acesso\avatar.png" />
     <Content Include="Scripts\libs\chart.min.js" />
     <Content Include="Scripts\libs\html2canvas.js" />
     <Content Include="Scripts\libs\html2canvas.min.js">
       <DependentUpon>html2canvas.js</DependentUpon>
     </Content>
-    <Content Include="Resources\images\content\login\amostra.jpg" />
-    <Content Include="Resources\images\content\login\avatar.jpg" />
+    <Content Include="Resources\images\content\acesso\amostra.jpg" />
     <Content Include="Resources\images\layout\background.jpg" />
     <Content Include="Resources\images\layout\logo-black.png" />
     <Content Include="Resources\images\layout\logo.png" />
