@@ -979,8 +979,7 @@ siac.Academica.Realizar = (function () {
                 $msg = $('#txtChatMensagem');
                 $msg.val($msg.val().trim())
                 if ($msg.val()) {
-                    var mensagem = $msg.val();
-                    mensagem = siac.Utilitario.quebrarLinhaEm(mensagem, 30);
+                    var mensagem = $msg.val().quebrarLinhaEm(30);
                     acadHub.server.chatAlunoEnvia(avalAcad, usrMatr, $msg.val());
                     $('.chat.popup .content .comments').append('\
                             <div class="comment" style="float:right;clear:both;">\
@@ -1094,7 +1093,7 @@ siac.Academica.Realizar = (function () {
         var chatQteMensagem = 0;
         acadHub.client.chatAlunoRecebe = function (mensagem) {
             if (mensagem) {
-                mensagem = siac.Utilitario.quebrarLinhaEm(mensagem, 30);
+                mensagem = mensagem.quebrarLinhaEm(30);
                 $('.chat.popup .comments').append('\
                             <div class="comment" style="float:left;clear:both;">\
                                 <div class="content">\
@@ -1180,8 +1179,7 @@ siac.Academica.Acompanhar = (function () {
                 $msg = $('#' + matr + 'msg');
                 $msg.val($msg.val().trim());
                 if ($msg.val()) {
-                    var mensagem = $msg.val();
-                    mensagem = siac.Utilitario.quebrarLinhaEm(mensagem, 30);
+                    var mensagem = $msg.val().quebrarLinhaEm(30);
                     acadHub.server.chatProfessorEnvia(avalAcad, matr, $msg.val());
                     $('#' + matr + '.content .chat.popup .comments').append('\
                             <div class="comment" style="float:right;clear:both;">\
@@ -1236,7 +1234,7 @@ siac.Academica.Acompanhar = (function () {
         acadHub.client.chatProfessorRecebe = function (usrMatricula, mensagem) {
             $content = $('#' + usrMatricula + '.content[id]');
             if (mensagem) {
-                mensagem = siac.Utilitario.quebrarLinhaEm(mensagem, 30);
+                mensagem = mensagem.quebrarLinhaEm(30);
                 $('#' + usrMatricula + '.content .chat.popup .comments').append('\
                             <div class="comment" style="float:left;clear:both;">\
                                 <div class="content">\
@@ -1376,8 +1374,7 @@ siac.Academica.Acompanhar = (function () {
                     acadHub.client.chatProfessorRecebe(alnMatricula, mensagens[i].Texto);
                 }
                 else {
-                    var mensagem = mensagens[i].Texto;
-                    mensagem = siac.Utilitario.quebrarLinhaEm(mensagem, 30);
+                    var mensagem = mensagens[i].Texto.quebrarLinhaEm(30);
                     $('#' + alnMatricula + '.content .chat.popup .comments').append('\
                         <div class="comment" style="float:right;clear:both;">\
                             <div class="content">\

@@ -153,7 +153,8 @@ siac.Utilitario = (function () {
         return text;
     }
 
-    function quebrarLinhaEm(texto, indiceMaximo) {
+    String.prototype.quebrarLinhaEm = function(indiceMaximo) {
+        texto = this;
         texto = texto.trim();
         if (texto.length > indiceMaximo) {
             var tempMensagem = texto;
@@ -202,8 +203,7 @@ siac.Utilitario = (function () {
 
     return {
         compararData: compararData,
-        dataEFuturo: dataEFuturo,
-        quebrarLinhaEm: quebrarLinhaEm
+        dataEFuturo: dataEFuturo
     }
 })();
 
