@@ -127,9 +127,10 @@ siac.Academica.Detalhe = (function () {
         $('.ui.accordion').accordion({
             animateChildren: false,
             onOpen: function () {
-                $content = $('.questao.content.active');
-                if ($content) {
-                    var ctx = $content.find('canvas').get(0).getContext("2d");
+                var $content = $('.questao.content.active');
+                var $canvas = $content.find('canvas').get(0);
+                if ($content && $canvas) {
+                    var ctx = $canvas.getContext("2d");
                     var data = JSON.parse($content.find('code.dados').html());
                     var chart = new Chart(ctx).Doughnut(data);
                 }
@@ -166,11 +167,12 @@ siac.Academica.Detalhe = (function () {
         $('.aluno.dropdown').change(function () {
             var $this = $(this);
             var matricula = $this.find(':selected').val();
+
             if (_controleAjax && _controleAjax.readyState != 4) {
                 _controleAjax.abort();
             }
-            var $partial = $('div.partial');
 
+            var $partial = $('div.partial');
             $('.loader.global').parent().addClass('active');
 
             _controleAjax = $.ajax({
@@ -186,7 +188,7 @@ siac.Academica.Detalhe = (function () {
                     siac.mensagem('Ocorreu um erro inesperado.');
                 },
                 complete: function () {
-                    $('.ui.accordion').accordion();
+                    $('.partial .ui.accordion').accordion();
                     $('div,a').popup();
                     $('.loader.global').parent().removeClass('active');
                 }
