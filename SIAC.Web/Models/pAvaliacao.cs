@@ -15,6 +15,16 @@ namespace SIAC.Models
             }
         }
 
+        public List<Tema> Temas
+        {
+            get
+            {
+                List<Tema> temas = (from t in AvaliacaoTema
+                                    select t.Tema).Distinct().ToList();
+                return temas;
+            }
+        }
+
         public List<Questao> Questao
         {
             get

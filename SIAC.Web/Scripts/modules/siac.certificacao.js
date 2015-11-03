@@ -154,3 +154,19 @@ siac.Certificacao.Gerar = (function () {
 	}
 	
 })();
+
+siac.Certificacao.Configurar = (function () {
+
+    function iniciar() {
+        $('.informacoes.button').click(function () {
+            $('.informacoes.modal').modal('show');
+        });
+
+        $('.ui.dropdown').dropdown();
+    }
+
+    return {
+        iniciar:iniciar
+    }
+
+})();

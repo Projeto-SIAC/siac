@@ -24,12 +24,6 @@
     ]
   },
   {
-    "outputFileName": "Scripts/modules/siac.certificacao.js",
-    "inputFiles": [
-      "Scripts/modules/siac.certificacao.js"
-    ]
-  },
-  {
     "outputFileName": "Scripts/modules/siac.questao.js",
     "inputFiles": [
       "Scripts/modules/siac.questao.js"
@@ -51,6 +45,12 @@
     "outputFileName": "Scripts/siac.js",
     "inputFiles": [
       "Scripts/siac.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/modules/siac.certificacao.js",
+    "inputFiles": [
+      "Scripts/modules/siac.certificacao.js"
     ]
   }
 ]

@@ -107,11 +107,12 @@ namespace SIAC.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
-                if (!cert.Avaliacao.FlagRealizada)
+                if (cert != null && !cert.Avaliacao.FlagRealizada)
                 {
                     Professor prof = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
                     if (prof != null && prof.CodProfessor == cert.Professor.CodProfessor)
                     {
+                        ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
                         return View(cert);
                     }
                 }

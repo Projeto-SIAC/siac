@@ -87,6 +87,9 @@
         else if (pathname == '/dashboard/avaliacao/certificacao/gerar') {
             siac.Certificacao.Gerar.iniciar();
         }
+        else if (/\/dashboard\/avaliacao\/certificacao\/configurar\/cert[0-9]+$/.test(pathname)) {
+            siac.Certificacao.Configurar.iniciar();
+        }
     }
 
     function mensagem(mensagem, titulo) {
