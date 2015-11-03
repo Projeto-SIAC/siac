@@ -164,6 +164,7 @@
     </Content>
     <Content Include="Mvc.sitemap" />
     <Content Include="Resources\images\content\acesso\avatar.png" />
+    <Content Include="Resources\images\layout\ogimage.jpg" />
     <Content Include="Scripts\libs\chart.min.js" />
     <Content Include="Scripts\libs\html2canvas.js" />
     <Content Include="Scripts\libs\html2canvas.min.js">

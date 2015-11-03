@@ -4,14 +4,30 @@
 
 <!DOCTYPE html>
 
-<html class="no-js" lang="pt-br">
+<html class="no-js" lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema Interativo de Avaliação de Conhecimento possibilita realização de autoavaliação, avaliação acadêmica, avaliação de certificação e avaliação institucional.">
+    <meta name="author" content="Póstero">
+    <meta name="keywords" content="educação, avaliação">
+    <meta name="rating" content="General">
+    <meta name="copyright" content="Póstero">
+    <meta name="robots" content="index">
     <title>Sistema Interativo de Avaliação de Conhecimento - SIAC</title>
     <link href="~/Resources/images/layout/logo-black.png" rel="shortcut icon" />
     @Styles.Render("~/bundles/css/acesso")
     @Scripts.Render("~/bundles/modernizr")
+    <meta property="og:title" content="@Page.Title">
+    <meta property="og:description" content="Sistema Interativo de Avaliação de Conhecimento possibilita realização de autoavaliação, avaliação acadêmica, avaliação de certificação e avaliação institucional.">
+    <meta property="og:url" content="@Request.Url">
+    <meta property="og:image" content="@(new Uri(Request.Url, Url.Content("~/resources/images/layout/ogimage.jpg")).ToString())">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="720">
+    <meta property="og:image:height" content="480">
+    <meta property="og:locale" content="pt_BR">
+    <meta property='og:type' content='website'>
+    <meta property='og:site_name' content='SIAC'>
 </head>
 <body  id="entrar" class="pushable">
     @*<form action="~/Acesso/Entrar" method="post" class="ui small modal">
