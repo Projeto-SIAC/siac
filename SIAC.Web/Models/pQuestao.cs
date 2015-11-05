@@ -92,7 +92,7 @@ namespace SIAC.Models
             return questoes;
         }
 
-        public static List<QuestaoTema> ListarPorDisciplina(int codDisciplina, string[] Temas, int dificulDisc, int qteObj = 0, int qteDiscu = 0)
+        public static List<QuestaoTema> ListarPorDisciplina(int codDisciplina, string[] Temas, int dificulDisc,int tipo, int qteQuestoes)
         {
             List<QuestaoTema> QuestoesTemas = new List<QuestaoTema>(); //LISTA DE QUESTÕES PARA AVALIAÇÃO
             List<QuestaoTema> QuestoesTotal = new List<QuestaoTema>(); //LISTA DE TODAS AS QUESTÕES DO BANCO
@@ -102,13 +102,13 @@ namespace SIAC.Models
             int temaContador = 0;
             int temaAtual = int.Parse(Temas[temaContador]);
 
-            if (qteObj > 0)
+            if (qteQuestoes > 0)
             {
                 foreach (string tema in Temas)
                 {
                     int codTema = int.Parse(tema);
                     List<QuestaoTema> temp = (from qt in contexto.QuestaoTema
-                                              where qt.Questao.CodTipoQuestao == 1
+                                              where qt.Questao.CodTipoQuestao == tipo
                                               && qt.Questao.CodDificuldade <= dificulDisc
                                               && qt.CodDisciplina == codDisciplina
                                               && qt.CodTema == codTema
@@ -117,7 +117,7 @@ namespace SIAC.Models
 
                     temp = Models.QuestaoTema.LimparRepeticao(temp, QuestoesTemas, QuestoesTotal);
 
-                    if (temp.Count != 0 && QuestoesTemas.Count < qteObj)
+                    if (temp.Count != 0 && QuestoesTemas.Count < qteQuestoes)
                     {
                         for (int i = dificulDisc; i >= 1; i--)
                         {
@@ -137,7 +137,7 @@ namespace SIAC.Models
                     }
                 }
 
-                for (int i = dificulDisc; i >= 1 && QuestoesTemas.Count < qteObj; i--)
+                for (int i = dificulDisc; i >= 1 && QuestoesTemas.Count < qteQuestoes; i--)
                 {
                     QuestoesAtual = (from qt in QuestoesTotal
                                      where qt.Questao.CodDificuldade == i
@@ -162,15 +162,15 @@ namespace SIAC.Models
                 }
 
 
-                if (qteObj > QuestoesTemas.Count)
+                if (qteQuestoes > QuestoesTemas.Count)
                 {
                     QuestoesAtual = (from qt in QuestoesTotal
                                      where qt.Questao.CodDificuldade == dificulDisc
                                      select qt).ToList();
 
-                    if (QuestoesAtual.Count + QuestoesTemas.Count >= qteObj)
+                    if (QuestoesAtual.Count + QuestoesTemas.Count >= qteQuestoes)
                     {
-                        for (int i = QuestoesTemas.Count; i < qteObj; i++)
+                        for (int i = QuestoesTemas.Count; i < qteQuestoes; i++)
                         {
                             int random = 0;
                             if (QuestoesAtual.Count > 1)
@@ -205,7 +205,7 @@ namespace SIAC.Models
 
                             if (QuestoesAtual.Count != 0)
                             {
-                                if (QuestoesAtual.Count + QuestoesTemas.Count >= qteObj)
+                                if (QuestoesAtual.Count + QuestoesTemas.Count >= qteQuestoes)
                                 {
                                     do
                                     {
@@ -229,7 +229,7 @@ namespace SIAC.Models
 
                                         }
 
-                                    } while (QuestoesTemas.Count != qteObj);
+                                    } while (QuestoesTemas.Count != qteQuestoes);
                                 }
                                 else
                                 {
@@ -241,7 +241,7 @@ namespace SIAC.Models
                                 }
                             }
 
-                            if (QuestoesTemas.Count == qteObj || i == 1)
+                            if (QuestoesTemas.Count == qteQuestoes || i == 1)
                             {
                                 break;
                             }
@@ -249,7 +249,7 @@ namespace SIAC.Models
                     }
                 }
             }
-
+            /*
             temaContador = 0;
             QuestoesTotal = new List<QuestaoTema>();
 
@@ -403,7 +403,7 @@ namespace SIAC.Models
                         }
                     }
                 }
-            }
+            }*/
             return QuestoesTemas;
         }
 

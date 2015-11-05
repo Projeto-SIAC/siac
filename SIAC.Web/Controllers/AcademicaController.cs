@@ -191,7 +191,16 @@ namespace SIAC.Controllers
                 string[] arrTemaCods = formCollection["ddlTemas"].Split(',');
 
                 /* Questões */
-                List<QuestaoTema> lstQuestoes = Questao.ListarPorDisciplina(codDisciplina, arrTemaCods, codDificuldade, qteObjetiva, qteDiscursiva);
+                List<QuestaoTema> lstQuestoes = new List<QuestaoTema>();
+
+                if (qteObjetiva > 0)
+                {
+                    lstQuestoes.AddRange(Questao.ListarPorDisciplina(codDisciplina, arrTemaCods, codDificuldade, 1, qteObjetiva));
+                }
+                if (qteDiscursiva > 0)
+                {
+                    lstQuestoes.AddRange(Questao.ListarPorDisciplina(codDisciplina, arrTemaCods, codDificuldade, 2, qteDiscursiva));
+                }
 
                 foreach (var strTemaCod in arrTemaCods)
                 {

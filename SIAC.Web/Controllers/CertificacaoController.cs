@@ -77,7 +77,16 @@ namespace SIAC.Controllers
                 string[] arrTemaCods = formCollection["ddlTemas"].Split(',');
 
                 /* Questões */
-                List<QuestaoTema> lstQuestoes = Questao.ListarPorDisciplina(codDisciplina, arrTemaCods, codDificuldade, qteObjetiva, qteDiscursiva);
+                List<QuestaoTema> lstQuestoes = new List<QuestaoTema>();
+
+                if (qteObjetiva > 0)
+                {
+                    lstQuestoes.AddRange(Questao.ListarPorDisciplina(codDisciplina, arrTemaCods, codDificuldade, 1, qteObjetiva));
+                }
+                if (qteDiscursiva > 0)
+                {
+                    lstQuestoes.AddRange(Questao.ListarPorDisciplina(codDisciplina, arrTemaCods, codDificuldade, 2, qteDiscursiva));
+                }
 
                 foreach (var strTemaCod in arrTemaCods)
                 {
@@ -134,16 +143,8 @@ namespace SIAC.Controllers
                     List<QuestaoTema> questoesTemas = new List<QuestaoTema>();
                     List<Questao> questoes = new List<Questao>();
 
-                    //Caso as questões sejam => Objetiva OBJ
-                    if (tipo == 1)
-                    {
-                        questoesTemas = Questao.ListarPorDisciplina(cert.CodDisciplina, temas, dificuldade, 10);
-                    }
-                    //Caso as questões sejam => Discursiva DISC
-                    else if (tipo == 2)
-                    {
-                        questoesTemas = Questao.ListarPorDisciplina(cert.CodDisciplina, temas, dificuldade,0,10);
-                    }
+                    questoesTemas = Questao.ListarPorDisciplina(cert.CodDisciplina, temas, dificuldade, tipo,10);
+                    
                     questoes = (from qt in questoesTemas
                                 select qt.Questao).ToList();
 
