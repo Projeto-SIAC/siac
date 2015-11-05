@@ -18,3 +18,6 @@ Possibilitar autoavaliações em qualquer assunto ministrado no IFRN por todos q
 * Prof. Reginaldo Falcão (Orientador)
 * Felipe Pontes (Desenvolvedor)
 * Francisco Bento (Desenvolvedor)
+* Deyvison Soares (Analista) [Não participante]
+* João Paulo (Designer) [Não participante]
+* Bruno Medeiros (Analista) [Não participante]
