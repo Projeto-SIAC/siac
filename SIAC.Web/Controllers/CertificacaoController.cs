@@ -113,11 +113,44 @@ namespace SIAC.Controllers
                     if (prof != null && prof.CodProfessor == cert.Professor.CodProfessor)
                     {
                         ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
+                        ViewBag.TiposQuestao = TipoQuestao.ListarOrdenadamente();
                         return View(cert);
                     }
                 }
             }
             return RedirectToAction("Index");
+        }
+
+        // POST: Certificacao/CarregarQuestoes/CERT201520001/{temas}/{dificuldade}/{tipo}
+        [HttpPost]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult CarregarQuestoes(string codigo, string[] temas, int dificuldade, int tipo)
+        {
+            if (!String.IsNullOrEmpty(codigo) && temas.Count() > 0 && dificuldade > 0 && tipo > 0 )
+            {
+                AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
+                if (cert != null)
+                {
+                    List<QuestaoTema> questoesTemas = new List<QuestaoTema>();
+                    List<Questao> questoes = new List<Questao>();
+
+                    //Caso as questões sejam => Objetiva OBJ
+                    if (tipo == 1)
+                    {
+                        questoesTemas = Questao.ListarPorDisciplina(cert.CodDisciplina, temas, dificuldade, 10);
+                    }
+                    //Caso as questões sejam => Discursiva DISC
+                    else if (tipo == 2)
+                    {
+                        questoesTemas = Questao.ListarPorDisciplina(cert.CodDisciplina, temas, dificuldade,0,10);
+                    }
+                    questoes = (from qt in questoesTemas
+                                select qt.Questao).ToList();
+
+                    return PartialView("_ListaQuestao", questoes);
+                }
+            }
+            return null;
         }
     }
 }

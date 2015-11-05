@@ -55,7 +55,7 @@
 
 <form class="ui form">
     <div class="ui fields">
-        <div class="ui twelve wide field required">
+        <div class="ui ten wide field required">
             <label>Tema(s)</label>
             <select id="ddlTemas" name="ddlTemas" class="ui search dropdown fluid tema" multiple required>
                 <option value="">Temas...</option>
@@ -65,7 +65,7 @@
                 }
             </select>
         </div>
-        <div class="ui four wide field required">
+        <div class="ui three wide field required">
             <label>Dificuldade</label>
             <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown fluid dificuldade" required>
                 <option value="">Dificuldade...</option>
@@ -75,8 +75,26 @@
                 }
             </select>
         </div>
+        <div class="ui three wide field required">
+            <label>Tipo</label>
+            <select id="ddlTipo" name="ddlTipo" class="ui search dropdown fluid dificuldade" required>
+                <option value="">Tipo...</option>
+                @foreach (TipoQuestao t in ViewBag.TiposQuestao)
+                {
+                    <option value="@t.CodTipoQuestao">@t.Descricao</option>
+                }
+            </select>
+        </div>
     </div>
 </form>
+
+<div class="questoes sixteen wide column">
+    <div class="ui basic segment">
+        <div class="ui two stackable cards">
+        </div>
+    </div>
+</div>
+
 @section Scripts{
     @Scripts.Render("~/bundles/js/certificacao")
 }
