@@ -222,6 +222,10 @@ siac.Anexo = siac.Anexo || (function () {
 
         $('body').append($modal);
 
+        //$modal.modal({
+        //    allowMultiple: true
+        //});
+
         $modal.modal('show');
     }
 

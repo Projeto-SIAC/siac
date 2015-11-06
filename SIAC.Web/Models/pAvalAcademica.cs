@@ -68,7 +68,7 @@ namespace SIAC.Models
                 .ToList();
         }
 
-        public static List<AvalAcademica> ListarPendentePorProfessor(int codProfessor)
+        public static List<AvalAcademica> ListarCorrecaoPendentePorProfessor(int codProfessor)
         {
             return contexto.AvalQuesPessoaResposta
                 .Where(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcademica.CodProfessor == codProfessor && !a.RespNota.HasValue)

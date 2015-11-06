@@ -301,12 +301,16 @@ else if (Model.Avaliacao.FlagRealizada)
         <div class="partial"></div>
     </div>
                                         }
+                                        else if (DateTime.Now < Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value))
+                                        {
+                                            <div class="ui message"><p>Você poderá conferir seu resultado assim que o tempo de aplicação da prova acabar.</p></div>
+                                        }
                                         else
                                         {
                                             int codPessoaFisica = Usuario.ObterPessoaFisica(SIAC.Helpers.Sessao.UsuarioMatricula);
                                             var lstPessoaResposta = LstResposta.Where(p => p.CodPessoaFisica == codPessoaFisica).ToList();
-                                            var avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.FirstOrDefault(r=>r.CodPessoaFisica == codPessoaFisica);
-                                            int qteAcerto = lstPessoaResposta.Where(p=>p.RespNota.HasValue && p.RespNota.Value == 10).Count();
+                                            var avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.FirstOrDefault(r => r.CodPessoaFisica == codPessoaFisica);
+                                            int qteAcerto = lstPessoaResposta.Where(p => p.RespNota.HasValue && p.RespNota.Value == 10).Count();
                                             var percent = qteAcerto / LstQuestao.Count;
                                             if (avalPessoaResultado != null)
                                             {
@@ -355,8 +359,8 @@ else if (Model.Avaliacao.FlagRealizada)
                 <div class="title">
                     <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).ToShortString(80))
                     @if (LstQuestao[i].CodTipoQuestao == 1)
-                    {
-                        var correta = LstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
+                                                {
+                                                    var correta = LstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
                         <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? Html.Raw("<i class=\"checkmark icon\"></i>Correta") : Html.Raw("<i class=\"remove icon\"></i>Incorreta") )</div>
                     }
                     else if (resposta.RespNota.HasValue)
@@ -379,19 +383,19 @@ else if (Model.Avaliacao.FlagRealizada)
                             }
                         </div>
                         @if (LstQuestao[i].CodTipoQuestao == 1)
-                        {
+                                        {
                             <div class="ui list">
                                 @foreach (var alternativa in LstQuestao[i].Alternativa)
-                                {
+                                        {
                                     <div class="item">
                                         <div class="middle aligned content">
                                             <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
                                             @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
-                                            {
+                                        {
                                                 <a data-html="@(("<b>Comentário</b>: " + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
                                             }
                                             @if (alternativa.CodOrdem == resposta.RespAlternativa)
-                                            {
+                                        {
                                                 <a data-html="@(("<b>Comentário</b>: " + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Marcada</a>
                                             }
                                         </div>
@@ -416,15 +420,15 @@ else if (Model.Avaliacao.FlagRealizada)
                             </div>
                                     }
                         @if (LstQuestao[i].QuestaoAnexo.Count > 0)
-                        {
+                                        {
                             <div class="accordion">
                                 <div class="title"><i class="icon dropdown"></i>Anexos</div>
                                 <div class="content">
                                     @foreach (var anexo in LstQuestao[i].QuestaoAnexo)
-                                    {
-                                        switch (anexo.CodTipoAnexo)
                                         {
-                                            case 1:
+                                            switch (anexo.CodTipoAnexo)
+                                            {
+                                                case 1:
                                                 <a class="ui anexo imagem card">
                                                     <div class="image">
                                                         <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo, 0, anexo.Anexo.Length)" />
@@ -450,13 +454,16 @@ else if (Model.Avaliacao.FlagRealizada)
                 </div>
                                     }
         </div> 
-    </div>  
-                                                    }
-                                                }
+    </div>
                                             }
-                                            else
-                                            {
-    <a href="@Url.Action("Agendar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 2)
+                                        {
+                                            <a href="@Url.Action("Agendar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
+                                        }
                                     }
 <a href="@Url.Action("Index")" class="ui button">Histórico</a>
 @if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 2)
