@@ -136,6 +136,14 @@ namespace SIAC.Models
             }
         }
 
+        public bool FlagCorrecaoPendente
+        {
+            get
+            {
+                return this.FlagRealizada && this.PessoaResposta.Where(pr => !pr.RespNota.HasValue).Count() > 0;
+            }
+        }
+
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         public static int ObterNumIdentificador(int codTipoAvaliacao)

@@ -28,6 +28,12 @@
             <span class="ui label"><i class="checkmark icon"></i>Realizada</span>
         }
     }
+    @if (Model.Avaliacao.FlagCorrecaoPendente)
+    {
+        <a href="@Url.Action("Corrigir", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui right floated corrigir button">
+            Corrigir
+        </a>
+    }
 </h2>
 
 <div class="ui basic segment">

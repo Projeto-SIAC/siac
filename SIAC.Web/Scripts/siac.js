@@ -92,17 +92,27 @@
         }
     }
 
+    var HTML_TEMPLATE = '<div class="ui small mensagem modal">' +
+                    '<div class="header">{titulo}</div>' +
+                    '<div class="content">{mensagem}</div>' +
+                    '<div class="actions">' +
+                        '<div class="ui cancel button">Fechar</div>' +
+                    '</div>' +
+                '</div>';
+
     function mensagem(mensagem, titulo) {
         if (mensagem) {
-            if (titulo) {
-                $('.ui.mensagem.modal .header')
-					.text(titulo)
-                ;
-            }
-            $('.ui.mensagem.modal .content')
-				.text(mensagem)
-            ;
+            var html = HTML_TEMPLATE;
+            titulo ? html = html.replace('{titulo}', titulo) : html = html.replace('{titulo}', 'Mensagem');
+            html = html.replace('{mensagem}', mensagem);
+            $('body').append(html);
             $('.ui.mensagem.modal')
+                .modal({
+                    transition: 'fly down',
+                    onHidden: function() {
+                        $(this).remove();
+                    }
+                })
 				.modal('show')
             ;
         }

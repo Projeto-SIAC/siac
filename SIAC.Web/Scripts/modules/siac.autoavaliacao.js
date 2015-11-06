@@ -160,8 +160,6 @@ siac.Autoavaliacao.Detalhe = (function () {
         _codAvaliacao = $elemento.attr('data-avaliacao');
         $elemento.removeAttr('data-avaliacao');
 
-        $('.ui.modal').modal();
-
         $('.ui.accordion').accordion({
             animateChildren: false
         });

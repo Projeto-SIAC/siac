@@ -213,6 +213,11 @@ siac.Academica.Detalhe = (function () {
 
             siac.Anexo.expandirImagem(source, legenda, fonte);
         });
+
+        $('.corrigir.button').popup({
+            title: 'Corrigir avaliação',
+            content: 'Esta avaliação possui correções pendentes.'
+        }).popup('show');
     }
 
     return {
