@@ -7,7 +7,13 @@
     @Scripts.Render("~/bundles/js/academica")
 }
 
-<h2>@ViewBag.Title <a class="ui right floated button" href="@Url.Action("Gerar")">Gerar</a></h2>
+<h2>
+    @ViewBag.Title 
+    @if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 2)
+    {
+        <a class="ui right floated button" href="@Url.Action("Gerar")">Gerar</a>
+    }
+</h2>
 
 <div class="ui stackable grid" style="clear:both">
     <div class="sixteen wide column">

@@ -97,6 +97,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -108,6 +113,14 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
       <Private>True</Private>
@@ -165,6 +178,7 @@
     </Content>
     <Content Include="Mvc.sitemap" />
     <Content Include="Resources\images\content\acesso\avatar.png" />
+    <Content Include="Resources\images\layout\loader.gif" />
     <Content Include="Resources\images\layout\ogimage.jpg" />
     <Content Include="Scripts\libs\chart.min.js" />
     <Content Include="Scripts\libs\html2canvas.js" />
@@ -225,7 +239,9 @@
     <Compile Include="Controllers\AutoavaliacaoController.cs" />
     <Compile Include="Controllers\AcademicaController.cs" />
     <Compile Include="Controllers\CertificacaoController.cs" />
-    <Compile Include="Filters\CategoriaFilterAttribute.cs" />
+    <Compile Include="Controllers\InstitucionalController.cs" />
+    <Compile Include="Controllers\PerfilController.cs" />
+    <Compile Include="Filters\AutenticacaoFilterAttribute.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\AcessoController.cs" />
     <Compile Include="Controllers\ErroController.cs" />
@@ -602,7 +618,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Institucional\" />
     <Folder Include="Views\LeroLero\" />
+    <Folder Include="Views\Perfil\" />
     <Folder Include="Views\Tema\" />
   </ItemGroup>
   <ItemGroup>

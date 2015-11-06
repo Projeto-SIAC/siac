@@ -429,9 +429,12 @@ else if (Model.Avaliacao.FlagRealizada)
     <a href="@Url.Action("Agendar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
                                     }
 <a href="@Url.Action("Index")" class="ui button">Histórico</a>
-@if (Model.Avaliacao.FlagArquivo || !Model.Avaliacao.FlagRealizada)
+@if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 2)
 {
-    <div class="ui arquivar toggle @(Model.Avaliacao.FlagArquivo ? "active" : "") button">Arquiva@(Model.Avaliacao.FlagArquivo ? "da" : "r")</div>
+    if (Model.Avaliacao.FlagArquivo || !Model.Avaliacao.FlagRealizada)
+    {
+        <div class="ui arquivar toggle @(Model.Avaliacao.FlagArquivo ? "active" : "") button">Arquiva@(Model.Avaliacao.FlagArquivo ? "da" : "r")</div>
+    }
 }
 @if (Model.Avaliacao.FlagAgendada)
 {

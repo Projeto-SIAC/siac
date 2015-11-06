@@ -1,8 +1,109 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Histórico";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int autoavaliacao = 0; //Model.PessoaFisica.AvalAuto.Where(a => a.Avaliacao.AvalPessoaResultado.Count == 0).Count();
+    int academica = 0;
+    int certificacao = 0;
+    int agendada = 0;
+    int pendente = 0;
+    //if (Model.CodCategoria == 2)
+    //{
+    //    var prof = Model.Professor.First();
+    //    academica = prof.AvalAcademica.Where(a=>!a.NumTurma.HasValue).Count();
+    //    certificacao = prof.AvalCertificacao.Where(a => a.PessoaFisica.Count == 0).Count();
+    //    agendada = prof.AvalAcademica.Where(a => a.Avaliacao.DtAplicacao.HasValue).Count();
+    //    pendente = prof.AvalAcademica.Where(a => a.Avaliacao.AvalPessoaResultado.Where(r => !r.Nota.HasValue).Count() > 0).Count();
+    //}
+    //else if (Model.CodCategoria == 1)
+    //{
+    //    var aluno = Model.Aluno.First();
+    //    agendada = aluno.TurmaDiscAluno.Sum(t => t.Turma.AvalAcademica.Where(c=> c.Avaliacao.AvalPessoaResultado.Count == 0).Count());
+    //}
 }
+@model SIAC.Models.Usuario
 
 <h2>@ViewBag.Title</h2>
 
+<div class="ui stackable grid dashmenu">
+    <div class="stackable doubling four columns centered row">  
+        <div class="column aligned center">
+            <a href="@Url.Action("Index", "Autoavaliacao")" class="ui basic segment">
+                <div class="ui icon header">
+                    <i class="folder icon"></i>
+                    Autoavaliações Salvas
+                </div>
+            </a>
+        </div>       
+        @if (Model.CodCategoria == 2)
+        {
+            <div class="column aligned center">
+                <a href="@Url.Action("Index", "Academica")" class="ui basic segment">
+                    <div class="ui icon header">
+                        <i class="file icon"></i>
+                        @if (academica > 0)
+                        {
+                            <div class="ui floating small red label">@academica</div>
+                        }
+                        Histórico de Acadêmicas
+                    </div>
+                </a>
+            </div>
+        }
+        @if (Model.CodCategoria == 2 || Model.CodCategoria == 3)
+        {
+            <div class="column aligned center">
+                <a href="@Url.Action("Index", "Certificacao")" class="ui basic segment">
+                    <div class="ui icon header">
+                        <i class="file text icon"></i>
+                        @if (certificacao > 0)
+                        {
+                            <div class="ui floating small red label">@certificacao</div>
+                        }
+                        Histórico de Certificações
+                    </div>
+                </a>
+            </div>
+        }
+        @if (Model.CodCategoria == 2)
+        {
+            <div class="column aligned center">
+                <a href="@Url.Action("Index", "Questao")" class="ui basic segment">
+                    <div class="ui icon header">
+                        <i class="book icon"></i>
+                        Minhas Questões
+                    </div>
+                </a>
+            </div>
+        }
+        @if (Model.CodCategoria <= 2)
+        {
+            <div class="column aligned center">
+                <a href="@Url.Action("Agendada", "Academica")" class="ui basic segment">
+                    <div class="ui icon header">
+                        <i class="calendar icon"></i>
+                        @if (agendada > 0)
+                        {
+                            <div class="ui floating small red label">@agendada</div>
+                        }
+                        Avaliações Agendadas
+                    </div>
+                </a>
+            </div>
+        }
+        @if (Model.CodCategoria == 2)
+        {
+            <div class="column aligned center">
+                <a href="@Url.Action("Pendente", "Academica")" class="ui basic segment">
+                    <div class="ui icon header">
+                        <i class="edit icon"></i>
+                        @if (pendente > 0)
+                        {
+                            <div class="ui floating small red label">@pendente</div>
+                        }
+                        Correções Pendentes
+                    </div>
+                </a>
+            </div>
+        }           
+    </div>
+</div>

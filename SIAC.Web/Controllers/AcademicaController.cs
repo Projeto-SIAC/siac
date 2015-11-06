@@ -7,7 +7,7 @@ using SIAC.Models;
 
 namespace SIAC.Controllers
 {
-    [Filters.CategoriaFilter(Categorias = new[] { 1, 2 })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2 })]
     public class AcademicaController : Controller
     {      
         public List<AvalAcademica> Academicas
@@ -114,7 +114,7 @@ namespace SIAC.Controllers
         }
 
         //GET: Dashboard/Avaliacao/Academica/Gerar
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Gerar()
         {
             if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
@@ -134,7 +134,7 @@ namespace SIAC.Controllers
 
         //POST: Dashboard/Avaliacao/Academica/Confirmar
         [HttpPost]
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Confirmar(FormCollection formCollection)
         {
             if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
@@ -226,7 +226,7 @@ namespace SIAC.Controllers
 
         //GET: Dashboard/Avaliacao/Academica/Agendar/ACAD2015100002
         [HttpGet]
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Agendar(string codigo)
         {
             if (String.IsNullOrEmpty(codigo))
@@ -254,7 +254,7 @@ namespace SIAC.Controllers
 
         //POST: Dashboard/Avaliacao/Academica/Agendar/ACAD2015100002
         [HttpPost]
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Agendar(string codigo, FormCollection form)
         {
             if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
@@ -334,7 +334,7 @@ namespace SIAC.Controllers
 
         // GET: Avaliacao/Academica/Configurar/ACAD201520001
         [HttpGet]
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Configurar(string codigo)
         {
             TempData["listaQuestoesAntigas"] = new List<AvalTemaQuestao>();
@@ -364,7 +364,7 @@ namespace SIAC.Controllers
         }
 
         // GET: Avaliacao/Academica/Imprimir/ACAD201520001
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Imprimir(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))
@@ -430,7 +430,7 @@ namespace SIAC.Controllers
 
         //POST: Avaliacao/Academica/Trocar/ACAD201520001
         [AcceptVerbs(HttpVerbs.Post)]
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult TrocarQuestao(string codigoAvaliacao, int tipo, int indice, int codQuestao)
         {
             List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData["listaQuestoesAntigas"];
@@ -523,7 +523,7 @@ namespace SIAC.Controllers
         //POST: Avaliacao/Academica/Salvar/ACAD201520001
         [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Salvar(string codigoAval)
         {
             List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData["listaQuestoesAntigas"];
@@ -548,7 +548,7 @@ namespace SIAC.Controllers
 
         //POST: Avaliacao/Academica/Desfazer/ACAD201520001
         [AcceptVerbs(HttpVerbs.Post)]
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Desfazer(string codigoAvaliacao, int tipo, int indice, int codQuestao)
         {
             List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData["listaQuestoesAntigas"];
@@ -628,14 +628,14 @@ namespace SIAC.Controllers
 
         //POST: Avaliacao/Academica/Liberar/ACAD201520001
         [AcceptVerbs(HttpVerbs.Post)]
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult AlternarLiberar(string codAvaliacao)
         {
             return Json(AvalAcademica.AlternarLiberar(codAvaliacao), JsonRequestBehavior.AllowGet);
         }
 
         //GET: Avaliacao/Academica/Acompanhar/ACAD201520007
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Acompanhar(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))
@@ -671,7 +671,7 @@ namespace SIAC.Controllers
         }
 
         // GET: Academica/Realizar
-        [Filters.CategoriaFilter(Categorias = new[] { 1 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 1 })]
         public ActionResult Realizar(string codigo)
         {
             if (Helpers.Sessao.UsuarioCategoriaCodigo == 1 && !String.IsNullOrEmpty(codigo))
@@ -687,7 +687,7 @@ namespace SIAC.Controllers
 
         // POST: Academica/Resultado/ACAD201520001
         [HttpPost]
-        [Filters.CategoriaFilter(Categorias = new[] { 1 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 1 })]
         public ActionResult Resultado(string codigo, FormCollection form)
         {
             int codPessoaFisica = Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula);
@@ -756,7 +756,7 @@ namespace SIAC.Controllers
 
         // POST: Academica/Desistir/ACAD201520016
         [HttpPost]
-        [Filters.CategoriaFilter(Categorias = new[] { 1 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 1 })]
         public void Desistir(string codigo)
         {
             int codPessoaFisica = Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula);
@@ -792,7 +792,7 @@ namespace SIAC.Controllers
 
         // POST: Academica/Pendente
         [HttpGet]
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Pendente()
         {
             string strMatr = Helpers.Sessao.UsuarioMatricula;
@@ -802,7 +802,7 @@ namespace SIAC.Controllers
 
         // GET: Avaliacao/Academica/Corrigir/ACAD201520016
         [HttpGet]
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Corrigir(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))
@@ -818,7 +818,7 @@ namespace SIAC.Controllers
         }
         // POST: Academica/Arquivar
         [HttpPost]
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Arquivar(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))
@@ -831,7 +831,7 @@ namespace SIAC.Controllers
         //POST: Academica/Avaliacao/CarregarAlunos/{codigo}
         [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult CarregarAlunos(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))
@@ -852,7 +852,7 @@ namespace SIAC.Controllers
         //POST: Academica/Avaliacao/CarregarQuestoesDiscursivas/{codigo}
         [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult CarregarQuestoesDiscursivas(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))
@@ -876,7 +876,7 @@ namespace SIAC.Controllers
         //POST: Academica/Avaliacao/CarregarRespostasDiscursivas/{codigo}/{matrAluno}
         [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult CarregarRespostasDiscursivas(string codigo,string matrAluno)
         {
             if (!String.IsNullOrEmpty(codigo) && !String.IsNullOrEmpty(matrAluno))
@@ -907,7 +907,7 @@ namespace SIAC.Controllers
         //POST: Academica/Avaliacao/CarregarRespostasPorQuestao/{codigo}/{codQuestao}
         [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult CarregarRespostasPorQuestao(string codigo, string codQuestao)
         {
             if (!String.IsNullOrEmpty(codigo) && !String.IsNullOrEmpty(codQuestao))
@@ -939,7 +939,7 @@ namespace SIAC.Controllers
         //POST: Academica/Avaliacao/CorrigirQuestaoAluno/{codigo}/{matrAluno}/{codQuestao}
         [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
-        [Filters.CategoriaFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult CorrigirQuestaoAluno(string codigo, string matrAluno,string codQuestao,string notaObtida,string profObservacao)
         {
             if (!String.IsNullOrEmpty(codigo) && !String.IsNullOrEmpty(matrAluno) && !String.IsNullOrEmpty(codQuestao))
@@ -956,7 +956,7 @@ namespace SIAC.Controllers
         
         //[AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
-        [Filters.CategoriaFilter(Categorias =new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias =new[] { 2 })]
         public ActionResult DetalheIndividual(string codigo, string matricula)
         {
             if (!Helpers.StringExt.IsNullOrEmpty(codigo, matricula))

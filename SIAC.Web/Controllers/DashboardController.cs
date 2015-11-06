@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.CategoriaFilter]
+    [Filters.AutenticacaoFilter]
     public class DashboardController : Controller
     {
         // GET: Dashboard
@@ -16,6 +16,11 @@ namespace SIAC.Controllers
             Usuario usuario = Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
             return View(usuario);            
         }
-       
+
+        // GET: Dashboard/Avaliacao
+        public ActionResult Avaliacao()
+        {
+            return RedirectToAction("Index");
+        }
     }
 }
