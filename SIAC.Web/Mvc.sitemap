@@ -37,6 +37,7 @@
           <mvcSiteMapNode title="Gerar" controller="Certificacao" action="Gerar">
             <mvcSiteMapNode title="Confirmação" controller="Certificacao" action="Confirmar"/>
           </mvcSiteMapNode>
+          <mvcSiteMapNode title="Configurar" controller="Certificacao" action="Configurar" preservedRouteParameters="codigo"/>
         </mvcSiteMapNode>
       </mvcSiteMapNode>
     </mvcSiteMapNode>

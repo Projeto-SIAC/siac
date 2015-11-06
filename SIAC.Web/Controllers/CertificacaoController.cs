@@ -111,6 +111,7 @@ namespace SIAC.Controllers
         }
 
         // GET: Certificacao/Configurar/CERT201520001
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2/*, 3*/ })]
         public ActionResult Configurar(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))
@@ -133,6 +134,7 @@ namespace SIAC.Controllers
         // POST: Certificacao/CarregarQuestoes/CERT201520001/{temas}/{dificuldade}/{tipo}
         [HttpPost]
         [AcceptVerbs(HttpVerbs.Post)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2/*, 3*/ })]
         public ActionResult CarregarQuestoes(string codigo, string[] temas, int dificuldade, int tipo)
         {
             if (!String.IsNullOrEmpty(codigo) && temas.Count() > 0 && dificuldade > 0 && tipo > 0 )
