@@ -173,6 +173,11 @@ siac.Certificacao.Configurar = (function () {
             carregarQuestoes();
         });
 
+        $('.ui.questoes.button').popup({
+            on: 'click',
+            inline: true
+        });
+
     }
 
     function carregarQuestoes() {

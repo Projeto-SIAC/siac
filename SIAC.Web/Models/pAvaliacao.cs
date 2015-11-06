@@ -73,6 +73,28 @@ namespace SIAC.Models
             }
         }
 
+        public int CodDificuldade
+        {
+            get
+            {
+                return Questao.Max(q => q.CodDificuldade);
+            }
+        }
+
+        public int TipoQuestoes
+        {
+            get
+            {
+                int qteObj = Questao.Count(q => q.CodTipoQuestao == 1);
+                int qteDis = Questao.Count(q => q.CodTipoQuestao == 2);
+
+                if (qteObj > 0 && qteDis > 0) return 3;
+                else if (qteObj > 0) return 1;
+                else if (qteDis > 0) return 2;
+                else return -1;
+            }
+        }
+
         public bool FlagPendente
         {
             get

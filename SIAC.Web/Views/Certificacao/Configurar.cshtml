@@ -8,6 +8,15 @@
 <h2 data-avaliacao="@Model.Avaliacao.CodAvaliacao">
     @ViewBag.Title
     <div class="ui right floated informacoes button">Informações</div>
+    <div class="ui right floated questoes button">Questões</div>
+    <div class="ui questoes popup" data-position="bottom right" data-content="Bottom Right">
+        <div class="header">
+            Questões Selecionadas
+        </div>
+        <div class="content">
+            
+        </div>
+    </div>
 </h2>
 
 <div class="ui informacoes modal">
@@ -69,9 +78,12 @@
             <label>Dificuldade</label>
             <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown fluid dificuldade" required>
                 <option value="">Dificuldade...</option>
-                @foreach( Dificuldade d in ViewBag.Dificuldades)
+                @foreach (Dificuldade d in ViewBag.Dificuldades)
                 {
-                    <option value="@d.CodDificuldade">@d.Descricao</option>
+                    if (d.CodDificuldade <= Model.Avaliacao.CodDificuldade)
+                    {
+                        <option value="@d.CodDificuldade">@d.Descricao</option>
+                    }
                 }
             </select>
         </div>
@@ -81,7 +93,10 @@
                 <option value="">Tipo...</option>
                 @foreach (TipoQuestao t in ViewBag.TiposQuestao)
                 {
-                    <option value="@t.CodTipoQuestao">@t.Descricao</option>
+                    if (Model.Avaliacao.TipoQuestoes == t.CodTipoQuestao || Model.Avaliacao.TipoQuestoes == 3)
+                    {
+                        <option value="@t.CodTipoQuestao">@t.Descricao</option>
+                    }
                 }
             </select>
         </div>

@@ -1,0 +1,16 @@
+﻿@model List<SIAC.Models.Questao>
+
+@foreach (var questao in Model)
+{
+    <a id="@questao.CodQuestao" class="card" @*href="@Url.Action("Detalhe","Questao", new { codigo = questao.CodQuestao })"*@>
+        <div class="content">
+            <div class="header">@questao.Enunciado.ToShortString(140)</div>
+            <div class="meta"><span title="@questao.DtCadastro.ToBrazilianString()">@questao.DtCadastro.ToElapsedTimeString()</span></div>
+            <div class="description ui labels">
+                <span class="ui label">@questao.Disciplina.Descricao</span>
+                <span class="ui label">@questao.Dificuldade.Descricao</span>
+                <span class="ui label">@questao.TipoQuestao.Descricao</span>
+            </div>
+        </div>
+    </a>
+}
