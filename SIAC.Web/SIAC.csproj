@@ -582,7 +582,7 @@
     <Content Include="Views\Shared\DisplayTemplates\MenuHelperModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\CanonicalHelperModel.cshtml" />
     <Content Include="Views\Historico\Index.cshtml" />
-    <Content Include="Views\Questao\_ListaQuestao.cshtml" />
+    <Content Include="Views\Shared\_ListaQuestao.cshtml" />
     <Content Include="Views\Autoavaliacao\_ListaAutoavaliacao.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Certificacao\Index.cshtml" />

@@ -46,7 +46,8 @@ namespace SIAC.Models
 
         public static List<AvalAuto> ListarNaoRealizadaPorPessoa(int codPessoaFisica)
         {
-            return contexto.AvalAuto.Where(auto => auto.CodPessoaFisica == codPessoaFisica && auto.Avaliacao.AvalPessoaResultado.Count == 0 && (auto.Avaliacao.FlagArquivo) ).ToList();
+            List<AvalAuto> lst = contexto.AvalAuto.Where(auto => auto.CodPessoaFisica == codPessoaFisica).ToList();
+            return lst.Where(a => a.Avaliacao.FlagPendente).ToList();
         }        
     }
 }

@@ -156,17 +156,57 @@ siac.Certificacao.Gerar = (function () {
 })();
 
 siac.Certificacao.Configurar = (function () {
+    var _codAvaliacao;
 
     function iniciar() {
+        $elemento = $('[data-avaliacao]');
+        if (!_codAvaliacao && $elemento) {
+            _codAvaliacao = $elemento.data('avaliacao');
+        }
+        $elemento.removeAttr("data-avaliacao");
+
         $('.informacoes.button').click(function () {
             $('.informacoes.modal').modal('show');
         });
 
-        $('.ui.dropdown').dropdown();
+        $('.ui.dropdown').dropdown().change(function () {
+            carregarQuestoes();
+        });
+
+    }
+
+    function carregarQuestoes() {
+        var temas = $('#ddlTemas').val();
+        var dificuldade = $('#ddlDificuldade').val();
+        var tipo = $('#ddlTipo').val();
+
+        if (temas && dificuldade && tipo) {
+            $('.cards').addClass('form loading');
+            $.ajax({
+                type: 'POST',
+                url: '/dashboard/avaliacao/certificacao/CarregarQuestoes/',
+                data: {
+                    codigo: _codAvaliacao,
+                    temas: temas,
+                    dificuldade: dificuldade,
+                    tipo: tipo
+                },
+                success: function (data) {
+                    $('.cards').html(data);
+                },
+                error: function (data) {
+                    siac.mensagem(data,'Error');
+                },
+                complete: function () {
+                    $('.cards').removeClass('form loading');
+                }
+            });
+        }
     }
 
     return {
-        iniciar:iniciar
+        iniciar: iniciar
+
     }
 
 })();

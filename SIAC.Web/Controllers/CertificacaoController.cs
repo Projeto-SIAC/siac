@@ -77,7 +77,16 @@ namespace SIAC.Controllers
                 string[] arrTemaCods = formCollection["ddlTemas"].Split(',');
 
                 /* Questões */
-                List<QuestaoTema> lstQuestoes = Questao.ListarPorDisciplina(codDisciplina, arrTemaCods, codDificuldade, qteObjetiva, qteDiscursiva);
+                List<QuestaoTema> lstQuestoes = new List<QuestaoTema>();
+
+                if (qteObjetiva > 0)
+                {
+                    lstQuestoes.AddRange(Questao.ListarPorDisciplina(codDisciplina, arrTemaCods, codDificuldade, 1, qteObjetiva));
+                }
+                if (qteDiscursiva > 0)
+                {
+                    lstQuestoes.AddRange(Questao.ListarPorDisciplina(codDisciplina, arrTemaCods, codDificuldade, 2, qteDiscursiva));
+                }
 
                 foreach (var strTemaCod in arrTemaCods)
                 {
@@ -113,11 +122,36 @@ namespace SIAC.Controllers
                     if (prof != null && prof.CodProfessor == cert.Professor.CodProfessor)
                     {
                         ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
+                        ViewBag.TiposQuestao = TipoQuestao.ListarOrdenadamente();
                         return View(cert);
                     }
                 }
             }
             return RedirectToAction("Index");
+        }
+
+        // POST: Certificacao/CarregarQuestoes/CERT201520001/{temas}/{dificuldade}/{tipo}
+        [HttpPost]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult CarregarQuestoes(string codigo, string[] temas, int dificuldade, int tipo)
+        {
+            if (!String.IsNullOrEmpty(codigo) && temas.Count() > 0 && dificuldade > 0 && tipo > 0 )
+            {
+                AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
+                if (cert != null)
+                {
+                    List<QuestaoTema> questoesTemas = new List<QuestaoTema>();
+                    List<Questao> questoes = new List<Questao>();
+
+                    questoesTemas = Questao.ListarPorDisciplina(cert.CodDisciplina, temas, dificuldade, tipo,10);
+                    
+                    questoes = (from qt in questoesTemas
+                                select qt.Questao).ToList();
+
+                    return PartialView("_ListaQuestao", questoes);
+                }
+            }
+            return null;
         }
     }
 }
