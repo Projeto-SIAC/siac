@@ -9,14 +9,6 @@
     @ViewBag.Title
     <div class="ui right floated informacoes button">Informações</div>
     <div class="ui right floated questoes button">Questões</div>
-    <div class="ui questoes popup" data-position="bottom right" data-content="Bottom Right">
-        <div class="header">
-            Questões Selecionadas
-        </div>
-        <div class="content">
-            
-        </div>
-    </div>
 </h2>
 
 <div class="ui informacoes modal">
@@ -57,6 +49,41 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="ui questoes modal">
+    <div class="header">
+        Questões Selecionadas
+    </div>
+    <div class="content">
+        <div class="ui three cards">
+            @foreach (Questao questao in Model.Avaliacao.Questao)
+            {
+                <div id="@questao.CodQuestao" class="card">
+                    <div class="content">
+                        <div class="header">@questao.Enunciado.ToShortString(140)</div>
+                        <div class="meta"><span title="@questao.DtCadastro.ToBrazilianString()">@questao.DtCadastro.ToElapsedTimeString()</span></div>
+                        <div class="description ui labels">
+                            <span class="ui label">@questao.Disciplina.Descricao</span>
+                            <span class="ui label">@questao.Dificuldade.Descricao</span>
+                            <span class="ui label">@questao.TipoQuestao.Descricao</span>
+                        </div>
+                    </div>
+                    <div class="ui two bottom attached buttons">
+                        <div class="ui detalhe button">Detalhes</div>
+                        <div class="ui acao button">Remover</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="ui questao modal">
+    <div class="header"></div>
+    <div class="content">
+        <div class="ui segment"></div>
     </div>
 </div>
 
@@ -101,14 +128,16 @@
             </select>
         </div>
     </div>
-</form>
-
-<div class="questoes sixteen wide column">
-    <div class="ui basic segment">
-        <div class="ui two stackable cards">
+    <br />
+    <div class="resultado sixteen wide column" style="max-height:500px;overflow-y:scroll;">
+        <div class="ui basic segment">
+            <div class="ui two stackable cards">
+            </div>
         </div>
     </div>
-</div>
+    <br />
+    <button type="submit" class="ui button">Salvar</button>
+</form>
 
 @section Scripts{
     @Scripts.Render("~/bundles/js/certificacao")

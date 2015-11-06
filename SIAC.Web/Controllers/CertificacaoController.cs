@@ -151,5 +151,19 @@ namespace SIAC.Controllers
             }
             return null;
         }
+
+        [HttpPost]
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult CarregarQuestao(int codQuestao)
+        {
+            if (codQuestao > 0)
+            {
+                Questao questao = Questao.ListarPorCodigo(codQuestao);
+
+                return PartialView("~/Views/Questao/_Questao.cshtml", questao); 
+            }
+            return null;
+        }
     }
 }
