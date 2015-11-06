@@ -7,7 +7,7 @@ using SIAC.Models;
 
 namespace SIAC.Controllers
 {
-    [Filters.CategoriaFilter]
+    [Filters.AutenticacaoFilter]
     public class AutoavaliacaoController : Controller
     {
         public List<AvalAuto> Autoavaliacoes

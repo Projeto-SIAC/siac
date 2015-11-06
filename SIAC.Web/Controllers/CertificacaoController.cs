@@ -7,7 +7,7 @@ using SIAC.Models;
 
 namespace SIAC.Controllers
 {
-    [Filters.CategoriaFilter(Categorias = new[] { 1, 2, 3 })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2, 3 })]
     public class CertificacaoController : Controller
     {
         // GET: Certificacao
@@ -17,7 +17,7 @@ namespace SIAC.Controllers
         }
 
         // GET: Certificacao/Gerar
-        [Filters.CategoriaFilter(Categorias = new[] { 2/*, 3*/ })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2/*, 3*/ })]
         public ActionResult Gerar()
         {
             ViewBag.Disciplinas = /*Helpers.Sessao.UsuarioCategoriaCodigo == 2 ? */Disciplina.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula)/*: Disciplina.ListarOrdenadamente()*/;
@@ -28,7 +28,7 @@ namespace SIAC.Controllers
 
         // POST: Certificacao/Confirmar
         [HttpPost]
-        [Filters.CategoriaFilter(Categorias = new[] { 2/*, 3*/ })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2/*, 3*/ })]
         public ActionResult Confirmar(FormCollection formCollection)
         {
             AvalCertificacao cert = new AvalCertificacao();
@@ -111,6 +111,7 @@ namespace SIAC.Controllers
         }
 
         // GET: Certificacao/Configurar/CERT201520001
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2/*, 3*/ })]
         public ActionResult Configurar(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))
@@ -133,6 +134,7 @@ namespace SIAC.Controllers
         // POST: Certificacao/CarregarQuestoes/CERT201520001/{temas}/{dificuldade}/{tipo}
         [HttpPost]
         [AcceptVerbs(HttpVerbs.Post)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2/*, 3*/ })]
         public ActionResult CarregarQuestoes(string codigo, int[] temas, int dificuldade, int tipo)
         {
             if (!String.IsNullOrEmpty(codigo) && temas.Count() > 0 && dificuldade > 0 && tipo > 0 )

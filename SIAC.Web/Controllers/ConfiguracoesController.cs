@@ -8,7 +8,7 @@ using SIAC.Helpers;
 
 namespace SIAC.Controllers
 {
-    [Filters.CategoriaFilter(Categorias = new[] { 3 })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
     public class ConfiguracoesController : Controller
     {
         // GET: /Configuracoes

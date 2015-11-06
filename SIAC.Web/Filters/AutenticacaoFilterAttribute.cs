@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Filters
 {
-    public class CategoriaFilterAttribute : ActionFilterAttribute
+    public class AutenticacaoFilterAttribute : ActionFilterAttribute
     {
         public int[] Categorias { get; set; }
 
