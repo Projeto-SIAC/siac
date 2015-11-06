@@ -46,7 +46,7 @@ namespace SIAC.Controllers
 
             if (formCollection.HasKeys())
             {
-                if (!String.IsNullOrWhiteSpace(formCollection["txtMatricula"]) && !String.IsNullOrWhiteSpace(formCollection["txtSenha"]))
+                if (!Helpers.StringExt.IsNullOrWhiteSpace(formCollection["txtMatricula"], formCollection["txtSenha"]))
                 {
                     string matricula = formCollection["txtMatricula"].ToString();
                     string senha = formCollection["txtSenha"].ToString();
@@ -79,7 +79,7 @@ namespace SIAC.Controllers
             {
                 ViewBag.Acao = "$('.modal').modal('show');";
                 ViewBag.Erro = "error";
-                if (Sistema.MatriculaAtivo.Contains(formCollection["txtMatricula"].ToString()))
+                if (formCollection.HasKeys() && !String.IsNullOrEmpty(formCollection["txtMatricula"]) && Sistema.MatriculaAtivo.Contains(formCollection["txtMatricula"].ToString()))
                 {
                     ViewBag.Acao += "$('.ui.message.error .header').text('Seu usuário já está conectado.');$('.ui.message.error p').text('Seu usuário já está conectado.');";
                 }

@@ -7,11 +7,20 @@ namespace SIAC.Helpers
 {
     public class Sessao
     {
+        private static HttpContext context
+        {
+            get { return HttpContext.Current; }
+        }
+
         public static bool Autenticado
         {
             get
             {
-                return HttpContext.Current.Session["Autenticado"] != null ? (bool)HttpContext.Current.Session["Autenticado"] : false;
+                if (context != null)
+                {
+                    return context.Session["Autenticado"] != null ? (bool)HttpContext.Current.Session["Autenticado"] : false;
+                }
+                return false;
             }
         }
 
@@ -19,7 +28,11 @@ namespace SIAC.Helpers
         {
             get
             {
-                return (string)HttpContext.Current.Session["UsuarioMatricula"];
+                if (context!=null)
+                {
+                    return (string)HttpContext.Current.Session["UsuarioMatricula"];
+                }
+                return String.Empty;
             }
         }
 
@@ -27,7 +40,11 @@ namespace SIAC.Helpers
         {
             get
             {
-                return (string)HttpContext.Current.Session["UsuarioNome"];
+                if (context != null)
+                {
+                    return (string)context.Session["UsuarioNome"];
+                }
+                return String.Empty;
             }
         }
 
@@ -35,31 +52,49 @@ namespace SIAC.Helpers
         {
             get
             {
-                return (string)HttpContext.Current.Session["UsuarioCategoria"];
+                if (context != null)
+                {
+                    return (string)HttpContext.Current.Session["UsuarioCategoria"];
+                }
+                return String.Empty;
             }
         }
 
         public static int UsuarioCategoriaCodigo
         {
             get
-            {
-                return (int)HttpContext.Current.Session["UsuarioCategoriaCodigo"];
+            {                
+                if (context != null)
+                {
+                    return (int)context.Session["UsuarioCategoriaCodigo"];
+                }
+                return 0;
             }
         }
 
         public static void Inserir(string chave, object valor)
         {
-            HttpContext.Current.Session[chave] = valor;
+            if (context != null)
+            {
+                context.Session[chave] = valor;
+            }
         }
 
         public static object Retornar(string chave)
         {
-            return HttpContext.Current.Session[chave];
+            if (context != null)
+            {
+                return context.Session[chave];
+            }
+            return null;
         }
 
         public static void Limpar()
         {
-            HttpContext.Current.Session.Clear();
+            if (context != null)
+            {
+                context.Session.Clear();
+            }
         }
     }
 }
