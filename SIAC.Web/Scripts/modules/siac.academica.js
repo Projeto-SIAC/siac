@@ -191,8 +191,27 @@ siac.Academica.Detalhe = (function () {
                     $('.partial .ui.accordion').accordion();
                     $('div,a').popup();
                     $('.loader.global').parent().removeClass('active');
+                    $('.card.anexo.imagem').off().click(function () {
+                        var $this = $(this);
+                        var source = $this.find('img').attr('src');
+                        var legenda = $this.find('.header').text();
+                        var fonte = $this.find('.description').text();
+
+                        siac.Anexo.expandirImagem(source, legenda, fonte);
+                    });
                 }
             });
+        });
+
+        $('.ui.modal').modal();
+
+        $('.card.anexo.imagem').off().click(function () {
+            var $this = $(this);
+            var source = $this.find('img').attr('src');
+            var legenda = $this.find('.header').text();
+            var fonte = $this.find('.description').text();            
+
+            siac.Anexo.expandirImagem(source, legenda, fonte);
         });
     }
 
@@ -205,6 +224,14 @@ siac.Academica.Resultado = (function () {
     function iniciar() {
         $('.ui.accordion').accordion({ animateChildren: false });
         $('.label, div').popup();
+        $('.card.anexo.imagem').off().click(function () {
+            var $this = $(this);
+            var source = $this.find('img').attr('src');
+            var legenda = $this.find('.header').text();
+            var fonte = $this.find('.description').text();
+
+            siac.Anexo.expandirImagem(source, legenda, fonte);
+        });
     }
 
     return {
@@ -414,6 +441,15 @@ siac.Academica.Configurar = (function () {
 
             obterNovaQuestao(codQuestao, indice, codTipoQuestao);
         });
+        
+        $('.card.anexo.imagem').off().click(function () {
+            var $this = $(this);
+            var source = $this.find('img').attr('src');
+            var legenda = $this.find('.header').text();
+            var fonte = $this.find('.description').text();
+
+            siac.Anexo.expandirImagem(source, legenda, fonte);
+        });
 
         $('.desfazer.button').off().click(function () {
             var $_this = $(this);
@@ -552,6 +588,14 @@ siac.Academica.Agendada = (function () {
                                 siac.mensagem('Ocorreu um erro inesperado na tentativa de arquivar a avaliação.', 'Tente novamente')
                             }
                         });
+                    });
+                    $('.card.anexo.imagem').off().click(function () {
+                        var $this = $(this);
+                        var source = $this.find('img').attr('src');
+                        var legenda = $this.find('.header').text();
+                        var fonte = $this.find('.description').text();
+
+                        siac.Anexo.expandirImagem(source, legenda, fonte);
                     });
                     abrirHub();
                     contagemRegressiva(1000);
@@ -757,10 +801,6 @@ siac.Academica.Realizar = (function () {
             })
         ;
 
-        $('.ui.anexo.modal')
-            .modal()
-        ;
-
         $('.ui.accordion')
             .accordion({
                 animateChildren: false
@@ -792,8 +832,13 @@ siac.Academica.Realizar = (function () {
             })
         ;
 
-        $('.anexo.imagem.card').click(function () {
-            expandirImagem(this);
+        $('.card.anexo.imagem').off().click(function () {
+            var $this = $(this);
+            var source = $this.find('img').attr('src');
+            var legenda = $this.find('.header').text();
+            var fonte = $this.find('.description').text();
+
+            siac.Anexo.expandirImagem(source, legenda, fonte);
         });
 
         $('.desistir.button').click(function () {
@@ -807,20 +852,6 @@ siac.Academica.Realizar = (function () {
         relogio();
         temporizador(_dtTermino);
         conectarHub(_codAvaliacao, _matriculaUsuario);
-    }
-
-    function expandirImagem(card) {
-        var $card = $(card);
-        var src = $card.find('img').attr('src');
-        var legenda = $card.find('.header').text();
-        var fonte = $card.find('.description').text();
-        $modal = $('.ui.anexo.modal');
-
-        $modal.find('.header').text(legenda);
-        $modal.find('img.image').attr('src', src);
-        $modal.find('.description').html(fonte);
-
-        $modal.modal('show');
     }
 
     function relogio() {

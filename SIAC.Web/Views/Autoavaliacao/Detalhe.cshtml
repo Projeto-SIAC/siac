@@ -19,6 +19,15 @@
     }
 </h2>
 
+<div class="ui anexo basic modal">
+    <i class="close icon"></i>
+    <div class="ui centered header"></div>
+    <div class="image content">
+        <img class="ui centered image">
+    </div>
+    <div class="description" style="text-align:center;"></div>
+</div>
+
 <div class="ui basic segment">
     <div class="ui dividing header">
         Detalhes
@@ -185,7 +194,7 @@ else
                                         switch (anexo.CodTipoAnexo)
                                         {
                                             case 1:
-                                                <a onclick="expandirImagem(this)" class="ui card">
+                                                <a class="ui anexo imagem card">
                                                     <div class="image">
                                                         <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo,0, anexo.Anexo.Length)" />
                                                     </div>

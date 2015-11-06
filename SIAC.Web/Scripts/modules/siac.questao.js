@@ -808,19 +808,13 @@ siac.Questao.Detalhe = (function () {
             on: 'click'
         })
         ;
-        $('a.card').click(function () {
-            $card = $(this);
-            src = $card.find('img').attr('src');
-            legenda = $card.find('.header').text();
-            fonte = $card.find('.description').text();
+        $('.card.anexo.imagem').off().click(function () {
+            var $this = $(this);
+            var source = $this.find('img').attr('src');
+            var legenda = $this.find('.header').text();
+            var fonte = $this.find('.description').text();
 
-            $modal = $('.ui.anexo.modal');
-
-            $modal.find('.header').text(legenda);
-            $modal.find('img.image').attr('src', src);
-            $modal.find('.description').html(fonte);
-
-            $modal.modal('show');
+            siac.Anexo.expandirImagem(source, legenda, fonte);
         });
         $('.arquivar.button').click(function () {
             var $_this = $(this);
