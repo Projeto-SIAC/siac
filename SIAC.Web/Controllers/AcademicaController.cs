@@ -797,7 +797,7 @@ namespace SIAC.Controllers
         {
             string strMatr = Helpers.Sessao.UsuarioMatricula;
             int codProfessor = Professor.ListarPorMatricula(strMatr).CodProfessor;
-            return View(AvalAcademica.ListarPendentePorProfessor(codProfessor));
+            return View(AvalAcademica.ListarCorrecaoPendentePorProfessor(codProfessor));
         }
 
         // GET: Avaliacao/Academica/Corrigir/ACAD201520016

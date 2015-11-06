@@ -88,11 +88,11 @@
                                             <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
                                             @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
     {
-                                                <a data-html="@(("" + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
+                                                <a data-html="@(("<b>Comentário</b>: " + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
                                             }
                                             @if (alternativa.CodOrdem == resposta.RespAlternativa)
                                             {
-                                                <a data-html="@(("" + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Marcada</a>
+                                                <a data-html="@(("<b>Comentário</b>: " + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Marcada</a>
                                             }
                                         </div>
                                     </div>
@@ -102,7 +102,7 @@
                         else
                         {
                             <div>
-                                <a class="ui ribbon label" data-html="@lstQuestao[i].ChaveDeResposta.Replace("\n", "<br>")" data-variation="very wide">Resposta</a>
+                                <a class="ui ribbon label" data-html="@(("<b>Chave de Resposta</b>: "+lstQuestao[i].ChaveDeResposta).Replace("\n", "<br>"))" data-variation="very wide">Resposta</a>
                                 @{
                                     var respDiscursiva = resposta.RespDiscursiva.Split('\n', '\r');
                                     foreach (var strRespDiscursiva in respDiscursiva)
@@ -125,7 +125,7 @@
                                         switch (anexo.CodTipoAnexo)
                                         {
                                             case 1:
-                                                <a onclick="expandirImagem(this)" class="ui card">
+                                                <a class="ui anexo imagem card">
                                                     <div class="image">
                                                         <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo, 0, anexo.Anexo.Length)" />
                                                     </div>

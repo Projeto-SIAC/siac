@@ -92,17 +92,27 @@
         }
     }
 
+    var HTML_TEMPLATE = '<div class="ui small mensagem modal">' +
+                    '<div class="header">{titulo}</div>' +
+                    '<div class="content">{mensagem}</div>' +
+                    '<div class="actions">' +
+                        '<div class="ui cancel button">Fechar</div>' +
+                    '</div>' +
+                '</div>';
+
     function mensagem(mensagem, titulo) {
         if (mensagem) {
-            if (titulo) {
-                $('.ui.mensagem.modal .header')
-					.text(titulo)
-                ;
-            }
-            $('.ui.mensagem.modal .content')
-				.text(mensagem)
-            ;
+            var html = HTML_TEMPLATE;
+            titulo ? html = html.replace('{titulo}', titulo) : html = html.replace('{titulo}', 'Mensagem');
+            html = html.replace('{mensagem}', mensagem);
+            $('body').append(html);
             $('.ui.mensagem.modal')
+                .modal({
+                    transition: 'fly down',
+                    onHidden: function() {
+                        $(this).remove();
+                    }
+                })
 				.modal('show')
             ;
         }
@@ -114,7 +124,7 @@
     }
 })();
 
-siac.Utilitario = (function () {
+siac.Utilitario = siac.Utilitario || (function () {
     // return 1 = a is bigger than b, 0 = a and b are same, -1 = a is smaller than b
     function compararData(strDateA, strDateB) {
         timeDateA = Date.parse(strDateA);
@@ -207,6 +217,30 @@ siac.Utilitario = (function () {
     return {
         compararData: compararData,
         dataEFuturo: dataEFuturo
+    }
+})();
+
+siac.Anexo = siac.Anexo || (function () {
+    function expandirImagem(source, legenda, fonte) {
+        $('.ui.anexo.modal').remove();
+
+        $modal = $('<div></div>').addClass('ui anexo basic modal').append($('<i></i>').addClass('close icon'));
+
+        $modal.append($('<div class="ui centered header"></div>').text(legenda));
+        $modal.append($('<div class="image content"></div>').html($('<img class="ui centered image" />').attr('src', source)));
+        $modal.append($('<div class="description" style="text-align:center;"></div>').text(fonte));
+
+        $('body').append($modal);
+
+        //$modal.modal({
+        //    allowMultiple: true
+        //});
+
+        $modal.modal('show');
+    }
+
+    return {
+        expandirImagem: expandirImagem
     }
 })();
 

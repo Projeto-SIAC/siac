@@ -34,7 +34,7 @@
                 </div>
             </a>
         </div>       
-        @if (Model.CodCategoria == 2)
+        @if (Model.CodCategoria <= 2)
         {
             <div class="column aligned center">
                 <a href="@Url.Action("Index", "Academica")" class="ui basic segment">
@@ -49,7 +49,7 @@
                 </a>
             </div>
         }
-        @if (Model.CodCategoria == 2 || Model.CodCategoria == 3)
+        @if (Model.CodCategoria <= 3)
         {
             <div class="column aligned center">
                 <a href="@Url.Action("Index", "Certificacao")" class="ui basic segment">
