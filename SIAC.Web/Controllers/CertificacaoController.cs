@@ -161,7 +161,7 @@ namespace SIAC.Controllers
             {
                 Questao questao = Questao.ListarPorCodigo(codQuestao);
 
-                return PartialView("~/Views/Questao/_Questao.cshtml", questao); 
+                return PartialView("~/Views/Questao/Partials/_Questao.cshtml", questao); 
             }
             return null;
         }

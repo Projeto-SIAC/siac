@@ -15,6 +15,7 @@ namespace SIAC
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            ViewEngines.Engines.Add(new SIACViewEngine());
             Models.Parametro.Obter();
         }
 
@@ -22,5 +23,19 @@ namespace SIAC
         {
             Models.Sistema.MatriculaAtivo.Remove((string)Session["UsuarioMatricula"]);
         }    
+    }
+
+    public class SIACViewEngine : RazorViewEngine
+    {
+        private static string[] NewPartialViewFormats = new[] {
+            "~/Views/{1}/Partials/{0}.cshtml",
+            "~/Views/Shared/Partials/{0}.cshtml"
+        };
+
+        public SIACViewEngine()
+        {
+            base.PartialViewLocationFormats = base.PartialViewLocationFormats.Union(NewPartialViewFormats).ToArray();
+        }
+
     }
 }
