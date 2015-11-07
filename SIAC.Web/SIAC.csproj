@@ -212,6 +212,9 @@
     <Content Include="Scripts\modules\siac.questao.min.js">
       <DependentUpon>siac.questao.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\siac.min.js">
+      <DependentUpon>siac.js</DependentUpon>
+    </Content>
     <Content Include="Styles\semantic.min.css" />
     <Content Include="Scripts\libs\semantic.min.js" />
     <Content Include="Styles\siac.acesso.css" />
@@ -221,9 +224,6 @@
     <Content Include="Styles\siac.css" />
     <Content Include="Styles\siac.min.css">
       <DependentUpon>siac.css</DependentUpon>
-    </Content>
-    <Content Include="Scripts\siac.min.js">
-      <DependentUpon>siac.js</DependentUpon>
     </Content>
     <Content Include="Styles\themes\basic\assets\fonts\icons.svg" />
     <Content Include="Styles\themes\default\assets\fonts\icons.svg" />
@@ -609,6 +609,7 @@
     <Content Include="Scripts\modules\siac.certificacao.js" />
     <Content Include="Views\Certificacao\Configurar.cshtml" />
     <Content Include="Views\Academica\_Individual.cshtml" />
+    <Content Include="Views\Shared\_ListaQuestaoCard.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

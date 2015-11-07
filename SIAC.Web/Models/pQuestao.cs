@@ -482,26 +482,35 @@ namespace SIAC.Models
                 {
                     return questoes;
                 }
-                /*if (questoes.Count > 0)
-                {
-                    int random = r.Next(0, questoes.Count);
+            }
+            return null;
+        }
+        public static List<Questao> ListarQuestoesFiltradas(int codDisciplina, int[] Temas, int dificulDisc, int tipo)
+        {
+            List<QuestaoTema> QuestoesTotal = new List<QuestaoTema>();
+             
+            foreach (int tema in Temas)
+            {
+                List<QuestaoTema> temp = (from qt in contexto.QuestaoTema
+                                            where qt.Questao.CodTipoQuestao == tipo
+                                            && qt.Questao.CodDificuldade == dificulDisc
+                                            && qt.CodDisciplina == codDisciplina
+                                            && qt.CodTema == tema
+                                            && !qt.Questao.FlagArquivo
+                                            select qt).ToList();
 
-                    return questoes.ElementAtOrDefault(random);
+                temp = Models.QuestaoTema.LimparRepeticao(temp, QuestoesTotal);
+
+                if (temp.Count != 0)
+                {
+                    QuestoesTotal.AddRange(temp);
                 }
-                for (int i = codDificuldade; i >= 1; i--)
-                {
-                    List<QuestaoTema> qstIdeal = (from qt in questoes
-                                                  where qt.Questao.CodDificuldade == i
-                                                  select qt).ToList();
-
-                    if (qstIdeal.Count > 0)
-                    {
-                        int random = r.Next(0, qstIdeal.Count);
-
-                        return qstIdeal.ElementAtOrDefault(random);
-                    }
-
-                }*/
+            }
+            if(QuestoesTotal.Count > 0)
+            {
+                List<Questao> questoes = (from qt in QuestoesTotal
+                                          select qt.Questao).ToList();
+                return questoes;
             }
             return null;
         }

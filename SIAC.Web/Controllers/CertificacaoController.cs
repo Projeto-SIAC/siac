@@ -135,23 +135,33 @@ namespace SIAC.Controllers
         [HttpPost]
         [AcceptVerbs(HttpVerbs.Post)]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2/*, 3*/ })]
-        public ActionResult CarregarQuestoes(string codigo, string[] temas, int dificuldade, int tipo)
+        public ActionResult CarregarQuestoes(string codigo, int[] temas, int dificuldade, int tipo)
         {
             if (!String.IsNullOrEmpty(codigo) && temas.Count() > 0 && dificuldade > 0 && tipo > 0 )
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 if (cert != null)
                 {
-                    List<QuestaoTema> questoesTemas = new List<QuestaoTema>();
-                    List<Questao> questoes = new List<Questao>();
-
-                    questoesTemas = Questao.ListarPorDisciplina(cert.CodDisciplina, temas, dificuldade, tipo,10);
-                    
-                    questoes = (from qt in questoesTemas
-                                select qt.Questao).ToList();
-
-                    return PartialView("_ListaQuestao", questoes);
+                    List<Questao> questoes = Questao.ListarQuestoesFiltradas(cert.CodDisciplina, temas, dificuldade, tipo);
+                    if (questoes != null)
+                    {
+                        return PartialView("_ListaQuestaoCard", questoes);
+                    }
                 }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult CarregarQuestao(int codQuestao)
+        {
+            if (codQuestao > 0)
+            {
+                Questao questao = Questao.ListarPorCodigo(codQuestao);
+
+                return PartialView("~/Views/Questao/_Questao.cshtml", questao); 
             }
             return null;
         }

@@ -184,6 +184,15 @@ siac.Autoavaliacao.Detalhe = (function () {
                 }
             });
         });
+
+        $('.card.anexo.imagem').off().click(function () {
+            var $this = $(this);
+            var source = $this.find('img').attr('src');
+            var legenda = $this.find('.header').text();
+            var fonte = $this.find('.description').text();
+
+            siac.Anexo.expandirImagem(source, legenda, fonte);
+        });
     }
 
     return {
@@ -201,6 +210,15 @@ siac.Autoavaliacao.Resultado = (function () {
         $('.label, div')
             .popup()
         ;
+
+        $('.card.anexo.imagem').off().click(function () {
+            var $this = $(this);
+            var source = $this.find('img').attr('src');
+            var legenda = $this.find('.header').text();
+            var fonte = $this.find('.description').text();
+
+            siac.Anexo.expandirImagem(source, legenda, fonte);
+        });
     }
 
     return {
@@ -280,10 +298,6 @@ siac.Autoavaliacao.Realizar = (function () {
             .modal()
         ;
 
-        $('.ui.anexo.modal')
-            .modal()
-        ;
-
         $('.ui.confirmar.modal')
             .modal({
                 onApprove: function () {
@@ -312,8 +326,13 @@ siac.Autoavaliacao.Realizar = (function () {
             finalizar();
         });
 
-        $('.card.anexo.imagem').click(function () {
-            expandirImagem(this);
+        $('.card.anexo.imagem').off().click(function () {
+            var $this = $(this);
+            var source = $this.find('img').attr('src');
+            var legenda = $this.find('.header').text();
+            var fonte = $this.find('.description').text();
+
+            siac.Anexo.expandirImagem(source, legenda, fonte);
         });
 
         $('textarea[name^="txtResposta"], input[name^="rdoResposta"]').change(function () {
@@ -396,20 +415,6 @@ siac.Autoavaliacao.Realizar = (function () {
                 clearInterval(_controleInterval);
             }
         }, 1000);
-    }
-
-    function expandirImagem(card) {
-        card = $(card);
-        src = card.find('img').attr('src');
-        legenda = card.find('.header').text();
-        fonte = card.find('.description').text();
-        modal = $('.ui.anexo.modal');
-
-        modal.find('.header').text(legenda);
-        modal.find('img.image').attr('src', src);
-        modal.find('.description').html(fonte);
-
-        modal.modal('show');
     }
 
     function finalizar() {

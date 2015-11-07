@@ -157,13 +157,20 @@ siac.Certificacao.Gerar = (function () {
 
 siac.Certificacao.Configurar = (function () {
     var _codAvaliacao;
+    var _arrayQuestoes = [];
+    var qteMaxObjetiva;
+    var qteMaxDiscursiva;
 
     function iniciar() {
         $elemento = $('[data-avaliacao]');
         if (!_codAvaliacao && $elemento) {
             _codAvaliacao = $elemento.data('avaliacao');
+            $elemento.removeAttr("data-avaliacao");
         }
-        $elemento.removeAttr("data-avaliacao");
+        qteMaxObjetiva = $($('.informacoes .label .detail')[0]).html();
+        qteMaxDiscursiva = $($('.informacoes .label .detail')[1]).html();
+        
+        $('.questoes.modal .card').map(function () { _arrayQuestoes.push($(this).attr('id')) }); //Preenchendo um Array com Questões da Avaliação
 
         $('.informacoes.button').click(function () {
             $('.informacoes.modal').modal('show');
@@ -173,6 +180,28 @@ siac.Certificacao.Configurar = (function () {
             carregarQuestoes();
         });
 
+        $('.ui.questoes.button').click(function(){
+            $('.questoes.modal').modal('show');
+        });
+
+        $('.ui.detalhe.button').click(function () {
+            var codQuestao = $(this).parents('.card').attr('id');
+            mostrarQuestao(codQuestao, this);
+            console.log(_arrayQuestoes);
+        });
+
+        $('.ui.acao.button').click(function () {
+            $_this = $(this);
+            if ($_this.html() == "Adicionar") {
+                var id = $_this.parents('.card').attr('id');
+                adicionarQuestao(id);
+            } else if ($_this.html() == "Remover") {
+                var id = $_this.parents('.card').attr('id');
+                removerQuestao(id);
+            }
+        });
+
+        
     }
 
     function carregarQuestoes() {
@@ -181,7 +210,8 @@ siac.Certificacao.Configurar = (function () {
         var tipo = $('#ddlTipo').val();
 
         if (temas && dificuldade && tipo) {
-            $('.cards').addClass('form loading');
+            $resultado = $('.resultado .cards');
+            $resultado.addClass('form loading')
             $.ajax({
                 type: 'POST',
                 url: '/dashboard/avaliacao/certificacao/CarregarQuestoes/',
@@ -192,21 +222,81 @@ siac.Certificacao.Configurar = (function () {
                     tipo: tipo
                 },
                 success: function (data) {
-                    $('.cards').html(data);
+                    $resultado.html(data);
                 },
                 error: function (data) {
                     siac.mensagem(data,'Error');
                 },
                 complete: function () {
-                    $('.cards').removeClass('form loading');
+                    $resultado.removeClass('form loading');
+                    $('.acao.button').off('click')
+                    $resultado.find('.acao.button').click(function () {
+                        $_this = $(this);
+                        if ($_this.html() == "Adicionar") {
+                            var id = $_this.parents('.card').attr('id');
+                            adicionarQuestao(id);
+                        } else if ($_this.html() == "Remover") {
+                            var id = $_this.parents('.card').attr('id');
+                            removerQuestao(id);
+                        }
+                    });
+                    $('.ui.detalhe.button').click(function () {
+                        var codQuestao = $(this).parents('.card').attr('id');
+                        mostrarQuestao(codQuestao,this);
+                    });
                 }
             });
         }
     }
 
+    function adicionarQuestao(codQuestao) {
+        $card = $('#' + codQuestao + '.card');
+        $card.find('.acao.button').off('click');
+        _arrayQuestoes.push(codQuestao);
+        $card.transition({
+            onHide: function () {
+                $('.questoes.modal .cards').append($card);
+            }
+        }).transition('scale');
+    }
+
+    function removerQuestao(codQuestao) {
+        $card = $('#' + codQuestao + '.card');
+        var index = _arrayQuestoes.indexOf(codQuestao);
+        if (index > -1) { _arrayQuestoes.splice(index, 1); }
+        $card.transition({
+            onHide: function () {
+                $card.remove();
+            }
+        }).transition('scale');
+    }
+
+    function mostrarQuestao(codQuestao,_this) {
+        $_this = $(_this);
+        $_this.addClass('loading');
+        $.ajax({
+            type: 'POST',
+            url: '/dashboard/avaliacao/certificacao/CarregarQuestao/',
+            data: {
+                codQuestao: codQuestao
+            },
+            success: function (data) {
+                $('.questao.modal .header').html('Questão ' + codQuestao);
+                $('.questao.modal .segment').html(data);
+                $('.accordion').accordion();
+                $('.questao.modal').modal('show');
+            },
+            error: function (data) {
+                siac.mensagem(data, 'Error');
+            },
+            complete: function () {
+                $_this.removeClass('loading');
+            }
+        });
+    }
+
     return {
         iniciar: iniciar
-
     }
 
 })();
