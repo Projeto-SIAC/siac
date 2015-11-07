@@ -17,7 +17,7 @@ namespace SIAC
                 "~/scripts/libs/html2canvas.min.js",
                 "~/scripts/plugins/jquery.mask-1.13.4.min.js",
                 "~/scripts/plugins/jquery.address-1.6.min.js",
-                "~/scripts/siac.min.js"
+                "~/scripts/siac.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/js/questao").Include(
@@ -37,7 +37,7 @@ namespace SIAC
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/js/certificacao").Include(
-                "~/scripts/modules/siac.certificacao.min.js"
+                "~/scripts/modules/siac.certificacao.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/signalR").Include(
