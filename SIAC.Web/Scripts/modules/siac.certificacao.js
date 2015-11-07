@@ -158,6 +158,8 @@ siac.Certificacao.Gerar = (function () {
 siac.Certificacao.Configurar = (function () {
     var _codAvaliacao;
     var _arrayQuestoes = [];
+    var qteMaxObjetiva;
+    var qteMaxDiscursiva;
 
     function iniciar() {
         $elemento = $('[data-avaliacao]');
@@ -165,6 +167,8 @@ siac.Certificacao.Configurar = (function () {
             _codAvaliacao = $elemento.data('avaliacao');
             $elemento.removeAttr("data-avaliacao");
         }
+        qteMaxObjetiva = $($('.informacoes .label .detail')[0]).html();
+        qteMaxDiscursiva = $($('.informacoes .label .detail')[1]).html();
         
         $('.questoes.modal .card').map(function () { _arrayQuestoes.push($(this).attr('id')) }); //Preenchendo um Array com Questões da Avaliação
 
@@ -185,6 +189,19 @@ siac.Certificacao.Configurar = (function () {
             mostrarQuestao(codQuestao, this);
             console.log(_arrayQuestoes);
         });
+
+        $('.ui.acao.button').click(function () {
+            $_this = $(this);
+            if ($_this.html() == "Adicionar") {
+                var id = $_this.parents('.card').attr('id');
+                adicionarQuestao(id);
+            } else if ($_this.html() == "Remover") {
+                var id = $_this.parents('.card').attr('id');
+                removerQuestao(id);
+            }
+        });
+
+        
     }
 
     function carregarQuestoes() {
@@ -214,8 +231,14 @@ siac.Certificacao.Configurar = (function () {
                     $resultado.removeClass('form loading');
                     $('.acao.button').off('click')
                     $resultado.find('.acao.button').click(function () {
-                        var id = $(this).parents('.card').attr('id');
-                        adicionarQuestao(id);
+                        $_this = $(this);
+                        if ($_this.html() == "Adicionar") {
+                            var id = $_this.parents('.card').attr('id');
+                            adicionarQuestao(id);
+                        } else if ($_this.html() == "Remover") {
+                            var id = $_this.parents('.card').attr('id');
+                            removerQuestao(id);
+                        }
                     });
                     $('.ui.detalhe.button').click(function () {
                         var codQuestao = $(this).parents('.card').attr('id');
@@ -229,13 +252,23 @@ siac.Certificacao.Configurar = (function () {
     function adicionarQuestao(codQuestao) {
         $card = $('#' + codQuestao + '.card');
         $card.find('.acao.button').off('click');
+        _arrayQuestoes.push(codQuestao);
         $card.transition({
             onHide: function () {
                 $('.questoes.modal .cards').append($card);
             }
-        }).transition('scale')
-        ;
-        
+        }).transition('scale');
+    }
+
+    function removerQuestao(codQuestao) {
+        $card = $('#' + codQuestao + '.card');
+        var index = _arrayQuestoes.indexOf(codQuestao);
+        if (index > -1) { _arrayQuestoes.splice(index, 1); }
+        $card.transition({
+            onHide: function () {
+                $card.remove();
+            }
+        }).transition('scale');
     }
 
     function mostrarQuestao(codQuestao,_this) {
