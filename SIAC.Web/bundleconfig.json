@@ -42,15 +42,15 @@
     ]
   },
   {
-    "outputFileName": "Scripts/siac.js",
-    "inputFiles": [
-      "Scripts/siac.js"
-    ]
-  },
-  {
     "outputFileName": "Scripts/modules/siac.certificacao.js",
     "inputFiles": [
       "Scripts/modules/siac.certificacao.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/siac.js",
+    "inputFiles": [
+      "Scripts/siac.js"
     ]
   }
 ]

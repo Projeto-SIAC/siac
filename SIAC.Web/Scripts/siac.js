@@ -118,9 +118,39 @@
         }
     }
 
+    var HTML_SIDEBAR_TEMPLATE = '<div class="ui aviso sidebar top center aligned segment">'+
+                                    '<h3 class="ui center aligned {cor} header">'+
+                                        '<div class="content">'+
+                                            '{mensagem}'+
+                                        '</div>'+
+                                    '</h3>'+
+                                '</div>';
+
+    function aviso(mensagem,cor,icone) {
+        if (mensagem) {
+            $html = $(HTML_SIDEBAR_TEMPLATE);
+            $html.html($html.html().substituirTodos('{mensagem}', mensagem));
+            $html.html($html.html().substituirTodos('{cor}', cor));
+            if (icone) $html.find('.header').addClass('small icon').prepend('<i class="' + icone + ' icon"></i>');
+            $('body').prepend($html);
+            $('.ui.aviso.sidebar')
+                .sidebar({
+                    dimPage: false,
+                    transition: 'overlay',
+                    onHidden: function () {
+                        $(this).remove();
+                    }
+                })
+                .sidebar('hide')
+				.sidebar('show')
+            ;
+        }
+    }
+
     return {
         iniciar: iniciar,
-        mensagem: mensagem
+        mensagem: mensagem,
+        aviso: aviso
     }
 })();
 

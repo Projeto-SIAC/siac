@@ -11,104 +11,106 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="ui menu" style="border-radius:0">
-        <a href="~/" class="item">
-            <img src="~/resources/images/layout/logo-black.png" />
-        </a>
-        <div class="item text">
-            <h2 class="ui header left aligned">
-                <div class="content">
-                    SIAC
-                    <div class="sub header">Sistema Interativo de Avaliação de Conhecimento</div>
-                </div>
-            </h2>
-        </div>
-        <div class="right menu">
+    <div class="pusher">
+        <div class="ui menu" style="border-radius:0">
+            <a href="~/" class="item">
+                <img src="~/resources/images/layout/logo-black.png" />
+            </a>
             <div class="item text">
-                @DateTime.Today.ToString("D", new System.Globalization.CultureInfo("pt-BR"))
+                <h2 class="ui header left aligned">
+                    <div class="content">
+                        SIAC
+                        <div class="sub header">Sistema Interativo de Avaliação de Conhecimento</div>
+                    </div>
+                </h2>
             </div>
-            <div class="item">@Html.ActionLink("Sair", "Sair", "Acesso", null, new { @class = "ui button" })</div>
+            <div class="right menu">
+                <div class="item text">
+                    @DateTime.Today.ToString("D", new System.Globalization.CultureInfo("pt-BR"))
+                </div>
+                <div class="item">@Html.ActionLink("Sair", "Sair", "Acesso", null, new { @class = "ui button" })</div>
+            </div>
         </div>
-    </div>
 
 
-    <div class="ui stackable grid" style="margin: auto 1em">
-        <div class="sixteen wide column" style="padding-top: 0; padding-bottom: 0">
-            @Html.MvcSiteMap().SiteMapPath()
-        </div>
-        <div class="three wide column">
-            <div class="ui segment">
-                <div class="ui header">
-                    <i class="icon user"></i>
-                    <div class="content" data-matricula="@SIAC.Helpers.Sessao.UsuarioMatricula">
-                        @SIAC.Helpers.Sessao.UsuarioNome
-                        <div class="sub header">
-                            @SIAC.Helpers.Sessao.UsuarioCategoria
+        <div class="ui stackable grid" style="margin: auto 1em">
+            <div class="sixteen wide column" style="padding-top: 0; padding-bottom: 0">
+                @Html.MvcSiteMap().SiteMapPath()
+            </div>
+            <div class="three wide column">
+                <div class="ui segment">
+                    <div class="ui header">
+                        <i class="icon user"></i>
+                        <div class="content" data-matricula="@SIAC.Helpers.Sessao.UsuarioMatricula">
+                            @SIAC.Helpers.Sessao.UsuarioNome
+                            <div class="sub header">
+                                @SIAC.Helpers.Sessao.UsuarioCategoria
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="ui vertical fluid secondary menu" style="margin: auto 0">
-                    <a href="@Url.Action("Index", "Dashboard")" class="@(Request.Url.ToString().Contains("dashboard")? "active blue" : "") item">
-                        <i class="block layout icon"></i><span class="content">Dashboard</span>
-                    </a>
-                    <a href="@Url.Action("Index", "Historico")" class="@(Request.Url.ToString().Contains("historico")? "active blue" : "") item">
-                        <i class="time icon"></i><span class="content">Histórico</span>
-                    </a>
-                    <a href="@Url.Action("Index", "Institucional")" class="@(Request.Url.ToString().Contains("institucional")? "active blue" : "") item">
-                        <i class="file text outline icon"></i><span class="content">Av. Instituicional</span>
-                    </a>
-                    <a href="@Url.Action("Index", "Perfil")" class="@(Request.Url.ToString().Contains("perfil")? "active blue" : "") item">
-                        <i class="user icon"></i><span class="content">Perfil</span>
-                    </a>
-
-                    @if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 3)
-                    {
-                        <a href="@Url.Action("Index", "Configuracoes")" class="@(Request.Url.ToString().Contains("configuracoes")? "active blue" : "") item">
-                            <i class="setting icon"></i><span class="content">Configurações</span>
+                    <div class="ui vertical fluid secondary menu" style="margin: auto 0">
+                        <a href="@Url.Action("Index", "Dashboard")" class="@(Request.Url.ToString().Contains("dashboard")? "active blue" : "") item">
+                            <i class="block layout icon"></i><span class="content">Dashboard</span>
                         </a>
-                    }
+                        <a href="@Url.Action("Index", "Historico")" class="@(Request.Url.ToString().Contains("historico")? "active blue" : "") item">
+                            <i class="time icon"></i><span class="content">Histórico</span>
+                        </a>
+                        <a href="@Url.Action("Index", "Institucional")" class="@(Request.Url.ToString().Contains("institucional")? "active blue" : "") item">
+                            <i class="file text outline icon"></i><span class="content">Av. Instituicional</span>
+                        </a>
+                        <a href="@Url.Action("Index", "Perfil")" class="@(Request.Url.ToString().Contains("perfil")? "active blue" : "") item">
+                            <i class="user icon"></i><span class="content">Perfil</span>
+                        </a>
 
-                    <a href="@Url.Action("Sair", "Acesso")" class="item">
-                        <i class="power icon"></i><span class="content">Sair</span>
-                    </a>
+                        @if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 3)
+                        {
+                            <a href="@Url.Action("Index", "Configuracoes")" class="@(Request.Url.ToString().Contains("configuracoes")? "active blue" : "") item">
+                                <i class="setting icon"></i><span class="content">Configurações</span>
+                            </a>
+                        }
+
+                        <a href="@Url.Action("Sair", "Acesso")" class="item">
+                            <i class="power icon"></i><span class="content">Sair</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="thirteen wide column" style="height:100%">
+                <div class="ui segment">
+                    @RenderBody()
                 </div>
             </div>
         </div>
-        <div class="thirteen wide column" style="height:100%">
-            <div class="ui segment">
-                @RenderBody()
-            </div>
+        <div class="ui lero icon button" onmouseover="selecionarFocado()" onclick="leroLero()" style="position: fixed; right:.5em; bottom:.5em; z-index: 1003"><i class="icon write"></i></div>
+        @Scripts.Render("~/bundles/js")
+        @RenderSection("scripts", required: false)
+        <script>
+            var focado;
+
+            function selecionarFocado() {
+                focado = $(':focus');
+            }
+
+            function leroLero() {
+                $('.lero').addClass('loading');
+                $.ajax({
+                    cache: false,
+                    type: 'GET',
+                    url: '@(Url.RouteUrl("LeroLero"))',
+                    success: function (data) {
+                        focado.val(data);
+                        focado.change();
+                        $('.lero').removeClass('loading');
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $('.lero').removeClass('loading');
+                    }
+                });
+            }
+        </script>
+        <div class="ui active dimmer">
+            <div class="ui large text global loader">Carregando</div>
         </div>
-    </div>    
-    <div class="ui lero icon button" onmouseover="selecionarFocado()" onclick="leroLero()" style="position: fixed; right:.5em; bottom:.5em; z-index: 1003"><i class="icon write"></i></div>
-    @Scripts.Render("~/bundles/js")
-    @RenderSection("scripts", required: false)
-    <script>
-        var focado;
-
-        function selecionarFocado() {
-            focado = $(':focus');
-        }
-
-        function leroLero() {
-            $('.lero').addClass('loading');
-            $.ajax({
-                cache: false,
-                type: 'GET',
-                url: '@(Url.RouteUrl("LeroLero"))',
-                success: function (data) {
-                    focado.val(data);
-                    focado.change();
-                    $('.lero').removeClass('loading');
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    $('.lero').removeClass('loading');
-                }
-            });
-        }
-    </script>
-    <div class="ui active dimmer">
-        <div class="ui large text global loader">Carregando</div>
     </div>
 </body>
 </html>
