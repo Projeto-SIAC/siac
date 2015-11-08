@@ -254,7 +254,7 @@ siac.Anexo = siac.Anexo || (function () {
     function expandirImagem(source, legenda, fonte) {
         $('.ui.anexo.modal').remove();
 
-        $modal = $('<div></div>').addClass('ui anexo basic modal').append($('<i></i>').addClass('close icon'));
+        $modal = $('<div></div>').addClass('ui large anexo basic modal').append($('<i></i>').addClass('close icon'));
 
         $modal.append($('<div class="ui centered header"></div>').text(legenda));
         $modal.append($('<div class="image content"></div>').html($('<img class="ui centered image" />').attr('src', source)));

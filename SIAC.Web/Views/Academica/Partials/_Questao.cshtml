@@ -72,19 +72,7 @@
                     switch (anexo.CodTipoAnexo)
                     {
                         case 1:
-                <a class="ui anexo imagem card">
-                    <div class="image">
-                        <img src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo, 0, anexo.Anexo.Length)" />
-                    </div>
-                    <div class="content">
-                        <div class="header">
-                            @anexo.Legenda
-                        </div>
-                        <div class="description">
-                            @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte.ToShortString(30): "Fonte não informada")
-                        </div>
-                    </div>
-                </a>
+                            @Html.Partial("_AnexoImagem", anexo)
                             break;
                         default:
                             break;

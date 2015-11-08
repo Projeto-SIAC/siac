@@ -610,6 +610,7 @@
     <Content Include="Views\Academica\Partials\_Individual.cshtml" />
     <Content Include="Views\Shared\_ListaQuestaoCard.cshtml" />
     <Content Include="Views\Shared\Partials\_ListaQuestao.cshtml" />
+    <Content Include="Views\Shared\Partials\_AnexoImagem.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

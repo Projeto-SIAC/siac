@@ -1,0 +1,25 @@
+﻿@using SIAC.Models
+@model QuestaoAnexo
+<a class="ui anexo imagem card">
+    <div class="image">
+        <img src="data:image/png;base64,@Convert.ToBase64String(Model.Anexo,0, Model.Anexo.Length)" />
+    </div>
+    <div class="content">
+        <div class="header">
+            @Model.Legenda
+        </div>
+        @if (!String.IsNullOrWhiteSpace(Model.Fonte))
+        {
+            <div class="description" @Html.Raw((Model.Fonte.Length > 30 ? "data-fonte=\"" + Model.Fonte + "\"" : ""))>
+                @Model.Fonte.ToShortString(30)
+            </div>
+        }
+        else
+        {
+            <div class="description">
+                Fonte não informada
+            </div>
+        }
+
+    </div>
+</a>

@@ -189,7 +189,8 @@ siac.Autoavaliacao.Detalhe = (function () {
             var $this = $(this);
             var source = $this.find('img').attr('src');
             var legenda = $this.find('.header').text();
-            var fonte = $this.find('.description').text();
+            $description = $this.find('.description');
+            var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
 
             siac.Anexo.expandirImagem(source, legenda, fonte);
         });
@@ -215,7 +216,8 @@ siac.Autoavaliacao.Resultado = (function () {
             var $this = $(this);
             var source = $this.find('img').attr('src');
             var legenda = $this.find('.header').text();
-            var fonte = $this.find('.description').text();
+            $description = $this.find('.description');
+            var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
 
             siac.Anexo.expandirImagem(source, legenda, fonte);
         });
@@ -330,7 +332,8 @@ siac.Autoavaliacao.Realizar = (function () {
             var $this = $(this);
             var source = $this.find('img').attr('src');
             var legenda = $this.find('.header').text();
-            var fonte = $this.find('.description').text();
+            $description = $this.find('.description');
+            var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
 
             siac.Anexo.expandirImagem(source, legenda, fonte);
         });
