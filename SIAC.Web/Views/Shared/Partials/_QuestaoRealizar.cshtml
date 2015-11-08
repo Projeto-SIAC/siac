@@ -1,0 +1,72 @@
+﻿@model SIAC.Models.Questao
+@{ var i = (int)ViewData["Index"]; }
+<div id="@Model.CodQuestao" class="title">
+    <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + Model.Enunciado).ToShortString(80))
+    <div class="ui small label" style="display:none">Respondida</div>
+</div>
+<div id="@Model.CodQuestao" class="content">
+    <div class="ui segment">
+        <div class="ui dividing header" style="text-align:justify">
+            @{
+                var enunciado = (@i.GetIndiceQuestao() + ". " + Model.Enunciado).Split('\n', '\r');
+                foreach (var strEnunciado in enunciado)
+                {
+                    if (!String.IsNullOrWhiteSpace(strEnunciado))
+                    {
+                        <p>@strEnunciado</p>
+                    }
+                }
+            }
+        </div>
+        @if (Model.CodTipoQuestao == 1)
+        {
+            <div class="grouped fields">
+                <label>Selecione a alternativa</label>
+                @{ var lstAlternativa = Model.EmbaralharAlternativa(); }
+                @for (int j = 0; j < lstAlternativa.Count; j++)
+                {
+                    <div class="field">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="rdoResposta@(Model.CodQuestao)" value="@lstAlternativa[j].CodOrdem" />
+                            <label><b>@j.GetIndiceAlternativa()</b>) @lstAlternativa[j].Enunciado</label>
+                        </div>
+                    </div>
+                }
+            </div>
+                    }
+                    else
+                    {
+                        <div class="field">
+                            <label>Resposta</label>
+                            <textarea name="txtResposta@(Model.CodQuestao)" id="txtResposta@(Model.CodQuestao)" placeholder="Resposta..." rows="3"></textarea>
+                        </div>
+                    }
+
+        <div class="accordion">
+            @if (Model.QuestaoAnexo.Count > 0)
+            {
+                <div class="title"><i class="icon dropdown"></i>Anexos</div>
+                                <div class="content">
+                                    @foreach (var anexo in Model.QuestaoAnexo)
+                                    {
+                                        switch (anexo.CodTipoAnexo)
+                                        {
+                                            case 1:
+                                                @Html.Partial("_AnexoImagem", anexo)
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                </div>
+            }
+            <div class="title"><i class="icon dropdown"></i>Comentário</div>
+            <div class="content">
+                <div class="field">
+                    <label>Comentário</label>
+                    <textarea name="txtComentario@(Model.CodQuestao)" id="txtComentario@(Model.CodQuestao)" placeholder="Comentário..." rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

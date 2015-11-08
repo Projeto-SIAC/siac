@@ -11,46 +11,7 @@
     <a class="ui right floated imprimir button">Visualizar impressão</a>
 </h2>
 
-<div class="ui informacoes modal">
-    <i class="icon close"></i>
-    <div class="header">Informações sobre a avaliação</div>
-    <div class="content">
-        <table class="ui striped table">
-            <thead>
-                <tr>
-                    <th>Disciplina</th>
-                    <th>Tema(s)</th>
-                    <th>Quantidade</th>
-                    <th>Dificuldade</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        @* Disciplina *@
-                        <b>@Model.Disciplina.Descricao</b>
-                    </td>
-                    <td class="ui labels">
-                        @* Temas *@
-                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema)
-                        {
-                            <div class="ui tag label">@avalTema.Tema.Descricao</div>
-                        }
-                    </td>
-                    <td class="ui labels">
-                        @* Qte de Questões *@
-                        <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.CodDisciplina, 1)</div></div>
-                        <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.CodDisciplina, 2)</div></div>
-                    </td>
-                    <td>
-                        @* Dificuldade *@
-                        @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(Model.CodDisciplina)
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+@Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
 
 <div class="ui basic segment">
     <h3 class="ui dividing header">Questões</h3>

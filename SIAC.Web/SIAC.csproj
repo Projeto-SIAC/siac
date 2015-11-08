@@ -560,7 +560,6 @@
     <Content Include="Views\Questao\Index.cshtml" />
     <Content Include="Views\Questao\Cadastrar.cshtml" />
     <Content Include="Views\Erro\Index.cshtml" />
-    <Content Include="Views\Questao\Confirmar.cshtml" />
     <Content Include="Views\Questao\Detalhe.cshtml" />
     <Content Include="Views\Configuracoes\Index.cshtml" />
     <Content Include="Views\Autoavaliacao\Gerar.cshtml" />
@@ -581,8 +580,8 @@
     <Content Include="Views\Academica\Configurar.cshtml" />
     <Content Include="Views\Academica\Imprimir.cshtml" />
     <Content Include="Views\Academica\Agendada.cshtml" />
-    <Content Include="Views\Academica\_Agendada.cshtml" />
-    <Content Include="Views\Academica\_Questao.cshtml" />
+    <Content Include="Views\Academica\Partials\_Agendada.cshtml" />
+    <Content Include="Views\Academica\Partials\_Questao.cshtml" />
     <Content Include="Views\Academica\Acompanhar.cshtml" />
     <Content Include="Views\Academica\Realizar.cshtml" />
     <Content Include="Views\Academica\Resultado.cshtml" />
@@ -598,18 +597,21 @@
     <Content Include="Views\Shared\DisplayTemplates\MenuHelperModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\CanonicalHelperModel.cshtml" />
     <Content Include="Views\Historico\Index.cshtml" />
-    <Content Include="Views\Shared\_ListaQuestao.cshtml" />
-    <Content Include="Views\Autoavaliacao\_ListaAutoavaliacao.cshtml" />
+    <Content Include="Views\Autoavaliacao\Partials\_ListaAutoavaliacao.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Certificacao\Index.cshtml" />
     <Content Include="Views\Certificacao\Gerar.cshtml" />
     <Content Include="Views\Certificacao\Confirmar.cshtml" />
-    <Content Include="Views\Questao\_Questao.cshtml" />
-    <Content Include="Views\Academica\_ListaAcademica.cshtml" />
+    <Content Include="Views\Questao\Partials\_Questao.cshtml" />
+    <Content Include="Views\Academica\Partials\_ListaAcademica.cshtml" />
     <Content Include="Scripts\modules\siac.certificacao.js" />
     <Content Include="Views\Certificacao\Configurar.cshtml" />
-    <Content Include="Views\Academica\_Individual.cshtml" />
+    <Content Include="Views\Academica\Partials\_Individual.cshtml" />
     <Content Include="Views\Shared\_ListaQuestaoCard.cshtml" />
+    <Content Include="Views\Shared\Partials\_ListaQuestao.cshtml" />
+    <Content Include="Views\Shared\Partials\_AnexoImagem.cshtml" />
+    <Content Include="Views\Shared\Partials\_AvaliacaoInformacoes.cshtml" />
+    <Content Include="Views\Shared\Partials\_QuestaoRealizar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -808,14 +808,17 @@ siac.Questao.Detalhe = (function () {
             on: 'click'
         })
         ;
+
         $('.card.anexo.imagem').off().click(function () {
             var $this = $(this);
             var source = $this.find('img').attr('src');
             var legenda = $this.find('.header').text();
-            var fonte = $this.find('.description').text();
+            $description = $this.find('.description');
+            var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
 
             siac.Anexo.expandirImagem(source, legenda, fonte);
         });
+
         $('.arquivar.button').click(function () {
             var $_this = $(this);
             $_this.addClass('loading');
