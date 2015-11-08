@@ -8,7 +8,8 @@
 @if (ViewBag.Geradas.Count > 0)
 {
     <h2>@ViewBag.Title<a href="@Url.Action("Gerar")" class="ui right floated button">Gerar</a></h2>
-    <div class="ui cards">
+    <div class="ui basic segment">
+        <div class="ui stackable three cards">
         @foreach (SIAC.Models.AvalAuto auto in ViewBag.Geradas)
         {
             <div class="card">
@@ -41,6 +42,7 @@
                 </a>
             </div>
         }
+    </div>
     </div>
 }
 else

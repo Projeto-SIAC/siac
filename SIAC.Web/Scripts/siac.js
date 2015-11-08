@@ -9,6 +9,22 @@
 
             window.onbeforeunload = function () { $('.ui.global.loader').parent().dimmer('show'); };
 
+            $(document).keydown(function (e) {
+                if (e.keyCode == 27) {
+                    $('.ui.global.loader').parent().dimmer('hide');
+                }
+            });
+            
+            $('.ui.global.loader').parent().click(function () {
+                try {
+                    window.stop();
+                }
+                catch (e) {
+                    document.execCommand('Stop');
+                }
+                $('.ui.global.loader').parent().dimmer('hide');
+            });
+
             carregar();
         });
     }
