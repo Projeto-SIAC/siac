@@ -241,7 +241,6 @@ siac.Certificacao.Configurar = (function () {
                         
                         $resultado.find('.card').map(function () {
                             $card = $(this);
-                            console.log($card.html());
                             var id = $card.attr('id');
                             if (_arrayQuestoes.indexOf(id) > -1) {
                                 $card.find('.acao.button').text(_REM);
@@ -309,7 +308,7 @@ siac.Certificacao.Configurar = (function () {
         }
     }
 
-    function removerQuestao(codQuestao,tipo) {
+    function removerQuestao(codQuestao, tipo) {
         $card = $('#' + codQuestao + '.card');
         var index = _arrayQuestoes.indexOf(codQuestao);
         if (index > -1) {

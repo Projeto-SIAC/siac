@@ -42,8 +42,8 @@
                             </td>
                             <td class="ui labels">
                                 @* qte de questões *@
-                                <div class="ui label">Objetiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
-                                <div class="ui label">Discursiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
+                                <div class="ui objetiva label">Objetiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
+                                <div class="ui discursiva label">Discursiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
                             </td>
                             <td>
                                 @* dificuldade *@
@@ -69,8 +69,8 @@
                     </td>
                     <td class="ui labels">
                         @* Qte de Questões *@
-                        <div class="ui label">Objetiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(disciplina.CodDisciplina, 1)</div></div>
-                        <div class="ui label">Discursiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(disciplina.CodDisciplina, 2)</div></div>
+                        <div class="ui objetiva label">Objetiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(disciplina.CodDisciplina, 1)</div></div>
+                        <div class="ui discursiva label">Discursiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(disciplina.CodDisciplina, 2)</div></div>
                     </td>
                     <td>
                         @* Dificuldade *@
