@@ -679,6 +679,8 @@ namespace SIAC.Controllers
                 AvalAcademica avalAcad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                 if (avalAcad.Avaliacao.FlagPendente && avalAcad.Avaliacao.FlagLiberada && avalAcad.Avaliacao.FlagAgora)
                 {
+                    Helpers.Sessao.Inserir("RealizandoAvaliacao", true);
+                    Helpers.Sessao.Inserir("UsuarioAvaliacao", codigo);
                     return View(avalAcad);
                 }
             }
@@ -747,6 +749,8 @@ namespace SIAC.Controllers
                     Repositorio.GetInstance().SaveChanges();
                     
                     ViewBag.Porcentagem = (avalPessoaResultado.QteAcertoObj / qteObjetiva) * 100;
+                    Helpers.Sessao.Inserir("RealizandoAvaliacao", false);
+                    Helpers.Sessao.Inserir("UsuarioAvaliacao", String.Empty);
                     return View(aval);
                 }
                 return RedirectToAction("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao });
@@ -786,6 +790,8 @@ namespace SIAC.Controllers
                     aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
                     Repositorio.GetInstance().SaveChanges();
+                    Helpers.Sessao.Inserir("RealizandoAvaliacao", false);
+                    Helpers.Sessao.Inserir("UsuarioAvaliacao", String.Empty);
                 }
             }
         }

@@ -24,6 +24,18 @@ namespace SIAC.Helpers
             }
         }
 
+        public static bool RealizandoAvaliacao
+        {
+            get
+            {
+                if (context != null)
+                {
+                    return context.Session["RealizandoAvaliacao"] != null ? (bool)HttpContext.Current.Session["RealizandoAvaliacao"] : false;
+                }
+                return false;
+            }
+        }
+
         public static string UsuarioMatricula
         {
             get
@@ -69,6 +81,18 @@ namespace SIAC.Helpers
                     return (int)context.Session["UsuarioCategoriaCodigo"];
                 }
                 return 0;
+            }
+        }
+
+        public static string UsuarioAvaliacao
+        {
+            get
+            {
+                if (context != null)
+                {
+                    return (string)context.Session["UsuarioAvaliacao"];
+                }
+                return String.Empty;
             }
         }
 

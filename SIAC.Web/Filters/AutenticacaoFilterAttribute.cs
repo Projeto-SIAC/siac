@@ -20,6 +20,22 @@ namespace SIAC.Filters
             {
                 filterContext.Result = new RedirectResult("~/?continuar="+filterContext.HttpContext.Request.Path);
             }
+            else if (Helpers.Sessao.RealizandoAvaliacao)
+            {
+                string[] paths = filterContext.HttpContext.Request.Path.ToLower().Split('/');
+                if (paths.Length > 0)
+                {
+                    string codigo = paths[paths.Length - 1];
+                    if ((!paths.Contains("desistir") || !paths.Contains("resultado") || !paths.Contains("realizar")) && codigo != Helpers.Sessao.UsuarioAvaliacao) 
+                    {
+                        filterContext.Result = new RedirectResult("~/dashboard/avaliacao/academica/realizar/" + Helpers.Sessao.UsuarioAvaliacao);
+                    }
+                }
+                else
+                {
+                    filterContext.Result = new RedirectResult("~/dashboard/avaliacao/academica/realizar/" + Helpers.Sessao.UsuarioAvaliacao);
+                }
+            }
             base.OnActionExecuting(filterContext);
         }
     }
