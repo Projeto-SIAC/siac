@@ -569,14 +569,14 @@ siac.Academica.Agendada = (function () {
             $('.ui.avaliacao.modal').modal('show');
         }
         else {
-            $('.ui.global.loader').parent().addClass('active');
+            $('.ui.global.loader').parent().dimmer('show');
             $.ajax({
                 url: '/Historico/Avaliacao/Academica/Agendada/' + strCodigo,
                 method: 'POST',
                 success: function (htmlModal) {
                     _codAvaliacao = strCodigo;
                     $('.ui.avaliacao.modal').attr('id', strCodigo).html('').append(htmlModal).modal('show');
-                    $('.ui.global.loader').parent().removeClass('active');
+                    $('.ui.global.loader').parent().dimmer('hide');
                     $('.ui.avaliacao.modal .ui.accordion').accordion({
                         animateChildren: false,
                         onChange: function () { $('.ui.avaliacao.modal').modal('refresh'); }
@@ -610,7 +610,7 @@ siac.Academica.Agendada = (function () {
                     abrirHub();
                     contagemRegressiva(1000);
                 },
-                error: function (xhr) { siac.mensagem("Ocorreu um erro."); $('.ui.global.loader').parent().removeClass('active'); }
+                error: function (xhr) { siac.mensagem("Ocorreu um erro."); $('.ui.global.loader').parent().dimmer('hide'); }
             });
         }
     }
@@ -894,7 +894,7 @@ siac.Academica.Realizar = (function () {
             }
             else {
                 alert('O tempo de aplicação acabou, sua prova será enviada automaticamente.');
-                $('.ui.global.loader').parent().addClass('active');
+                $('.ui.global.loader').parent().dimmer('show');
                 finalizar();
             }
         }, 1000);
@@ -902,7 +902,7 @@ siac.Academica.Realizar = (function () {
 
     function finalizar() {
         window.onbeforeunload = function () {
-            $('.ui.global.loader').parent().addClass('active');
+            $('.ui.global.loader').parent().dimmer('show');
         };
         $('form').submit();
     }
@@ -961,13 +961,13 @@ siac.Academica.Realizar = (function () {
     }
 
     function desistir(url) {
-        $('.ui.global.loader').parent().addClass('active');
+        $('.ui.global.loader').parent().dimmer('show');
         $.ajax({
             url: '/Dashboard/Avaliacao/Academica/Desistir/' + _codAvaliacao,
             type: 'POST',
             success: function () {
                 window.onbeforeunload = function () {
-                    $('.ui.global.loader').parent().addClass('active');
+                    $('.ui.global.loader').parent().dimmer('show');
                 };
                 if (!url) {
                     url = '/Dashboard';
@@ -975,7 +975,7 @@ siac.Academica.Realizar = (function () {
                 window.location.href = url;
             },
             error: function () {
-                $('.ui.global.loader').parent().removeClass('active');
+                $('.ui.global.loader').parent().dimmer('hide');
                 siac.mensagem('Ocorreu um erro na tentativa de desistência');
             }
         });
@@ -988,7 +988,7 @@ siac.Academica.Realizar = (function () {
 
             finalizar = function () {
                 window.onbeforeunload = function () {
-                    $('.ui.global.loader').parent().addClass('active');
+                    $('.ui.global.loader').parent().dimmer('show');
                 };
                 acadHub.server.alunoFinalizou(avalAcad, usrMatr);
                 $('form').submit();

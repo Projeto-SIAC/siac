@@ -3,17 +3,11 @@
         $(function () {
             document.onreadystatechange = function () {
                 if (document.readyState == "complete") {
-                    $('.ui.global.loader').parent().removeClass('active');
+                    $('.ui.global.loader').parent().dimmer('hide');
                 }
             }
 
-            window.onbeforeunload = function () { $('.ui.global.loader').parent().addClass('active'); };
-
-            $('.ui.mensagem.modal')
-			    .modal({
-			        allowMultiple: true
-			    })
-            ;
+            window.onbeforeunload = function () { $('.ui.global.loader').parent().dimmer('show'); };
 
             carregar();
         });

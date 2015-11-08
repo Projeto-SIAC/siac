@@ -304,7 +304,7 @@ siac.Autoavaliacao.Realizar = (function () {
             .modal({
                 onApprove: function () {
                     window.onbeforeunload = function () {
-                        $('.ui.global.loader').parent().addClass('active');
+                        $('.ui.global.loader').parent().dimmer('show');
                     };
                     window.location.href = $('.ui.confirmar.modal #txtRef').val();
                 },
@@ -363,7 +363,7 @@ siac.Autoavaliacao.Realizar = (function () {
                         url: "/Acesso/Conectado",
                         success: function () {
                             window.onbeforeunload = function () {
-                                $('.ui.global.loader').parent().addClass('active');
+                                $('.ui.global.loader').parent().dimmer('show');
                             };
                             $('form').submit();
                         },
@@ -482,7 +482,7 @@ siac.Autoavaliacao.Realizar = (function () {
             data: { codigo: _codAvaliacao },
             url: "/Dashboard/Autoavaliacao/Arquivar",
             success: function () {
-                window.onbeforeunload = function () { $('.ui.global.loader').parent().addClass('active'); };
+                window.onbeforeunload = function () { $('.ui.global.loader').parent().dimmer('show'); };
                 window.location.href = '/historico/autoavaliacao/detalhe/' + _codAvaliacao;
             },
             error: function () {
