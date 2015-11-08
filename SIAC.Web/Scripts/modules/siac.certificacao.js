@@ -5,7 +5,7 @@ siac.Certificacao.Gerar = (function () {
 	function iniciar() {
 		$('.ui.dropdown').dropdown();
 		$('.ui.modal').modal();
-		$('.ui.termo.modal').modal('show');
+	    $('.ui.termo.modal').modal({ closable: false }).modal('show');
 		$('.cancelar.button').popup({ on: 'click' });
 
 		$('.ui.confirmar.modal').modal({

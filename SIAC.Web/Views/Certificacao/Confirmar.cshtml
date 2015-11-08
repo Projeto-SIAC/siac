@@ -6,7 +6,32 @@
 }
 
 <h2>@ViewBag.Title</h2>
-
+<div class="ui four fluid ordered steps">
+    <div class="completed step">
+        <div class="content">
+            <div class="title">Gerar</div>
+            <div class="description">Defina os dados gerais da avaliação</div>
+        </div>
+    </div>
+    <div class="step">
+        <div class="content">
+            <div class="title">Configurar</div>
+            <div class="description">Configure a avaliação</div>
+        </div>
+    </div>
+    <div class="step">
+        <div class="content">
+            <div class="title">Agendar</div>
+            <div class="description">Agende a avaliação</div>
+        </div>
+    </div>
+    <div class="step">
+        <div class="content">
+            <div class="title">Pessoas</div>
+            <div class="description">Selecione as pessoas que realizarão a avaliação</div>
+        </div>
+    </div>
+</div>
 <div class="ui icon message positive">
     <i class="icon checkmark"></i>
     <div class="content">
@@ -58,5 +83,5 @@
 </div>
 
 <a href="@Url.Action("Index", "Dashboard")" class="ui button">Voltar para Dashboard</a>
-<a href="@Url.Action("Index")" class="ui button">Avaliações de Certificação</a>
+<a href="@Url.Action("Index")" class="ui button">Histórico de Certificação</a>
 <a href="@Url.Action("Configurar", "Certificacao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Configurar agora</a>
