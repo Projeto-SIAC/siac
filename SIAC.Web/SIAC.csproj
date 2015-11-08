@@ -560,7 +560,6 @@
     <Content Include="Views\Questao\Index.cshtml" />
     <Content Include="Views\Questao\Cadastrar.cshtml" />
     <Content Include="Views\Erro\Index.cshtml" />
-    <Content Include="Views\Questao\Confirmar.cshtml" />
     <Content Include="Views\Questao\Detalhe.cshtml" />
     <Content Include="Views\Configuracoes\Index.cshtml" />
     <Content Include="Views\Autoavaliacao\Gerar.cshtml" />
@@ -611,6 +610,8 @@
     <Content Include="Views\Shared\_ListaQuestaoCard.cshtml" />
     <Content Include="Views\Shared\Partials\_ListaQuestao.cshtml" />
     <Content Include="Views\Shared\Partials\_AnexoImagem.cshtml" />
+    <Content Include="Views\Shared\Partials\_AvaliacaoInformacoes.cshtml" />
+    <Content Include="Views\Shared\Partials\_QuestaoRealizar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
