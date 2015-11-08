@@ -31,9 +31,7 @@
                 </div>
             </div>
         </div>
-        
     </div>
-    
     <div class="actions">
         <a class="ui cancel button">Fechar</a>
     </div>
@@ -70,19 +68,19 @@
             <div class="ui label">
                 Dificuldade
                 <div id="mdlDificuldade" class="detail"></div>
-            </div>    
-            <span id="mdlTagTemas" class="ui tag labels"></span>       
+            </div>
+            <span id="mdlTagTemas" class="ui tag labels"></span>
         </div>
         <div id="mdlEnunciado" class="ui dividing header" data-html=""></div>
         <div id="mdlListAlternativas" class="ui very relaxed list">
         </div>
-        <div id="mdlChaveDeResposta" data-html="">            
+        <div id="mdlChaveDeResposta" data-html="">
         </div>
         <br />
         <div id="mdlAccordionAnexos" class="ui styled fluid accordion">
             <div class="title"><i class="icon dropdown"></i>Anexos</div>
             <div class="content">
-                <div id="mdlCardAnexos" class="ui cards">                    
+                <div id="mdlCardAnexos" class="ui cards">
                 </div>
             </div>
         </div>
@@ -106,10 +104,9 @@
         <div class="ui positive button">Confirmar</div>
     </div>
 </div>
- 
 
 <h2>@ViewBag.Title <a id="btnPesquisa" class="ui right floated button"><i class="search icon"></i>Pesquisar</a></h2>
- 
+
 <form id="frmQuestao" action="@Url.Action("Confirmar")" method="post" class="ui form" enctype="multipart/form-data">
     <div class="ui error message">
         <div class="header">Verifique</div>
@@ -189,12 +186,12 @@
     </div>
     @* Alternativas da Questão *@
     <div class="ui bottom attached tab segment questao objetiva" data-tab="alternativas">
-            <input id="txtQtdAlternativas" name="txtQtdAlternativas" type="number" hidden />
-            <div class="ui adicionar button" style="float: right">Adicionar</div>
+        <input id="txtQtdAlternativas" name="txtQtdAlternativas" type="number" hidden />
+        <div class="ui adicionar button" style="float: right">Adicionar</div>
         <div class="ui alternativas fluid accordion">
         </div>
-    </div>   
-     @* Anexos da Questão *@
+    </div>
+    @* Anexos da Questão *@
     <div class="ui bottom attached tab segment anexos" data-tab="anexos">
         <input id="txtQtdAnexos" name="txtQtdAnexos" type="number" hidden />
         @* Anexos *@

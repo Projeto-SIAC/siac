@@ -44,8 +44,7 @@
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Agendada", "Academica") },
                 { "Icone", "calendar" },
-                { "Descricao", "Avaliações Agendadas" },
-                { "Notificacao", AvalAcademica.ListarAgendadaPorProfessor(Model.Professor.First().CodProfessor).Count }
+                { "Descricao", "Avaliações Agendadas" }
             })
         }
         @if (Model.CodCategoria == 2)
@@ -53,8 +52,7 @@
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Pendente", "Academica") },
                 { "Icone", "edit" },
-                { "Descricao", "Correções Pendentes" },
-                { "Notificacao", AvalAcademica.ListarCorrecaoPendentePorProfessor(Model.Professor.First().CodProfessor).Count }
+                { "Descricao", "Correções Pendentes" }
             })
         }
     </div>

@@ -3,8 +3,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<h2>
+    @ViewBag.Title
+    <a class="ui right floated button" href="/Dashboard/Questao/Cadastrar">
+        Cadastrar
+    </a>
+</h2>
 
-<h2>@ViewBag.Title <a class="ui right floated button" href="/Dashboard/Questao/Cadastrar">Cadastrar</a></h2>
 <div class="ui stackable grid" style="clear:both">
     <div class="sixteen wide column">
         <div class="ui fluid icon pesquisa input">
@@ -12,7 +17,7 @@
             <i class="search icon"></i>
         </div>
     </div>
-    <div class="eight wide column">        
+    <div class="eight wide column">
         <div class="ui text menu" style="margin-bottom:0">
             <div class="header item">Ordenar</div>
             <a class="active ordenar item" data-ordenar="data_desc">
@@ -29,7 +34,7 @@
             <a class="tipo item" data-tipo="discursiva">
                 Discursiva
             </a>
-        </div>        
+        </div>
     </div>
     <div class="eight wide column">
         <div class="ui text menu">
@@ -53,8 +58,8 @@
                     {
                         <div class="ui dropdown disciplina item" data-disciplina="@disciplina.CodDisciplina">
                             @disciplina.Descricao
-                            <div class="menu">  
-                                <a class="tema item active selected" data-tema="">Todos</a>                              
+                            <div class="menu">
+                                <a class="tema item active selected" data-tema="">Todos</a>
                                 @foreach (SIAC.Models.Tema tema in disciplina.Tema)
                                 {
                                     <a class="item tema" data-tema="@tema.CodTema">@tema.Descricao</a>
@@ -71,7 +76,6 @@
             <div class="ui two stackable cards">
             </div>
         </div>
-
         <div class="ui right floated icon button topo"><i class="icon angle up"></i></div>
     </div>
 </div>

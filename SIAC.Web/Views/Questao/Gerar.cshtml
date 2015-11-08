@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Gerar</h2>
+<h2>@ViewBag.Title</h2>
 
 <div class="ui form">
     <div class="inline field">
@@ -13,9 +13,7 @@
     </div>
 </div>
 <div class="questoes" style="max-height:50em; overflow-y:auto; margin-top:1em">
-
 </div>
-
 
 <form action="/Dashboard/Questao/Gerar" method="post">
     <a href="/Historico/Questao" class="ui button">Voltar</a>

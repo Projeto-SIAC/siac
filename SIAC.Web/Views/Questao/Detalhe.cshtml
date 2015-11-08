@@ -1,7 +1,7 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Questão " + Model.CodQuestao;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var lstResposta = Model.Resposta().Where(r => !String.IsNullOrWhiteSpace(r.RespComentario)).ToList();
 }
 
 @model SIAC.Models.Questao
@@ -9,47 +9,44 @@
 <h2>@ViewBag.Title</h2>
 
 <div class="ui segment">
-    @Html.Partial("_Questao", Model)    
+    @Html.Partial("_Questao", Model)
 </div>
-@{ 
-    var lstResposta = Model.Resposta().Where(r=>!String.IsNullOrWhiteSpace(r.RespComentario)).ToList();
-}
-@if(lstResposta.Count > 0) { 
-<div class="ui secondary segment">
-    <div class="ui dividing header">
-        <p>Comentários</p>
-    </div>
-    @* Expor comentários dos usuários que já responderam essa questão *@
-    <div class="ui comments" style="max-height: 15em; overflow-y:auto">
-        @foreach (var resp in lstResposta)
-        {            
-            <div class="comment">
-                <div class="content">
-                    <a class="author">@resp.PessoaFisica.Nome.Split(' ')[0]</a>
-                    <div class="metadata">
-                        <span class="date">@resp.AvalTemaQuestao.AvaliacaoTema.Avaliacao.DtCadastro.ToElapsedTimeString()</span>@* Continuar: pegar data da AvalPessoaResultado *@
-                    </div>
-                    <div class="text">
-                        @{
-                            var comentario = resp.RespComentario.Split('\n', '\r');
-                            foreach (var strComentario in comentario)
+
+@if (lstResposta.Count > 0)
+{
+    <div class="ui secondary segment">
+        <div class="ui dividing header">
+            <p>Comentários</p>
+        </div>
+        @* Expor comentários dos usuários que já responderam essa questão *@
+        <div class="ui comments" style="max-height: 15em; overflow-y:auto">
+            @foreach (var resp in lstResposta)
+            {
+                <div class="comment">
+                    <div class="content">
+                        <a class="author">@resp.PessoaFisica.Nome.Split(' ')[0]</a>
+                        <div class="metadata">
+                            <span class="date">@resp.AvalTemaQuestao.AvaliacaoTema.Avaliacao.DtCadastro.ToElapsedTimeString()</span>@* Continuar: pegar data da AvalPessoaResultado *@
+                        </div>
+                        <div class="text">
+                            @{ var comentario = resp.RespComentario.Split('\n', '\r'); }
+                            @foreach (var strComentario in comentario)
                             {
                                 if (!String.IsNullOrWhiteSpace(strComentario))
                                 {
                                     <p>@strComentario</p>
                                 }
                             }
-                        }
+                        </div>
                     </div>
                 </div>
-            </div>            
-        }
+            }
+        </div>
     </div>
-</div>
-                            }
+}
 
-<div data-questao="@Model.CodQuestao" class="ui arquivar toggle @(Model.FlagArquivo ? "active":"") button">
-    Arquiva@(Model.FlagArquivo ? "da":"r")
+<div data-questao="@Model.CodQuestao" class="ui arquivar toggle @( Model.FlagArquivo ? "active" : "" ) button">
+    Arquiva@(Model.FlagArquivo ? "da" : "r")
 </div>
 <a href="@Url.Action("Editar", new { codigo = Model.CodQuestao })" class="ui button">
     Editar

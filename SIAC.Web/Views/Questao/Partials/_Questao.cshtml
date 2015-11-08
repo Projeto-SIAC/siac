@@ -59,24 +59,24 @@ else
             }
         }
     </div>
-            }
+}
 @if (Model.QuestaoAnexo.Count > 0)
 {
     <br />
-        <div class="ui styled fluid accordion">
-            <div class="title"><i class="icon dropdown"></i>Anexos</div>
-            <div class="content">
-                @foreach (var anexo in Model.QuestaoAnexo)
+    <div class="ui styled fluid accordion">
+        <div class="title"><i class="icon dropdown"></i>Anexos</div>
+        <div class="content">
+            @foreach (var anexo in Model.QuestaoAnexo)
+            {
+                switch (anexo.CodTipoAnexo)
                 {
-                    switch (anexo.CodTipoAnexo)
-                    {
-                        case 1:
-                            @Html.Partial("_AnexoImagem", anexo)
-                            break;
-                        default:
-                            break;
-                    }
+                    case 1:
+                        @Html.Partial("_AnexoImagem", anexo)
+                        break;
+                    default:
+                        break;
                 }
-            </div>
+            }
         </div>
+    </div>
 }

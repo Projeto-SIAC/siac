@@ -18,7 +18,7 @@
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Gerar", "Academica") },
                 { "Icone", "file" },
-                { "Descricao", "Nova Acadêmica" }
+                { "Descricao", "Gerar Acadêmica" }
             })           
         }
         @if (Model.CodCategoria == 2 || Model.CodCategoria == 3)
@@ -26,7 +26,7 @@
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Gerar", "Certificacao") },
                 { "Icone", "file text" },
-                { "Descricao", "Nova Certificacao" }
+                { "Descricao", "Gerar Certificacao" }
             })
         }
         @if (Model.CodCategoria == 2)

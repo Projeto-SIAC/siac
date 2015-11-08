@@ -49,6 +49,10 @@
             if (acad.Avaliacao.FlagArquivo)
             {
                 <span class="ui attached top right label"><i class="archive icon"></i>Arquivo</span>
+                if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 2)
+                {
+                    <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
+                }
             }
             else if (acad.Avaliacao.FlagAgendada)
             {
