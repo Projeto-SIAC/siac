@@ -1158,10 +1158,11 @@ siac.Academica.Realizar = (function () {
                     $lblQteMsg.remove();
                     chatQteMensagem++;
                     $btnChat.addClass('blue').html('<i class="icon comments outline"></i> ' + chatQteMensagem);
-                    document.title = "Você recebeu uma mensagem - SIAC";
+                    document.title = 'Você recebeu uma mensagem - SIAC';
                     if (chatQteMensagem > 1) {
-                        document.title = "Você recebeu " + chatQteMensagem + " mensagens - SIAC";
+                        document.title = 'Você recebeu ' + chatQteMensagem + ' mensagens - SIAC';
                     }
+                    siac.aviso('Você recebeu uma mensagem')
                 }
             }
         };

@@ -92,7 +92,7 @@
         }
     }
 
-    var HTML_TEMPLATE = '<div class="ui small mensagem modal">' +
+    var HTML_MENSAGEM_TEMPLATE = '<div class="ui small mensagem modal">' +
                     '<div class="header">{titulo}</div>' +
                     '<div class="content">{mensagem}</div>' +
                     '<div class="actions">' +
@@ -102,14 +102,14 @@
 
     function mensagem(mensagem, titulo) {
         if (mensagem) {
-            var html = HTML_TEMPLATE;
+            var html = HTML_MENSAGEM_TEMPLATE;
             titulo ? html = html.replace('{titulo}', titulo) : html = html.replace('{titulo}', 'Mensagem');
             html = html.replace('{mensagem}', mensagem);
             $('body').append(html);
             $('.ui.mensagem.modal')
                 .modal({
                     transition: 'fly down',
-                    onHidden: function() {
+                    onHidden: function () {
                         $(this).remove();
                     }
                 })
@@ -118,17 +118,17 @@
         }
     }
 
-    var HTML_SIDEBAR_TEMPLATE = '<div class="ui aviso sidebar top center aligned segment">'+
-                                    '<h3 class="ui center aligned {cor} header">'+
-                                        '<div class="content">'+
-                                            '{mensagem}'+
-                                        '</div>'+
-                                    '</h3>'+
+    var HTML_AVISO_TEMPLATE = '<div class="ui aviso sidebar top center aligned segment">' +
+                                    '<h3 class="ui center aligned {cor} header">' +
+                                        '<div class="content">' +
+                                            '{mensagem}' +
+                                        '</div>' +
+                                    '</h3>' +
                                 '</div>';
 
-    function aviso(mensagem,cor,icone) {
+    function aviso(mensagem, cor, icone) {
         if (mensagem) {
-            $html = $(HTML_SIDEBAR_TEMPLATE);
+            $html = $(HTML_AVISO_TEMPLATE);
             $html.html($html.html().substituirTodos('{mensagem}', mensagem));
             $html.html($html.html().substituirTodos('{cor}', cor));
             if (icone) $html.find('.header').addClass('small icon').prepend('<i class="' + icone + ' icon"></i>');
@@ -177,7 +177,7 @@ siac.Utilitario = siac.Utilitario || (function () {
         return (timeData > timeDataAgora);
     }
 
-    String.prototype.encurtarTextoEm = function(length) {
+    String.prototype.encurtarTextoEm = function (length) {
         var text = '';
         var str = this;
         if (str.length > length) {
@@ -196,7 +196,7 @@ siac.Utilitario = siac.Utilitario || (function () {
         return text;
     }
 
-    String.prototype.quebrarLinhaEm = function(indiceMaximo) {
+    String.prototype.quebrarLinhaEm = function (indiceMaximo) {
         texto = this;
         texto = texto.trim();
         if (texto.length > indiceMaximo) {
