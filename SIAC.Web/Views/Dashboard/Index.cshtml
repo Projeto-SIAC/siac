@@ -1,24 +1,6 @@
 ﻿@{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int autoavaliacao = 0; //Model.PessoaFisica.AvalAuto.Where(a => a.Avaliacao.AvalPessoaResultado.Count == 0).Count();
-    int academica = 0;
-    int certificacao = 0;
-    int agendada = 0;
-    int pendente = 0;
-    //if (Model.CodCategoria == 2)
-    //{
-    //    var prof = Model.Professor.First();
-    //    academica = prof.AvalAcademica.Where(a=>!a.NumTurma.HasValue).Count();
-    //    certificacao = prof.AvalCertificacao.Where(a => a.PessoaFisica.Count == 0).Count();
-    //    agendada = prof.AvalAcademica.Where(a => a.Avaliacao.DtAplicacao.HasValue).Count();
-    //    pendente = prof.AvalAcademica.Where(a => a.Avaliacao.AvalPessoaResultado.Where(r => !r.Nota.HasValue).Count() > 0).Count();
-    //}
-    //else if (Model.CodCategoria == 1)
-    //{
-    //    var aluno = Model.Aluno.First();
-    //    agendada = aluno.TurmaDiscAluno.Sum(t => t.Turma.AvalAcademica.Where(c=> c.Avaliacao.AvalPessoaResultado.Count == 0).Count());
-    //}
 }
 @model SIAC.Models.Usuario
 
@@ -26,75 +8,48 @@
 
 <div class="ui stackable grid dashmenu">
     <div class="stackable doubling four columns centered row">
-        <div class="column aligned center">
-            <a href="@Url.Action("Realizar", "Autoavaliacao")" class="ui basic segment">
-                <div class="ui icon header">
-                    <i class="file outline icon"></i>
-                    @if (autoavaliacao > 0)
-                    {
-                        <div class="ui floating small red label">@autoavaliacao</div>
-
-                    }
-                    Realizar Autoavaliação
-                </div>
-            </a>
-        </div>
+        @Html.Partial("_Atalho", new ViewDataDictionary() {
+            { "Url", Url.Action("Realizar", "Autoavaliacao") },
+            { "Icone", "file outline" },
+            { "Descricao", "Realizar Autoavaliação" }
+        })
         @if (Model.CodCategoria == 2)
         {
-            <div class="column aligned center">
-                <a href="@Url.Action("Gerar", "Academica")" class="ui basic segment">
-                    <div class="ui icon header">
-                        <i class="file icon"></i>
-                        @if (academica > 0)
-                        {
-                            <div class="ui floating small red label">@academica</div>
-                        }
-                        Nova Acadêmica
-                    </div>
-                </a>
-            </div>
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
+                { "Url", Url.Action("Gerar", "Academica") },
+                { "Icone", "file" },
+                { "Descricao", "Nova Acadêmica" }
+            })           
         }
         @if (Model.CodCategoria == 2 || Model.CodCategoria == 3)
         {
-            <div class="column aligned center">
-                <a href="@Url.Action("Gerar", "Certificacao")" class="ui basic segment">
-                    <div class="ui icon header">
-                        <i class="file text icon"></i>
-                        @if (certificacao > 0)
-                        {
-                            <div class="ui floating small red label">@certificacao</div>
-                        }
-                        Nova Certificação
-                    </div>
-                </a>
-            </div>
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
+                { "Url", Url.Action("Gerar", "Certificacao") },
+                { "Icone", "file text" },
+                { "Descricao", "Nova Certificacao" }
+            })
         }
         @if (Model.CodCategoria == 2)
         {
-            <div class="column aligned center">
-                <a href="@Url.Action("Cadastrar", "Questao")" class="ui basic segment">
-                    <div class="ui icon header">
-                        <i class="add circle icon"></i>
-                        Nova Questão
-                    </div>
-                </a>
-            </div>
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
+                { "Url", Url.Action("Cadastrar", "Questao") },
+                { "Icone", "add circle" },
+                { "Descricao", "Nova Questão" }
+            })
         }                        
         <div class="column aligned center">
-            <a href="@Url.Action("Index", "Perfil")" class="ui basic segment">
-                <div class="ui icon header">
-                    <i class="user icon"></i>
-                    Abrir Perfil
-                </div>
-            </a>
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
+                { "Url", Url.Action("Index", "Perfil") },
+                { "Icone", "user" },
+                { "Descricao", "Abir Perfil" }
+            })
         </div>
         <div class="column aligned center">
-            <a href="@Url.Action("Index", "Historico")" class="ui basic segment">
-                <div class="ui icon header">
-                    <i class="wait icon"></i>
-                        Abrir Histórico
-                </div>
-            </a>
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
+                { "Url", Url.Action("Index", "Historico") },
+                { "Icone", "wait" },
+                { "Descricao", "Abir Histórico" }
+            })
         </div>
     </div>
 </div>

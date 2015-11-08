@@ -1,0 +1,13 @@
+﻿<div class="column aligned center">
+    <a href="@ViewData["Url"]" class="ui basic segment">
+        <div class="ui icon header">
+            <i class="@ViewData["Icone"] icon"></i>
+            @if (ViewData["Notificacao"] != null)
+            {
+                <div class="ui floating small red label">@ViewData["Notificacao"]</div>
+            }
+            @ViewData["Descricao"]
+        </div>
+
+    </a>
+</div>

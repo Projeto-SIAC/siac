@@ -612,6 +612,7 @@
     <Content Include="Views\Shared\Partials\_AnexoImagem.cshtml" />
     <Content Include="Views\Shared\Partials\_AvaliacaoInformacoes.cshtml" />
     <Content Include="Views\Shared\Partials\_QuestaoRealizar.cshtml" />
+    <Content Include="Views\Shared\Partials\_Atalho.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
