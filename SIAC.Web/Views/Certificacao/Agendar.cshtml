@@ -1,0 +1,67 @@
+﻿@using SIAC.Models
+@model SIAC.ViewModels.AvaliacaoAgendarViewModel
+@{
+    ViewBag.Title = "Agendar " + Model.Avaliacao.CodAvaliacao;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>
+    @ViewBag.Title
+    <div class="ui right floated informacoes button">
+        Informações
+    </div>
+</h2>
+
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 3 } })
+
+@Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
+
+<div class="ui confirmar modal">
+    <div class="header">
+        Verificar e confirmar
+    </div>
+    <div class="content">
+
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Voltar</div>
+        <div class="ui approve button">Confirmar</div>
+    </div>
+</div>
+
+<form class="ui form" method="post">
+    <div class="ui error message">
+        <div class="header">Verifique</div>
+        <ul class="list"></ul>
+    </div>
+    <div class="three fields">
+        <div class="field required">
+            <label>Data de Aplicação</label>
+            <input id="txtData" name="txtData" type="date" data-mask="0000-00-00" placeholder="Data" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("yyyy-MM-dd") : "")" required />
+        </div>
+        <div class="field required">
+            <label>Hora de Início</label>
+            <input id="txtHoraInicio" name="txtHoraInicio" type="time" data-mask="00:00" placeholder="Hora de início" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("HH:mm") : "")" required />
+        </div>
+        <div class="field required">
+            <label>Hora de Término</label>
+            <input id="txtHoraTermino" name="txtHoraTermino" type="time" data-mask="00:00" placeholder="Hora de término" value="@(Model.Avaliacao.DtAplicacao.HasValue && Model.Avaliacao.Duracao.HasValue ? Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToString("HH:mm") : "")" required />
+        </div>
+    </div>
+    <div class="field required">
+        <label>Sala</label>
+        <select id="ddlSala" name="ddlSala" class="ui search dropdown" required>
+            <option value="">Sala</option>
+            @foreach (Sala sala in Model.Salas)
+            {
+                <option @(Model.Avaliacao.AvalCertificacao.CodSala.HasValue && Model.Avaliacao.AvalCertificacao.CodSala.Value == sala.CodSala ? "selected" : "") value="@sala.CodSala" title="@sala.RefLocal">@sala.Descricao</option>
+            }
+        </select>
+    </div>
+    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("Index")' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+    <button class="ui confirmar button" tabindex="0">Avançar</button>
+</form>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/certificacao")
+}

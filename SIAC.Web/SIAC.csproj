@@ -526,6 +526,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="App_Start\Startup.cs" />
+    <Compile Include="ViewModels\AvaliacaoAgendarViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -614,6 +615,7 @@
     <Content Include="Views\Shared\Partials\_QuestaoRealizar.cshtml" />
     <Content Include="Views\Shared\Partials\_Atalho.cshtml" />
     <Content Include="Views\Certificacao\Partials\_PassoAPasso.cshtml" />
+    <Content Include="Views\Certificacao\Agendar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

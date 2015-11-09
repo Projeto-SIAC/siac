@@ -107,7 +107,8 @@ namespace SIAC.Controllers
                 AvalCertificacao.Inserir(cert);
             }
 
-            return View(cert);
+            //return View(cert);
+            return RedirectToAction("Configurar", new { codigo = cert.Avaliacao.CodAvaliacao });
         }
 
         // GET: Certificacao/Configurar/CERT201520001
@@ -164,6 +165,73 @@ namespace SIAC.Controllers
                 return PartialView("~/Views/Questao/Partials/_Questao.cshtml", questao); 
             }
             return null;
+        }
+
+        [HttpGet]
+        [Filters.AutenticacaoFilter(Categorias = new [] { 2 })]
+        public ActionResult Agendar(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
+                
+                if (cert.Professor.MatrProfessor == Helpers.Sessao.UsuarioMatricula)
+                {
+                    var model = new ViewModels.AvaliacaoAgendarViewModel();
+
+                    model.Avaliacao = cert.Avaliacao;
+                    model.Salas = Sala.ListarOrdenadamente();
+
+                    return View(model);
+                }
+                
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult Agendar(string codigo, FormCollection form)
+        {
+            string strCodSala = form["ddlSala"];
+            string strData = form["txtData"];
+            string strHoraInicio = form["txtHoraInicio"];
+            string strHoraTermino = form["txtHoraTermino"];
+            if (!Helpers.StringExt.IsNullOrWhiteSpace(strCodSala, strData, strHoraInicio, strHoraTermino))
+            {
+                AvalCertificacao aval = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
+
+                string strMatr = Helpers.Sessao.UsuarioMatricula;
+                Professor prof = Professor.ListarPorMatricula(strMatr);
+
+                if (aval.CodProfessor == prof.CodProfessor)
+                {
+                    // Sala
+                    int codSala;
+                    int.TryParse(strCodSala, out codSala);
+                    Sala sala = Sala.ListarPorCodigo(codSala);
+                    if (sala != null)
+                    {
+                        aval.Sala = sala;
+                    }
+
+                    // Data de Aplicacao
+                    DateTime dtAplicacao = DateTime.Parse(strData + " " + strHoraInicio);
+                    DateTime dtAplicacaoTermino = DateTime.Parse(strData + " " + strHoraTermino);
+
+                    if (dtAplicacao.IsFuture() && dtAplicacaoTermino.IsFuture() && dtAplicacaoTermino > dtAplicacao)
+                    {
+                        aval.Avaliacao.DtAplicacao = dtAplicacao;
+                        aval.Avaliacao.Duracao = Convert.ToInt32((dtAplicacaoTermino - aval.Avaliacao.DtAplicacao.Value).TotalMinutes);
+                    }
+
+                    aval.Avaliacao.FlagLiberada = false;
+
+                    Repositorio.GetInstance().SaveChanges();
+                }
+            }
+
+            return RedirectToAction("Index"); // Redirecionar para Pessoas
         }
     }
 }

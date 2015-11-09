@@ -100,6 +100,9 @@
         else if (/\/dashboard\/avaliacao\/certificacao\/configurar\/cert[0-9]+$/.test(pathname)) {
             siac.Certificacao.Configurar.iniciar();
         }
+        else if (/\/dashboard\/avaliacao\/certificacao\/agendar\/cert[0-9]+$/.test(pathname)) {
+            siac.Certificacao.Agendar.iniciar();
+        }
     }
 
     var HTML_MENSAGEM_TEMPLATE = '<div class="ui small mensagem modal">' +
