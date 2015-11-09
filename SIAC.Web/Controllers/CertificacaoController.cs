@@ -219,6 +219,19 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
+        //POST: Certificacao/Configurar/CERT201520001
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] {2})]
+        public ActionResult Configurar(string codigo,int[] questoes)
+        {
+            if(!String.IsNullOrEmpty(codigo) && questoes.Count() > 0)
+            {
+                Avaliacao.AtualizarQuestoes(codigo, questoes);
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            return Json(false, JsonRequestBehavior.AllowGet);
+        }
+
         // POST: Certificacao/CarregarQuestoes/CERT201520001/{temas}/{dificuldade}/{tipo}
         [HttpPost]
         [AcceptVerbs(HttpVerbs.Post)]

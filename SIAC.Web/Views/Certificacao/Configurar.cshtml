@@ -1,7 +1,7 @@
 ﻿@using SIAC.Models
 @model AvalCertificacao
 @{
-    ViewBag.Title = "Configurar "+Model.Avaliacao.CodAvaliacao;
+    ViewBag.Title = "Configurar " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -21,21 +21,21 @@
         <div class="ui three cards">
             @foreach (Questao questao in Model.Avaliacao.Questao)
             {
-                <div id="@questao.CodQuestao" class="card">
-                    <div class="content">
-                        <div class="header">@questao.Enunciado.ToShortString(140)</div>
-                        <div class="meta"><span title="@questao.DtCadastro.ToBrazilianString()">@questao.DtCadastro.ToElapsedTimeString()</span></div>
-                        <div class="description ui labels">
-                            <span class="ui label">@questao.Disciplina.Descricao</span>
-                            <span class="ui label">@questao.Dificuldade.Descricao</span>
-                            <span class="ui tipo label">@questao.TipoQuestao.Descricao</span>
-                        </div>
-                    </div>
-                    <div class="ui two bottom attached buttons">
-                        <div class="ui detalhe button">Detalhes</div>
-                        <div class="ui acao button">Remover</div>
+            <div id="@questao.CodQuestao" class="card">
+                <div class="content">
+                    <div class="header" data-enunciado="@questao.Enunciado">@questao.Enunciado.ToShortString(140)</div>
+                    <div class="meta"><span title="@questao.DtCadastro.ToBrazilianString()">@questao.DtCadastro.ToElapsedTimeString()</span></div>
+                    <div class="description ui labels">
+                        <span class="ui label">@questao.Disciplina.Descricao</span>
+                        <span class="ui label">@questao.Dificuldade.Descricao</span>
+                        <span class="ui tipo label">@questao.TipoQuestao.Descricao</span>
                     </div>
                 </div>
+                <div class="ui two bottom attached buttons">
+                    <div class="ui detalhe button">Detalhes</div>
+                    <div class="ui acao button">Remover</div>
+                </div>
+            </div>
             }
         </div>
     </div>
@@ -48,13 +48,30 @@
     </div>
 </div>
 
-<h3>Seleção de Questão</h3>
+<div class="ui confirmar modal">
+    <div class="header">
+        Deseja prosseguir?
+    </div>
+    <div class="content">
+        Clique em confirmar para agendar sua avaliação de certificação
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Voltar</div>
+        <div class="ui approve button">Confirmar</div>
+    </div>
+</div>
+
+<h3>
+    Seleção de Questão
+    <div class="ui right floated quantidade obj label">Objetiva(s) <div class="ui detail">0</div></div>
+    <div class="ui right floated quantidade disc label">Discursiva(s) <div class="ui detail">0</div></div>
+</h3>
 
 <form class="ui form">
     <div class="ui fields">
-        <div class="ui ten wide field required">
+        <div class="ui ten wide field">
             <label>Tema(s)</label>
-            <select id="ddlTemas" name="ddlTemas" class="ui search dropdown fluid tema" multiple required>
+            <select id="ddlTemas" name="ddlTemas" class="ui search dropdown fluid tema" multiple>
                 <option value="">Temas...</option>
                 @foreach (Tema t in Model.Avaliacao.Temas)
                 {
@@ -62,9 +79,9 @@
                 }
             </select>
         </div>
-        <div class="ui three wide field required">
+        <div class="ui three wide field ">
             <label>Dificuldade</label>
-            <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown fluid dificuldade" required>
+            <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown fluid dificuldade">
                 <option value="">Dificuldade...</option>
                 @foreach (Dificuldade d in ViewBag.Dificuldades)
                 {
@@ -75,9 +92,9 @@
                 }
             </select>
         </div>
-        <div class="ui three wide field required">
+        <div class="ui three wide field">
             <label>Tipo</label>
-            <select id="ddlTipo" name="ddlTipo" class="ui search dropdown fluid dificuldade" required>
+            <select id="ddlTipo" name="ddlTipo" class="ui search dropdown fluid dificuldade">
                 <option value="">Tipo...</option>
                 @foreach (TipoQuestao t in ViewBag.TiposQuestao)
                 {
@@ -97,7 +114,8 @@
         </div>
     </div>
     <br />
-    <button type="submit" class="ui button">Salvar</button>
+    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("Index")' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+    <div class="ui confirmar button" tabindex="0">Prosseguir</div>
 </form>
 
 @section Scripts{

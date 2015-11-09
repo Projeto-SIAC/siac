@@ -222,5 +222,90 @@ namespace SIAC.Models
             }
             return aval.FlagArquivo;
         }
+
+        public static void AtualizarQuestoes(string codigo,int[] questoes)
+        {
+            Avaliacao aval = ListarPorCodigoAvaliacao(codigo);
+
+            List<QuestaoTema> questoesTema = new List<QuestaoTema>();
+
+            foreach (int questao in questoes)
+            {
+                List<QuestaoTema> qtTemp = (from qt in contexto.QuestaoTema
+                                                  where qt.CodQuestao == questao
+                                                  select qt).ToList();
+
+                questoesTema.AddRange(qtTemp);
+            }
+            
+            if(questoesTema.Count > 0)
+            {
+                //Deletar questões antigas
+                List<AvalTemaQuestao> questoesAntigas = contexto.AvalTemaQuestao
+                                                        .Where(atq => atq.Ano == aval.Ano
+                                                                   && atq.Semestre == aval.Semestre
+                                                                   && atq.CodTipoAvaliacao == aval.CodTipoAvaliacao
+                                                                   && atq.NumIdentificador == aval.NumIdentificador
+                                                        ).ToList();
+                contexto.AvalTemaQuestao.RemoveRange(questoesAntigas);
+
+                List<AvalTemaQuestao> questoesAdicionadas = new List<AvalTemaQuestao>();
+                
+                foreach (Tema tema in aval.Temas)
+                {
+                    List<QuestaoTema> questaoTema = questoesTema.Where(qt => qt.Tema == tema).ToList();
+                    AvaliacaoTema avalTema = aval.AvaliacaoTema.FirstOrDefault(at => at.Tema == tema);
+
+                    if (questaoTema.Count > 0)
+                    {
+                        foreach (QuestaoTema qt in questaoTema)
+                        {
+
+                            AvalTemaQuestao proximaQuestao = new AvalTemaQuestao
+                            {
+                                AvaliacaoTema = avalTema,
+                                QuestaoTema = qt
+                            };
+
+                            if (questoesAdicionadas.Where(atq => atq.Ano == aval.Ano
+                                                                   && atq.Semestre == aval.Semestre
+                                                                   && atq.CodTipoAvaliacao == aval.CodTipoAvaliacao
+                                                                   && atq.NumIdentificador == aval.NumIdentificador
+                                                                   && atq.CodQuestao == qt.CodQuestao).ToList().Count == 0)
+                            //Verificar se a questão já não foi adicionada
+                            //if (contexto.AvalTemaQuestao.Where(atq => atq.Ano == aval.Ano
+                            //                                       && atq.Semestre == aval.Semestre
+                            //                                       && atq.CodTipoAvaliacao == aval.CodTipoAvaliacao
+                            //                                       && atq.NumIdentificador == aval.NumIdentificador
+                            //                                       && atq.CodQuestao == qt.CodQuestao).ToList().Count == 0)
+                            {
+                                contexto.AvalTemaQuestao.Add(proximaQuestao);
+                                questoesAdicionadas.Add(proximaQuestao);
+                                //contexto.AvalTemaQuestao.Add(new AvalTemaQuestao
+                                //{
+                                //    //{
+                                //    //    Ano = aval.Ano,
+                                //    //    Semestre = aval.Semestre,
+                                //    //    CodTipoAvaliacao = aval.CodTipoAvaliacao,
+                                //    //    NumIdentificador = aval.NumIdentificador,
+                                //    //    CodQuestao = questoesTemaNovo.CodQuestao,
+                                //    //    CodDisciplina = questoesTemaNovo.CodDisciplina,
+                                //    //    CodTema = questoesTemaNovo.CodTema,
+                                //    AvaliacaoTema = avalTema,
+                                //    QuestaoTema = qt
+                                //});
+                                //questoesAdicionadas.Add(new AvalTemaQuestao
+                                //{
+                                //    AvaliacaoTema = avalTema,
+                                //    QuestaoTema = qt
+                                //});
+                            }
+                        }
+                    }
+                }
+
+                contexto.SaveChanges();
+            }
+        }
     }
 }
