@@ -10,10 +10,92 @@ namespace SIAC.Controllers
     [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2, 3 })]
     public class CertificacaoController : Controller
     {
+        public List<AvalCertificacao> Certificacoes
+        {
+            get
+            {
+                if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
+                {
+                    int codProfessor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodProfessor;
+                    return AvalCertificacao.ListarPorProfessor(codProfessor);
+                }
+                else
+                {
+                    int codPessoaFisica = Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula);
+                    return AvalCertificacao.ListarPorPessoa(codPessoaFisica);
+                }
+            }
+        }
+
         // GET: Certificacao
         public ActionResult Index()
         {
+            if (Request.Url.ToString().ToLower().Contains("dashboard"))
+            {
+                return Redirect("~/historico/avaliacao/certificacao");
+            }
+            ViewBag.Disciplinas = Certificacoes.Select(a => a.Disciplina).Distinct().ToList();
             return View();
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina)
+        {
+            var qte = 12;
+            var certificacoes = Certificacoes;
+            pagina = pagina ?? 1;
+            if (!String.IsNullOrWhiteSpace(pesquisa))
+            {
+                certificacoes = certificacoes.Where(a => a.Avaliacao.CodAvaliacao.ToLower().Contains(pesquisa.ToLower())).ToList();
+            }
+
+            if (!String.IsNullOrWhiteSpace(disciplina))
+            {
+                certificacoes = certificacoes.Where(a => a.CodDisciplina == int.Parse(disciplina)).ToList();
+            }
+
+            if (categorias != null)
+            {
+                if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagAgendada).ToList();
+                }
+                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagArquivo).ToList();
+                }
+                else if (!categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagRealizada).ToList();
+                }
+                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagArquivo).ToList();
+                }
+                else if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagAgendada).ToList();
+                }
+                else if (categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagArquivo || a.Avaliacao.FlagAgendada).ToList();
+                }
+            }
+
+            switch (ordenar)
+            {
+                case "data_desc":
+                    certificacoes = certificacoes.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+                case "data":
+                    certificacoes = certificacoes.OrderBy(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+                default:
+                    certificacoes = certificacoes.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+            }
+
+            return PartialView("_ListaCertificacao", certificacoes.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
         }
 
         // GET: Certificacao/Gerar

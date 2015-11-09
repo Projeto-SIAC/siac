@@ -67,6 +67,9 @@
         else if (pathname == '/historico/avaliacao/academica') {
             siac.Academica.Index.iniciar();
         }
+        else if (pathname == '/historico/avaliacao/certificacao') {
+            siac.Certificacao.Index.iniciar();
+        }
         else if (pathname == '/dashboard/avaliacao/academica/gerar') {
             siac.Academica.Gerar.iniciar();
         }

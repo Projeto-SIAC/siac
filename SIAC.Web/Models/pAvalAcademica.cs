@@ -53,8 +53,8 @@ namespace SIAC.Models
         public static List<AvalAcademica> ListarPorProfessor(int codProfessor)
         {
             return contexto.AvalAcademica.Where(ac => ac.CodProfessor == codProfessor)
-                                         .OrderBy(ac => ac.NumTurma)
-                                         .ThenByDescending(ac=>ac.NumIdentificador).ToList();
+                                         .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
+                                         .ToList();
         }
 
         public static List<AvalAcademica> ListarAgendadaPorProfessor(int codProfessor)

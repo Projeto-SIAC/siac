@@ -58,7 +58,9 @@
             <mvcSiteMapNode title="Corrigir" controller="Academica" action="Corrigir" preservedRouteParameters="codigo"/>
           </mvcSiteMapNode>
         </mvcSiteMapNode>
-        <mvcSiteMapNode title="Certificação" controller="Certificacao" action="Index"/>
+        <mvcSiteMapNode title="Certificação" controller="Certificacao" action="Index">
+          <mvcSiteMapNode title="Detalhe" controller="Certificacao" action="Detalhe" preservedRouteParameters="codigo"/>
+        </mvcSiteMapNode>
       </mvcSiteMapNode>
     </mvcSiteMapNode>
   </mvcSiteMapNode>

@@ -1,13 +1,70 @@
-﻿
-@{
-    ViewBag.Title = "Avaliação de Certificações";
+﻿@{
+    ViewBag.Title = "Histórico de Certificações";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/certificacao")
 }
 
 <h2>
     @ViewBag.Title
-    <a href="@Url.Action("Gerar")" class="ui right floated button">
-        Gerar
-    </a>
+    @if (Sessao.UsuarioCategoriaCodigo == 2)
+    {
+        <a class="ui right floated button" href="@Url.Action("Gerar")">Gerar</a>
+    }
 </h2>
 
+<div class="ui stackable grid" style="clear:both">
+    <div class="sixteen wide column">
+        <div class="ui fluid icon pesquisa input">
+            <input type="text" placeholder="Pesquisar..." />
+            <i class="search icon"></i>
+        </div>
+    </div>
+    <div class="ten wide column">
+        <div class="ui text menu" style="margin-bottom:0">
+            <div class="header item">Ordenar</div>
+            <a class="active ordenar item" data-ordenar="data_desc">
+                Mais recentes
+            </a>
+            <a class="ordenar item" data-ordenar="data">
+                Mais antigos
+            </a>
+            <div class="header item">Categoria</div>
+            <a class="categoria item" data-categoria="realizada">
+                Realizada
+            </a>
+            <a class="categoria item" data-categoria="arquivo">
+                Arquivo
+            </a>
+            <a class="categoria item" data-categoria="agendada">
+                Agendada
+            </a>
+        </div>
+    </div>
+    <div class="six wide column">
+        <div class="ui text menu">
+            <div class="ui dropdown item">
+                Disciplina
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <a class="disciplina item active selected" data-disciplina="">Todos</a>
+                    @foreach (Disciplina disciplina in ViewBag.Disciplinas)
+                    {
+                        <a class="disciplina item" data-disciplina="@disciplina.CodDisciplina">
+                            @disciplina.Descricao
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sixteen wide column">
+        <div class="ui basic segment">
+            <div class="ui three stackable cards">
+            </div>
+        </div>
+        <div class="ui right floated icon button topo"><i class="icon angle up"></i></div>
+    </div>
+</div>  

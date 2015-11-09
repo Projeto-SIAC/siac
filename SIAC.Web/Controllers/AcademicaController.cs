@@ -93,7 +93,7 @@ namespace SIAC.Controllers
         {
             if (Request.Url.ToString().ToLower().Contains("dashboard"))
             {
-                return Redirect("~/Historico/Academica");
+                return Redirect("~/historico/avaliacao/academica");
             }
             //if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
             //{
