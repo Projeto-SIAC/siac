@@ -1,0 +1,79 @@
+﻿@using SIAC.Models
+@using SIAC.Helpers
+
+@model List<AvalCertificacao>
+
+@foreach (var cert in Model)
+{
+    var FlagProfessor = cert.PessoaFisica.FirstOrDefault(p => p.CodPessoa == Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula)) == null;
+    <div class="card">
+        <div class="content">
+            <a href="@Url.Action("Detalhe", new { codigo = cert.Avaliacao.CodAvaliacao })" class="header">
+                @cert.Avaliacao.CodAvaliacao
+            </a>
+            <div class="meta">
+                <span title="@cert.Avaliacao.DtCadastro.ToBrazilianString()">@cert.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
+            </div>
+            <div class="description">
+                @if (cert.Avaliacao.DtAplicacao.HasValue)
+                {
+                <p><b>Aplicação</b>: @cert.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy HH'h'mm'min'")</p>
+                }
+                <p><b>Quantidade de Questões</b>: @cert.Avaliacao.QteQuestoes()</p>
+            </div>
+        </div>
+        <div class="extra content">
+            <div class="ui tag label">
+                @cert.Disciplina.Descricao
+            </div>
+        </div>
+        @if (cert.Avaliacao.FlagRealizada)
+        {
+            if (!FlagProfessor)
+            {
+                if (cert.PessoasRealizaram.Where(a => a.CodPessoa == Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula)).Count() > 0)
+                {
+                    <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
+                    <a href="@Url.Action("Detalhe", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+                }
+                else
+                {
+                    <span class="ui attached top right label"><i class="remove icon"></i>Ausente</span>
+                    <a href="@Url.Action("Detalhe", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
+                }
+            }
+            else
+            {
+                <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
+                <a href="@Url.Action("Detalhe", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+            }
+        }
+        else
+        {
+            if (cert.Avaliacao.FlagArquivo)
+            {
+                <span class="ui attached top right label"><i class="archive icon"></i>Arquivo</span>
+                if (FlagProfessor)
+                {
+                    <a href="@Url.Action("Detalhe", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
+                }
+            }
+            else if (cert.Avaliacao.FlagAgendada)
+            {
+                <span class="ui attached top right label"><i class="clock icon"></i>Agendada</span>
+                if (FlagProfessor)
+                {
+                    <a href="@Url.Action("Configurar", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
+                }
+            }
+            else if(FlagProfessor)
+            {                
+                <a href="@Url.Action("Agendar", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
+            }
+            if(!FlagProfessor)
+            {
+                <a href="@Url.Action("Detalhe", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
+            }
+        }
+    </div>
+}

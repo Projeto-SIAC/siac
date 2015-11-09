@@ -4,16 +4,103 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SIAC.Models;
+using SIAC.Helpers;
 
 namespace SIAC.Controllers
 {
     [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2, 3 })]
     public class CertificacaoController : Controller
     {
+        public List<AvalCertificacao> Certificacoes
+        {
+            get
+            {
+                var matr = Sessao.UsuarioMatricula;
+                if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
+                {                    
+                    int codProfessor = Professor.ListarPorMatricula(matr).CodProfessor;
+                    var lstProfessor = AvalCertificacao.ListarPorProfessor(codProfessor);
+                    int codPessoaFisica = Usuario.ObterPessoaFisica(matr);
+                    return AvalCertificacao.ListarPorPessoa(codPessoaFisica).Union(lstProfessor).Distinct().ToList();
+                }
+                else
+                {
+                    int codPessoaFisica = Usuario.ObterPessoaFisica(matr);
+                    return AvalCertificacao.ListarPorPessoa(codPessoaFisica);
+                }
+            }
+        }
+
         // GET: Certificacao
         public ActionResult Index()
         {
-            return View();
+            if (Request.Url.ToString().ToLower().Contains("dashboard"))
+            {
+                return Redirect("~/historico/avaliacao/certificacao");
+            }
+            var model = new ViewModels.AvaliacaoIndexViewModel();
+            model.Disciplinas = Certificacoes.Select(a => a.Disciplina).Distinct().ToList();
+            return View(model);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina)
+        {
+            var qte = 12;
+            var certificacoes = Certificacoes;
+            pagina = pagina ?? 1;
+            if (!String.IsNullOrWhiteSpace(pesquisa))
+            {
+                certificacoes = certificacoes.Where(a => a.Avaliacao.CodAvaliacao.ToLower().Contains(pesquisa.ToLower())).ToList();
+            }
+
+            if (!String.IsNullOrWhiteSpace(disciplina))
+            {
+                certificacoes = certificacoes.Where(a => a.CodDisciplina == int.Parse(disciplina)).ToList();
+            }
+
+            if (categorias != null)
+            {
+                if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagAgendada).ToList();
+                }
+                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagArquivo).ToList();
+                }
+                else if (!categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagRealizada).ToList();
+                }
+                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagArquivo).ToList();
+                }
+                else if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagAgendada).ToList();
+                }
+                else if (categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagArquivo || a.Avaliacao.FlagAgendada).ToList();
+                }
+            }
+
+            switch (ordenar)
+            {
+                case "data_desc":
+                    certificacoes = certificacoes.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+                case "data":
+                    certificacoes = certificacoes.OrderBy(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+                default:
+                    certificacoes = certificacoes.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+            }
+
+            return PartialView("_ListaCertificacao", certificacoes.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
         }
 
         // GET: Certificacao/Gerar
@@ -180,6 +267,7 @@ namespace SIAC.Controllers
             return null;
         }
 
+        // GET: Certificacao/Agendar/CERT201520001
         [HttpGet]
         [Filters.AutenticacaoFilter(Categorias = new [] { 2 })]
         public ActionResult Agendar(string codigo)
@@ -201,7 +289,8 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        
+        // POST: Certificacao/Agendar/CERT201520001
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Agendar(string codigo, FormCollection form)
@@ -210,7 +299,7 @@ namespace SIAC.Controllers
             string strData = form["txtData"];
             string strHoraInicio = form["txtHoraInicio"];
             string strHoraTermino = form["txtHoraTermino"];
-            if (!Helpers.StringExt.IsNullOrWhiteSpace(strCodSala, strData, strHoraInicio, strHoraTermino))
+            if (!StringExt.IsNullOrWhiteSpace(strCodSala, strData, strHoraInicio, strHoraTermino))
             {
                 AvalCertificacao aval = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
 
@@ -244,7 +333,53 @@ namespace SIAC.Controllers
                 }
             }
 
-            return RedirectToAction("Index"); // Redirecionar para Pessoas
+            return RedirectToAction("Pessoas", new { codigo = codigo }); // Redirecionar para Pessoas
+        }
+
+        [HttpGet]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult Pessoas(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
+                if (cert.Professor.MatrProfessor == Sessao.UsuarioMatricula)
+                {
+                    return View(cert);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult Filtrar(int filtro)
+        {
+            object lstResultado = null;
+
+            switch (filtro)
+            {
+                case 1:
+                    break;
+                case 2:
+                    lstResultado = Turma.ListarOrdenadamente().Select(a => new { cod = a.CodTurma, description = a.CodTurma, title = $"{a.Curso.Descricao} ({a.CodTurma})" });
+                    break;
+                case 3:
+                    lstResultado = Curso.ListarOrdenadamente().Select(a=>new { cod = a.CodCurso, description = a.Sigla, title = a.Descricao });
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                default:
+                    break;
+            }
+
+            return Json(lstResultado, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -93,24 +93,11 @@ namespace SIAC.Controllers
         {
             if (Request.Url.ToString().ToLower().Contains("dashboard"))
             {
-                return Redirect("~/Historico/Academica");
+                return Redirect("~/historico/avaliacao/academica");
             }
-            //if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
-            //{
-            //    int codProfessor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodProfessor;
-            //    List<AvalAcademica> avaliacoes = AvalAcademica.ListarPorProfessor(codProfessor);
-            //    TempData["lstAvalAcademica"] = avaliacoes;
-            //    return View(avaliacoes.Take(9).ToList());
-            //}
-            //else if (Helpers.Sessao.UsuarioCategoriaCodigo == 1)
-            //{
-            //    int codAluno = Aluno.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodAluno;
-            //    List<AvalAcademica> avaliacoes = AvalAcademica.ListarPorAluno(codAluno);
-            //    TempData["lstAvalAcademica"] = avaliacoes;
-            //    return View(avaliacoes.Take(9).ToList());
-            //}
-            ViewBag.Disciplinas = Academicas.Select(a=>a.Disciplina).Distinct().ToList();
-            return View();
+            var model = new ViewModels.AvaliacaoIndexViewModel();
+            model.Disciplinas = Academicas.Select(a=>a.Disciplina).Distinct().ToList();
+            return View(model);
         }
 
         //GET: Dashboard/Avaliacao/Academica/Gerar

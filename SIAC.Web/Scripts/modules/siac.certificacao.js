@@ -537,3 +537,191 @@ siac.Certificacao.Agendar = (function () {
         iniciar: iniciar
     }
 })();
+
+siac.Certificacao.Index = (function () {
+    var _controleTimeout, _controlePartial, _controleQte = 12, _controleAjax;
+
+    var pagina = 1;
+    var ordenar = "data_desc";
+    var categorias = [];
+    var disciplina = "";
+    var pesquisa = "";
+
+    function iniciar() {
+        $(window).scroll(function () {
+            if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+                if ($('.cards .card').length == (_controleQte * pagina)) {
+                    pagina++;
+                    listar();
+                }
+            }
+        });
+        $('.ui.dropdown').dropdown();
+
+        $('.pesquisa input').keyup(function () {
+            var _this = this;
+            if (_controleTimeout) {
+                clearTimeout(_controleTimeout);
+            }
+            _controleTimeout = setTimeout(function () {
+                pesquisa = _this.value;
+                pagina = 1;
+                listar();
+            }, 500);
+        });
+
+        $('.button.topo').click(function () {
+            topo();
+        });
+
+        $('.categoria.item').click(function () {
+            var $_this = $(this);
+            pagina = 1;
+            var _categoria = $_this.attr('data-categoria');
+            if ($_this.hasClass('active')) {
+                var _tempCategorias = categorias;
+                categorias = [];
+                for (var i = 0, length = _tempCategorias.length; i < length; i++) {
+                    if (_tempCategorias[i] != _categoria) {
+                        categorias.push(_tempCategorias[i]);
+                    }
+                }
+                $_this.removeClass('active');
+            }
+            else {
+                categorias.push(_categoria);
+                $_this.addClass('active');
+            }
+            listar();
+        });
+
+        $('.disciplina.item').click(function () {
+            var $_this = $(this);
+            pagina = 1;
+            disciplina = $_this.attr('data-disciplina');
+            listar();
+        });
+
+        $('.ordenar.item').click(function () {
+            var $_this = $(this);
+            pagina = 1;
+            ordenar = $_this.attr('data-ordenar');
+            listar();
+            $('.ordenar.item').removeClass('active');
+            $_this.addClass('active');
+        });
+
+        listar();
+    }
+
+    function listar() {
+        if (_controleAjax && _controleAjax.readyState != 4) {
+            _controleAjax.abort();
+        }
+        $cards = $('.ui.cards');
+        $cards.parent().addClass('loading');
+        _controleAjax = $.ajax({
+            url: '/Dashboard/Avaliacao/Certificacao/Listar',
+            data: {
+                pagina: pagina,
+                ordenar: ordenar,
+                disciplina: disciplina,
+                categorias: categorias,
+                pesquisa: pesquisa
+            },
+            method: 'POST',
+            success: function (partial) {
+                if (partial != _controlePartial) {
+                    if (pagina == 1) {
+                        $cards.html(partial);
+                    }
+                    else {
+                        $cards.append(partial);
+                    }
+                    _controlePartial = partial;
+                }
+            },
+            complete: function () {
+                console.log(pesquisa);
+                $cards.parent().removeClass('loading');
+            }
+        });
+    }
+
+    function topo() {
+        $("html, body").animate({
+            scrollTop: 0
+        }, 500);
+        return false;
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();
+
+siac.Certificacao.Pessoas = (function () {
+    var _controleAjax;
+    var _lstPessoaSelecionada = [];
+    var _content = [];
+
+    function iniciar() {
+        var $code = $('code#pessoas');
+        _lstPessoaSelecionada = JSON.parse($code.html());
+        $code.remove();
+
+        $('.ui.modal').modal();
+        $('.ui.checkbox').checkbox();
+        $('.ui.dropdown').dropdown();
+
+        $('#ddlFiltro').change(function () {
+            filtrar($(this).val());
+            console.log('mudou');
+        });
+
+        $('.ui.search')
+          .search({
+              source: _content
+          })
+        ;
+    }
+
+    function filtrar(filtro) {
+        if (_controleAjax && _controleAjax.readyState != 4) {
+            _controleAjax.abort();
+        }
+
+        $buscar = $('.ui.search');
+            
+        $buscar.addClass('loading');
+
+        _controleAjax = $.ajax({
+            data: {
+                filtro: filtro
+            },
+            type: 'POST',
+            url: '/dashboard/avaliacao/certificacao/filtrar',
+            success: function (data) {
+                _content = data;
+                $buscar
+                  .search({
+                      source: _content,
+                      onSelect: function onSelect(result, response) {
+                          console.log(result);
+                      }
+                  })
+                ;
+            },
+            error: function () {
+                siac.mensagem('Um erro ocorreu.');
+            },
+            complete: function () {
+                $buscar.removeClass('loading');
+            }
+        });
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();

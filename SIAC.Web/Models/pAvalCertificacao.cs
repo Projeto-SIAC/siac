@@ -7,6 +7,21 @@ namespace SIAC.Models
 {
     public partial class AvalCertificacao
     {
+        public List<PessoaFisica> PessoasRealizaram
+        {
+            get
+            {
+                List<PessoaFisica> result = new List<PessoaFisica>();
+                foreach (PessoaFisica a in this.PessoaFisica)
+                {
+                    var lstRespostas = this.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == a.CodPessoa);
+                    if (lstRespostas.Count() > 0)
+                        result.Add(a);
+                }
+                return result;
+            }
+        }
+
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         public static void Inserir(AvalCertificacao avalCertificacao)
@@ -38,6 +53,20 @@ namespace SIAC.Models
                 return avalCert;
             }
             return null;
+        }
+
+        internal static List<AvalCertificacao> ListarPorPessoa(int codPessoaFisica)
+        {
+            return contexto.AvalCertificacao.Where(ac => ac.PessoaFisica.FirstOrDefault(p=>p.CodPessoa == codPessoaFisica) != null)
+                                         .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
+                                         .ToList();
+        }
+
+        public static List<AvalCertificacao> ListarPorProfessor(int codProfessor)
+        {
+            return contexto.AvalCertificacao.Where(ac => ac.CodProfessor == codProfessor)
+                                         .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
+                                         .ToList();
         }
     }
 }
