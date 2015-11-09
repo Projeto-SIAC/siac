@@ -1,4 +1,6 @@
-﻿@{
+﻿@model AvaliacaoIndexViewModel
+
+@{
     ViewBag.Title = "Histórico de Acadêmicas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -9,7 +11,7 @@
 
 <h2>
     @ViewBag.Title 
-    @if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 2)
+    @if (Sessao.UsuarioCategoriaCodigo == 2)
     {
         <a class="ui right floated button" href="@Url.Action("Gerar")">Gerar</a>
     }
@@ -50,7 +52,7 @@
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a class="disciplina item active selected" data-disciplina="">Todos</a>
-                    @foreach (SIAC.Models.Disciplina disciplina in ViewBag.Disciplinas)
+                    @foreach (Disciplina disciplina in Model.Disciplinas)
                     {
                         <a class="disciplina item" data-disciplina="@disciplina.CodDisciplina">
                             @disciplina.Descricao

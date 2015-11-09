@@ -38,8 +38,9 @@ namespace SIAC.Controllers
             {
                 return Redirect("~/historico/avaliacao/certificacao");
             }
-            ViewBag.Disciplinas = Certificacoes.Select(a => a.Disciplina).Distinct().ToList();
-            return View();
+            var model = new ViewModels.AvaliacaoIndexViewModel();
+            model.Disciplinas = Certificacoes.Select(a => a.Disciplina).Distinct().ToList();
+            return View(model);
         }
 
         [AcceptVerbs(HttpVerbs.Post)]

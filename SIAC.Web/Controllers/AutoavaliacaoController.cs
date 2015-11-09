@@ -25,14 +25,15 @@ namespace SIAC.Controllers
             {
                 return Redirect("~/Historico/Autoavaliacao");
             }
-            ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
+            var model = new ViewModels.AvaliacaoIndexViewModel();
+            model.Dificuldades = Dificuldade.ListarOrdenadamente();
             List<Disciplina> tempLstDisciplina = new List<Disciplina>();
             foreach (var auto in Autoavaliacoes)
             {
                 tempLstDisciplina.AddRange(auto.Disciplina);
             }
-            ViewBag.Disciplinas = tempLstDisciplina.Distinct().ToList();
-            return View();
+            model.Disciplinas = tempLstDisciplina.Distinct().ToList();
+            return View(model);
         }
 
         // POST: Autoavaliacao/Listar

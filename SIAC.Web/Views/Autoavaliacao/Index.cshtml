@@ -1,4 +1,6 @@
-﻿@{
+﻿@model AvaliacaoIndexViewModel
+
+@{
     ViewBag.Title = "Autoavaliações Salvas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -40,7 +42,7 @@
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a class="dificuldade item active selected" data-dificuldade="">Todos</a>
-                    @foreach (SIAC.Models.Dificuldade dificuldade in ViewBag.Dificuldades)
+                    @foreach (Dificuldade dificuldade in Model.Dificuldades)
                     {
                         <a class="dificuldade item" data-dificuldade="@dificuldade.CodDificuldade">@dificuldade.Descricao</a>
                     }
@@ -51,7 +53,7 @@
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a class="disciplina item active selected" data-disciplina="">Todos</a>
-                    @foreach (SIAC.Models.Disciplina disciplina in ViewBag.Disciplinas)
+                    @foreach (Disciplina disciplina in Model.Disciplinas)
                     {
                         <a class="disciplina item" data-disciplina="@disciplina.CodDisciplina">
                             @disciplina.Descricao

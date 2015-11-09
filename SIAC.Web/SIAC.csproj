@@ -527,6 +527,7 @@
     </Compile>
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="ViewModels\AvaliacaoAgendarViewModel.cs" />
+    <Compile Include="ViewModels\AvaliacaoIndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

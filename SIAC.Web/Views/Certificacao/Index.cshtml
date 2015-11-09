@@ -1,4 +1,6 @@
-﻿@{
+﻿@model AvaliacaoIndexViewModel
+
+@{
     ViewBag.Title = "Histórico de Certificações";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -50,7 +52,7 @@
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a class="disciplina item active selected" data-disciplina="">Todos</a>
-                    @foreach (Disciplina disciplina in ViewBag.Disciplinas)
+                    @foreach (Disciplina disciplina in Model.Disciplinas)
                     {
                         <a class="disciplina item" data-disciplina="@disciplina.CodDisciplina">
                             @disciplina.Descricao
