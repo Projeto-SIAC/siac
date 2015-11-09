@@ -182,6 +182,7 @@ siac.Certificacao.Configurar = (function () {
             _arrayQuestoes.push($(this).attr('id'))
             if ($(this).find('.tipo.label').text() == _OBJ) _qteObjetiva++;
             else if ($(this).find('.tipo.label').text() == _DISC) _qteDiscursiva++;
+            console.log(_arrayQuestoes);
         });
         //Fim da Obtenção de Dados
 
@@ -191,6 +192,51 @@ siac.Certificacao.Configurar = (function () {
 
         $('.ui.dropdown').dropdown().change(function () {
             carregarQuestoes();
+        });
+
+        $('.cancelar.button').popup({ on: 'click' });
+
+        $('.ui.confirmar.modal').modal({
+                onApprove: function () {
+                    console.log(_arrayQuestoes);
+                    $.ajax({
+                        type: 'POST',
+                        url: '/dashboard/avaliacao/certificacao/Configurar/',
+                        data: {
+                            codigo: _codAvaliacao,
+                            questoes: _arrayQuestoes
+                        },
+                        success: function (data) {
+                            if (data) {
+                                window.location.href = "/dashboard/avaliacao/certificacao/agendar/"+_codAvaliacao;
+                            }
+                        },
+                        error: function (data) {
+                            siac.aviso('error', 'red');
+                        }
+                    });
+                }
+            });
+
+        $('.confirmar.button').click(function () {
+
+            $questoes = $('.questoes.modal .cards').clone();
+            $questoes.removeClass('three').addClass('one');
+            $questoes.find('.attached.buttons').remove();
+
+            $questoes.find('.card').map(function () {
+                $header = $(this).find('.header');
+                var text = $header.data('enunciado');
+                text = text.substituirTodos('\n', '<br>');
+                $header.html(text);
+                $header.css('text-align', 'justify');
+            })
+
+            $('.confirmar.modal .content').html($questoes);
+
+            $('.ui.confirmar.modal').modal('show');
+
+            return false;
         });
 
         $('.ui.questoes.button').click(function(){
@@ -214,6 +260,7 @@ siac.Certificacao.Configurar = (function () {
             }
         });
 
+        atualizarQuantidadeView();
         
     }
 
@@ -221,7 +268,7 @@ siac.Certificacao.Configurar = (function () {
         var temas = $('#ddlTemas').val();
         var dificuldade = $('#ddlDificuldade').val();
         var tipo = $('#ddlTipo').val();
-
+        console.log(temas);
         if (temas && dificuldade && tipo) {
             $resultado = $('.resultado .cards');
             $resultado.addClass('form loading')
@@ -303,6 +350,7 @@ siac.Certificacao.Configurar = (function () {
                 onHide: function () {
                     $('.questoes.modal .cards').append($card);
                     siac.aviso('Questão adicionada', 'green');
+                    atualizarQuantidadeView();
                 }
             }).transition('scale');
         }
@@ -320,6 +368,7 @@ siac.Certificacao.Configurar = (function () {
             onHide: function () {
                 $card.remove();
                 siac.aviso('Questão removida', 'red');
+                atualizarQuantidadeView();
             }
         }).transition('scale');
     }
@@ -347,6 +396,29 @@ siac.Certificacao.Configurar = (function () {
                 $_this.removeClass('loading');
             }
         });
+    }
+
+    function atualizarQuantidadeView() {
+        $disc = $('.quantidade.disc.label');
+        $obj = $('.quantidade.obj.label');
+
+        $disc.find('.detail').text(_qteDiscursiva);
+        $obj.find('.detail').text(_qteObjetiva);
+        
+        {
+            if (_qteObjetiva == _qteMaxObjetiva) {
+                $obj.addClass('green');
+            }
+            else $obj.removeClass('green');
+        }
+        
+        {
+            if (_qteDiscursiva == _qteMaxDiscursiva) {
+                $disc.addClass('green');
+            }
+            else $disc.removeClass('green');
+        }
+
     }
 
     return {
