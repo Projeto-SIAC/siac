@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SIAC.Models;
+using SIAC.Helpers;
 
 namespace SIAC.Controllers
 {
@@ -14,14 +15,17 @@ namespace SIAC.Controllers
         {
             get
             {
+                var matr = Sessao.UsuarioMatricula;
                 if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
-                {
-                    int codProfessor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodProfessor;
-                    return AvalCertificacao.ListarPorProfessor(codProfessor);
+                {                    
+                    int codProfessor = Professor.ListarPorMatricula(matr).CodProfessor;
+                    var lstProfessor = AvalCertificacao.ListarPorProfessor(codProfessor);
+                    int codPessoaFisica = Usuario.ObterPessoaFisica(matr);
+                    return AvalCertificacao.ListarPorPessoa(codPessoaFisica).Union(lstProfessor).Distinct().ToList();
                 }
                 else
                 {
-                    int codPessoaFisica = Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula);
+                    int codPessoaFisica = Usuario.ObterPessoaFisica(matr);
                     return AvalCertificacao.ListarPorPessoa(codPessoaFisica);
                 }
             }
