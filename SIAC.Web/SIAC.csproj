@@ -618,6 +618,7 @@
     <Content Include="Views\Certificacao\Partials\_PassoAPasso.cshtml" />
     <Content Include="Views\Certificacao\Agendar.cshtml" />
     <Content Include="Views\Certificacao\Partials\_ListaCertificacao.cshtml" />
+    <Content Include="Views\Certificacao\Pessoas.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

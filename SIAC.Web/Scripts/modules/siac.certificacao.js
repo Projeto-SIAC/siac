@@ -587,3 +587,69 @@ siac.Certificacao.Index = (function () {
         iniciar: iniciar
     }
 })();
+
+siac.Certificacao.Pessoas = (function () {
+    var _controleAjax;
+    var _lstPessoaSelecionada = [];
+    var _content = [];
+
+    function iniciar() {
+        var $code = $('code#pessoas');
+        _lstPessoaSelecionada = JSON.parse($code.html());
+        $code.remove();
+
+        $('.ui.modal').modal();
+        $('.ui.checkbox').checkbox();
+        $('.ui.dropdown').dropdown();
+
+        $('#ddlFiltro').change(function () {
+            filtrar($(this).val());
+            console.log('mudou');
+        });
+
+        $('.ui.search')
+          .search({
+              source: _content
+          })
+        ;
+    }
+
+    function filtrar(filtro) {
+        if (_controleAjax && _controleAjax.readyState != 4) {
+            _controleAjax.abort();
+        }
+
+        $buscar = $('.ui.search');
+            
+        $buscar.addClass('loading');
+
+        _controleAjax = $.ajax({
+            data: {
+                filtro: filtro
+            },
+            type: 'POST',
+            url: '/dashboard/avaliacao/certificacao/filtrar',
+            success: function (data) {
+                _content = data;
+                $buscar
+                  .search({
+                      source: _content,
+                      onSelect: function onSelect(result, response) {
+                          console.log(result);
+                      }
+                  })
+                ;
+            },
+            error: function () {
+                siac.mensagem('Um erro ocorreu.');
+            },
+            complete: function () {
+                $buscar.removeClass('loading');
+            }
+        });
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();

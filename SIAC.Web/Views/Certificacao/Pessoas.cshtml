@@ -1,0 +1,99 @@
+﻿@model AvalCertificacao
+
+@{
+    ViewBag.Title = "Selecionar Pessoas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>
+    @ViewBag.Title
+    <div class="ui right floated informacoes button">
+        Informações
+    </div>
+</h2>
+
+@Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 4 } })
+
+<div class="ui confirmar modal">
+    <div class="header">
+        Verificar e confirmar
+    </div>
+    <div class="content">
+
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Voltar</div>
+        <div class="ui approve button">Confirmar</div>
+    </div>
+</div>
+
+<div class="ui segment">
+    <div class="ui form">
+        <div class="fields">
+            <div class="four wide field">
+                <label>Filtro</label>
+                <select id="ddlFiltro" name="ddlFiltro" class="ui dropdown">
+                    <option value="">Filtro</option>
+                    <option value="1">Pessoa</option>
+                    <option value="2">Turma</option>
+                    <option value="3">Curso</option>
+                    <option value="4">Diretoria</option>
+                    <option value="5">Campus</option>
+                    <option value="6">Reitoria</option>
+                    <option value="7">Instituição</option>
+                </select>
+            </div>
+            <div class="twelve wide field">
+                <label>Buscar</label>
+
+                <div class="ui search">
+                    <div class="ui icon input">
+                        <input class="prompt" type="text" placeholder="Buscar...">
+                        <i class="search icon"></i>
+                    </div>
+                    <div class="results"></div>
+                </div>
+
+                @*<select id="ddlBuscar" name="ddlBuscar" class="ui search dropdown">
+                    <option value="">Buscar</option>
+                </select>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui basic segment">
+    <table class="ui table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pessoa in Model.PessoaFisica)
+            {
+                <tr data-pessoa="@pessoa.CodPessoa">
+                    <td id="nome">
+                        @pessoa.Nome
+                    </td>
+                    <td>
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" name="chkSelecionado" checked>
+                            <label>Selecionado</label>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<code id="pessoas" hidden>
+    @Html.Raw(Json.Encode(Model.PessoaFisica.Select(u => new { u.CodPessoa, u.Nome })))
+</code>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/certificacao")
+}

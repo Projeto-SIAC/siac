@@ -254,6 +254,7 @@ namespace SIAC.Controllers
             return null;
         }
 
+        // GET: Certificacao/Agendar/CERT201520001
         [HttpGet]
         [Filters.AutenticacaoFilter(Categorias = new [] { 2 })]
         public ActionResult Agendar(string codigo)
@@ -275,7 +276,8 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
-
+        
+        // POST: Certificacao/Agendar/CERT201520001
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Agendar(string codigo, FormCollection form)
@@ -284,7 +286,7 @@ namespace SIAC.Controllers
             string strData = form["txtData"];
             string strHoraInicio = form["txtHoraInicio"];
             string strHoraTermino = form["txtHoraTermino"];
-            if (!Helpers.StringExt.IsNullOrWhiteSpace(strCodSala, strData, strHoraInicio, strHoraTermino))
+            if (!StringExt.IsNullOrWhiteSpace(strCodSala, strData, strHoraInicio, strHoraTermino))
             {
                 AvalCertificacao aval = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
 
@@ -318,7 +320,53 @@ namespace SIAC.Controllers
                 }
             }
 
-            return RedirectToAction("Index"); // Redirecionar para Pessoas
+            return RedirectToAction("Pessoas", new { codigo = codigo }); // Redirecionar para Pessoas
+        }
+
+        [HttpGet]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult Pessoas(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
+                if (cert.Professor.MatrProfessor == Sessao.UsuarioMatricula)
+                {
+                    return View(cert);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult Filtrar(int filtro)
+        {
+            object lstResultado = null;
+
+            switch (filtro)
+            {
+                case 1:
+                    break;
+                case 2:
+                    lstResultado = Turma.ListarOrdenadamente().Select(a => new { cod = a.CodTurma, description = a.CodTurma, title = $"{a.Curso.Descricao} ({a.CodTurma})" });
+                    break;
+                case 3:
+                    lstResultado = Curso.ListarOrdenadamente().Select(a=>new { cod = a.CodCurso, description = a.Sigla, title = a.Descricao });
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                default:
+                    break;
+            }
+
+            return Json(lstResultado, JsonRequestBehavior.AllowGet);
         }
     }
 }
