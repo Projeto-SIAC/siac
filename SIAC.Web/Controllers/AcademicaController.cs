@@ -233,23 +233,21 @@ namespace SIAC.Controllers
             {
                 return RedirectToAction("Index");
             }
-            if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
-            {
-                if (Session["UrlReferrer"] != null)
-                {
-                    return Redirect(Session["UrlReferrer"].ToString());
-                }
-                else return RedirectToAction("Index", "Dashboard");
-            }
             AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
 
             string strMatr = Helpers.Sessao.UsuarioMatricula;
             Professor prof = Professor.ListarPorMatricula(strMatr);
+            if (acad.CodProfessor == prof.CodProfessor)
+            {
+                var model = new ViewModels.AvaliacaoAgendarViewModel();
 
-            ViewBag.lstTurma = prof.TurmaDiscProfHorario.Select(d => d.Turma).Distinct().OrderBy(t => t.Curso.Descricao).ToList();
-            ViewBag.lstSala = Sala.ListarOrdenadamente();
+                model.Avaliacao = acad.Avaliacao;
+                model.Turmas = prof.TurmaDiscProfHorario.Select(d => d.Turma).Distinct().OrderBy(t => t.Curso.Descricao).ToList();
+                model.Salas = Sala.ListarOrdenadamente();
 
-            return View(acad);
+                return View(model);
+            }
+            return RedirectToAction("Index");
         }
 
         //POST: Dashboard/Avaliacao/Academica/Agendar/ACAD2015100002

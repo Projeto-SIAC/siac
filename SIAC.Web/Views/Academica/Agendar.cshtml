@@ -1,5 +1,5 @@
 ﻿@using SIAC.Models
-@model AvalAcademica
+@model SIAC.ViewModels.AvaliacaoAgendarViewModel
 @{
     ViewBag.Title = "Agendar " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -36,10 +36,10 @@
         <label title="Apenas são mostradas as turmas do seu horário.">Turma</label>
         <select id="ddlTurma" name="ddlTurma" class="ui search dropdown" required>
             <option value="">Turma</option>
-            @foreach (Turma turma in ViewBag.lstTurma)
+            @foreach (Turma turma in Model.Turmas)
             {
                 var cod = @turma.CodTurma;
-                <option @(Model.NumTurma.HasValue ? Model.Turma.CodTurma == cod ? "selected" : "" : "") value="@cod">@turma.Curso.Descricao (@cod)</option>
+                <option @(Model.Avaliacao.AvalAcademica.NumTurma.HasValue ? Model.Avaliacao.AvalAcademica.Turma.CodTurma == cod ? "selected" : "" : "") value="@cod">@turma.Curso.Descricao (@cod)</option>
             }
         </select>
     </div>
@@ -61,9 +61,9 @@
         <label>Sala</label>
         <select id="ddlSala" name="ddlSala" class="ui search dropdown" required>
             <option value="">Sala</option>
-            @foreach (Sala sala in ViewBag.lstSala)
+            @foreach (Sala sala in Model.Salas)
             {
-                <option @(Model.CodSala.HasValue && Model.CodSala.Value == sala.CodSala?"selected" :"") value="@sala.CodSala" title="@sala.RefLocal">@sala.Descricao</option>
+                <option @(Model.Avaliacao.AvalAcademica.CodSala.HasValue && Model.Avaliacao.AvalAcademica.CodSala.Value == sala.CodSala?"selected" :"") value="@sala.CodSala" title="@sala.RefLocal">@sala.Descricao</option>
             }
         </select>
     </div>

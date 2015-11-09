@@ -9,5 +9,6 @@ namespace SIAC.ViewModels
     {
         public Models.Avaliacao Avaliacao { get; set; }
         public List<Models.Sala> Salas { get; set; }
+        public List<Models.Turma> Turmas { get; set; }
     }
 }
