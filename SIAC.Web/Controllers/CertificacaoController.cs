@@ -360,20 +360,66 @@ namespace SIAC.Controllers
             switch (filtro)
             {
                 case 1:
+                    lstResultado = Usuario.Listar().Select(a => new {
+                        cod = a.CodPessoaFisica,
+                        description = a.Matricula,
+                        title = a.PessoaFisica.Nome,
+                        category = "Pessoa"
+                    });
                     break;
                 case 2:
-                    lstResultado = Turma.ListarOrdenadamente().Select(a => new { cod = a.CodTurma, description = a.CodTurma, title = $"{a.Curso.Descricao} ({a.CodTurma})" });
+                    lstResultado = Turma.ListarOrdenadamente().Select(a => new { 
+                        cod = a.CodTurma,
+                        description = a.CodTurma,
+                        title = $"{a.Curso.Descricao} ({a.CodTurma})",
+                        category = "Turma"
+                    });
                     break;
                 case 3:
-                    lstResultado = Curso.ListarOrdenadamente().Select(a=>new { cod = a.CodCurso, description = a.Sigla, title = a.Descricao });
+                    lstResultado = Curso.ListarOrdenadamente().Select(a=>new {
+                        cod = a.CodCurso,
+                        description = a.Sigla,
+                        title = a.Descricao,
+                        category = "Curso"
+                    });
                     break;
                 case 4:
+                    lstResultado = Diretoria.ListarOrdenadamente().Select(a => new {
+                        cod = a.CodComposto,
+                        description = $"{a.Campus.PessoaJuridica.NomeFantasia} ({a.Campus.Instituicao.Sigla})",
+                        title = a.PessoaJuridica.NomeFantasia,
+                        category = "Diretoria"
+                    });
                     break;
                 case 5:
+                    lstResultado = Campus.ListarOrdenadamente().Select(a=>new {
+                        cod =a.CodComposto,
+                        description = a.Instituicao.PessoaJuridica.NomeFantasia,
+                        title = a.PessoaJuridica.NomeFantasia,
+                        category = "Campus"
+                    });
                     break;
                 case 6:
+                    var lst = Reitoria.ListarOrdenadamente().Select(a => new {
+                        cod = a.CodComposto,
+                        description = a.Instituicao.PessoaJuridica.NomeFantasia,
+                        title = a.PessoaJuridica.NomeFantasia,
+                        category = "Reitoria"
+                    });
+                    lstResultado = lst.Union(ProReitoria.ListarOrdenadamente().Select(a => new {
+                        cod = a.CodComposto,
+                        description = a.Instituicao.PessoaJuridica.NomeFantasia,
+                        title = a.PessoaJuridica.NomeFantasia,
+                        category = "Pró-Reitoria"
+                    }));                    
                     break;
                 case 7:
+                    lstResultado = Instituicao.ListarOrdenadamente().Select(a => new {
+                        cod = a.CodInstituicao,
+                        description = a.Sigla,
+                        title = a.PessoaJuridica.NomeFantasia,
+                        category = "Instituição"
+                    });
                     break;
                 default:
                     break;

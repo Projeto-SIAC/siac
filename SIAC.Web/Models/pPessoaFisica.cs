@@ -15,5 +15,10 @@ namespace SIAC.Models
             contexto.SaveChanges();
             return pessoaFisica.CodPessoa;
         }
+
+        public static List<PessoaFisica> Listar()
+        {
+            return contexto.PessoaFisica.ToList();
+        }
     }
 }

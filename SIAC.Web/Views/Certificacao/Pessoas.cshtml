@@ -46,7 +46,6 @@
             </div>
             <div class="twelve wide field">
                 <label>Buscar</label>
-
                 <div class="ui search">
                     <div class="ui icon input">
                         <input class="prompt" type="text" placeholder="Buscar...">
@@ -54,12 +53,12 @@
                     </div>
                     <div class="results"></div>
                 </div>
-
-                @*<select id="ddlBuscar" name="ddlBuscar" class="ui search dropdown">
-                    <option value="">Buscar</option>
-                </select>*@
             </div>
         </div>
+        <div class="field">
+            <div class="ui right floated disabled selecionar button">Selecionar</div>
+        </div>
+        <br />
     </div>
 </div>
 
@@ -67,12 +66,13 @@
     <table class="ui table">
         <thead>
             <tr>
-                <th>Nome</th>
+                <th>Selecionado</th>
+                <th></th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var pessoa in Model.PessoaFisica)
+            @*@foreach (var pessoa in Model.PessoaFisica)
             {
                 <tr data-pessoa="@pessoa.CodPessoa">
                     <td id="nome">
@@ -85,14 +85,24 @@
                         </div>
                     </td>
                 </tr>
-            }
+            }*@
         </tbody>
     </table>
 </div>
 
-<code id="pessoas" hidden>
+<div class="ui cancelar button">Cancelar</div>
+<div class="ui popup">
+    <div class="header">Tem certeza?</div>
+    <div class="content">
+        Essa ação não poderá ser desfeita.
+        <a href="@Url.Action("Index")" class="ui small button">Sim, cancelar</a>
+    </div>
+</div>
+<div class="ui salvar button">Salvar</div>
+
+@*<code id="pessoas" hidden>
     @Html.Raw(Json.Encode(Model.PessoaFisica.Select(u => new { u.CodPessoa, u.Nome })))
-</code>
+</code>*@
 
 @section Scripts{
     @Scripts.Render("~/bundles/js/certificacao")

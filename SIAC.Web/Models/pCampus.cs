@@ -7,6 +7,8 @@ namespace SIAC.Models
 {
     public partial class Campus
     {
+        public string CodComposto => $"{CodInstituicao}.{CodCampus}";
+
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         public static List<Campus> ListarOrdenadamente()

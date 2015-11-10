@@ -406,6 +406,8 @@
     <Compile Include="Models\PessoaJuridica.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\pProReitoria.cs" />
+    <Compile Include="Models\pReitoria.cs" />
     <Compile Include="Models\Professor.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>

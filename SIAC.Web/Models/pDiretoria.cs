@@ -7,6 +7,8 @@ namespace SIAC.Models
 {
     public partial class Diretoria
     {
+        public string CodComposto => $"{CodInstituicao}.{CodCampus}.{CodDiretoria}";
+
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         public static void Inserir(Diretoria diretoria)

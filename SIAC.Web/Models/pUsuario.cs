@@ -50,5 +50,10 @@ namespace SIAC.Models
             return contexto.Usuario.FirstOrDefault(u => u.Matricula == matricula).CodPessoaFisica;
         }
 
+        public static List<Usuario> Listar()
+        {
+            return contexto.Usuario.ToList();
+        }
+
     }
 }

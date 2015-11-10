@@ -662,13 +662,14 @@ siac.Certificacao.Index = (function () {
 
 siac.Certificacao.Pessoas = (function () {
     var _controleAjax;
-    var _lstPessoaSelecionada = [];
+    var _results = [];
     var _content = [];
+    var _result;
 
     function iniciar() {
-        var $code = $('code#pessoas');
-        _lstPessoaSelecionada = JSON.parse($code.html());
-        $code.remove();
+        //var $code = $('code#pessoas');
+        //_lstPessoaSelecionada = JSON.parse($code.html());
+        //$code.remove();
 
         $('.ui.modal').modal();
         $('.ui.checkbox').checkbox();
@@ -680,10 +681,14 @@ siac.Certificacao.Pessoas = (function () {
         });
 
         $('.ui.search')
-          .search({
-              source: _content
-          })
+          .search()
         ;
+
+        $('.selecionar.button').click(function () {
+            selecionar();
+        });
+
+        $('.cancelar.button').popup({inline: true, on: 'click'});
     }
 
     function filtrar(filtro) {
@@ -707,18 +712,53 @@ siac.Certificacao.Pessoas = (function () {
                   .search({
                       source: _content,
                       onSelect: function onSelect(result, response) {
-                          console.log(result);
+                          _result = result;
+                          $('.selecionar.button').removeClass('disabled');
                       }
                   })
                 ;
+                $buscar.find('input').val('');
             },
             error: function () {
                 siac.mensagem('Um erro ocorreu.');
             },
             complete: function () {
+                $('.selecionar.button').addClass('disabled');
                 $buscar.removeClass('loading');
             }
         });
+    }
+
+    function selecionar() {
+        $buscar = $('.ui.search');
+        $buscar.find('input').val('');
+        if (_result) {
+            _results.push(_result);
+
+            $tbody = $('table > tbody');
+            $tbody
+                .append($('<tr data-selecionado="' + _result.cod + '"></tr>')
+                    .append($('<td></td>')
+                        .text(_result.title)
+                    )
+                    .append($('<td></td>')
+                        .append($('<a class="ui label"></a>')
+                            .text(_result.category)
+                        )
+
+                    )
+                    .append($('<td></td>')
+                        .append($('<div class="ui small icon remover button"></div>')
+                            .html('<i class="remove icon"></i> Remover')
+                        )
+                    )
+                )
+            ;
+
+            _result = null;
+        }
+
+        $('.selecionar.button').addClass('disabled');
     }
 
     return {
