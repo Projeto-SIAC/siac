@@ -267,38 +267,16 @@ namespace SIAC.Models
                                 QuestaoTema = qt
                             };
 
+                            //Verificar se a questão já não foi adicionada
                             if (questoesAdicionadas.Where(atq => atq.Ano == aval.Ano
                                                                    && atq.Semestre == aval.Semestre
                                                                    && atq.CodTipoAvaliacao == aval.CodTipoAvaliacao
                                                                    && atq.NumIdentificador == aval.NumIdentificador
                                                                    && atq.CodQuestao == qt.CodQuestao).ToList().Count == 0)
-                            //Verificar se a questão já não foi adicionada
-                            //if (contexto.AvalTemaQuestao.Where(atq => atq.Ano == aval.Ano
-                            //                                       && atq.Semestre == aval.Semestre
-                            //                                       && atq.CodTipoAvaliacao == aval.CodTipoAvaliacao
-                            //                                       && atq.NumIdentificador == aval.NumIdentificador
-                            //                                       && atq.CodQuestao == qt.CodQuestao).ToList().Count == 0)
+                            
                             {
                                 contexto.AvalTemaQuestao.Add(proximaQuestao);
                                 questoesAdicionadas.Add(proximaQuestao);
-                                //contexto.AvalTemaQuestao.Add(new AvalTemaQuestao
-                                //{
-                                //    //{
-                                //    //    Ano = aval.Ano,
-                                //    //    Semestre = aval.Semestre,
-                                //    //    CodTipoAvaliacao = aval.CodTipoAvaliacao,
-                                //    //    NumIdentificador = aval.NumIdentificador,
-                                //    //    CodQuestao = questoesTemaNovo.CodQuestao,
-                                //    //    CodDisciplina = questoesTemaNovo.CodDisciplina,
-                                //    //    CodTema = questoesTemaNovo.CodTema,
-                                //    AvaliacaoTema = avalTema,
-                                //    QuestaoTema = qt
-                                //});
-                                //questoesAdicionadas.Add(new AvalTemaQuestao
-                                //{
-                                //    AvaliacaoTema = avalTema,
-                                //    QuestaoTema = qt
-                                //});
                             }
                         }
                     }

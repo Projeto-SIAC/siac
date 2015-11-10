@@ -182,7 +182,6 @@ siac.Certificacao.Configurar = (function () {
             _arrayQuestoes.push($(this).attr('id'))
             if ($(this).find('.tipo.label').text() == _OBJ) _qteObjetiva++;
             else if ($(this).find('.tipo.label').text() == _DISC) _qteDiscursiva++;
-            console.log(_arrayQuestoes);
         });
         //Fim da Obtenção de Dados
 
@@ -197,8 +196,8 @@ siac.Certificacao.Configurar = (function () {
         $('.cancelar.button').popup({ on: 'click' });
 
         $('.ui.confirmar.modal').modal({
-                onApprove: function () {
-                    console.log(_arrayQuestoes);
+            onApprove: function () {
+                $('.ui.global.loader').parent().dimmer('show');
                     $.ajax({
                         type: 'POST',
                         url: '/dashboard/avaliacao/certificacao/Configurar/',
@@ -213,6 +212,7 @@ siac.Certificacao.Configurar = (function () {
                         },
                         error: function (data) {
                             siac.aviso('error', 'red');
+                            $('.ui.global.loader').parent().dimmer('hide');
                         }
                     });
                 }
@@ -246,7 +246,6 @@ siac.Certificacao.Configurar = (function () {
         $('.ui.detalhe.button').click(function () {
             var codQuestao = $(this).parents('.card').attr('id');
             mostrarQuestao(codQuestao, this);
-            console.log(_arrayQuestoes);
         });
 
         $('.ui.acao.button').click(function () {
@@ -268,7 +267,6 @@ siac.Certificacao.Configurar = (function () {
         var temas = $('#ddlTemas').val();
         var dificuldade = $('#ddlDificuldade').val();
         var tipo = $('#ddlTipo').val();
-        console.log(temas);
         if (temas && dificuldade && tipo) {
             $resultado = $('.resultado .cards');
             $resultado.addClass('form loading')

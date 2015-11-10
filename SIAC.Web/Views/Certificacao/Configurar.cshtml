@@ -63,8 +63,8 @@
 
 <h3>
     Seleção de Questão
-    <div class="ui right floated quantidade obj label">Objetiva(s) <div class="ui detail">0</div></div>
-    <div class="ui right floated quantidade disc label">Discursiva(s) <div class="ui detail">0</div></div>
+    @if (Model.Avaliacao.TipoQuestoes == 1 || Model.Avaliacao.TipoQuestoes == 3) { <div class="ui right floated quantidade obj label">Objetiva(s) <div class="ui detail">0</div></div> }
+    @if (Model.Avaliacao.TipoQuestoes == 2 || Model.Avaliacao.TipoQuestoes == 3) { <div class="ui right floated quantidade disc label">Discursiva(s) <div class="ui detail">0</div></div> }
 </h3>
 
 <form class="ui form">
