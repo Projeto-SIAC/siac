@@ -21,6 +21,13 @@ namespace SIAC.Models
 
         public static int Inserir(Tema tema)
         {
+            //Realizando um "IDENTITY Manual"
+            Disciplina disciplina = tema.Disciplina;
+            List<Tema> temas = contexto.Tema.Where(t => t.CodDisciplina == tema.CodDisciplina).ToList();
+            int id = temas.Count > 0 ? temas.Max(t => t.CodTema) + 1 : 1;
+
+            tema.CodTema = id;
+
             contexto.Tema.Add(tema);
             contexto.SaveChanges();
             return tema.CodTema;
