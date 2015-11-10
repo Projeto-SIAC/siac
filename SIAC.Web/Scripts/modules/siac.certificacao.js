@@ -673,9 +673,10 @@ siac.Certificacao.Pessoas = (function () {
         $('.ui.checkbox').checkbox();
         $('.ui.dropdown').dropdown();
 
+        $('.ui.continuar.modal').modal({ closable: false }).modal('show');
+
         $('#ddlFiltro').change(function () {
             filtrar($(this).val());
-            console.log('mudou');
         });
 
         $('.ui.search')
@@ -731,32 +732,60 @@ siac.Certificacao.Pessoas = (function () {
         $buscar = $('.ui.search');
         $buscar.find('input').val('');
         if (_result) {
-            _results.push(_result);
+            var flagSelecionado = false;
+            for (var i = 0, length = _results.length; i < length; i++) {
+                if (_results[i].cod == _result.cod) {
+                    flagSelecionado = true;
+                    siac.aviso(_result.title +' já foi selecionado!');
+                }
+            }
 
-            $tbody = $('table > tbody');
-            $tbody
-                .append($('<tr data-selecionado="' + _result.cod + '"></tr>')
-                    .append($('<td></td>')
-                        .text(_result.title)
-                    )
-                    .append($('<td></td>')
-                        .append($('<a class="ui label"></a>')
-                            .text(_result.category)
-                        )
+            if (!flagSelecionado) {
+                _results.push(_result);
 
-                    )
-                    .append($('<td></td>')
-                        .append($('<div class="ui small icon remover button"></div>')
-                            .html('<i class="remove icon"></i> Remover')
+                $tbody = $('table > tbody');
+                $tbody
+                    .append($('<tr data-selecionado="' + _result.cod + '"></tr>')
+                        .append($('<td></td>')
+                            .text(_result.title)
+                        )
+                        .append($('<td></td>')
+                            .append($('<a class="ui label"></a>')
+                                .text(_result.category)
+                            )
+
+                        )
+                        .append($('<td></td>')
+                            .append($('<div class="ui small icon remover button"></div>')
+                                .html('<i class="remove icon"></i> Remover')
+                            )
                         )
                     )
-                )
-            ;
+                ;
+            }
 
             _result = null;
         }
 
+        $('.remover.button').off().click(function () {
+            remover($(this));
+        });
+
         $('.selecionar.button').addClass('disabled');
+    }
+
+    function remover($this) {
+        var $tr = $this.parents('tr');
+        var cod = $tr.data('selecionado');
+        $tr.remove();
+        var _tempResults = _results;
+        _results = [];
+        for (var i = 0, length = _tempResults.length; i < length; i++) {
+            if (_tempResults[i].cod != cod) {
+                _results.push(_tempResults[i]);
+            }
+        }
+        console.log(_results);
     }
 
     return {

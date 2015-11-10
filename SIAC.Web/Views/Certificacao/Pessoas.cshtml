@@ -15,6 +15,30 @@
 @Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
 @Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 4 } })
 
+@if (Model.PessoaFisica.Count > 0)
+{
+    // modal para indicar que as pessoas selecionadas serão
+    // substituídas por essas que serão cadastradas agora
+    <div class="ui small continuar modal">
+        <div class="header">
+            Você tem certeza?
+        </div>
+        <div class="content">
+            <p>
+                Caso você continue, as pessoas selecionadas anteriormente
+                serão automáticamente substituídas pelas que você selecionará.
+            </p>
+            <p>
+                <b>Essa ação não poderá ser desfeita.</b>
+            </p>
+        </div>
+        <div class="actions">
+            <a href="@Url.Action("Detalhe", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui negative button">Cancelar</a>
+            <div class="ui approve positive button">Continuar</div>
+        </div>
+    </div>
+}
+
 <div class="ui confirmar modal">
     <div class="header">
         Verificar e confirmar
@@ -66,26 +90,12 @@
     <table class="ui table">
         <thead>
             <tr>
-                <th>Selecionado</th>
+                <th>Selecionados</th>
                 <th></th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @*@foreach (var pessoa in Model.PessoaFisica)
-            {
-                <tr data-pessoa="@pessoa.CodPessoa">
-                    <td id="nome">
-                        @pessoa.Nome
-                    </td>
-                    <td>
-                        <div class="ui toggle checkbox">
-                            <input type="checkbox" name="chkSelecionado" checked>
-                            <label>Selecionado</label>
-                        </div>
-                    </td>
-                </tr>
-            }*@
         </tbody>
     </table>
 </div>
@@ -99,10 +109,6 @@
     </div>
 </div>
 <div class="ui salvar button">Salvar</div>
-
-@*<code id="pessoas" hidden>
-    @Html.Raw(Json.Encode(Model.PessoaFisica.Select(u => new { u.CodPessoa, u.Nome })))
-</code>*@
 
 @section Scripts{
     @Scripts.Render("~/bundles/js/certificacao")
