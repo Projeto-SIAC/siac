@@ -21,10 +21,15 @@ namespace SIAC.Models
             contexto.Campus.Add(campus);
             contexto.SaveChanges();
         }
-        
-        public static Campus ListarPorCodigo(int codCampus)
+
+        public static Campus ListarPorCodigo(string codComposto)
         {
-            return contexto.Campus.FirstOrDefault(c => c.CodCampus == codCampus);
+            string[] codigos = codComposto.Split('.');
+            int codInstituicao = int.Parse(codigos[0]);
+            int codCampus = int.Parse(codigos[1]);
+
+            return contexto.Campus.FirstOrDefault(c => c.CodInstituicao == codInstituicao
+                                                    && c.CodCampus == codCampus);
         }
     }
 }

@@ -15,5 +15,15 @@ namespace SIAC.Models
         {
             return contexto.Reitoria.OrderBy(c => c.Sigla).ToList();
         }
+
+        public static Reitoria ListarPorCodigo(string codComposto)
+        {
+            string[] codigos = codComposto.Split('.');
+            int codInstituicao = int.Parse(codigos[0]);
+            int codReitoria = int.Parse(codigos[1]);
+
+            return contexto.Reitoria.FirstOrDefault(r => r.CodInstituicao == codInstituicao
+                                                    && r.CodReitoria == codReitoria);
+        }
     }
 }

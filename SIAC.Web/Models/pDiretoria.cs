@@ -22,9 +22,16 @@ namespace SIAC.Models
             return contexto.Diretoria.OrderBy(d => d.Sigla).ToList();
         }
 
-        public static Diretoria ListarPorCodigo(int codDiretoria)
+        public static Diretoria ListarPorCodigo(string codComposto)
         {
-            return contexto.Diretoria.FirstOrDefault(d => d.CodDiretoria == codDiretoria);
+            string[] codigos = codComposto.Split('.');
+            int codInstituicao = int.Parse(codigos[0]);
+            int codCampus = int.Parse(codigos[1]);
+            int codDiretoria = int.Parse(codigos[2]);
+
+            return contexto.Diretoria.FirstOrDefault(d => d.CodInstituicao == codInstituicao
+                                                       && d.CodCampus == codCampus
+                                                       && d.CodDiretoria == codDiretoria);
         }
     }
 }
