@@ -13,6 +13,13 @@ namespace SIAC.Models
 
         public static void Inserir(Diretoria diretoria)
         {
+            //Realizando um "IDENTITY Manual"
+            Campus campus = diretoria.Campus;
+            List<Diretoria> diretorias = contexto.Diretoria.Where(d => d.CodInstituicao == campus.CodInstituicao 
+                                                                    && d.CodCampus == campus.CodCampus).ToList();
+            int id = diretorias.Count > 0 ? diretorias.Max(d => d.CodDiretoria) + 1 : 1;
+
+            diretoria.CodDiretoria = id;
             contexto.Diretoria.Add(diretoria);
             contexto.SaveChanges();
         }
