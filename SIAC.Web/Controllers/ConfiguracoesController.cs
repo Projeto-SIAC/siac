@@ -175,9 +175,10 @@ namespace SIAC.Controllers
                 diretoria.PessoaJuridica.Portal = formCollection["txtDiretoriaPortal"];
 
                 //Diretoria
-                int codCampus = int.Parse(formCollection["ddlDiretoriaCampus"]);
-                diretoria.CodCampus = codCampus;
-                diretoria.CodInstituicao = Campus.ListarPorCodigo(codCampus).CodInstituicao;
+                string codCampus = formCollection["ddlDiretoriaCampus"];
+                diretoria.Campus = Campus.ListarPorCodigo(codCampus);
+                //diretoria.CodCampus = codCampus;
+                //diretoria.CodInstituicao = Campus.ListarPorCodigo(codCampus).CodInstituicao;
                 diretoria.CodColaboradorDiretor = int.Parse(formCollection["ddlDiretoriaDiretor"]);
                 diretoria.Sigla = formCollection["txtDiretoriaSigla"];
 
@@ -195,7 +196,7 @@ namespace SIAC.Controllers
                 Curso curso = new Curso();
 
                 //Diretoria
-                int codDiretoria = int.Parse(formCollection["ddlCursoDiretoria"]);
+                string codDiretoria = formCollection["ddlCursoDiretoria"];
                 curso.Diretoria = Diretoria.ListarPorCodigo(codDiretoria);
 
                 //NivelEnsino
@@ -282,7 +283,7 @@ namespace SIAC.Controllers
                                 select t.CodTema).ToList();
 
                 string[] temas = formCollection["txtTemaDescricao"].Split(';');
-                int i = codTemas != null && codTemas.Count > 0 ? codTemas.Max() + 1 : 1; ;
+                int i = codTemas != null && codTemas.Count > 0 ? codTemas.Max() + 1 : 1;
                 foreach (string item in temas)
                 {
                     string tema = item.Trim();
@@ -342,7 +343,7 @@ namespace SIAC.Controllers
                 Sala sala = new Sala();
 
                 //Campus
-                int codCampus = int.Parse(formCollection["ddlSalaCampus"]);
+                string codCampus = formCollection["ddlSalaCampus"];
                 sala.Campus = Campus.ListarPorCodigo(codCampus);
                 sala.Descricao = formCollection["txtSalaDescricao"];
                 sala.Sigla = formCollection["txtSalaSigla"];
