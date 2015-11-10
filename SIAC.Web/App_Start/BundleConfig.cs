@@ -21,19 +21,19 @@ namespace SIAC
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/js/questao").Include(
-                "~/scripts/modules/siac.questao.min.js"
+                "~/scripts/modules/siac.questao.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/js/configuracoes").Include(
-                "~/scripts/modules/siac.configuracoes.min.js"
+                "~/scripts/modules/siac.configuracoes.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/js/autoavaliacao").Include(
-                "~/scripts/modules/siac.autoavaliacao.min.js"
+                "~/scripts/modules/siac.autoavaliacao.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/js/academica").Include(
-                "~/scripts/modules/siac.academica.min.js"
+                "~/scripts/modules/siac.academica.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/js/certificacao").Include(
