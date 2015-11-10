@@ -2,157 +2,157 @@
 
 siac.Certificacao.Gerar = (function () {
 
-	function iniciar() {
-		$('.ui.dropdown').dropdown();
-		$('.ui.modal').modal();
-	    $('.ui.termo.modal').modal({ closable: false }).modal('show');
-		$('.cancelar.button').popup({ on: 'click' });
+    function iniciar() {
+        $('.ui.dropdown').dropdown();
+        $('.ui.modal').modal();
+        $('.ui.termo.modal').modal({ closable: false }).modal('show');
+        $('.cancelar.button').popup({ on: 'click' });
 
-		$('.ui.confirmar.modal').modal({
-			onApprove: function () {
-				$('form').addClass('loading').submit();
-			}
-		});
+        $('.ui.confirmar.modal').modal({
+            onApprove: function () {
+                $('form').addClass('loading').submit();
+            }
+        });
 
-		$('.prosseguir.button').click(function () {
-			prosseguir()
-		});
+        $('.prosseguir.button').click(function () {
+            prosseguir()
+        });
 
-		$('#ddlDisciplina').change(function () {
-			listarTemas(this.value);
-		})
+        $('#ddlDisciplina').change(function () {
+            listarTemas(this.value);
+        })
 
-		$('#ddlTipo').change(function () {
-			mostrarOpcoesPorTipo(this.value);
-		})
-
-
-	}
-
-	function prosseguir() {
-		var errorList = $('form .error.message .list');
-
-		errorList.html('');
-		$('form').removeClass('error');
-
-		var valido = true;
-
-		if (!$('#ddlDisciplina').val()) {
-			errorList.append('<li>Selecione uma disciplina</li>');
-			valido = false;
-		}
-
-		if (!$('#ddlTemas').val()) {
-			errorList.append('<li>Selecione ao menos um tema</li>');
-			valido = false;
-		}
-
-		if (!$('#ddlTipo').val()) {
-			errorList.append('<li>Selecione o tipo das questões da sua avaliação acadêmica</li>');
-			valido = false;
-		}
-
-		if (($('#ddlTipo').val() == 1 || $('#ddlTipo').val() == 3) && !$('#txtQteObjetiva').val()) {
-			errorList.append('<li>Indique a quantidade das questões objetivas</li>');
-			valido = false;
-		}
-		if (($('#ddlTipo').val() == 2 || $('#ddlTipo').val() == 3) && !$('#txtQteDiscursiva').val()) {
-			errorList.append('<li>Indique a quantidade das questões discursivas</li>');
-			valido = false;
-		}
-
-		if (!$('#ddlDificuldade').val()) {
-			errorList.append('<li>Selecione a dificuldade das questões</li>');
-			valido = false;
-		}
+        $('#ddlTipo').change(function () {
+            mostrarOpcoesPorTipo(this.value);
+        })
 
 
-		if (valido) {
-			confirmar();
-		}
-		else {
-			$('form').addClass('error');
-			$('html, body').animate({
-				scrollTop: $('form .error.message').offset().top
-			}, 1000);
-		}
-	}
+    }
 
-	function confirmar() {
-		$modal = $('.ui.confirmar.modal');
-		$ddlDisciplina = $('#ddlDisciplina :selected');
-		$ddlTipo = $('#ddlTipo');
-		$table = $modal.find('tbody').html('');
+    function prosseguir() {
+        var errorList = $('form .error.message .list');
 
-		$tr = $('<tr></tr>');
-		$tdDisciplina = $('<td></td>').html('<b>' + $ddlDisciplina.text() + '</b>');
-		$tdTemas = $('<td class="ui labels"></td>');
+        errorList.html('');
+        $('form').removeClass('error');
 
-		$ddlTemas = $('#ddlTemas :selected');
-		for (var i = 0; i < $ddlTemas.length; i++) {
-			$tdTemas.append($('<div class="ui tag label"></div>').text($ddlTemas.eq(i).text()));
-		}
-		$tdQteQuestoes = $('<td class="ui labels"></td>');
-		if ($ddlTipo.val() == 1 || $ddlTipo.val() == 3) {
-		    $tdQteQuestoes.append($('<div class="ui label"></div>').html('Objetiva<div class="detail">' + $('#txtQteObjetiva').val() + '</div>'));
-		}
-		if ($ddlTipo.val() == 2 || $ddlTipo.val() == 3) {
-		    $tdQteQuestoes.append($('<div class="ui label"></div>').html('Discursiva<div class="detail">' + $('#txtQteDiscursiva').val() + '</div>'));
-		}
-		$tdDificuldade = $('<td></td>').text($('#ddlDificuldade :selected').text());
+        var valido = true;
 
-		$table.append($tr.append($tdDisciplina).append($tdTemas).append($tdQteQuestoes).append($tdDificuldade));
+        if (!$('#ddlDisciplina').val()) {
+            errorList.append('<li>Selecione uma disciplina</li>');
+            valido = false;
+        }
 
-		$modal.modal('show');
-	}
+        if (!$('#ddlTemas').val()) {
+            errorList.append('<li>Selecione ao menos um tema</li>');
+            valido = false;
+        }
 
-	function listarTemas(codDisciplina) {
-		var disciplinas = $('#ddlDisciplinas');
-		var ddlTemas = $('#ddlTemas');
+        if (!$('#ddlTipo').val()) {
+            errorList.append('<li>Selecione o tipo das questões da sua avaliação acadêmica</li>');
+            valido = false;
+        }
 
-		ddlTemas.parent().addClass('loading');
-		$.ajax({
-			type: 'POST',
-			url: '/Tema/RecuperarTemasPorCodDisciplinaTemQuestao',
-			data: { 'codDisciplina': codDisciplina },
-			success: function (data) {
-				ddlTemas.html('');
-				ddlTemas.val(ddlTemas.prop('defaultSelected'));
-				$.each(data, function (id, item) {
-					ddlTemas.append('<option value="' + item.CodTema + '">' + item.Descricao + '</option>');
-				});
+        if (($('#ddlTipo').val() == 1 || $('#ddlTipo').val() == 3) && !$('#txtQteObjetiva').val()) {
+            errorList.append('<li>Indique a quantidade das questões objetivas</li>');
+            valido = false;
+        }
+        if (($('#ddlTipo').val() == 2 || $('#ddlTipo').val() == 3) && !$('#txtQteDiscursiva').val()) {
+            errorList.append('<li>Indique a quantidade das questões discursivas</li>');
+            valido = false;
+        }
 
-				ddlTemas.parent().removeClass('loading');
-			},
-			error: function () {
-				siac.mensagem("Erro no carregamento de Temas", "Erro");
-				ddlTemas.parent().removeClass('loading');
-			}
-		});
-	}
+        if (!$('#ddlDificuldade').val()) {
+            errorList.append('<li>Selecione a dificuldade das questões</li>');
+            valido = false;
+        }
 
-	function mostrarOpcoesPorTipo(tipoAvaliacao) {
-	    var txtQteObjetiva = $('#txtQteObjetiva');
-	    var txtQteDiscursiva = $('#txtQteDiscursiva');
 
-		if (tipoAvaliacao == 1) {
-		    txtQteObjetiva.prop('disabled', false);
-		    txtQteDiscursiva.prop('disabled', true);
-		}
-		else if (tipoAvaliacao == 2) {
-		    txtQteObjetiva.prop('disabled', true);
-		    txtQteDiscursiva.prop('disabled', false);
-		}
-		else {
-		    txtQteObjetiva.prop('disabled', false);
-		    txtQteDiscursiva.prop('disabled', false);
-		}
-	}
+        if (valido) {
+            confirmar();
+        }
+        else {
+            $('form').addClass('error');
+            $('html, body').animate({
+                scrollTop: $('form .error.message').offset().top
+            }, 1000);
+        }
+    }
 
-	return {
-		iniciar: iniciar
-	}
-	
+    function confirmar() {
+        $modal = $('.ui.confirmar.modal');
+        $ddlDisciplina = $('#ddlDisciplina :selected');
+        $ddlTipo = $('#ddlTipo');
+        $table = $modal.find('tbody').html('');
+
+        $tr = $('<tr></tr>');
+        $tdDisciplina = $('<td></td>').html('<b>' + $ddlDisciplina.text() + '</b>');
+        $tdTemas = $('<td class="ui labels"></td>');
+
+        $ddlTemas = $('#ddlTemas :selected');
+        for (var i = 0; i < $ddlTemas.length; i++) {
+            $tdTemas.append($('<div class="ui tag label"></div>').text($ddlTemas.eq(i).text()));
+        }
+        $tdQteQuestoes = $('<td class="ui labels"></td>');
+        if ($ddlTipo.val() == 1 || $ddlTipo.val() == 3) {
+            $tdQteQuestoes.append($('<div class="ui label"></div>').html('Objetiva<div class="detail">' + $('#txtQteObjetiva').val() + '</div>'));
+        }
+        if ($ddlTipo.val() == 2 || $ddlTipo.val() == 3) {
+            $tdQteQuestoes.append($('<div class="ui label"></div>').html('Discursiva<div class="detail">' + $('#txtQteDiscursiva').val() + '</div>'));
+        }
+        $tdDificuldade = $('<td></td>').text($('#ddlDificuldade :selected').text());
+
+        $table.append($tr.append($tdDisciplina).append($tdTemas).append($tdQteQuestoes).append($tdDificuldade));
+
+        $modal.modal('show');
+    }
+
+    function listarTemas(codDisciplina) {
+        var disciplinas = $('#ddlDisciplinas');
+        var ddlTemas = $('#ddlTemas');
+
+        ddlTemas.parent().addClass('loading');
+        $.ajax({
+            type: 'POST',
+            url: '/Tema/RecuperarTemasPorCodDisciplinaTemQuestao',
+            data: { 'codDisciplina': codDisciplina },
+            success: function (data) {
+                ddlTemas.html('');
+                ddlTemas.val(ddlTemas.prop('defaultSelected'));
+                $.each(data, function (id, item) {
+                    ddlTemas.append('<option value="' + item.CodTema + '">' + item.Descricao + '</option>');
+                });
+
+                ddlTemas.parent().removeClass('loading');
+            },
+            error: function () {
+                siac.mensagem("Erro no carregamento de Temas", "Erro");
+                ddlTemas.parent().removeClass('loading');
+            }
+        });
+    }
+
+    function mostrarOpcoesPorTipo(tipoAvaliacao) {
+        var txtQteObjetiva = $('#txtQteObjetiva');
+        var txtQteDiscursiva = $('#txtQteDiscursiva');
+
+        if (tipoAvaliacao == 1) {
+            txtQteObjetiva.prop('disabled', false);
+            txtQteDiscursiva.prop('disabled', true);
+        }
+        else if (tipoAvaliacao == 2) {
+            txtQteObjetiva.prop('disabled', true);
+            txtQteDiscursiva.prop('disabled', false);
+        }
+        else {
+            txtQteObjetiva.prop('disabled', false);
+            txtQteDiscursiva.prop('disabled', false);
+        }
+    }
+
+    return {
+        iniciar: iniciar
+    }
+
 })();
 
 siac.Certificacao.Configurar = (function () {
@@ -177,7 +177,7 @@ siac.Certificacao.Configurar = (function () {
         }
         _qteMaxObjetiva = $('.informacoes .objetiva.label .detail').html();
         _qteMaxDiscursiva = $('.informacoes .discursiva.label .detail').html();
-        
+
         $('.questoes.modal .card').map(function () {
             _arrayQuestoes.push($(this).attr('id'))
             if ($(this).find('.tipo.label').text() == _OBJ) _qteObjetiva++;
@@ -198,25 +198,25 @@ siac.Certificacao.Configurar = (function () {
         $('.ui.confirmar.modal').modal({
             onApprove: function () {
                 $('.ui.global.loader').parent().dimmer('show');
-                    $.ajax({
-                        type: 'POST',
-                        url: '/dashboard/avaliacao/certificacao/Configurar/',
-                        data: {
-                            codigo: _codAvaliacao,
-                            questoes: _arrayQuestoes
-                        },
-                        success: function (data) {
-                            if (data) {
-                                window.location.href = "/dashboard/avaliacao/certificacao/agendar/"+_codAvaliacao;
-                            }
-                        },
-                        error: function (data) {
-                            siac.aviso('error', 'red');
-                            $('.ui.global.loader').parent().dimmer('hide');
+                $.ajax({
+                    type: 'POST',
+                    url: '/dashboard/avaliacao/certificacao/Configurar/',
+                    data: {
+                        codigo: _codAvaliacao,
+                        questoes: _arrayQuestoes
+                    },
+                    success: function (data) {
+                        if (data) {
+                            window.location.href = "/dashboard/avaliacao/certificacao/agendar/" + _codAvaliacao;
                         }
-                    });
-                }
-            });
+                    },
+                    error: function (data) {
+                        siac.aviso('error', 'red');
+                        $('.ui.global.loader').parent().dimmer('hide');
+                    }
+                });
+            }
+        });
 
         $('.confirmar.button').click(function () {
 
@@ -239,7 +239,7 @@ siac.Certificacao.Configurar = (function () {
             return false;
         });
 
-        $('.ui.questoes.button').click(function(){
+        $('.ui.questoes.button').click(function () {
             $('.questoes.modal').modal('show');
         });
 
@@ -253,14 +253,14 @@ siac.Certificacao.Configurar = (function () {
             var tipo = $_this.parents('.card').find('.label').last().text();
             var id = $_this.parents('.card').attr('id');
             if ($_this.html() == "Adicionar") {
-                adicionarQuestao(id,tipo);
+                adicionarQuestao(id, tipo);
             } else if ($_this.html() == "Remover") {
-                removerQuestao(id,tipo);
+                removerQuestao(id, tipo);
             }
         });
 
         atualizarQuantidadeView();
-        
+
     }
 
     function carregarQuestoes() {
@@ -283,7 +283,7 @@ siac.Certificacao.Configurar = (function () {
                     if (data) {
                         $cards = $(data);
                         $resultado.html($cards);
-                        
+
                         $resultado.find('.card').map(function () {
                             $card = $(this);
                             var id = $card.attr('id');
@@ -294,7 +294,7 @@ siac.Certificacao.Configurar = (function () {
                     }
                 },
                 error: function (data) {
-                    siac.mensagem(data,'Error');
+                    siac.mensagem(data, 'Error');
                 },
                 complete: function () {
                     $resultado.removeClass('form loading');
@@ -304,16 +304,16 @@ siac.Certificacao.Configurar = (function () {
                         var tipo = $_this.parents('.card').find('.tipo.label').text();
                         if ($_this.html() == _ADD) {
                             var id = $_this.parents('.card').attr('id');
-                            adicionarQuestao(id,tipo);
+                            adicionarQuestao(id, tipo);
                         } else if ($_this.html() == _REM) {
                             var id = $_this.parents('.card').attr('id');
-                            removerQuestao(id,tipo);
+                            removerQuestao(id, tipo);
                         }
                     });
 
                     $('.ui.detalhe.button').click(function () {
                         var codQuestao = $(this).parents('.card').attr('id');
-                        mostrarQuestao(codQuestao,this);
+                        mostrarQuestao(codQuestao, this);
                     });
                 }
             });
@@ -371,7 +371,7 @@ siac.Certificacao.Configurar = (function () {
         }).transition('scale');
     }
 
-    function mostrarQuestao(codQuestao,_this) {
+    function mostrarQuestao(codQuestao, _this) {
         $_this = $(_this);
         $_this.addClass('loading');
         $.ajax({
@@ -402,14 +402,14 @@ siac.Certificacao.Configurar = (function () {
 
         $disc.find('.detail').text(_qteDiscursiva);
         $obj.find('.detail').text(_qteObjetiva);
-        
+
         {
             if (_qteObjetiva == _qteMaxObjetiva) {
                 $obj.addClass('green');
             }
             else $obj.removeClass('green');
         }
-        
+
         {
             if (_qteDiscursiva == _qteMaxDiscursiva) {
                 $disc.addClass('green');
@@ -640,7 +640,6 @@ siac.Certificacao.Index = (function () {
                 }
             },
             complete: function () {
-                console.log(pesquisa);
                 $cards.parent().removeClass('loading');
             }
         });
@@ -658,17 +657,13 @@ siac.Certificacao.Index = (function () {
     }
 })();
 
-siac.Certificacao.Pessoas = (function () {
+siac.Certificacao.Avaliados = (function () {
     var _controleAjax;
     var _results = [];
     var _content = [];
     var _result;
 
     function iniciar() {
-        //var $code = $('code#pessoas');
-        //_lstPessoaSelecionada = JSON.parse($code.html());
-        //$code.remove();
-
         $('.ui.modal').modal();
         $('.ui.checkbox').checkbox();
         $('.ui.dropdown').dropdown();
@@ -687,7 +682,26 @@ siac.Certificacao.Pessoas = (function () {
             selecionar();
         });
 
-        $('.cancelar.button').popup({inline: true, on: 'click'});
+        $('.cancelar.button').popup({ inline: true, on: 'click' });
+
+        $('.ui.confirmar.modal').modal({
+            onApprove: function () {
+                salvar();
+            }
+        });
+
+        $('.informacoes.button').click(function () {
+            $('.informacoes.modal').modal('show');
+        });
+
+        $('.salvar.button').click(function () {
+            if (!_results || _results.length <= 0) {
+                siac.aviso('Você ainda não selecionou os avaliados ou grupos.', 'red', 'warning sign');
+            }
+            else {
+                confirmar();
+            }
+        });
     }
 
     function filtrar(filtro) {
@@ -696,15 +710,12 @@ siac.Certificacao.Pessoas = (function () {
         }
 
         $buscar = $('.ui.search');
-            
+
         $buscar.addClass('loading');
 
         _controleAjax = $.ajax({
-            data: {
-                filtro: filtro
-            },
             type: 'POST',
-            url: '/dashboard/avaliacao/certificacao/filtrar',
+            url: '/dashboard/avaliacao/certificacao/filtrar/'+filtro,
             success: function (data) {
                 _content = data;
                 $buscar
@@ -713,7 +724,8 @@ siac.Certificacao.Pessoas = (function () {
                       onSelect: function onSelect(result, response) {
                           _result = result;
                           $('.selecionar.button').removeClass('disabled');
-                      }
+                      },
+                      minCharacters: 3                  
                   })
                 ;
                 $buscar.find('input').val('');
@@ -734,18 +746,18 @@ siac.Certificacao.Pessoas = (function () {
         if (_result) {
             var flagSelecionado = false;
             for (var i = 0, length = _results.length; i < length; i++) {
-                if (_results[i].cod == _result.cod) {
+                if (_results[i].id == _result.id) {
                     flagSelecionado = true;
-                    siac.aviso(_result.title +' já foi selecionado!');
+                    siac.aviso(_result.title + ' já foi selecionado!');
                 }
             }
 
             if (!flagSelecionado) {
                 _results.push(_result);
 
-                $tbody = $('table > tbody');
+                $tbody = $('table.selecionados > tbody');
                 $tbody
-                    .append($('<tr data-selecionado="' + _result.cod + '"></tr>')
+                    .append($('<tr data-selecionado="' + _result.id + '"></tr>')
                         .append($('<td></td>')
                             .text(_result.title)
                         )
@@ -776,16 +788,46 @@ siac.Certificacao.Pessoas = (function () {
 
     function remover($this) {
         var $tr = $this.parents('tr');
-        var cod = $tr.data('selecionado');
+        var id = $tr.data('selecionado');
         $tr.remove();
         var _tempResults = _results;
         _results = [];
         for (var i = 0, length = _tempResults.length; i < length; i++) {
-            if (_tempResults[i].cod != cod) {
+            if (_tempResults[i].id != id) {
                 _results.push(_tempResults[i]);
             }
         }
-        console.log(_results);
+    }
+
+    function confirmar() {
+        var $table = $('table.selecionados').clone();
+
+        $table.removeClass('selecionados');
+        $table.find('.button').remove();
+
+        var $model = $('.confirmar.modal');
+        $model.find('.content').html($table);
+
+        $model.modal('show');
+    }
+
+    function salvar() {
+        $('.ui.global.loader').parent().dimmer('show');
+
+        $.ajax({
+            type: 'post',
+            url: window.location.pathname,
+            data: {
+                selecao: _results
+            },
+            success: function (url) {
+                window.location.href = url;
+            },
+            error: function () {
+                siac.mensagem('Ocorreu um erro ao tentar conectar com o Servidor.');
+                $('.ui.global.loader').parent().dimmer('hide');
+            }
+        });
     }
 
     return {

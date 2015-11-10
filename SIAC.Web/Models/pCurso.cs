@@ -14,6 +14,10 @@ namespace SIAC.Models
             return contexto.Curso.OrderBy(c => c.Descricao).ToList();
         }
 
+        public static Curso ListarPorCodigo(int codCurso) {
+            return contexto.Curso.SingleOrDefault(c => c.CodCurso == codCurso);
+        }
+
         public static void Inserir(Curso curso)
         {
             curso.CodCurso = ObterCodCurso();

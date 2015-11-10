@@ -106,8 +106,8 @@
         else if (/\/dashboard\/avaliacao\/certificacao\/agendar\/cert[0-9]+$/.test(pathname)) {
             siac.Certificacao.Agendar.iniciar();
         }
-        else if (/\/dashboard\/avaliacao\/certificacao\/pessoas\/cert[0-9]+$/.test(pathname)) {
-            siac.Certificacao.Pessoas.iniciar();
+        else if (/\/dashboard\/avaliacao\/certificacao\/avaliados\/cert[0-9]+$/.test(pathname)) {
+            siac.Certificacao.Avaliados.iniciar();
         }
     }
 

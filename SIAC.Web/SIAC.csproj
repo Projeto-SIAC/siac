@@ -472,6 +472,7 @@
     <Compile Include="Models\pTurma.cs" />
     <Compile Include="Models\pTurno.cs" />
     <Compile Include="Models\pUsuario.cs" />
+    <Compile Include="Models\Selecao.cs" />
     <Compile Include="Models\Sala.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -620,7 +621,7 @@
     <Content Include="Views\Certificacao\Partials\_PassoAPasso.cshtml" />
     <Content Include="Views\Certificacao\Agendar.cshtml" />
     <Content Include="Views\Certificacao\Partials\_ListaCertificacao.cshtml" />
-    <Content Include="Views\Certificacao\Pessoas.cshtml" />
+    <Content Include="Views\Certificacao\Avaliados.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

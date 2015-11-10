@@ -333,12 +333,13 @@ namespace SIAC.Controllers
                 }
             }
 
-            return RedirectToAction("Pessoas", new { codigo = codigo }); // Redirecionar para Pessoas
+            return RedirectToAction("Avaliados", new { codigo = codigo }); // Redirecionar para Pessoas
         }
 
+        // GET: Certificacao/Avaliados/CERT201520001
         [HttpGet]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
-        public ActionResult Pessoas(string codigo)
+        public ActionResult Avaliados(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))
             {
@@ -351,80 +352,103 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
+        // POST: Certificacao/Avaliados/CERT201520001
         [AcceptVerbs(HttpVerbs.Post)]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
-        public ActionResult Filtrar(int filtro)
+        public ActionResult Avaliados(string codigo, List<Selecao> selecao)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
+                if (cert.Professor.MatrProfessor == Sessao.UsuarioMatricula)
+                {
+                    cert.PessoaFisica.Clear();
+                    List<PessoaFisica> lstPessoaFisica = new List<PessoaFisica>();
+
+                    foreach (var item in selecao)
+                    {
+                        switch (item.category)
+                        {
+                            case "Pessoa":
+                                lstPessoaFisica.Add(PessoaFisica.ListarPorCodigo(int.Parse(item.id)));
+                                break;
+                            case "Turma":
+                                lstPessoaFisica.AddRange(PessoaFisica.ListarPorTurma(item.id));
+                                break;
+                            case "Curso":
+                                lstPessoaFisica.AddRange(PessoaFisica.ListarPorCurso(int.Parse(item.id)));
+                                break;
+                            case "Diretoria":
+                                lstPessoaFisica.AddRange(PessoaFisica.ListarPorDiretoria(item.id));
+                                break;
+                            case "Campus":
+                                lstPessoaFisica.AddRange(PessoaFisica.ListarPorCampus(item.id));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    cert.PessoaFisica = lstPessoaFisica.Distinct().ToList();
+                    Repositorio.GetInstance().SaveChanges();
+                }
+            }
+            return Json("/historico/avaliacao/certificacao/detalhe/"+codigo, JsonRequestBehavior.AllowGet);
+        }
+        
+        // POST: Certificacao/Avaliados/CERT201520001
+        [AcceptVerbs(HttpVerbs.Post)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult Filtrar(int codigo)
         {
             object lstResultado = null;
 
-            switch (filtro)
+            switch (codigo)
             {
                 case 1:
-                    lstResultado = Usuario.Listar().Select(a => new {
-                        cod = a.CodPessoaFisica,
+                    lstResultado = Usuario.Listar().Select(a => new Selecao {
+                        id = a.CodPessoaFisica.ToString(),
                         description = a.Matricula,
                         title = a.PessoaFisica.Nome,
                         category = "Pessoa"
                     });
                     break;
                 case 2:
-                    lstResultado = Turma.ListarOrdenadamente().Select(a => new { 
-                        cod = a.CodTurma,
+                    lstResultado = Turma.ListarOrdenadamente().Select(a => new Selecao {
+                        id = a.CodTurma,
                         description = a.CodTurma,
                         title = $"{a.Curso.Descricao} ({a.CodTurma})",
                         category = "Turma"
                     });
                     break;
                 case 3:
-                    lstResultado = Curso.ListarOrdenadamente().Select(a=>new {
-                        cod = a.CodCurso,
+                    lstResultado = Curso.ListarOrdenadamente().Select(a=>new Selecao {
+                        id = a.CodCurso.ToString(),
                         description = a.Sigla,
                         title = a.Descricao,
                         category = "Curso"
                     });
                     break;
                 case 4:
-                    lstResultado = Diretoria.ListarOrdenadamente().Select(a => new {
-                        cod = a.CodComposto,
+                    lstResultado = Diretoria.ListarOrdenadamente().Select(a => new Selecao {
+                        id = a.CodComposto,
                         description = $"{a.Campus.PessoaJuridica.NomeFantasia} ({a.Campus.Instituicao.Sigla})",
                         title = a.PessoaJuridica.NomeFantasia,
                         category = "Diretoria"
                     });
                     break;
                 case 5:
-                    lstResultado = Campus.ListarOrdenadamente().Select(a=>new {
-                        cod =a.CodComposto,
+                    lstResultado = Campus.ListarOrdenadamente().Select(a=>new Selecao {
+                        id = a.CodComposto,
                         description = a.Instituicao.PessoaJuridica.NomeFantasia,
                         title = a.PessoaJuridica.NomeFantasia,
                         category = "Campus"
                     });
                     break;
-                case 6:
-                    var lst = Reitoria.ListarOrdenadamente().Select(a => new {
-                        cod = a.CodComposto,
-                        description = a.Instituicao.PessoaJuridica.NomeFantasia,
-                        title = a.PessoaJuridica.NomeFantasia,
-                        category = "Reitoria"
-                    });
-                    lstResultado = lst.Union(ProReitoria.ListarOrdenadamente().Select(a => new {
-                        cod = a.CodComposto,
-                        description = a.Instituicao.PessoaJuridica.NomeFantasia,
-                        title = a.PessoaJuridica.NomeFantasia,
-                        category = "Pró-Reitoria"
-                    }));                    
-                    break;
-                case 7:
-                    lstResultado = Instituicao.ListarOrdenadamente().Select(a => new {
-                        cod = a.CodInstituicao,
-                        description = a.Sigla,
-                        title = a.PessoaJuridica.NomeFantasia,
-                        category = "Instituição"
-                    });
-                    break;
                 default:
                     break;
             }
-
+           
             return Json(lstResultado, JsonRequestBehavior.AllowGet);
         }
     }
