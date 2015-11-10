@@ -1,0 +1,22 @@
+﻿@{
+    ViewBag.Title = "Avaliação Institucional";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Usuario
+
+<h2>@ViewBag.Title</h2>
+
+<div class="ui stackable grid dashmenu">
+    <div class="stackable doubling four columns centered row">
+        
+        @if (Model.CodCategoria == 3)
+        {
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
+                { "Url", Url.Action("Gerar") },
+                { "Icone", "file text outline" },
+                { "Descricao", "Gerar Av. Institucional" }
+            })
+        }
+    </div>
+</div>

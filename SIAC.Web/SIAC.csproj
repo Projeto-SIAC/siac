@@ -622,6 +622,8 @@
     <Content Include="Views\Certificacao\Agendar.cshtml" />
     <Content Include="Views\Certificacao\Partials\_ListaCertificacao.cshtml" />
     <Content Include="Views\Certificacao\Avaliados.cshtml" />
+    <Content Include="Views\Institucional\Index.cshtml" />
+    <Content Include="Views\Institucional\Gerar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -631,7 +633,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Institucional\" />
     <Folder Include="Views\LeroLero\" />
     <Folder Include="Views\Perfil\" />
     <Folder Include="Views\Tema\" />

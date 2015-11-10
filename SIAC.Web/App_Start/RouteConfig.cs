@@ -13,12 +13,19 @@ namespace SIAC
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.LowercaseUrls = true;
+            
+            routes.MapRoute(
+                name: "Institucional",
+                url:"Institucional/{action}/{codigo}",
+                defaults: new { controller = "Institucional", action = "Index", codigo = UrlParameter.Optional },
+                constraints: new { controller = @"^(Institucional)$" }
+            );
 
             routes.MapRoute(
                 name: "HistoricoAvaliacao",
                 url: "Historico/Avaliacao/{controller}/{action}/{codigo}",
                 defaults: new { controller = "Historico", action = "Index", codigo = UrlParameter.Optional },
-                constraints: new { controller = @"^(Academica|Reposicao|Certificacao|Institucional)$", action = @"^(Index|Minhas|Detalhe|Agendada|Pendente|Corrigir)$" }
+                constraints: new { controller = @"^(Academica|Reposicao|Certificacao)$", action = @"^(Index|Minhas|Detalhe|Agendada|Pendente|Corrigir)$" }
             );
 
             routes.MapRoute(
@@ -33,7 +40,7 @@ namespace SIAC
                 name: "DashboardAvaliacao",
                 url: "Dashboard/Avaliacao/{controller}/{action}/{codigo}",
                 defaults: new { controller = "Dashboard", action = "Index", codigo = UrlParameter.Optional },
-                constraints: new { controller = @"^(Academica|Reposicao|Certificacao|Institucional)$" }
+                constraints: new { controller = @"^(Academica|Reposicao|Certificacao)$" }
             );
 
             routes.MapRoute(
@@ -59,7 +66,7 @@ namespace SIAC
                 name: "Default",
                 url: "{controller}/{action}",
                 defaults: new { controller = "Acesso", action = "Index" },
-                constraints: new { controller = @"^(Dashboard|Historico|Perfil|Acesso|Erro|Configuracoes|Tema)$" }
+                constraints: new { controller = @"^(Dashboard|Historico|Institucional|Perfil|Acesso|Erro|Configuracoes|Tema)$" }
             );           
 
             routes.MapRoute(
