@@ -535,6 +535,7 @@
     <Compile Include="ViewModels\AvaliacaoGerarViewModel.cs" />
     <Compile Include="ViewModels\AvaliacaoIndexViewModel.cs" />
     <Compile Include="ViewModels\AvaliacaoResultadoViewModel.cs" />
+    <Compile Include="ViewModels\CertificacaoConfigurarViewModel.cs" />
     <Compile Include="ViewModels\QuestaoCadastrarViewModel.cs" />
     <Compile Include="ViewModels\QuestaoIndexViewModel.cs" />
   </ItemGroup>
