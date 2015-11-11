@@ -104,9 +104,10 @@ namespace SIAC.Controllers
         // GET: Autoavaliacao/Gerar
         public ActionResult Gerar()
         {
-            ViewBag.Disciplinas = Disciplina.ListarTemQuestoes();
-            ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente().Select(d=>new {Codigo = d.CodDificuldade, Descricao = d.Descricao });
-            return View();
+            var model = new ViewModels.AvaliacaoGerarViewModel();
+            model.Disciplinas = Disciplina.ListarTemQuestoes();
+            model.Dificuldades = Dificuldade.ListarOrdenadamente();
+            return View(model);
         }
 
         // POST: Autoavaliacao/Confirmar
@@ -210,6 +211,9 @@ namespace SIAC.Controllers
                 {
                     if (auto.CodPessoaFisica == codPessoaFisica)
                     {
+                        var model = new ViewModels.AutoavaliacaoDetalheViewModel();
+                        model.Avaliacao = auto.Avaliacao;
+
                         if (auto.Avaliacao.AvalPessoaResultado.Count > 0)
                         {
                             double qteObjetiva = 0;
@@ -241,18 +245,17 @@ namespace SIAC.Controllers
                                 }
                             }
 
-                            ViewBag.Porcentagem = (auto.Avaliacao.AvalPessoaResultado.First().QteAcertoObj / qteObjetiva) * 100;
-                            ViewBag.Desempenho = new Dictionary<string, double>();
+                            model.Porcentagem = (auto.Avaliacao.AvalPessoaResultado.First().QteAcertoObj.Value / qteObjetiva) * 100;
                             foreach (var key in qteObjetivaDisciplina.Keys)
                             {
                                 if (qteObjetivaDisciplina[key] > 0)
                                 {
-                                    ViewBag.Desempenho.Add(key, (qteObjetivaAcertoDisciplina[key] / qteObjetivaDisciplina[key]) * 100);
+                                    model.Desempenho.Add(key, (qteObjetivaAcertoDisciplina[key] / qteObjetivaDisciplina[key]) * 100);
                                 }
                             }
                         }
 
-                        return View(auto);
+                        return View(model);
                     }
                 }
             }
@@ -270,9 +273,10 @@ namespace SIAC.Controllers
                     return View(auto);
                 }
             }
+            var model = new ViewModels.AutoavaliacaoNovoViewModel();
             int codPessoaFisica = Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula);
-            ViewBag.Geradas = AvalAuto.ListarNaoRealizadaPorPessoa(codPessoaFisica);
-            return View("Novo");
+            model.Geradas = AvalAuto.ListarNaoRealizadaPorPessoa(codPessoaFisica);
+            return View("Novo", model);
         }
 
         // GET: Autoavaliacao/Imprimir/AUTO201520001
@@ -347,21 +351,21 @@ namespace SIAC.Controllers
 
                     Repositorio.GetInstance().SaveChanges();
 
-                    ViewBag.Porcentagem = (avalPessoaResultado.QteAcertoObj / qteObjetiva) * 100;
-                    ViewBag.Desempenho = new Dictionary<string, double>();
+                    var model = new ViewModels.AvaliacaoResultadoViewModel();
+                    model.Avaliacao = auto.Avaliacao;
+                    model.Porcentagem = (avalPessoaResultado.QteAcertoObj.Value / qteObjetiva) * 100;
                     foreach (var key in qteObjetivaDisciplina.Keys)
                     {
                         if (qteObjetivaDisciplina[key] > 0)
                         {
-                            ViewBag.Desempenho.Add(key, (qteObjetivaAcertoDisciplina[key] / qteObjetivaDisciplina[key]) * 100);
+                            model.Desempenho.Add(key, (qteObjetivaAcertoDisciplina[key] / qteObjetivaDisciplina[key]) * 100);
                         }
                     }
-                    return View(auto);
+                    return View(model);
                 }
                 return RedirectToAction("Detalhe", new { codigo = auto.Avaliacao.CodAvaliacao });
-            }            
-            ViewBag.Geradas = AvalAuto.ListarNaoRealizadaPorPessoa(codPessoaFisica);
-            return View("Novo");
+            }                        
+            return RedirectToAction("Realizar");
         }
 
         [HttpPost]

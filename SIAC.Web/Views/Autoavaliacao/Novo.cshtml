@@ -1,16 +1,17 @@
-﻿
+﻿@model AutoavaliacaoNovoViewModel
+
 @{
     ViewBag.Title = "Realizar autoavaliação";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-@if (ViewBag.Geradas.Count > 0)
+@if (Model.Geradas.Count > 0)
 {
     <h2>@ViewBag.Title<a href="@Url.Action("Gerar")" class="ui right floated button">Gerar</a></h2>
     <div class="ui basic segment">
         <div class="ui stackable three cards">
-        @foreach (SIAC.Models.AvalAuto auto in ViewBag.Geradas)
+        @foreach (AvalAuto auto in Model.Geradas)
         {
             <div class="card">
                 <div class="content">
