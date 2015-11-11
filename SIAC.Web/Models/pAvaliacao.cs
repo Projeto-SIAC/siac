@@ -85,13 +85,35 @@ namespace SIAC.Models
         {
             get
             {
-                int qteObj = Questao.Count(q => q.CodTipoQuestao == 1);
-                int qteDis = Questao.Count(q => q.CodTipoQuestao == 2);
+                int tipo = 0;
 
-                if (qteObj > 0 && qteDis > 0) return 3;
-                else if (qteObj > 0) return 1;
-                else if (qteDis > 0) return 2;
-                else return -1;
+                foreach (var questao in this.Questao)
+                {
+                    if (questao.CodTipoQuestao == 1)
+                    {
+                        tipo += 1;
+                        break;
+                    }
+                }
+
+                foreach (var questao in this.Questao)
+                {
+                    if (questao.CodTipoQuestao == 2)
+                    {
+                        tipo += 2;
+                        break;
+                    }
+                }
+
+                return tipo > 0 ? tipo : -1;
+
+                //int qteObj = Questao.Count(q => q.CodTipoQuestao == 1);
+                //int qteDis = Questao.Count(q => q.CodTipoQuestao == 2);
+
+                //if (qteObj > 0 && qteDis > 0) return 3;
+                //else if (qteObj > 0) return 1;
+                //else if (qteDis > 0) return 2;
+                //else return -1;
             }
         }
 

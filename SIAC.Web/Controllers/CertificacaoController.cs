@@ -107,10 +107,11 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { 2/*, 3*/ })]
         public ActionResult Gerar()
         {
-            ViewBag.Disciplinas = /*Helpers.Sessao.UsuarioCategoriaCodigo == 2 ? */Disciplina.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula)/*: Disciplina.ListarOrdenadamente()*/;
-            ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
-            ViewBag.Termo = Parametro.Obter().NotaUso;
-            return View();
+            var model = new ViewModels.AvaliacaoGerarViewModel();
+            model.Disciplinas = /*Helpers.Sessao.UsuarioCategoriaCodigo == 2 ? */Disciplina.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula)/*: Disciplina.ListarOrdenadamente()*/;
+            model.Dificuldades = Dificuldade.ListarOrdenadamente();
+            model.Termo = Parametro.Obter().NotaUso;
+            return View(model);
         }
 
         // POST: Certificacao/Confirmar
@@ -188,9 +189,6 @@ namespace SIAC.Controllers
                     cert.Avaliacao.AvaliacaoTema.Add(avalTema);
                 }
 
-                ViewBag.QteQuestoes = lstQuestoes.Count;
-                ViewBag.QuestoesDaAvaliacao = lstQuestoes;
-
                 AvalCertificacao.Inserir(cert);
             }
 
@@ -210,9 +208,11 @@ namespace SIAC.Controllers
                     Professor prof = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
                     if (prof != null && prof.CodProfessor == cert.Professor.CodProfessor)
                     {
-                        ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
-                        ViewBag.TiposQuestao = TipoQuestao.ListarOrdenadamente();
-                        return View(cert);
+                        var model = new ViewModels.CertificacaoConfigurarViewModel();
+                        model.Avaliacao = cert.Avaliacao;
+                        model.Dificuldades = Dificuldade.ListarOrdenadamente();
+                        model.TiposQuestao = TipoQuestao.ListarOrdenadamente();
+                        return View(model);
                     }
                 }
             }

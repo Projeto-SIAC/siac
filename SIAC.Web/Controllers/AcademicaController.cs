@@ -104,14 +104,6 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Gerar()
         {
-            if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
-            {
-                if (Session["UrlReferrer"] != null)
-                {
-                    return Redirect(Session["UrlReferrer"].ToString());
-                }
-                else return RedirectToAction("Index", "Dashboard");
-            }
             var model = new ViewModels.AvaliacaoGerarViewModel();
             model.Disciplinas = Disciplina.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula);
             model.Dificuldades = Dificuldade.ListarOrdenadamente();
