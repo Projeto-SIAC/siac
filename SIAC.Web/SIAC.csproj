@@ -219,6 +219,7 @@
       <DependentUpon>siac.js</DependentUpon>
     </Content>
     <Content Include="Styles\fullcalendar.css" />
+    <Content Include="Styles\fullcalendar.print.css" />
     <Content Include="Styles\semantic.min.css" />
     <Content Include="Scripts\libs\semantic.min.js" />
     <Content Include="Styles\siac.acesso.css" />
@@ -367,6 +368,7 @@
     <Compile Include="Models\Estado.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Evento.cs" />
     <Compile Include="Models\Horario.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -477,10 +479,10 @@
     <Compile Include="Models\pTurma.cs" />
     <Compile Include="Models\pTurno.cs" />
     <Compile Include="Models\pUsuario.cs" />
-    <Compile Include="Models\Selecao.cs" />
     <Compile Include="Models\Sala.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Selecao.cs" />
     <Compile Include="Models\Sistema.cs" />
     <Compile Include="Models\Telefone.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>

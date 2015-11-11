@@ -36,7 +36,15 @@
                 { "Icone", "add circle" },
                 { "Descricao", "Nova Questão" }
             })
-        }                     
+        }     
+        @if (Model.CodCategoria <= 3)
+        {
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
+                { "Url", Url.Action("Index", "Agenda") },
+                { "Icone", "calendar" },
+                { "Descricao", "Abrir Agenda" }
+            })
+        }                       
         <div class="column aligned center">
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Index", "Perfil") },

@@ -41,7 +41,8 @@
           <mvcSiteMapNode title="Agendar" controller="Certificacao" action="Agendar" preservedRouteParameters="codigo"/>
           <mvcSiteMapNode title="Selecionar Avaliados" controller="Certificacao" action="Avaliados" preservedRouteParameters="codigo"/>
         </mvcSiteMapNode>
-      </mvcSiteMapNode>
+      </mvcSiteMapNode>    
+      <mvcSiteMapNode title="Agenda" controller="Agenda" action="Index" />
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Histórico" controller="Historico" action="Index">
       <mvcSiteMapNode title="Questão" controller="Questao" action="Index">

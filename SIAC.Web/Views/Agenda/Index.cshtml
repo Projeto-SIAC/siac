@@ -4,22 +4,42 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Styles {
-    @Styles.Render("~/bundles/css/fullcalendar")    
+    @Styles.Render("~/bundles/fullcalendar/css")    
 }
 
 @section Scripts{
-    @Scripts.Render("~/bundles/fullcalendar")    
+    @Scripts.Render("~/bundles/fullcalendar/js")    
     <script>
         $(document).ready(function () {
 
             // page is now ready, initialize the calendar...
 
             $('#calendar').fullCalendar({
+                header: {
+                        left:   'title',
+                        center: '',
+                        right:  'today agendaDay,agendaWeek,month prev,next'
+                },
                 lang: 'pt-br',
-                events: {
-                    url: '/dashboard/agenda/eventos',
-                    cache: true
-                }
+                eventSources: [
+                    {
+                        url: '/dashboard/agenda/certificacoes',
+                        type: 'POST',
+                        color: '#009688'
+                    },
+                    {
+                        url: '/dashboard/agenda/academicas',
+                        type: 'POST',
+                        color: '#2196F3'
+                    },
+                    {
+                        url: '/dashboard/agenda/horarios',
+                        type: 'POST',
+                        color: '#4CAF50',
+                        cache: true,
+                        rendering: 'background'
+                    }
+                ]
             });
 
         });

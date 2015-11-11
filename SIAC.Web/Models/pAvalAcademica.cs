@@ -50,6 +50,23 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
+        public static List<AvalAcademica> ListarAgendadaPorColaborador(int codColaborador)
+        {
+            return contexto.AvalAcademica
+                .Where(a => 
+                    (
+                        a.Turma.Curso.CodColabCoordenador == codColaborador 
+                        || a.Turma.Curso.Diretoria.CodColaboradorDiretor == codColaborador 
+                        || a.Turma.Curso.Diretoria.Campus.CodColaboradorDiretor == codColaborador 
+                        || a.Turma.Curso.Diretoria.Campus.Instituicao.Reitoria.Where(r=>r.CodColaboradorReitor == codColaborador).Count() > 0
+                    )
+                    && a.Avaliacao.DtAplicacao.HasValue
+                    && a.Avaliacao.AvalPessoaResultado.Count == 0
+                    && !a.Avaliacao.FlagArquivo)
+                .OrderBy(a => a.Avaliacao.DtAplicacao)
+                .ToList();
+        }
+
         public static List<AvalAcademica> ListarPorProfessor(int codProfessor)
         {
             return contexto.AvalAcademica.Where(ac => ac.CodProfessor == codProfessor)

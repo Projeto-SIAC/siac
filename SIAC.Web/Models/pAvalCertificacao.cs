@@ -55,9 +55,9 @@ namespace SIAC.Models
             return null;
         }
 
-        internal static List<AvalCertificacao> ListarPorPessoa(int codPessoaFisica)
+        public static List<AvalCertificacao> ListarPorPessoa(int codPessoaFisica)
         {
-            return contexto.AvalCertificacao.Where(ac => ac.PessoaFisica.FirstOrDefault(p=>p.CodPessoa == codPessoaFisica) != null)
+            return contexto.AvalCertificacao.Where(ac => ac.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica) != null)
                                          .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
                                          .ToList();
         }
@@ -67,6 +67,44 @@ namespace SIAC.Models
             return contexto.AvalCertificacao.Where(ac => ac.CodProfessor == codProfessor)
                                          .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
                                          .ToList();
+        }
+
+        public static List<AvalCertificacao> ListarAgendada()
+        {
+            return contexto.AvalCertificacao
+                .Where(a => a.Avaliacao.DtAplicacao.HasValue
+                    && a.Avaliacao.AvalPessoaResultado.Count == 0
+                    && !a.Avaliacao.FlagArquivo)
+                .OrderBy(a => a.Avaliacao.DtAplicacao)
+                .ToList();
+        }
+
+        public static List<AvalCertificacao> ListarAgendadaPorProfessor(int codProfessor)
+        {
+            return ListarAgendada()
+                .Where(a => a.CodProfessor == codProfessor)
+                .OrderBy(a => a.Avaliacao.DtAplicacao)
+                .ToList();
+        }
+
+        public static List<AvalCertificacao> ListarAgendadaPorPessoa(int codPessoaFisica)
+        {
+            return ListarAgendada()
+                .Where(ac => ac.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica) != null)
+                .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
+                .ToList();
+        }
+
+        public static List<AvalCertificacao> ListarAgendadaPorColaborador(int codColaborador)
+        {
+            return ListarAgendada()
+                .Where(a =>
+                        a.Professor.TurmaDiscProfHorario.Where(t => t.Turma.Curso.CodColabCoordenador == codColaborador
+                        || t.Turma.Curso.Diretoria.CodColaboradorDiretor == codColaborador
+                        || t.Turma.Curso.Diretoria.Campus.CodColaboradorDiretor == codColaborador
+                        || t.Turma.Curso.Diretoria.Campus.Instituicao.Reitoria.Where(r => r.CodColaboradorReitor == codColaborador).Count() > 0).Count() > 0)
+                .OrderBy(a => a.Avaliacao.DtAplicacao)
+                .ToList();
         }
     }
 }

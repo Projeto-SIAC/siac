@@ -44,7 +44,7 @@ namespace SIAC
                 "~/scripts/plugins/jquery.signalR-2.2.0.min.js"
             ));
 
-            bundles.Add(new ScriptBundle("~/bundles/fullcalendar").Include(
+            bundles.Add(new ScriptBundle("~/bundles/fullcalendar/js").Include(
                 "~/scripts/libs/moment.min.js",
                 "~/scripts/libs/fullcalendar.min.js",
                 "~/scripts/libs/fullcalendar.pt-br.min.js"
@@ -59,8 +59,9 @@ namespace SIAC
                 "~/styles/siac.min.css"
             ));
 
-            bundles.Add(new StyleBundle("~/bundles/css/fullcalendar").Include(
-                "~/styles/fullcalendar.css"
+            bundles.Add(new StyleBundle("~/bundles/fullcalendar/css").Include(
+                "~/styles/fullcalendar.css",
+                "~/styles/fullcalendar.print.css"
             ));
 
             bundles.Add(new StyleBundle("~/bundles/css/acesso").Include(
