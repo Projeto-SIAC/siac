@@ -635,7 +635,6 @@
     <Content Include="Views\Certificacao\Partials\_PassoAPasso.cshtml" />
     <Content Include="Views\Certificacao\Agendar.cshtml" />
     <Content Include="Views\Certificacao\Partials\_ListaCertificacao.cshtml" />
-    <Content Include="Views\Certificacao\Pessoas.cshtml" />
     <Content Include="Views\Institucional\Index.cshtml" />
     <Content Include="Views\Institucional\Gerar.cshtml" />
     <Content Include="Views\Agenda\Index.cshtml" />
