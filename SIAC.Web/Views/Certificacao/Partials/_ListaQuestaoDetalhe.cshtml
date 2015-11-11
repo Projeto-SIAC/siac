@@ -1,0 +1,95 @@
+﻿@model List<Questao>
+@{
+    int i = 0;
+    foreach (Questao questao in Model)
+    {
+        <div id="@questao.CodQuestao" class="title">
+            <i class="dropdown icon"></i><b>@((i++.GetIndiceQuestao() + ". " + questao.Enunciado).ToShortString(80))</b>
+        </div>
+        <div id="@questao.CodQuestao" class="content">
+            <div class="ui segment">
+                <div class="ui labels">
+                    <div class="ui label">
+                        Disciplina
+                        <div class="detail">
+                            @questao.QuestaoTema.ElementAt(0).Tema.Disciplina.Descricao
+                        </div>
+                    </div>
+                    <div class="ui label" data-html="@( !String.IsNullOrEmpty(questao.Dificuldade.Comentario) ? "<b>Comentário</b>: "+questao.Dificuldade.Comentario : "" )">
+                        Dificuldade
+                        <div class="detail">
+                            @questao.Dificuldade.Descricao
+                        </div>
+                    </div>
+                    @foreach (var questaoTema in questao.QuestaoTema)
+                    {
+                        <div class="ui tag label" data-html="@( !String.IsNullOrEmpty(questaoTema.Tema.Comentario) ? "<b>Comentário</b>: "+questaoTema.Tema.Comentario : "" )">@questaoTema.Tema.Descricao</div>
+                    }
+                </div>
+                <div class="ui dividing header" data-html="@( !String.IsNullOrEmpty(questao.Objetivo) ? "<b>Objetivo</b>: " + questao.Objetivo : "")">
+                    @{
+                        var enunciado = questao.Enunciado.Split('\n', '\r');
+                        foreach (var strEnunciado in enunciado)
+                        {
+                            if (!String.IsNullOrWhiteSpace(strEnunciado))
+                            {
+                                <p>@strEnunciado</p>
+                            }
+                        }
+                    }
+                </div>
+                @if (questao.CodTipoQuestao == 1)
+                {
+                    <div class="ui very relaxed list">
+                        @foreach (var alternativa in questao.Alternativa)
+                        {
+                            <div class="item" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
+                                <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
+                                @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
+                                {
+                                    <a class="ui green label">Correta</a>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div data-html="@(!String.IsNullOrEmpty(questao.Comentario) ? "<b>Comentário</b>: " + questao.Comentario : "")">
+                        <a class="ui green ribbon label">Chave de Resposta</a>
+                        @{
+                            var chaveDeResposta = questao.ChaveDeResposta.Split('\n', '\r');
+                            foreach (var strChaveDeResposta in chaveDeResposta)
+                            {
+                                if (!String.IsNullOrWhiteSpace(strChaveDeResposta))
+                                {
+                                    <p><i>@strChaveDeResposta</i></p>
+                                }
+                            }
+                        }
+                    </div>
+                            }
+                @if (questao.QuestaoAnexo.Count > 0)
+                {
+                    <br />
+                    <div class="ui styled fluid accordion">
+                        <div class="title"><i class="icon dropdown"></i>Anexos</div>
+                        <div class="content">
+                            @foreach (var anexo in questao.QuestaoAnexo)
+                            {
+                                switch (anexo.CodTipoAnexo)
+                                {
+                                    case 1:
+                                        @Html.Partial("_AnexoImagem", anexo)
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}

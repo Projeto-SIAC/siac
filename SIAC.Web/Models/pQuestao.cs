@@ -407,13 +407,18 @@ namespace SIAC.Models
             return QuestoesTemas;
         }
 
+        public static List<Questao> Listar()
+        {
+            return contexto.Questao.ToList();
+        }
+        
         //MÉTODO PARA USAR EM AJAX 
         public static List<Questao> ListarPorPalavraChave(string[] palavraChave)
         {
             List<Questao> todas = Questao.Listar();
             List<Questao> retorno = new List<Questao>();
             List<string> tags = new List<string>();
-            string tagsReservadas = "ão das do da porque que quais porquê quê por abaixo porém mas a e o as os para cujo quais";
+            string tagsReservadas = "ão das do da porque que como isso quais porquê quê por abaixo porém mas a e o as os para cujo quais";
 
             for (int i = 0; i < palavraChave.Length; i++)
             {
@@ -440,13 +445,7 @@ namespace SIAC.Models
             }
             return retorno;
         }
-
-        public static List<Questao> Listar()
-        {
-            return contexto.Questao.ToList();
-        }
-
-        //MÉTODO PARA USAR EM AJAX 
+        
         public static List<QuestaoTema> ObterNovasQuestoes(List<QuestaoTema> QuestoesOriginais, int codTipoQuestao)
         {
             if (QuestoesOriginais.Count > 0)
@@ -485,6 +484,7 @@ namespace SIAC.Models
             }
             return null;
         }
+
         public static List<Questao> ListarQuestoesFiltradas(int codDisciplina, int[] Temas, int dificulDisc, int tipo)
         {
             List<QuestaoTema> QuestoesTotal = new List<QuestaoTema>();
@@ -513,6 +513,18 @@ namespace SIAC.Models
                 return questoes;
             }
             return null;
+        }
+
+        public static List<Questao> ListarPorCodigos(int[] codQuestoes)
+        {
+            List<Questao> questoes = new List<Questao>();
+
+            foreach (int codQuestao in codQuestoes)
+            {
+                questoes.Add(Questao.ListarPorCodigo(codQuestao));
+            }
+
+            return questoes;
         }
     }
 }
