@@ -168,6 +168,8 @@ siac.Certificacao.Configurar = (function () {
     var _ADD = "Adicionar";
     var _REM = "Remover"
 
+    var _controleModal;
+
     function iniciar() {
         //Obtendo Dados da Página
         $elemento = $('[data-avaliacao]');
@@ -184,6 +186,14 @@ siac.Certificacao.Configurar = (function () {
             else if ($(this).find('.tipo.label').text() == _DISC) _qteDiscursiva++;
         });
         //Fim da Obtenção de Dados
+
+        $('.questao.modal').modal({
+            onDeny: function () {
+                if (_controleModal) {
+                    _controleModal.modal('show');
+                }
+            }
+        });
 
         $('.informacoes.button').click(function () {
             $('.informacoes.modal').modal('show');
@@ -245,6 +255,7 @@ siac.Certificacao.Configurar = (function () {
 
         $('.ui.detalhe.button').click(function () {
             var codQuestao = $(this).parents('.card').attr('id');
+            _controleModal = $(this).parents('.modal');
             mostrarQuestao(codQuestao, this);
         });
 
@@ -313,6 +324,7 @@ siac.Certificacao.Configurar = (function () {
 
                     $('.ui.detalhe.button').click(function () {
                         var codQuestao = $(this).parents('.card').attr('id');
+                        _controleModal = $(this).parents('.modal');
                         mostrarQuestao(codQuestao,this);
                     });
                 }
@@ -371,7 +383,7 @@ siac.Certificacao.Configurar = (function () {
         }).transition('scale');
     }
 
-    function mostrarQuestao(codQuestao,_this) {
+    function mostrarQuestao(codQuestao, _this) {
         $_this = $(_this);
         $_this.addClass('loading');
         $.ajax({
