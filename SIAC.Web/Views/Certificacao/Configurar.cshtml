@@ -13,7 +13,19 @@
 @Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 2 } })
 @Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
 
+<div class="ui questao small modal">
+    <i class="close icon"></i>
+    <div class="header"></div>
+    <div class="content">
+        <div class="ui segment"></div>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Voltar</div>
+    </div>
+</div>
+
 <div class="ui questoes modal">
+    <i class="close icon"></i>
     <div class="header">
         Questões Selecionadas
     </div>
@@ -41,19 +53,13 @@
     </div>
 </div>
 
-<div class="ui questao modal">
-    <div class="header"></div>
-    <div class="content">
-        <div class="ui segment"></div>
-    </div>
-</div>
-
 <div class="ui confirmar modal">
+    <i class="close icon"></i>
     <div class="header">
         Deseja prosseguir?
     </div>
     <div class="content">
-        Clique em confirmar para agendar sua avaliação de certificação
+        <div class="ui accordion"></div>
     </div>
     <div class="actions">
         <div class="ui cancel button">Voltar</div>

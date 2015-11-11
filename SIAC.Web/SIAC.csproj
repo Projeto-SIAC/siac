@@ -182,6 +182,7 @@
     <Content Include="Resources\images\layout\ogimage.jpg" />
     <Content Include="Scripts\libs\chart.min.js" />
     <Content Include="Scripts\libs\fullcalendar.min.js" />
+    <Content Include="Scripts\libs\fullcalendar.pt-br.min.js" />
     <Content Include="Scripts\libs\html2canvas.js" />
     <Content Include="Scripts\libs\html2canvas.min.js">
       <DependentUpon>html2canvas.js</DependentUpon>
@@ -191,7 +192,6 @@
     <Content Include="Resources\images\layout\logo-black.png" />
     <Content Include="Resources\images\layout\logo.png" />
     <Content Include="Scripts\libs\moment.min.js" />
-    <Content Include="Scripts\libs\fullcalendar.pt-br.min.js" />
     <Content Include="Scripts\modules\siac.academica.js" />
     <Content Include="Scripts\modules\siac.academica.min.js">
       <DependentUpon>siac.academica.js</DependentUpon>
@@ -635,10 +635,12 @@
     <Content Include="Views\Certificacao\Partials\_PassoAPasso.cshtml" />
     <Content Include="Views\Certificacao\Agendar.cshtml" />
     <Content Include="Views\Certificacao\Partials\_ListaCertificacao.cshtml" />
-    <Content Include="Views\Certificacao\Avaliados.cshtml" />
+    <Content Include="Views\Certificacao\Pessoas.cshtml" />
     <Content Include="Views\Institucional\Index.cshtml" />
     <Content Include="Views\Institucional\Gerar.cshtml" />
     <Content Include="Views\Agenda\Index.cshtml" />
+    <Content Include="Views\Certificacao\Avaliados.cshtml" />
+    <Content Include="Views\Certificacao\Partials\_ListaQuestaoDetalhe.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -168,6 +168,8 @@ siac.Certificacao.Configurar = (function () {
     var _ADD = "Adicionar";
     var _REM = "Remover"
 
+    var _controleModal;
+
     function iniciar() {
         //Obtendo Dados da Página
         $elemento = $('[data-avaliacao]');
@@ -185,6 +187,14 @@ siac.Certificacao.Configurar = (function () {
         });
         //Fim da Obtenção de Dados
 
+        $('.questao.modal').modal({
+            onDeny: function () {
+                if (_controleModal) {
+                    _controleModal.modal('show');
+                }
+            }
+        });
+
         $('.informacoes.button').click(function () {
             $('.informacoes.modal').modal('show');
         });
@@ -197,7 +207,7 @@ siac.Certificacao.Configurar = (function () {
 
         $('.ui.confirmar.modal').modal({
             onApprove: function () {
-                $('.ui.global.loader').parent().dimmer('show');
+                $('.confirmar.button').addClass('loading');
                 $.ajax({
                     type: 'POST',
                     url: '/dashboard/avaliacao/certificacao/Configurar/',
@@ -219,24 +229,10 @@ siac.Certificacao.Configurar = (function () {
         });
 
         $('.confirmar.button').click(function () {
-
-            $questoes = $('.questoes.modal .cards').clone();
-            $questoes.removeClass('three').addClass('one');
-            $questoes.find('.attached.buttons').remove();
-
-            $questoes.find('.card').map(function () {
-                $header = $(this).find('.header');
-                var text = $header.data('enunciado');
-                text = text.substituirTodos('\n', '<br>');
-                $header.html(text);
-                $header.css('text-align', 'justify');
-            })
-
-            $('.confirmar.modal .content').html($questoes);
-
-            $('.ui.confirmar.modal').modal('show');
-
-            return false;
+            if (_arrayQuestoes.length >= _qteMaxDiscursiva + _qteMaxObjetiva) {
+                prosseguir($(this));
+            }
+            else siac.aviso('Você ainda não selecionou questões suficientes para esta avaliação', 'red');
         });
 
         $('.ui.questoes.button').click(function () {
@@ -245,6 +241,7 @@ siac.Certificacao.Configurar = (function () {
 
         $('.ui.detalhe.button').click(function () {
             var codQuestao = $(this).parents('.card').attr('id');
+            _controleModal = $(this).parents('.modal');
             mostrarQuestao(codQuestao, this);
         });
 
@@ -313,7 +310,8 @@ siac.Certificacao.Configurar = (function () {
 
                     $('.ui.detalhe.button').click(function () {
                         var codQuestao = $(this).parents('.card').attr('id');
-                        mostrarQuestao(codQuestao, this);
+                        _controleModal = $(this).parents('.modal');
+                        mostrarQuestao(codQuestao,this);
                     });
                 }
             });
@@ -382,16 +380,57 @@ siac.Certificacao.Configurar = (function () {
             },
             success: function (data) {
                 if (_arrayQuestoes.indexOf(codQuestao) > -1) codQuestao = _arrayQuestoes.indexOf(codQuestao) + 1;
-                $('.questao.modal .header').html('Questão ' + codQuestao);
-                $('.questao.modal .segment').html(data);
-                $('.accordion').accordion();
-                $('.questao.modal').modal('show');
+                $modal = $('.questao.modal');
+                $modal.find('.header').html('Questão ' + codQuestao);
+                $modal.find('.segment').html(data);
+                $('.accordion').accordion({
+                    onChange:function(){
+                        $modal.modal('refresh');
+                    }
+                });
+                $modal.modal('show');
             },
             error: function (data) {
                 siac.mensagem(data, 'Error');
             },
             complete: function () {
                 $_this.removeClass('loading');
+                $('.card.anexo.imagem').off().click(function () {
+                    expandirModalImagem($(this));
+                });
+            }
+        });
+    }
+
+    function prosseguir($_this) {
+        $_this.addClass('loading');
+        $modal = $('.confirmar.modal');
+        $.ajax({
+            type: 'POST',
+            url: '/dashboard/avaliacao/certificacao/CarregarListaQuestaoDetalhe',
+            data: {
+                codQuestoes: _arrayQuestoes
+            },
+            success: function (data) {
+                if (data) {
+                    $modal.find('.ui.accordion')
+                        .html(data)
+                        .accordion({
+                            onChange:function(){
+                                $modal.modal('refresh');
+                            }
+                        });
+                }
+            },
+            error: function (data) {
+                siac.mensagem(data, 'Error');
+            },
+            complete: function () {
+                $_this.removeClass('loading');
+                $modal.modal('show');
+                $('.card.anexo.imagem').off().click(function () {
+                    expandirModalImagem($(this));
+                });
             }
         });
     }
@@ -417,6 +456,15 @@ siac.Certificacao.Configurar = (function () {
             else $disc.removeClass('green');
         }
 
+    }
+
+    function expandirModalImagem($this) {
+        var source = $this.find('img').attr('src');
+        var legenda = $this.find('.header').text();
+        $description = $this.find('.description');
+        var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
+
+        siac.Anexo.expandirImagem(source, legenda, fonte);
     }
 
     return {
