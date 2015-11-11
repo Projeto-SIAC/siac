@@ -531,6 +531,8 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="ViewModels\AvaliacaoAgendarViewModel.cs" />
     <Compile Include="ViewModels\AvaliacaoIndexViewModel.cs" />
+    <Compile Include="ViewModels\QuestaoCadastrarViewModel.cs" />
+    <Compile Include="ViewModels\QuestaoIndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

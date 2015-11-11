@@ -2,9 +2,9 @@
 
 namespace SIAC.ViewModels
 {
-    public class AvaliacaoIndexViewModel
+    public class QuestaoIndexViewModel
     {
-        public List<Models.Dificuldade> Dificuldades { get; set; }
         public List<Models.Disciplina> Disciplinas { get; set; }
+        public List<Models.Dificuldade> Dificuldades { get; set; }
     }
 }
