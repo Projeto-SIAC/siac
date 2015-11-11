@@ -1,7 +1,7 @@
 ﻿@model AvalCertificacao
 
 @{
-    ViewBag.Title = "Selecionar Pessoas";
+    ViewBag.Title = "Selecionar Avaliados";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -14,6 +14,28 @@
 
 @Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
 @Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 4 } })
+
+@if (Model.PessoaFisica.Count > 0)
+{
+    <div class="ui small continuar modal">
+        <div class="header">
+            Você tem certeza?
+        </div>
+        <div class="content">
+            <p>
+                Caso você continue, as pessoas selecionadas anteriormente
+                serão automaticamente substituídas pelas que você selecionará.
+            </p>
+            <p>
+                <b>Essa ação não poderá ser desfeita.</b>
+            </p>
+        </div>
+        <div class="actions">
+            <a href="@Url.Action("Detalhe", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui negative button">Cancelar</a>
+            <div class="ui approve positive button">Continuar</div>
+        </div>
+    </div>
+}
 
 <div class="ui confirmar modal">
     <div class="header">
@@ -40,8 +62,6 @@
                     <option value="3">Curso</option>
                     <option value="4">Diretoria</option>
                     <option value="5">Campus</option>
-                    <option value="6">Reitoria</option>
-                    <option value="7">Instituição</option>
                 </select>
             </div>
             <div class="twelve wide field">
@@ -63,30 +83,15 @@
 </div>
 
 <div class="ui basic segment">
-    <table class="ui table">
+    <table class="ui selecionados table">
         <thead>
             <tr>
-                <th>Selecionado</th>
+                <th>Selecionados</th>
                 <th></th>
                 <th></th>
             </tr>
         </thead>
-        <tbody>
-            @*@foreach (var pessoa in Model.PessoaFisica)
-            {
-                <tr data-pessoa="@pessoa.CodPessoa">
-                    <td id="nome">
-                        @pessoa.Nome
-                    </td>
-                    <td>
-                        <div class="ui toggle checkbox">
-                            <input type="checkbox" name="chkSelecionado" checked>
-                            <label>Selecionado</label>
-                        </div>
-                    </td>
-                </tr>
-            }*@
-        </tbody>
+        <tbody></tbody>
     </table>
 </div>
 
@@ -99,10 +104,6 @@
     </div>
 </div>
 <div class="ui salvar button">Salvar</div>
-
-@*<code id="pessoas" hidden>
-    @Html.Raw(Json.Encode(Model.PessoaFisica.Select(u => new { u.CodPessoa, u.Nome })))
-</code>*@
 
 @section Scripts{
     @Scripts.Render("~/bundles/js/certificacao")

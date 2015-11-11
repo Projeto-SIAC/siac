@@ -104,19 +104,12 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Gerar()
         {
-            if (Helpers.Sessao.UsuarioCategoriaCodigo != 2)
-            {
-                if (Session["UrlReferrer"] != null)
-                {
-                    return Redirect(Session["UrlReferrer"].ToString());
-                }
-                else return RedirectToAction("Index", "Dashboard");
-            }
-            ViewBag.Disciplinas = Disciplina.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula);
-            ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
-            ViewBag.Termo = Parametro.Obter().NotaUso;
+            var model = new ViewModels.AvaliacaoGerarViewModel();
+            model.Disciplinas = Disciplina.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula);
+            model.Dificuldades = Dificuldade.ListarOrdenadamente();
+            model.Termo = Parametro.Obter().NotaUso;
 
-            return View();
+            return View(model);
         }
 
         //POST: Dashboard/Avaliacao/Academica/Confirmar
@@ -201,9 +194,6 @@ namespace SIAC.Controllers
                     }
                     acad.Avaliacao.AvaliacaoTema.Add(avalTema);
                 }
-
-                ViewBag.QteQuestoes = lstQuestoes.Count;
-                ViewBag.QuestoesDaAvaliacao = lstQuestoes;
 
                 AvalAcademica.Inserir(acad);
             }
@@ -732,11 +722,15 @@ namespace SIAC.Controllers
                     aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
                     Repositorio.GetInstance().SaveChanges();
-                    
-                    ViewBag.Porcentagem = (avalPessoaResultado.QteAcertoObj / qteObjetiva) * 100;
+
+                    var model = new ViewModels.AvaliacaoResultadoViewModel();
+                    model.Avaliacao = aval.Avaliacao;
+                    model.Porcentagem = (avalPessoaResultado.QteAcertoObj.Value / qteObjetiva) * 100;
+
                     Helpers.Sessao.Inserir("RealizandoAvaliacao", false);
                     Helpers.Sessao.Inserir("UsuarioAvaliacao", String.Empty);
-                    return View(aval);
+
+                    return View(model);
                 }
                 return RedirectToAction("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao });
             }

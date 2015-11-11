@@ -1,9 +1,9 @@
-﻿@using SIAC.Models
-@model AvalAcademica
+﻿@model AvaliacaoResultadoViewModel
+
 @{
     ViewBag.Title = "Resultado " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
-    int codPessoaFisica = Usuario.ObterPessoaFisica(SIAC.Helpers.Sessao.UsuarioMatricula);
+    int codPessoaFisica = Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula);
     List<Questao> lstQuestao = Model.Avaliacao.Questao;
     List<AvalQuesPessoaResposta> lstPessoaResposta = Model.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == codPessoaFisica).ToList();
     AvalPessoaResultado avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.First(r => r.CodPessoaFisica == codPessoaFisica);
@@ -17,7 +17,7 @@
     <div class="ui statistics">
         <div class="statistic">
             <div class="value">
-                @(ViewBag.Porcentagem.ToString("0.##'%'"))
+                @(Model.Porcentagem.ToString("0.##'%'"))
             </div>
             <div class="label">
                 Porcentagem de Acerto
@@ -68,7 +68,7 @@
                     <div class="ui segment">
                         <div class="ui dividing header" style="text-align:justify">
                             @{
-                                var enunciado = (@i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).Split('\n', '\r');
+                                var enunciado = (i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).Split('\n', '\r');
                                 foreach (var strEnunciado in enunciado)
                                 {
                                     if (!String.IsNullOrWhiteSpace(strEnunciado))

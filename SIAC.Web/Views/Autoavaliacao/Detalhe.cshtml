@@ -1,5 +1,4 @@
-﻿@using SIAC.Models
-@model AvalAuto
+﻿@model AutoavaliacaoDetalheViewModel
 
 @{
     ViewBag.Title = "Autoavaliação " + Model.Avaliacao.CodAvaliacao;
@@ -84,7 +83,7 @@ else
             <div class="ui label">
                 Porcentagem de Acerto
                 <div class="detail">
-                    @(ViewBag.Porcentagem.ToString("0.##'%'"))
+                    @(Model.Porcentagem.ToString("0.##'%'"))
                 </div>
             </div>
             <div class="ui label">
@@ -95,11 +94,11 @@ else
             </div>
         </div>
         <div class="ui statistics">
-            @foreach (var key in ViewBag.Desempenho.Keys)
+            @foreach (var key in Model.Desempenho.Keys)
             {
-                <div class="statistic @(ViewBag.Desempenho[key]>50 ? "green" : "red")">
+                <div class="statistic @(Model.Desempenho[key]>50 ? "green" : "red")">
                         <div class="value">
-                            @ViewBag.Desempenho[key].ToString("0.##'%'")
+                            @Model.Desempenho[key].ToString("0.##'%'")
                         </div>
                         <div class="label">@key</div>
                 </div>

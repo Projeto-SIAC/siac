@@ -24,9 +24,10 @@ namespace SIAC.Controllers
             {
                 return Redirect("~/Historico/Questao");
             }
-            ViewBag.Disciplinas = Questoes.Select(q => q.Disciplina).Distinct().ToList();
-            ViewBag.Dificuldades = Questoes.Select(q => q.Dificuldade).Distinct().ToList();
-            return View();
+            var model = new ViewModels.QuestaoIndexViewModel();
+            model.Disciplinas = Questoes.Select(q => q.Disciplina).Distinct().ToList();
+            model.Dificuldades = Questoes.Select(q => q.Dificuldade).Distinct().ToList();
+            return View(model);
         }
 
         // POST: Questao/Listar
@@ -106,13 +107,14 @@ namespace SIAC.Controllers
         // GET: Questao/Cadastrar
         public ActionResult Cadastrar()
         {
-            ViewBag.Captcha = Helpers.Captcha.Novo();
-            ViewBag.Termo = Parametro.Obter().TermoResponsabilidade;
-            ViewBag.Disciplinas = Professor.ObterDisciplinas(Helpers.Sessao.UsuarioMatricula);
-            ViewBag.Tipos = TipoQuestao.ListarOrdenadamente();
-            ViewBag.Dificuldades = Dificuldade.ListarOrdenadamente();
-            ViewBag.TiposAnexo = TipoAnexo.ListarOrdenadamente();
-            return View();
+            var model = new ViewModels.QuestaoCadastrarViewModel();
+            model.Captcha = Helpers.Captcha.Novo();
+            model.Termo = Parametro.Obter().TermoResponsabilidade;
+            model.Disciplinas = Professor.ObterDisciplinas(Helpers.Sessao.UsuarioMatricula);
+            model.Tipos = TipoQuestao.ListarOrdenadamente();
+            model.Dificuldades = Dificuldade.ListarOrdenadamente();
+            model.TiposAnexo = TipoAnexo.ListarOrdenadamente();
+            return View(model);
         }
 
         // GET: Questao/Captcha

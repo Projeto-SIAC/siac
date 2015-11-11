@@ -1,4 +1,5 @@
-﻿
+﻿@model AvaliacaoGerarViewModel
+
 @{
     ViewBag.Title = "Gerar autoavaliação";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -38,7 +39,7 @@
         <label for="ddlDisciplinas">Disciplina (s)</label>
         <select id="ddlDisciplinas" name="ddlDisciplinas" class="ui search dropdown" multiple required>
             <option value="">Disciplina</option>
-            @foreach (var disc in ViewBag.Disciplinas)
+            @foreach (var disc in Model.Disciplinas)
             {
                 <option value="@disc.CodDisciplina">@disc.Descricao</option>
             }
@@ -79,7 +80,9 @@
     </div>
 </form>
 
-<code class="json" hidden>@Html.Raw(Json.Encode(ViewBag.Dificuldades))</code>
+<code class="json" hidden>
+    @Html.Raw(Json.Encode(Model.Dificuldades.Select(d => new { Codigo = d.CodDificuldade, Descricao = d.Descricao })))
+</code>
 
 @section Scripts{
     @Scripts.Render("~/bundles/js/autoavaliacao")

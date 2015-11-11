@@ -1,5 +1,5 @@
-﻿@using SIAC.Models
-@model AvalCertificacao
+﻿@model CertificacaoConfigurarViewModel
+
 @{
     ViewBag.Title = "Configurar " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -89,7 +89,7 @@
             <label>Dificuldade</label>
             <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown fluid dificuldade">
                 <option value="">Dificuldade...</option>
-                @foreach (Dificuldade d in ViewBag.Dificuldades)
+                @foreach (Dificuldade d in Model.Dificuldades)
                 {
                     if (d.CodDificuldade <= Model.Avaliacao.CodDificuldade)
                     {
@@ -102,7 +102,7 @@
             <label>Tipo</label>
             <select id="ddlTipo" name="ddlTipo" class="ui search dropdown fluid dificuldade">
                 <option value="">Tipo...</option>
-                @foreach (TipoQuestao t in ViewBag.TiposQuestao)
+                @foreach (TipoQuestao t in Model.TiposQuestao)
                 {
                     if (Model.Avaliacao.TipoQuestoes == t.CodTipoQuestao || Model.Avaliacao.TipoQuestoes == 3)
                     {

@@ -1,5 +1,5 @@
-﻿@using SIAC.Models
-@model AvalAuto
+﻿@model AvaliacaoResultadoViewModel
+
 @{
     ViewBag.Title = "Resultado "+Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -12,15 +12,15 @@
 <div class="ui basic segment">
     <div class="ui dividing header" data-content="Note que os cálculos levem em conta somente as questões objetivas.">
         Desempenho
-        <div class="ui label">Porcentagem de Acerto<div class="detail">@(ViewBag.Porcentagem.ToString("0.##'%'"))</div></div>
+        <div class="ui label">Porcentagem de Acerto<div class="detail">@(Model.Porcentagem.ToString("0.##'%'"))</div></div>
         <div class="ui label">Quantidade de Acerto<div class="detail">@avalPessoaResultado.QteAcertoObj</div></div>
     </div>
     <div class="ui statistics">
-        @foreach (var key in ViewBag.Desempenho.Keys)
+        @foreach (var key in Model.Desempenho.Keys)
         {
-            <div class="statistic @(ViewBag.Desempenho[key]>50 ? "green" : "red")">
+            <div class="statistic @(Model.Desempenho[key]>50 ? "green" : "red")">
                 <div class="value">
-                    @ViewBag.Desempenho[key].ToString("0.##'%'")
+                    @Model.Desempenho[key].ToString("0.##'%'")
                 </div>
                 <div class="label">@key</div>
             </div>

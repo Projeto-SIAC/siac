@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "Agenda";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles {
+    @Styles.Render("~/bundles/css/fullcalendar")    
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/fullcalendar")    
+    <script>
+        $(document).ready(function () {
+
+            // page is now ready, initialize the calendar...
+
+            $('#calendar').fullCalendar({
+                lang: 'pt-br',
+                events: {
+                    url: '/dashboard/agenda/eventos',
+                    cache: true
+                }
+            });
+
+        });
+    </script>
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div id="calendar"></div>

@@ -294,20 +294,20 @@ else if (Model.Avaliacao.FlagRealizada)
         </div>
         <div class="partial"></div>
     </div>
-                                        }
-                                        else if (DateTime.Now < Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value))
-                                        {
-                                            <div class="ui message"><p>Você poderá conferir seu resultado assim que o tempo de aplicação da prova acabar.</p></div>
-                                        }
-                                        else
-                                        {
-                                            int codPessoaFisica = Usuario.ObterPessoaFisica(SIAC.Helpers.Sessao.UsuarioMatricula);
-                                            var lstPessoaResposta = LstResposta.Where(p => p.CodPessoaFisica == codPessoaFisica).ToList();
-                                            var avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.FirstOrDefault(r => r.CodPessoaFisica == codPessoaFisica);
-                                            int qteAcerto = lstPessoaResposta.Where(p => p.RespNota.HasValue && p.RespNota.Value == 10).Count();
-                                            var percent = qteAcerto / LstQuestao.Count;
-                                            if (avalPessoaResultado != null)
-                                            {
+    }
+    else if (DateTime.Now < Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value))
+    {
+        <div class="ui message"><p>Você poderá conferir seu resultado assim que o tempo de aplicação da prova acabar.</p></div>
+    }
+    else
+    {
+        int codPessoaFisica = Usuario.ObterPessoaFisica(SIAC.Helpers.Sessao.UsuarioMatricula);
+        var lstPessoaResposta = LstResposta.Where(p => p.CodPessoaFisica == codPessoaFisica).ToList();
+        var avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.FirstOrDefault(r => r.CodPessoaFisica == codPessoaFisica);
+        int qteAcerto = lstPessoaResposta.Where(p => p.RespNota.HasValue && p.RespNota.Value == 10).Count();
+        var percent = qteAcerto / LstQuestao.Count;
+        if (avalPessoaResultado != null)
+        {
 
 
     <div class="ui basic segment">
