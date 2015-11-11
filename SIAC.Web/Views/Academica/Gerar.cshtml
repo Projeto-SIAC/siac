@@ -1,15 +1,14 @@
-﻿
+﻿@model AvaliacaoGerarViewModel
 @{
     ViewBag.Title = "Gerar Avaliação Acadêmica";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@using SIAC.Models;
 
 <div class="ui termo modal">
     <div class="header">Você está ciente de...</div>
     <div class="content">
         @{
-            var termo = ViewBag.Termo.Split('\n', '\r');
+            var termo = Model.Termo.Split('\n', '\r');
             foreach (var str in termo)
             {
                 if (!String.IsNullOrWhiteSpace(str))
@@ -58,7 +57,7 @@
         <label>Disciplina</label>
         <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" required>
             <option value="">Disciplina</option>
-            @foreach (var disc in ViewBag.Disciplinas)
+            @foreach (var disc in Model.Disciplinas)
             {
                 <option value="@disc.CodDisciplina">@disc.Descricao</option>
             }
@@ -86,7 +85,7 @@
         <label>Dificuldade das Questões</label>
         <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown" required>
             <option value="">Dificuldade...</option>
-            @foreach (Dificuldade d in ViewBag.Dificuldades)
+            @foreach (Dificuldade d in Model.Dificuldades)
             {
                 <option value="@d.CodDificuldade">@d.Descricao</option>
             }
