@@ -181,6 +181,7 @@
     <Content Include="Resources\images\layout\loader.gif" />
     <Content Include="Resources\images\layout\ogimage.jpg" />
     <Content Include="Scripts\libs\chart.min.js" />
+    <Content Include="Scripts\libs\fullcalendar.min.js" />
     <Content Include="Scripts\libs\html2canvas.js" />
     <Content Include="Scripts\libs\html2canvas.min.js">
       <DependentUpon>html2canvas.js</DependentUpon>
@@ -189,6 +190,8 @@
     <Content Include="Resources\images\layout\background.jpg" />
     <Content Include="Resources\images\layout\logo-black.png" />
     <Content Include="Resources\images\layout\logo.png" />
+    <Content Include="Scripts\libs\moment.min.js" />
+    <Content Include="Scripts\libs\fullcalendar.pt-br.min.js" />
     <Content Include="Scripts\modules\siac.academica.js" />
     <Content Include="Scripts\modules\siac.academica.min.js">
       <DependentUpon>siac.academica.js</DependentUpon>
@@ -215,6 +218,7 @@
     <Content Include="Scripts\siac.min.js">
       <DependentUpon>siac.js</DependentUpon>
     </Content>
+    <Content Include="Styles\fullcalendar.css" />
     <Content Include="Styles\semantic.min.css" />
     <Content Include="Scripts\libs\semantic.min.js" />
     <Content Include="Styles\siac.acesso.css" />
@@ -236,6 +240,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AgendaController.cs" />
     <Compile Include="Controllers\AutoavaliacaoController.cs" />
     <Compile Include="Controllers\AcademicaController.cs" />
     <Compile Include="Controllers\CertificacaoController.cs" />
@@ -631,6 +636,7 @@
     <Content Include="Views\Certificacao\Avaliados.cshtml" />
     <Content Include="Views\Institucional\Index.cshtml" />
     <Content Include="Views\Institucional\Gerar.cshtml" />
+    <Content Include="Views\Agenda\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
