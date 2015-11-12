@@ -54,7 +54,7 @@
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Avaliação" controller="Historico" action="Avaliacao">
         <mvcSiteMapNode title="Acadêmica" controller="Academica" action="Index">
-          <mvcSiteMapNode title="Agendada" controller="Academica" action="Agendada"/>
+          <mvcSiteMapNode title="Agendada" controller="Academica" action="Agendada" preservedRouteParameters="codigo"/>
           <mvcSiteMapNode title="Detalhe" controller="Academica" action="Detalhe" preservedRouteParameters="codigo"/>
           <mvcSiteMapNode title="Pendente" controller="Academica" action="Pendente">
             <mvcSiteMapNode title="Corrigir" controller="Academica" action="Corrigir" preservedRouteParameters="codigo"/>

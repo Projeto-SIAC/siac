@@ -38,15 +38,7 @@
                 { "Icone", "book" },
                 { "Descricao", "Minhas Questões" }
             })
-        }
-        @if (Model.CodCategoria <= 2)
-        {
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Agendada", "Academica") },
-                { "Icone", "calendar" },
-                { "Descricao", "Avaliações Agendadas" }
-            })
-        }
+        }        
         @if (Model.CodCategoria == 2)
         {
             @Html.Partial("_Atalho", new ViewDataDictionary() {

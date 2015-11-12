@@ -251,7 +251,7 @@ siac.Academica.Gerar = (function () {
     function iniciar() {
         $('.ui.dropdown').dropdown();
         $('.ui.modal').modal();
-        $('.ui.termo.modal').modal({closable:false}).modal('show');
+        $('.ui.termo.modal').modal({ closable: false }).modal('show');
         $('.cancelar.button').popup({ on: 'click' });
         $('.ui.confirmar.modal')
          .modal({
@@ -449,7 +449,7 @@ siac.Academica.Configurar = (function () {
 
             obterNovaQuestao(codQuestao, indice, codTipoQuestao);
         });
-        
+
         $('.card.anexo.imagem').off().click(function () {
             var $this = $(this);
             var source = $this.find('img').attr('src');
@@ -557,62 +557,45 @@ siac.Academica.Agendada = (function () {
             $elemento.removeAttr('data-categoria');
         }
 
-        $('.ui.avaliacao.modal').modal({ closable: false });
+        if (!_codAvaliacao) {
+            _codAvaliacao = window.location.pathname.match(/acad[0-9]+$/)[0];
+        }
 
-        $('.card[data-avaliacao]').click(function () {
-            detalhe($(this).attr('data-avaliacao'));
+        $('.ui.accordion').accordion({
+            animateChildren: false
         });
-    }
 
-    function detalhe(strCodigo) {
-        if ($('.ui.avaliacao.modal').prop('id') == strCodigo) {
-            $('.ui.avaliacao.modal').modal('show');
-        }
-        else {
-            $('.ui.global.loader').parent().dimmer('show');
+        $('.arquivar.button').click(function () {
+            var $_this = $(this);
+            $_this.addClass('loading');
             $.ajax({
-                url: '/Historico/Avaliacao/Academica/Agendada/' + strCodigo,
-                method: 'POST',
-                success: function (htmlModal) {
-                    _codAvaliacao = strCodigo;
-                    $('.ui.avaliacao.modal').attr('id', strCodigo).html('').append(htmlModal).modal('show');
-                    $('.ui.global.loader').parent().dimmer('hide');
-                    $('.ui.avaliacao.modal .ui.accordion').accordion({
-                        animateChildren: false,
-                        onChange: function () { $('.ui.avaliacao.modal').modal('refresh'); }
-                    });
-                    $('.arquivar.button').click(function () {
-                        var $_this = $(this);
-                        $_this.addClass('loading');
-                        $.ajax({
-                            url: '/Dashboard/Avaliacao/Academica/Arquivar/' + _codAvaliacao,
-                            type: 'POST',
-                            success: function (data) {
-                                if (data) {
-                                    window.location.href = '/dashboard/avaliacao/academica/detalhe/' + _codAvaliacao;
-                                }
-                            },
-                            error: function () {
-                                $_this.removeClass('loading');
-                                siac.mensagem('Ocorreu um erro inesperado na tentativa de arquivar a avaliação.', 'Tente novamente')
-                            }
-                        });
-                    });
-                    $('.card.anexo.imagem').off().click(function () {
-                        var $this = $(this);
-                        var source = $this.find('img').attr('src');
-                        var legenda = $this.find('.header').text();
-                        $description = $this.find('.description');
-                        var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
-
-                        siac.Anexo.expandirImagem(source, legenda, fonte);
-                    });
-                    abrirHub();
-                    contagemRegressiva(1000);
+                url: '/Dashboard/Avaliacao/Academica/Arquivar/' + _codAvaliacao,
+                type: 'POST',
+                success: function (data) {
+                    if (data) {
+                        window.location.href = '/dashboard/avaliacao/academica/detalhe/' + _codAvaliacao;
+                    }
                 },
-                error: function (xhr) { siac.mensagem("Ocorreu um erro."); $('.ui.global.loader').parent().dimmer('hide'); }
+                error: function () {
+                    $_this.removeClass('loading');
+                    siac.mensagem('Ocorreu um erro inesperado na tentativa de arquivar a avaliação.', 'Tente novamente')
+                }
             });
-        }
+        });
+
+        $('.card.anexo.imagem').off().click(function () {
+            var $this = $(this);
+            var source = $this.find('img').attr('src');
+            var legenda = $this.find('.header').text();
+            $description = $this.find('.description');
+            var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
+
+            siac.Anexo.expandirImagem(source, legenda, fonte);
+        });
+
+        abrirHub();
+
+        contagemRegressiva(1000);
     }
 
     function contagemRegressiva(intervalo) {
@@ -647,7 +630,6 @@ siac.Academica.Agendada = (function () {
         var acadHub = $.connection.academicaHub;
         if (_categoriaUsuario == 1) {
             acadHub.client.liberar = function (strCodigo) {
-                var $modal = $('#' + strCodigo);
                 $.ajax({
                     type: 'GET',
                     url: '/Dashboard/Avaliacao/Academica/ContagemRegressiva',
@@ -656,7 +638,7 @@ siac.Academica.Agendada = (function () {
                         alert('O professor liberou a avaliação.');
                         if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
                             $('.iniciar.button').removeClass('disabled').text('Iniciar');
-                            $modal.find('#mensagem').html('\
+                            $('#mensagem').html('\
                                         <i class="checkmark icon"></i>\
                                         <div class="content">\
                                             Seu professor liberou a prova\
@@ -666,7 +648,7 @@ siac.Academica.Agendada = (function () {
                         }
                         else if (data.FlagLiberada == true) {
                             $('.iniciar.button').addClass('disabled');
-                            $modal.find('#mensagem').html('\
+                            $('#mensagem').html('\
                                         <i class="checkmark icon"></i>\
                                         <div class="content">\
                                             Seu professor liberou a prova\
@@ -678,7 +660,7 @@ siac.Academica.Agendada = (function () {
                 });
             };
             acadHub.client.bloquear = function (strCodigo) {
-                var $modal = $('#' + strCodigo);
+                
                 $.ajax({
                     type: 'GET',
                     url: '/Dashboard/Avaliacao/Academica/ContagemRegressiva',
@@ -687,7 +669,7 @@ siac.Academica.Agendada = (function () {
                         if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == false) {
                             alert('O professor bloqueou a avaliação.');
                             $('.iniciar.button').addClass('disabled');
-                            $modal.find('#mensagem').html('\
+                            $('#mensagem').html('\
                                         <i class="clock icon"></i>\
                                         <div class="content">\
                                             Seu professor não liberou a prova ainda\
@@ -1778,7 +1760,7 @@ siac.Academica.Corrigir = (function () {
             var $this = $(this);
             var codQuestao = $this.data('questao');
             var matr = $this.parents('[id]').attr('id');
-            
+
             $('.modal.corrigir').modal('show');
             $('.modal.corrigir form').addClass('loading');
             $('#ddlCorrecaoModo').dropdown('set selected', 'aluno').change();
@@ -1838,7 +1820,7 @@ siac.Academica.Corrigir = (function () {
                 var questoesQteTotal = $('.corrigir .correcao.conteudo .dimmer').length;
                 var questoesQteCorrigidas = $('.corrigir .correcao.conteudo .dimmer.active').length;
 
-                if(modo == "aluno"){
+                if (modo == "aluno") {
                     if (questoesQteCorrigidas == questoesQteTotal - 1) {
                         var itemAtual = $('#ddlCorrecaoValor').dropdown('get text')[0];
                         if (itemAtual.indexOf('(corrigido)') < 0) {

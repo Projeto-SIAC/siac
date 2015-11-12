@@ -289,7 +289,7 @@ namespace SIAC.Controllers
                 }
             }
 
-            return RedirectToAction("Agendada");
+            return RedirectToAction("Agendada", new { codigo = codigo });
         }
 
         // GET: Avaliacao/Academica/Detalhe/ACAD201520001
@@ -358,26 +358,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Avaliacao/Academica/Agendada
-        [HttpGet]
-        public ActionResult Agendada()
-        {
-            if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
-            {
-                string strMatr = Helpers.Sessao.UsuarioMatricula;
-                int codProfessor = Professor.ListarPorMatricula(strMatr).CodProfessor;
-                return View(AvalAcademica.ListarAgendadaPorProfessor(codProfessor));
-            }
-            else if (Helpers.Sessao.UsuarioCategoriaCodigo == 1)
-            {
-                int codAluno = Aluno.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodAluno;
-                return View(AvalAcademica.ListarAgendadaPorAluno(codAluno));
-            }
-            return RedirectToAction("Index");
-        }
-
-        // POST: Avaliacao/Academica/Agendada/ACAD201520001
-        [AcceptVerbs(HttpVerbs.Post)]
+        // GET: Avaliacao/Academica/Agendada/ACAD201520001
         public ActionResult Agendada(string codigo)
         {
             if (String.IsNullOrEmpty(codigo))
@@ -391,14 +372,19 @@ namespace SIAC.Controllers
                 AvalAcademica avalAcademica = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                 if (codProfessor == avalAcademica.CodProfessor)
                 {
-                    return PartialView("_Agendada", avalAcademica);
+                    //return PartialView("_Agendada", avalAcademica);
+                    return View(avalAcademica);
                 }
             }
             else if (Helpers.Sessao.UsuarioCategoriaCodigo == 1)
             {
-                //int codAluno = Aluno.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodAluno;
+                int codAluno = Aluno.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodAluno;
                 AvalAcademica avalAcademica = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                return PartialView("_Agendada", avalAcademica);
+                if (avalAcademica.Alunos.FirstOrDefault(a=>a.CodAluno == codAluno) != null)
+                {
+                    return View(avalAcademica);
+                }
+                //return PartialView("_Agendada", avalAcademica);
             }
             return RedirectToAction("Index");
         }

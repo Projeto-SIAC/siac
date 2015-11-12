@@ -1,40 +1,45 @@
-﻿@using SIAC.Models
-@model List<AvalAcademica>
+﻿@model AvalAcademica
+
 @{
-    ViewBag.Title = "Avaliações Agendadas";
+    ViewBag.Title = "Avaliação Agendada";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 @section Scripts {
     @Scripts.Render("~/bundles/js/academica")
     @Scripts.Render("~/bundles/signalR")
     <script src="~/signalr/hubs"></script>
 }
-<div class="ui fullscreen avaliacao modal">
-</div>
 
-<h2>@ViewBag.Title</h2>
-<div class="ui basic segment" data-categoria="@SIAC.Helpers.Sessao.UsuarioCategoriaCodigo">
-    <div class="ui two stackable cards">
-        @foreach (AvalAcademica avalAcademica in Model)
-            {
-            <a data-avaliacao="@avalAcademica.Avaliacao.CodAvaliacao" class="card">
-                <div class="content">
-                    <div class="header">@avalAcademica.Avaliacao.CodAvaliacao</div>
-                    <div class="meta">
-                        <span title="@avalAcademica.Avaliacao.DtCadastro.ToBrazilianString()">@avalAcademica.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
-                    </div>
-                    <div class="description">
-                        <p><b>Disciplina</b>: @avalAcademica.Disciplina.Descricao</p>
-                        <p><b>Turma</b>: @avalAcademica.Turma.Curso.Descricao (@avalAcademica.Turma.CodTurma)</p>
-                        <p><b>Quantidade de Questões</b>: @avalAcademica.Avaliacao.QteQuestoes()</p>
-                    </div>
-                </div>
-                <span class="ui @(avalAcademica.Avaliacao.FlagAgora ? "green" : avalAcademica.Avaliacao.FlagVencida ? "red" : "") attached top right label">
-                    <i class="@(avalAcademica.Avaliacao.FlagAgora ? "alarm" : avalAcademica.Avaliacao.FlagVencida ? "warning sign" : "clock") icon"></i>
-                    @avalAcademica.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy HH:mm")
-                </span>
-            </a>
-        }
+@Html.Partial("_Agendada", Model)
+
+@*<div class="ui fullscreen avaliacao modal">
     </div>
-</div>
+
+    <h2>@ViewBag.Title</h2>
+            <div class="ui basic segment" data-categoria="@Sessao.UsuarioCategoriaCodigo">
+
+               <div class="ui two stackable cards">
+                    @foreach (AvalAcademica avalAcademica in Model)
+                        {
+                        <a data-avaliacao="@avalAcademica.Avaliacao.CodAvaliacao" class="card">
+                            <div class="content">
+                                <div class="header">@avalAcademica.Avaliacao.CodAvaliacao</div>
+                                <div class="meta">
+                                    <span title="@avalAcademica.Avaliacao.DtCadastro.ToBrazilianString()">@avalAcademica.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
+                                </div>
+                                <div class="description">
+                                    <p><b>Disciplina</b>: @avalAcademica.Disciplina.Descricao</p>
+                                    <p><b>Turma</b>: @avalAcademica.Turma.Curso.Descricao (@avalAcademica.Turma.CodTurma)</p>
+                                    <p><b>Quantidade de Questões</b>: @avalAcademica.Avaliacao.QteQuestoes()</p>
+                                </div>
+                            </div>
+                            <span class="ui @(avalAcademica.Avaliacao.FlagAgora ? "green" : avalAcademica.Avaliacao.FlagVencida ? "red" : "") attached top right label">
+                                <i class="@(avalAcademica.Avaliacao.FlagAgora ? "alarm" : avalAcademica.Avaliacao.FlagVencida ? "warning sign" : "clock") icon"></i>
+                                @avalAcademica.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy HH:mm")
+                            </span>
+                        </a>
+                    }
+                </div>
+        </div>*@
 

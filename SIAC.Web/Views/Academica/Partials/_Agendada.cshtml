@@ -2,12 +2,12 @@
 @model AvalAcademica
 
 @{
-    var CodCategoria = SIAC.Helpers.Sessao.UsuarioCategoriaCodigo;
+    var CodCategoria = Sessao.UsuarioCategoriaCodigo;
     var FlagAgora =  Model.Avaliacao.FlagAgora;
     var FlagVencida = Model.Avaliacao.FlagVencida;
 }
-<div class="header">
-    @Model.Avaliacao.CodAvaliacao
+<h2>
+    Avaliação Acadêmica @Model.Avaliacao.CodAvaliacao
     @if (!FlagVencida && !FlagAgora)
     {
         <div class="ui label">
@@ -21,8 +21,8 @@
             <i class="warning icon"></i>Vencida
         </div>
     }
-</div>
-<div class="content">
+</h2>
+<div class="ui basic segment" data-categoria="@CodCategoria">
     <div class="ui fluid styled accordion">
         <div class="active title"><i class="dropdown icon"></i>Detalhes</div>
         <div class="active content">
@@ -177,8 +177,8 @@
                                 </div>
                             }
                         </div>
-                                                contador++;
-                                            }
+                        contador++;
+                    }
                 }
             </div>
         </div>
@@ -208,8 +208,8 @@
         }
     }
 </div>
-<div class="actions">
-    <div class="ui cancel button">Fechar</div>
+@*<div class="actions">
+    <div class="ui cancel button">Fechar</div>*@
     @if (CodCategoria == 2)
     {
     <div onclick="window.open('@Url.Action("Imprimir", new { codigo = Model.Avaliacao.CodAvaliacao })', '_blank');" class="ui button">Imprimir</div>
@@ -241,4 +241,4 @@
             <div onclick="window.location.href ='@Url.Action("Realizar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui iniciar disabled button">Iniciar</div>
         }
     }
-</div>
+@*</div>*@

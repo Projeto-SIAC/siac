@@ -85,7 +85,7 @@
         else if (/\/dashboard\/avaliacao\/academica\/configurar\/acad[0-9]+$/.test(pathname)) {
             siac.Academica.Configurar.iniciar();
         }
-        else if (pathname == '/historico/avaliacao/academica/agendada') {
+        else if (/\/historico\/avaliacao\/academica\/agendada\/acad[0-9]+$/.test(pathname)) {
             siac.Academica.Agendada.iniciar();
         }
         else if (/\/dashboard\/avaliacao\/academica\/realizar\/acad[0-9]+$/.test(pathname)) {
