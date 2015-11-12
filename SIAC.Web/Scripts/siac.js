@@ -270,10 +270,22 @@ siac.Utilitario = siac.Utilitario || (function () {
 })();
 
 siac.Anexo = siac.Anexo || (function () {
+    function iniciar() {
+        $('.card.anexo.imagem').off().click(function () {
+            var $this = $(this);
+            var source = $this.find('img').attr('src');
+            var legenda = $this.find('.header').text();
+            $description = $this.find('.description');
+            var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
+
+            expandirImagem(source, legenda, fonte);
+        });
+    }
+
     function expandirImagem(source, legenda, fonte) {
         $('.ui.anexo.modal').remove();
 
-        $modal = $('<div></div>').addClass('ui large anexo basic modal').append($('<i></i>').addClass('close icon'));
+        $modal = $('<div></div>').addClass('ui large anexo basic modal');//.append($('<i></i>').addClass('close icon'));
 
         $modal.append($('<div class="ui centered header"></div>').text(legenda));
         $modal.append($('<div class="image content"></div>').html($('<img class="ui centered image" />').attr('src', source)));
@@ -281,15 +293,15 @@ siac.Anexo = siac.Anexo || (function () {
 
         $('body').append($modal);
 
-        //$modal.modal({
-        //    allowMultiple: true
-        //});
-
         $modal.modal('show');
+
+        $modal.click(function () {
+            $(this).modal('hide');
+        });
     }
 
     return {
-        expandirImagem: expandirImagem
+        iniciar: iniciar
     }
 })();
 

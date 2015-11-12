@@ -191,30 +191,14 @@ siac.Academica.Detalhe = (function () {
                     $('.partial .ui.accordion').accordion();
                     $('div,a').popup();
                     $('.loader.global').parent().removeClass('active');
-                    $('.card.anexo.imagem').off().click(function () {
-                        var $this = $(this);
-                        var source = $this.find('img').attr('src');
-                        var legenda = $this.find('.header').text();
-                        $description = $this.find('.description');
-                        var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
-
-                        siac.Anexo.expandirImagem(source, legenda, fonte);
-                    });
+                    siac.Anexo.iniciar();
                 }
             });
         });
 
         $('.ui.modal').modal();
 
-        $('.card.anexo.imagem').off().click(function () {
-            var $this = $(this);
-            var source = $this.find('img').attr('src');
-            var legenda = $this.find('.header').text();
-            $description = $this.find('.description');
-            var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
-
-            siac.Anexo.expandirImagem(source, legenda, fonte);
-        });
+        siac.Anexo.iniciar();
 
         $('.corrigir.button').popup({
             title: 'Corrigir avaliação',
@@ -231,15 +215,7 @@ siac.Academica.Resultado = (function () {
     function iniciar() {
         $('.ui.accordion').accordion({ animateChildren: false });
         $('.label, div').popup();
-        $('.card.anexo.imagem').off().click(function () {
-            var $this = $(this);
-            var source = $this.find('img').attr('src');
-            var legenda = $this.find('.header').text();
-            $description = $this.find('.description');
-            var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
-
-            siac.Anexo.expandirImagem(source, legenda, fonte);
-        });
+        siac.Anexo.iniciar();
     }
 
     return {
@@ -450,15 +426,7 @@ siac.Academica.Configurar = (function () {
             obterNovaQuestao(codQuestao, indice, codTipoQuestao);
         });
 
-        $('.card.anexo.imagem').off().click(function () {
-            var $this = $(this);
-            var source = $this.find('img').attr('src');
-            var legenda = $this.find('.header').text();
-            $description = $this.find('.description');
-            var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
-
-            siac.Anexo.expandirImagem(source, legenda, fonte);
-        });
+        siac.Anexo.iniciar();
 
         $('.desfazer.button').off().click(function () {
             var $_this = $(this);
@@ -583,15 +551,7 @@ siac.Academica.Agendada = (function () {
             });
         });
 
-        $('.card.anexo.imagem').off().click(function () {
-            var $this = $(this);
-            var source = $this.find('img').attr('src');
-            var legenda = $this.find('.header').text();
-            $description = $this.find('.description');
-            var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
-
-            siac.Anexo.expandirImagem(source, legenda, fonte);
-        });
+        siac.Anexo.iniciar();
 
         abrirHub();
 
@@ -824,15 +784,7 @@ siac.Academica.Realizar = (function () {
             })
         ;
 
-        $('.card.anexo.imagem').off().click(function () {
-            var $this = $(this);
-            var source = $this.find('img').attr('src');
-            var legenda = $this.find('.header').text();
-            $description = $this.find('.description');
-            var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
-
-            siac.Anexo.expandirImagem(source, legenda, fonte);
-        });
+        siac.Anexo.iniciar();
 
         $('.desistir.button').click(function () {
             desistir();

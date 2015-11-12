@@ -185,15 +185,7 @@ siac.Autoavaliacao.Detalhe = (function () {
             });
         });
 
-        $('.card.anexo.imagem').off().click(function () {
-            var $this = $(this);
-            var source = $this.find('img').attr('src');
-            var legenda = $this.find('.header').text();
-            $description = $this.find('.description');
-            var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
-
-            siac.Anexo.expandirImagem(source, legenda, fonte);
-        });
+        siac.Anexo.iniciar();
     }
 
     return {
@@ -212,15 +204,7 @@ siac.Autoavaliacao.Resultado = (function () {
             .popup()
         ;
 
-        $('.card.anexo.imagem').off().click(function () {
-            var $this = $(this);
-            var source = $this.find('img').attr('src');
-            var legenda = $this.find('.header').text();
-            $description = $this.find('.description');
-            var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
-
-            siac.Anexo.expandirImagem(source, legenda, fonte);
-        });
+        siac.Anexo.iniciar();
     }
 
     return {
@@ -328,15 +312,7 @@ siac.Autoavaliacao.Realizar = (function () {
             finalizar();
         });
 
-        $('.card.anexo.imagem').off().click(function () {
-            var $this = $(this);
-            var source = $this.find('img').attr('src');
-            var legenda = $this.find('.header').text();
-            $description = $this.find('.description');
-            var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
-
-            siac.Anexo.expandirImagem(source, legenda, fonte);
-        });
+        siac.Anexo.iniciar();
 
         $('textarea[name^="txtResposta"], input[name^="rdoResposta"]').change(function () {
             var $_this = $(this);
