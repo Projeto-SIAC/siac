@@ -269,6 +269,8 @@
     <Compile Include="Helpers\StringExt.cs" />
     <Compile Include="Helpers\TimeLog.cs" />
     <Compile Include="Hubs\AcademicaHub.cs" />
+    <Compile Include="Hubs\CertificacaoHub.cs" />
+    <Compile Include="Hubs\Models.cs" />
     <Compile Include="Models\Alternativa.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -640,6 +642,7 @@
     <Content Include="Views\Agenda\Index.cshtml" />
     <Content Include="Views\Certificacao\Avaliados.cshtml" />
     <Content Include="Views\Certificacao\Partials\_ListaQuestaoDetalhe.cshtml" />
+    <Content Include="Views\Certificacao\Agendada.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

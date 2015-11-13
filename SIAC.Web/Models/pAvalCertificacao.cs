@@ -30,6 +30,14 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
+        public static bool AlternarLiberar(string codAvaliacao)
+        {
+            AvalCertificacao avalAcad = ListarPorCodigoAvaliacao(codAvaliacao);
+            avalAcad.Avaliacao.FlagLiberada = !avalAcad.Avaliacao.FlagLiberada;
+            contexto.SaveChanges();
+            return avalAcad.Avaliacao.FlagLiberada;
+        }
+
         public static AvalCertificacao ListarPorCodigoAvaliacao(string codigo)
         {
             int numIdentificador = 0;
@@ -105,6 +113,23 @@ namespace SIAC.Models
                         || t.Turma.Curso.Diretoria.Campus.Instituicao.Reitoria.Where(r => r.CodColaboradorReitor == codColaborador).Count() > 0).Count() > 0)
                 .OrderBy(a => a.Avaliacao.DtAplicacao)
                 .ToList();
+        }
+
+        public static List<AvalCertificacao> ListarAgendadaPorUsuario(Usuario usuario)
+        {
+            switch (usuario.CodCategoria)
+            {
+                case 1:
+                    return ListarAgendadaPorPessoa(usuario.CodPessoaFisica);
+                case 2:
+                    return Models.AvalCertificacao.ListarAgendadaPorProfessor(usuario.Professor.First().CodProfessor);
+                case 3:
+                    return Models.AvalCertificacao.ListarAgendadaPorPessoa(usuario.CodPessoaFisica)
+                        .Union(Models.AvalCertificacao.ListarAgendadaPorColaborador(usuario.Colaborador.First().CodColaborador))
+                        .ToList();
+                default:
+                    return new List<AvalCertificacao>();
+            }
         }
     }
 }

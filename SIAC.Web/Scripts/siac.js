@@ -109,6 +109,9 @@
         else if (/\/dashboard\/avaliacao\/certificacao\/avaliados\/cert[0-9]+$/.test(pathname)) {
             siac.Certificacao.Avaliados.iniciar();
         }
+        else if (/\/historico\/avaliacao\/certificacao\/agendada\/cert[0-9]+$/.test(pathname)) {
+            siac.Certificacao.Agendada.iniciar();
+        }
     }
 
     var HTML_MENSAGEM_TEMPLATE = '<div class="ui small mensagem modal">' +

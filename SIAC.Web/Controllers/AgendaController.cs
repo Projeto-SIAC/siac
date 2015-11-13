@@ -23,28 +23,7 @@ namespace SIAC.Controllers
             var termino = DateTime.Parse(end);
 
             var usuario = Models.Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-            var lstAgendadas = new List<Models.AvalAcademica>();
-
-            switch (usuario.CodCategoria)
-            {
-                case 1:
-                    lstAgendadas = Models.AvalAcademica.ListarAgendadaPorAluno(usuario.Aluno.First().CodAluno)
-                        .Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino)
-                        .ToList();
-                    break;
-                case 2:
-                    lstAgendadas = Models.AvalAcademica.ListarAgendadaPorProfessor(usuario.Professor.First().CodProfessor)
-                        .Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino)
-                        .ToList();
-                    break;
-                case 3:
-                    lstAgendadas = Models.AvalAcademica.ListarAgendadaPorColaborador(usuario.Colaborador.First().CodColaborador)
-                        .Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino)
-                        .ToList();
-                    break;
-                default:
-                    break;
-            }           
+            var lstAgendadas = Models.AvalAcademica.ListarAgendadaPorUsuario(usuario);    
 
             var retorno = lstAgendadas.Select(a => new Models.Evento
             {
@@ -66,29 +45,7 @@ namespace SIAC.Controllers
             var termino = DateTime.Parse(end);
 
             var usuario = Models.Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-            var lstAgendadas = new List<Models.AvalCertificacao>();
-
-            switch (usuario.CodCategoria)
-            {
-                case 1:
-                    lstAgendadas = Models.AvalCertificacao.ListarAgendadaPorPessoa(usuario.CodPessoaFisica)
-                        .Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino)
-                        .ToList();
-                    break;
-                case 2:
-                    lstAgendadas = Models.AvalCertificacao.ListarAgendadaPorProfessor(usuario.Professor.First().CodProfessor)
-                        .Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino)
-                        .ToList();
-                    break;
-                case 3:
-                    lstAgendadas = Models.AvalCertificacao.ListarAgendadaPorPessoa(usuario.CodPessoaFisica)
-                        .Union(Models.AvalCertificacao.ListarAgendadaPorColaborador(usuario.Colaborador.First().CodColaborador))
-                        .Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino)
-                        .ToList();
-                    break;
-                default:
-                    break;
-            }
+            var lstAgendadas = Models.AvalCertificacao.ListarAgendadaPorUsuario(usuario);
 
             var retorno = lstAgendadas.Select(a => new Models.Evento
             {
@@ -96,7 +53,7 @@ namespace SIAC.Controllers
                 title = a.Avaliacao.CodAvaliacao,
                 start = a.Avaliacao.DtAplicacao.Value.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"),
                 end = a.Avaliacao.DtAplicacao.Value.AddMinutes(a.Avaliacao.Duracao.Value).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"),
-                url = Url.Action("Detalhe", "Certificacao", new { codigo = a.Avaliacao.CodAvaliacao })
+                url = Url.Action("Agendada", "Certificacao", new { codigo = a.Avaliacao.CodAvaliacao })
             });
 
             return Json(retorno, JsonRequestBehavior.AllowGet);

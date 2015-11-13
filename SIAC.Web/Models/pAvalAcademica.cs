@@ -114,6 +114,21 @@ namespace SIAC.Models
                 .ToList();
         }
 
+        public static List<AvalAcademica> ListarAgendadaPorUsuario(Usuario usuario)
+        {
+            switch (usuario.CodCategoria)
+            {
+                case 1:
+                    return ListarAgendadaPorAluno(usuario.Aluno.First().CodAluno);
+                case 2:
+                    return ListarAgendadaPorProfessor(usuario.Professor.First().CodProfessor);
+                case 3:
+                    return ListarAgendadaPorColaborador(usuario.Colaborador.First().CodColaborador);
+                default:
+                    return new List<AvalAcademica>();
+            }
+        }
+
         public static AvalAcademica ListarPorCodigoAvaliacao(string codigo)
         {
             int numIdentificador = 0;

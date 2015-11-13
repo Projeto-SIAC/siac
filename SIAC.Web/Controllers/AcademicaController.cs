@@ -361,30 +361,16 @@ namespace SIAC.Controllers
         // GET: Avaliacao/Academica/Agendada/ACAD201520001
         public ActionResult Agendada(string codigo)
         {
-            if (String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrEmpty(codigo))
             {
-                return RedirectToAction("Index");
-            }
-            if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
-            {
-                string strMatr = Helpers.Sessao.UsuarioMatricula;
-                int codProfessor = Professor.ListarPorMatricula(strMatr).CodProfessor;
-                AvalAcademica avalAcademica = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (codProfessor == avalAcademica.CodProfessor && avalAcademica.Avaliacao.FlagAgendada)
+                var usuario = Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
+                var acad = AvalAcademica.ListarAgendadaPorUsuario(usuario).FirstOrDefault(a=>a.Avaliacao.CodAvaliacao.ToLower() == codigo.ToLower());
+                if (acad != null)
                 {
-                    return View(avalAcademica);
+                    return View(acad);
                 }
             }
-            else if (Helpers.Sessao.UsuarioCategoriaCodigo == 1)
-            {
-                int codAluno = Aluno.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodAluno;
-                AvalAcademica avalAcademica = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (avalAcademica.Alunos.FirstOrDefault(a => a.CodAluno == codAluno) != null && avalAcademica.Avaliacao.FlagAgendada)
-                {
-                    return View(avalAcademica);
-                }
-            }
-            return RedirectToAction("Index");
+            return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
         //POST: Avaliacao/Academica/Trocar/ACAD201520001
@@ -586,7 +572,7 @@ namespace SIAC.Controllers
         }
 
         //POST: Avaliacao/Academica/Liberar/ACAD201520001
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult AlternarLiberar(string codAvaliacao)
         {

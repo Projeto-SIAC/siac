@@ -152,8 +152,6 @@ siac.Questao.Cadastrar = (function () {
 
         $('.ui.dropdown').dropdown();
 
-        $('.tabular.menu .item').tab();
-
         $('.ui.termo.modal')
             .modal({
                 closable: false,

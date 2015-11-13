@@ -469,6 +469,60 @@ namespace SIAC.Controllers
             return Json(lstResultado, JsonRequestBehavior.AllowGet);
         }
 
+        // GET: Certificacao/Agendada/CERT201520001
+        [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2 })]
+        public ActionResult Agendada(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                var usuario = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula);
+                var cert = AvalCertificacao.ListarAgendadaPorUsuario(usuario).FirstOrDefault(a => a.Avaliacao.CodAvaliacao.ToLower() == codigo.ToLower());
+                if (cert != null)
+                {
+                    return View(cert);
+                }
+            }
+            return RedirectToAction("Detalhe", new { codigo = codigo });
+        }
 
+        // POST: Certificacao/AlternarLiberar
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult AlternarLiberar(string codAvaliacao)
+        {
+            return Json(AvalCertificacao.AlternarLiberar(codAvaliacao));
+        }
+
+        // POST: Certificacao/ContagemRegressiva
+        [HttpPost]
+        public ActionResult ContagemRegressiva(string codAvaliacao)
+        {
+            AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codAvaliacao);
+            string strTempo = cert.Avaliacao.DtAplicacao.Value.ToLeftTimeString();
+            int qteMilissegundo = 0;
+            bool flagLiberada = cert.Avaliacao.FlagLiberada && cert.Avaliacao.DtAplicacao.Value.AddMinutes(cert.Avaliacao.Duracao.Value) > DateTime.Now;
+            if (strTempo != "Agora")
+            {
+                char tipo = strTempo[(strTempo.IndexOf(' ')) + 1];
+                switch (tipo)
+                {
+                    case 'd':
+                        qteMilissegundo = 0;
+                        break;
+                    case 'h':
+                        qteMilissegundo = 1 * 60 * 60 * 1000;
+                        break;
+                    case 'm':
+                        qteMilissegundo = 1 * 60 * 1000;
+                        break;
+                    case 's':
+                        qteMilissegundo = 1 * 1000;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return Json(new { Tempo = strTempo, Intervalo = qteMilissegundo, FlagLiberada = flagLiberada });
+        }
     }
 }

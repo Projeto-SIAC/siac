@@ -1,8 +1,11 @@
 ﻿@model AvalAcademica
 
 @{
-    ViewBag.Title = "Avaliação Agendada";
+    ViewBag.Title = "Avaliação Acadêmica " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var CodCategoria = Sessao.UsuarioCategoriaCodigo;
+    var FlagAgora = Model.Avaliacao.FlagAgora;
+    var FlagVencida = Model.Avaliacao.FlagVencida;
 }
 
 @section Scripts {
@@ -11,35 +14,237 @@
     <script src="~/signalr/hubs"></script>
 }
 
-@Html.Partial("_Agendada", Model)
+<h2>
+    @ViewBag.Title
+    @if (!FlagVencida && !FlagAgora)
+    {
+        <div class="ui label">
+            @(CodCategoria == 2 ? "Restante" : "Aguarde")
+            <div id="contagem" class="detail">@Model.Avaliacao.DtAplicacao.Value.ToLeftTimeString()</div>
+        </div>
+    }
+    else if (FlagVencida)
+    {
+        <div class="ui red label">
+            <i class="warning icon"></i>Vencida
+        </div>
+    }
+</h2>
 
-@*<div class="ui fullscreen avaliacao modal">
-    </div>
-
-    <h2>@ViewBag.Title</h2>
-            <div class="ui basic segment" data-categoria="@Sessao.UsuarioCategoriaCodigo">
-
-               <div class="ui two stackable cards">
-                    @foreach (AvalAcademica avalAcademica in Model)
+<div class="ui basic segment" data-categoria="@CodCategoria">
+    <div class="ui fluid styled accordion">
+        <div class="active title"><i class="dropdown icon"></i>Detalhes</div>
+        <div class="active content">
+            <table class="ui striped table">
+                <thead>
+                    <tr>
+                        <th>Disciplina</th>
+                        <th>Tema(s)</th>
+                        <th>Quantidade</th>
+                        <th>Dificuldade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+            {
+                        <tr>
+                            <td>
+                                @* disciplina *@
+                                <b>@disc.Descricao</b>
+                            </td>
+                            <td class="ui labels">
+                                @* temas *@
+                                @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                                {
+                                    <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                                }
+                            </td>
+                            <td class="ui labels">
+                                @* qte de questões *@
+                                <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
+                                <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
+                            </td>
+                            <td>
+                                @* dificuldade *@
+                                @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="title"><i class="dropdown icon"></i>Agendamento</div>
+        <div class="content">
+            <table class="ui striped table">
+                <thead>
+                    <tr>
+                        <th>Turma</th>
+                        <th>Data</th>
+                        <th>Horário</th>
+                        <th>Sala</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @* Turma *@
+                            @Model.Turma.Curso.Descricao (@Model.Turma.CodTurma)
+                        </td>
+                        <td>
+                            @* Data *@
+                            @Model.Avaliacao.DtAplicacao.Value.ToString("ddd, dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @* Horário *@
+                            Das @Model.Avaliacao.DtAplicacao.Value.ToShortTimeString() até @Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToShortTimeString()
+                        </td>
+                        <td>
+                            @* Sala *@
+                            @Model.Sala.Descricao
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        @if (CodCategoria == 2)
+        {
+            <div class="title"><i class="dropdown icon"></i>Questões</div>
+            <div class="content">
+                <div class="ui one cards" style="max-height: 25em; overflow-y: auto">
+                    @{
+                        int contador = 0;
+                        foreach (Questao questao in Model.Avaliacao.Questao)
                         {
-                        <a data-avaliacao="@avalAcademica.Avaliacao.CodAvaliacao" class="card">
-                            <div class="content">
-                                <div class="header">@avalAcademica.Avaliacao.CodAvaliacao</div>
-                                <div class="meta">
-                                    <span title="@avalAcademica.Avaliacao.DtCadastro.ToBrazilianString()">@avalAcademica.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
+                            <div class="card">
+                                <div class="content">
+                                    <div class="header" data-html="@( !String.IsNullOrEmpty(questao.Objetivo) ? "<b>Objetivo</b>: " + questao.Objetivo : "")">
+                                        @{
+                                            var enunciado = (contador.GetIndiceQuestao() + ". " + questao.Enunciado).Split('\n', '\r');
+                                            foreach (var strEnunciado in enunciado)
+                                            {
+                                                if (!String.IsNullOrWhiteSpace(strEnunciado))
+                                                {
+                                                    <p>@strEnunciado</p>
+                                                }
+                                            }
+                                        }
+                                    </div>
                                 </div>
-                                <div class="description">
-                                    <p><b>Disciplina</b>: @avalAcademica.Disciplina.Descricao</p>
-                                    <p><b>Turma</b>: @avalAcademica.Turma.Curso.Descricao (@avalAcademica.Turma.CodTurma)</p>
-                                    <p><b>Quantidade de Questões</b>: @avalAcademica.Avaliacao.QteQuestoes()</p>
+                                <div class="content">
+                                    @if (questao.CodTipoQuestao == 1)
+                                    {
+                                        <div class="ui very relaxed list">
+                                            @foreach (var alternativa in questao.Alternativa)
+                                            {
+                                                <div class="item" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
+                                                    <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
+                                                    @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
+                                                    {
+                                                        <a class="ui tiny green label">Correta</a>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div data-html="@(!String.IsNullOrEmpty(questao.Comentario) ? "<b>Comentário</b>: " + questao.Comentario : "")">
+                                            <a class="ui tiny green ribbon label">Chave de Resposta</a>
+                                            @{
+                                                var chaveDeResposta = questao.ChaveDeResposta.Split('\n', '\r');
+                                                foreach (var strChaveDeResposta in chaveDeResposta)
+                                                {
+                                                    if (!String.IsNullOrWhiteSpace(strChaveDeResposta))
+                                                    {
+                                                        <p><i>@strChaveDeResposta</i></p>
+                                                    }
+                                                }
+                                            }
+                                        </div>
+                                                }
                                 </div>
+                                @if (questao.QuestaoAnexo.Count > 0)
+                                {
+                                    <div class="extra content">
+                                        <div class="accordion">
+                                            <div class="title"><i class="icon dropdown"></i>Anexos</div>
+                                            <div class="content">
+                                                @foreach (var anexo in questao.QuestaoAnexo)
+                                                {
+                                                    switch (anexo.CodTipoAnexo)
+                                                    {
+                                                        case 1:
+                                                            @Html.Partial("_AnexoImagem", anexo)
+                                                            break;
+                                                        default:
+                                                            break;
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
                             </div>
-                            <span class="ui @(avalAcademica.Avaliacao.FlagAgora ? "green" : avalAcademica.Avaliacao.FlagVencida ? "red" : "") attached top right label">
-                                <i class="@(avalAcademica.Avaliacao.FlagAgora ? "alarm" : avalAcademica.Avaliacao.FlagVencida ? "warning sign" : "clock") icon"></i>
-                                @avalAcademica.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy HH:mm")
-                            </span>
-                        </a>
+                                                    contador++;
+                                                }
                     }
                 </div>
-        </div>*@
+            </div>
+                                                }
+    </div>
+    @if (CodCategoria == 1)
+    {
+        if (!FlagVencida && !Model.Avaliacao.FlagLiberada)
+        {
+            <div id="mensagem" class="ui header">
+                <i class="clock icon"></i>
+                <div class="content">
+                    Seu professor não liberou a prova ainda
+                    <div class="sub header">Aguarde a liberação da avaliação para iniciar</div>
+                </div>
+            </div>
+        }
+        else if (!FlagVencida && Model.Avaliacao.FlagLiberada)
+        {
+            <div id="mensagem" class="ui header">
+                <i class="checkmark icon"></i>
+                <div class="content">
+                    Seu professor liberou a prova
+                    <div class="sub header">Você já pode iniciar assim que chegar a hora de aplicação</div>
+                </div>
+            </div>
+        }
+    }
+</div>
 
+@if (CodCategoria == 2)
+{
+    <div onclick="window.open('@Url.Action("Imprimir", new { codigo = Model.Avaliacao.CodAvaliacao })', '_blank');" class="ui button">Imprimir</div>
+    <div class="ui arquivar button">Arquivar</div>
+    <div onclick="window.location.href='@Url.Action("Agendar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui reagendar button" @(!Model.Avaliacao.FlagLiberada || !FlagAgora ? "" : "style=\"display:none\"")>Reagendar</div>
+
+    if (!FlagVencida)
+    {
+        if (!Model.Avaliacao.FlagLiberada)
+        {
+            <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui configurar button" @(!FlagAgora ? "" : "style=\"display:none\"")>Configurar</a>
+                <div class="ui toggle liberar button">Liberar</div>
+        }
+        else
+        {
+            <div class="ui toggle active liberar button">Liberada</div>
+        }
+        <div onclick="window.location.href= '@Url.Action("Acompanhar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui @(!FlagAgora || (FlagAgora && !Model.Avaliacao.FlagLiberada) ? "disabled" : "") acompanhar button">Acompanhar</div>
+    }
+}
+else if (CodCategoria == 1)
+{
+    if (FlagAgora)
+    {
+        <div onclick="window.location.href='@Url.Action("Realizar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui iniciar button">Iniciar</div>
+    }
+    else if (!FlagVencida)
+    {
+        <div onclick="window.location.href ='@Url.Action("Realizar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui iniciar disabled button">Iniciar</div>
+    }
+}
