@@ -9,7 +9,7 @@ namespace SIAC.Controllers
 {
     [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2 })]
     public class AcademicaController : Controller
-    {      
+    {
         public List<AvalAcademica> Academicas
         {
             get
@@ -84,7 +84,7 @@ namespace SIAC.Controllers
                     academicas = academicas.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
                     break;
             }
-            
+
             return PartialView("_ListaAcademica", academicas.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
         }
 
@@ -96,7 +96,7 @@ namespace SIAC.Controllers
                 return Redirect("~/historico/avaliacao/academica");
             }
             var model = new ViewModels.AvaliacaoIndexViewModel();
-            model.Disciplinas = Academicas.Select(a=>a.Disciplina).Distinct().ToList();
+            model.Disciplinas = Academicas.Select(a => a.Disciplina).Distinct().ToList();
             return View(model);
         }
 
@@ -370,9 +370,8 @@ namespace SIAC.Controllers
                 string strMatr = Helpers.Sessao.UsuarioMatricula;
                 int codProfessor = Professor.ListarPorMatricula(strMatr).CodProfessor;
                 AvalAcademica avalAcademica = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (codProfessor == avalAcademica.CodProfessor)
+                if (codProfessor == avalAcademica.CodProfessor && avalAcademica.Avaliacao.FlagAgendada)
                 {
-                    //return PartialView("_Agendada", avalAcademica);
                     return View(avalAcademica);
                 }
             }
@@ -380,11 +379,10 @@ namespace SIAC.Controllers
             {
                 int codAluno = Aluno.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodAluno;
                 AvalAcademica avalAcademica = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (avalAcademica.Alunos.FirstOrDefault(a=>a.CodAluno == codAluno) != null)
+                if (avalAcademica.Alunos.FirstOrDefault(a => a.CodAluno == codAluno) != null && avalAcademica.Avaliacao.FlagAgendada)
                 {
                     return View(avalAcademica);
                 }
-                //return PartialView("_Agendada", avalAcademica);
             }
             return RedirectToAction("Index");
         }
@@ -530,7 +528,7 @@ namespace SIAC.Controllers
                 if (tipo == 1)
                 {
                     questao = questoesTrocaObj.FirstOrDefault(qt => qt.CodQuestao == codQuestaoRecente);
-                    if(questao == null)
+                    if (questao == null)
                     {
                         questao = antigas[indices.IndexOf(indice)].QuestaoTema;
                     }
@@ -565,7 +563,7 @@ namespace SIAC.Controllers
             bool flagLiberada = avalAcad.Avaliacao.FlagLiberada && avalAcad.Avaliacao.DtAplicacao.Value.AddMinutes(avalAcad.Avaliacao.Duracao.Value) > DateTime.Now;
             if (strTempo != "Agora")
             {
-                char tipo = strTempo[(strTempo.IndexOf(' '))+1];
+                char tipo = strTempo[(strTempo.IndexOf(' ')) + 1];
                 switch (tipo)
                 {
                     case 'd':
@@ -584,7 +582,7 @@ namespace SIAC.Controllers
                         break;
                 }
             }
-            return Json(new { Tempo = strTempo, Intervalo = qteMilissegundo, FlagLiberada = flagLiberada },JsonRequestBehavior.AllowGet);
+            return Json(new { Tempo = strTempo, Intervalo = qteMilissegundo, FlagLiberada = flagLiberada }, JsonRequestBehavior.AllowGet);
         }
 
         //POST: Avaliacao/Academica/Liberar/ACAD201520001
@@ -657,7 +655,7 @@ namespace SIAC.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAcademica aval = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (aval.Alunos.SingleOrDefault(a=>a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null && aval.Avaliacao.AvalPessoaResultado.SingleOrDefault(a => a.CodPessoaFisica == codPessoaFisica) == null)
+                if (aval.Alunos.SingleOrDefault(a => a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null && aval.Avaliacao.AvalPessoaResultado.SingleOrDefault(a => a.CodPessoaFisica == codPessoaFisica) == null)
                 {
                     AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
                     avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
@@ -690,7 +688,7 @@ namespace SIAC.Controllers
                                 else
                                 {
                                     avalQuesPessoaResposta.RespNota = 0;
-                                }                                
+                                }
                             }
                             else
                             {
@@ -702,8 +700,8 @@ namespace SIAC.Controllers
 
                     }
 
-                    var lstAvalQuesPessoaResposta =  aval.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == codPessoaFisica);
-                    
+                    var lstAvalQuesPessoaResposta = aval.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == codPessoaFisica);
+
                     avalPessoaResultado.Nota = lstAvalQuesPessoaResposta.Average(r => r.RespNota);
                     aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
@@ -732,7 +730,7 @@ namespace SIAC.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAcademica aval = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (aval.Alunos.SingleOrDefault(a => a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null && aval.Avaliacao.AvalPessoaResultado.SingleOrDefault(a=>a.CodPessoaFisica == codPessoaFisica) == null)
+                if (aval.Alunos.SingleOrDefault(a => a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null && aval.Avaliacao.AvalPessoaResultado.SingleOrDefault(a => a.CodPessoaFisica == codPessoaFisica) == null)
                 {
                     AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
                     avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
@@ -747,7 +745,7 @@ namespace SIAC.Controllers
                             AvalQuesPessoaResposta avalQuesPessoaResposta = new AvalQuesPessoaResposta();
                             avalQuesPessoaResposta.CodPessoaFisica = codPessoaFisica;
                             if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1) avalQuesPessoaResposta.RespAlternativa = -1;
-                            avalQuesPessoaResposta.RespNota = 0;                            
+                            avalQuesPessoaResposta.RespNota = 0;
                             avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
                         }
                     }
@@ -794,7 +792,7 @@ namespace SIAC.Controllers
         {
             if (!String.IsNullOrEmpty(codigo))
             {
-                return Json(Avaliacao.AlternarFlagArquivo(codigo));                
+                return Json(Avaliacao.AlternarFlagArquivo(codigo));
             }
             return Json(false);
         }
@@ -813,7 +811,7 @@ namespace SIAC.Controllers
                              {
                                  Matricula = alunos.MatrAluno,
                                  Nome = alunos.Usuario.PessoaFisica.Nome,
-                                 FlagCorrecaoPendente = acad.Avaliacao.AvalPessoaResultado.Single(r=>r.CodPessoaFisica == alunos.Usuario.CodPessoaFisica).FlagParcial
+                                 FlagCorrecaoPendente = acad.Avaliacao.AvalPessoaResultado.Single(r => r.CodPessoaFisica == alunos.Usuario.CodPessoaFisica).FlagParcial
                              };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -848,7 +846,7 @@ namespace SIAC.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
-        public ActionResult CarregarRespostasDiscursivas(string codigo,string matrAluno)
+        public ActionResult CarregarRespostasDiscursivas(string codigo, string matrAluno)
         {
             if (!String.IsNullOrEmpty(codigo) && !String.IsNullOrEmpty(matrAluno))
             {
@@ -892,7 +890,7 @@ namespace SIAC.Controllers
                                 && questao.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 2
                              select new
                              {
-                                 alunoMatricula = acad.AlunosRealizaram.FirstOrDefault(a=>a.Usuario.CodPessoaFisica == questao.CodPessoaFisica).Usuario.Matricula,
+                                 alunoMatricula = acad.AlunosRealizaram.FirstOrDefault(a => a.Usuario.CodPessoaFisica == questao.CodPessoaFisica).Usuario.Matricula,
                                  alunoNome = questao.PessoaFisica.Nome,
                                  codQuestao = questao.CodQuestao,
                                  questaoEnunciado = questao.AvalTemaQuestao.QuestaoTema.Questao.Enunciado,
@@ -911,7 +909,7 @@ namespace SIAC.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
-        public ActionResult CorrigirQuestaoAluno(string codigo, string matrAluno,string codQuestao,string notaObtida,string profObservacao)
+        public ActionResult CorrigirQuestaoAluno(string codigo, string matrAluno, string codQuestao, string notaObtida, string profObservacao)
         {
             if (!String.IsNullOrEmpty(codigo) && !String.IsNullOrEmpty(matrAluno) && !String.IsNullOrEmpty(codQuestao))
             {
@@ -924,10 +922,10 @@ namespace SIAC.Controllers
             }
             return Json(false);
         }
-        
+
         //[AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias =new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult DetalheIndividual(string codigo, string matricula)
         {
             if (!Helpers.StringExt.IsNullOrEmpty(codigo, matricula))
