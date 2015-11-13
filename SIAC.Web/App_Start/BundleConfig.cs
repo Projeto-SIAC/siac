@@ -40,6 +40,10 @@ namespace SIAC
                 "~/scripts/modules/siac.certificacao.js"
             ));
 
+            bundles.Add(new ScriptBundle("~/bundles/js/institucional").Include(
+                "~/scripts/modules/siac.institucional.js"
+            ));
+
             bundles.Add(new ScriptBundle("~/bundles/signalR").Include(
                 "~/scripts/plugins/jquery.signalR-2.2.0.min.js"
             ));
