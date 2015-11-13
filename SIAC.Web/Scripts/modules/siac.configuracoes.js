@@ -5,7 +5,7 @@ siac.Configuracoes = (function () {
     var HorarioCount = 2;
 
     function iniciar() {
-        $('.menu .item').tab();
+
         $('.ui.dropdown').dropdown();
         $('.ui.accordion').accordion({ animateChildren: false });
 

@@ -400,6 +400,9 @@
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\pAvalCertificacao.cs" />
+    <Compile Include="Models\pAviCategoria.cs" />
+    <Compile Include="Models\pAviIndicador.cs" />
+    <Compile Include="Models\pAviModulo.cs" />
     <Compile Include="Models\pdbSIACEntities.cs" />
     <Compile Include="Models\Pessoa.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
@@ -640,6 +643,8 @@
     <Content Include="Views\Agenda\Index.cshtml" />
     <Content Include="Views\Certificacao\Avaliados.cshtml" />
     <Content Include="Views\Certificacao\Partials\_ListaQuestaoDetalhe.cshtml" />
+    <Content Include="Views\Institucional\Configurar.cshtml" />
+    <Content Include="Scripts\modules\siac.institucional.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

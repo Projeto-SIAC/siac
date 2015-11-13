@@ -15,7 +15,13 @@
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Gerar") },
                 { "Icone", "file text outline" },
-                { "Descricao", "Gerar Av. Institucional" }
+                { "Descricao", "Gerar Nova" }
+            })
+
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
+                { "Url", Url.Action("Configurar") },
+                { "Icone", "settings" },
+                { "Descricao", "Configurar" }
             })
         }
     </div>
