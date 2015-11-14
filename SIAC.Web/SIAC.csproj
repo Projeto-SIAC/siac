@@ -648,6 +648,9 @@
     <Content Include="Views\Certificacao\Agendada.cshtml" />
     <Content Include="Views\Institucional\Configurar.cshtml" />
     <Content Include="Scripts\modules\siac.institucional.js" />
+    <Content Include="Views\Certificacao\Acompanhar.cshtml" />
+    <Content Include="Views\Certificacao\Realizar.cshtml" />
+    <Content Include="Views\Certificacao\Resultado.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

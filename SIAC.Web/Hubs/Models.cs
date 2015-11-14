@@ -18,7 +18,7 @@ namespace SIAC.Hubs
         public bool FlagAutor { get; set; }
     }
 
-    public class Aluno
+    public class Avaliado
     {
         public string ConnectionId { get; set; }
         public bool FlagConectado { get; set; }
@@ -34,13 +34,10 @@ namespace SIAC.Hubs
         public bool FlagConectado { get; set; }
     }
 
-    public class Academica
+    public class Avaliacao
     {
-        // _professor: key = Matricula, value = { ConnectionId, FlagConectado }
-        // _alunos: key = Matricula, value = { ConnectionId, FlagConectado, FlagFinalizou, Feed, Questoes: key = CodQuestao, value = FlagRespondido, Chat = [{ Texto, FlagAutor }] }
-        // _questaoMapa: key = CodQuestao, value = Indice em Avaliacao.Questao
         private KeyValuePair<string, Professor> _professor = new KeyValuePair<string, Professor>();
-        private Dictionary<string, Aluno> _alunos = new Dictionary<string, Aluno>();
+        private Dictionary<string, Avaliado> _avaliados = new Dictionary<string, Avaliado>();
         private Dictionary<int, string> _questaoMapa = new Dictionary<int, string>();
 
         public List<int> ListarQuestoes()
@@ -73,52 +70,52 @@ namespace SIAC.Hubs
             _professor = new KeyValuePair<string, Professor>(matricula, new Professor { ConnectionId = connectionId, FlagConectado = true });
         }
 
-        public void InserirAluno(string matricula, string connectionId)
+        public void InserirAvaliado(string matricula, string connectionId)
         {
             List<Evento> lstEvento = new List<Evento>();
             List<Mensagem> lstMensagem = new List<Mensagem>();
-            if (_alunos.ContainsKey(matricula))
+            if (_avaliados.ContainsKey(matricula))
             {
-                lstEvento = _alunos[matricula].Feed;
-                _alunos.Remove(matricula);
+                lstEvento = _avaliados[matricula].Feed;
+                _avaliados.Remove(matricula);
             }
-            _alunos.Add(matricula, new Aluno { ConnectionId = connectionId, FlagConectado = true, FlagFinalizou = false, Feed = lstEvento, Chat = lstMensagem, Questoes = new Dictionary<int, bool>() });
+            _avaliados.Add(matricula, new Avaliado { ConnectionId = connectionId, FlagConectado = true, FlagFinalizou = false, Feed = lstEvento, Chat = lstMensagem, Questoes = new Dictionary<int, bool>() });
             for (int i = 0, length = _questaoMapa.Count; i < length; i++)
             {
-                _alunos[matricula].Questoes.Add(_questaoMapa.Keys.ElementAt(i), false);
+                _avaliados[matricula].Questoes.Add(_questaoMapa.Keys.ElementAt(i), false);
             }
         }
 
         public void InserirEvento(string matricula, string icone, string descricao)
         {
-            if (_alunos.ContainsKey(matricula) && !SeAlunoFinalizou(matricula))
+            if (_avaliados.ContainsKey(matricula) && !SeAvaliadoFinalizou(matricula))
             {
-                _alunos[matricula].Feed.Add(new Evento() { Icone = icone, Descricao = descricao, Data = DateTime.Now });
+                _avaliados[matricula].Feed.Add(new Evento() { Icone = icone, Descricao = descricao, Data = DateTime.Now });
             }
         }
 
         public void InserirMensagem(string matricula, string mensagem, bool flagAutor)
         {
-            if (_alunos.ContainsKey(matricula))
+            if (_avaliados.ContainsKey(matricula))
             {
-                _alunos[matricula].Chat.Add(new Mensagem() { Texto = mensagem, FlagAutor = flagAutor });
+                _avaliados[matricula].Chat.Add(new Mensagem() { Texto = mensagem, FlagAutor = flagAutor });
             }
         }
 
         public List<Evento> ListarFeed(string matricula)
         {
-            if (_alunos.ContainsKey(matricula))
+            if (_avaliados.ContainsKey(matricula))
             {
-                return _alunos[matricula].Feed;
+                return _avaliados[matricula].Feed;
             }
             return null;
         }
 
         public List<Mensagem> ListarChat(string matricula)
         {
-            if (_alunos.ContainsKey(matricula))
+            if (_avaliados.ContainsKey(matricula))
             {
-                return _alunos[matricula].Chat;
+                return _avaliados[matricula].Chat;
             }
             return null;
         }
@@ -132,29 +129,29 @@ namespace SIAC.Hubs
             return null;
         }
 
-        public string SelecionarConnectionIdPorAluno(string matricula)
+        public string SelecionarConnectionIdPorAvaliado(string matricula)
         {
-            if (_alunos.ContainsKey(matricula))
+            if (_avaliados.ContainsKey(matricula))
             {
-                return _alunos[matricula].ConnectionId;
+                return _avaliados[matricula].ConnectionId;
             }
             return null;
         }
 
-        public bool SeAlunoFinalizou(string matricula)
+        public bool SeAvaliadoFinalizou(string matricula)
         {
-            if (_alunos.ContainsKey(matricula))
+            if (_avaliados.ContainsKey(matricula))
             {
-                return _alunos[matricula].FlagFinalizou;
+                return _avaliados[matricula].FlagFinalizou;
             }
             return false;
         }
 
-        public string SelecionarMatriculaPorAluno(string connectionId)
+        public string SelecionarMatriculaPorAvaliado(string connectionId)
         {
-            foreach (var key in _alunos.Keys)
+            foreach (var key in _avaliados.Keys)
             {
-                if (_alunos[key].ConnectionId == connectionId)
+                if (_avaliados[key].ConnectionId == connectionId)
                 {
                     return key;
                 }
@@ -162,48 +159,48 @@ namespace SIAC.Hubs
             return null;
         }
 
-        public List<string> ListarMatriculaAlunos()
+        public List<string> ListarMatriculaAvaliados()
         {
-            return _alunos.Keys.ToList();
+            return _avaliados.Keys.ToList();
         }
 
-        public List<string> ListarConnectionIdAlunos()
+        public List<string> ListarConnectionIdAvaliados()
         {
-            return _alunos.Values.Select(a => a.ConnectionId).ToList();
+            return _avaliados.Values.Select(a => a.ConnectionId).ToList();
         }
 
-        public void AlterarAlunoQuestao(string matricula, int codQuestao, bool flag)
+        public void AlterarAvaliadoQuestao(string matricula, int codQuestao, bool flag)
         {
-            if (_alunos.ContainsKey(matricula))
+            if (_avaliados.ContainsKey(matricula))
             {
-                _alunos[matricula].Questoes[codQuestao] = flag;
+                _avaliados[matricula].Questoes[codQuestao] = flag;
             }
         }
 
-        public List<int> ListarQuestaoRespondidasPorAluno(string matricula)
+        public List<int> ListarQuestaoRespondidasPorAvaliado(string matricula)
         {
-            if (_alunos.ContainsKey(matricula))
+            if (_avaliados.ContainsKey(matricula))
             {
-                return _alunos[matricula].Questoes.Where(q => q.Value == true).Select(q => q.Key).ToList();
+                return _avaliados[matricula].Questoes.Where(q => q.Value == true).Select(q => q.Key).ToList();
             }
             return null;
         }
 
-        public void AlterarAlunoFlagFinalizou(string matricula)
+        public void AlterarAvaliadoFlagFinalizou(string matricula)
         {
-            if (_alunos.ContainsKey(matricula))
+            if (_avaliados.ContainsKey(matricula))
             {
-                _alunos[matricula].FlagFinalizou = true;
+                _avaliados[matricula].FlagFinalizou = true;
             }
         }
 
         public void DesconectarPorConnectionId(string connectionId)
         {
-            foreach (var key in _alunos.Keys)
+            foreach (var key in _avaliados.Keys)
             {
-                if (_alunos[key].ConnectionId == connectionId)
+                if (_avaliados[key].ConnectionId == connectionId)
                 {
-                    _alunos[key].FlagConectado = false;
+                    _avaliados[key].FlagConectado = false;
                     return;
                 }
             }
@@ -219,9 +216,9 @@ namespace SIAC.Hubs
             {
                 return false;
             }
-            foreach (var key in _alunos.Keys)
+            foreach (var key in _avaliados.Keys)
             {
-                if (_alunos[key].FlagConectado == true)
+                if (_avaliados[key].FlagConectado == true)
                 {
                     return false;
                 }
@@ -229,16 +226,16 @@ namespace SIAC.Hubs
             return true;
         }
 
-        public bool ContemAluno(string matricula)
+        public bool ContemAvaliado(string matricula)
         {
-            return _alunos.ContainsKey(matricula);
+            return _avaliados.ContainsKey(matricula);
         }
 
-        public void RemoverAluno(string matricula)
+        public void RemoverAvaliado(string matricula)
         {
-            if (_alunos.ContainsKey(matricula))
+            if (_avaliados.ContainsKey(matricula))
             {
-                _alunos.Remove(matricula);
+                _avaliados.Remove(matricula);
             }
         }
     }

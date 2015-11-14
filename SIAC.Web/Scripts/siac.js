@@ -111,8 +111,18 @@
         }
         else if (/\/historico\/avaliacao\/certificacao\/agendada\/cert[0-9]+$/.test(pathname)) {
             siac.Certificacao.Agendada.iniciar();
+        }
         else if (/\/institucional\/configurar(|\/indicador|\/categoria|\/modulo)$/.test(pathname)) {
             siac.Institucional.Configurar.iniciar();
+        }
+        else if (/\/dashboard\/avaliacao\/certificacao\/realizar\/cert[0-9]+$/.test(pathname)) {
+            siac.Certificacao.Realizar.iniciar();
+        }
+        else if (/\/dashboard\/avaliacao\/certificacao\/acompanhar\/cert[0-9]+$/.test(pathname)) {
+            siac.Certificacao.Acompanhar.iniciar();
+        }
+        else if (/\/dashboard\/avaliacao\/certificacao\/resultado\/cert[0-9]+$/.test(pathname)) {
+            siac.Certificacao.Resultado.iniciar();
         }
     }
 

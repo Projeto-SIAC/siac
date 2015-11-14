@@ -234,7 +234,6 @@ namespace SIAC.Controllers
 
         // POST: Certificacao/CarregarQuestoes/CERT201520001/{temas}/{dificuldade}/{tipo}
         [HttpPost]
-        [AcceptVerbs(HttpVerbs.Post)]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2/*, 3*/ })]
         public ActionResult CarregarQuestoes(string codigo, int[] temas, int dificuldade, int tipo)
         {
@@ -254,7 +253,6 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
-        [AcceptVerbs(HttpVerbs.Post)]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult CarregarQuestao(int codQuestao)
         {
@@ -268,7 +266,6 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
-        [AcceptVerbs(HttpVerbs.Post)]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult CarregarListaQuestaoDetalhe(int[] codQuestoes)
         {
@@ -523,6 +520,174 @@ namespace SIAC.Controllers
                 }
             }
             return Json(new { Tempo = strTempo, Intervalo = qteMilissegundo, FlagLiberada = flagLiberada });
+        }
+
+        // GET: Certificacao/Realizar/
+        [Filters.AutenticacaoFilter(Categorias = new[] { 1 })]
+        public ActionResult Realizar(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
+                if (cert.Avaliacao.FlagPendente 
+                    && cert.Avaliacao.FlagLiberada 
+                    && cert.Avaliacao.FlagAgora  
+                    && cert.PessoaFisica.FirstOrDefault(p=>p.CodPessoa == Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula)) != null)
+                {
+                    Helpers.Sessao.Inserir("RealizandoAvaliacao", true);
+                    Helpers.Sessao.Inserir("UsuarioAvaliacao", codigo);
+                    return View(cert);
+                }
+            }
+            return RedirectToAction("Agendada", new { codigo = codigo });
+        }
+
+        //GET: Certificacao/Acompanhar/CERT201520007
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult Acompanhar(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
+                if (cert != null && cert.Professor.MatrProfessor == Sessao.UsuarioMatricula && cert.Avaliacao.FlagAgendada && cert.Avaliacao.FlagAgora)
+                {
+                    return View(cert);
+                }
+            }
+            return RedirectToAction("Agendada", new {codigo = codigo });
+        }
+
+        //POST: Certificacao/Printar
+        [HttpPost]
+        public ActionResult Printar(string codAvaliacao, string imageData)
+        {
+            var cert = AvalCertificacao.ListarPorCodigoAvaliacao(codAvaliacao);
+            var flagProfessor = cert.Professor.MatrProfessor == Sessao.UsuarioMatricula;
+            if (!flagProfessor)
+            {
+                Sistema.TempDataUrlImage[codAvaliacao] = imageData;
+                return Json(true);
+            }
+            else if (flagProfessor)
+            {
+                string temp = Sistema.TempDataUrlImage[codAvaliacao];
+                Sistema.TempDataUrlImage[codAvaliacao] = String.Empty;
+                return Json(temp);
+            }
+            return Json(false);
+        }
+
+        // POST: Certificacao/Desistir/CERT201520016
+        [HttpPost]
+        public void Desistir(string codigo)
+        {
+            int codPessoaFisica = Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula);
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalCertificacao aval = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
+                if (aval.PessoaFisica.FirstOrDefault(a => a.CodPessoa == codPessoaFisica) != null 
+                    && aval.Avaliacao.AvalPessoaResultado.FirstOrDefault(a => a.CodPessoaFisica == codPessoaFisica) == null)
+                {
+                    AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
+                    avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
+                    avalPessoaResultado.HoraTermino = DateTime.Now;
+                    avalPessoaResultado.QteAcertoObj = 0;
+                    avalPessoaResultado.Nota = 0;
+
+                    foreach (var avaliacaoTema in aval.Avaliacao.AvaliacaoTema)
+                    {
+                        foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                        {
+                            AvalQuesPessoaResposta avalQuesPessoaResposta = new AvalQuesPessoaResposta();
+                            avalQuesPessoaResposta.CodPessoaFisica = codPessoaFisica;
+                            if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1) avalQuesPessoaResposta.RespAlternativa = -1;
+                            avalQuesPessoaResposta.RespNota = 0;
+                            avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
+                        }
+                    }
+
+                    aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
+
+                    Repositorio.GetInstance().SaveChanges();
+                    Sessao.Inserir("RealizandoAvaliacao", false);
+                    Sessao.Inserir("UsuarioAvaliacao", String.Empty);
+                }
+            }
+        }
+
+        // POST: Certificacao/Resultado/CERT201520001
+        [HttpPost]
+        public ActionResult Resultado(string codigo, FormCollection form)
+        {
+            int codPessoaFisica = Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula);
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalCertificacao aval = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
+                if (aval.PessoaFisica.FirstOrDefault(a => a.CodPessoa == codPessoaFisica) != null
+                    && aval.Avaliacao.AvalPessoaResultado.FirstOrDefault(a => a.CodPessoaFisica == codPessoaFisica) == null)
+                {
+                    AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
+                    avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
+                    avalPessoaResultado.HoraTermino = DateTime.Now;
+                    avalPessoaResultado.QteAcertoObj = 0;
+
+                    double qteObjetiva = 0;
+
+                    foreach (var avaliacaoTema in aval.Avaliacao.AvaliacaoTema)
+                    {
+                        foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                        {
+                            AvalQuesPessoaResposta avalQuesPessoaResposta = new AvalQuesPessoaResposta();
+                            avalQuesPessoaResposta.CodPessoaFisica = codPessoaFisica;
+                            if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1)
+                            {
+                                qteObjetiva++;
+                                int respAlternativa = -1;
+                                string strRespAlternativa = form["rdoResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao];
+                                if (!String.IsNullOrEmpty(strRespAlternativa))
+                                {
+                                    int.TryParse(strRespAlternativa, out respAlternativa);
+                                }
+                                avalQuesPessoaResposta.RespAlternativa = respAlternativa;
+                                if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q => q.FlagGabarito.HasValue && q.FlagGabarito.Value).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
+                                {
+                                    avalQuesPessoaResposta.RespNota = 10;
+                                    avalPessoaResultado.QteAcertoObj++;
+                                }
+                                else
+                                {
+                                    avalQuesPessoaResposta.RespNota = 0;
+                                }
+                            }
+                            else
+                            {
+                                avalQuesPessoaResposta.RespDiscursiva = form["txtResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim();
+                            }
+                            avalQuesPessoaResposta.RespComentario = !String.IsNullOrEmpty(form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]) ? form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim() : null;
+                            avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
+                        }
+
+                    }
+
+                    var lstAvalQuesPessoaResposta = aval.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == codPessoaFisica);
+
+                    avalPessoaResultado.Nota = lstAvalQuesPessoaResposta.Average(r => r.RespNota);
+                    aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
+
+                    Repositorio.GetInstance().SaveChanges();
+
+                    var model = new ViewModels.AvaliacaoResultadoViewModel();
+                    model.Avaliacao = aval.Avaliacao;
+                    model.Porcentagem = (avalPessoaResultado.QteAcertoObj.Value / qteObjetiva) * 100;
+
+                    Helpers.Sessao.Inserir("RealizandoAvaliacao", false);
+                    Helpers.Sessao.Inserir("UsuarioAvaliacao", String.Empty);
+
+                    return View(model);
+                }
+                return RedirectToAction("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao });
+            }
+            return RedirectToAction("Index");
         }
     }
 }

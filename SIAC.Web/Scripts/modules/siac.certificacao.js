@@ -48,7 +48,7 @@ siac.Certificacao.Gerar = (function () {
         }
 
         if (!$('#ddlTipo').val()) {
-            errorList.append('<li>Selecione o tipo das questões da sua avaliação acadêmica</li>');
+            errorList.append('<li>Selecione o tipo das questões da sua certificação</li>');
             valido = false;
         }
 
@@ -229,7 +229,7 @@ siac.Certificacao.Configurar = (function () {
         });
 
         $('.confirmar.button').click(function () {
-            if (_arrayQuestoes.length >= _qteMaxDiscursiva + _qteMaxObjetiva) {
+            if (_arrayQuestoes.length == parseInt(_qteMaxDiscursiva) + parseInt(_qteMaxObjetiva)) {
                 prosseguir($(this));
             }
             else siac.aviso('Você ainda não selecionou questões suficientes para esta avaliação', 'red');
@@ -1018,7 +1018,7 @@ siac.Certificacao.Agendada = (function () {
                                 certHub.server.liberar(_codAvaliacao, true);
                                 $('.liberar.button').addClass('active').removeClass('loading').text('Liberada');
                                 $.ajax({
-                                    type: 'GET',
+                                    type: 'POST',
                                     url: '/Dashboard/Avaliacao/Certificacao/ContagemRegressiva',
                                     data: { codAvaliacao: _codAvaliacao },
                                     success: function (data) {
@@ -1051,6 +1051,697 @@ siac.Certificacao.Agendada = (function () {
             });
         }
     };
+
+    return {
+        iniciar: iniciar
+    }
+})();
+
+siac.Certificacao.Realizar = (function () {
+    var _codAvaliacao, _matriculaUsuario, _dtTermino;
+    var _controleInterval, _controleRestante;
+
+    function iniciar() {
+        var $elemento;
+
+        $elemento = $('[data-avaliacao][data-usuario]');
+        _codAvaliacao = $elemento.attr('data-avaliacao');
+        _matriculaUsuario = $elemento.attr('data-usuario');
+        $elemento.removeAttr('data-avaliacao data-usuario');
+
+        $elemento = $('[data-termino]');
+        _dtTermino = new Date();
+        _dtTermino.setTime(Date.parse($elemento.attr('data-termino')));
+        $elemento.removeAttr('data-termino');
+
+        window.onbeforeunload = function () {
+            return 'Você está realizando uma avaliação.';
+        };
+
+        setInterval(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/Acesso/Conectado'
+            });
+        }, 1000 * 60 * 15);
+
+        $('a[href]').on('click', function () {
+            $('.ui.confirmar.modal').modal('show');
+            $('.ui.confirmar.modal #txtRef').val($(this).attr('href'));
+            return false;
+        });
+
+        $('.ui.checkbox')
+            .checkbox()
+        ;
+
+        $('.ui.informacoes.modal')
+            .modal()
+        ;
+
+        $('.informacoes.button').click(function () {
+            $('.ui.informacoes.modal').modal('show');
+        });
+
+        $('.ui.confirmar.modal')
+            .modal({
+                onApprove: function () {
+                    desistir($('.ui.confirmar.modal #txtRef').val());
+                },
+                onDeny: function () {
+                    $('.ui.segment.loading').removeClass('loading');
+                }
+            })
+        ;
+
+        $('.ui.accordion')
+            .accordion({
+                animateChildren: false
+            })
+        ;
+
+        $('.trigger.button')
+            .popup({
+                inline: true,
+                on: 'click'
+            })
+        ;
+
+        $('.ui.gabarito.modal')
+            .modal({
+                onApprove: function () {
+                    $.ajax({
+                        type: 'GET',
+                        url: "/Acesso/Conectado",
+                        success: function () {
+                            finalizar();
+                        },
+                        error: function () {
+                            siac.mensagem('Conecte-se à internet antes de confirmar.');
+                        }
+                    });
+                    return false;
+                }
+            })
+        ;
+
+        siac.Anexo.iniciar();
+
+        $('.desistir.button').click(function () {
+            desistir();
+        });
+
+        var date = new Date();
+        $('#lblHoraInicio').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
+        $('#lblHoraTermino').text(_dtTermino.getHours() + 'h' + ("0" + (_dtTermino.getMinutes())).slice(-2) + 'min');
+
+        relogio();
+        temporizador(_dtTermino);
+        conectarHub(_codAvaliacao, _matriculaUsuario);
+    }
+
+    function relogio() {
+        setInterval(function () {
+            date = new Date();
+            $('#lblHoraAgora').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
+        }, 1000);
+    }
+
+    function temporizador(dtTermino) {
+        setInterval(function () {
+            var offset = dtTermino.getTimezoneOffset() * 60 * 1000;
+            var timeRestante = (dtTermino.getTime() + offset) - (new Date().getTime() + offset);
+
+            if (timeRestante > 0) {
+                var date = new Date();
+                date.setTime(timeRestante);
+                var offsetDate = date.getTimezoneOffset() * 60 * 1000;
+                date.setTime(date.getTime() + offsetDate);
+                var txtRestante = ("0" + date.getHours()).slice(-2) + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min';
+                $('#lblHoraRestante').text(txtRestante);
+                if (txtRestante != _controleRestante) {
+                    $('#lblHoraRestante').parent().transition('flash');
+                }
+                _controleRestante = txtRestante;
+                if (timeRestante < 1000 * 60 * 5 && !$('#lblHoraRestante').parent().hasClass('red')) {
+                    $('#lblHoraRestante').parent().addClass('red');
+                }
+            }
+            else {
+                alert('O tempo de aplicação acabou, sua prova será enviada automaticamente.');
+                $('.ui.global.loader').parent().dimmer('show');
+                finalizar();
+            }
+        }, 1000);
+    }
+
+    function finalizar() {
+        window.onbeforeunload = function () {
+            $('.ui.global.loader').parent().dimmer('show');
+        };
+        $('form').submit();
+    }
+
+    function verificar() {
+        $Objects = $('textarea[name^="txtResposta"], input[name^="rdoResposta"]');
+        var retorno = true;
+        for (var i = 0, length = $Objects.length; i < length; i++) {
+            var _this = $Objects.eq(i);
+            $label = _this.parents('.content').prev().find('.ui.label');
+            if (_this.attr('name').indexOf('rdo') > -1) {
+                if ($('input[name="' + _this.attr('name') + '"]:checked').length === 0) {
+                    $label.removeAttr('style').addClass('red').html('Não respondida').transition('tada');
+                    retorno = false;
+                }
+            }
+            else if (!_this.val()) {
+                $label.removeAttr('style').addClass('red').html('Não respondida').transition('tada');
+                retorno = false;
+            }
+        }
+        return retorno;
+    }
+
+    function confirmar() {
+        $modal = $('.ui.gabarito.modal');
+
+        $accordion = $('form .ui.accordion').clone();
+
+        $accordion.removeAttr('style');
+
+        $modal.find('.content').html($('<div class="ui form"></div>').append($accordion));
+
+        $modalAccordion = $modal.find('.ui.accordion');
+
+        $modalAccordion.accordion({
+            onChange: function () {
+                $('.ui.gabarito.modal').modal('refresh');
+            },
+            animateChildren: false
+        });
+
+        $lstInput = $modalAccordion.find(':input,a');
+
+        for (var i = 0, length = $lstInput.length; i < length; i++) {
+            $lstInput.eq(i)
+                .attr({
+                    'readonly': 'readonly'
+                })
+                .removeAttr('href onchange onclick')
+                .off()
+            ;
+        }
+
+        $modal.modal('show');
+    }
+
+    function desistir(url) {
+        $('.ui.global.loader').parent().dimmer('show');
+        $.ajax({
+            url: '/Dashboard/Avaliacao/Certificacao/Desistir/' + _codAvaliacao,
+            type: 'POST',
+            success: function () {
+                window.onbeforeunload = function () {
+                    $('.ui.global.loader').parent().dimmer('show');
+                };
+                if (!url) {
+                    url = '/Dashboard';
+                }
+                window.location.href = url;
+            },
+            error: function () {
+                $('.ui.global.loader').parent().dimmer('hide');
+                siac.mensagem('Ocorreu um erro na tentativa de desistência');
+            }
+        });
+    }
+
+    function conectarHub(codAval, usrMatr) {
+        var certHub = $.connection.certificacaoHub;
+        $.connection.hub.start().done(function () {
+            certHub.server.avaliadoConectou(codAval, usrMatr);
+
+            finalizar = function () {
+                window.onbeforeunload = function () {
+                    $('.ui.global.loader').parent().dimmer('show');
+                };
+                certHub.server.avaliadoFinalizou(codAval, usrMatr);
+                $('form').submit();
+
+            };
+
+            $('.ui.continuar.modal')
+                .modal({
+                    onApprove: function () {
+                        certHub.server.avaliadoVerificando(codAval, usrMatr);
+                        confirmar();
+                    },
+                    onDeny: function () {
+                        $('html, body').animate({
+                            scrollTop: $(".title .label.red").offset().top
+                        }, 1000);
+                    }
+                })
+            ;
+
+            $('.finalizar.button').click(function () {
+                if (verificar()) {
+                    certHub.server.avaliadoVerificando(codAval, usrMatr);
+                    confirmar();
+                }
+                else {
+                    $('.continuar.modal').modal('show');
+                }
+            });
+
+            enviarMsg = function enviarMsg(_this) {
+                $msg = $('#txtChatMensagem');
+                $msg.val($msg.val().trim())
+                if ($msg.val()) {
+                    var mensagem = $msg.val().quebrarLinhaEm(30);
+                    certHub.server.chatAvaliadoEnvia(codAval, usrMatr, $msg.val());
+                    $('.chat.popup .content .comments').append('\
+                            <div class="comment" style="float:right;clear:both;">\
+                                <div class="content">\
+                                <div class="ui right pointing label">\
+                                    '+ mensagem + '\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+                    $msg.val('');
+                    var $comments = $('.chat.popup .content .comments');
+                    $($comments).scrollTop($comments.children().last().offset().top);
+                }
+            };
+            $('.enviar.icon').on('click', function () { enviarMsg(this) });
+            $('#txtChatMensagem').keypress(function (e) {
+                if (e.which == 13) {
+                    enviarMsg(this);
+                    return false;
+                }
+            });
+
+            $('textarea[name^="txtResposta"], input[name^="rdoResposta"]').change(function () {
+                $label = $(this).parents('.content').prev().find('.ui.label');
+                if ($(this).val()) {
+                    $label.removeClass('red');
+                    $label.removeAttr('style');
+                    $label.html('Respondida');
+                    var questao;
+                    if ($(this).attr('name').indexOf('rdo') > -1) {
+                        questao = $(this).attr('name').split('rdoResposta')[1];
+                        $label.find('.detail').remove();
+                        $label.append($('<div class="detail"></div>').text($('input[name="' + $(this).attr('name') + '"]:checked').next().find('b').text()));
+                    }
+                    else {
+                        questao = $(this).attr('name').split('txtResposta')[1];
+                    }
+                    certHub.server.responderQuestao(codAval, usrMatr, questao, true);
+                }
+                else {
+                    var questao;
+                    if ($(this).attr('name').indexOf('rdo') > -1) {
+                        questao = $(this).attr('name').split('rdoResposta')[1];
+                    }
+                    else {
+                        questao = $(this).attr('name').split('txtResposta')[1];
+                    }
+                    certHub.server.responderQuestao(codAval, usrMatr, questao, false);
+                    $label.attr('style', 'display:none');
+                }
+            });
+
+            $(window).on("blur focus", function (e) {
+                var prevType = $(this).data("prevType");
+
+                if (prevType != e.type) {
+                    switch (e.type) {
+                        case "blur":
+                            certHub.server.focoAvaliacao(codAval, usrMatr, false);
+                            break;
+                        case "focus":
+                            certHub.server.focoAvaliacao(codAval, usrMatr, true);
+                            break;
+                    }
+                }
+
+                $(this).data("prevType", e.type);
+            })
+        });
+
+        certHub.client.alertar = function (mensagem) {
+            var timeAntes = new Date();
+            alert(mensagem);
+            var timeDepois = new Date();
+            if ((timeDepois - timeAntes) < 350) {
+                siac.mensagem(mensagem, 'O professor disse...');
+            }
+        }
+
+        certHub.client.enviarAval = function (codAvaliacao) {
+            html2canvas(document.body, {
+                onrendered: function (canvas) {
+                    var c = $(canvas);
+                    c.attr('id', 'mycanvas').hide();
+                    $('body').append(c);
+                    var canvas = document.getElementById("mycanvas");
+                    data = canvas.toDataURL("image/png");
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Dashboard/Avaliacao/Certificacao/Printar',
+                        data: {
+                            codAvaliacao: codAval,
+                            imageData: data
+                        },
+                        success: function () {
+                            certHub.server.avalEnviada(codAvaliacao, usrMatr);
+                        },
+                        error: function () {
+                            // adicionar erro ao Feed do professor
+                        }
+                    });
+
+                    c.remove();
+                }
+            });
+        };
+
+        var chatQteMensagem = 0;
+        certHub.client.chatAvaliadoRecebe = function (mensagem) {
+            if (mensagem) {
+                mensagem = mensagem.quebrarLinhaEm(30);
+                $('.chat.popup .comments').append('\
+                            <div class="comment" style="float:left;clear:both;">\
+                                <div class="content">\
+                                <div class="ui left pointing label">\
+                                    '+ mensagem + '\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+                var $comments = $('.chat.popup .comments');
+                $($comments).animate({
+                    scrollTop: $comments.children().last().offset().top
+                }, 0);
+
+                if (!$('.chat.popup').hasClass('visible')) {
+                    $btnChat = $('.icon.chat.button');
+                    $lblQteMsg = $('#lblQteMsg');
+                    $lblQteMsg.remove();
+                    chatQteMensagem++;
+                    $btnChat.addClass('blue').html('<i class="icon comments outline"></i> ' + chatQteMensagem);
+                    document.title = 'Você recebeu uma mensagem - SIAC';
+                    if (chatQteMensagem > 1) {
+                        document.title = 'Você recebeu ' + chatQteMensagem + ' mensagens - SIAC';
+                    }
+                    siac.aviso('Você recebeu uma mensagem')
+                }
+            }
+        };
+        $('.icon.chat.button').on('click', function () {
+            chatQteMensagem = 0;
+            $('#lblQteMsg').remove();
+            $(this).removeClass('blue').html('<i class="icon comments outline"></i>');
+            document.title = 'Realizar ' + _codAvaliacao;
+        });
+
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();
+
+siac.Certificacao.Acompanhar = (function () {
+    var _codAvaliacao, _matriculaUsuario;
+
+    function iniciar() {
+        $elemento = $('[data-avaliacao][data-usuario]');
+        _codAvaliacao = $elemento.attr('data-avaliacao');
+        _matriculaUsuario = $elemento.attr('data-usuario');
+        $elemento.removeAttr('data-avaliacao data-usuario');
+
+        conectarHub(_codAvaliacao, _matriculaUsuario);
+
+        $('.ui.accordion')
+            .accordion({
+                animateChildren: false
+            })
+        ;
+
+        $('.ui.progress')
+            .progress({
+                label: 'ratio',
+                text: {
+                    ratio: '{value} de {total}'
+                }
+            })
+        ;
+
+        $('.trigger.button')
+            .popup({
+                inline: true,
+                on: 'click'
+            })
+        ;
+    }
+
+    function conectarHub(codAval, usrMatr) {
+        var certHub = $.connection.certificacaoHub;
+        $.connection.hub.start().done(function () {
+
+            enviarMsg = function enviarMsg(_this) {
+                $content = $(_this).parents('.content[id]');
+                matr = $content.attr('id');
+                $msg = $('#' + matr + 'msg');
+                $msg.val($msg.val().trim());
+                if ($msg.val()) {
+                    var mensagem = $msg.val().quebrarLinhaEm(30);
+                    certHub.server.chatProfessorEnvia(codAval, matr, $msg.val());
+                    $('#' + matr + '.content .chat.popup .comments').append('\
+                            <div class="comment" style="float:right;clear:both;">\
+                                <div class="content">\
+                                <div class="ui right pointing label">\
+                                    '+ mensagem + '\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+                    $msg.val('');
+                    var $comments = $content.find('.comments');
+                    $($comments).animate({
+                        scrollTop: $comments.children().last().offset().top
+                    }, 0);
+                }
+            };
+
+            certHub.server.professorConectou(codAval, usrMatr);
+
+            $('.prova.button').on('click', function () {
+                matr = $(this).parent().attr('id');
+                certHub.server.requererAval(codAval, matr);
+                $('#' + matr + '.content .prova.button').addClass('loading').removeClass('transition visible');
+            });
+
+            $('.alertar.button').on('click', function () {
+                mensagem = $(this).prev().find('textarea').val();
+                matr = $(this).parent().parent().parent().attr('id');
+                certHub.server.alertar(codAval, mensagem, matr);
+                $(this).prev().find('textarea').val('');
+                $(this).popup('hide all');
+            });
+
+            $('.enviar.icon').on('click', function () { enviarMsg(this) });
+            $('.chat input').keypress(function (e) {
+                if (e.which == 13) {
+                    enviarMsg(this);
+                    return false;
+                }
+            });
+
+
+            setInterval(function () {
+                lstMatr = $('.accordion')
+                            .find('.title')
+                            .map(function () {
+                                certHub.server.feed(codAval, this.id);
+                            });
+            }, 3000);
+        });
+
+        certHub.client.chatProfessorRecebe = function (usrMatricula, mensagem) {
+            $content = $('#' + usrMatricula + '.content[id]');
+            if (mensagem) {
+                mensagem = mensagem.quebrarLinhaEm(30);
+                $('#' + usrMatricula + '.content .chat.popup .comments').append('\
+                            <div class="comment" style="float:left;clear:both;">\
+                                <div class="content">\
+                                <div class="ui left pointing label">\
+                                    '+ mensagem + '\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+                var $comments = $content.find('.comments');
+                $($comments).animate({
+                    scrollTop: $comments.children().last().offset().top
+                }, 0);
+
+                chatQteMensagem = 0;
+                if ($('#' + usrMatricula + 'lblQteMsg').length) { chatQteMensagem = $('#' + usrMatricula + 'lblQteMsg').data('qte') }
+                if (!$('#' + usrMatricula + '.content .chat.popup').hasClass('visible')) {
+                    $accordionChat = $('#' + usrMatricula + '.title');
+                    $lblQteMsg = $('#' + usrMatricula + 'lblQteMsg');
+                    $lblQteMsg.remove();
+                    $accordionChat.append($('<div></div>').attr('id', usrMatricula + 'lblQteMsg').addClass('ui small blue label').append('<i class="ui comments icon"></i>'));
+                    chatQteMensagem++;
+                    $('#' + usrMatricula + 'lblQteMsg').data('qte', chatQteMensagem).append(chatQteMensagem);
+                }
+            }
+        };
+
+        $('.icon.chat.button').on('click', function () {
+            matr = ($(this).parents('.content[id]').attr('id'));
+            $('#' + matr + 'lblQteMsg').remove();
+        });
+
+        certHub.client.atualizarFeed = function (alnMatricula, lstEvento) {
+            $feed = $('#' + alnMatricula + '.content .feed');
+            $feed.html('');
+            $feed.append('<h4 class="ui header">Atividade</h4>');
+            if (lstEvento) {
+                for (var i = lstEvento.length - 1; i > -1; i--) {
+                    $feed.append('\
+                        <div class="event">\
+                            <div class="label">\
+                                <i class="'+ lstEvento[i].Icone + ' icon"></i>\
+                            </div>\
+                            <div class="content">\
+                                <div class="summary">\
+                                    ' + lstEvento[i].Descricao + '\
+                                    <div class="date" title="'+ lstEvento[i].DataCompleta + '">' + lstEvento[i].Data + '</div>\
+                                </div>\
+                            </div>\
+                        </div>\
+                    ');
+                }
+
+                $('#' + alnMatricula + 'lblInfo').remove();
+                if (lstEvento[lstEvento.length - 1].Icone == "red warning sign" && !$('#' + alnMatricula + 'lblWarning').length && !$('#' + alnMatricula).hasClass('active')) {
+                    $accordionChat = $('#' + alnMatricula + '.title');
+                    $accordionChat.append($('<i></i>').attr('id', alnMatricula + 'lblWarning').addClass('red warning sign icon'));
+                }
+
+                else if (!$('#' + alnMatricula + 'lblWarning').length) {
+                    $accordionChat = $('#' + alnMatricula + '.title');
+                    $accordionChat.append($('<i></i>').attr('id', alnMatricula + 'lblInfo').addClass(lstEvento[lstEvento.length - 1].Icone + ' icon'));
+                }
+            }
+        }
+
+        $('.accordion .title').on('click', function () {
+            matr = ($(this).attr('id'));
+            $('#' + matr + 'lblWarning').remove();
+        });
+
+        certHub.client.conectarAvaliado = function (usrMatricula) {
+            $('#' + usrMatricula + '.title .small.label').remove();
+            $('#' + usrMatricula + '.title .status.label').removeClass('red').addClass('green');
+            $('#' + usrMatricula + '.content .button').removeClass('disabled');
+        };
+
+        certHub.client.desconectarAvaliado = function (usrMatricula) {
+            $('#' + usrMatricula + '.title').append('<div class="ui small label">Desconectado</div>');
+            $('#' + usrMatricula + '.title .status.label').removeClass('green');
+            $('#' + usrMatricula + '.content .button').addClass('disabled');
+        };
+
+        certHub.client.avaliadoFinalizou = function (usrMatricula) {
+            $('#' + usrMatricula + '.title').append('<div class="ui small label">Finalizou</div>');
+            $('#' + usrMatricula + '.title .status.label').removeClass('green').addClass('red');
+            $('#' + usrMatricula + '.content .button').addClass('disabled');
+        };
+
+        certHub.client.receberAval = function (alnMatricula) {
+            $.ajax({
+                type: 'POST',
+                url: '/Dashboard/Avaliacao/Certificacao/Printar',
+                data: {
+                    codAvaliacao: codAval
+                },
+                success: function (data) {
+                    $('.printscreen.modal .header').text($('#' + alnMatricula + ' .nome').text() + ' (' + alnMatricula + ')');
+                    $('.printscreen.modal .content').css({
+                        'background-image': 'url(\'' + data + '\')'
+                    });
+                    $('.printscreen.modal .nova.guia.button').attr('href', data);
+                    $('.printscreen.modal').modal('show').modal('refresh');
+                    $('#' + alnMatricula + '.content .prova.button').removeClass('loading');
+                },
+                error: function () {
+                    siac.mensagem('Ocorreu um erro inesperado. Tente novamente mais tarde.');
+                }
+            });
+        };
+
+        certHub.client.atualizarProgresso = function (alnMatricula, value) {
+            if (value > 0) {
+                $('#' + alnMatricula + '.content .progress')
+                    .progress({
+                        value: value,
+                        label: 'ratio',
+                        text: {
+                            ratio: '{value} de {total}'
+                        }
+                    })
+                ;
+            }
+        }
+
+        certHub.client.respondeuQuestao = function (alnMatricula, questao, flag) {
+            $questao = $('#' + alnMatricula + '.content [data-questao="' + questao + '"]');
+            $questao.removeClass('positive').find('i').remove();
+            if (flag) {
+                $questao.addClass('green');
+            }
+        }
+
+        certHub.client.listarChat = function (alnMatricula, mensagens) {
+            for (var i = 0, length = mensagens.length; i < length; i++) {
+                if (mensagens[i].FlagAutor) {
+                    certHub.client.chatProfessorRecebe(alnMatricula, mensagens[i].Texto);
+                }
+                else {
+                    var mensagem = mensagens[i].Texto.quebrarLinhaEm(30);
+                    $('#' + alnMatricula + '.content .chat.popup .comments').append('\
+                        <div class="comment" style="float:right;clear:both;">\
+                            <div class="content">\
+                            <div class="ui right pointing label">\
+                                '+ mensagem + '\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+
+                    var $comments = $('#' + alnMatricula + '.content .comments');
+                    $($comments).scrollTop($comments.children().last().offset().top);
+                }
+            }
+        }
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();
+
+siac.Academica.Resultado = (function () {
+    function iniciar() {
+        $('.ui.accordion').accordion({ animateChildren: false });
+        $('.label, div').popup();
+        siac.Anexo.iniciar();
+    }
 
     return {
         iniciar: iniciar

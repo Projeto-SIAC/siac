@@ -918,13 +918,13 @@ siac.Academica.Realizar = (function () {
     function conectarHub(avalAcad, usrMatr) {
         var acadHub = $.connection.academicaHub;
         $.connection.hub.start().done(function () {
-            acadHub.server.alunoConectou(avalAcad, usrMatr);
+            acadHub.server.avaliadoConectou(avalAcad, usrMatr);
 
             finalizar = function () {
                 window.onbeforeunload = function () {
                     $('.ui.global.loader').parent().dimmer('show');
                 };
-                acadHub.server.alunoFinalizou(avalAcad, usrMatr);
+                acadHub.server.avaliadoFinalizou(avalAcad, usrMatr);
                 $('form').submit();
 
             };
@@ -932,7 +932,7 @@ siac.Academica.Realizar = (function () {
             $('.ui.continuar.modal')
                 .modal({
                     onApprove: function () {
-                        acadHub.server.alunoVerificando(avalAcad, usrMatr);
+                        acadHub.server.avaliadoVerificando(avalAcad, usrMatr);
                         confirmar();
                     },
                     onDeny: function () {
@@ -945,7 +945,7 @@ siac.Academica.Realizar = (function () {
 
             $('.finalizar.button').click(function () {
                 if (verificar()) {
-                    acadHub.server.alunoVerificando(avalAcad, usrMatr);
+                    acadHub.server.avaliadoVerificando(avalAcad, usrMatr);
                     confirmar();
                 }
                 else {
@@ -958,7 +958,7 @@ siac.Academica.Realizar = (function () {
                 $msg.val($msg.val().trim())
                 if ($msg.val()) {
                     var mensagem = $msg.val().quebrarLinhaEm(30);
-                    acadHub.server.chatAlunoEnvia(avalAcad, usrMatr, $msg.val());
+                    acadHub.server.chatAvaliadoEnvia(avalAcad, usrMatr, $msg.val());
                     $('.chat.popup .content .comments').append('\
                             <div class="comment" style="float:right;clear:both;">\
                                 <div class="content">\
@@ -1041,22 +1041,27 @@ siac.Academica.Realizar = (function () {
         }
 
         acadHub.client.enviarAval = function (codAvaliacao) {
+            console.log('Envio');
             html2canvas(document.body, {
                 onrendered: function (canvas) {
                     var c = $(canvas);
                     c.attr('id', 'mycanvas').hide();
                     $('body').append(c);
                     var canvas = document.getElementById("mycanvas");
-                    data = canvas.toDataURL("image/png");
+                    strData = canvas.toDataURL("image/png");
+                    console.log(strData);
                     $.ajax({
                         type: 'POST',
                         url: '/Dashboard/Avaliacao/Academica/Printar',
                         data: {
                             codAvaliacao: avalAcad,
-                            imageData: data
+                            imageData: strData
                         },
-                        success: function () {
-                            acadHub.server.avalEnviada(codAvaliacao, usrMatr);
+                        success: function (resp) {
+                            console.log(resp);
+                            if (resp) {
+                                acadHub.server.avalEnviada(avalAcad, usrMatr);
+                            }
                         },
                         error: function () {
                             // adicionar erro ao Feed do professor
@@ -1069,7 +1074,7 @@ siac.Academica.Realizar = (function () {
         };
 
         var chatQteMensagem = 0;
-        acadHub.client.chatAlunoRecebe = function (mensagem) {
+        acadHub.client.chatAvaliadoRecebe = function (mensagem) {
             if (mensagem) {
                 mensagem = mensagem.quebrarLinhaEm(30);
                 $('.chat.popup .comments').append('\
@@ -1285,19 +1290,19 @@ siac.Academica.Acompanhar = (function () {
             $('#' + matr + 'lblWarning').remove();
         });
 
-        acadHub.client.conectarAluno = function (usrMatricula) {
+        acadHub.client.conectarAvaliado = function (usrMatricula) {
             $('#' + usrMatricula + '.title .small.label').remove();
             $('#' + usrMatricula + '.title .status.label').removeClass('red').addClass('green');
             $('#' + usrMatricula + '.content .button').removeClass('disabled');
         };
 
-        acadHub.client.desconectarAluno = function (usrMatricula) {
+        acadHub.client.desconectarAvaliado = function (usrMatricula) {
             $('#' + usrMatricula + '.title').append('<div class="ui small label">Desconectado</div>');
             $('#' + usrMatricula + '.title .status.label').removeClass('green');
             $('#' + usrMatricula + '.content .button').addClass('disabled');
         };
 
-        acadHub.client.alunoFinalizou = function (usrMatricula) {
+        acadHub.client.avaliadoFinalizou = function (usrMatricula) {
             $('#' + usrMatricula + '.title').append('<div class="ui small label">Finalizou</div>');
             $('#' + usrMatricula + '.title .status.label').removeClass('green').addClass('red');
             $('#' + usrMatricula + '.content .button').addClass('disabled');
@@ -1317,10 +1322,12 @@ siac.Academica.Acompanhar = (function () {
                     });
                     $('.printscreen.modal .nova.guia.button').attr('href', data);
                     $('.printscreen.modal').modal('show').modal('refresh');
-                    $('#' + alnMatricula + '.content .prova.button').removeClass('loading');
                 },
                 error: function () {
                     siac.mensagem('Ocorreu um erro inesperado. Tente novamente mais tarde.');
+                },
+                complete: function () {
+                    $('#' + alnMatricula + '.content .prova.button').removeClass('loading');
                 }
             });
         };
