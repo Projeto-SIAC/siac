@@ -28,7 +28,7 @@ namespace SIAC.Controllers
             return View();
         }
 
-        // OIST: institucional/CadastrarModulo
+        // POST: institucional/CadastrarModulo
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult CadastrarModulo(FormCollection form)
@@ -40,9 +40,41 @@ namespace SIAC.Controllers
             modulo.Observacao = form["txtObservacao"];
 
             AviModulo.Inserir(modulo);
-            
-            return View("Configurar");
+
+            return RedirectToAction("Configurar");
         }
+
+        // POST: institucional/CadastrarCategoria
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        public ActionResult CadastrarCategoria(FormCollection form)
+        {
+            AviCategoria categoria = new AviCategoria();
+
+            categoria.Descricao = form["txtTitulo"];
+            categoria.Observacao = form["txtObservacao"];
+
+            AviCategoria.Inserir(categoria);
+
+            return RedirectToAction("Configurar");
+        }
+
+        // POST: institucional/CadastrarIndicador
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        public ActionResult CadastrarIndicador(FormCollection form)
+        {
+            AviIndicador indicador = new AviIndicador();
+
+            indicador.Descricao = form["txtTitulo"];
+            indicador.Observacao = form["txtObservacao"];
+
+            AviIndicador.Inserir(indicador);
+
+            return RedirectToAction("Configurar");
+        }
+
+
 
         // GET: institucional/Gerar
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]

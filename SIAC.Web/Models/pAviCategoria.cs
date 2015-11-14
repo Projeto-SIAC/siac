@@ -13,5 +13,11 @@ namespace SIAC.Models
         {
             return contexto.AviCategoria.OrderBy(c => c.Descricao).ToList();
         }
+
+        public static void Inserir(AviCategoria categoria)
+        {
+            contexto.AviCategoria.Add(categoria);
+            contexto.SaveChanges();
+        }
     }
 }

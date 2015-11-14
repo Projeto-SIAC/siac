@@ -13,5 +13,11 @@ namespace SIAC.Models
         {
             return contexto.AviIndicador.OrderBy(i => i.Descricao).ToList();
         }
+
+        public static void Inserir(AviIndicador indicador)
+        {
+            contexto.AviIndicador.Add(indicador);
+            contexto.SaveChanges();
+        }
     }
 }
