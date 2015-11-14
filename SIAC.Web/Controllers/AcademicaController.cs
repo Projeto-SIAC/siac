@@ -594,11 +594,11 @@ namespace SIAC.Controllers
                     }
                 }
             }
-            return RedirectToAction("Agendada");
+            return RedirectToAction("Agendada", new { codigo = codigo });
         }
 
         //POST: Academica/Printar/CodAvaliacao/UsrMatricula
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Printar(string codAvaliacao, string imageData)
         {
             if (Helpers.Sessao.UsuarioCategoriaCodigo == 1)
@@ -622,14 +622,17 @@ namespace SIAC.Controllers
             if (Helpers.Sessao.UsuarioCategoriaCodigo == 1 && !String.IsNullOrEmpty(codigo))
             {
                 AvalAcademica avalAcad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (avalAcad.Avaliacao.FlagPendente && avalAcad.Avaliacao.FlagLiberada && avalAcad.Avaliacao.FlagAgora)
+                if (avalAcad.Avaliacao.FlagPendente 
+                    && avalAcad.Avaliacao.FlagLiberada 
+                    && avalAcad.Avaliacao.FlagAgora
+                    && avalAcad.Alunos.FirstOrDefault(a=>a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null)
                 {
                     Helpers.Sessao.Inserir("RealizandoAvaliacao", true);
                     Helpers.Sessao.Inserir("UsuarioAvaliacao", codigo);
                     return View(avalAcad);
                 }
             }
-            return RedirectToAction("Agendada");
+            return RedirectToAction("Agendada", new { codigo = codigo });
         }
 
         // POST: Academica/Resultado/ACAD201520001
@@ -704,7 +707,7 @@ namespace SIAC.Controllers
                 }
                 return RedirectToAction("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao });
             }
-            return RedirectToAction("Agendada");
+            return RedirectToAction("Index");
         }
 
         // POST: Academica/Desistir/ACAD201520016

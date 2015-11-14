@@ -21,7 +21,7 @@ namespace SIAC.Hubs
 
             foreach (var key in acads.Keys)
             {
-                if (acads[key].ListarConnectionIdAlunos().Contains(connId))
+                if (acads[key].ListarConnectionIdAvaliados().Contains(connId))
                 {
                     aval = key;
                     break;
@@ -43,17 +43,17 @@ namespace SIAC.Hubs
                 }
                 else
                 {
-                    var matr = mapping.SelecionarMatriculaPorAluno(connId);
+                    var matr = mapping.SelecionarMatriculaPorAvaliado(connId);
 
                     if (!String.IsNullOrEmpty(matr))
                     {
-                        if (!mapping.SeAlunoFinalizou(matr))
+                        if (!mapping.SeAvaliadoFinalizou(matr))
                         {
                             mapping.InserirEvento(matr, "red power", "Desconectou");
 
                             if (!String.IsNullOrEmpty(mapping.SelecionarConnectionIdProfessor()))
                             {
-                                Clients.Client(mapping.SelecionarConnectionIdProfessor()).desconectarAluno(matr);
+                                Clients.Client(mapping.SelecionarConnectionIdProfessor()).desconectarAvaliado(matr);
                             }
                         }
                     }
@@ -89,37 +89,37 @@ namespace SIAC.Hubs
             var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
             mapping.InserirProfessor(usrMatricula, Context.ConnectionId);
             
-            foreach (var alnMatricula in mapping.ListarMatriculaAlunos())
+            foreach (var alnMatricula in mapping.ListarMatriculaAvaliados())
             {
-                foreach (var codQuestao in mapping.ListarQuestaoRespondidasPorAluno(alnMatricula))
+                foreach (var codQuestao in mapping.ListarQuestaoRespondidasPorAvaliado(alnMatricula))
                 {
                     Clients.Client(mapping.SelecionarConnectionIdProfessor()).respondeuQuestao(alnMatricula, codQuestao, true);
                 }
                 Clients.Client(mapping.SelecionarConnectionIdProfessor()).listarChat(alnMatricula, mapping.ListarChat(alnMatricula));
                 
-                Clients.Client(mapping.SelecionarConnectionIdProfessor()).atualizarProgresso(alnMatricula, mapping.ListarQuestaoRespondidasPorAluno(alnMatricula).Count);
-                Clients.Client(mapping.SelecionarConnectionIdProfessor()).conectarAluno(alnMatricula);
-                if (mapping.SeAlunoFinalizou(alnMatricula))
+                Clients.Client(mapping.SelecionarConnectionIdProfessor()).atualizarProgresso(alnMatricula, mapping.ListarQuestaoRespondidasPorAvaliado(alnMatricula).Count);
+                Clients.Client(mapping.SelecionarConnectionIdProfessor()).conectarAvaliado(alnMatricula);
+                if (mapping.SeAvaliadoFinalizou(alnMatricula))
                 {
-                    Clients.Client(mapping.SelecionarConnectionIdProfessor()).alunoFinalizou(alnMatricula);
+                    Clients.Client(mapping.SelecionarConnectionIdProfessor()).avaliadoFinalizou(alnMatricula);
                 }
             }
         }
 
-        public void AlunoConectou(string codAvaliacao, string usrMatricula)
+        public void AvaliadoConectou(string codAvaliacao, string usrMatricula)
         {
             avaliacoes.InserirAcademica(codAvaliacao);
 
             var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
 
-            if (mapping.ListarMatriculaAlunos().Contains(usrMatricula))
+            if (mapping.ListarMatriculaAvaliados().Contains(usrMatricula))
             {
                 mapping.InserirEvento(usrMatricula, "sign in", "Reconectou");
-                mapping.InserirAluno(usrMatricula, Context.ConnectionId);
+                mapping.InserirAvaliado(usrMatricula, Context.ConnectionId);
             }
             else
             {
-                mapping.InserirAluno(usrMatricula, Context.ConnectionId);
+                mapping.InserirAvaliado(usrMatricula, Context.ConnectionId);
                 mapping.InserirEvento(usrMatricula, "green sign in", "Conectou");
             }
 
@@ -130,14 +130,14 @@ namespace SIAC.Hubs
                 {
                     Clients.Client(mapping.SelecionarConnectionIdProfessor()).respondeuQuestao(usrMatricula, codQuestao, false);
                 }
-                Clients.Client(mapping.SelecionarConnectionIdProfessor()).atualizarProgresso(usrMatricula, mapping.ListarQuestaoRespondidasPorAluno(usrMatricula).Count);
-                Clients.Client(mapping.SelecionarConnectionIdProfessor()).conectarAluno(usrMatricula);
+                Clients.Client(mapping.SelecionarConnectionIdProfessor()).atualizarProgresso(usrMatricula, mapping.ListarQuestaoRespondidasPorAvaliado(usrMatricula).Count);
+                Clients.Client(mapping.SelecionarConnectionIdProfessor()).conectarAvaliado(usrMatricula);
             }
         }
 
         public void RequererAval(string codAvaliacao,string usrMatricula)
         {
-            Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdPorAluno(usrMatricula)).enviarAval(codAvaliacao);
+            Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdPorAvaliado(usrMatricula)).enviarAval(codAvaliacao);
         }
 
         public void AvalEnviada(string codAvaliacao, string alnMatricula)
@@ -153,7 +153,7 @@ namespace SIAC.Hubs
                         
             if (flag)
             {
-                if (mapping.ListarQuestaoRespondidasPorAluno(usrMatricula).Contains(questao))
+                if (mapping.ListarQuestaoRespondidasPorAvaliado(usrMatricula).Contains(questao))
                 {
                     mapping.InserirEvento(usrMatricula, "refresh", "Mudou a resposta da questão " + mapping.SelecionarIndiceQuestao(questao));
                 }
@@ -167,11 +167,11 @@ namespace SIAC.Hubs
                mapping.InserirEvento(usrMatricula, "erase", "Retirou resposta da questão " + mapping.SelecionarIndiceQuestao(questao));
             }
 
-            mapping.AlterarAlunoQuestao(usrMatricula, questao, flag);
+            mapping.AlterarAvaliadoQuestao(usrMatricula, questao, flag);
 
             if (!string.IsNullOrEmpty(mapping.SelecionarConnectionIdProfessor()))
             {
-                Clients.Client(mapping.SelecionarConnectionIdProfessor()).atualizarProgresso(usrMatricula, mapping.ListarQuestaoRespondidasPorAluno(usrMatricula).Count);
+                Clients.Client(mapping.SelecionarConnectionIdProfessor()).atualizarProgresso(usrMatricula, mapping.ListarQuestaoRespondidasPorAvaliado(usrMatricula).Count);
                 Clients.Client(mapping.SelecionarConnectionIdProfessor()).respondeuQuestao(usrMatricula, questao, flag);
             }
         }
@@ -182,23 +182,23 @@ namespace SIAC.Hubs
             {
                 if (String.IsNullOrEmpty(alnMatricula))
                 {
-                    foreach (var matr in avaliacoes.SelecionarAcademica(codAvaliacao).ListarMatriculaAlunos())
+                    foreach (var matr in avaliacoes.SelecionarAcademica(codAvaliacao).ListarMatriculaAvaliados())
                     {
                         avaliacoes.SelecionarAcademica(codAvaliacao).InserirEvento(matr, "announcement", "Recebeu alerta geral");
                     }
-                    Clients.Clients(avaliacoes.SelecionarAcademica(codAvaliacao).ListarConnectionIdAlunos()).alertar(mensagem);
+                    Clients.Clients(avaliacoes.SelecionarAcademica(codAvaliacao).ListarConnectionIdAvaliados()).alertar(mensagem);
                 }
                 else
                 {
                     avaliacoes.SelecionarAcademica(codAvaliacao).InserirEvento(alnMatricula, "announcement", "Recebeu alerta específico");
-                    Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdPorAluno(alnMatricula)).alertar(mensagem);
+                    Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdPorAvaliado(alnMatricula)).alertar(mensagem);
                 }
             }
         }
 
         public void Feed(string codAvaliacao, string alnMatricula)
         {
-            if (avaliacoes.SelecionarAcademica(codAvaliacao).ListarMatriculaAlunos().Contains(alnMatricula))
+            if (avaliacoes.SelecionarAcademica(codAvaliacao).ListarMatriculaAvaliados().Contains(alnMatricula))
             {
                 var lstEvento = avaliacoes.SelecionarAcademica(codAvaliacao).ListarFeed(alnMatricula).Select(e => new { Icone = e.Icone, Descricao = e.Descricao, DataCompleta = e.Data.ToBrazilianString(), Data = e.Data.ToElapsedTimeString() });
                 if (!String.IsNullOrEmpty(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdProfessor()))
@@ -224,38 +224,38 @@ namespace SIAC.Hubs
         public void ChatProfessorEnvia(string codAvaliacao, string usrMatricula, string mensagem)
         {
             avaliacoes.SelecionarAcademica(codAvaliacao).InserirMensagem(usrMatricula, mensagem, false);
-            Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdPorAluno(usrMatricula)).chatAlunoRecebe(mensagem);
+            Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdPorAvaliado(usrMatricula)).chatAvaliadoRecebe(mensagem);
         }
 
-        public void ChatAlunoEnvia(string codAvaliacao, string usrMatricula, string mensagem)
+        public void ChatAvaliadoEnvia(string codAvaliacao, string usrMatricula, string mensagem)
         {
             avaliacoes.SelecionarAcademica(codAvaliacao).InserirMensagem(usrMatricula, mensagem, true);
             Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdProfessor()).chatProfessorRecebe(usrMatricula, mensagem);
         }
 
-        public void AlunoVerificando(string codAvaliacao, string usrMatricula)
+        public void AvaliadoVerificando(string codAvaliacao, string usrMatricula)
         {
             var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
             mapping.InserirEvento(usrMatricula, "write square", "Verificando respostas");
         }
 
-        public void AlunoFinalizou(string codAvaliacao, string usrMatricula)
+        public void AvaliadoFinalizou(string codAvaliacao, string usrMatricula)
         {
             var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
             mapping.InserirEvento(usrMatricula, "red sign out", "Finalizou");
-            mapping.AlterarAlunoFlagFinalizou(usrMatricula);
+            mapping.AlterarAvaliadoFlagFinalizou(usrMatricula);
             if (!String.IsNullOrEmpty(mapping.SelecionarConnectionIdProfessor()))
             {
-                Clients.Client(mapping.SelecionarConnectionIdProfessor()).alunoFinalizou(usrMatricula);
+                Clients.Client(mapping.SelecionarConnectionIdProfessor()).avaliadoFinalizou(usrMatricula);
             }
         }
     }
 
     public class AcademicaMapping
     {
-        private readonly Dictionary<string, Academica> academicas = new Dictionary<string, Academica>();
+        private readonly Dictionary<string, Avaliacao> academicas = new Dictionary<string, Avaliacao>();
 
-        public Dictionary<string, Academica> ListarAcademicas()
+        public Dictionary<string, Avaliacao> ListarAcademicas()
         {
             return academicas;
         }
@@ -266,7 +266,7 @@ namespace SIAC.Hubs
             {
                 if (!academicas.ContainsKey(codAvaliacao))
                 {
-                    academicas.Add(codAvaliacao, new Academica());
+                    academicas.Add(codAvaliacao, new Avaliacao());
                     using (var e = new Models.dbSIACEntities()) {
                         int numIdentificador = 0;
                         int semestre = 0;
@@ -303,7 +303,7 @@ namespace SIAC.Hubs
             }
         }
 
-        public Academica SelecionarAcademica(string codAvaliacao)
+        public Avaliacao SelecionarAcademica(string codAvaliacao)
         {
             if (academicas.ContainsKey(codAvaliacao))
             {
