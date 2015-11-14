@@ -604,7 +604,6 @@
     <Content Include="Views\Academica\Configurar.cshtml" />
     <Content Include="Views\Academica\Imprimir.cshtml" />
     <Content Include="Views\Academica\Agendada.cshtml" />
-    <Content Include="Views\Academica\Partials\_Agendada.cshtml" />
     <Content Include="Views\Academica\Partials\_Questao.cshtml" />
     <Content Include="Views\Academica\Acompanhar.cshtml" />
     <Content Include="Views\Academica\Realizar.cshtml" />
