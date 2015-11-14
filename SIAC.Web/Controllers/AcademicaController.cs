@@ -28,7 +28,7 @@ namespace SIAC.Controllers
         }
 
         // POST: Academica/Listar
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina)
         {
             var qte = 12;
@@ -374,7 +374,7 @@ namespace SIAC.Controllers
         }
 
         //POST: Avaliacao/Academica/Trocar/ACAD201520001
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult TrocarQuestao(string codigoAvaliacao, int tipo, int indice, int codQuestao)
         {
@@ -492,7 +492,7 @@ namespace SIAC.Controllers
         }
 
         //POST: Avaliacao/Academica/Desfazer/ACAD201520001
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Desfazer(string codigoAvaliacao, int tipo, int indice, int codQuestao)
         {
@@ -540,7 +540,7 @@ namespace SIAC.Controllers
             return Json(String.Empty);
         }
 
-        [AcceptVerbs(HttpVerbs.Get)]
+        [HttpPost]
         public ActionResult ContagemRegressiva(string codAvaliacao)
         {
             AvalAcademica avalAcad = AvalAcademica.ListarPorCodigoAvaliacao(codAvaliacao);
@@ -568,7 +568,7 @@ namespace SIAC.Controllers
                         break;
                 }
             }
-            return Json(new { Tempo = strTempo, Intervalo = qteMilissegundo, FlagLiberada = flagLiberada }, JsonRequestBehavior.AllowGet);
+            return Json(new { Tempo = strTempo, Intervalo = qteMilissegundo, FlagLiberada = flagLiberada });
         }
 
         //POST: Avaliacao/Academica/Liberar/ACAD201520001
@@ -576,7 +576,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult AlternarLiberar(string codAvaliacao)
         {
-            return Json(AvalAcademica.AlternarLiberar(codAvaliacao), JsonRequestBehavior.AllowGet);
+            return Json(AvalAcademica.AlternarLiberar(codAvaliacao));
         }
 
         //GET: Avaliacao/Academica/Acompanhar/ACAD201520007
@@ -594,11 +594,11 @@ namespace SIAC.Controllers
                     }
                 }
             }
-            return RedirectToAction("Agendada");
+            return RedirectToAction("Agendada", new { codigo = codigo });
         }
 
         //POST: Academica/Printar/CodAvaliacao/UsrMatricula
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Printar(string codAvaliacao, string imageData)
         {
             if (Helpers.Sessao.UsuarioCategoriaCodigo == 1)
@@ -622,14 +622,17 @@ namespace SIAC.Controllers
             if (Helpers.Sessao.UsuarioCategoriaCodigo == 1 && !String.IsNullOrEmpty(codigo))
             {
                 AvalAcademica avalAcad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (avalAcad.Avaliacao.FlagPendente && avalAcad.Avaliacao.FlagLiberada && avalAcad.Avaliacao.FlagAgora)
+                if (avalAcad.Avaliacao.FlagPendente 
+                    && avalAcad.Avaliacao.FlagLiberada 
+                    && avalAcad.Avaliacao.FlagAgora
+                    && avalAcad.Alunos.FirstOrDefault(a=>a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null)
                 {
                     Helpers.Sessao.Inserir("RealizandoAvaliacao", true);
                     Helpers.Sessao.Inserir("UsuarioAvaliacao", codigo);
                     return View(avalAcad);
                 }
             }
-            return RedirectToAction("Agendada");
+            return RedirectToAction("Agendada", new { codigo = codigo });
         }
 
         // POST: Academica/Resultado/ACAD201520001
@@ -704,7 +707,7 @@ namespace SIAC.Controllers
                 }
                 return RedirectToAction("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao });
             }
-            return RedirectToAction("Agendada");
+            return RedirectToAction("Index");
         }
 
         // POST: Academica/Desistir/ACAD201520016
@@ -771,6 +774,7 @@ namespace SIAC.Controllers
             }
             return View("Index");
         }
+        
         // POST: Academica/Arquivar
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
@@ -784,7 +788,6 @@ namespace SIAC.Controllers
         }
 
         //POST: Academica/Avaliacao/CarregarAlunos/{codigo}
-        [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult CarregarAlunos(string codigo)
@@ -799,13 +802,12 @@ namespace SIAC.Controllers
                                  Nome = alunos.Usuario.PessoaFisica.Nome,
                                  FlagCorrecaoPendente = acad.Avaliacao.AvalPessoaResultado.Single(r => r.CodPessoaFisica == alunos.Usuario.CodPessoaFisica).FlagParcial
                              };
-                return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(result);
             }
             return Json(null);
         }
 
         //POST: Academica/Avaliacao/CarregarQuestoesDiscursivas/{codigo}
-        [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult CarregarQuestoesDiscursivas(string codigo)
@@ -823,13 +825,12 @@ namespace SIAC.Controllers
                                  questaoChaveResposta = questao.ChaveDeResposta,
                                  flagCorrecaoPendente = acad.Avaliacao.PessoaResposta.Where(r => r.CodQuestao == questao.CodQuestao && !r.RespNota.HasValue).Count() > 0
                              };
-                return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(result);
             }
             return Json(null);
         }
 
         //POST: Academica/Avaliacao/CarregarRespostasDiscursivas/{codigo}/{matrAluno}
-        [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult CarregarRespostasDiscursivas(string codigo, string matrAluno)
@@ -854,13 +855,12 @@ namespace SIAC.Controllers
                                  correcaoComentario = alunoResposta.ProfObservacao != null ? alunoResposta.ProfObservacao : "",
                                  flagCorrigida = alunoResposta.RespNota != null ? true : false
                              };
-                return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(result);
             }
             return Json(null);
         }
 
         //POST: Academica/Avaliacao/CarregarRespostasPorQuestao/{codigo}/{codQuestao}
-        [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult CarregarRespostasPorQuestao(string codigo, string codQuestao)
@@ -886,13 +886,12 @@ namespace SIAC.Controllers
                                  correcaoComentario = questao.ProfObservacao != null ? questao.ProfObservacao : "",
                                  flagCorrigida = questao.RespNota != null ? true : false
                              };
-                return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(result);
             }
             return Json(null);
         }
 
         //POST: Academica/Avaliacao/CorrigirQuestaoAluno/{codigo}/{matrAluno}/{codQuestao}
-        [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult CorrigirQuestaoAluno(string codigo, string matrAluno, string codQuestao, string notaObtida, string profObservacao)
@@ -904,12 +903,11 @@ namespace SIAC.Controllers
 
                 bool result = AvalAcademica.CorrigirQuestaoAluno(codigo, matrAluno, codQuesTemp, nota, profObservacao);
 
-                return Json(result, JsonRequestBehavior.AllowGet);
+                return Json(result);
             }
             return Json(false);
         }
 
-        //[AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult DetalheIndividual(string codigo, string matricula)

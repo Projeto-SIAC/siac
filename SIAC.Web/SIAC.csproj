@@ -604,7 +604,6 @@
     <Content Include="Views\Academica\Configurar.cshtml" />
     <Content Include="Views\Academica\Imprimir.cshtml" />
     <Content Include="Views\Academica\Agendada.cshtml" />
-    <Content Include="Views\Academica\Partials\_Agendada.cshtml" />
     <Content Include="Views\Academica\Partials\_Questao.cshtml" />
     <Content Include="Views\Academica\Acompanhar.cshtml" />
     <Content Include="Views\Academica\Realizar.cshtml" />
@@ -648,6 +647,9 @@
     <Content Include="Views\Certificacao\Agendada.cshtml" />
     <Content Include="Views\Institucional\Configurar.cshtml" />
     <Content Include="Scripts\modules\siac.institucional.js" />
+    <Content Include="Views\Certificacao\Acompanhar.cshtml" />
+    <Content Include="Views\Certificacao\Realizar.cshtml" />
+    <Content Include="Views\Certificacao\Resultado.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

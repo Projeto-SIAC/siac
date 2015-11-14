@@ -16,7 +16,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Index", "Acesso");
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult RecuperarTemasPorCodDisciplina(string codDisciplina)
         {
             if (!String.IsNullOrEmpty(codDisciplina))
@@ -26,13 +26,13 @@ namespace SIAC.Controllers
                 {                    
                     var temas = Tema.ListarPorDisciplina(cod);
                     var result = from t in temas select new { CodTema = t.CodTema, Descricao = t.Descricao };
-                    return Json(result.ToList(), JsonRequestBehavior.AllowGet);
+                    return Json(result.ToList());
                 }
             }
             return Json(null);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult RecuperarTemasPorCodDisciplinaTemQuestao(string codDisciplina)
         {
             if (!String.IsNullOrEmpty(codDisciplina))
@@ -42,7 +42,7 @@ namespace SIAC.Controllers
                 {
                     var temas = Tema.ListarPorDisciplinaTemQuestao(cod);
                     var result = from t in temas select new { CodTema = t.CodTema, Descricao = t.Descricao };
-                    return Json(result.ToList(), JsonRequestBehavior.AllowGet);
+                    return Json(result.ToList());
                 }
             }
             return Json(null);

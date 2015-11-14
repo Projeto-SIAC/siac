@@ -37,7 +37,7 @@ namespace SIAC.Controllers
         }
 
         //POST: /Configuracoes
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Index(FormCollection formCollection)
         {
             if (formCollection.HasKeys())

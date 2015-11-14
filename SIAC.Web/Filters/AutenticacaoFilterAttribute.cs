@@ -26,8 +26,9 @@ namespace SIAC.Filters
                 if (paths.Length > 0)
                 {
                     string codigo = paths[paths.Length - 1];
-                    if ((!paths.Contains("desistir") || !paths.Contains("resultado") || !paths.Contains("realizar")) && codigo != Helpers.Sessao.UsuarioAvaliacao) 
+                    if ((!paths.Contains("printar") && !paths.Contains("desistir") && !paths.Contains("resultado") && !paths.Contains("realizar")) && codigo != Helpers.Sessao.UsuarioAvaliacao) 
                     {
+                        // como sei se é acadêmica ou certificacao ou reposicao? '-'
                         filterContext.Result = new RedirectResult("~/dashboard/avaliacao/academica/realizar/" + Helpers.Sessao.UsuarioAvaliacao);
                     }
                 }

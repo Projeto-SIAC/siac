@@ -5,7 +5,7 @@
 
 @foreach (var cert in Model)
 {
-    var FlagProfessor = cert.PessoaFisica.FirstOrDefault(p => p.CodPessoa == Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula)) == null;
+    var FlagProfessor = cert.Professor.MatrProfessor == Sessao.UsuarioMatricula;
     <div class="card">
         <div class="content">
             <a href="@Url.Action("Detalhe", new { codigo = cert.Avaliacao.CodAvaliacao })" class="header">
