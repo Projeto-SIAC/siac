@@ -34,7 +34,7 @@ namespace SIAC.Controllers
                 url = Url.Action("Agendada", "Academica", new { codigo = a.Avaliacao.CodAvaliacao })
             });
 
-            return Json(retorno, JsonRequestBehavior.AllowGet);
+            return Json(retorno);
         }
 
         // POST: Agenda/Certificacoes?start=2013-12-01&end=2014-01-12&_=1386054751381
@@ -56,7 +56,7 @@ namespace SIAC.Controllers
                 url = Url.Action("Agendada", "Certificacao", new { codigo = a.Avaliacao.CodAvaliacao })
             });
 
-            return Json(retorno, JsonRequestBehavior.AllowGet);
+            return Json(retorno);
         }
 
         [HttpPost]
@@ -109,7 +109,7 @@ namespace SIAC.Controllers
                 inicio = inicio.AddDays(1);
             }
 
-            return Json(retorno, JsonRequestBehavior.AllowGet);
+            return Json(retorno);
         }
     }
 }

@@ -37,7 +37,7 @@ namespace SIAC.Controllers
         }
 
         // POST: Autoavaliacao/Listar
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina, string dificuldade)
         {
             var qte = 10;

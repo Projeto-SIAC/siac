@@ -227,9 +227,9 @@ namespace SIAC.Controllers
             if(!String.IsNullOrEmpty(codigo) && questoes.Length > 0)
             {
                 Avaliacao.AtualizarQuestoes(codigo, questoes);
-                return Json(true, JsonRequestBehavior.AllowGet);
+                return Json(true);
             }
-            return Json(false, JsonRequestBehavior.AllowGet);
+            return Json(false);
         }
 
         // POST: Certificacao/CarregarQuestoes/CERT201520001/{temas}/{dificuldade}/{tipo}
@@ -367,7 +367,7 @@ namespace SIAC.Controllers
         }
 
         // POST: Certificacao/Avaliados/CERT201520001
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Avaliados(string codigo, List<Selecao> selecao)
         {
@@ -407,11 +407,11 @@ namespace SIAC.Controllers
                     Repositorio.GetInstance().SaveChanges();
                 }
             }
-            return Json("/historico/avaliacao/certificacao/detalhe/"+codigo, JsonRequestBehavior.AllowGet);
+            return Json("/historico/avaliacao/certificacao/detalhe/"+codigo);
         }
-        
+
         // POST: Certificacao/Avaliados/CERT201520001
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Filtrar(int codigo)
         {
@@ -463,7 +463,7 @@ namespace SIAC.Controllers
                     break;
             }
            
-            return Json(lstResultado, JsonRequestBehavior.AllowGet);
+            return Json(lstResultado);
         }
 
         // GET: Certificacao/Agendada/CERT201520001

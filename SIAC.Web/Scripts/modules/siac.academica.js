@@ -561,7 +561,7 @@ siac.Academica.Agendada = (function () {
     function contagemRegressiva(intervalo) {
         setTimeout(function () {
             $.ajax({
-                type: 'GET',
+                type: 'POST',
                 url: '/Dashboard/Avaliacao/Academica/ContagemRegressiva',
                 data: { codAvaliacao: _codAvaliacao },
                 success: function (data) {
@@ -591,7 +591,7 @@ siac.Academica.Agendada = (function () {
         if (_categoriaUsuario == 1) {
             acadHub.client.liberar = function (strCodigo) {
                 $.ajax({
-                    type: 'GET',
+                    type: 'POST',
                     url: '/Dashboard/Avaliacao/Academica/ContagemRegressiva',
                     data: { codAvaliacao: _codAvaliacao },
                     success: function (data) {
@@ -622,7 +622,7 @@ siac.Academica.Agendada = (function () {
             acadHub.client.bloquear = function (strCodigo) {
                 
                 $.ajax({
-                    type: 'GET',
+                    type: 'POST',
                     url: '/Dashboard/Avaliacao/Academica/ContagemRegressiva',
                     data: { codAvaliacao: _codAvaliacao },
                     success: function (data) {
@@ -657,7 +657,7 @@ siac.Academica.Agendada = (function () {
                                 acadHub.server.liberar(_codAvaliacao, true);
                                 $('.liberar.button').addClass('active').removeClass('loading').text('Liberada');
                                 $.ajax({
-                                    type: 'GET',
+                                    type: 'POST',
                                     url: '/Dashboard/Avaliacao/Academica/ContagemRegressiva',
                                     data: { codAvaliacao: _codAvaliacao },
                                     success: function (data) {

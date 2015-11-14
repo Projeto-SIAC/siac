@@ -31,7 +31,7 @@ namespace SIAC.Controllers
         }
 
         // POST: Questao/Listar
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] tipos, string disciplina, string tema, string dificuldade)
         {
             var qte = 10;
@@ -86,7 +86,7 @@ namespace SIAC.Controllers
         }
 
         //POST: Questao/PalavrasChave
-        [AcceptVerbs(HttpVerbs.Post)]
+        [HttpPost]
         public ActionResult PalavrasChave(string[] palavras)
         {
             var resultado = Questao.ListarPorPalavraChave(palavras);
@@ -101,7 +101,7 @@ namespace SIAC.Controllers
                 DtCadastro = q.DtCadastro.ToBrazilianString(),
                 FlagProprietario = q.Professor.MatrProfessor == Helpers.Sessao.UsuarioMatricula
             });
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result);
         }
 
         // GET: Questao/Cadastrar
@@ -118,7 +118,7 @@ namespace SIAC.Controllers
         }
 
         // GET: Questao/Captcha
-        [AcceptVerbs(HttpVerbs.Get)]
+        [HttpPost]
         public string ChequeCaptcha(string captcha)
         {
             if (captcha == Helpers.Sessao.Retornar("Captcha") as string)
@@ -129,7 +129,7 @@ namespace SIAC.Controllers
         }
 
         // GET: Questao/Captcha
-        [AcceptVerbs(HttpVerbs.Get)]
+        [HttpPost]
         public string NovoCaptcha()
         {
             return Helpers.Captcha.Novo();
@@ -319,7 +319,7 @@ namespace SIAC.Controllers
         }
 
         //GET: Dashboard/Questao/Gerar/50
-        [AcceptVerbs(HttpVerbs.Get)]
+        [HttpGet]
         public ActionResult Gerar(string strQte)
         {
             if (!String.IsNullOrEmpty(strQte))
