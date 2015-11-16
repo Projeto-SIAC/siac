@@ -19,6 +19,10 @@
                 {
                 <p><b>Aplicação</b>: @cert.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy HH'h'mm'min'")</p>
                 }
+                @if (cert.PessoaFisica.Count > 0)
+                {
+                    <p><b>Quantidade de Avaliados</b>: @cert.PessoaFisica.Count</p>
+                }
                 <p><b>Quantidade de Questões</b>: @cert.Avaliacao.QteQuestoes()</p>
             </div>
         </div>
@@ -58,19 +62,29 @@
                     <a href="@Url.Action("Detalhe", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
                 }
             }
-            else if (cert.Avaliacao.FlagAgendada)
+            else if (cert.PessoaFisica.Count > 0 && cert.Avaliacao.FlagAgendada)
             {
                 <span class="ui attached top right label"><i class="clock icon"></i>Agendada</span>
                 if (FlagProfessor)
                 {
-                    <a href="@Url.Action("Configurar", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
+                    <a href="@Url.Action("Agendada", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Aplicar</a>
                 }
             }
-            else if(FlagProfessor)
-            {                
-                <a href="@Url.Action("Agendar", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
+            else if (cert.Avaliacao.FlagAgendada && cert.PessoaFisica.Count == 0)
+            {
+                if (FlagProfessor)
+                {
+                    <a href="@Url.Action("Avaliados", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Selecionar avaliados</a>
+                }
             }
-            if(!FlagProfessor)
+            else if (FlagProfessor)
+            {
+                <div class="ui buttons">
+                    <a href="@Url.Action("Configurar", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
+                    <a href="@Url.Action("Agendar", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
+                </div>
+            }
+            if (!FlagProfessor)
             {
                 <a href="@Url.Action("Detalhe", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
             }
