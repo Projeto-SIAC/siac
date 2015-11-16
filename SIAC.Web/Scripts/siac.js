@@ -112,9 +112,6 @@
         else if (/\/historico\/avaliacao\/certificacao\/agendada\/cert[0-9]+$/.test(pathname)) {
             siac.Certificacao.Agendada.iniciar();
         }
-        else if (/\/institucional\/configurar(|\/indicador|\/categoria|\/modulo)$/.test(pathname)) {
-            siac.Institucional.Configurar.iniciar();
-        }
         else if (/\/dashboard\/avaliacao\/certificacao\/realizar\/cert[0-9]+$/.test(pathname)) {
             siac.Certificacao.Realizar.iniciar();
         }
@@ -129,6 +126,12 @@
         }
         else if (/\/historico\/avaliacao\/certificacao\/detalhe\/cert[0-9]+$/.test(pathname)) {
             siac.Certificacao.Detalhe.iniciar();
+        }
+        else if (/\/institucional\/configurar(|\/indicador|\/categoria|\/modulo)$/.test(pathname)) {
+            siac.Institucional.Configurar.iniciar();
+        }
+        else if (pathname == '/institucional/gerar') {
+            siac.Institucional.Gerar.iniciar();            
         }
     }
 

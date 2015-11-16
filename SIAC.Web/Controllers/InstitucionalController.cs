@@ -16,18 +16,17 @@ namespace SIAC.Controllers
             Usuario usuario = Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
             return View(usuario);
         }
-
         // GET: institucional/Configurar
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult Configurar()
         {
-            ViewBag.Modulos = AviModulo.ListarOrdenadamente();
-            ViewBag.Categorias = AviCategoria.ListarOrdenadamente();
-            ViewBag.Indicadores = AviIndicador.ListarOrdenadamente();
+            ViewModels.InstitucionalGerarQuestaoViewModel model = new ViewModels.InstitucionalGerarQuestaoViewModel();
+            model.Modulos = AviModulo.ListarOrdenadamente();
+            model.Categorias = AviCategoria.ListarOrdenadamente();
+            model.Indicadores = AviIndicador.ListarOrdenadamente();
 
-            return View();
+            return View(model);
         }
-
         // POST: institucional/CadastrarModulo
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
@@ -43,7 +42,6 @@ namespace SIAC.Controllers
 
             return RedirectToAction("Configurar");
         }
-
         // POST: institucional/CadastrarCategoria
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
@@ -58,7 +56,6 @@ namespace SIAC.Controllers
 
             return RedirectToAction("Configurar");
         }
-
         // POST: institucional/CadastrarIndicador
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
@@ -73,14 +70,17 @@ namespace SIAC.Controllers
 
             return RedirectToAction("Configurar");
         }
-
-
-
         // GET: institucional/Gerar
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult Gerar()
         {
-            return View();
+            ViewModels.InstitucionalGerarQuestaoViewModel model = new ViewModels.InstitucionalGerarQuestaoViewModel();
+            model.Modulos = AviModulo.ListarOrdenadamente();
+            model.Categorias = AviCategoria.ListarOrdenadamente();
+            model.Indicadores = AviIndicador.ListarOrdenadamente();
+            model.Tipos = TipoQuestao.ListarOrdenadamente();
+
+            return View(model);
         }
     }
 }

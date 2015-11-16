@@ -407,8 +407,11 @@ siac.Questao.Cadastrar = (function () {
             title.remove();
             content.remove();
             renomearAlternativas();
+            i--;
+        } else {
+            siac.aviso('É preciso ter, no mínimo, duas alternativas por questão', 'red');
         }
-        $('#txtQtdAlternativas').val($('.ui.alternativas.accordion .title').length);
+        $('#txtQtdAlternativas').val(i);
     }
 
     function adicionarAnexo() {

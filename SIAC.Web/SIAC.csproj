@@ -548,6 +548,7 @@
     <Compile Include="ViewModels\AvaliacaoIndexViewModel.cs" />
     <Compile Include="ViewModels\AvaliacaoResultadoViewModel.cs" />
     <Compile Include="ViewModels\CertificacaoConfigurarViewModel.cs" />
+    <Compile Include="ViewModels\InstitucionalGerarQuestaoViewModel.cs" />
     <Compile Include="ViewModels\QuestaoCadastrarViewModel.cs" />
     <Compile Include="ViewModels\QuestaoIndexViewModel.cs" />
   </ItemGroup>
