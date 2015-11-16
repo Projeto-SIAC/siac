@@ -38,6 +38,16 @@ namespace SIAC.Models
             return avalAcad.Avaliacao.FlagLiberada;
         }
 
+        public static List<AvalCertificacao> ListarCorrecaoPendentePorProfessor(int codProfessor)
+        {
+            return contexto.AvalQuesPessoaResposta
+                .Where(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalCertificacao.CodProfessor == codProfessor && !a.RespNota.HasValue)
+                .OrderBy(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.DtAplicacao)
+                .Select(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalCertificacao)
+                .Distinct()
+                .ToList();
+        }
+
         public static AvalCertificacao ListarPorCodigoAvaliacao(string codigo)
         {
             int numIdentificador = 0;

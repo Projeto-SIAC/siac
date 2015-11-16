@@ -38,14 +38,6 @@
                 { "Icone", "book" },
                 { "Descricao", "Minhas Questões" }
             })
-        }        
-        @if (Model.CodCategoria == 2)
-        {
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Pendente", "Academica") },
-                { "Icone", "edit" },
-                { "Descricao", "Correções Pendentes" }
-            })
         }
     </div>
 </div>

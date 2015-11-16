@@ -19,7 +19,7 @@
                 { "Url", Url.Action("Gerar", "Academica") },
                 { "Icone", "file" },
                 { "Descricao", "Gerar Acadêmica" }
-            })           
+            })
         }
         @if (Model.CodCategoria == 2 || Model.CodCategoria == 3)
         {
@@ -36,7 +36,7 @@
                 { "Icone", "add circle" },
                 { "Descricao", "Nova Questão" }
             })
-        }     
+        }
         @if (Model.CodCategoria <= 3)
         {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
@@ -44,20 +44,24 @@
                 { "Icone", "calendar" },
                 { "Descricao", "Abrir Agenda" }
             })
-        }                       
-        <div class="column aligned center">
+        }
+        @if (Model.CodCategoria == 2)
+        {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Index", "Perfil") },
-                { "Icone", "user" },
-                { "Descricao", "Abrir Perfil" }
+                { "Url", Url.Action("Pendente") },
+                { "Icone", "edit" },
+                { "Descricao", "Correções Pendentes" }
             })
-        </div>
-        <div class="column aligned center">
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Index", "Historico") },
-                { "Icone", "wait" },
-                { "Descricao", "Abir Histórico" }
-            })
-        </div>
+        }
+        @Html.Partial("_Atalho", new ViewDataDictionary() {
+            { "Url", Url.Action("Index", "Perfil") },
+            { "Icone", "user" },
+            { "Descricao", "Abrir Perfil" }
+        })
+        @Html.Partial("_Atalho", new ViewDataDictionary() {
+            { "Url", Url.Action("Index", "Historico") },
+            { "Icone", "wait" },
+            { "Descricao", "Abir Histórico" }
+        })
     </div>
 </div>

@@ -1,0 +1,51 @@
+﻿@model List<Avaliacao>
+@{
+    ViewBag.Title = "Correções Pendentes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="ui basic segment">
+    <div class="ui two stackable cards">
+        @foreach (Avaliacao aval in Model)
+        {
+            switch (aval.CodTipoAvaliacao)
+            {
+                case 2:
+                    <a href="@Url.Action("Corrigir", "Academica", new { codigo = aval.CodAvaliacao })" class="card blue">
+                        <div class="content">
+                            <div class="header">@aval.CodAvaliacao</div>
+                            <div class="meta">
+                                <span title="@aval.DtAplicacao.Value.ToBrazilianString()">@aval.DtAplicacao.Value.ToElapsedTimeString()</span>
+                            </div>
+                            <div class="description">
+                                <p><b>Disciplina</b>: @aval.AvalAcademica.Disciplina.Descricao</p>                                
+                                <p><b>Turma</b>: @aval.AvalAcademica.Turma.Curso.Descricao (@aval.AvalAcademica.Turma.CodTurma)</p>
+                                <p><b>Quantidade de Questões</b>: @aval.QteQuestoes()</p>
+                            </div>
+                        </div>
+                    </a>
+                    break;
+                case 3:
+                    <a href="@Url.Action("Corrigir", "Certificacao", new { codigo = aval.CodAvaliacao })" class="card teal">
+                        <div class="content">
+                            <div class="header">@aval.CodAvaliacao</div>
+                            <div class="meta">
+                                <span title="@aval.DtAplicacao.Value.ToBrazilianString()">@aval.DtAplicacao.Value.ToElapsedTimeString()</span>
+                            </div>
+                            <div class="description">
+                                <p><b>Disciplina</b>: @aval.AvalCertificacao.Disciplina.Descricao</p>
+                                <p><b>Quantidade de Questões</b>: @aval.QteQuestoes()</p>
+                            </div>
+                        </div>
+                    </a>
+
+                    break;
+                default:
+                    break;
+            }
+
+        }
+    </div>
+</div>
+

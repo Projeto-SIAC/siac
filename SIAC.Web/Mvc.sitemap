@@ -44,8 +44,9 @@
             <mvcSiteMapNode title="Resultado" controller="Certificacao" action="Resultado" preservedRouteParameters="codigo"/>
           </mvcSiteMapNode>
         </mvcSiteMapNode>
-      </mvcSiteMapNode>    
+      </mvcSiteMapNode>
       <mvcSiteMapNode title="Agenda" controller="Agenda" action="Index" />
+      <mvcSiteMapNode title="Correções Pendentes" controller="Dashboard" action="Pendente" />
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Histórico" controller="Historico" action="Index">
       <mvcSiteMapNode title="Questão" controller="Questao" action="Index">
@@ -59,16 +60,12 @@
         <mvcSiteMapNode title="Acadêmica" controller="Academica" action="Index">
           <mvcSiteMapNode title="Agendada" controller="Academica" action="Agendada" preservedRouteParameters="codigo"/>
           <mvcSiteMapNode title="Detalhe" controller="Academica" action="Detalhe" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Pendente" controller="Academica" action="Pendente">
-            <mvcSiteMapNode title="Corrigir" controller="Academica" action="Corrigir" preservedRouteParameters="codigo"/>
-          </mvcSiteMapNode>
+          <mvcSiteMapNode title="Corrigir" controller="Academica" action="Corrigir" preservedRouteParameters="codigo"/>
         </mvcSiteMapNode>
         <mvcSiteMapNode title="Certificação" controller="Certificacao" action="Index">
           <mvcSiteMapNode title="Detalhe" controller="Certificacao" action="Detalhe" preservedRouteParameters="codigo"/>
           <mvcSiteMapNode title="Agendada" controller="Certificacao" action="Agendada" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Pendente" controller="Certificacao" action="Pendente">
-            <mvcSiteMapNode title="Corrigir" controller="Certificacao" action="Corrigir" preservedRouteParameters="codigo"/>
-          </mvcSiteMapNode>
+          <mvcSiteMapNode title="Corrigir" controller="Certificacao" action="Corrigir" preservedRouteParameters="codigo"/>
         </mvcSiteMapNode>
       </mvcSiteMapNode>
     </mvcSiteMapNode>

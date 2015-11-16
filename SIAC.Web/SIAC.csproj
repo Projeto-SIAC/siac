@@ -608,7 +608,7 @@
     <Content Include="Views\Academica\Acompanhar.cshtml" />
     <Content Include="Views\Academica\Realizar.cshtml" />
     <Content Include="Views\Academica\Resultado.cshtml" />
-    <Content Include="Views\Academica\Pendente.cshtml" />
+    <Content Include="Views\Dashboard\Pendente.cshtml" />
     <Content Include="Scripts\siac.js" />
     <Content Include="Views\Academica\Corrigir.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SiteMapTitleHelperModel.cshtml" />
