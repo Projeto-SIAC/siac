@@ -827,5 +827,25 @@ namespace SIAC.Controllers
             }
             return Json(false);
         }
+
+        // GET: Avaliacao/Academica/Imprimir/ACAD201520001
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult Imprimir(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
+                if (cert != null)
+                {
+                    string strMatr = Sessao.UsuarioMatricula;
+                    Professor prof = Professor.ListarPorMatricula(strMatr);
+                    if (prof.CodProfessor == cert.CodProfessor)
+                    {
+                        return View(cert);
+                    }
+                }
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

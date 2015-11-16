@@ -402,11 +402,7 @@ siac.Academica.Configurar = (function () {
         $('.informacoes.button').click(function () {
             $('.informacoes.modal').modal('show');
         });
-
-        $('.imprimir.button').click(function () {
-            window.open('/Dashboard/Avaliacao/Academica/Imprimir/' + _codAvaliacao, '_blank');
-        });
-
+        
         $('.salvar.button').click(function () {
             salvar();
         });
