@@ -164,6 +164,7 @@
         </div>
     </div>
 </div>
+
 @* Placeholder da opção de Correção por Questão *@
 <div id="templateCorrecaoQuestao" class="ui basic segment questoes aluno" hidden>
     <div id="{codQuestao}" class="ui fluid card">
@@ -228,15 +229,15 @@
         <form class="ui form">
             <div class="fields">
                 <div class="four wide field required">
-                    <label for="">Corrigir por...</label>
+                    <label for="ddlCorrecaoModo">Corrigir por...</label>
                     <select id="ddlCorrecaoModo" name="ddlCorrecaoModo" class="ui dropdown">
                         <option value="">Corrigir por...</option>
-                        <option value="aluno">Aluno</option>
+                        <option value="aluno">Avaliado</option>
                         <option value="questao">Questão</option>
                     </select>
                 </div>
                 <div class="twelve wide field required">
-                    <label for="">Selecione </label>
+                    <label for="ddlCorrecaoValor">Selecione</label>
                     <select id="ddlCorrecaoValor" name="ddlCorrecaoValor" class="ui dropdown disabled" style="z-index:1005;"></select>
                 </div>
             </div>

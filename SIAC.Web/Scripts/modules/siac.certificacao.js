@@ -311,7 +311,7 @@ siac.Certificacao.Configurar = (function () {
                     $('.ui.detalhe.button').click(function () {
                         var codQuestao = $(this).parents('.card').attr('id');
                         _controleModal = $(this).parents('.modal');
-                        mostrarQuestao(codQuestao,this);
+                        mostrarQuestao(codQuestao, this);
                     });
                 }
             });
@@ -384,7 +384,7 @@ siac.Certificacao.Configurar = (function () {
                 $modal.find('.header').html('Questão ' + codQuestao);
                 $modal.find('.segment').html(data);
                 $('.accordion').accordion({
-                    onChange:function(){
+                    onChange: function () {
                         $modal.modal('refresh');
                     }
                 });
@@ -416,7 +416,7 @@ siac.Certificacao.Configurar = (function () {
                     $modal.find('.ui.accordion')
                         .html(data)
                         .accordion({
-                            onChange:function(){
+                            onChange: function () {
                                 $modal.modal('refresh');
                             }
                         });
@@ -756,7 +756,7 @@ siac.Certificacao.Avaliados = (function () {
 
         _controleAjax = $.ajax({
             type: 'POST',
-            url: '/dashboard/avaliacao/certificacao/filtrar/'+filtro,
+            url: '/dashboard/avaliacao/certificacao/filtrar/' + filtro,
             success: function (data) {
                 _content = data;
                 $buscar
@@ -766,7 +766,7 @@ siac.Certificacao.Avaliados = (function () {
                           _result = result;
                           $('.selecionar.button').removeClass('disabled');
                       },
-                      minCharacters: 3                  
+                      minCharacters: 3
                   })
                 ;
                 $buscar.find('input').val('');
@@ -1788,8 +1788,8 @@ siac.Certificacao.Corrigir = (function () {
                     type: 'POST',
                     url: '/Dashboard/Avaliacao/Certificacao/CarregarAlunos/' + _codAvaliacao,
                     success: function (data) {
-                        $ddlCorrecaoValor.html('<option value="">Selecione o aluno</option>');
-                        $ddlCorrecaoValor.parents('.field').find('label').text('Selecione o aluno');
+                        $ddlCorrecaoValor.html('<option value="">Selecione o avaliado</option>');
+                        $ddlCorrecaoValor.parents('.field').find('label').text('Selecione o avaliado');
                         for (i = 0, length = data.length; i < length; i++) {
                             if (data[i].FlagCorrecaoPendente) {
                                 $ddlCorrecaoValor.append('<option value="' + data[i].Matricula + '">' + data[i].Nome + '</option>');
@@ -1967,9 +1967,6 @@ siac.Certificacao.Corrigir = (function () {
             window.setTimeout(function () {
                 $('#ddlCorrecaoValor').dropdown('set selected', matr);
             }, 1000);
-
-
-
         });
     }
 
