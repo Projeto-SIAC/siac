@@ -1,8 +1,102 @@
-﻿
-@{
+﻿@model SIAC.ViewModels.InstitucionalGerarQuestaoViewModel
+@{   
     ViewBag.Title = "Gerar Av.Institucional";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
 
+<form class="ui form">
+    <div class="ui error message">
+        <div class="header">Verifique</div>
+        <ul class="list"></ul>
+    </div>
+    <div class="ui top attached tabular menu">
+        <div class="item" data-tab="questoes">Questões da AVI</div>
+        <div class="active item" data-tab="gerais">Gerais</div>
+        <div class="item" data-tab="detalhes">Detalhes</div>
+        <div class="item questao objetiva" data-tab="alternativas">Alternativas</div>
+    </div>
+    @* Questões da AVI *@
+    <div class="ui bottom attached tab segment questoes" data-tab="questoes">
+
+    </div>
+    @* Gerais da Questão *@
+    <div class="ui bottom attached active tab segment gerais" data-tab="gerais">
+        <div class="field required">
+            <label>Módulo</label>
+            <select id="ddlModulo" name="ddlModulo" class="ui search dropdown" required>
+                <option value="">Módulos</option>
+                @foreach (AviModulo modulo in Model.Modulos)
+                {
+                    <option value="@modulo.CodAviModulo">@modulo.Descricao</option>
+                }
+            </select>
+        </div>
+        <div class="field required">
+            <label>Categoria</label>
+            <select id="ddlCategoria" name="ddlCategoria" class="ui search dropdown" required>
+                <option value="">Categoria</option>
+                @foreach (AviCategoria categoria in Model.Categorias)
+                {
+                    <option value="@categoria.CodAviCategoria">@categoria.Descricao</option>
+                }
+            </select>
+        </div>
+        <div class="field required">
+            <label>Indicador</label>
+            <select id="ddlIndicador" name="ddlIndicador" class="ui search dropdown" required>
+                <option value="">Indicador</option>
+                @foreach (AviIndicador indicador in Model.Indicadores)
+                {
+                    <option value="@indicador.CodAviIndicador">@indicador.Descricao</option>
+                }
+            </select>
+        </div>
+        <div class="field required">
+            <label>Tipo</label>
+            <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" required>
+                <option value="">Tipo</option>
+                @foreach (TipoQuestao tipo in Model.Tipos)
+                {
+                    <option value="@tipo.CodTipoQuestao">@tipo.Descricao</option>
+                }
+            </select>
+        </div>
+    </div>
+    @* Detalhes da Questão *@
+    <div class="ui bottom attached tab segment detalhes" data-tab="detalhes">
+        <div class="field required">
+            <label for="txtEnunciado">Enunciado</label>
+            <textarea id="txtEnunciado" name="txtEnunciado" rows="2" required placeholder="Enunciado..."></textarea>
+        </div>
+        <div class="field">
+            <label for="txtObservacao">Observação</label>
+            <textarea id="txtObservacao" name="txtObservacao" rows="2" placeholder="Observação..."></textarea>
+        </div>
+    </div>
+    @* Alternativas da Questão *@
+    <div class="ui bottom attached tab segment questao objetiva" data-tab="alternativas">
+        <input id="txtQtdAlternativas" name="txtQtdAlternativas" type="number" hidden />
+        <div class="ui adicionar button" style="float: right">Adicionar</div>
+        <div class="ui alternativas fluid accordion">
+        </div>
+    </div>
+    <br />
+    <div class="ui left floated cancelar button">Cancelar</div>
+    <div class="ui special popup">
+        <div class='header'>Tem certeza?</div>
+        <div class='content'>
+            <p>Você perderá todos os dados</p>
+            <a href='@Url.Action("Index")' class='ui small button'>Sim, cancelar</a>
+        </div>
+    </div>
+    <div class="ui right floated prosseguir button">Prosseguir</div>
+    <center>
+        <div class="ui center floated prosseguir button">Adicionar Questão</div>
+    </center>
+</form>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/institucional")
+}

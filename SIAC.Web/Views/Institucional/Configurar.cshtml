@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SIAC.ViewModels.InstitucionalGerarQuestaoViewModel
+@{
     ViewBag.Title = "Configurar Av. Institucional";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -26,7 +27,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (AviModulo modulo in ViewBag.Modulos)
+                        @foreach (AviModulo modulo in Model.Modulos)
                         {
                             <tr>
                                 <td>@modulo.Descricao</td>
@@ -67,7 +68,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (AviCategoria categoria in ViewBag.Categorias)
+                        @foreach (AviCategoria categoria in Model.Categorias)
                         {
                             <tr>
                                 <td>@categoria.Descricao</td>
@@ -103,7 +104,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (AviIndicador indicador in ViewBag.Indicadores)
+                        @foreach (AviIndicador indicador in Model.Indicadores)
                         {
                             <tr>
                                 <td>@indicador.Descricao</td>
