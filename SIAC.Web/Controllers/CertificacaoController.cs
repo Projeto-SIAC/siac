@@ -847,5 +847,17 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        // POST: Academica/Arquivar
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult Arquivar(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                return Json(Avaliacao.AlternarFlagArquivo(codigo));
+            }
+            return Json(false);
+        }
     }
 }
