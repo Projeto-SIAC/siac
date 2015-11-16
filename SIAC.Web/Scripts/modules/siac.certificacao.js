@@ -987,7 +987,7 @@ siac.Certificacao.Agendada = (function () {
                     url: '/Dashboard/Avaliacao/Certificacao/ContagemRegressiva',
                     data: { codAvaliacao: _codAvaliacao },
                     success: function (data) {
-                        if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == false) {
+                        if (data.FlagLiberada == false) {
                             alert('O professor bloqueou a avaliação.');
                             $('.iniciar.button').addClass('disabled');
                             $('#mensagem').html('\
@@ -2032,6 +2032,102 @@ siac.Certificacao.Corrigir = (function () {
                 }
             }
         });
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();
+
+siac.Certificacao.Detalhe = (function () {
+    var _codAvaliacao, _controleAjax;
+
+    function iniciar() {
+        $elemento = $('[data-avaliacao]');
+        _codAvaliacao = $elemento.attr('data-avaliacao');
+        $elemento.removeAttr('data-avaliacao');
+
+        $('.ui.accordion').accordion({
+            animateChildren: false,
+            onOpen: function () {
+                var $content = $('.questao.content.active');
+                var $canvas = $content.find('canvas').get(0);
+                if ($content && $canvas) {
+                    var ctx = $canvas.getContext("2d");
+                    var data = JSON.parse($content.find('code.dados').html());
+                    var chart = new Chart(ctx).Doughnut(data);
+                }
+            }
+        });
+
+        $('.ui.dropdown').dropdown();
+
+        $('.arquivar.button').click(function () {
+            var $_this = $(this);
+            $_this.addClass('loading');
+            $.ajax({
+                url: '/Dashboard/Avaliacao/Certificacao/Arquivar/' + _codAvaliacao,
+                type: 'POST',
+                success: function (data) {
+                    location.reload();
+                    if (data) {
+                        $_this.addClass('active').text('Arquivada');
+                    }
+                    else {
+                        $_this.removeClass('active').text('Arquivar');
+                    }
+                },
+                error: function () {
+                    siac.mensagem('Ocorreu um erro inesperado na tentativa de arquivar a avaliação.', 'Tente novamente')
+                },
+                complete: function () {
+                    $_this.removeClass('loading');
+                }
+            });
+        });
+
+        $('div,a').popup();
+
+        $('.aluno.dropdown').change(function () {
+            var $this = $(this);
+            var codPessoa = $this.find(':selected').val();
+
+            if (_controleAjax && _controleAjax.readyState != 4) {
+                _controleAjax.abort();
+            }
+
+            var $partial = $('div.partial');
+            $('.loader.global').parent().addClass('active');
+
+            _controleAjax = $.ajax({
+                url: '/Dashboard/Avaliacao/Certificacao/DetalheIndividual/' + _codAvaliacao,
+                data: {
+                    pessoa: codPessoa
+                },
+                type: 'POST',
+                success: function (partial) {
+                    $partial.html(partial);
+                },
+                error: function () {
+                    siac.mensagem('Ocorreu um erro inesperado.');
+                },
+                complete: function () {
+                    $('.partial .ui.accordion').accordion();
+                    $('div,a').popup();
+                    $('.loader.global').parent().removeClass('active');
+                    siac.Anexo.iniciar();
+                }
+            });
+        });
+
+        $('.ui.modal').modal();
+
+        siac.Anexo.iniciar();
+
+        $('.corrigir.button').popup({
+            title: 'Corrigir avaliação',
+            content: 'Esta avaliação possui correções pendentes.'
+        }).popup('show');
     }
 
     return {

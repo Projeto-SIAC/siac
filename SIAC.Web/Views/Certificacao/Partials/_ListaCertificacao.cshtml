@@ -72,6 +72,7 @@
             }
             else if (cert.Avaliacao.FlagAgendada && cert.PessoaFisica.Count == 0)
             {
+                <span class="ui attached top right label"><i class="clock icon"></i>Agendada</span>
                 if (FlagProfessor)
                 {
                     <a href="@Url.Action("Avaliados", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Selecionar avaliados</a>

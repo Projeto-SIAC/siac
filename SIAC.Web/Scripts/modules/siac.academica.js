@@ -146,6 +146,7 @@ siac.Academica.Detalhe = (function () {
                 url: '/Dashboard/Avaliacao/Academica/Arquivar/' + _codAvaliacao,
                 type: 'POST',
                 success: function (data) {
+                    location.reload();
                     if (data) {
                         $_this.addClass('active').text('Arquivada');
                     }
@@ -622,7 +623,7 @@ siac.Academica.Agendada = (function () {
                     url: '/Dashboard/Avaliacao/Academica/ContagemRegressiva',
                     data: { codAvaliacao: _codAvaliacao },
                     success: function (data) {
-                        if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == false) {
+                        if (data.FlagLiberada == false) {
                             alert('O professor bloqueou a avaliação.');
                             $('.iniciar.button').addClass('disabled');
                             $('#mensagem').html('\

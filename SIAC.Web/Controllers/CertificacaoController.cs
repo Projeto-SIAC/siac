@@ -859,5 +859,40 @@ namespace SIAC.Controllers
             }
             return Json(false);
         }
+
+        // GET: Avaliacao/Academica/Detalhe/ACAD201520001
+        public ActionResult Detalhe(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
+                if (cert != null)
+                {
+                    return View(cert);
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult DetalheIndividual(string codigo, int pessoa)
+        {
+            if (!Helpers.StringExt.IsNullOrEmpty(codigo))
+            {
+                AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
+                if (cert != null)
+                {
+                    AvalPessoaResultado model = cert.Avaliacao.AvalPessoaResultado.FirstOrDefault(r => r.CodPessoaFisica == pessoa);
+                    if (model != null)
+                    {
+                        return PartialView("_Individual", model);
+                    }
+                }
+            }
+            return null;
+        }
     }
 }

@@ -652,6 +652,8 @@
     <Content Include="Views\Certificacao\Resultado.cshtml" />
     <Content Include="Views\Certificacao\Corrigir.cshtml" />
     <Content Include="Views\Certificacao\Imprimir.cshtml" />
+    <Content Include="Views\Certificacao\Partials\_Individual.cshtml" />
+    <Content Include="Views\Certificacao\Detalhe.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

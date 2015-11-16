@@ -1,20 +1,20 @@
-﻿@using SIAC.Models
-@model SIAC.Models.AvalAcademica
+﻿@model AvalCertificacao
 @{
-    ViewBag.Title = "Avaliação Acadêmica " + Model.Avaliacao.CodAvaliacao;
+    ViewBag.Title = "Certificação " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
     var LstQuestao = Model.Avaliacao.Questao;
     var LstResposta = Model.Avaliacao.PessoaResposta;
     var LstResultado = Model.Avaliacao.AvalPessoaResultado;
+    var FlagProfessor = Sessao.UsuarioMatricula == Model.Professor.MatrProfessor;
 }
 
 <h2 data-avaliacao="@Model.Avaliacao.CodAvaliacao">
     @ViewBag.Title
     @if (Model.Avaliacao.FlagRealizada)
     {
-        if (Sessao.UsuarioCategoriaCodigo == 1)
+        if (!FlagProfessor)
         {
-            if (Model.AlunosRealizaram.Where(a => a.MatrAluno == Sessao.UsuarioMatricula).Count() > 0)
+            if (Model.PessoasRealizaram.Where(a => a.CodPessoa == Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula)).Count() > 0)
             {
                 <span class="ui label"><i class="checkmark icon"></i>Realizada</span>
             }
@@ -28,7 +28,7 @@
             <span class="ui label"><i class="checkmark icon"></i>Realizada</span>
         }
     }
-    @if (Sessao.UsuarioCategoriaCodigo == 2 && Model.Avaliacao.FlagCorrecaoPendente)
+    @if (FlagProfessor && Model.Avaliacao.FlagCorrecaoPendente)
     {
         <a href="@Url.Action("Corrigir", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui right floated corrigir button">
             Corrigir
@@ -88,7 +88,7 @@
         <table class="ui striped table">
             <thead>
                 <tr>
-                    <th>Turma</th>
+                    <th>Quant. de Avaliados</th>
                     <th>Data</th>
                     <th>Horário</th>
                     <th>Sala</th>
@@ -97,8 +97,7 @@
             <tbody>
                 <tr>
                     <td>
-                        @* Turma *@
-                        @Model.Turma.Curso.Descricao (@Model.Turma.CodTurma)
+                        @Model.PessoaFisica.Count
                     </td>
                     <td>
                         @* Data *@
@@ -119,7 +118,7 @@
 }
 else if (Model.Avaliacao.FlagRealizada)
 {
-    if (Sessao.UsuarioCategoriaCodigo == 2)
+    if (FlagProfessor)
     {
         <div class="ui basic segment">
             <div class="ui dividing header">
@@ -285,9 +284,9 @@ else if (Model.Avaliacao.FlagRealizada)
                     <label>Aluno</label>
                     <select class="ui search aluno dropdown">
                         <option value="">Selecione</option>
-                        @foreach (var aluno in Model.AlunosRealizaram)
+                        @foreach (var pessoa in Model.PessoasRealizaram)
                         {
-                            <option value="@aluno.MatrAluno">@aluno.Usuario.PessoaFisica.Nome</option>
+                            <option value="@pessoa.CodPessoa">@pessoa.Nome</option>
                         }
                     </select>
                 </div>
@@ -303,7 +302,7 @@ else if (Model.Avaliacao.FlagRealizada)
     }
     else
     {
-        int codPessoaFisica = Usuario.ObterPessoaFisica(SIAC.Helpers.Sessao.UsuarioMatricula);
+        int codPessoaFisica = Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula);
         var lstPessoaResposta = LstResposta.Where(p => p.CodPessoaFisica == codPessoaFisica).ToList();
         var avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.FirstOrDefault(r => r.CodPessoaFisica == codPessoaFisica);
         int qteAcerto = lstPessoaResposta.Where(p => p.RespNota.HasValue && p.RespNota.Value == 10).Count();
@@ -440,7 +439,7 @@ else if (Model.Avaliacao.FlagRealizada)
     }
 }
 <a href="@Url.Action("Index")" class="ui button">Histórico</a>
-@if (Sessao.UsuarioCategoriaCodigo == 2)
+@if (FlagProfessor)
 {
     if (Model.Avaliacao.FlagArquivo || !Model.Avaliacao.FlagRealizada)
     {
@@ -450,18 +449,17 @@ else if (Model.Avaliacao.FlagRealizada)
             <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
         }
     }
-
 }
-@if (Sessao.UsuarioCategoriaCodigo == 2 && Model.Avaliacao.FlagPendente)
+@if (FlagProfessor && Model.Avaliacao.FlagPendente)
 {
     <a href="@Url.Action("Agendar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">@(Model.Avaliacao.FlagAgendada ? "Reagendar" : "Agendar")</a>
 }
 @if (Model.Avaliacao.FlagAgendada)
 {
-    <a href="@Url.Action("Agendada", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">@(Sessao.UsuarioCategoriaCodigo == 2 ? "Aplicar" : "Realizar" )</a>
+    <a href="@Url.Action("Agendada", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">@(FlagProfessor ? "Aplicar" : "Realizar" )</a>
 }
 
 @section Scripts {
-    @Scripts.Render("~/bundles/js/academica")
+    @Scripts.Render("~/bundles/js/certificacao")
     @Scripts.Render("~/bundles/chart")
 }
