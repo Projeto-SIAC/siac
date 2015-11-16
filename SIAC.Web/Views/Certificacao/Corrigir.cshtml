@@ -1,0 +1,329 @@
+﻿@model AvalCertificacao
+@{
+    ViewBag.Title = "Corrigir " + Model.Avaliacao.CodAvaliacao;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var lstQuestoes = Model.Avaliacao.Questao.OrderBy(q => q.CodQuestao).ToList();
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/certificacao")
+}
+
+<code class="questoes" hidden>
+    {
+    @for (int i = 0, length = lstQuestoes.Count; i < length; i++)
+    {
+    <text>
+        "@lstQuestoes[i].CodQuestao":"@i.GetIndiceQuestao()"
+        @if (i < (length-1))
+        {
+            @:,
+        }
+    </text>
+    }
+    }
+</code>
+
+<h2 data-avaliacao="@Model.Avaliacao.CodAvaliacao">
+    @ViewBag.Title
+    <div class="ui right floated button corrigir">Corrigir</div>
+    <div class="ui right floated button informacoes">Informações</div>
+</h2>
+
+<div class="ui modal informacoes">
+    <i class="icon close"></i>
+    <div class="header">
+        @Model.Avaliacao.CodAvaliacao
+    </div>
+    <div class="content">
+        <div class="ui fluid styled accordion">
+            <div class="active title"><i class="dropdown icon"></i>Detalhes</div>
+            <div class="active content">
+                <table class="ui striped table">
+                    <thead>
+                        <tr>
+                            <th>Disciplina</th>
+                            <th>Tema(s)</th>
+                            <th>Quantidade</th>
+                            <th>Dificuldade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+                        {
+                            <tr>
+                                <td>
+                                    @* disciplina *@
+                                    <b>@disc.Descricao</b>
+                                </td>
+                                <td class="ui labels">
+                                    @* temas *@
+                                    @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                                    {
+                                        <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                                    }
+                                </td>
+                                <td class="ui labels">
+                                    @* qte de questões *@
+                                    <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
+                                    <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
+                                </td>
+                                <td>
+                                    @* dificuldade *@
+                                    @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="title"><i class="dropdown icon"></i>Agendamento</div>
+            <div class="content">
+                <table class="ui striped table">
+                    <thead>
+                        <tr>
+                            <th>Quant. de Avaliados</th>
+                            <th>Data</th>
+                            <th>Horário</th>
+                            <th>Sala</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                @Model.PessoaFisica.Count
+                            </td>
+                            <td>
+                                @Model.Avaliacao.DtAplicacao.Value.ToString("ddd, dd/MM/yyyy")
+                            </td>
+                            <td>
+                                Das @Model.Avaliacao.DtAplicacao.Value.ToShortTimeString() até @Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToShortTimeString()
+                            </td>
+                            <td>
+                                @Model.Sala.Descricao
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Placeholder da opção de Correção por Aluno *@
+<div id="templateCorrecaoAluno" class="ui basic segment questoes aluno" hidden>
+    <div id="{codQuestao}" class="ui fluid card">
+        <div class="content">
+            <div class="header">
+                <p>{questaoIndice}. {questaoEnunciado}
+            </div>
+            <a class="ui tiny ribbon label">Chave de Resposta</a>
+            <p><i>{questaoChaveResposta}</i></p>
+        </div>
+        <div class="segment">
+            <table class="ui striped table">
+                <thead>
+                    <tr>
+                        <th class="six wide">Resposta do Aluno</th>
+                        <th class="two wide">Nota Obtida</th>
+                        <th class="six wide">Comentário de Correção</th>
+                        <th class="three wide"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{alunoResposta}</td>
+                        <td>
+                            <div class="field required">
+                                <input type="number" value="@Parametro.Obter().ValorNotaMedia.ToValueHtml()" min="0" step="0.1" max="10" class="notaObtida" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field required">
+                                <textarea class="correcaoComentario" rows="3">{correcaoComentario}</textarea>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui button corrigir aluno">Salvar</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="ui dimmer">
+                <div class="content">
+                    <div class="center">
+                        <h2 class="ui inverted icon header">
+                            <i class="checkmark icon"></i>
+                            Questão Corrigida!
+                        </h2>
+                        <br />
+                        <p class="detail">Clique para recorrigir</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* Placeholder da opção de Correção por Questão *@
+<div id="templateCorrecaoQuestao" class="ui basic segment questoes aluno" hidden>
+    <div id="{codQuestao}" class="ui fluid card">
+        <div class="content">
+            <div class="header">
+                <p>{questaoIndice}. {questaoEnunciado}
+            </div>
+            <a class="ui tiny ribbon label">Chave de Resposta</a>
+            <p><i>{questaoChaveResposta}</i></p>
+        </div>
+        <div class="segment">
+            <table class="ui striped table">
+                <thead>
+                    <tr>
+                        <th class="six wide">{alunoNome}</th>
+                        <th class="two wide">Nota Obtida</th>
+                        <th class="six wide">Comentário de Correção</th>
+                        <th class="three wide"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{alunoResposta}</td>
+                        <td>
+                            <div class="field required">
+                                <input type="number" value="@Parametro.Obter().ValorNotaMedia.ToValueHtml()" min="0" step="0.1" max="10" class="notaObtida" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field required">
+                                <textarea class="correcaoComentario" rows="3">{correcaoComentario}</textarea>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui button corrigir aluno">Salvar</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="ui dimmer">
+                <div class="content">
+                    <div class="center">
+                        <h2 class="ui inverted small icon header">
+                            <i class="checkmark icon"></i>
+                            Questão Corrigida!
+                        </h2>
+                        <br />
+                        <p class="detail">Clique para recorrigir</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui modal fullscreen corrigir">
+    <i class="icon close"></i>
+    <div class="header">
+        Corrigir Avaliação
+    </div>
+    <div class="content">
+        <form class="ui form">
+            <div class="fields">
+                <div class="four wide field required">
+                    <label for="">Corrigir por...</label>
+                    <select id="ddlCorrecaoModo" name="ddlCorrecaoModo" class="ui dropdown">
+                        <option value="">Corrigir por...</option>
+                        <option value="aluno">Aluno</option>
+                        <option value="questao">Questão</option>
+                    </select>
+                </div>
+                <div class="twelve wide field required">
+                    <label for="">Selecione </label>
+                    <select id="ddlCorrecaoValor" name="ddlCorrecaoValor" class="ui dropdown disabled" style="z-index:1005;"></select>
+                </div>
+            </div>
+            <div class="correcao conteudo">
+                
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="ui basic segment">
+    <div class="ui accordion">
+        @foreach (PessoaFisica pessoa in Model.PessoaFisica.OrderBy(a => a.Nome))
+        {
+            var lstResposta = Model.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == pessoa.CodPessoa);
+
+            bool realizou = lstResposta.Count() != 0;
+
+            <div id="@pessoa.CodPessoa" class="title">
+                <i class="dropdown icon" style="float:right"></i>
+                <b class="nome">@pessoa.Nome</b>
+                @if (realizou)
+                {
+                    <div class="ui small label">Nota Parcial<div class="detail">@Model.Avaliacao.AvalPessoaResultado.First(r=>r.CodPessoaFisica == pessoa.CodPessoa).Nota.Value.ToString("0.0")</div></div>
+                }
+                else
+                {
+                    <div class="ui small label">Ausente</div>
+                }
+            </div>
+            <div id="@pessoa.CodPessoa" class="content">
+                
+                <table class="ui very basic table">
+                    @{
+                        int questaoIndice = 0;
+                        int qteColunas = 10;
+                        int colunaIndice = 1;
+                    }
+                    
+                    <tr>
+                        @foreach (AvalQuesPessoaResposta resp in lstResposta.OrderBy(aqpr => aqpr.CodQuestao))
+                        {
+                            if (colunaIndice == qteColunas)
+                            {
+                                @:</tr><tr>
+                                colunaIndice = 1;
+                            }
+                            <td style="border:none!important;">
+                                <a @((resp.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 2)? "data-questao="+resp.CodQuestao:"") class="ui label">
+                                    @if (resp.RespAlternativa.HasValue) {
+                                    <i class="@(resp.RespNota == 10 ? "checkmark green" : "remove red") icon"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="write icon"></i>
+                                    }
+                                    @questaoIndice.GetIndiceQuestao()
+                                    @if (resp.RespAlternativa.HasValue)
+                                    {
+                                        if (resp.RespAlternativa.Value > -1)
+                                        {
+                                            <div class="detail">
+                                                @resp.RespAlternativa.Value.GetIndiceAlternativa()
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="detail">
+                                                <i class="icon thumbs down"></i>
+                                            </div>
+                                        }
+                                    }
+                                    else if (String.IsNullOrEmpty(resp.RespDiscursiva))
+                                    {
+                                        <div class="detail">
+                                            <i class="icon thumbs down"></i>
+                                        </div>
+                                    }
+                                </a>
+                            </td>
+                            questaoIndice+=1;
+                            colunaIndice++;
+                        }
+                    </tr>
+                </table>
+
+            </div>
+        }
+    </div>
+</div>

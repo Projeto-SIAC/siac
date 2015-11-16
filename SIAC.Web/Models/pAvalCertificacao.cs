@@ -141,5 +141,33 @@ namespace SIAC.Models
                     return new List<AvalCertificacao>();
             }
         }
+
+
+        public static bool CorrigirQuestaoAluno(string codAvaliacao, string matrAluno, int codQuestao, double notaObtida, string profObservacao)
+        {
+            if (!String.IsNullOrEmpty(codAvaliacao) && !String.IsNullOrEmpty(matrAluno) && codQuestao != 0)
+            {
+                AvalCertificacao cert = ListarPorCodigoAvaliacao(codAvaliacao);
+
+                int codPessoaFisica = int.Parse(matrAluno);
+
+                AvalQuesPessoaResposta resposta = cert.Avaliacao.PessoaResposta.FirstOrDefault(pr => pr.CodQuestao == codQuestao && pr.CodPessoaFisica == codPessoaFisica);
+
+                resposta.RespNota = notaObtida;
+                resposta.ProfObservacao = profObservacao;
+
+                cert.Avaliacao.AvalPessoaResultado
+                    .Single(r => r.CodPessoaFisica == codPessoaFisica)
+                    .Nota = cert.Avaliacao.PessoaResposta
+                                .Where(pr => pr.CodPessoaFisica == codPessoaFisica)
+                                .Average(pr => pr.RespNota);
+
+                contexto.SaveChanges();
+
+                return true;
+            }
+
+            return false;
+        }
     }
 }
