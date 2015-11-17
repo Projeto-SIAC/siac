@@ -32,6 +32,23 @@ namespace SIAC.Models
             return null;
         }
 
+        public static bool Verificar(string senha)
+        {
+            Usuario usuario = contexto.Usuario.SingleOrDefault(u => u.Matricula == Sessao.UsuarioMatricula);
+
+            if (usuario != null)
+            {
+                string strSenha = Criptografia.RetornarHash(senha);
+
+                if (usuario.Senha == strSenha)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static int Inserir(Usuario usuario)
         {
             usuario.DtCadastro = DateTime.Now;

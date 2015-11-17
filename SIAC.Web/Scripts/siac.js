@@ -133,6 +133,9 @@
         else if (pathname == '/institucional/gerar') {
             siac.Institucional.Gerar.iniciar();            
         }
+        else if (/\/dashboard\/avaliacao\/reposicao\/justificar\/acad[0-9]+$/.test(pathname)) {
+            siac.Reposicao.Justificar.iniciar();
+        }
     }
 
     var HTML_MENSAGEM_TEMPLATE = '<div class="ui small mensagem modal">' +

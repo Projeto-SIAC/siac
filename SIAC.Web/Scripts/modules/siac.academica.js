@@ -146,7 +146,7 @@ siac.Academica.Detalhe = (function () {
                 url: '/Dashboard/Avaliacao/Academica/Arquivar/' + _codAvaliacao,
                 type: 'POST',
                 success: function (data) {
-                    location.reload();
+                    window.location.reload();
                     if (data) {
                         $_this.addClass('active').text('Arquivada');
                     }
@@ -204,6 +204,12 @@ siac.Academica.Detalhe = (function () {
         $('.corrigir.button').popup({
             title: 'Corrigir avaliação',
             content: 'Esta avaliação possui correções pendentes.'
+        }).popup('show');
+
+
+        $('.reposicao.button').popup({
+            title: 'Agende a reposição',
+            content: 'Esta avaliação possui alunos ausentes.'
         }).popup('show');
     }
 
@@ -1732,6 +1738,11 @@ siac.Academica.Corrigir = (function () {
 
 
         });
+
+        $('.reposicao.button').popup({
+            title: 'Agende a reposição',
+            content: 'Esta avaliação possui alunos ausentes.'
+        }).popup('show');
     }
 
     function getIndiceQuestao(codQuestao) {

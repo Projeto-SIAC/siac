@@ -203,6 +203,7 @@
     <Content Include="Scripts\modules\siac.certificacao.min.js">
       <DependentUpon>siac.certificacao.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\modules\siac.reposicao.js" />
     <Content Include="Scripts\plugins\jquery.address-1.6.min.js" />
     <Content Include="Scripts\plugins\jquery.mask-1.13.4.min.js" />
     <Content Include="Scripts\libs\jquery.min.js" />
@@ -247,6 +248,7 @@
     <Compile Include="Controllers\CertificacaoController.cs" />
     <Compile Include="Controllers\InstitucionalController.cs" />
     <Compile Include="Controllers\PerfilController.cs" />
+    <Compile Include="Controllers\ReposicaoController.cs" />
     <Compile Include="Filters\AutenticacaoFilterAttribute.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\AcessoController.cs" />
@@ -657,6 +659,8 @@
     <Content Include="Views\Certificacao\Imprimir.cshtml" />
     <Content Include="Views\Certificacao\Partials\_Individual.cshtml" />
     <Content Include="Views\Certificacao\Detalhe.cshtml" />
+    <Content Include="Views\Reposicao\Index.cshtml" />
+    <Content Include="Views\Reposicao\Justificar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

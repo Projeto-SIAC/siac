@@ -33,6 +33,9 @@
         <a href="@Url.Action("Corrigir", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui right floated corrigir button">
             Corrigir
         </a>
+        if(Model.AlunoAusente.Count > 0) {
+            <a href="@Url.Action("Justificar", "Reposicao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui right floated reposicao button">Reposição</a>
+        }
     }
 </h2>
 

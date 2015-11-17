@@ -2069,7 +2069,7 @@ siac.Certificacao.Detalhe = (function () {
                 url: '/Dashboard/Avaliacao/Certificacao/Arquivar/' + _codAvaliacao,
                 type: 'POST',
                 success: function (data) {
-                    location.reload();
+                    window.location.reload();
                     if (data) {
                         $_this.addClass('active').text('Arquivada');
                     }

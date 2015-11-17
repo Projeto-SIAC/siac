@@ -30,6 +30,51 @@ namespace SIAC.Models
             }
         }
 
+        public List<Aluno> AlunoAusente
+        {
+            get
+            {
+                List<Aluno> result = new List<Aluno>();
+                foreach (Aluno a in this.Alunos)
+                {
+                    var lstRespostas = this.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == a.Usuario.CodPessoaFisica);
+                    if (lstRespostas.Count() == 0)
+                        result.Add(a);
+                }
+                return result;
+            }
+        }
+
+        public List<Aluno> AlunoSemJustificacao
+        {
+            get
+            {
+                List<Aluno> lstRetorno = new List<Aluno>();
+
+                foreach (var aluno in this.AlunoAusente)
+                {
+                    if (Justificacoes.FirstOrDefault(j=>j.CodPessoaFisica == aluno.Usuario.CodPessoaFisica) == null)
+                    {
+                        lstRetorno.Add(aluno);
+                    }
+                }
+
+                return lstRetorno;
+            }
+        }
+
+        public List<Justificacao> Justificacoes
+        {
+            get {
+                List<Justificacao> lstRetorno = new List<Justificacao>();
+                foreach (var avalPessoaResultado in this.Avaliacao.AvalPessoaResultado)
+                {
+                    lstRetorno.AddRange(avalPessoaResultado.Justificacao);
+                }
+                return lstRetorno;
+            }
+        }
+
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
         
         public static void Inserir(AvalAcademica avalAcademica)
