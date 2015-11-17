@@ -1,12 +1,9 @@
-﻿
+﻿@model ConfiguracoesIndexViewModel
+
 @{
     ViewBag.Title = "Configurações";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-@using SIAC.Models;
-
-@model SIAC.Models.Parametro
 
 <h2>@ViewBag.Title</h2>
 
@@ -32,44 +29,44 @@
 
         <div class="field required">
             <label>Tempo de Inatividade (em dias)</label>
-            <input type="number" value="@Model.TempoInatividade" name="txtTempoInatividade" placeholder="Tempo de Inatividade" required />
+            <input type="number" value="@Model.Parametro.TempoInatividade" name="txtTempoInatividade" placeholder="Tempo de Inatividade" required />
         </div>
         <div class="field required">
             <label>Tipo de Numeração das Questões</label>
             <select name="ddlNumeracaoQuestao" class="ui dropdown" required>
-                <option value="1" @(@Model.NumeracaoQuestao == 1 ? "selected" : "")>Algarismos indo-arábicos</option>
-                <option value="2" @(@Model.NumeracaoQuestao == 2 ? "selected" : "")>Algarismos romanos</option>
-                <option value="3" @(@Model.NumeracaoQuestao == 3 ? "selected" : "")>Letras em caixa baixa</option>
-                <option value="4" @(@Model.NumeracaoQuestao == 4 ? "selected" : "")>Letras em caixa alta</option>
+                <option value="1" @(@Model.Parametro.NumeracaoQuestao == 1 ? "selected" : "")>Algarismos indo-arábicos</option>
+                <option value="2" @(@Model.Parametro.NumeracaoQuestao == 2 ? "selected" : "")>Algarismos romanos</option>
+                <option value="3" @(@Model.Parametro.NumeracaoQuestao == 3 ? "selected" : "")>Letras em caixa baixa</option>
+                <option value="4" @(@Model.Parametro.NumeracaoQuestao == 4 ? "selected" : "")>Letras em caixa alta</option>
             </select>
         </div>
         <div class="field required">
             <label>Tipo de Numeração das Alternativas</label>
             <select name="ddlNumeracaoAlternativa" class="ui dropdown" required>
-                <option value="1" @(@Model.NumeracaoAlternativa == 1 ? "selected" : "")>Algarismos indo-arábicos</option>
-                <option value="2" @(@Model.NumeracaoAlternativa == 2 ? "selected" : "")>Algarismos romanos</option>
-                <option value="3" @(@Model.NumeracaoAlternativa == 3 ? "selected" : "")>Letras em caixa baixa</option>
-                <option value="4" @(@Model.NumeracaoAlternativa == 4 ? "selected" : "")>Letras em caixa alta</option>
+                <option value="1" @(@Model.Parametro.NumeracaoAlternativa == 1 ? "selected" : "")>Algarismos indo-arábicos</option>
+                <option value="2" @(@Model.Parametro.NumeracaoAlternativa == 2 ? "selected" : "")>Algarismos romanos</option>
+                <option value="3" @(@Model.Parametro.NumeracaoAlternativa == 3 ? "selected" : "")>Letras em caixa baixa</option>
+                <option value="4" @(@Model.Parametro.NumeracaoAlternativa == 4 ? "selected" : "")>Letras em caixa alta</option>
             </select>
         </div>
         <div class="field required">
             <label>Quantidade de Semestres</label>
-            <input name="txtQteSemestre" type="number" value="@Model.QteSemestres" placeholder="Quantidade de Semestres" required />
+            <input name="txtQteSemestre" type="number" value="@Model.Parametro.QteSemestres" placeholder="Quantidade de Semestres" required />
         </div>
         <div class="field required">
             <label>Valor da Nota Média</label>
-            <input name="txtValorNotaMedia" type="number" min="1" max="10" step="0.1" value="@Model.ValorNotaMedia.ToValueHtml()" placeholder="Valor da Nota Média" required />
+            <input name="txtValorNotaMedia" type="number" min="1" max="10" step="0.1" value="@Model.Parametro.ValorNotaMedia.ToValueHtml()" placeholder="Valor da Nota Média" required />
         </div>
     </div>
     @* Termo *@
     <div class="ui bottom attached tab segment termo" data-tab="termo">
         <div class="field required">
             <label>Termo de Responsabilidade</label>
-            <textarea rows="10" name="txtTermoResponsabilidade" placeholder="Digite aqui o Termo de Responsabilidade..." required >@Model.TermoResponsabilidade</textarea>
+            <textarea rows="10" name="txtTermoResponsabilidade" placeholder="Digite aqui o Termo de Responsabilidade..." required >@Model.Parametro.TermoResponsabilidade</textarea>
         </div>
         <div class="field required">
             <label>Nota de Uso</label>
-            <textarea rows="10" name="txtNotaUso" placeholder="Digite aqui a Nota de Uso..." required >@Model.NotaUso</textarea>
+            <textarea rows="10" name="txtNotaUso" placeholder="Digite aqui a Nota de Uso..." required >@Model.Parametro.NotaUso</textarea>
         </div>
     </div>
 
@@ -104,7 +101,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (Aluno aluno in ViewBag.Alunos)
+                            @foreach (Aluno aluno in Model.Alunos)
                             {
                                 <tr>
                                     <td>@aluno.Usuario.PessoaFisica.Nome</td>
@@ -131,7 +128,7 @@
                     <label>Curso</label>
                     <select name="ddlAlunoCurso" class="ui fluid search dropdown" required">
                         <option value="">Curso...</option>
-                        @foreach (Curso c in ViewBag.Cursos)
+                        @foreach (Curso c in Model.Cursos)
                         {
                             <option value="@c.CodCurso">@c.Descricao</option>
                         }
@@ -156,7 +153,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (Professor prof in ViewBag.Professores)
+                            @foreach (Professor prof in Model.Professores)
                             {
                                 <tr>
                                     <td>@prof.Usuario.PessoaFisica.Nome</td>
@@ -188,7 +185,7 @@
                     <label>Disciplinas</label>
                     <select name="ddlProfessorDisciplinas" class="ui fluid search dropdown" multiple="" required">
                         <option value="">Disciplinas...</option>
-                        @foreach (var d in ViewBag.Disciplinas)
+                        @foreach (var d in Model.Disciplinas)
                         {
                             <option value="@d.CodDisciplina">@d.Descricao</option>
                         }
@@ -212,7 +209,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (Colaborador col in ViewBag.Colaboradores)
+                            @foreach (Colaborador col in Model.Colaboradores)
                             {
                                 <tr>
                                     <td>@col.Usuario.PessoaFisica.Nome</td>
@@ -251,7 +248,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (Campus camp in ViewBag.Campi)
+                            @foreach (Campus camp in Model.Campi)
                             {
                                 <tr>
                                     <td>@camp.Sigla</td>
@@ -268,7 +265,7 @@
                     <label>Instituição</label>
                     <select name="ddlCampusInstituicao" class="ui fluid search dropdown" required>
                         <option value="">Instituição...</option>
-                        @foreach (Instituicao inst in ViewBag.Instituicoes)
+                        @foreach (Instituicao inst in Model.Instituicoes)
                         {
                             <option value="@inst.CodInstituicao">@inst.Sigla</option>
                         }
@@ -294,7 +291,7 @@
                     <label>Diretor</label>
                     <select name="ddlCampusDiretor" class="ui fluid search dropdown" required>
                         <option value="">Diretor...</option>
-                        @foreach (Colaborador col in ViewBag.Colaboradores)
+                        @foreach (Colaborador col in Model.Colaboradores)
                         {
                             <option value="@col.CodColaborador">@col.Usuario.PessoaFisica.Nome</option>
                         }
@@ -319,7 +316,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (Diretoria dir in ViewBag.Diretorias)
+                            @foreach (Diretoria dir in Model.Diretorias)
                             {
                                 <tr>
                                     <td>@dir.Sigla</td>
@@ -337,7 +334,7 @@
                     <label>Campus</label>
                     <select name="ddlDiretoriaCampus" class="ui fluid search dropdown" required>
                         <option value="">Campus...</option>
-                        @foreach (Campus camp in ViewBag.Campi)
+                        @foreach (Campus camp in Model.Campi)
                         {
                             <option value="@camp.CodComposto">@camp.Sigla</option>
                         }
@@ -363,7 +360,7 @@
                     <label>Diretor</label>
                     <select name="ddlDiretoriaDiretor" class="ui fluid search dropdown" required>
                         <option value="">Diretor...</option>
-                        @foreach (Colaborador col in ViewBag.Colaboradores)
+                        @foreach (Colaborador col in Model.Colaboradores)
                         {
                             <option value="@col.CodColaborador">@col.Usuario.PessoaFisica.Nome</option>
                         }
@@ -387,7 +384,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (Curso cur in ViewBag.Cursos)
+                            @foreach (Curso cur in Model.Cursos)
                             {
                                 <tr>
                                     <td>@cur.Descricao</td>
@@ -404,7 +401,7 @@
                     <label>Diretoria</label>
                     <select name="ddlCursoDiretoria" class="ui fluid search dropdown" required>
                         <option value="">Diretoria...</option>
-                        @foreach (Diretoria dir in ViewBag.Diretorias)
+                        @foreach (Diretoria dir in Model.Diretorias)
                         {
                             <option value="@dir.CodComposto">@dir.Sigla</option>
                         }
@@ -414,7 +411,7 @@
                     <label>Nível Ensino</label>
                     <select name="ddlCursoNivelEnsino" class="ui fluid search dropdown" required >
                         <option value="">Nível Ensino...</option>
-                        @foreach (NivelEnsino ne in ViewBag.NiveisEnsino)
+                        @foreach (NivelEnsino ne in Model.NiveisEnsino)
                         {
                             <option value="@ne.CodNivelEnsino">@ne.Descricao</option>
                         }
@@ -432,7 +429,7 @@
                     <label>Coordenador</label>
                     <select name="ddlCursoCoordenador" class="ui fluid search dropdown" required>
                         <option value="">Coordenador...</option>
-                        @foreach (Colaborador col in ViewBag.Colaboradores)
+                        @foreach (Colaborador col in Model.Colaboradores)
                         {
                             <option value="@col.CodColaborador">@col.Usuario.PessoaFisica.Nome</option>
                         }
@@ -456,7 +453,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (Turma tur in ViewBag.Turmas)
+                            @foreach (Turma tur in Model.Turmas)
                             {
                                 <tr>
                                     <td>@tur.Periodo.@tur.CodCurso.@tur.NumTurma.@tur.CodTurno</td>
@@ -477,7 +474,7 @@
                     <label>Curso</label>
                     <select name="ddlTurmaCurso" class="ui fluid search dropdown" required>
                         <option value="">Curso...</option>
-                        @foreach (Curso cur in ViewBag.Cursos)
+                        @foreach (Curso cur in Model.Cursos)
                         {
                             <option value="@cur.CodCurso">@cur.Descricao</option>
                         }
@@ -487,7 +484,7 @@
                     <label>Turno</label>
                     <select name="ddlTurmaTurno" class="ui fluid search dropdown" required>
                         <option value="">Turno...</option>
-                        @foreach(Turno tur in ViewBag.Turnos)
+                        @foreach(Turno tur in Model.Turnos)
                         {
                             <option value="@tur.CodTurno">@tur.Descricao</option>
                         }
@@ -515,7 +512,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (Disciplina disc in ViewBag.Disciplinas)
+                            @foreach (Disciplina disc in Model.Disciplinas)
                             {
                                 <tr>
                                     <td>@disc.Descricao</td>
@@ -568,12 +565,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (Disciplina disc in ViewBag.Disciplinas)
+                            @foreach (Disciplina disc in Model.Disciplinas)
                             {
                                 <tr>
                                     <td>@disc.Descricao</td>
                                     <td class="ui labels">
-                                        @foreach (Tema tema in ViewBag.Temas)
+                                        @foreach (Tema tema in Model.Temas)
                                         {
                                             if (tema.CodDisciplina == disc.CodDisciplina)
                                             {
@@ -593,7 +590,7 @@
                     <label>Disciplina</label>
                     <select name="ddlTemaDisciplina" class="ui fluid search dropdown" required>
                         <option value="">Disciplina</option>
-                        @foreach (var d in ViewBag.Disciplinas)
+                        @foreach (var d in Model.Disciplinas)
                         {
                             <option value="@d.CodDisciplina">@d.Descricao</option>
                         }
@@ -620,7 +617,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (Sala sala in ViewBag.Salas)
+                            @foreach (Sala sala in Model.Salas)
                             {
                                 <tr>
                                     <td>@sala.Descricao</td>
@@ -637,7 +634,7 @@
                     <label>Campus</label>
                     <select name="ddlSalaCampus" class="ui fluid search dropdown" required>
                         <option value="">Campus...</option>
-                        @foreach (Campus c in ViewBag.Campi)
+                        @foreach (Campus c in Model.Campi)
                         {
                             <option value="@c.CodComposto">@c.Sigla</option>
                         }
@@ -660,7 +657,7 @@
             <div class="ui styled fluid accordion">
                 <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
                 <div class="content">
-                    @foreach (MatrizCurricular matriz in ViewBag.Matrizes)
+                    @foreach (MatrizCurricular matriz in Model.Matrizes)
                     {
                         <div class="accordion">
                             <div class="title"><i class="icon dropdown"></i>@matriz.Curso.Descricao - @matriz.CodMatriz</div>
@@ -695,7 +692,7 @@
                     <label>Curso</label>
                     <select name="ddlMatrizCurso" class="ui search dropdown" required>
                         <option value="">Curso...</option>
-                        @foreach(Curso curso in ViewBag.Cursos)
+                        @foreach(Curso curso in Model.Cursos)
                         {
                             <option value="@curso.CodCurso">@curso.Descricao</option>
                         }
@@ -720,7 +717,7 @@
                                 <div class="field required">
                                     <select name="ddlDisciplina1" class="ui fluid search dropdown" required>
                                         <option value="">Disciplina...</option>
-                                        @foreach(Disciplina d in ViewBag.Disciplinas)
+                                        @foreach(Disciplina d in Model.Disciplinas)
                                         {
                                             <option value="@d.CodDisciplina">@d.Descricao</option>
                                         }
@@ -757,7 +754,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (Horario horario in ViewBag.Horarios)
+                            @foreach (Horario horario in Model.Horarios)
                             {
                                 <tr>
                                     <td>@horario.Turno.Descricao</td>
@@ -778,7 +775,7 @@
                     <label>Turno</label>
                     <select name="ddlHorarioTurno" class="ui search dropdown" required>
                         <option value="">Turno...</option>
-                        @foreach (Turno turno in ViewBag.Turnos)
+                        @foreach (Turno turno in Model.Turnos)
                         {
                             <option value="@turno.CodTurno">@turno.Descricao</option>
                         }

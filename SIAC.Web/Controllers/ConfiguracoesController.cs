@@ -14,24 +14,24 @@ namespace SIAC.Controllers
         // GET: /Configuracoes
         public ActionResult Index()
         {
-            Parametro model = Parametro.Obter();
+            var model = new ViewModels.ConfiguracoesIndexViewModel();
+            model.Parametro = Parametro.Obter();
 
-            ViewBag.Disciplinas = Disciplina.ListarOrdenadamente();
-            ViewBag.Professores = Professor.ListarOrdenadamente();
-            ViewBag.Temas = Tema.ListarOrdenadamenteComDisciplina();
-            ViewBag.Alunos = Aluno.ListarOrdenadamente();
-            ViewBag.Cursos = Curso.ListarOrdenadamente();
-            ViewBag.Colaboradores = Colaborador.ListarOrdenadamente();
-            ViewBag.Campi = Campus.ListarOrdenadamente();
-            ViewBag.Instituicoes = Instituicao.ListarOrdenadamente();
-            ViewBag.Diretorias = Diretoria.ListarOrdenadamente();
-            ViewBag.Cursos = Curso.ListarOrdenadamente();
-            ViewBag.NiveisEnsino = NivelEnsino.ListarOrdenadamente();
-            ViewBag.Turmas = Turma.ListarOrdenadamente();
-            ViewBag.Turnos = Turno.ListarOrdenadamente();
-            ViewBag.Salas = Sala.ListarOrdenadamente();
-            ViewBag.Matrizes = MatrizCurricular.ListarOrdenadamente();
-            ViewBag.Horarios = Horario.ListarOrdenadamente();
+            model.Disciplinas = Disciplina.ListarOrdenadamente();
+            model.Professores = Professor.ListarOrdenadamente();
+            model.Temas = Tema.ListarOrdenadamenteComDisciplina();
+            model.Alunos = Aluno.ListarOrdenadamente();
+            model.Colaboradores = Colaborador.ListarOrdenadamente();
+            model.Campi = Campus.ListarOrdenadamente();
+            model.Instituicoes = Instituicao.ListarOrdenadamente();
+            model.Diretorias = Diretoria.ListarOrdenadamente();
+            model.Cursos = Curso.ListarOrdenadamente();
+            model.NiveisEnsino = NivelEnsino.ListarOrdenadamente();
+            model.Turmas = Turma.ListarOrdenadamente();
+            model.Turnos = Turno.ListarOrdenadamente();
+            model.Salas = Sala.ListarOrdenadamente();
+            model.Matrizes = MatrizCurricular.ListarOrdenadamente();
+            model.Horarios = Horario.ListarOrdenadamente();
 
             return View(model);
         }
