@@ -1,4 +1,6 @@
-﻿@{
+﻿@model AcessoIndexViewModel
+
+@{
     Layout = null;
 }
 
@@ -29,7 +31,7 @@
     <meta property='og:type' content='website'>
     <meta property='og:site_name' content='SIAC'>
 </head>
-<body  id="entrar" class="pushable">
+<body id="entrar" class="pushable">
     @*<form action="~/Acesso/Entrar" method="post" class="ui small modal">
         <i class="close icon"></i>
         <div class="header">Quais as suas credenciais?</div>
@@ -126,13 +128,13 @@
                 </h1>
                 <h2 style="margin-top: 0">Feito por alunos para comunidade acadêmica</h2>
                 <div class="ui text container">
-                    <form method="post" class="ui large form @ViewBag.Erro">                        
+                    <form method="post" class="ui large form @(Model.Erro ? "error" : "")">                        
                         <div class="fields">
                             <div class="seven wide field required">
                                 @*<label for="TextBoxMatricula">Matrícula</label>*@
                                 <div class="ui left icon input">
                                     <i class="icon user"></i>
-                                    <input name="txtMatricula" type="text" value="@ViewBag.TextBoxMatricula" placeholder="Matrícula" required pattern="[a-zA-Z0-9]+" autofocus />
+                                    <input name="txtMatricula" type="text" value="@Model.Matricula" placeholder="Matrícula" required pattern="[a-zA-Z0-9]+" autofocus />
                                 </div>
                             </div>
                             <div class="seven wide field required">
@@ -149,6 +151,10 @@
                         <div style="text-align:left" class="ui small message error">
                             <div class="header">Credenciais inválidas</div>
                             <p>Note que ambos os campos diferenciam maiúsculas e minúsculas.</p>
+                            @foreach (var mensagem in Model.Mensagens)
+                            {
+                                <p>@mensagem</p>
+                            }
                         </div>
                     </form>
                 </div>                

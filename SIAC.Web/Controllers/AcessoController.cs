@@ -18,20 +18,22 @@ namespace SIAC.Controllers
             {
                 return RedirectToAction("Index", "Dashboard");
             }
-            return View();
+            return View(new ViewModels.AcessoIndexViewModel());
         }
 
-        // GET: Acesso/Entrar
-        //[HttpGet]
-        //public ActionResult Entrar()
-        //{
-        //    if (Helpers.Sessao.Autenticado)
-        //    {
-        //        return RedirectToAction("Index", "Dashboard");
-        //    }
-        //    ViewBag.Acao = "$('.modal').modal('show')";
-        //    return View("Index");
-        //}
+        /*
+        GET: Acesso/Entrar
+        [HttpGet]
+        public ActionResult Entrar()
+        {
+            if (Helpers.Sessao.Autenticado)
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
+            ViewBag.Acao = "$('.modal').modal('show')";
+            return View("Index");
+        }
+        */
 
         // POST: Acesso/Entrar
         [HttpPost]
@@ -77,13 +79,15 @@ namespace SIAC.Controllers
             }
             else
             {
-                ViewBag.Acao = "$('.modal').modal('show');";
-                ViewBag.Erro = "error";
-                if (formCollection.HasKeys() && !String.IsNullOrEmpty(formCollection["txtMatricula"]) && Sistema.MatriculaAtivo.Contains(formCollection["txtMatricula"].ToString()))
+                var model = new ViewModels.AcessoIndexViewModel();
+                model.Matricula = formCollection.HasKeys() ? formCollection["txtMatricula"] : "";
+                //ViewBag.Acao = "$('.modal').modal('show');";
+                model.Erro = true;
+                if (!String.IsNullOrEmpty(model.Matricula) && Sistema.MatriculaAtivo.Contains(model.Matricula))
                 {
-                    ViewBag.Acao += "$('.ui.message.error .header').text('Seu usuário já está conectado.');$('.ui.message.error p').text('Seu usuário já está conectado.');";
+                    model.Mensagens = new string[] { "Seu usuário já está conectado." };
                 }
-                return View("Index");
+                return View(model);
             }
         }
 
