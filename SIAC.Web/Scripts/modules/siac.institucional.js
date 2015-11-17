@@ -20,10 +20,13 @@ siac.Institucional.Configurar = (function () {
 })();
 
 siac.Institucional.Gerar = (function () {
+    var _qteQuestoes = 0;
+
     function iniciar() {
 
         $('.ui.dropdown').dropdown();
         $('.tabular.menu .item').tab();
+        $('h3').popup();
         $('.ui.accordion').accordion({ animateChildren: false });
         $('.cancelar.button').popup({
             on: 'click',
@@ -31,7 +34,7 @@ siac.Institucional.Gerar = (function () {
         });
 
         //Definindo o Tipo Default como 1 ( Objetiva )
-        $('#ddlTipo').dropdown('set selected', 1);
+        $('#ddlTipo').dropdown('set selected', 2);
 
         //Adicionando Alternativas por default
         for (var i = 0; i < 5; i++) {
@@ -46,6 +49,10 @@ siac.Institucional.Gerar = (function () {
         $('.questao.objetiva .adicionar.button').click(function () {
             adicionarAlternativa();
         });
+
+        $('.adicionar.questao.button').click(function () {
+            verificar();
+        })
     }
 
     function adicionarAlternativa() {
@@ -119,6 +126,144 @@ siac.Institucional.Gerar = (function () {
         else if (tipo == 2) {
             $('.questao.objetiva').hide();
         }
+    }
+
+    function verificar() {
+        $('form').removeClass('error');
+        $('.ui.error.message .list').html('');
+        var validado = false;
+        if (!$('#ddlModulo').val()) {
+            $('.ui.error.message .list').append('<li>É necessário selecionar um módulo</li>')
+        }
+        if (!$('#ddlCategoria').val()) {
+            $('.ui.error.message .list').append('<li>É necessário selecionar uma categoria</li>')
+        }
+        if (!$('#ddlIndicador').val()) {
+            $('.ui.error.message .list').append('<li>É necessário selecionar um indicador</li>')
+        }
+
+        if (!$('#ddlTipo').val()) {
+            $('.ui.error.message .list').append('<li>É necessário selecionar um tipo</li>')
+        }
+
+        if (!$('#txtEnunciado').val()) {
+            $('.ui.error.message .list').append('<li>É necessário preencher o enunciado</li>')
+        }
+
+        if ($('#ddlTipo').val()) {
+            var tipo = $('#ddlTipo').val();
+
+            if (tipo == 1) {
+                var qteAlternativas = $('#txtQtdAlternativas').val();
+                var ok = true;
+                for (var i = 0; i < qteAlternativas; i++) {
+                    if ($('#txtAlternativaEnunciado' + (i + 1)).val() == '') {
+                        ok = false;
+                    }
+                }
+                if (ok) {
+                   validado = true;
+                }
+                else {
+                    $('.ui.error.message .list').append('<li>É necessário preencher os enunciados de todas as alternativas</li>')
+                }
+            }
+            else if (tipo == 2) {
+                if ($('#txtEnunciado').val()) {
+                    validado = true;
+                }
+            }
+        }
+
+        if (validado) adicionarQuestao();
+        else $('form').addClass('error');
+    }
+
+    function adicionarQuestao() {
+        _qteQuestoes++;
+        //OBTENDO DADOS DA QUESTÃO
+        var moduloCod = $('#ddlModulo :selected').val();
+        var modulo = $('#ddlModulo :selected').text();
+        var categoriaCod = $('#ddlCategoria').val();
+        var categoria = $('#ddlCategoria :selected').text();
+        var indicadorCod = $('#ddlIndicador').val();
+        var indicador = $('#ddlIndicador :selected').text();
+        var tipo = $('#ddlTipo').val();
+        var enunciado = $('#txtEnunciado').val();
+        var observacao = $('#txtObservacao').val();
+        var TEMPLATE_QUESTAO_HTML ='<div class="title">'+
+                                        '<i class="dropdown icon"></i>'+
+                                        modulo+
+                                    '</div>'+
+                                    '<div class="content" data-modulo="' + moduloCod + '">' +
+                                        '<div class="accordion">'+
+                                            '<div class="title">'+
+                                                '<i class="dropdown icon"></i>'+
+                                                categoria + 
+                                            '</div>'+
+                                            '<div class="content" data-categoria="' + categoriaCod + '">' +
+                                                '<div class="accordion">'+
+                                                    '<div class="title">'+
+                                                        '<i class="dropdown icon"></i>'+
+                                                         indicador +
+                                                    '</div>'+
+                                                    '<div class="content" data-indicador="' + indicadorCod + '">' +
+                                                        '<div class="accordion">'+
+                                                            '<div class="title">'+
+                                                                '<i class="dropdown icon"></i>'+
+                                                                    'Questão '+_qteQuestoes+
+                                                            '</div>'+
+                                                            '<div class="content">'+
+                                                                '<div class="ui segment">'+
+                                                                    '<h3 class="ui dividing header" data-content="' + observacao + '">'+enunciado+'</h3>'+
+                                                                    //<div class="ui very relaxed list">\
+                                                                    //    <div class="item">\
+                                                                    //        <b>1)</b> ALternativa\
+                                                                    //    </div>\
+                                                                    //</div>\
+                                                                '</div>'+
+                                                            '</div>'+
+                                                        '</div>'+
+                                                    '</div>'+
+                                                '</div>'+
+                                            '</div>'+
+                                        '</div>' +
+                                    '</div>';
+
+        //Obtendo possíveis accordions questões por módulos
+        var $questoesModulo = $('[data-modulo=' + moduloCod + ']');
+        var $questoesCategoria = $('[data-categoria=' + categoriaCod + ']');
+        var $questoesIndicador = $('[data-indicador=' + indicadorCod + ']');
+
+        if ($questoesModulo.length > 0) {
+            if ($questoesModulo.find('[data-categoria=' + categoriaCod + ']').length > 0) {
+                //if ($questoesCategoria.length > 0) {
+                if ($questoesModulo.find('[data-categoria=' + categoriaCod + ']').find('[data-indicador=' + indicadorCod + ']').length > 0) {
+                //if ($questoesIndicador.length > 0) {
+                    $questao = $(TEMPLATE_QUESTAO_HTML).find('[data-indicador=' + indicadorCod + ']').find('.accordion').html();
+                    $questoesModulo
+                        .find('[data-categoria=' + categoriaCod + ']')
+                        .find('[data-indicador=' + indicadorCod + ']')
+                        .children('.accordion').append($questao);
+                } else {
+                    $questao = $(TEMPLATE_QUESTAO_HTML).find('[data-categoria=' + categoriaCod + ']').find('.accordion').html();
+                    $questoesModulo
+                        .find('[data-categoria=' + categoriaCod + ']')
+                        .children('.accordion').append($questao);
+                }
+            }
+            else {
+                $questao = $(TEMPLATE_QUESTAO_HTML).find('.accordion').html();
+                $questoesModulo
+                    .children('.accordion').append($questao);
+            }
+        }
+        else {
+            $('.tab.questoes .fluid.styled.accordion').append(TEMPLATE_QUESTAO_HTML);
+        }
+        $('h3').popup();
+        siac.aviso('Questão adicionada com sucesso!', 'green');
+        console.log(moduloCod, categoriaCod, indicadorCod);
     }
 
     function marcarCorreta(chk) {
