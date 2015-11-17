@@ -17,7 +17,6 @@ namespace SIAC.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Avaliacao()
         {
-            this.AvalAcadReposicao = new HashSet<AvalAcadReposicao>();
             this.AvaliacaoTema = new HashSet<AvaliacaoTema>();
             this.AvalPessoaResultado = new HashSet<AvalPessoaResultado>();
         }
@@ -34,8 +33,7 @@ namespace SIAC.Models
         public bool FlagArquivo { get; set; }
     
         public virtual AvalAcademica AvalAcademica { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AvalAcadReposicao> AvalAcadReposicao { get; set; }
+        public virtual AvalAcadReposicao AvalAcadReposicao { get; set; }
         public virtual AvalAuto AvalAuto { get; set; }
         public virtual AvalAvi AvalAvi { get; set; }
         public virtual AvalCertificacao AvalCertificacao { get; set; }

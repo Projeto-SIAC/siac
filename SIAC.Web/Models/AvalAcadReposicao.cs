@@ -14,17 +14,22 @@ namespace SIAC.Models
     
     public partial class AvalAcadReposicao
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public AvalAcadReposicao()
+        {
+            this.Justificacao = new HashSet<Justificacao>();
+        }
+    
         public int CodTipoAvaliacao { get; set; }
         public int NumIdentificador { get; set; }
         public int Semestre { get; set; }
         public int Ano { get; set; }
-        public int CodProfessor { get; set; }
-        public int CodJustificacao { get; set; }
         public int CodSala { get; set; }
         public Nullable<double> Valor { get; set; }
     
         public virtual Sala Sala { get; set; }
         public virtual Avaliacao Avaliacao { get; set; }
-        public virtual Justificacao Justificacao { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Justificacao> Justificacao { get; set; }
     }
 }

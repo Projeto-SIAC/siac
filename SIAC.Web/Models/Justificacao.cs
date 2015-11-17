@@ -31,9 +31,9 @@ namespace SIAC.Models
         public Nullable<System.DateTime> DtConfirmacao { get; set; }
         public string Descricao { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AvalAcadReposicao> AvalAcadReposicao { get; set; }
         public virtual AvalPessoaResultado AvalPessoaResultado { get; set; }
         public virtual Professor Professor { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AvalAcadReposicao> AvalAcadReposicao { get; set; }
     }
 }
