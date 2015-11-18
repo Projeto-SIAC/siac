@@ -1,0 +1,22 @@
+﻿@{ int passo = (int)ViewData["Passo"]; }
+
+<div class="ui three fluid ordered steps">
+    <div class="@(passo > 1 ? "completed" : passo == 1 ? "active" : "") step">
+        <div class="content">
+            <div class="title">Justificar</div>
+            <div class="description">Justificar ausências e selecionar alunos</div>
+        </div>
+    </div>
+    <div class="@(passo > 2 ? "completed" : passo == 2 ? "active" : "") step">
+        <div class="content">
+            <div class="title">Configurar</div>
+            <div class="description">Configure a avaliação</div>
+        </div>
+    </div>
+    <div class="@(passo == 3 ? "active" : "") step">
+        <div class="content">
+            <div class="title">Agendar</div>
+            <div class="description">Agende a avaliação</div>
+        </div>
+    </div>
+</div>

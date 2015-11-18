@@ -22,7 +22,7 @@
         </mvcSiteMapNode>
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Avaliação" controller="Dashboard" action="Avaliacao">
-        <mvcSiteMapNode title="Acadêmica" url="~/Historico/Avaliacao/Academica">
+        <mvcSiteMapNode title="Acadêmica" url="~/historico/avaliacao/academica">
           <mvcSiteMapNode title="Gerar" controller="Academica" action="Gerar">
             <mvcSiteMapNode title="Confirmação" controller="Academica" action="Confirmar"/>
           </mvcSiteMapNode>
@@ -33,7 +33,7 @@
             <mvcSiteMapNode title="Resultado" controller="Academica" action="Resultado" preservedRouteParameters="codigo"/>
           </mvcSiteMapNode>
         </mvcSiteMapNode>
-        <mvcSiteMapNode title="Certificação" url="~/Historico/Avaliacao/Certificacao">
+        <mvcSiteMapNode title="Certificação" url="~/historico/avaliacao/certificacao">
           <mvcSiteMapNode title="Gerar" controller="Certificacao" action="Gerar">
             <mvcSiteMapNode title="Confirmação" controller="Certificacao" action="Confirmar"/>
           </mvcSiteMapNode>
@@ -44,6 +44,15 @@
             <mvcSiteMapNode title="Resultado" controller="Certificacao" action="Resultado" preservedRouteParameters="codigo"/>
           </mvcSiteMapNode>
         </mvcSiteMapNode>
+        <mvcSiteMapNode title="Reposição" url="~/historico/avaliacao/reposicao">
+            <mvcSiteMapNode title="Justificar" controller="Reposicao" action="Justificar" preservedRouteParameters="codigo"/>
+            <mvcSiteMapNode title="Agendar" controller="Reposicao" action="Agendar" preservedRouteParameters="codigo"/>
+            <mvcSiteMapNode title="Configurar" controller="Reposicao" action="Configurar" preservedRouteParameters="codigo"/>
+            <mvcSiteMapNode title="Acompanhar" controller="Reposicao" action="Acompanhar" preservedRouteParameters="codigo"/>
+            <mvcSiteMapNode title="Realizar" controller="Reposicao" action="Realizar" preservedRouteParameters="codigo">
+              <mvcSiteMapNode title="Resultado" controller="Reposicao" action="Resultado" preservedRouteParameters="codigo"/>
+            </mvcSiteMapNode>
+          </mvcSiteMapNode>
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Agenda" controller="Agenda" action="Index" />
       <mvcSiteMapNode title="Correções Pendentes" controller="Dashboard" action="Pendente" />
@@ -66,6 +75,11 @@
           <mvcSiteMapNode title="Detalhe" controller="Certificacao" action="Detalhe" preservedRouteParameters="codigo"/>
           <mvcSiteMapNode title="Agendada" controller="Certificacao" action="Agendada" preservedRouteParameters="codigo"/>
           <mvcSiteMapNode title="Corrigir" controller="Certificacao" action="Corrigir" preservedRouteParameters="codigo"/>
+        </mvcSiteMapNode>
+        <mvcSiteMapNode title="Reposição" controller="Reposicao" action="Index">
+          <mvcSiteMapNode title="Detalhe" controller="Reposicao" action="Detalhe" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Agendada" controller="Reposicao" action="Agendada" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Corrigir" controller="Reposicao" action="Corrigir" preservedRouteParameters="codigo"/>
         </mvcSiteMapNode>
       </mvcSiteMapNode>
     </mvcSiteMapNode>

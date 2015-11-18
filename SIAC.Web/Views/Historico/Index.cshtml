@@ -23,6 +23,14 @@
                 { "Descricao", "Histórico de Acadêmicas" }
             })
         }
+        @if (Model.CodCategoria <= 2)
+            {
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
+                { "Url", Url.Action("Index", "Reposicao") },
+                { "Icone", "file archive outline" },
+                { "Descricao", "Histórico de Reposições" }
+            })
+        }
         @if (Model.CodCategoria <= 3)
             {
             @Html.Partial("_Atalho", new ViewDataDictionary() {

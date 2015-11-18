@@ -136,6 +136,15 @@
         else if (/\/dashboard\/avaliacao\/reposicao\/justificar\/acad[0-9]+$/.test(pathname)) {
             siac.Reposicao.Justificar.iniciar();
         }
+        else if (/\/dashboard\/avaliacao\/reposicao\/configurar\/repo[0-9]+$/.test(pathname)) {
+            siac.Reposicao.Configurar.iniciar();
+        }
+        else if (/\/dashboard\/avaliacao\/reposicao\/agendar\/repo[0-9]+$/.test(pathname)) {
+            siac.Reposicao.Agendar.iniciar();
+        }
+        else if (pathname == '/historico/avaliacao/reposicao') {
+            siac.Reposicao.Index.iniciar();
+        }
     }
 
     var HTML_MENSAGEM_TEMPLATE = '<div class="ui small mensagem modal">' +

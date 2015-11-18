@@ -466,10 +466,9 @@ namespace SIAC.Controllers
         }
 
         //POST: Avaliacao/Academica/Salvar/ACAD201520001
-        [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
-        public ActionResult Salvar(string codigoAval)
+        public ActionResult Salvar(string codigo)
         {
             List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData["listaQuestoesAntigas"];
             List<AvalTemaQuestao> novas = (List<AvalTemaQuestao>)TempData["listaQuestoesNovas"];
@@ -488,7 +487,7 @@ namespace SIAC.Controllers
             TempData.Clear();
 
 
-            return RedirectToAction("Detalhe", new { codigo = codigoAval });
+            return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
         //POST: Avaliacao/Academica/Desfazer/ACAD201520001

@@ -29,7 +29,7 @@
     @ViewBag.Title
     <div class="ui right floated button corrigir">Corrigir</div>
     <div class="ui right floated button informacoes">Informações</div>
-    @if(Model.AlunoAusente.Count > 0) {
+    @if(Model.AlunoSemJustificacao.Count > 0 || Model.Justificacoes.Count > 0) {
         <a href="@Url.Action("Justificar", "Reposicao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui right floated reposicao button">Reposição</a>
     }
 </h2>

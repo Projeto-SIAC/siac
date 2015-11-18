@@ -403,6 +403,7 @@
     <Compile Include="Models\Parametro.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\pAvalAcadReposicao.cs" />
     <Compile Include="Models\pAvalCertificacao.cs" />
     <Compile Include="Models\pAviCategoria.cs" />
     <Compile Include="Models\pAviIndicador.cs" />
@@ -659,8 +660,13 @@
     <Content Include="Views\Certificacao\Imprimir.cshtml" />
     <Content Include="Views\Certificacao\Partials\_Individual.cshtml" />
     <Content Include="Views\Certificacao\Detalhe.cshtml" />
-    <Content Include="Views\Reposicao\Index.cshtml" />
     <Content Include="Views\Reposicao\Justificar.cshtml" />
+    <Content Include="Views\Reposicao\Partials\_PassoAPasso.cshtml" />
+    <Content Include="Views\Reposicao\Configurar.cshtml" />
+    <Content Include="Views\Reposicao\Partials\_Questao.cshtml" />
+    <Content Include="Views\Reposicao\Agendar.cshtml" />
+    <Content Include="Views\Reposicao\Partials\_ListaReposicao.cshtml" />
+    <Content Include="Views\Reposicao\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
