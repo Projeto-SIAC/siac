@@ -78,7 +78,7 @@
           <Property Name="NumIdentificador" Type="int" Nullable="false" />
           <Property Name="Semestre" Type="int" Nullable="false" />
           <Property Name="Ano" Type="int" Nullable="false" />
-          <Property Name="CodSala" Type="int" Nullable="false" />
+          <Property Name="CodSala" Type="int" />
           <Property Name="Valor" Type="float" />
         </EntityType>
         <EntityType Name="AvalAuto">
@@ -1155,7 +1155,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__AvalAcadR__CodSa__2962141D">
-          <End Role="Sala" Type="Self.Sala" Multiplicity="1" />
+          <End Role="Sala" Type="Self.Sala" Multiplicity="0..1" />
           <End Role="AvalAcadReposicao" Type="Self.AvalAcadReposicao" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sala">
@@ -4036,7 +4036,7 @@
           <Property Name="NumIdentificador" Type="Int32" Nullable="false" />
           <Property Name="Semestre" Type="Int32" Nullable="false" />
           <Property Name="Ano" Type="Int32" Nullable="false" />
-          <Property Name="CodSala" Type="Int32" Nullable="false" />
+          <Property Name="CodSala" Type="Int32" />
           <Property Name="Valor" Type="Double" />
           <NavigationProperty Name="Sala" Relationship="dbSIACModel.FK__AvalAcadR__CodSa__2962141D" FromRole="AvalAcadReposicao" ToRole="Sala" />
           <NavigationProperty Name="Avaliacao" Relationship="dbSIACModel.FK__AvalAcadReposica__2A563856" FromRole="AvalAcadReposicao" ToRole="Avaliacao" />
@@ -5173,7 +5173,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK__AvalAcadR__CodSa__2962141D">
-          <End Type="dbSIACModel.Sala" Role="Sala" Multiplicity="1" />
+          <End Type="dbSIACModel.Sala" Role="Sala" Multiplicity="0..1" />
           <End Type="dbSIACModel.AvalAcadReposicao" Role="AvalAcadReposicao" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Sala">
