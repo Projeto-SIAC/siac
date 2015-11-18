@@ -53,7 +53,7 @@ namespace SIAC.Models
 
                 foreach (var aluno in this.AlunoAusente)
                 {
-                    if (Justificacoes.FirstOrDefault(j=>j.CodPessoaFisica == aluno.Usuario.CodPessoaFisica) == null)
+                    if (this.Avaliacao.AvalPessoaResultado.FirstOrDefault(j=>j.CodPessoaFisica == aluno.Usuario.CodPessoaFisica) == null)
                     {
                         lstRetorno.Add(aluno);
                     }

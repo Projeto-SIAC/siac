@@ -661,6 +661,7 @@
     <Content Include="Views\Certificacao\Detalhe.cshtml" />
     <Content Include="Views\Reposicao\Index.cshtml" />
     <Content Include="Views\Reposicao\Justificar.cshtml" />
+    <Content Include="Views\Reposicao\Partials\_PassoAPasso.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

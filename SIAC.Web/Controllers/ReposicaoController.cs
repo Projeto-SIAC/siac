@@ -135,11 +135,17 @@ namespace SIAC.Controllers
             Repositorio.GetInstance().AvalAcadReposicao.Add(aval);
             Repositorio.GetInstance().SaveChanges();            
             
-            return Url.Action("Configurar", new { codigo = aval.Avaliacao.CodAvaliacao });
+            return nova ? Url.Action("Configurar", new { codigo = aval.Avaliacao.CodAvaliacao }) : Url.Action("Agendar", new { codigo = aval.Avaliacao.CodAvaliacao });
         }
 
         [Filters.AutenticacaoFilter(Categorias = new[] { 2})]
         public ActionResult Configurar(string codigo)
+        {
+            return null;
+        }
+
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult Agendar(string codigo)
         {
             return null;
         }

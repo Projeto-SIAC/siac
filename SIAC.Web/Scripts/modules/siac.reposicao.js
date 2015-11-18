@@ -46,6 +46,9 @@ siac.Reposicao.Justificar = (function () {
                     $('#txtSenha').transition('tada');
                     return false;
                 }
+            },
+            onHidden: function () {
+                $('#txtSenha').val('');
             }
         });
 

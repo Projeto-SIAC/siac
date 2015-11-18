@@ -14,6 +14,8 @@
     <div class="ui right floated informacoes button">Informações</div>
 </h2>
 
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 1 } })
+
 <div class="ui informacoes modal">
     <i class="icon close"></i>
     <div class="header">
@@ -35,28 +37,28 @@
                     <tbody>
                         @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
                         {
-                            <tr>
-                                <td>
-                                    @* disciplina *@
-                                    <b>@disc.Descricao</b>
-                                </td>
-                                <td class="ui labels">
-                                    @* temas *@
-                                    @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                        <tr>
+                            <td>
+                                @* disciplina *@
+                                <b>@disc.Descricao</b>
+                            </td>
+                            <td class="ui labels">
+                                @* temas *@
+                                @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
                                     {
-                                        <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                                    <div class="ui tag label">@avalTema.Tema.Descricao</div>
                                     }
-                                </td>
-                                <td class="ui labels">
-                                    @* qte de questões *@
-                                    <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
-                                    <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
-                                </td>
-                                <td>
-                                    @* dificuldade *@
-                                    @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
-                                </td>
-                            </tr>
+                            </td>
+                            <td class="ui labels">
+                                @* qte de questões *@
+                                <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
+                                <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
+                            </td>
+                            <td>
+                                @* dificuldade *@
+                                @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
@@ -140,60 +142,64 @@
     </div>
 </div>
 
-<form method="post" class="ui form basic segment">
-    <div class="ui error message">
-        <div class="header">Verifique</div>
-        <ul></ul>
-    </div>
-    <div class="field required">
-        <label for="ddlAluno">Aluno</label>
-        <select id="ddlAluno" name="ddlAluno" class="ui search dropdown" tabindex="0">
-            <option value="">Selecione</option>
-            @foreach (var aluno in Model.AlunoSemJustificacao.OrderBy(a => a.Usuario.PessoaFisica.Nome))
-            {
-                <option value="@aluno.MatrAluno">@aluno.Usuario.PessoaFisica.Nome</option>
-            }
-        </select>
-    </div>
-    <div class="field required">
-        <label for="txtJustificacao">Justificação</label>
-        <textarea id="txtJustificacao" name="txtJustificacao" rows="2" tabindex="0" placeholder="Justificação"></textarea>
-    </div>
-    <div class="field">
-        <div class="ui adicionar button" tabindex="0">
-            Adicionar
+@if (Model.AlunoSemJustificacao.Count > 0)
+{
+    <form method="post" class="ui form basic segment">
+        <div class="ui error message">
+            <div class="header">Verifique</div>
+            <ul></ul>
         </div>
-    </div>
-</form>
-
-<table class="ui selectable stripped table">
-    <thead>
-        <tr>
-            <th class="two wide"></th>
-            <th class="four wide">Aluno</th>
-            <th class="ten wide">Justificação</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var justificacao in Model.Justificacoes.OrderBy(j => j.AvalPessoaResultado.PessoaFisica.Nome))
-        {
-            <tr id="@justificacao.CodJustificacao">
-                <td>
-                    <div class="ui toggle checkbox">
-                        <input type="checkbox" name="chkSelecionado@(justificacao.CodJustificacao)" />
-                    </div>
-                </td>
-                <td>
-                    @justificacao.AvalPessoaResultado.PessoaFisica.Nome
-                </td>
-                <td>
-                    @Html.Raw(justificacao.Descricao.Replace("\n", "<br/>"))
-                </td>
+        <div class="field required">
+            <label for="ddlAluno">Aluno</label>
+            <select id="ddlAluno" name="ddlAluno" class="ui search dropdown" tabindex="0">
+                <option value="">Selecione</option>
+                @foreach (var aluno in Model.AlunoSemJustificacao.OrderBy(a => a.Usuario.PessoaFisica.Nome))
+                {
+                    <option value="@aluno.MatrAluno">@aluno.Usuario.PessoaFisica.Nome</option>
+                }
+            </select>
+        </div>
+        <div class="field required">
+            <label for="txtJustificacao">Justificação</label>
+            <textarea id="txtJustificacao" name="txtJustificacao" rows="2" tabindex="0" placeholder="Justificação"></textarea>
+        </div>
+        <div class="field">
+            <div class="ui adicionar button" tabindex="0">
+                Adicionar
+            </div>
+        </div>
+    </form>
+}
+@if (Model.Justificacoes.Count > 0)
+{
+    <table class="ui selectable stripped table">
+        <thead>
+            <tr>
+                <th class="two wide"></th>
+                <th class="four wide">Aluno</th>
+                <th class="ten wide">Justificação</th>
             </tr>
-        }
-    </tbody>
-</table>
-
+        </thead>
+        <tbody>
+            @foreach (var justificacao in Model.Justificacoes.OrderBy(j => j.AvalPessoaResultado.PessoaFisica.Nome))
+            {
+                <tr id="@justificacao.CodJustificacao">
+                    <td>
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" name="chkSelecionado@(justificacao.CodJustificacao)" />
+                        </div>
+                    </td>
+                    <td>
+                        @justificacao.AvalPessoaResultado.PessoaFisica.Nome
+                    </td>
+                    <td>
+                        @Html.Raw(justificacao.Descricao.Replace("\n", "<br/>"))
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 <div class="ui cancelar button" tabindex="0">
     Cancelar
 </div>
