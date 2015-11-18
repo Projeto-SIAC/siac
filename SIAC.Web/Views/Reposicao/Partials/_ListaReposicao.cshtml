@@ -1,0 +1,80 @@
+﻿@model List<AvalAcadReposicao>
+
+@foreach (var aval in Model)
+{
+    <div class="card">
+        <div class="content">
+            <a href="@Url.Action("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao })" class="header">
+                @aval.Avaliacao.CodAvaliacao
+            </a>
+            <div class="meta">
+                <span title="@aval.Avaliacao.DtCadastro.ToBrazilianString()">@aval.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
+            </div>
+            <div class="description">
+                @if (aval.Avaliacao.FlagAgendada)
+                {
+                    <p><b>Aplicação</b>: @aval.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy HH'h'mm'min'")</p>
+                }
+                <p><b>Quantidade de Alunos</b>: @aval.Justificacao.Count</p>
+                <p><b>Quantidade de Questões</b>: @aval.Avaliacao.QteQuestoes()</p>
+            </div>
+        </div>
+        <div class="extra content">
+            <div class="ui tag label">
+                @aval.Disciplina.Descricao
+            </div>
+        </div>
+        @if (aval.Avaliacao.FlagRealizada)
+        {
+            if (Sessao.UsuarioCategoriaCodigo == 1)
+            {
+                if (aval.AlunosRealizaram.Where(a => a.MatrAluno == Sessao.UsuarioMatricula).Count() > 0)
+                {
+                    <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
+                    <a href="@Url.Action("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+                }
+                else
+                {
+                    <span class="ui attached top right label"><i class="remove icon"></i>Ausente</span>
+                    <a href="@Url.Action("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
+                }
+            }
+            else
+            {
+                <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
+                <a href="@Url.Action("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+            }
+        }
+        else
+        {
+            if (aval.Avaliacao.FlagArquivo)
+            {
+                <span class="ui attached top right label"><i class="archive icon"></i>Arquivo</span>
+                if (Sessao.UsuarioCategoriaCodigo == 2)
+                {
+                    <a href="@Url.Action("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
+                }
+            }
+            else if (aval.Avaliacao.FlagAgendada)
+            {
+                <span class="ui attached top right label"><i class="clock icon"></i>Agendada</span>
+                if (Sessao.UsuarioCategoriaCodigo == 2)
+                {
+                    <a href="@Url.Action("Agendada", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Aplicar</a>
+                }
+            }
+            else if (Sessao.UsuarioCategoriaCodigo == 2)
+            {
+                <div class="ui buttons">
+                    <a href="@Url.Action("Configurar", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
+                    <a href="@Url.Action("Agendar", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
+                </div>
+            }
+
+            if (Sessao.UsuarioCategoriaCodigo == 1)
+            {
+                <a href="@Url.Action("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
+            }
+        }
+    </div>
+}

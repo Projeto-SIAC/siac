@@ -11,12 +11,95 @@ namespace SIAC.Controllers
     [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2 })]
     public class ReposicaoController : Controller
     {
+        public List<AvalAcadReposicao> Reposicoes
+        {
+            get
+            {
+                if (Sessao.UsuarioCategoriaCodigo == 2)
+                {
+                    int codProfessor = Professor.ListarPorMatricula(Sessao.UsuarioMatricula).CodProfessor;
+                    return AvalAcadReposicao.ListarPorProfessor(codProfessor);
+                }
+                else
+                {
+                    int codAluno = Aluno.ListarPorMatricula(Sessao.UsuarioMatricula).CodAluno;
+                    return AvalAcadReposicao.ListarPorAluno(codAluno);
+                }
+            }
+        }
+
+        // POST: Reposicao/Listar
+        [HttpPost]
+        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina)
+        {
+            var qte = 12;
+            var reposicoes = Reposicoes;
+            pagina = pagina ?? 1;
+            if (!String.IsNullOrWhiteSpace(pesquisa))
+            {
+                reposicoes = reposicoes.Where(a => a.Avaliacao.CodAvaliacao.ToLower().Contains(pesquisa.ToLower())).ToList();
+            }
+
+            if (!String.IsNullOrWhiteSpace(disciplina))
+            {
+                reposicoes = reposicoes.Where(a => a.Disciplina.CodDisciplina == int.Parse(disciplina)).ToList();
+            }
+
+            if (categorias != null)
+            {
+                if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    reposicoes = reposicoes.Where(a => a.Avaliacao.FlagAgendada).ToList();
+                }
+                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    reposicoes = reposicoes.Where(a => a.Avaliacao.FlagArquivo).ToList();
+                }
+                else if (!categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    reposicoes = reposicoes.Where(a => a.Avaliacao.FlagRealizada).ToList();
+                }
+                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    reposicoes = reposicoes.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagArquivo).ToList();
+                }
+                else if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    reposicoes = reposicoes.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagAgendada).ToList();
+                }
+                else if (categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    reposicoes = reposicoes.Where(a => a.Avaliacao.FlagArquivo || a.Avaliacao.FlagAgendada).ToList();
+                }
+            }
+
+            switch (ordenar)
+            {
+                case "data_desc":
+                    reposicoes = reposicoes.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+                case "data":
+                    reposicoes = reposicoes.OrderBy(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+                default:
+                    reposicoes = reposicoes.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+            }
+
+            return PartialView("_ListaReposicao", reposicoes.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
+        }
+
         // GET: Reposicao
         public ActionResult Index()
         {
-            return View();
+            if (Request.Url.ToString().ToLower().Contains("dashboard"))
+            {
+                return Redirect("~/historico/avaliacao/reposicao");
+            }
+            var model = new ViewModels.AvaliacaoIndexViewModel();
+            model.Disciplinas = Reposicoes.Select(a => a.Disciplina).Distinct().ToList();
+            return View(model);
         }
-
 
         // GET: Reposicao/Justificar/ACAD201520002
         [HttpGet]
