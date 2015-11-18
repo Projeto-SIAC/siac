@@ -32,6 +32,17 @@ siac.Institucional.Gerar = (function () {
             on: 'click',
             inline: true
         });
+        $('.ui.checkbox').checkbox({
+            onChange: function () {
+                var checked = $(this).is(':checked');
+                if (checked) {
+                    $('#txtAlternativaDiscursiva').prop('readonly',false).parent().removeClass('disabled');
+
+                } else {
+                    $('#txtAlternativaDiscursiva').prop('readonly', true).parent().addClass('disabled');
+                }
+            }
+        });
 
         //Definindo o Tipo Default como 1 ( Objetiva )
         $('#ddlTipo').dropdown('set selected', 1);
@@ -241,10 +252,16 @@ siac.Institucional.Gerar = (function () {
                 var enunciado = listContent.eq(i).find('textarea[name="txtAlternativaEnunciado' + j + '"]').val();
                 var alternativa = '<div class="item"><b>' + j + ')</b> ' + enunciado + '</div>';
                 $template.find('.very.relaxed.list').append(alternativa);
-            }   
+            }
+            if ($('#chkAlternativaDiscursiva').is(':checked')) {
+                var alternativaDiscursiva = $('#txtAlternativaDiscursiva').val();
+                var alternativa = '<div class="item"><b>' + (list.length+1) + ')</b> ' + alternativaDiscursiva + '<input class="input" placeholder="Resposta" type="text" readonly/></div>';
+                $template.find('.very.relaxed.list').append(alternativa);
+            }
         }
         else if (tipo == 2) {
             $template.find('.very.relaxed.list').remove();
+            $template.find('.ui.segment').append('<input class="input" placeholder="Resposta" type="text" readonly/>');
         }
 
         //Obtendo possíveis accordions questões por módulos
