@@ -5,20 +5,27 @@ siac.Reposicao.Justificar = (function () {
 
     function iniciar() {
         $('.ui.dropdown').dropdown();
-        $('.ui.cancelar.button').popup({inline: true, on: "click"});
+        $('.ui.checkbox').checkbox();
+        $('.ui.cancelar.button').popup({ inline: true, on: "click" });
 
         $('.ui.adicionar.button').click(function () {
             _justificacao.aluno = $('#ddlAluno').val();
             _justificacao.descricao = $('#txtJustificacao').val();
-            _justificacao.cadastro = new Date();
+            _justificacao.cadastro = new Date().toISOString();
             verificar();
         });
 
         $('.ui.confirmar.modal').modal({
             onApprove: function () {
-                _justificacao.confirmacao = new Date();
+                _justificacao.confirmacao = new Date().toISOString();
                 _justificacao.senha = $('#txtSenha').val();
-                confirmar();
+                if (_justificacao.senha) {
+                    confirmar();
+                }
+                else {
+                    $('#txtSenha').transition('tada');
+                    return false;
+                }
             }
         });
     }
@@ -62,7 +69,7 @@ siac.Reposicao.Justificar = (function () {
             }
 
             $form.find('textarea').text(_justificacao.descricao);
-            
+
             $modal.find('.content .form').prepend($form.html());
 
             $modal.modal('show');
@@ -79,14 +86,13 @@ siac.Reposicao.Justificar = (function () {
             data: {
                 justificacao: _justificacao
             },
-            success: function() {
+            success: function () {
                 window.location.reload();
             },
             error: function () {
                 siac.mensagem('Aconteceu um erro durante a requisição.')
             }
         });
-        // ajax goes here
     }
 
     return {

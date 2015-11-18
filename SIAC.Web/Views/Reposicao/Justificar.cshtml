@@ -20,7 +20,7 @@
             <div class="ui red segment">
                 <div class="field required">
                     <label for="txtSenha">Insira sua senha para confirmar</label>
-                    <input id="txtSenha" name="txtSenha" type="password" />
+                    <input id="txtSenha" name="txtSenha" type="password" placeholder="Senha" />
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@
     </div>
     <div class="field required">
         <label for="txtJustificacao">Justificação</label>
-        <textarea id="txtJustificacao" name="txtJustificacao" rows="2" tabindex="0"></textarea>
+        <textarea id="txtJustificacao" name="txtJustificacao" rows="2" tabindex="0" placeholder="Justificação"></textarea>
     </div>
     <div class="field">
         <div class="ui adicionar button" tabindex="0">
@@ -61,20 +61,22 @@
     </div> 
 </form>
 
-<table class="ui stripped table">
+<table class="ui selectable stripped table">
     <thead>
         <tr>
-            <th></th>
-            <th>Aluno</th>
-            <th>Justificação</th>
+            <th class="two wide"></th>
+            <th class="four wide">Aluno</th>
+            <th class="ten wide">Justificação</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var justificacao in Model.Justificacoes)
+        @foreach (var justificacao in Model.Justificacoes.OrderBy(j=>j.AvalPessoaResultado.PessoaFisica.Nome))
         {
             <tr id="@justificacao.CodJustificacao">
                 <td>
-                    <input type="checkbox" name="chkSelecionado@(justificacao.CodJustificacao)" />
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="chkSelecionado@(justificacao.CodJustificacao)" />
+                    </div>                    
                 </td>
                 <td>
                     @justificacao.AvalPessoaResultado.PessoaFisica.Nome
