@@ -466,7 +466,6 @@ namespace SIAC.Controllers
         }
 
         //POST: Avaliacao/Academica/Salvar/ACAD201520001
-        [AcceptVerbs(HttpVerbs.Post)]
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Salvar(string codigoAval)

@@ -162,3 +162,138 @@ siac.Reposicao.Justificar = (function () {
     }
 
 })();
+
+siac.Reposicao.Configurar = (function () {
+    var _codAvaliacao;
+
+    function iniciar() {
+        _codAvaliacao = window.location.pathname.match(/repo[0-9]+$/)[0];
+
+        $('.ui.informacoes.modal').modal();
+
+        $('div').popup();
+
+        $('.cancelar.button').popup({
+            on: 'click'
+        });
+
+        $('.right.floated.button').popup({
+            inline: true,
+            on: 'click'
+        });
+
+        $('.ui.accordion').accordion({
+            animateChildren: false
+        });
+
+        $('.informacoes.button').click(function () {
+            $('.informacoes.modal').modal('show');
+        });
+
+        $('.salvar.button').click(function () {
+            salvar();
+        });
+
+        adicionarEventos();
+    }
+
+    function adicionarEventos() {
+        $('.trocar.button').off().click(function () {
+            var $_this = $(this);
+            var codQuestao, indice, codTipoQuestao;
+
+            codQuestao = $_this.parents('[data-questao]').attr('data-questao');
+            indice = $_this.parents('[data-indice]').attr('data-indice');
+            codTipoQuestao = $_this.parents('[data-tipo]').attr('data-tipo');
+
+            obterNovaQuestao(codQuestao, indice, codTipoQuestao);
+        });
+
+        siac.Anexo.iniciar();
+
+        $('.desfazer.button').off().click(function () {
+            var $_this = $(this);
+            var codQuestao, indice, codTipoQuestao;
+
+            codQuestao = $_this.parents('[data-questao]').attr('data-questao');
+            indice = $_this.parents('[data-indice]').attr('data-indice');
+            codTipoQuestao = $_this.parents('[data-tipo]').attr('data-tipo');
+
+            desfazer(codQuestao, indice, codTipoQuestao);
+        });
+    }
+
+    function obterNovaQuestao(codQuestao, indice, codTipoQuestao) {
+        var card = $('#CardQuestao' + indice);
+        card.addClass('ui form loading');
+        $('#CardQuestao' + indice + ' div').popup('hide');
+        $.ajax({
+            type: "POST",
+            url: '/Dashboard/Avaliacao/Reposicao/TrocarQuestao',
+            data: {
+                codigoAvaliacao: _codAvaliacao,
+                tipo: codTipoQuestao,
+                indice: indice,
+                codQuestao: codQuestao
+            },
+            success: function (data) {
+                if (data) {
+                    card.html(data);
+                    $('.ui.accordion').accordion({ animateChildren: false });
+                    $('.right.floated.button').popup({ on: 'click' });
+                    $('.ui.button.disabled').removeClass('disabled');
+                    $('#CardQuestao' + indice + ' .ui.desfazer.button').parents('.popup').prev().show();
+                }
+                card.removeClass('ui form loading');
+            },
+            error: function () {
+                card.removeClass('ui form loading');
+                siac.mensagem('Ocorreu um erro não esperado.');
+            },
+            complete: function () {
+                adicionarEventos();
+            }
+        });
+    }
+
+    function salvar() {
+        $('.button.salvar').addClass('loading');
+        $('form').submit();
+    }
+
+    function desfazer(codQuestao, indice, codTipoQuestao) {
+        var card = $('#CardQuestao' + indice);
+        card.addClass('ui form loading');
+        $('#CardQuestao' + indice + ' div').popup('hide');
+        $.ajax({
+            type: 'POST',
+            url: '/Dashboard/Avaliacao/Reposicao/Desfazer',
+            data: {
+                codigoAvaliacao: _codAvaliacao,
+                tipo: codTipoQuestao,
+                indice: indice,
+                codQuestao: codQuestao
+            },
+            success: function (data) {
+                if (data) {
+                    card.html(data);
+                    $('.ui.accordion').accordion({ animateChildren: false });
+                    $('.right.floated.button').popup({ on: 'click' });
+                    $('#CardQuestao' + indice + ' .ui.desfazer.button').parents('.popup').prev().hide();
+                }
+                card.removeClass('ui form loading');
+            },
+            error: function () {
+                card.removeClass('ui form loading');
+                siac.mensagem('Ocorreu um erro não esperado.');
+            },
+            complete: function () {
+                adicionarEventos();
+            }
+        });
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();
