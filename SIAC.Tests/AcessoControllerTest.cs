@@ -17,9 +17,9 @@ namespace SIAC.Tests
             form["txtMatricula"] = String.Empty;
             form["txtSenha"] = String.Empty;
 
-            var result = controller.Index(form) as ViewResult;
+            var result = (controller.Index(form) as ViewResult).Model as ViewModels.AcessoIndexViewModel;
 
-            Assert.AreEqual("Index", result.ViewName);
+            Assert.AreEqual(true, result.Erro);
         }
 
         [TestMethod]
@@ -31,9 +31,9 @@ namespace SIAC.Tests
             form["txtMatricula"] = null;
             form["txtSenha"] = null;
 
-            var result = controller.Index(form) as ViewResult;
+            var result = (controller.Index(form) as ViewResult).Model as ViewModels.AcessoIndexViewModel;
 
-            Assert.AreEqual("Index", result.ViewName);
+            Assert.AreEqual(true, result.Erro);
         }
 
 
@@ -46,9 +46,9 @@ namespace SIAC.Tests
             form["txtMatricula"] = " ";
             form["txtSenha"] = " ";
 
-            var result = controller.Index(form) as ViewResult;
+            var result = (controller.Index(form) as ViewResult).Model as ViewModels.AcessoIndexViewModel;
 
-            Assert.AreEqual("Index", result.ViewName);
+            Assert.AreEqual(true, result.Erro);
         }
 
         [TestMethod]
@@ -58,9 +58,9 @@ namespace SIAC.Tests
 
             FormCollection form = new FormCollection();
 
-            var result = controller.Index(form) as ViewResult;
+            var result = (controller.Index(form) as ViewResult).Model as ViewModels.AcessoIndexViewModel;
 
-            Assert.AreEqual("Index", result.ViewName);
+            Assert.AreEqual(true, result.Erro);
         }
 
         [TestMethod]
