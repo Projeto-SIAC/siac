@@ -34,7 +34,7 @@ siac.Institucional.Gerar = (function () {
         });
 
         //Definindo o Tipo Default como 1 ( Objetiva )
-        $('#ddlTipo').dropdown('set selected', 2);
+        $('#ddlTipo').dropdown('set selected', 1);
 
         //Adicionando Alternativas por default
         for (var i = 0; i < 5; i++) {
@@ -191,6 +191,7 @@ siac.Institucional.Gerar = (function () {
         var tipo = $('#ddlTipo').val();
         var enunciado = $('#txtEnunciado').val();
         var observacao = $('#txtObservacao').val();
+
         var TEMPLATE_QUESTAO_HTML ='<div class="title">'+
                                         '<i class="dropdown icon"></i>'+
                                         modulo+
@@ -211,7 +212,7 @@ siac.Institucional.Gerar = (function () {
                                                         '<div class="accordion">'+
                                                             '<div class="title">'+
                                                                 '<i class="dropdown icon"></i>'+
-                                                                    'Questão '+_qteQuestoes+
+                                                                    '{QuestãoIndice}'+
                                                             '</div>'+
                                                             '<div class="content">'+
                                                                 '<div class="ui segment">'+
@@ -235,55 +236,43 @@ siac.Institucional.Gerar = (function () {
         var $questoesCategoria = $('[data-categoria=' + categoriaCod + ']');
         var $questoesIndicador = $('[data-indicador=' + indicadorCod + ']');
 
-        if ($questoesModulo.length > 0) {
-            if ($questoesModulo.find('[data-categoria=' + categoriaCod + ']').length > 0) {
-                //if ($questoesCategoria.length > 0) {
-                if ($questoesModulo.find('[data-categoria=' + categoriaCod + ']').find('[data-indicador=' + indicadorCod + ']').length > 0) {
-                //if ($questoesIndicador.length > 0) {
+        var $local = $('.tab.questoes .fluid.styled.accordion');
+        var $questao = $(TEMPLATE_QUESTAO_HTML);
+        var $localNovo = $questoesModulo;
+        var questaoIndice = 1;
+
+        if ($localNovo.length > 0) {
+            $local = $localNovo;
+            $localNovo = $local.find('[data-categoria=' + categoriaCod + ']');
+            questaoIndice = $local.length + 1;
+            if ($localNovo.length > 0) {
+                $local = $localNovo;
+                $localNovo = $local.find('[data-indicador=' + indicadorCod + ']');
+                questaoIndice = $local.length + 1;
+                if ($localNovo.length > 0) {
+                    $local = $localNovo;
                     $questao = $(TEMPLATE_QUESTAO_HTML).find('[data-indicador=' + indicadorCod + ']').find('.accordion').html();
-                    $questoesModulo
-                        .find('[data-categoria=' + categoriaCod + ']')
-                        .find('[data-indicador=' + indicadorCod + ']')
-                        .children('.accordion').append($questao);
+                    //$local.children('.accordion').append($questao);
+                    //$local = $localNovo.children('.accordion');
                 } else {
                     $questao = $(TEMPLATE_QUESTAO_HTML).find('[data-categoria=' + categoriaCod + ']').find('.accordion').html();
-                    $questoesModulo
-                        .find('[data-categoria=' + categoriaCod + ']')
-                        .children('.accordion').append($questao);
+                    //$local.children('.accordion').append($questao);
                 }
             }
             else {
                 $questao = $(TEMPLATE_QUESTAO_HTML).find('.accordion').html();
-                $questoesModulo
-                    .children('.accordion').append($questao);
+                //$local.children('.accordion').append($questao);
             }
+            //$questao.html($questao.html().substituirTodos('{QuestaoIndice}', 'Questão ' + questaoIndice));
+            $local.children('.accordion').append($questao);
         }
         else {
-            $('.tab.questoes .fluid.styled.accordion').append(TEMPLATE_QUESTAO_HTML);
+            //console.log($questao.prop('outerHTML'),$questao.html().substituirTodos('{QuestãoIndice}', '1'));
+            //$questao.html($questao.html().substituirTodos('{QuestãoIndice}', '1'));
+            $local.append($questao);
         }
         $('h3').popup();
         siac.aviso('Questão adicionada com sucesso!', 'green');
-        console.log(moduloCod, categoriaCod, indicadorCod);
-    }
-
-    function marcarCorreta(chk) {
-        $chk = $(chk);
-        $lstCheckboxes = $('.ui.alternativas.accordion .content input[type="checkbox"]');
-        $('.ui.alternativas.accordion .title .label').attr('style', 'display:none');
-        for (var i = 0; i < $lstCheckboxes.length; i++) {
-            if ($chk.is(':checked')) {
-                if ($chk.attr('id') == $lstCheckboxes.eq(i).attr('id')) {
-                    $('.ui.alternativas.accordion .title.active .label').removeAttr('style');
-                    continue;
-                }
-                $lstCheckboxes.eq(i).attr({ 'readonly': 'readonly', 'disabled': 'disabled' });
-                $lstCheckboxes.eq(i).parent().addClass('disabled');
-            }
-            else {
-                $lstCheckboxes.eq(i).removeAttr('readonly disabled');
-                $lstCheckboxes.eq(i).parent().removeClass('disabled');
-            }
-        }
     }
 
     return {
