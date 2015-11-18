@@ -69,7 +69,7 @@ namespace SIAC.Models
                 List<Justificacao> lstRetorno = new List<Justificacao>();
                 foreach (var avalPessoaResultado in this.Avaliacao.AvalPessoaResultado)
                 {
-                    lstRetorno.AddRange(avalPessoaResultado.Justificacao);
+                    lstRetorno.AddRange(avalPessoaResultado.Justificacao.Where(j=>j.AvalAcadReposicao.Count == 0));
                 }
                 return lstRetorno;
             }

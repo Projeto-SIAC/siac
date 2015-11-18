@@ -176,7 +176,6 @@
         <AssociationConnector Association="dbSIACModel.FK__UsuarioOp__Matri__2101D846" />
         <AssociationConnector Association="dbSIACModel.FK__Visitante__MatrV__21F5FC7F" />
         <AssociationConnector Association="dbSIACModel.FK__UsuarioAcessoPag__200DB40D" />
-        <AssociationConnector Association="dbSIACModel.AvalAcadRepoJustificacao" />
         <AssociationConnector Association="dbSIACModel.AvalCertPessoa" />
         <AssociationConnector Association="dbSIACModel.AviPublicoCampus" />
         <AssociationConnector Association="dbSIACModel.AviPublicoCurso" />
