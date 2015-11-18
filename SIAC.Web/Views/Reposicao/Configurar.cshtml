@@ -9,7 +9,7 @@
     @ViewBag.Title 
     <div class="ui right floated informacoes button">Informações</div>
 </h2>
-
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 2 } })
 @Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
 
 <div class="ui basic segment">

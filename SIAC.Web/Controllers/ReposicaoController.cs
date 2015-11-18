@@ -94,7 +94,7 @@ namespace SIAC.Controllers
                 var codDificuldade = acad.Avaliacao.Questao.Max(a => a.CodDificuldade);
 
                 if (qteObjetiva > 0)
-                { 
+                {
                     lstQuestoes.AddRange(Questao.ListarPorDisciplina(acad.CodDisciplina, arrTemaCods, codDificuldade, 1, qteObjetiva));
                 }
                 if (qteDiscursiva > 0)
@@ -122,7 +122,7 @@ namespace SIAC.Controllers
                     aval.Avaliacao.AvaliacaoTema.Add(new AvaliacaoTema
                     {
                         Tema = avaliacaoTema.Tema,
-                        AvalTemaQuestao = avaliacaoTema.AvalTemaQuestao.Select(a=> new AvalTemaQuestao { QuestaoTema = a.QuestaoTema }).ToList()
+                        AvalTemaQuestao = avaliacaoTema.AvalTemaQuestao.Select(a => new AvalTemaQuestao { QuestaoTema = a.QuestaoTema }).ToList()
                     });
                 }
             }
@@ -131,14 +131,14 @@ namespace SIAC.Controllers
             {
                 aval.Justificacao.Add(acad.Justificacoes.First(j => j.CodJustificacao == codJustificacao));
             }
-            
+
             Repositorio.GetInstance().AvalAcadReposicao.Add(aval);
-            Repositorio.GetInstance().SaveChanges();            
-            
+            Repositorio.GetInstance().SaveChanges();
+
             return nova ? Url.Action("Configurar", new { codigo = aval.Avaliacao.CodAvaliacao }) : Url.Action("Agendar", new { codigo = aval.Avaliacao.CodAvaliacao });
         }
 
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2})]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Configurar(string codigo)
         {
             TempData["listaQuestoesAntigas"] = new List<AvalTemaQuestao>();
@@ -300,7 +300,7 @@ namespace SIAC.Controllers
 
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
-        public ActionResult Salvar(string codigoAval)
+        public ActionResult Salvar(string codigo)
         {
             List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData["listaQuestoesAntigas"];
             List<AvalTemaQuestao> novas = (List<AvalTemaQuestao>)TempData["listaQuestoesNovas"];
@@ -317,11 +317,77 @@ namespace SIAC.Controllers
             }
             TempData.Clear();
 
-            return RedirectToAction("Agendar", new { codigo = codigoAval });
+            return RedirectToAction("Agendar", new { codigo = codigo });
         }
 
+        [HttpGet]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Agendar(string codigo)
+        {
+            if (String.IsNullOrEmpty(codigo))
+            {
+                return RedirectToAction("Index");
+            }
+
+            var aval = AvalAcadReposicao.ListarPorCodigoAvaliacao(codigo);
+
+            if (aval.Professor.MatrProfessor == Sessao.UsuarioMatricula)
+            {
+                var model = new ViewModels.AvaliacaoAgendarViewModel();
+
+                model.Avaliacao = aval.Avaliacao;
+                model.Salas = Sala.ListarOrdenadamente();
+
+                return View(model);
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult Agendar(string codigo, FormCollection form)
+        {
+            string strCodSala = form["ddlSala"];
+            string strData = form["txtData"];
+            string strHoraInicio = form["txtHoraInicio"];
+            string strHoraTermino = form["txtHoraTermino"];
+            if (!StringExt.IsNullOrWhiteSpace(strCodSala, strData, strHoraInicio, strHoraTermino))
+            {
+                var aval = AvalAcadReposicao.ListarPorCodigoAvaliacao(codigo);
+
+                if (aval.Professor.MatrProfessor == Sessao.UsuarioMatricula)
+                {
+                    // Sala
+                    int codSala;
+                    int.TryParse(strCodSala, out codSala);
+                    Sala sala = Sala.ListarPorCodigo(codSala);
+                    if (sala != null)
+                    {
+                        aval.Sala = sala;
+                    }
+
+                    // Data de Aplicacao
+                    DateTime dtAplicacao = DateTime.Parse(strData + " " + strHoraInicio);
+                    DateTime dtAplicacaoTermino = DateTime.Parse(strData + " " + strHoraTermino);
+
+                    if (dtAplicacao.IsFuture() && dtAplicacaoTermino.IsFuture() && dtAplicacaoTermino > dtAplicacao)
+                    {
+                        aval.Avaliacao.DtAplicacao = dtAplicacao;
+                        aval.Avaliacao.Duracao = Convert.ToInt32((dtAplicacaoTermino - aval.Avaliacao.DtAplicacao.Value).TotalMinutes);
+                    }
+
+                    aval.Avaliacao.FlagLiberada = false;
+
+                    Repositorio.GetInstance().SaveChanges();
+                }
+            }
+
+            return RedirectToAction("Agendada", new { codigo = codigo });
+        }
+
+        [HttpGet]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult Agendada(string codigo)
         {
             return null;
         }

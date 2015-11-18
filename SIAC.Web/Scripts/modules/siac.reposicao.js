@@ -297,3 +297,114 @@ siac.Reposicao.Configurar = (function () {
         iniciar: iniciar
     }
 })();
+
+siac.Reposicao.Agendar = (function () {
+    function iniciar() {
+        $('.ui.informacoes.modal')
+            .modal()
+        ;
+
+        $('.ui.dropdown')
+            .dropdown()
+        ;
+
+        $('.cancelar.button').popup({ on: 'click' });
+
+        $('.ui.confirmar.modal')
+            .modal({
+                onApprove: function () {
+                    $('form').addClass('loading').submit();
+                }
+            })
+        ;
+
+        $('.informacoes.button').click(function () {
+            $('.ui.informacoes.modal')
+                .modal('show')
+            ;
+        });
+
+        $('.confirmar.button').click(function () {
+            confirmar();
+            return false;
+        });
+    }
+    function validar() {
+        retorno = true;
+
+        lstErro = $('form .error.message .list');
+        lstErro.html('');
+        $('form').removeClass('error');
+        
+        if (!$('#txtData').val()) {
+            lstErro.append('<li>Especifique a data de aplicação</li>');
+            retorno = false;
+        }
+
+        if (!$('#txtHoraInicio').val()) {
+            lstErro.append('<li>Especifique a hora de ínicio</li>');
+            retorno = false;
+        }
+
+        if ($('#txtData').val() && $('#txtHoraInicio').val()) {
+            strDate = $('#txtData').val() + ' ' + $('#txtHoraInicio').val();
+            if (!siac.Utilitario.dataEFuturo(strDate)) {
+                lstErro.append('<li>Especifique uma data de aplicação futura</li>');
+                retorno = false;
+            }
+        }
+
+        if (!$('#txtHoraTermino').val()) {
+            lstErro.append('<li>Especifique a hora de término</li>');
+            retorno = false;
+        }
+
+        if ($('#txtData').val() && $('#txtHoraInicio').val() && $('#txtHoraTermino').val()) {
+            strDateA = $('#txtData').val() + ' ' + $('#txtHoraInicio').val();
+            strDateB = $('#txtData').val() + ' ' + $('#txtHoraTermino').val();
+            if (siac.Utilitario.compararData(strDateA, strDateB) >= 0) {
+                lstErro.append('<li>Especifique uma hora de término maior que a hora de início</li>');
+                retorno = false;
+            }
+        }
+
+        if (!$('#ddlSala').val()) {
+            lstErro.append('<li>Selecione uma sala</li>');
+            retorno = false;
+        }
+
+        return retorno;
+    }
+
+    function confirmar() {
+        $form = $('form');
+        if (validar()) {
+            $div = $('<div class="ui form"></div>');
+            $div.append($form.html());
+            lstInput = $div.find(':input');
+            $div.find('.button').remove();
+            $div.find('#txtData').attr('value', $form.find('#txtData').val());
+            $div.find('#txtHoraInicio').attr('value', $form.find('#txtHoraInicio').val());
+            $div.find('#txtHoraTermino').attr('value', $form.find('#txtHoraTermino').val());
+            for (var i = 0; i < lstInput.length; i++) {
+                lstInput.eq(i)
+                    .removeAttr('id')
+                    .removeAttr('name')
+                    .removeAttr('required')
+                    .prop('readonly', true)
+                ;
+            }
+            $('.ui.confirmar.modal .content').html('').append($div);
+            $('.ui.confirmar.modal')
+                .modal('show')
+            ;
+        }
+        else {
+            $form.addClass('error');
+        }
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();

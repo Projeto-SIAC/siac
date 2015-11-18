@@ -139,6 +139,9 @@
         else if (/\/dashboard\/avaliacao\/reposicao\/configurar\/repo[0-9]+$/.test(pathname)) {
             siac.Reposicao.Configurar.iniciar();
         }
+        else if (/\/dashboard\/avaliacao\/reposicao\/agendar\/repo[0-9]+$/.test(pathname)) {
+            siac.Reposicao.Agendar.iniciar();
+        }
     }
 
     var HTML_MENSAGEM_TEMPLATE = '<div class="ui small mensagem modal">' +

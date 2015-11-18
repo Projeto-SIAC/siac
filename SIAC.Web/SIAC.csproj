@@ -665,6 +665,7 @@
     <Content Include="Views\Reposicao\Partials\_PassoAPasso.cshtml" />
     <Content Include="Views\Reposicao\Configurar.cshtml" />
     <Content Include="Views\Reposicao\Partials\_Questao.cshtml" />
+    <Content Include="Views\Reposicao\Agendar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
