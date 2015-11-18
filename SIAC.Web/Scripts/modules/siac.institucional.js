@@ -212,16 +212,16 @@ siac.Institucional.Gerar = (function () {
                                                         '<div class="accordion">'+
                                                             '<div class="title">'+
                                                                 '<i class="dropdown icon"></i>'+
-                                                                    '{QuestãoIndice}'+
+                                                                    'Questão '+ _qteQuestoes+
                                                             '</div>'+
                                                             '<div class="content">'+
                                                                 '<div class="ui segment">'+
                                                                     '<h3 class="ui dividing header" data-content="' + observacao + '">'+enunciado+'</h3>'+
-                                                                    //<div class="ui very relaxed list">\
+                                                                    '<div class="ui very relaxed list">'+
                                                                     //    <div class="item">\
                                                                     //        <b>1)</b> ALternativa\
                                                                     //    </div>\
-                                                                    //</div>\
+                                                                    '</div>'+
                                                                 '</div>'+
                                                             '</div>'+
                                                         '</div>'+
@@ -230,6 +230,22 @@ siac.Institucional.Gerar = (function () {
                                             '</div>'+
                                         '</div>' +
                                     '</div>';
+        var $template = $(TEMPLATE_QUESTAO_HTML);
+
+        if (tipo == 1) {
+            var list = $('.ui.alternativas.accordion .title');
+            var listContent = $('.ui.alternativas.accordion .content.segment');
+            for (var i = 0; i < list.length; i++) {
+                var j = list.eq(i).find('#txtAlternativaIndex').val();
+
+                var enunciado = listContent.eq(i).find('textarea[name="txtAlternativaEnunciado' + j + '"]').val();
+                var alternativa = '<div class="item"><b>' + j + ')</b> ' + enunciado + '</div>';
+                $template.find('.very.relaxed.list').append(alternativa);
+            }   
+        }
+        else if (tipo == 2) {
+            $template.find('.very.relaxed.list').remove();
+        }
 
         //Obtendo possíveis accordions questões por módulos
         var $questoesModulo = $('[data-modulo=' + moduloCod + ']');
@@ -237,7 +253,7 @@ siac.Institucional.Gerar = (function () {
         var $questoesIndicador = $('[data-indicador=' + indicadorCod + ']');
 
         var $local = $('.tab.questoes .fluid.styled.accordion');
-        var $questao = $(TEMPLATE_QUESTAO_HTML);
+        var $questao = $template;
         var $localNovo = $questoesModulo;
         var questaoIndice = 1;
 
@@ -251,24 +267,17 @@ siac.Institucional.Gerar = (function () {
                 questaoIndice = $local.length + 1;
                 if ($localNovo.length > 0) {
                     $local = $localNovo;
-                    $questao = $(TEMPLATE_QUESTAO_HTML).find('[data-indicador=' + indicadorCod + ']').find('.accordion').html();
-                    //$local.children('.accordion').append($questao);
-                    //$local = $localNovo.children('.accordion');
+                    $questao = $template.find('[data-indicador=' + indicadorCod + ']').find('.accordion').html();
                 } else {
-                    $questao = $(TEMPLATE_QUESTAO_HTML).find('[data-categoria=' + categoriaCod + ']').find('.accordion').html();
-                    //$local.children('.accordion').append($questao);
+                    $questao = $template.find('[data-categoria=' + categoriaCod + ']').find('.accordion').html();
                 }
             }
             else {
-                $questao = $(TEMPLATE_QUESTAO_HTML).find('.accordion').html();
-                //$local.children('.accordion').append($questao);
+                $questao = $template.find('.accordion').html();
             }
-            //$questao.html($questao.html().substituirTodos('{QuestaoIndice}', 'Questão ' + questaoIndice));
             $local.children('.accordion').append($questao);
         }
         else {
-            //console.log($questao.prop('outerHTML'),$questao.html().substituirTodos('{QuestãoIndice}', '1'));
-            //$questao.html($questao.html().substituirTodos('{QuestãoIndice}', '1'));
             $local.append($questao);
         }
         $('h3').popup();
