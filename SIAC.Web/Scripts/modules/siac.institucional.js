@@ -44,8 +44,15 @@ siac.Institucional.Gerar = (function () {
             }
         });
 
+        $('#ddlModulo').dropdown('set selected', 1);
+        $('#ddlCategoria').dropdown('set selected', 1);
+        $('#ddlIndicador').dropdown('set selected', 1);
+        $('#ddlTipo').dropdown('set selected', 2);
+        $('#txtEnunciado').val('Ainda assim, existem dúvidas a respeito de como a mobilidade dos capitais internacionais cumpre um papel essencial na formulação dos modos de operação convencionais.');
+
+
         //Definindo o Tipo Default como 1 ( Objetiva )
-        $('#ddlTipo').dropdown('set selected', 1);
+        //$('#ddlTipo').dropdown('set selected', 1);
 
         //Adicionando Alternativas por default
         for (var i = 0; i < 5; i++) {
@@ -68,28 +75,28 @@ siac.Institucional.Gerar = (function () {
 
     function adicionarAlternativa() {
         var i = $('.ui.alternativas.accordion .title').length + 1;
-        $('.ui.alternativas.accordion').append('\
-                        <div class="title">\
-                            <input id="txtAlternativaIndex" value="'+ i + '" hidden />\
-                            <i class="dropdown icon"></i>Alternativa ' + i + '\
-                        </div>\
-                        <div class="content ui segment">\
-                            <div class="field required">\
-                                <label for="txtAlternativaEnunciado' + i + '">Enunciado</label>\
-                                <textarea id="txtAlternativaEnunciado' + i + '" name="txtAlternativaEnunciado' + i + '" rows="2" placeholder="Enunciado..."></textarea>\
-                            </div>\
-                            <div class="field">\
-                                <div class="ui button">\
-                                    Remover\
-                                </div>\
-                                <div class="ui special popup">\
-                                    <div class="header">Tem certeza?</div>\
-                                    <div class="content"><p>Essa ação não poderá ser desfeita.</p>\
-                                    <div class="ui right aligned remover button tiny">Sim, remover</div>\
-                                </div>\
-                            </div>\
-                        </div>\
-                    </div>');
+        $('.ui.alternativas.accordion').append(
+                        '<div class="title">'+
+                            '<input id="txtAlternativaIndex" value="'+ i + '" hidden />'+
+                            '<i class="dropdown icon"></i>Alternativa ' + i +
+                        '</div>'+
+                        '<div class="content ui segment">'+
+                            '<div class="field required">'+
+                                '<label for="txtAlternativaEnunciado' + i + '">Enunciado</label>'+
+                                '<textarea id="txtAlternativaEnunciado' + i + '" name="txtAlternativaEnunciado' + i + '" rows="2" placeholder="Enunciado..."></textarea>'+
+                            '</div>'+
+                            '<div class="field">'+
+                                '<div class="ui button">'+
+                                    'Remover'+
+                                '</div>'+
+                                '<div class="ui special popup">'+
+                                    '<div class="header">Tem certeza?</div>'+
+                                    '<div class="content"><p>Essa ação não poderá ser desfeita.</p>'+
+                                    '<div class="ui right aligned remover button tiny">Sim, remover</div>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>' +
+                    '</div>');
         $('#txtQtdAlternativas').val(i);
         $('.ui.alternativas.accordion .remover.button').off().click(function () {
             removerAlternativa(this);
@@ -226,13 +233,21 @@ siac.Institucional.Gerar = (function () {
                                                                     'Questão '+ _qteQuestoes+
                                                             '</div>'+
                                                             '<div class="content">'+
-                                                                '<div class="ui segment">'+
-                                                                    '<h3 class="ui dividing header" data-content="' + observacao + '">'+enunciado+'</h3>'+
-                                                                    '<div class="ui very relaxed list">'+
+                                                                '<div class="ui segment">' +
+                                                                    '<div class="ui right floated remover button">Remover</div>' +
+                                                                    '<div class="ui popup">' +
+                                                                        '<div class="header">Tem certeza?</div>' +
+                                                                        '<div style="padding:0!important;" class="content">'+
+                                                                            '<p>Essa ação não poderá ser desfeita.</p>' +
+                                                                            '<div class="ui right aligned remover button tiny">Sim, remover</div>' +
+                                                                        '</div>' +
+                                                                    '</div>' +
+                                                                    '<h3 class="ui dividing header" data-content="' + observacao + '">' + enunciado + '</h3>' +
+                                                                    '<div class="ui very relaxed list">' +
                                                                     //    <div class="item">\
                                                                     //        <b>1)</b> ALternativa\
                                                                     //    </div>\
-                                                                    '</div>'+
+                                                                    '</div>' +
                                                                 '</div>'+
                                                             '</div>'+
                                                         '</div>'+
@@ -298,7 +313,28 @@ siac.Institucional.Gerar = (function () {
             $local.append($questao);
         }
         $('h3').popup();
+        $('.floated.remover.button').popup({ on: 'click', inline: true });
+        $('.tab.questoes .remover.button.tiny').click(function () {
+            removerQuestao(this);
+        });
+        $('.ui.accordion').accordion({ animateChildren: false });
         siac.aviso('Questão adicionada com sucesso!', 'green');
+    }
+
+    function removerQuestao(button) {
+        var content = $(button).parent().parent().parent().parent();
+        var title = $(content).prev();
+        title.remove();
+        content.remove();
+
+        if(content.parent().find('.title').length <= 0){
+            var moduloContent = content.parents('[data-modulo]');
+            var moduloTitle = moduloContent.prev();
+            moduloContent.remove();
+            moduloTitle.remove;
+            alert('oi');
+        }
+        siac.aviso('Questão removida com sucesso!', 'red');
     }
 
     return {
