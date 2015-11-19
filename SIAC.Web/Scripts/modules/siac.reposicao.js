@@ -6,7 +6,7 @@ siac.Reposicao.Justificar = (function () {
     function iniciar() {
         $('.ui.dropdown').dropdown();
         $('.ui.checkbox').checkbox();
-        $('.ui.accordion').accordion();
+        $('.ui.accordion').accordion({ animateChildren: false });
         $('.ui.cancelar.button').popup({ inline: true, on: "click" });
 
         $('.ui.informacoes.button').click(function () {
@@ -307,6 +307,8 @@ siac.Reposicao.Agendar = (function () {
         $('.ui.dropdown')
             .dropdown()
         ;
+        
+        $('.ui.accordion').accordion({ animateChildren: false });
 
         $('.cancelar.button').popup({ on: 'click' });
 

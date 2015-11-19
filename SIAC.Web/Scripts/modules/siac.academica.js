@@ -120,9 +120,7 @@ siac.Academica.Detalhe = (function () {
     var _codAvaliacao, _controleAjax;
 
     function iniciar() {
-        $elemento = $('[data-avaliacao]');
-        _codAvaliacao = $elemento.attr('data-avaliacao');
-        $elemento.removeAttr('data-avaliacao');
+        _codAvaliacao = window.location.pathname.match(/acad[0-9]+$/)[0];
 
         $('.ui.accordion').accordion({
             animateChildren: false,
@@ -385,9 +383,7 @@ siac.Academica.Configurar = (function () {
     var _codAvaliacao;
 
     function iniciar() {
-        $elemento = $('[data-avaliacao]');
-        _codAvaliacao = $elemento.attr('data-avaliacao');
-        $elemento.removeAttr('data-avaliacao');
+        _codAvaliacao = window.location.pathname.match(/acad[0-9]+$/)[0];
 
         $('.ui.informacoes.modal').modal();
 
@@ -706,10 +702,11 @@ siac.Academica.Realizar = (function () {
     function iniciar() {
         var $elemento;
 
-        $elemento = $('[data-avaliacao][data-usuario]');
-        _codAvaliacao = $elemento.attr('data-avaliacao');
+        $elemento = $('[data-usuario]');
         _matriculaUsuario = $elemento.attr('data-usuario');
-        $elemento.removeAttr('data-avaliacao data-usuario');
+        $elemento.removeAttr('data-usuario');
+
+        _codAvaliacao = window.location.pathname.match(/acad[0-9]+$/)[0];
 
         $elemento = $('[data-termino]');
         _dtTermino = new Date();
@@ -1126,10 +1123,11 @@ siac.Academica.Acompanhar = (function () {
     var _codAvaliacao, _matriculaUsuario;
 
     function iniciar() {
-        $elemento = $('[data-avaliacao][data-usuario]');
-        _codAvaliacao = $elemento.attr('data-avaliacao');
+        $elemento = $('[data-usuario]');
         _matriculaUsuario = $elemento.attr('data-usuario');
-        $elemento.removeAttr('data-avaliacao data-usuario');
+        $elemento.removeAttr('data-usuario');
+
+        _codAvaliacao = window.location.pathname.match(/acad[0-9]+$/)[0];
 
         conectarHub(_codAvaliacao, _matriculaUsuario);
 
@@ -1515,9 +1513,7 @@ siac.Academica.Corrigir = (function () {
     var _codAvaliacao;
 
     function iniciar() {
-        var $elemento = $('[data-avaliacao]');
-        _codAvaliacao = $elemento.attr('data-avaliacao');
-        $elemento.removeAttr('data-avaliacao');
+        _codAvaliacao = window.location.pathname.match(/acad[0-9]+$/)[0];
 
         var $elementoJson = $('code.questoes');
         _dicQuestoes = JSON.parse($elementoJson.html());

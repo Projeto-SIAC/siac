@@ -172,11 +172,8 @@ siac.Certificacao.Configurar = (function () {
 
     function iniciar() {
         //Obtendo Dados da Página
-        $elemento = $('[data-avaliacao]');
-        if (!_codAvaliacao && $elemento) {
-            _codAvaliacao = $elemento.data('avaliacao');
-            $elemento.removeAttr("data-avaliacao");
-        }
+        _codAvaliacao = window.location.pathname.match(/cert[0-9]+$/)[0];
+
         _qteMaxObjetiva = $('.informacoes .objetiva.label .detail').html();
         _qteMaxDiscursiva = $('.informacoes .discursiva.label .detail').html();
 
@@ -1064,15 +1061,16 @@ siac.Certificacao.Realizar = (function () {
     function iniciar() {
         var $elemento;
 
-        $elemento = $('[data-avaliacao][data-usuario]');
-        _codAvaliacao = $elemento.attr('data-avaliacao');
+        $elemento = $('[data-usuario]');
         _matriculaUsuario = $elemento.attr('data-usuario');
-        $elemento.removeAttr('data-avaliacao data-usuario');
+        $elemento.removeAttr('data-usuario');
 
         $elemento = $('[data-termino]');
         _dtTermino = new Date();
         _dtTermino.setTime(Date.parse($elemento.attr('data-termino')));
         $elemento.removeAttr('data-termino');
+
+        _codAvaliacao = window.location.pathname.match(/cert[0-9]+$/)[0];
 
         window.onbeforeunload = function () {
             return 'Você está realizando uma avaliação.';
@@ -1477,10 +1475,10 @@ siac.Certificacao.Acompanhar = (function () {
     var _codAvaliacao, _matriculaUsuario;
 
     function iniciar() {
-        $elemento = $('[data-avaliacao][data-usuario]');
-        _codAvaliacao = $elemento.attr('data-avaliacao');
+        $elemento = $('[data-usuario]');
+        _codAvaliacao = window.location.pathname.match(/cert[0-9]+$/)[0];
         _matriculaUsuario = $elemento.attr('data-usuario');
-        $elemento.removeAttr('data-avaliacao data-usuario');
+        $elemento.removeAttr('data-usuario');
 
         conectarHub(_codAvaliacao, _matriculaUsuario);
 
@@ -1753,9 +1751,7 @@ siac.Certificacao.Corrigir = (function () {
     var _codAvaliacao;
 
     function iniciar() {
-        var $elemento = $('[data-avaliacao]');
-        _codAvaliacao = $elemento.attr('data-avaliacao');
-        $elemento.removeAttr('data-avaliacao');
+        _codAvaliacao = window.location.pathname.match(/cert[0-9]+$/)[0];
 
         var $elementoJson = $('code.questoes');
         _dicQuestoes = JSON.parse($elementoJson.html());
@@ -2043,9 +2039,8 @@ siac.Certificacao.Detalhe = (function () {
     var _codAvaliacao, _controleAjax;
 
     function iniciar() {
-        $elemento = $('[data-avaliacao]');
-        _codAvaliacao = $elemento.attr('data-avaliacao');
-        $elemento.removeAttr('data-avaliacao');
+
+        _codAvaliacao = window.location.pathname.match(/cert[0-9]+$/)[0];
 
         $('.ui.accordion').accordion({
             animateChildren: false,

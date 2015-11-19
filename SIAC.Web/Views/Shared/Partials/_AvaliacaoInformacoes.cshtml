@@ -1,84 +1,339 @@
 ﻿@model SIAC.Models.Avaliacao
-@{
-    SIAC.Models.Disciplina disciplina = new SIAC.Models.Disciplina();
-    if(Model.CodTipoAvaliacao == 2)
-    {
-        disciplina = Model.AvalAcademica.Disciplina;
-    }
-    else if (Model.CodTipoAvaliacao == 3)
-    {
-        disciplina = Model.AvalCertificacao.Disciplina;
-    }
-}
 <div class="ui informacoes modal">
     <i class="icon close"></i>
     <div class="header">Informações sobre a avaliação</div>
     <div class="content">
-        <table class="ui striped table">
-            <thead>
-                <tr>
-                    <th>Disciplina</th>
-                    <th>Tema(s)</th>
-                    <th>Quantidade</th>
-                    <th>Dificuldade</th>
-                </tr>
-            </thead>
-            @if (Model.CodTipoAvaliacao == 1)
-            {
-                <tbody>
-                    @foreach (var disc in Model.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
-                    {
-                        <tr>
-                            <td>
-                                @* disciplina *@
-                                <b>@disc.Descricao</b>
-                            </td>
-                            <td class="ui labels">
-                                @* temas *@
-                                @foreach (var avalTema in Model.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
-                                {
-                                    <div class="ui tag label">@avalTema.Tema.Descricao</div>
-                                }
-                            </td>
-                            <td class="ui labels">
-                                @* qte de questões *@
-                                <div class="ui objetiva label">Objetiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
-                                <div class="ui discursiva label">Discursiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
-                            </td>
-                            <td>
-                                @* dificuldade *@
-                                @Model.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            }
-            else { 
-            <tbody>
-                <tr>
-                    <td>
-                        @* Disciplina *@
-                        <b>@disciplina.Descricao</b>                       
-                    </td>
-                    <td class="ui labels">
-                        @* Temas *@
-                        @foreach (var avalTema in Model.AvaliacaoTema)
+        @if (Model.FlagAgendada || Model.FlagRealizada)
+        {
+            <div class="ui fluid styled accordion">
+                <div class="active title"><i class="dropdown icon"></i>Detalhes</div>
+                <div class="active content">
+
+                    <table class="ui striped table">
+                        <thead>
+                            <tr>
+                                <th>Disciplina</th>
+                                <th>Tema(s)</th>
+                                <th>Quantidade</th>
+                                <th>Dificuldade</th>
+                            </tr>
+                        </thead>
+                        @switch (Model.CodTipoAvaliacao)
                         {
-                            <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                            case 1:
+                                <tbody>
+                                    @foreach (var disc in Model.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+                                    {
+                                        <tr>
+                                            <td>
+                                                @* disciplina *@
+                                                <b>@disc.Descricao</b>
+                                            </td>
+                                            <td class="ui labels">
+                                                @* temas *@
+                                                @foreach (var avalTema in Model.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                                                {
+                                                    <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                                                }
+                                            </td>
+                                            <td class="ui labels">
+                                                @* qte de questões *@
+                                                <div class="ui objetiva label">Objetiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
+                                                <div class="ui discursiva label">Discursiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
+                                            </td>
+                                            <td>
+                                                @* dificuldade *@
+                                                @Model.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                break;
+                            case 2:
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            @* Disciplina *@
+                                            <b>@Model.AvalAcademica.Disciplina.Descricao</b>
+                                        </td>
+                                        <td class="ui labels">
+                                            @* Temas *@
+                                            @foreach (var avalTema in Model.AvaliacaoTema)
+                                            {
+                                                <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                                            }
+                                        </td>
+                                        <td class="ui labels">
+                                            @* Qte de Questões *@
+                                            <div class="ui objetiva label">Objetiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.AvalAcademica.Disciplina.CodDisciplina, 1)</div></div>
+                                            <div class="ui discursiva label">Discursiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.AvalAcademica.Disciplina.CodDisciplina, 2)</div></div>
+                                        </td>
+                                        <td>
+                                            @* Dificuldade *@
+                                            @Model.AvaliacaoTema.ToList().MaxDificuldade(Model.AvalAcademica.Disciplina.CodDisciplina)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                break;
+                            case 3:
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            @* Disciplina *@
+                                            <b>@Model.AvalCertificacao.Disciplina.Descricao</b>
+                                        </td>
+                                        <td class="ui labels">
+                                            @* Temas *@
+                                            @foreach (var avalTema in Model.AvaliacaoTema)
+                                            {
+                                                <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                                            }
+                                        </td>
+                                        <td class="ui labels">
+                                            @* Qte de Questões *@
+                                            <div class="ui objetiva label">Objetiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.AvalCertificacao.Disciplina.CodDisciplina, 1)</div></div>
+                                            <div class="ui discursiva label">Discursiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.AvalCertificacao.Disciplina.CodDisciplina, 2)</div></div>
+                                        </td>
+                                        <td>
+                                            @* Dificuldade *@
+                                            @Model.AvaliacaoTema.ToList().MaxDificuldade(Model.AvalCertificacao.Disciplina.CodDisciplina)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                break;
+                            case 5:
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            @* Disciplina *@
+                                            <b>@Model.AvalAcadReposicao.Disciplina.Descricao</b>
+                                        </td>
+                                        <td class="ui labels">
+                                            @* Temas *@
+                                            @foreach (var avalTema in Model.AvaliacaoTema)
+                                            {
+                                                <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                                            }
+                                        </td>
+                                        <td class="ui labels">
+                                            @* Qte de Questões *@
+                                            <div class="ui objetiva label">Objetiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.AvalAcadReposicao.Disciplina.CodDisciplina, 1)</div></div>
+                                            <div class="ui discursiva label">Discursiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.AvalAcadReposicao.Disciplina.CodDisciplina, 2)</div></div>
+                                        </td>
+                                        <td>
+                                            @* Dificuldade *@
+                                            @Model.AvaliacaoTema.ToList().MaxDificuldade(Model.AvalAcadReposicao.Disciplina.CodDisciplina)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                break;
+                            default:
+                                break;
                         }
-                    </td>
-                    <td class="ui labels">
-                        @* Qte de Questões *@
-                        <div class="ui objetiva label">Objetiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(disciplina.CodDisciplina, 1)</div></div>
-                        <div class="ui discursiva label">Discursiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(disciplina.CodDisciplina, 2)</div></div>
-                    </td>
-                    <td>
-                        @* Dificuldade *@
-                        @Model.AvaliacaoTema.ToList().MaxDificuldade(disciplina.CodDisciplina)
-                    </td>
-                </tr>
-            </tbody>
-            }
-        </table>
+                    </table>
+                </div>
+                <div class="title"><i class="dropdown icon"></i>Agendamento</div>
+                <div class="content">
+                    <table class="ui striped table">
+                        <thead>
+                            <tr>
+                                @switch (Model.CodTipoAvaliacao)
+                            {
+                                case 2:
+                            <th>Turma</th>
+                                    break;
+                                case 3:
+                            <th>Quant. de Avaliados</th>
+                                    break;
+                                case 5:
+                            <th>Quant. de Alunos</th>
+                                    break;
+                                default:
+                                    break;
+                            }
+                                <th>Data</th>
+                                <th>Horário</th>
+                                <th>Sala</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                @switch (Model.CodTipoAvaliacao)
+                                {
+                                    case 2:
+                            <td>
+                                @* Turma *@
+                                @($"{Model.AvalAcademica.Turma.Curso.Descricao} ({Model.AvalAcademica.Turma.CodTurma})")
+                            </td>
+                                    break;
+                                case 3:
+                            <td>
+                                @Model.AvalCertificacao.PessoaFisica.Count
+                            </td>
+                                    break;
+                                case 5:
+                            <td>
+                                @Model.AvalAcadReposicao.Justificacao.Count
+                            </td>
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                                <td>
+                                    @* Data *@
+                                    @Model.DtAplicacao.Value.ToString("ddd, dd/MM/yyyy")
+                                </td>
+                                <td>
+                                    @* Horário *@
+                                    Das @Model.DtAplicacao.Value.ToShortTimeString() até @Model.DtAplicacao.Value.AddMinutes(Model.Duracao.Value).ToShortTimeString()
+                                </td>
+                                <td>
+                                    @switch (Model.CodTipoAvaliacao)
+                                {
+                                    case 2:
+                                @Model.AvalAcademica.Sala.Descricao
+                                        break;
+                                    case 3:
+                                @Model.AvalCertificacao.Sala.Descricao
+                                        break;
+                                    case 5:
+                                @Model.AvalAcadReposicao.Sala.Descricao
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        else
+        {
+            <table class="ui striped table">
+                <thead>
+                    <tr>
+                        <th>Disciplina</th>
+                        <th>Tema(s)</th>
+                        <th>Quantidade</th>
+                        <th>Dificuldade</th>
+                    </tr>
+                </thead>
+                @switch (Model.CodTipoAvaliacao)
+                {
+                    case 1:
+                        <tbody>
+                            @foreach (var disc in Model.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+                            {
+                                <tr>
+                                    <td>
+                                        @* disciplina *@
+                                        <b>@disc.Descricao</b>
+                                    </td>
+                                    <td class="ui labels">
+                                        @* temas *@
+                                        @foreach (var avalTema in Model.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                                        {
+                                            <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                                        }
+                                    </td>
+                                    <td class="ui labels">
+                                        @* qte de questões *@
+                                        <div class="ui objetiva label">Objetiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
+                                        <div class="ui discursiva label">Discursiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
+                                    </td>
+                                    <td>
+                                        @* dificuldade *@
+                                        @Model.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        break;
+                    case 2:
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @* Disciplina *@
+                                    <b>@Model.AvalAcademica.Disciplina.Descricao</b>
+                                </td>
+                                <td class="ui labels">
+                                    @* Temas *@
+                                    @foreach (var avalTema in Model.AvaliacaoTema)
+                                    {
+                                        <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                                    }
+                                </td>
+                                <td class="ui labels">
+                                    @* Qte de Questões *@
+                                    <div class="ui objetiva label">Objetiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.AvalAcademica.Disciplina.CodDisciplina, 1)</div></div>
+                                    <div class="ui discursiva label">Discursiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.AvalAcademica.Disciplina.CodDisciplina, 2)</div></div>
+                                </td>
+                                <td>
+                                    @* Dificuldade *@
+                                    @Model.AvaliacaoTema.ToList().MaxDificuldade(Model.AvalAcademica.Disciplina.CodDisciplina)
+                                </td>
+                            </tr>
+                        </tbody>
+                        break;
+                    case 3:
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @* Disciplina *@
+                                    <b>@Model.AvalCertificacao.Disciplina.Descricao</b>
+                                </td>
+                                <td class="ui labels">
+                                    @* Temas *@
+                                    @foreach (var avalTema in Model.AvaliacaoTema)
+                                    {
+                                        <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                                    }
+                                </td>
+                                <td class="ui labels">
+                                    @* Qte de Questões *@
+                                    <div class="ui objetiva label">Objetiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.AvalCertificacao.Disciplina.CodDisciplina, 1)</div></div>
+                                    <div class="ui discursiva label">Discursiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.AvalCertificacao.Disciplina.CodDisciplina, 2)</div></div>
+                                </td>
+                                <td>
+                                    @* Dificuldade *@
+                                    @Model.AvaliacaoTema.ToList().MaxDificuldade(Model.AvalCertificacao.Disciplina.CodDisciplina)
+                                </td>
+                            </tr>
+                        </tbody>
+                        break;
+                    case 5:
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @* Disciplina *@
+                                    <b>@Model.AvalAcadReposicao.Disciplina.Descricao</b>
+                                </td>
+                                <td class="ui labels">
+                                    @* Temas *@
+                                    @foreach (var avalTema in Model.AvaliacaoTema)
+                                    {
+                                        <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                                    }
+                                </td>
+                                <td class="ui labels">
+                                    @* Qte de Questões *@
+                                    <div class="ui objetiva label">Objetiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.AvalAcadReposicao.Disciplina.CodDisciplina, 1)</div></div>
+                                    <div class="ui discursiva label">Discursiva<div class="detail">@Model.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.AvalAcadReposicao.Disciplina.CodDisciplina, 2)</div></div>
+                                </td>
+                                <td>
+                                    @* Dificuldade *@
+                                    @Model.AvaliacaoTema.ToList().MaxDificuldade(Model.AvalAcadReposicao.Disciplina.CodDisciplina)
+                                </td>
+                            </tr>
+                        </tbody>
+                        break;
+                    default:
+                        break;
+                }
+            </table>
+        }
     </div>
 </div>
