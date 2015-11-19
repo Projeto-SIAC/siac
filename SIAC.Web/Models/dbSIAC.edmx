@@ -465,6 +465,7 @@
           <Property Name="CodAviModulo" Type="int" Nullable="false" />
           <Property Name="CodOrdem" Type="int" Nullable="false" />
           <Property Name="Enunciado" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="FlagAlternativaDiscursiva" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="AviQuestaoPessoaResposta">
           <Key>
@@ -4319,6 +4320,7 @@
           <Property Name="CodOrdem" Type="Int32" Nullable="false" />
           <Property Name="Enunciado" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="AviQuestao" Relationship="dbSIACModel.FK__AviQuestaoAltern__5D4BCC77" FromRole="AviQuestaoAlternativa" ToRole="AviQuestao" />
+          <Property Name="FlagAlternativaDiscursiva" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="AviQuestaoPessoaResposta">
           <Key>
@@ -6708,6 +6710,7 @@
           <EntitySetMapping Name="AviQuestaoAlternativa">
             <EntityTypeMapping TypeName="dbSIACModel.AviQuestaoAlternativa">
               <MappingFragment StoreEntitySet="AviQuestaoAlternativa">
+                <ScalarProperty Name="FlagAlternativaDiscursiva" ColumnName="FlagAlternativaDiscursiva" />
                 <ScalarProperty Name="Enunciado" ColumnName="Enunciado" />
                 <ScalarProperty Name="CodOrdem" ColumnName="CodOrdem" />
                 <ScalarProperty Name="CodAviModulo" ColumnName="CodAviModulo" />

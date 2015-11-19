@@ -24,6 +24,7 @@ namespace SIAC.Models
         public int CodAviModulo { get; set; }
         public int CodOrdem { get; set; }
         public string Enunciado { get; set; }
+        public bool FlagAlternativaDiscursiva { get; set; }
     
         public virtual AviQuestao AviQuestao { get; set; }
     }
