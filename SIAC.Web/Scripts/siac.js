@@ -34,7 +34,7 @@
         if (pathname == '/historico/questao') {
             siac.Questao.Index.iniciar();
         }
-        else if (pathname == '/dashboard/questao/cadastrar') {
+        else if (/\/dashboard\/questao\/cadastrar/.test(pathname)) {
             siac.Questao.Cadastrar.iniciar();
         }
         else if (pathname == '/historico/questao/gerar') {
@@ -312,9 +312,39 @@ siac.Anexo = siac.Anexo || (function () {
             var source = $this.find('img').attr('src');
             var legenda = $this.find('.header').text();
             $description = $this.find('.description');
-            var fonte = $description.attr("data-fonte") ? $description.data('fonte') : $description.text();
+            var fonte = $description.data('fonte') ? $description.data('fonte') : $description.text();
 
             expandirImagem(source, legenda, fonte);
+        });
+        $('.card.anexo.codigo').off().click(function () {
+            var $this = $(this);
+            var codigo = $this.find('code').data('codigo');
+
+            $description = $this.find('.content .description');
+            var observacao = $description.data('observacao') ? $description.data('observacao') : $description.text();
+
+            $description = $this.find('.extra.content .description');
+            var fonte = $description.data('fonte') ? $description.data('fonte') : $description.text();
+
+            expandirCodigo(codigo, observacao, fonte);
+        });
+    }
+
+    function expandirCodigo(codigo, observacao, fonte) {
+        $('.ui.anexo.modal').remove();
+
+        $modal = $('<div></div>').addClass('ui large anexo basic modal');
+
+        $modal.append($('<div class="ui centered header"></div>').text(observacao));
+        $modal.append($('<div class="content"></div>').html($('<code></code>').html(codigo.substituirTodos('\n', '<br/>').substituirTodos('\t', '&nbsp;&nbsp;&nbsp;&nbsp;'))));
+        $modal.append($('<div class="description" style="text-align:center;"></div>').text(fonte));
+
+        $('body').append($modal);
+
+        $modal.modal('show');
+
+        $modal.click(function () {
+            $(this).modal('hide');
         });
     }
 

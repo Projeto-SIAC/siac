@@ -1,9 +1,9 @@
-﻿@using SIAC.Models
-@model QuestaoAnexo
+﻿@model QuestaoAnexo
 <a class="ui anexo imagem card">
     <div class="image">
         <img src="data:image/png;base64,@Convert.ToBase64String(Model.Anexo,0, Model.Anexo.Length)" />
     </div>
+    @if(!StringExt.IsNullOrEmpty(Model.Legenda, Model.Fonte)) {
     <div class="content">
         <div class="header">
             @Model.Legenda
@@ -14,12 +14,6 @@
                 @Model.Fonte.ToShortString(30)
             </div>
         }
-        else
-        {
-            <div class="description">
-                Fonte não informada
-            </div>
-        }
-
     </div>
+    }
 </a>

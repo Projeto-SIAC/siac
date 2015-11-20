@@ -66,17 +66,22 @@ else
     <div class="ui styled fluid accordion">
         <div class="title"><i class="icon dropdown"></i>Anexos</div>
         <div class="content">
-            @foreach (var anexo in Model.QuestaoAnexo)
-            {
-                switch (anexo.CodTipoAnexo)
+            <div class="ui cards">
+                @foreach (var anexo in Model.QuestaoAnexo)
                 {
-                    case 1:
-                        @Html.Partial("_AnexoImagem", anexo)
-                        break;
-                    default:
-                        break;
+                    switch (anexo.CodTipoAnexo)
+                    {
+                        case 1:
+                            @Html.Partial("_AnexoImagem", anexo)
+                            break;
+                        case 2:
+                            @Html.Partial("_AnexoCodigo", anexo)
+                            break;
+                        default:
+                            break;
+                    }
                 }
-            }
+            </div>
         </div>
     </div>
 }

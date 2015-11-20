@@ -8,8 +8,24 @@ namespace SIAC
 {
     public static class Extensoes
     {
+        #region byte[]
+        public static string GetString(this byte[] bytes)
+        {
+            char[] chars = new char[bytes.Length / sizeof(char)];
+            Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
+            return new string(chars);
+        }
+        #endregion
+
         // String
         #region String
+        public static byte[] GetBytes(this string str)
+        {
+            byte[] bytes = new byte[str.Length * sizeof(char)];
+            Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+            return bytes;
+        }       
+
         public static string RemoveSpaces(this string aText)
         {
             aText = aText.Replace("\t", " ");

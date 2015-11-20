@@ -1,0 +1,26 @@
+﻿@model QuestaoAnexo
+<a class="ui anexo codigo card">
+    <div class="content">
+        <div class="header">
+            <code @Html.Raw((Model.Anexo.GetString().Length > 30 ? "data-codigo=\"" + Model.Anexo.GetString() + "\"" : ""))>
+                @Model.Anexo.GetString().ToShortString(50)
+            </code>
+        </div>
+        @if (!String.IsNullOrWhiteSpace(Model.Legenda))
+        {
+            <div class="description" @Html.Raw((Model.Legenda.Length > 30 ? "data-observacao=\"" + Model.Legenda + "\"" : ""))>
+                @Model.Legenda.ToShortString(30)
+            </div>
+        }
+    </div>
+    @if (!String.IsNullOrWhiteSpace(Model.Fonte))
+    {
+        <div class="extra content">
+
+            <div class="description" @Html.Raw((Model.Fonte.Length > 30 ? "data-fonte=\"" + Model.Fonte + "\"" : ""))>
+                @Model.Fonte.ToShortString(30)
+            </div>
+
+        </div>
+    }
+</a>

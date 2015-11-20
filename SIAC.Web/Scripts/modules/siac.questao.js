@@ -189,7 +189,7 @@ siac.Questao.Cadastrar = (function () {
         $('.tabular.menu .item').tab({
             history: true,
             historyType: 'state',
-            path: window.location.pathname
+            path: '/dashboard/questao/cadastrar'
         });
 
         mostrarCamposPorTipo();
@@ -418,8 +418,9 @@ siac.Questao.Cadastrar = (function () {
         var tipoAnexo = $('#ddlTiposAnexo').val();
         var tipoAnexoDescricao = $('#ddlTiposAnexo :selected').text();
         var i = $('.ui.anexos.accordion .title').length + 1;
-        if (tipoAnexo == 1) {
-            $('.ui.anexos.accordion').append('\
+        switch (tipoAnexo) {
+            case '1':
+                $('.ui.anexos.accordion').append('\
                         <div class="title">\
                             <input id="txtAnexoIndex" value="'+ i + '" class="disabled" readonly hidden/>\
                             <input name="txtAnexoTipo' + i + '" id="txtAnexoTipo' + i + '" value="' + tipoAnexo + '" hidden />\
@@ -451,10 +452,65 @@ siac.Questao.Cadastrar = (function () {
                             </div>\
                         </div>\
                     </div>');
+                $('.anexos.accordion [id^="fleAnexo"]').off().change(function () {
+                    carregarImagem(this);
+                });
+                break;
+            case '2':
+                $('.ui.anexos.accordion').append('\
+                        <div class="title">\
+                            <input id="txtAnexoIndex" value="'+ i + '" class="disabled" readonly hidden/>\
+                            <input name="txtAnexoTipo' + i + '" id="txtAnexoTipo' + i + '" value="' + tipoAnexo + '" hidden />\
+                            <i class="dropdown icon"></i>Anexo ' + i + '\
+                            <span class="ui label" id="txtAnexoTipoDescricao">'+ tipoAnexoDescricao + '</span>\
+                        </div>\
+                        <div class="content ui segment">\
+                            <div class="field required">\
+                                <label for="txtAnexo' + i + '">Código</label>\
+                                <textarea id="txtAnexo' + i + '" name="txtAnexo' + i + '" rows="10" placeholder="Código..." style="font-family:monospace"></textarea>\
+                            </div>\
+                            <div class="field">\
+                                <label for="txtAnexoLegenda' + i + '">Observação</label>\
+                                <textarea maxlength="250" id="txtAnexoLegenda' + i + '" name="txtAnexoLegenda' + i + '" rows="2" placeholder="Observação..."></textarea>\
+                            </div>\
+                            <div class="field">\
+                                <label for="txtAnexoFonte' + i + '">Fonte</label>\
+                                <input maxlength="250" type="text" id="txtAnexoFonte' + i + '" name="txtAnexoFonte' + i + '" placeholder="Fonte..."></textarea>\
+                            </div>\
+                            <div class="field">\
+                                <div class="ui button">\
+                                    Remover\
+                                </div>\
+                                <div class="ui special popup">\
+                                    <div class="header">Tem certeza?</div>\
+                                    <div class="content"><p>Essa ação não poderá ser desfeita.</p>\
+                                    <div class="ui right aligned remover button tiny">Sim, remover</div>\
+                                </div>\
+                            </div>\
+                        </div>\
+                    </div>');
+                $('.anexos.accordion [id^="txtAnexo"]').off().keydown(function (e) {
+                    var keyCode = e.keyCode || e.which;
+
+                    if (keyCode == 9) {
+                        e.preventDefault();
+                        var start = $(this).get(0).selectionStart;
+                        var end = $(this).get(0).selectionEnd;
+
+                        // set textarea value to: text before caret + tab + text after caret
+                        $(this).val($(this).val().substring(0, start)
+                                    + '\t'
+                                    + $(this).val().substring(end));
+
+                        // put caret at right position again
+                        $(this).get(0).selectionStart =
+                        $(this).get(0).selectionEnd = start + 1;
+                    }
+                });
+                break;
+            default:
+                break;
         }
-        $('.anexos.accordion [id^="fleAnexo"]').off().change(function () {
-            carregarImagem(this);
-        });
         $('#txtQtdAnexos').val($('.ui.anexos.accordion .title').length);
         $('.anexos.accordion .remover.button').off().click(function () {
             removerAnexo(this);
@@ -472,6 +528,7 @@ siac.Questao.Cadastrar = (function () {
             list.eq(i).html('<input id="txtAnexoIndex" value="' + (i + 1) + '" class="disabled" readonly hidden/><i class="dropdown icon"></i>Anexo ' + (i + 1) + '<input name="txtAnexoTipo' + (i + 1) + '" id="txtAnexoTipo' + (i + 1) + '" value="' + tipoAnexo + '" hidden /><span class="ui label" id="txtAnexoTipoDescricao">' + tipoAnexoDescricao + '</span>');
             listContent.eq(i).find('label[for="txtAnexoLegenda' + j + '"]').attr('for', 'txtAlternativaEnunciado' + (i + 1));
             listContent.eq(i).find('label[for="txtAnexoFonte' + j + '"]').attr('for', 'txtAlternativaComentario' + (i + 1));
+            listContent.eq(i).find('textarea[name="txtAnexo' + j + '"]').attr('name', 'txtAnexo' + (i + 1)).attr('id', 'txtAnexo' + (i + 1));
             listContent.eq(i).find('textarea[name="txtAnexoLegenda' + j + '"]').attr('name', 'txtAnexoLegenda' + (i + 1)).attr('id', 'txtAnexoLegenda' + (i + 1));
             listContent.eq(i).find('input[name="txtAnexoFonte' + j + '"]').attr('name', 'txtAnexoFonte' + (i + 1)).attr('id', 'txtAnexoFonte' + (i + 1));
             listContent.eq(i).find('input[name="fleAnexo' + j + '"]').attr('name', 'fleAnexo' + (i + 1)).attr('id', 'fleAnexo' + (i + 1));
@@ -480,7 +537,7 @@ siac.Questao.Cadastrar = (function () {
     }
 
     function removerAnexo(button) {
-        var content = $(button).parent().parent().parent().parent();
+        var content = $(button).parents('.content');
         var title = $(content).prev();
         title.remove();
         content.remove();
@@ -532,8 +589,19 @@ siac.Questao.Cadastrar = (function () {
                         if ($('#chkAnexos').is(':checked')) {
                             var qteAnexos = $('#txtQtdAnexos').val();
                             for (var i = 0; i < qteAnexos; i++) {
-                                if ($('#fleAnexo' + (i + 1))[0].files.length == 0) {
-                                    ok = false;
+                                tipoAnexo = $('#txtAnexoTipo' + (i + 1)).val();
+                                switch (tipoAnexo) {
+                                    case 1:
+                                        if ($('#fleAnexo' + (i + 1))[0].files.length == 0) {
+                                            ok = false;
+                                        }
+                                        break;
+                                    case 2:
+                                        if (!$('#txtAnexo' + (i + 1)).val()) {
+                                            ok = false;
+                                        }
+                                    default:
+                                        break;
                                 }
                             }
                             if (ok) {
@@ -561,8 +629,19 @@ siac.Questao.Cadastrar = (function () {
                         var ok = true;
                         var qteAnexos = $('#txtQtdAnexos').val();
                         for (var i = 0; i < qteAnexos; i++) {
-                            if ($('#fleAnexo' + (i + 1))[0].files.length == 0) {
-                                ok = false;
+                            tipoAnexo = $('#txtAnexoTipo' + (i + 1)).val();
+                            switch (tipoAnexo) {
+                                case 1:
+                                    if ($('#fleAnexo' + (i + 1))[0].files.length == 0) {
+                                        ok = false;
+                                    }
+                                    break;
+                                case 2:
+                                    if (!$('#txtAnexo' + (i + 1)).val()) {
+                                        ok = false;
+                                    }
+                                default:
+                                    break;
                             }
                         }
                         if (ok) {
@@ -750,7 +829,7 @@ siac.Questao.Cadastrar = (function () {
 
     function checarCaptcha() {
         $.ajax({
-            type: 'GET',
+            type: 'POST',
             data: { captcha: $('#txtCaptcha').val() },
             url: "/Dashboard/Questao/ChequeCaptcha",
             success: function (resp) {
@@ -776,7 +855,7 @@ siac.Questao.Cadastrar = (function () {
 
     function novoCaptcha() {
         $.ajax({
-            type: 'GET',
+            type: 'POST',
             url: "/Dashboard/Questao/NovoCaptcha",
             success: function (strBase64) {
                 if (strBase64) {

@@ -210,6 +210,16 @@ namespace SIAC.Controllers
                                 Anexo = new System.IO.BinaryReader(Request.Files[i].InputStream).ReadBytes(Request.Files[i].ContentLength)
                             });
                             break;
+                        case 2:
+                            questao.QuestaoAnexo.Add(new QuestaoAnexo
+                            {
+                                CodOrdem = i,
+                                CodTipoAnexo = tipoAnexo,
+                                Legenda = !String.IsNullOrWhiteSpace(formCollection["txtAnexoLegenda" + (i + 1)]) ? formCollection["txtAnexoLegenda" + (i + 1)].RemoveSpaces() : null,
+                                Fonte = !String.IsNullOrEmpty(formCollection["txtAnexoFonte" + (i + 1)]) ? formCollection["txtAnexoFonte" + (i + 1)].RemoveSpaces() : null,
+                                Anexo = formCollection["txtAnexo" + (i + 1)].ToString().GetBytes()
+                            });
+                            break;
                         default:
                             break;
                     }

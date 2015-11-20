@@ -8,7 +8,7 @@
     <mvcSiteMapNode title="Sair" controller="Acesso" action="Sair"/>
     <mvcSiteMapNode title="Dashboard" controller="Dashboard" action="Index">
       <mvcSiteMapNode title="Questão" url="~/Historico/Questao">
-        <mvcSiteMapNode title="Cadastrar" controller="Questao" action="Cadastrar">
+        <mvcSiteMapNode title="Cadastrar" controller="Questao" action="Cadastrar" preservedRouteParameters="codigo">
           <mvcSiteMapNode title="Confirmação" controller="Questao" action="Confirmar"/>
         </mvcSiteMapNode>
         <mvcSiteMapNode title="Gerar" controller="Questao" action="Gerar"/>

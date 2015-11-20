@@ -667,6 +667,7 @@
     <Content Include="Views\Reposicao\Agendar.cshtml" />
     <Content Include="Views\Reposicao\Partials\_ListaReposicao.cshtml" />
     <Content Include="Views\Reposicao\Index.cshtml" />
+    <Content Include="Views\Shared\Partials\_AnexoCodigo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
