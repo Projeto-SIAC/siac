@@ -324,15 +324,24 @@ siac.Institucional.Gerar = (function () {
     function removerQuestao(button) {
         var content = $(button).parent().parent().parent().parent();
         var title = $(content).prev();
-        var moduloContent = content.parents('[data-modulo]');
-        var moduloTitle = moduloContent.prev();
-        var accordionQuestoes = content.parent();
+        var modulo = content.parents('[data-modulo]');
+        var categoria = content.parents('[data-categoria]');
+        var indicador = content.parents('[data-indicador]');
+        //var accordionQuestoes = content.parent();
         title.remove();
         content.remove();
 
-        if(accordionQuestoes.find('.title').length <= 0){
-            moduloContent.remove();
-            moduloTitle.remove();
+        if(indicador.find('.title').length <= 0){
+            indicador.prev().remove();
+            indicador.remove();
+            if (categoria.find('.title').length <= 0) {
+                categoria.prev().remove();
+                categoria.remove();
+                if (modulo.find('.title').length <= 0) {
+                    modulo.prev().remove();
+                    modulo.remove();
+                }
+            }
         }
         siac.aviso('Questão removida com sucesso!', 'red');
     }
