@@ -1,16 +1,15 @@
 ﻿siac.Institucional = siac.Institucional || {};
 
-siac.Institucional.Configurar = (function () {
+siac.Institucional.Configuracao = (function () {
 	function iniciar() {
 
-		//$('.menu .item').tab();
 		$('.ui.dropdown').dropdown();
 		$('.ui.accordion').accordion({ animateChildren: false });
 
 		$('.tabular.menu .item').tab({
 			history: true,
 			historyType: 'state',
-			path: '/institucional/configurar'
+			path: '/institucional/configuracao'
 		});
 	}
 
@@ -20,6 +19,90 @@ siac.Institucional.Configurar = (function () {
 })();
 
 siac.Institucional.Gerar = (function () {
+    function iniciar() {
+        $('.ui.modal').modal();
+        $('.ui.termo.modal').modal({ closable: false }).modal('show');
+        $('.cancelar.button').popup({ on: 'click' });
+        $('.ui.confirmar.modal')
+         .modal({
+             onApprove: function () {
+                 $('form').submit();
+             }
+         });
+
+        $('.prosseguir.button').click(function () {
+            prosseguir();
+        });
+    }
+
+    function prosseguir() {
+        var $errorList = $('form .error.message .list');
+
+        $errorList.html('');
+        $('form').removeClass('error');
+
+        var valido = true;
+
+        if (!$('#txtTitulo').val()) {
+            $errorList.append('<li>Insira o título</li>');
+            valido = false;
+        }
+
+        if (!$('#txtObjetivo').val()) {
+            $errorList.append('<li>Insira o objetivo</li>');
+            valido = false;
+        }
+
+        if (!$('#txtDataTermino').val()) {
+            $errorList.append('<li>Insira a data de término</li>');
+            valido = false;
+        }
+
+        if (valido) {
+            confirmar();
+        }
+        else {
+            $('form').addClass('error');
+            $('html, body').animate({
+                scrollTop: $('form .error.message').offset().top
+            }, 1000);
+        }
+    }
+
+    function confirmar() {
+        $modal = $('.ui.confirmar.modal');
+        //$ddlDisciplina = $('#ddlDisciplina :selected');
+        //$ddlTipo = $('#ddlTipo');
+        //$table = $modal.find('tbody').html('');
+
+        //$tr = $('<tr></tr>');
+        //$tdDisciplina = $('<td></td>').html('<b>' + $ddlDisciplina.text() + '</b>');
+        //$tdTemas = $('<td class="ui labels"></td>');
+
+        //$ddlTemas = $('#ddlTemas :selected');
+        //for (var i = 0; i < $ddlTemas.length; i++) {
+        //    $tdTemas.append($('<div class="ui tag label"></div>').text($ddlTemas.eq(i).text()));
+        //}
+        //$tdQteQuestoes = $('<td class="ui labels"></td>');
+        //if ($ddlTipo.val() == 1 || $ddlTipo.val() == 3) {
+        //    $tdQteQuestoes.append($('<div class="ui label"></div>').html('Objetiva<div class="detail">' + $('#txtQteObjetiva').val() + '</div>'));
+        //}
+        //if ($ddlTipo.val() == 2 || $ddlTipo.val() == 3) {
+        //    $tdQteQuestoes.append($('<div class="ui label"></div>').html('Discursiva<div class="detail">' + $('#txtQteDiscursiva').val() + '</div>'));
+        //}
+        //$tdDificuldade = $('<td></td>').text($('#ddlDificuldade :selected').text());
+
+        //$table.append($tr.append($tdDisciplina).append($tdTemas).append($tdQteQuestoes).append($tdDificuldade));
+
+        $modal.modal('show');
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();
+
+siac.Institucional.Configurar = (function () {
     var _qteQuestoes = 0;
 
     function iniciar() {
@@ -36,7 +119,7 @@ siac.Institucional.Gerar = (function () {
             onChange: function () {
                 var checked = $(this).is(':checked');
                 if (checked) {
-                    $('#txtAlternativaDiscursiva').prop('readonly',false).parent().removeClass('disabled');
+                    $('#txtAlternativaDiscursiva').prop('readonly', false).parent().removeClass('disabled');
 
                 } else {
                     $('#txtAlternativaDiscursiva').prop('readonly', true).parent().addClass('disabled');
@@ -76,25 +159,25 @@ siac.Institucional.Gerar = (function () {
     function adicionarAlternativa() {
         var i = $('.ui.alternativas.accordion .title').length + 1;
         $('.ui.alternativas.accordion').append(
-                        '<div class="title">'+
-                            '<input id="txtAlternativaIndex" value="'+ i + '" hidden />'+
+                        '<div class="title">' +
+                            '<input id="txtAlternativaIndex" value="' + i + '" hidden />' +
                             '<i class="dropdown icon"></i>Alternativa ' + i +
-                        '</div>'+
-                        '<div class="content ui segment">'+
-                            '<div class="field required">'+
-                                '<label for="txtAlternativaEnunciado' + i + '">Enunciado</label>'+
-                                '<textarea id="txtAlternativaEnunciado' + i + '" name="txtAlternativaEnunciado' + i + '" rows="2" placeholder="Enunciado..."></textarea>'+
-                            '</div>'+
-                            '<div class="field">'+
-                                '<div class="ui button">'+
-                                    'Remover'+
-                                '</div>'+
-                                '<div class="ui special popup">'+
-                                    '<div class="header">Tem certeza?</div>'+
-                                    '<div class="content"><p>Essa ação não poderá ser desfeita.</p>'+
-                                    '<div class="ui right aligned remover button tiny">Sim, remover</div>'+
-                                '</div>'+
-                            '</div>'+
+                        '</div>' +
+                        '<div class="content ui segment">' +
+                            '<div class="field required">' +
+                                '<label for="txtAlternativaEnunciado' + i + '">Enunciado</label>' +
+                                '<textarea id="txtAlternativaEnunciado' + i + '" name="txtAlternativaEnunciado' + i + '" rows="2" placeholder="Enunciado..."></textarea>' +
+                            '</div>' +
+                            '<div class="field">' +
+                                '<div class="ui button">' +
+                                    'Remover' +
+                                '</div>' +
+                                '<div class="ui special popup">' +
+                                    '<div class="header">Tem certeza?</div>' +
+                                    '<div class="content"><p>Essa ação não poderá ser desfeita.</p>' +
+                                    '<div class="ui right aligned remover button tiny">Sim, remover</div>' +
+                                '</div>' +
+                            '</div>' +
                         '</div>' +
                     '</div>');
         $('#txtQtdAlternativas').val(i);
@@ -102,7 +185,7 @@ siac.Institucional.Gerar = (function () {
             removerAlternativa(this);
         });
         $('.ui.alternativas.accordion .button').popup({ inline: true, on: 'click', position: 'right center' });
-        $('.ui.alternativas.accordion').accordion({animateChildren:false});
+        $('.ui.alternativas.accordion').accordion({ animateChildren: false });
 
     }
 
@@ -112,7 +195,7 @@ siac.Institucional.Gerar = (function () {
         for (var i = 0; i < list.length; i++) {
             var j = list.eq(i).find('#txtAlternativaIndex').val();
             list.eq(i).html('<input id="txtAlternativaIndex" value="' + (i + 1) + '" hidden /><i class="dropdown icon"></i>Alternativa ' + (i + 1));
-            
+
             /* RENOMEAR LABELS, INPUTS e TEXTAREAS */
             listContent.eq(i).find('label[for="txtAlternativaEnunciado' + j + '"]').attr('for', 'txtAlternativaEnunciado' + (i + 1));
             listContent.eq(i).find('textarea[name="txtAlternativaEnunciado' + j + '"]').attr('name', 'txtAlternativaEnunciado' + (i + 1)).attr('id', 'txtAlternativaEnunciado' + (i + 1));
@@ -180,7 +263,7 @@ siac.Institucional.Gerar = (function () {
                     }
                 }
                 if (ok) {
-                   validado = true;
+                    validado = true;
                 }
                 else {
                     $('.ui.error.message .list').append('<li>É necessário preencher os enunciados de todas as alternativas</li>')
@@ -193,7 +276,21 @@ siac.Institucional.Gerar = (function () {
             }
         }
 
-        if (validado) adicionarQuestao();
+        if (validado) {
+            var form = $('.form').serialize();
+            $.ajax({
+                type: 'POST',
+                url: '/institucional/CadastrarQuestao',
+                data: form,
+                dataType: 'json',
+                success: function () {
+                },
+                error: function () {
+                    alert('erro');
+                }
+            });
+            adicionarQuestao();
+        }
         else $('form').addClass('error');
     }
 
@@ -210,34 +307,34 @@ siac.Institucional.Gerar = (function () {
         var enunciado = $('#txtEnunciado').val();
         var observacao = $('#txtObservacao').val();
 
-        var TEMPLATE_QUESTAO_HTML ='<div class="title">'+
-                                        '<i class="dropdown icon"></i>'+
-                                        modulo+
-                                    '</div>'+
+        var TEMPLATE_QUESTAO_HTML = '<div class="title">' +
+                                        '<i class="dropdown icon"></i>' +
+                                        modulo +
+                                    '</div>' +
                                     '<div class="content" data-modulo="' + moduloCod + '">' +
-                                        '<div class="accordion">'+
-                                            '<div class="title">'+
-                                                '<i class="dropdown icon"></i>'+
-                                                categoria + 
-                                            '</div>'+
+                                        '<div class="accordion">' +
+                                            '<div class="title">' +
+                                                '<i class="dropdown icon"></i>' +
+                                                categoria +
+                                            '</div>' +
                                             '<div class="content" data-categoria="' + categoriaCod + '">' +
-                                                '<div class="accordion">'+
-                                                    '<div class="title">'+
-                                                        '<i class="dropdown icon"></i>'+
+                                                '<div class="accordion">' +
+                                                    '<div class="title">' +
+                                                        '<i class="dropdown icon"></i>' +
                                                          indicador +
-                                                    '</div>'+
+                                                    '</div>' +
                                                     '<div class="content" data-indicador="' + indicadorCod + '">' +
-                                                        '<div class="accordion">'+
-                                                            '<div class="title">'+
-                                                                '<i class="dropdown icon"></i>'+
-                                                                    'Questão '+ _qteQuestoes+
-                                                            '</div>'+
-                                                            '<div class="content">'+
+                                                        '<div class="accordion">' +
+                                                            '<div class="title">' +
+                                                                '<i class="dropdown icon"></i>' +
+                                                                    'Questão ' + _qteQuestoes +
+                                                            '</div>' +
+                                                            '<div class="content">' +
                                                                 '<div class="ui segment">' +
                                                                     '<div class="ui right floated remover button">Remover</div>' +
                                                                     '<div class="ui popup">' +
                                                                         '<div class="header">Tem certeza?</div>' +
-                                                                        '<div style="padding:0!important;" class="content">'+
+                                                                        '<div style="padding:0!important;" class="content">' +
                                                                             '<p>Essa ação não poderá ser desfeita.</p>' +
                                                                             '<div class="ui right aligned remover button tiny">Sim, remover</div>' +
                                                                         '</div>' +
@@ -248,12 +345,12 @@ siac.Institucional.Gerar = (function () {
                                                                     //        <b>1)</b> ALternativa\
                                                                     //    </div>\
                                                                     '</div>' +
-                                                                '</div>'+
-                                                            '</div>'+
-                                                        '</div>'+
-                                                    '</div>'+
-                                                '</div>'+
-                                            '</div>'+
+                                                                '</div>' +
+                                                            '</div>' +
+                                                        '</div>' +
+                                                    '</div>' +
+                                                '</div>' +
+                                            '</div>' +
                                         '</div>' +
                                     '</div>';
         var $template = $(TEMPLATE_QUESTAO_HTML);
@@ -270,7 +367,7 @@ siac.Institucional.Gerar = (function () {
             }
             if ($('#chkAlternativaDiscursiva').is(':checked')) {
                 var alternativaDiscursiva = $('#txtAlternativaDiscursiva').val();
-                var alternativa = '<div class="item"><b>' + (list.length+1) + ')</b> ' + alternativaDiscursiva + '<input class="input" placeholder="Resposta" type="text" readonly/></div>';
+                var alternativa = '<div class="item"><b>' + (list.length + 1) + ')</b> ' + alternativaDiscursiva + '<input class="input" placeholder="Resposta" type="text" readonly/></div>';
                 $template.find('.very.relaxed.list').append(alternativa);
             }
         }
@@ -331,7 +428,7 @@ siac.Institucional.Gerar = (function () {
         title.remove();
         content.remove();
 
-        if(indicador.find('.title').length <= 0){
+        if (indicador.find('.title').length <= 0) {
             indicador.prev().remove();
             indicador.remove();
             if (categoria.find('.title').length <= 0) {

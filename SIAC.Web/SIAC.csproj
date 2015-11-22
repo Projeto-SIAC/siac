@@ -404,6 +404,7 @@
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\pAvalAcadReposicao.cs" />
+    <Compile Include="Models\pAvalAvi.cs" />
     <Compile Include="Models\pAvalCertificacao.cs" />
     <Compile Include="Models\pAviCategoria.cs" />
     <Compile Include="Models\pAviIndicador.cs" />
@@ -668,6 +669,7 @@
     <Content Include="Views\Reposicao\Partials\_ListaReposicao.cshtml" />
     <Content Include="Views\Reposicao\Index.cshtml" />
     <Content Include="Views\Shared\Partials\_AnexoCodigo.cshtml" />
+    <Content Include="Views\Institucional\Configuracao.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

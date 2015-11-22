@@ -16,9 +16,9 @@ namespace SIAC.Controllers
             Usuario usuario = Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
             return View(usuario);
         }
-        // GET: institucional/Configurar
+        // GET: institucional/Configuracao
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
-        public ActionResult Configurar()
+        public ActionResult Configuracao()
         {
             ViewModels.InstitucionalGerarQuestaoViewModel model = new ViewModels.InstitucionalGerarQuestaoViewModel();
             model.Modulos = AviModulo.ListarOrdenadamente();
@@ -27,6 +27,58 @@ namespace SIAC.Controllers
 
             return View(model);
         }
+        // GET: institucional/Gerar
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        [AcceptVerbs(HttpVerbs.Get)]
+        public ActionResult Gerar()
+        {
+            return View();
+        }
+        // POST: institucional/Gerar
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Gerar(FormCollection form)
+        {
+            AvalAvi avi = new AvalAvi();
+            /* Chave */
+            avi.Avaliacao = new Avaliacao();
+            DateTime hoje = DateTime.Now;
+            avi.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(4);
+            avi.Avaliacao.Ano = hoje.Year;
+            avi.Avaliacao.Semestre = hoje.Month > 6 ? 2 : 1;
+            avi.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(4);
+            avi.Avaliacao.DtCadastro = hoje;
+            avi.Avaliacao.FlagLiberada = true;
+
+            /* AVI */
+            avi.Titulo = form["txtTitulo"];
+            avi.Objetivo = form["txtObjetivo"];
+            avi.DtTermino = DateTime.Parse(form["txtDataTermino"]);
+
+            /* Colaborador */
+            Colaborador colaborador = Colaborador.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
+            avi.CodColabCoordenador = colaborador.CodColaborador;
+            avi.Colaborador = colaborador;
+
+            AvalAvi.Inserir(avi);
+            
+            return RedirectToAction("Configurar");
+        }
+
+        // GET: institucional/Configurar
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        public ActionResult Configurar()
+        {
+            ViewModels.InstitucionalGerarQuestaoViewModel model = new ViewModels.InstitucionalGerarQuestaoViewModel();
+            model.Modulos = AviModulo.ListarOrdenadamente();
+            model.Categorias = AviCategoria.ListarOrdenadamente();
+            model.Indicadores = AviIndicador.ListarOrdenadamente();
+            model.Tipos = TipoQuestao.ListarOrdenadamente();
+
+            return View(model);
+        }
+
+
         // POST: institucional/CadastrarModulo
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
@@ -70,17 +122,26 @@ namespace SIAC.Controllers
 
             return RedirectToAction("Configurar");
         }
-        // GET: institucional/Gerar
+        
+        // POST: institucional/CadastrarQuestao
+        [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
-        public ActionResult Gerar()
+        public ActionResult CadastrarQuestao(FormCollection form)
         {
-            ViewModels.InstitucionalGerarQuestaoViewModel model = new ViewModels.InstitucionalGerarQuestaoViewModel();
-            model.Modulos = AviModulo.ListarOrdenadamente();
-            model.Categorias = AviCategoria.ListarOrdenadamente();
-            model.Indicadores = AviIndicador.ListarOrdenadamente();
-            model.Tipos = TipoQuestao.ListarOrdenadamente();
+            AviQuestao questao = new AviQuestao();
+            questao.CodAviModulo = int.Parse(form["ddlModulo"]);
+            questao.CodAviCategoria = int.Parse(form["ddlCategoria"]);
+            questao.CodAviIndicador = int.Parse(form["ddlIndicador"]);
+            
 
-            return View(model);
+            questao.Enunciado = form["txtEnunciado"];
+            questao.Observacao = form["txtObservacao"];
+            
+            if(int.Parse(form["ddlTipo"]) == 1)
+            {
+
+            }
+            return Json(true);
         }
     }
 }

@@ -19,5 +19,10 @@ namespace SIAC.Models
         {
             return contexto.Colaborador.OrderBy(c => c.Usuario.PessoaFisica.Nome).ToList();
         }
+
+        public static Colaborador ListarPorMatricula(string matricula)
+        {
+            return contexto.Colaborador.FirstOrDefault(c => c.MatrColaborador == matricula);
+        }
     }
 }

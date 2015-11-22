@@ -1,0 +1,135 @@
+﻿@model SIAC.ViewModels.InstitucionalGerarQuestaoViewModel
+@{
+    ViewBag.Title = "Configurar Av. Institucional";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="ui form">
+
+    @* Menu das Abas *@
+    <div class="ui top attached tabular menu">
+        <a class="active item" data-tab="modulo">Módulo</a>
+        <a class="item" data-tab="categoria">Categoria</a>
+        <a class="item" data-tab="indicador">Indicador</a>
+    </div>
+
+    @* Módulo *@
+    <div class="ui bottom attached active tab segment modulo" data-tab="modulo">
+        <div class="ui styled fluid accordion">
+            <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+            <div class="content">
+                <table class="ui striped table">
+                    <thead>
+                        <tr>
+                            <th>Módulo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (AviModulo modulo in Model.Modulos)
+                        {
+                            <tr>
+                                <td>@modulo.Descricao</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        <form method="post" action="@Url.Action("CadastrarModulo")">
+            <div class="field required">
+                <label>Título</label>
+                <input type="text" name="txtTitulo" maxlength="100" placeholder="Título" required />
+            </div>
+            <div class="field required">
+                <label>Objetivo</label>
+                <textarea rows="5" name="txtObjetivo" placeholder="Objetivo" required></textarea>
+            </div>
+            <div class="field">
+                <label>Observação</label>
+                <textarea rows="2" name="txtObservacao" placeholder="Observação"></textarea>
+            </div>
+            <br />
+            <input type="submit" class="ui button" value="Cadastrar" />
+        </form>
+
+    </div>
+    @* Categoria *@
+    <div class="ui bottom attached tab segment categoria" data-tab="categoria">
+        <div class="ui styled fluid accordion">
+            <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+            <div class="content">
+                <table class="ui striped table">
+                    <thead>
+                        <tr>
+                            <th>Categoria</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (AviCategoria categoria in Model.Categorias)
+                        {
+                            <tr>
+                                <td>@categoria.Descricao</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        <form method="post" action="@Url.Action("CadastrarCategoria")">
+            <div class="field required">
+                <label>Título</label>
+                <input type="text" name="txtTitulo" placeholder="Título" required />
+            </div>
+            <div class="field">
+                <label>Observação</label>
+                <textarea rows="2" name="txtObservacao" placeholder="Observação"></textarea>
+            </div>
+            <br />
+            <input type="submit" class="ui button" value="Cadastrar" />
+        </form>
+    </div>
+    @* Indicador *@
+    <div class="ui bottom attached tab segment indicador" data-tab="indicador">
+        <div class="ui styled fluid accordion">
+            <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+            <div class="content">
+                <table class="ui striped table">
+                    <thead>
+                        <tr>
+                            <th>Indicador</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (AviIndicador indicador in Model.Indicadores)
+                        {
+                            <tr>
+                                <td>@indicador.Descricao</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        <form method="post" action="@Url.Action("CadastrarIndicador")">
+            <div class="field required">
+                <label>Título</label>
+                <input type="text" name="txtTitulo" placeholder="Título" required />
+            </div>
+            <div class="field">
+                <label>Observação</label>
+                <textarea rows="2" name="txtObservacao" placeholder="Observação"></textarea>
+            </div>
+            <br />
+            <input type="submit" class="ui button" value="Cadastrar" />
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/institucional")
+}
