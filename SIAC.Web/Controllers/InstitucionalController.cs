@@ -48,7 +48,7 @@ namespace SIAC.Controllers
             avi.Avaliacao.Semestre = hoje.Month > 6 ? 2 : 1;
             avi.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(4);
             avi.Avaliacao.DtCadastro = hoje;
-            avi.Avaliacao.FlagLiberada = true;
+            avi.Avaliacao.FlagLiberada = false;
 
             /* AVI */
             avi.Titulo = form["txtTitulo"];
@@ -62,9 +62,8 @@ namespace SIAC.Controllers
 
             AvalAvi.Inserir(avi);
             
-            return RedirectToAction("Configurar");
+            return RedirectToAction("Configurar", new { codigo = avi.Avaliacao.CodAvaliacao });
         }
-
         // GET: institucional/Configurar
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult Configurar()
@@ -77,8 +76,6 @@ namespace SIAC.Controllers
 
             return View(model);
         }
-
-
         // POST: institucional/CadastrarModulo
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
@@ -122,26 +119,66 @@ namespace SIAC.Controllers
 
             return RedirectToAction("Configurar");
         }
-        
-        // POST: institucional/CadastrarQuestao
+        // POST: institucional/CadastrarQuestao/{codigo}
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
-        public ActionResult CadastrarQuestao(FormCollection form)
+        public ActionResult CadastrarQuestao(string codigo,FormCollection form)
         {
-            AviQuestao questao = new AviQuestao();
-            questao.CodAviModulo = int.Parse(form["ddlModulo"]);
-            questao.CodAviCategoria = int.Parse(form["ddlCategoria"]);
-            questao.CodAviIndicador = int.Parse(form["ddlIndicador"]);
-            
-
-            questao.Enunciado = form["txtEnunciado"];
-            questao.Observacao = form["txtObservacao"];
-            
-            if(int.Parse(form["ddlTipo"]) == 1)
+            AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
+            if (avi != null)
             {
+                AviQuestao questao = new AviQuestao();
 
+                /* Chave */
+                questao.AvalAvi = avi;
+                questao.CodAviModulo = int.Parse(form["ddlModulo"]);
+                questao.CodAviCategoria = int.Parse(form["ddlCategoria"]);
+                questao.CodAviIndicador = int.Parse(form["ddlIndicador"]);
+                questao.CodOrdem = AviQuestao.ObterNovaOrdem(avi, questao.CodAviModulo, questao.CodAviCategoria, questao.CodAviIndicador);
+
+
+                questao.Enunciado = form["txtEnunciado"];
+                questao.Observacao = form["txtObservacao"];
+
+
+                if (int.Parse(form["ddlTipo"]) == 1)
+                {
+                    int qteAlternativas = int.Parse(form["txtQtdAlternativas"]);
+
+                    for (int i = 1; i <= qteAlternativas; i++)
+                    {
+                        string enunciado = form["txtAlternativaEnunciado" + i];
+                        questao.AviQuestaoAlternativa.Add(new AviQuestaoAlternativa
+                        {
+                            AviQuestao = questao,
+                            CodAlternativa = i,
+                            Enunciado = enunciado,
+                            FlagAlternativaDiscursiva = false
+                        });
+                    }
+                    
+                    if (form["chkAlternativaDiscursiva"] == "on")
+                    {
+                        int codAlternativa = qteAlternativas + 1;
+                        string enunciado = form["txtAlternativaDiscursiva"];
+                        questao.AviQuestaoAlternativa.Add(new AviQuestaoAlternativa
+                        {
+                            AviQuestao = questao,
+                            CodAlternativa = codAlternativa,
+                            Enunciado = enunciado,
+                            FlagAlternativaDiscursiva = true
+                        });
+                    }
+
+                }
+                else if (int.Parse(form["ddlTipo"]) == 2)
+                {
+                    questao.FlagDiscursiva = true;
+                }
+                AviQuestao.Inserir(questao);
+                return Json(true);
             }
-            return Json(true);
+            return Json(false);
         }
     }
 }

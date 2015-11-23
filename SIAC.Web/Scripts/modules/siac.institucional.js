@@ -104,9 +104,10 @@ siac.Institucional.Gerar = (function () {
 
 siac.Institucional.Configurar = (function () {
     var _qteQuestoes = 0;
+    var _codAvaliacao;
 
     function iniciar() {
-
+        _codAvaliacao = window.location.pathname.match(/avi[0-9]+$/)[0];
         $('.ui.dropdown').dropdown();
         $('.tabular.menu .item').tab();
         $('h3').popup();
@@ -280,13 +281,13 @@ siac.Institucional.Configurar = (function () {
             var form = $('.form').serialize();
             $.ajax({
                 type: 'POST',
-                url: '/institucional/CadastrarQuestao',
+                url: '/institucional/CadastrarQuestao/'+_codAvaliacao,
                 data: form,
                 dataType: 'json',
                 success: function () {
                 },
                 error: function () {
-                    alert('erro');
+                    siac.mensagem('Error');
                 }
             });
             adicionarQuestao();

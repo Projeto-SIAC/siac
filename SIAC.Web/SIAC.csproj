@@ -409,6 +409,7 @@
     <Compile Include="Models\pAviCategoria.cs" />
     <Compile Include="Models\pAviIndicador.cs" />
     <Compile Include="Models\pAviModulo.cs" />
+    <Compile Include="Models\pAviQuestao.cs" />
     <Compile Include="Models\pdbSIACEntities.cs" />
     <Compile Include="Models\Pessoa.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
