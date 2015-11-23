@@ -278,24 +278,12 @@ siac.Institucional.Configurar = (function () {
         }
 
         if (validado) {
-            var form = $('.form').serialize();
-            $.ajax({
-                type: 'POST',
-                url: '/institucional/CadastrarQuestao/'+_codAvaliacao,
-                data: form,
-                dataType: 'json',
-                success: function () {
-                },
-                error: function () {
-                    siac.mensagem('Error');
-                }
-            });
-            adicionarQuestao();
+            inserirQuestao();
         }
         else $('form').addClass('error');
     }
 
-    function adicionarQuestao() {
+    function adicionarQuestao(questaoId) {
         _qteQuestoes++;
         //OBTENDO DADOS DA QUESTÃO
         var moduloCod = $('#ddlModulo :selected').val();
@@ -330,7 +318,7 @@ siac.Institucional.Configurar = (function () {
                                                                 '<i class="dropdown icon"></i>' +
                                                                     'Questão ' + _qteQuestoes +
                                                             '</div>' +
-                                                            '<div class="content">' +
+                                                            '<div class="content" data-questao="' + questaoId + '">' +
                                                                 '<div class="ui segment">' +
                                                                     '<div class="ui right floated remover button">Remover</div>' +
                                                                     '<div class="ui popup">' +
@@ -413,7 +401,7 @@ siac.Institucional.Configurar = (function () {
         $('h3').popup();
         $('.floated.remover.button').popup({ on: 'click', inline: true });
         $('.tab.questoes .remover.button.tiny').click(function () {
-            removerQuestao(this);
+            deletarQuestao(this);
         });
         $('.ui.accordion').accordion({ animateChildren: false });
         siac.aviso('Questão adicionada com sucesso!', 'green');
@@ -443,6 +431,57 @@ siac.Institucional.Configurar = (function () {
         }
         siac.aviso('Questão removida com sucesso!', 'red');
     }
+
+    function inserirQuestao() {
+        $('.adicionar.questao.button').addClass('loading');
+        var form = $('.form').serialize();
+        $.ajax({
+            type: 'POST',
+            url: '/institucional/CadastrarQuestao/' + _codAvaliacao,
+            data: form,
+            dataType: 'json',
+            success: function (questaoId) {
+                adicionarQuestao(questaoId);
+            },
+            error: function () {
+                siac.mensagem('Erro na adição de questão');
+            },
+            complete: function () {
+                $('.adicionar.questao.button').removeClass('loading');
+            }
+        });
+    }
+
+    function deletarQuestao(button) {
+        var content = $(button).parent().parent().parent().parent();
+
+        var modulo = content.parents('[data-modulo]').data('modulo');
+        var categoria = content.parents('[data-categoria]').data('categoria');
+        var indicador = content.parents('[data-indicador]').data('indicador');
+        var ordem = content.data('questao');
+
+        $(button).addClass('loading');
+        $.ajax({
+            type: 'POST',
+            url: '/institucional/RemoverQuestao/' + _codAvaliacao,
+            data: {
+                modulo: modulo,
+                categoria: categoria,
+                indicador: indicador,
+                ordem: ordem
+            },
+            success: function () {
+                removerQuestao(button);
+            },
+            error: function () {
+                siac.mensagem('Erro na remoção de questão');
+            },
+            complete: function () {
+                $(button).removeClass('loading');
+            }
+        });
+    }
+
 
     return {
         iniciar: iniciar

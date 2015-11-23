@@ -29,5 +29,22 @@ namespace SIAC.Models
 
             return questao != null ? questao.CodOrdem + 1 : 1;
         }
+
+        public static void Remover(AviQuestao questao)
+        {
+            AviQuestao questaoTemp = contexto.AviQuestao.FirstOrDefault(q => q.Ano == questao.Ano
+                                                                         && q.Semestre == questao.Semestre
+                                                                         && q.CodTipoAvaliacao == questao.CodTipoAvaliacao
+                                                                         && q.NumIdentificador == questao.NumIdentificador
+                                                                         && q.CodAviModulo == questao.CodAviModulo
+                                                                         && q.CodAviCategoria == questao.CodAviCategoria
+                                                                         && q.CodAviIndicador == questao.CodAviIndicador
+                                                                         && q.CodOrdem == questao.CodOrdem);
+            if (questaoTemp != null)
+            {
+                contexto.AviQuestao.Remove(questaoTemp);
+                contexto.SaveChanges();
+            }
+        }
     }
 }

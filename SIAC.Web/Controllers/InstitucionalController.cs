@@ -177,7 +177,32 @@ namespace SIAC.Controllers
                     questao.FlagDiscursiva = true;
                 }
                 AviQuestao.Inserir(questao);
-                return Json(true);
+                return Json(questao.CodOrdem);
+            }
+            return Json(false);
+        }
+        // POST: institucional/RemoverQuestao/{codigo}
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        public ActionResult RemoverQuestao(string codigo,int modulo,int categoria, int indicador, int ordem)
+        {
+            AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
+            if (avi != null)
+            {
+                AviQuestao questao = new AviQuestao();
+
+                /* Chave */
+                questao.Ano = avi.Ano;
+                questao.Semestre = avi.Semestre;
+                questao.CodTipoAvaliacao = avi.CodTipoAvaliacao;
+                questao.NumIdentificador = avi.NumIdentificador;
+                questao.CodAviModulo = modulo;
+                questao.CodAviCategoria = categoria;
+                questao.CodAviIndicador = indicador;
+                questao.CodOrdem = ordem;
+
+                AviQuestao.Remover(questao);
+                return Json(questao.CodOrdem);
             }
             return Json(false);
         }
