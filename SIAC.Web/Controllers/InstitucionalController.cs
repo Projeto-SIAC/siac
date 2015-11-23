@@ -53,6 +53,7 @@ namespace SIAC.Controllers
             /* AVI */
             avi.Titulo = form["txtTitulo"];
             avi.Objetivo = form["txtObjetivo"];
+            avi.Avaliacao.DtAplicacao = DateTime.Parse(form["txtDataAplicacao"]);
             avi.DtTermino = DateTime.Parse(form["txtDataTermino"]);
 
             /* Colaborador */
