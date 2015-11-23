@@ -9,6 +9,65 @@ namespace SIAC.Models
     {
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
+        public List<AviQuestao> Questoes
+        {
+            get
+            {
+                List<AviQuestao> questoes = new List<AviQuestao>();
+
+                questoes = contexto.AviQuestao.Where(q => q.Ano == this.Ano
+                                                       && q.Semestre == this.Semestre
+                                                       && q.CodTipoAvaliacao == this.CodTipoAvaliacao
+                                                       && q.NumIdentificador == this.NumIdentificador)
+                                                       .OrderBy(q=>q.CodAviModulo)
+                                                       .ThenBy(q => q.CodAviCategoria)
+                                                       .ThenBy(q => q.CodAviIndicador)
+                                                       .ThenBy(q => q.CodOrdem)
+                                                       .ToList();
+
+                return questoes;
+            }
+        }
+
+        public List<MapAviModulo> MapQuestoes
+        {
+            get
+            {
+                List<MapAviModulo> modulos = new List<MapAviModulo>();
+                List<AviQuestao> lstQuestao = this.Questoes;
+                List<AviModulo> lstModulo = lstQuestao.Select(a => a.AviModulo).Distinct().ToList();
+
+                foreach (AviModulo m in lstModulo)
+                {
+                    MapAviModulo modulo = new MapAviModulo();
+                    modulo.Modulo = m;
+                    List<AviCategoria> categorias = lstQuestao.Where(a => a.CodAviModulo == m.CodAviModulo).Select(a => a.AviCategoria).Distinct().ToList();
+                    foreach (AviCategoria c in categorias)
+                    {
+                        MapAviCategoria categoria = new MapAviCategoria();
+                        categoria.Categoria = c;
+                        List<AviIndicador> indicadores = lstQuestao.Where(a => a.CodAviModulo == m.CodAviModulo && a.CodAviCategoria == c.CodAviCategoria).Select(a => a.AviIndicador).Distinct().ToList();
+                        foreach (AviIndicador i in indicadores)
+                        {
+                            MapAviIndicador indicador = new MapAviIndicador();
+                            indicador.Indicador = i;
+
+                            List<AviQuestao> questoesIndicador = lstQuestao.Where(a => a.CodAviModulo == m.CodAviModulo && a.CodAviCategoria == c.CodAviCategoria && a.CodAviIndicador == i.CodAviIndicador).ToList();
+
+                            indicador.Questoes.AddRange(questoesIndicador);
+
+                            categoria.Indicadores.Add(indicador);
+                        }
+
+                        modulo.Categorias.Add(categoria);
+                    }
+                    modulos.Add(modulo);
+                }
+
+                return modulos;
+            }
+        }
+
         public static void Inserir(AvalAvi avi)
         {
             contexto.AvalAvi.Add(avi);

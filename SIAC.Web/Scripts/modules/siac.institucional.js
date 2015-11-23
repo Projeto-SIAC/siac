@@ -112,10 +112,11 @@ siac.Institucional.Configurar = (function () {
         $('.tabular.menu .item').tab();
         $('h3').popup();
         $('.ui.accordion').accordion({ animateChildren: false });
-        $('.cancelar.button').popup({
-            on: 'click',
-            inline: true
+        $('.floated.remover.button').popup({ on: 'click', inline: true });
+        $('.tab.questoes .remover.button.tiny').click(function () {
+            deletarQuestao(this);
         });
+        $('.cancelar.button').popup({ on: 'click', inline: true });
         $('.ui.checkbox').checkbox({
             onChange: function () {
                 var checked = $(this).is(':checked');
@@ -263,6 +264,11 @@ siac.Institucional.Configurar = (function () {
                         ok = false;
                     }
                 }
+                if ($('#chkAlternativaDiscursiva').is(':checked')) {
+                    if (!$('#txtAlternativaDiscursiva').val()) {
+                        ok = false;
+                    }
+                }
                 if (ok) {
                     validado = true;
                 }
@@ -316,7 +322,7 @@ siac.Institucional.Configurar = (function () {
                                                         '<div class="accordion">' +
                                                             '<div class="title">' +
                                                                 '<i class="dropdown icon"></i>' +
-                                                                    'Questão ' + _qteQuestoes +
+                                                                     enunciado.encurtarTextoEm(50) +
                                                             '</div>' +
                                                             '<div class="content" data-questao="' + questaoId + '">' +
                                                                 '<div class="ui segment">' +

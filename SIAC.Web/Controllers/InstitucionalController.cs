@@ -67,15 +67,21 @@ namespace SIAC.Controllers
         }
         // GET: institucional/Configurar
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
-        public ActionResult Configurar()
+        public ActionResult Configurar(string codigo)
         {
-            ViewModels.InstitucionalGerarQuestaoViewModel model = new ViewModels.InstitucionalGerarQuestaoViewModel();
-            model.Modulos = AviModulo.ListarOrdenadamente();
-            model.Categorias = AviCategoria.ListarOrdenadamente();
-            model.Indicadores = AviIndicador.ListarOrdenadamente();
-            model.Tipos = TipoQuestao.ListarOrdenadamente();
+            AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
+            if (avi != null)
+            {
+                ViewModels.InstitucionalGerarQuestaoViewModel model = new ViewModels.InstitucionalGerarQuestaoViewModel();
+                model.Modulos = AviModulo.ListarOrdenadamente();
+                model.Categorias = AviCategoria.ListarOrdenadamente();
+                model.Indicadores = AviIndicador.ListarOrdenadamente();
+                model.Tipos = TipoQuestao.ListarOrdenadamente();
+                model.Avi = avi;
 
-            return View(model);
+                return View(model);
+            }
+            return RedirectToAction("Index");
         }
         // POST: institucional/CadastrarModulo
         [HttpPost]
@@ -137,10 +143,8 @@ namespace SIAC.Controllers
                 questao.CodAviIndicador = int.Parse(form["ddlIndicador"]);
                 questao.CodOrdem = AviQuestao.ObterNovaOrdem(avi, questao.CodAviModulo, questao.CodAviCategoria, questao.CodAviIndicador);
 
-
-                questao.Enunciado = form["txtEnunciado"];
-                questao.Observacao = form["txtObservacao"];
-
+                questao.Enunciado = form["txtEnunciado"].Trim();
+                questao.Observacao = !String.IsNullOrEmpty(form["txtObservacao"]) ? form["txtObservacao"].RemoveSpaces() : null;
 
                 if (int.Parse(form["ddlTipo"]) == 1)
                 {

@@ -20,6 +20,66 @@
     @* Questões da AVI *@
     <div class="ui bottom attached tab segment questoes" data-tab="questoes">
         <div class="ui fluid styled accordion">
+            @foreach (var modulo in Model.Avi.MapQuestoes)
+            {
+                <div class="title"><i class="dropdown icon"></i>@modulo.Modulo.Descricao</div>
+                <div class="content" data-modulo="@modulo.Modulo.CodAviModulo">
+                    <div class="accordion">
+                        @foreach (var categoria in modulo.Categorias)
+                        {
+                            <div class="title"><i class="dropdown icon"></i>@categoria.Categoria.Descricao</div>
+                            <div class="content" data-categoria="@categoria.Categoria.CodAviCategoria">
+                                <div class="accordion">
+                                    @foreach (var indicador in categoria.Indicadores)
+                                    {
+                                        <div class="title"><i class="dropdown icon"></i>@indicador.Indicador.Descricao</div>
+                                        <div class="content" data-indicador="@indicador.Indicador.CodAviIndicador">
+                                            <div class="accordion">
+                                                @foreach (var questao in indicador.Questoes)
+                                                {
+                                                    <div class="title">
+                                                        <i class="dropdown icon"></i>
+                                                        @questao.Enunciado.ToShortString(50)
+                                                    </div>
+                                                    <div class="content" data-questao="@questao.CodOrdem">
+                                                        <div class="ui segment">
+                                                            <div class="ui right floated remover button">Remover</div>
+                                                            <div class="ui popup">
+                                                                <div class="header">Tem certeza?</div>
+                                                                <div style="padding:0!important;" class="content">
+                                                                    <p>Essa ação não poderá ser desfeita.</p>
+                                                                    <div class="ui right aligned remover button tiny">Sim, remover</div>
+                                                                </div>
+                                                            </div>
+                                                            <h3 class="ui dividing header" data-content="@questao.Observacao">@questao.Enunciado.Replace(Environment.NewLine, "</br>")</h3>
+                                                            
+                                                                @if (questao.FlagDiscursiva.HasValue && questao.FlagDiscursiva.Value)
+                                                                {
+                                                                    <input class="input" placeholder="Resposta" type="text" readonly />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="ui very relaxed list">
+                                                                        @foreach (var alternativa in questao.AviQuestaoAlternativa)
+                                                                        {
+                                                                            <div class="item">
+                                                                                <b>@alternativa.CodAlternativa)</b> @alternativa.Enunciado
+                                                                            </div>
+                                                                        }
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
         </div>
     </div>
     @* Gerais da Questão *@

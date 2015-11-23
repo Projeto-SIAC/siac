@@ -382,6 +382,7 @@
     <Compile Include="Models\Justificacao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AviMapping.cs" />
     <Compile Include="Models\MatrizCurricular.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>

@@ -8,5 +8,6 @@ namespace SIAC.ViewModels
         public List<Models.AviCategoria> Categorias { get; set; }
         public List<Models.AviIndicador> Indicadores { get; set; }
         public List<Models.TipoQuestao> Tipos { get; set; }
+        public Models.AvalAvi Avi { get; set; }
     }
 }
