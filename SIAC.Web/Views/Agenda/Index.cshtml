@@ -10,10 +10,7 @@
 @section Scripts{
     @Scripts.Render("~/bundles/fullcalendar/js")    
     <script>
-        $(document).ready(function () {
-
-            // page is now ready, initialize the calendar...
-
+        $(function () {
             $('#calendar').fullCalendar({
                 header: {
                         left:   'title',
@@ -31,6 +28,11 @@
                         url: '/dashboard/agenda/academicas',
                         type: 'POST',
                         color: '#2196F3'
+                    },
+                    {
+                        url: '/dashboard/agenda/reposicoes',
+                        type: 'POST',
+                        color: '#EF5350'
                     },
                     {
                         url: '/dashboard/agenda/horarios',

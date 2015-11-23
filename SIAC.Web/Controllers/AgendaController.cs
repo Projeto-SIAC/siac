@@ -37,6 +37,28 @@ namespace SIAC.Controllers
             return Json(retorno);
         }
 
+        // POST: Agenda/Reposicoes?start=2013-12-01&end=2014-01-12&_=1386054751381
+        [HttpPost]
+        public ActionResult Reposicoes(string start, string end)
+        {
+            var inicio = DateTime.Parse(start);
+            var termino = DateTime.Parse(end);
+
+            var usuario = Models.Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
+            var lstAgendadas = Models.AvalAcadReposicao.ListarAgendadaPorUsuario(usuario);
+
+            var retorno = lstAgendadas.Select(a => new Models.Evento
+            {
+                id = a.Avaliacao.CodAvaliacao,
+                title = a.Avaliacao.CodAvaliacao,
+                start = a.Avaliacao.DtAplicacao.Value.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"),
+                end = a.Avaliacao.DtAplicacao.Value.AddMinutes(a.Avaliacao.Duracao.Value).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"),
+                url = Url.Action("Agendada", "Reposicao", new { codigo = a.Avaliacao.CodAvaliacao })
+            });
+
+            return Json(retorno);
+        }
+
         // POST: Agenda/Certificacoes?start=2013-12-01&end=2014-01-12&_=1386054751381
         [HttpPost]
         public ActionResult Certificacoes(string start, string end)
