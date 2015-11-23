@@ -103,7 +103,6 @@ siac.Institucional.Gerar = (function () {
 })();
 
 siac.Institucional.Configurar = (function () {
-    var _qteQuestoes = 0;
     var _codAvaliacao;
 
     function iniciar() {
@@ -113,6 +112,9 @@ siac.Institucional.Configurar = (function () {
         $('h3').popup();
         $('.ui.accordion').accordion({ animateChildren: false });
         $('.floated.remover.button').popup({ on: 'click', inline: true });
+        $('.floated.editar.button').click(function () {
+            editarQuestao(this);
+        })
         $('.tab.questoes .remover.button.tiny').click(function () {
             deletarQuestao(this);
         });
@@ -128,7 +130,6 @@ siac.Institucional.Configurar = (function () {
                 }
             }
         });
-
         $('#ddlModulo').dropdown('set selected', 1);
         $('#ddlCategoria').dropdown('set selected', 1);
         $('#ddlIndicador').dropdown('set selected', 1);
@@ -232,7 +233,7 @@ siac.Institucional.Configurar = (function () {
     }
 
     function verificar() {
-        $('form').removeClass('error');
+        $('form.cadastro').removeClass('error');
         $('.ui.error.message .list').html('');
         var validado = false;
         if (!$('#ddlModulo').val()) {
@@ -286,11 +287,10 @@ siac.Institucional.Configurar = (function () {
         if (validado) {
             inserirQuestao();
         }
-        else $('form').addClass('error');
+        else $('form.cadastro').addClass('error');
     }
 
     function adicionarQuestao(questaoId) {
-        _qteQuestoes++;
         //OBTENDO DADOS DA QUESTÃO
         var moduloCod = $('#ddlModulo :selected').val();
         var modulo = $('#ddlModulo :selected').text();
@@ -333,6 +333,7 @@ siac.Institucional.Configurar = (function () {
                                                                             '<p>Essa ação não poderá ser desfeita.</p>' +
                                                                             '<div class="ui right aligned remover button tiny">Sim, remover</div>' +
                                                                         '</div>' +
+                                                                        '<div class="ui right floated editar button">Editar</div>'+
                                                                     '</div>' +
                                                                     '<h3 class="ui dividing header" data-content="' + observacao + '">' + enunciado + '</h3>' +
                                                                     '<div class="ui very relaxed list">' +
@@ -440,7 +441,7 @@ siac.Institucional.Configurar = (function () {
 
     function inserirQuestao() {
         $('.adicionar.questao.button').addClass('loading');
-        var form = $('.form').serialize();
+        var form = $('form.cadastro').serialize();
         $.ajax({
             type: 'POST',
             url: '/institucional/CadastrarQuestao/' + _codAvaliacao,
@@ -488,6 +489,36 @@ siac.Institucional.Configurar = (function () {
         });
     }
 
+    function editarQuestao(button) {
+
+        var content = $(button).parent().parent().parent().parent();
+
+        var enunciado = content.find('h3').text();
+        var observacao = content.find('h3').data('content');
+
+        $('#txtEditarEnunciado').val(enunciado);
+        $('#txtEditarObservacao').val(observacao);
+
+        var qteAlternativas = content.find('item').length;
+        console.log(qteAlternativas);
+        if (qteAlternativas > -1) {
+            var indice = 1;
+            
+            content.find('item').map(function () {
+
+                var alternativa = $(this).text();
+
+                var ALTERNATIVA_TEMPLATE = '<div class="field required">' +
+                                                '<label for="txtEditarAlternativa' + indice + '">Enunciado</label>' +
+                                                '<textarea id="txtEditarAlternativa' + indice + '" name="txtEditarAlternativa' + indice + '" rows="2" required placeholder="Alternativa...">'+alternativa+'</textarea>' +
+                                            '</div>';
+
+                content.append(ALTERNATIVA_TEMPLATE);
+            })
+        }
+
+        $('.ui.editar.modal').modal('show');   
+    }
 
     return {
         iniciar: iniciar

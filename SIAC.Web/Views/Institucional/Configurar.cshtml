@@ -6,7 +6,35 @@
 
 <h2>@ViewBag.Title</h2>
 
-<form class="ui form">
+
+<div class="ui editar modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Editar Questão
+    </div>
+    <div class="content">
+        <form class="ui segment form edicao">
+            <div class="ui error message">
+                <div class="header">Verifique</div>
+                <ul class="list"></ul>
+            </div>
+            <div class="field required">
+                <label for="txtEditarEnunciado">Enunciado</label>
+                <textarea id="txtEditarEnunciado" name="txtEditarEnunciado" rows="2" required placeholder="Enunciado..."></textarea>
+            </div>
+            <div class="field">
+                <label for="txtEditarObservacao">Observação</label>
+                <textarea id="txtEditarObservacao" name="txtEditarObservacao" rows="2" placeholder="Observação..."></textarea>
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Cancelar</div>
+        <div class="ui approve button">Salvar Alterações</div>
+    </div>
+</div>
+
+<form class="ui form cadastro">
     <div class="ui error message">
         <div class="header">Verifique</div>
         <ul class="list"></ul>
@@ -51,6 +79,7 @@
                                                                     <div class="ui right aligned remover button tiny">Sim, remover</div>
                                                                 </div>
                                                             </div>
+                                                            <div class="ui right floated editar button">Editar</div>
                                                             <h3 class="ui dividing header" data-content="@questao.Observacao">@questao.Enunciado.Replace(Environment.NewLine, "</br>")</h3>
                                                             
                                                                 @if (questao.FlagDiscursiva.HasValue && questao.FlagDiscursiva.Value)
@@ -82,6 +111,7 @@
             }
         </div>
     </div>
+
     @* Gerais da Questão *@
     <div class="ui bottom attached active tab segment gerais" data-tab="gerais">
         <div class="field required">
@@ -125,6 +155,7 @@
             </select>
         </div>
     </div>
+
     @* Detalhes da Questão *@
     <div class="ui bottom attached tab segment detalhes" data-tab="detalhes">
         <div class="field required">
@@ -136,6 +167,7 @@
             <textarea id="txtObservacao" name="txtObservacao" rows="2" placeholder="Observação..."></textarea>
         </div>
     </div>
+
     @* Alternativas da Questão *@
     <div class="ui bottom attached tab segment questao objetiva" data-tab="alternativas">
         <input id="txtQtdAlternativas" name="txtQtdAlternativas" type="number" hidden />
