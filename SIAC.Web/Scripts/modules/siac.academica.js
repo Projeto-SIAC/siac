@@ -6,6 +6,10 @@ siac.Academica.Agendar = (function () {
             .modal()
         ;
 
+        $('.ui.accordion').accordion({
+            animateChildren: false
+        });
+
         $('.ui.dropdown')
             .dropdown()
         ;

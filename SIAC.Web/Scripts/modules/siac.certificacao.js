@@ -253,6 +253,10 @@ siac.Certificacao.Configurar = (function () {
             }
         });
 
+        $('.ui.accordion').accordion({
+            animateChildren: false
+        });
+
         atualizarQuantidadeView();
 
     }
@@ -472,6 +476,10 @@ siac.Certificacao.Agendar = (function () {
         $('.ui.dropdown')
             .dropdown()
         ;
+
+        $('.ui.accordion').accordion({
+            animateChildren: false
+        });
 
         $('.cancelar.button').popup({ on: 'click' });
 
@@ -715,6 +723,10 @@ siac.Certificacao.Avaliados = (function () {
         $('.ui.search')
           .search()
         ;
+
+        $('.ui.accordion').accordion({
+            animateChildren: false
+        });
 
         $('.selecionar.button').click(function () {
             selecionar();
