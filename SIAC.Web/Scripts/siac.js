@@ -324,9 +324,9 @@ siac.Anexo = siac.Anexo || (function () {
         });
         $('.card.anexo.codigo').off().click(function () {
             var $this = $(this);
-            var codigo = $this.find('code').data('codigo');
-
-            $description = $this.find('.content .description');
+            var codigo = $this.find('textarea.codigo').val();
+            
+            $description = $this.find(':not(.extra).content .description');
             var observacao = $description.data('observacao') ? $description.data('observacao') : $description.text();
 
             $description = $this.find('.extra.content .description');
@@ -339,10 +339,14 @@ siac.Anexo = siac.Anexo || (function () {
     function expandirCodigo(codigo, observacao, fonte) {
         $('.ui.anexo.modal').remove();
 
+        codigo = codigo.substituirTodos('&', '&gt;');
+        codigo = codigo.substituirTodos('<', '&lt;');
+        codigo = codigo.substituirTodos('>', '&gt;');
+
         $modal = $('<div></div>').addClass('ui large anexo basic modal');
 
         $modal.append($('<div class="ui centered header"></div>').text(observacao));
-        $modal.append($('<div class="content"></div>').html($('<code></code>').html(codigo.substituirTodos('\n', '<br/>').substituirTodos('\t', '&nbsp;&nbsp;&nbsp;&nbsp;'))));
+        $modal.append($('<div class="content"></div>').html($('<pre></pre>').html($('<code></code>').html(codigo))));
         $modal.append($('<div class="description" style="text-align:center;"></div>').text(fonte));
 
         $('body').append($modal);

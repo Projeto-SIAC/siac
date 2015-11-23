@@ -2,9 +2,10 @@
 <a class="ui anexo codigo card">
     <div class="content">
         <div class="header">
-            <code @Html.Raw((Model.Anexo.GetString().Length > 30 ? "data-codigo=\"" + Model.Anexo.GetString() + "\"" : ""))>
+            <code>
                 @Model.Anexo.GetString().ToShortString(50)
             </code>
+            <textarea class="codigo" hidden>@Model.Anexo.GetString()</textarea>
         </div>
         @if (!String.IsNullOrWhiteSpace(Model.Legenda))
         {

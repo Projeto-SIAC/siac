@@ -137,6 +137,7 @@ namespace SIAC.Controllers
 
         // POST: Questao/Confirmar
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Confirmar(FormCollection formCollection)
         {
             Questao questao = new Questao();

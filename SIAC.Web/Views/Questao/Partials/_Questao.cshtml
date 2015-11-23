@@ -69,17 +69,7 @@ else
             <div class="ui cards">
                 @foreach (var anexo in Model.QuestaoAnexo)
                 {
-                    switch (anexo.CodTipoAnexo)
-                    {
-                        case 1:
-                            @Html.Partial("_AnexoImagem", anexo)
-                            break;
-                        case 2:
-                            @Html.Partial("_AnexoCodigo", anexo)
-                            break;
-                        default:
-                            break;
-                    }
+                    @Html.Partial("_Anexo", anexo)
                 }
             </div>
         </div>

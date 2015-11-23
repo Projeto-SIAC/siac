@@ -69,14 +69,7 @@
             <div class="content">
                 @foreach (var anexo in Model.QuestaoAnexo)
                 {
-                    switch (anexo.CodTipoAnexo)
-                    {
-                        case 1:
-                            @Html.Partial("_AnexoImagem", anexo)
-                            break;
-                        default:
-                            break;
-                    }
+                    @Html.Partial("_Anexo", anexo)
                 }
             </div>
         </div>
