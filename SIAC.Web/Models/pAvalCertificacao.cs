@@ -28,15 +28,7 @@ namespace SIAC.Models
         {
             contexto.AvalCertificacao.Add(avalCertificacao);
             contexto.SaveChanges();
-        }
-
-        public static bool AlternarLiberar(string codAvaliacao)
-        {
-            AvalCertificacao avalAcad = ListarPorCodigoAvaliacao(codAvaliacao);
-            avalAcad.Avaliacao.FlagLiberada = !avalAcad.Avaliacao.FlagLiberada;
-            contexto.SaveChanges();
-            return avalAcad.Avaliacao.FlagLiberada;
-        }
+        }        
 
         public static List<AvalCertificacao> ListarCorrecaoPendentePorProfessor(int codProfessor)
         {

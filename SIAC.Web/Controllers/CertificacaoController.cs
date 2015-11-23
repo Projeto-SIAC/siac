@@ -487,7 +487,11 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult AlternarLiberar(string codAvaliacao)
         {
-            return Json(AvalCertificacao.AlternarLiberar(codAvaliacao));
+            if (!String.IsNullOrEmpty(codAvaliacao))
+            {
+                return Json(Avaliacao.AlternarFlagLiberada(codAvaliacao));
+            }
+            return Json(false);
         }
 
         // POST: Certificacao/ContagemRegressiva

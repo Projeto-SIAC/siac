@@ -469,10 +469,72 @@ namespace SIAC.Controllers
         }
 
         [HttpGet]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Agendada(string codigo)
         {
-            return null;
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                var usuario = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula);
+                var repo = AvalAcadReposicao.ListarAgendadaPorUsuario(usuario).FirstOrDefault(a => a.Avaliacao.CodAvaliacao.ToLower() == codigo.ToLower());
+                if (repo != null)
+                {
+                    return View(repo);
+                }
+            }
+            return RedirectToAction("Detalhe", new { codigo = codigo });
+        }
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult Arquivar(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                return Json(Avaliacao.AlternarFlagArquivo(codigo));
+            }
+            return Json(false);
+        }
+
+        [HttpPost]
+        public ActionResult ContagemRegressiva(string codAvaliacao)
+        {
+            AvalAcadReposicao aval = AvalAcadReposicao.ListarPorCodigoAvaliacao(codAvaliacao);
+            string strTempo = aval.Avaliacao.DtAplicacao.Value.ToLeftTimeString();
+            int qteMilissegundo = 0;
+            bool flagLiberada = aval.Avaliacao.FlagLiberada && aval.Avaliacao.DtAplicacao.Value.AddMinutes(aval.Avaliacao.Duracao.Value) > DateTime.Now;
+            if (strTempo != "Agora")
+            {
+                char tipo = strTempo[(strTempo.IndexOf(' ')) + 1];
+                switch (tipo)
+                {
+                    case 'd':
+                        qteMilissegundo = 0;
+                        break;
+                    case 'h':
+                        qteMilissegundo = 1 * 60 * 60 * 1000;
+                        break;
+                    case 'm':
+                        qteMilissegundo = 1 * 60 * 1000;
+                        break;
+                    case 's':
+                        qteMilissegundo = 1 * 1000;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return Json(new { Tempo = strTempo, Intervalo = qteMilissegundo, FlagLiberada = flagLiberada });
+        }
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult AlternarLiberar(string codAvaliacao)
+        {
+            if (!String.IsNullOrEmpty(codAvaliacao))
+            {
+                return Json(Avaliacao.AlternarFlagLiberada(codAvaliacao));
+            }
+            return Json(false);
         }
     }
 }
+ 

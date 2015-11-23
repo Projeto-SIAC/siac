@@ -69,6 +69,32 @@ namespace SIAC
 
             return text;
         }
+
+        public static string ToHtml(this string str, params string[] tags)
+        {
+            string html = String.Empty;
+
+            var strs = str.Split('\n', '\r');
+            foreach (var p in strs)
+            {
+                if (!String.IsNullOrWhiteSpace(p))
+                {
+                    tags = tags.Reverse().ToArray();
+
+                    var text = p;
+
+                    foreach (var tag in tags)
+                    {
+                        text = $"<{tag}>{text}</{tag}>";
+                    }
+
+                    html += text;
+                }
+            }
+
+            return html;
+        }
+
         #endregion
 
         // Int

@@ -532,3 +532,184 @@ siac.Reposicao.Index = (function () {
         iniciar: iniciar
     }
 })();
+
+siac.Reposicao.Agendada = (function () {
+    var _codAvaliacao, _categoriaUsuario;
+
+    function iniciar() {
+        if (!_categoriaUsuario) {
+            $elemento = $('[data-categoria]');
+            _categoriaUsuario = $elemento.attr('data-categoria');
+            $elemento.removeAttr('data-categoria');
+        }
+
+        if (!_codAvaliacao) {
+            _codAvaliacao = window.location.pathname.match(/repo[0-9]+$/)[0];
+        }
+
+        $('.ui.accordion').accordion({
+            animateChildren: false
+        });
+
+        $('.arquivar.button').click(function () {
+            var $_this = $(this);
+            $_this.addClass('loading');
+            $.ajax({
+                url: '/Dashboard/Avaliacao/Reposicao/Arquivar/' + _codAvaliacao,
+                type: 'POST',
+                success: function (data) {
+                    if (data) {
+                        window.location.href = '/dashboard/avaliacao/reposicao/detalhe/' + _codAvaliacao;
+                    }
+                },
+                error: function () {
+                    $_this.removeClass('loading');
+                    siac.mensagem('Ocorreu um erro inesperado na tentativa de arquivar a avaliação.', 'Tente novamente')
+                }
+            });
+        });
+
+        siac.Anexo.iniciar();
+
+        abrirHub();
+
+        contagemRegressiva(1000);
+    }
+
+    function contagemRegressiva(intervalo) {
+        setTimeout(function () {
+            $.ajax({
+                type: 'POST',
+                url: '/Dashboard/Avaliacao/Reposicao/ContagemRegressiva',
+                data: { codAvaliacao: _codAvaliacao },
+                success: function (data) {
+                    $('#contagem').text(data.Tempo).parent().transition('flash');
+                    if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
+                        $('.configurar.button').hide();
+                        $('.reagendar.button').hide();
+                        $('.iniciar.button').removeClass('disabled');
+                        $('.acompanhar.button').removeClass('disabled');
+                    }
+                    else if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == false) {
+                        $('.configurar.button').show();
+                        $('.reagendar.button').show();
+                        $('.iniciar.button').addClass('disabled');
+                        $('.acompanhar.button').addClass('disabled');
+                    }
+                    if (data.Intervalo > 0) {
+                        contagemRegressiva(data.Intervalo);
+                    }
+                }
+            });
+        }, intervalo);
+    }
+
+    function abrirHub() {
+        var hub = $.connection.reposicaoHub;
+        if (_categoriaUsuario == 1) {
+            hub.client.liberar = function (strCodigo) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Dashboard/Avaliacao/Reposicao/ContagemRegressiva',
+                    data: { codAvaliacao: _codAvaliacao },
+                    success: function (data) {
+                        alert('O professor liberou a avaliação.');
+                        if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
+                            $('.iniciar.button').removeClass('disabled').text('Iniciar');
+                            $('#mensagem').html('\
+                                        <i class="checkmark icon"></i>\
+                                        <div class="content">\
+                                            Seu professor liberou a prova\
+                                            <div class="sub header">Você já pode iniciar</div>\
+                                        </div>'
+                            );
+                        }
+                        else if (data.FlagLiberada == true) {
+                            $('.iniciar.button').addClass('disabled');
+                            $('#mensagem').html('\
+                                        <i class="checkmark icon"></i>\
+                                        <div class="content">\
+                                            Seu professor liberou a prova\
+                                            <div class="sub header">Você poderá iniciar assim que chegar a hora de aplicação</div>\
+                                        </div>'
+                            );
+                        }
+                    }
+                });
+            };
+            hub.client.bloquear = function (strCodigo) {
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Dashboard/Avaliacao/Reposicao/ContagemRegressiva',
+                    data: { codAvaliacao: _codAvaliacao },
+                    success: function (data) {
+                        if (data.FlagLiberada == false) {
+                            alert('O professor bloqueou a avaliação.');
+                            $('.iniciar.button').addClass('disabled');
+                            $('#mensagem').html('\
+                                        <i class="clock icon"></i>\
+                                        <div class="content">\
+                                            Seu professor não liberou a prova ainda\
+                                            <div class="sub header">Aguarde a liberação da avaliação para iniciar</div>\
+                                        </div>'
+                            );
+                        }
+                    }
+                });
+            };
+            $.connection.hub.start().done(function () {
+                hub.server.realizar(_codAvaliacao);
+            });
+        }
+        else if (_categoriaUsuario == 2) {
+            $.connection.hub.start().done(function () {
+                $('.liberar.button').click(function () {
+                    $('.liberar.button').addClass('loading');
+                    $.ajax({
+                        url: '/Dashboard/Avaliacao/Reposicao/AlternarLiberar',
+                        type: 'POST',
+                        data: { codAvaliacao: _codAvaliacao },
+                        success: function (data) {
+                            if (data == true) {
+                                hub.server.liberar(_codAvaliacao, true);
+                                $('.liberar.button').addClass('active').removeClass('loading').text('Liberada');
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/Dashboard/Avaliacao/Reposicao/ContagemRegressiva',
+                                    data: { codAvaliacao: _codAvaliacao },
+                                    success: function (data) {
+                                        if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
+                                            $('.reagendar.button').hide();
+                                            $('.configurar.button').hide();
+                                            $('.acompanhar.button').removeClass('disabled');
+                                        }
+                                        else {
+                                            $('.configurar.button').show();
+                                            $('.reagendar.button').show();
+                                            $('.acompanhar.button').addClass('disabled');
+                                        }
+                                    }
+                                });
+                            }
+                            else {
+                                hub.server.liberar(_codAvaliacao, false);
+                                $('.configurar.button').show();
+                                $('.reagendar.button').show();
+                                $('.liberar.button').removeClass('active').removeClass('loading').text('Liberar');
+                            }
+                        },
+                        error: function () {
+                            $('.liberar.button').removeClass('loading');
+                            siac.mensagem('Ocorreu um erro inesperado durante o processo. Verifique sua internet e tente novamente.', 'Liberar avaliação');
+                        }
+                    });
+                });
+            });
+        }
+    };
+
+    return {
+        iniciar: iniciar
+    }
+})();

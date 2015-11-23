@@ -245,6 +245,14 @@ namespace SIAC.Models
             return aval.FlagArquivo;
         }
 
+        public static bool AlternarFlagLiberada(string codAvaliacao)
+        {
+            Avaliacao aval = ListarPorCodigoAvaliacao(codAvaliacao);
+            aval.FlagLiberada = !aval.FlagLiberada;
+            contexto.SaveChanges();
+            return aval.FlagLiberada;
+        }
+
         public static void AtualizarQuestoes(string codigo,int[] questoes)
         {
             Avaliacao aval = ListarPorCodigoAvaliacao(codigo);

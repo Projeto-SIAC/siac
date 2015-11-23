@@ -151,6 +151,9 @@
         else if (pathname == '/historico/avaliacao/reposicao') {
             siac.Reposicao.Index.iniciar();
         }
+        else if (/\/historico\/avaliacao\/reposicao\/agendada\/repo[0-9]+$/.test(pathname)) {
+            siac.Reposicao.Agendada.iniciar();
+        }
     }
 
     var HTML_MENSAGEM_TEMPLATE = '<div class="ui small mensagem modal">' +

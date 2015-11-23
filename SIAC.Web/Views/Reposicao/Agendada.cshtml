@@ -1,16 +1,16 @@
-﻿@model AvalCertificacao
+﻿@model AvalAcadReposicao
 
 @{
-    ViewBag.Title = "Certificação " + Model.Avaliacao.CodAvaliacao;
+    ViewBag.Title = "Reposição " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
-
     var CodCategoria = Sessao.UsuarioCategoriaCodigo;
     var FlagAgora = Model.Avaliacao.FlagAgora;
     var FlagVencida = Model.Avaliacao.FlagVencida;
+    int contador = 0;
 }
 
 @section Scripts {
-    @Scripts.Render("~/bundles/js/certificacao")
+    @Scripts.Render("~/bundles/js/reposicao")
     @Scripts.Render("~/bundles/signalR")
     <script src="~/signalr/hubs"></script>
 }
@@ -34,9 +34,7 @@
 
 <div class="ui basic segment" data-categoria="@CodCategoria">
     <div class="ui fluid styled accordion">
-        <div class="active title">
-            <i class="dropdown icon"></i>Detalhes
-        </div>
+        <div class="active title"><i class="dropdown icon"></i>Detalhes</div>
         <div class="active content">
             <table class="ui striped table">
                 <thead>
@@ -49,22 +47,26 @@
                 </thead>
                 <tbody>
                     @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
-                    {
+            {
                         <tr>
                             <td>
+                                @* disciplina *@
                                 <b>@disc.Descricao</b>
                             </td>
                             <td class="ui labels">
+                                @* temas *@
                                 @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
                                 {
                                     <div class="ui tag label">@avalTema.Tema.Descricao</div>
                                 }
                             </td>
                             <td class="ui labels">
+                                @* qte de questões *@
                                 <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
                                 <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
                             </td>
                             <td>
+                                @* dificuldade *@
                                 @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
                             </td>
                         </tr>
@@ -72,15 +74,12 @@
                 </tbody>
             </table>
         </div>
-
-        <div class="title">
-            <i class="dropdown icon"></i>Agendamento
-        </div>
+        <div class="title"><i class="dropdown icon"></i>Agendamento</div>
         <div class="content">
             <table class="ui striped table">
                 <thead>
                     <tr>
-                        <th>Quant. de Avaliados</th>
+                        <th>Quant. de Alunos</th>
                         <th>Data</th>
                         <th>Horário</th>
                         <th>Sala</th>
@@ -89,32 +88,29 @@
                 <tbody>
                     <tr>
                         <td>
-                            @Model.PessoaFisica.Count
+                            @Model.Justificacao.Count
                         </td>
                         <td>
+                            @* Data *@
                             @Model.Avaliacao.DtAplicacao.Value.ToString("ddd, dd/MM/yyyy")
                         </td>
                         <td>
+                            @* Horário *@
                             Das @Model.Avaliacao.DtAplicacao.Value.ToShortTimeString() até @Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToShortTimeString()
                         </td>
                         <td>
+                            @* Sala *@
                             @Model.Sala.Descricao
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-
         @if (CodCategoria == 2)
         {
-            <div class="title">
-                <i class="dropdown icon"></i>Questões
-            </div>
+            <div class="title"><i class="dropdown icon"></i>Questões</div>
             <div class="content">
                 <div class="ui one cards" style="max-height: 25em; overflow-y: auto">
-                    @{
-                        int contador = 0;
-                    }
                     @foreach (Questao questao in Model.Avaliacao.Questao)
                     {
                         <div class="card">
@@ -162,14 +158,13 @@
                                 </div>
                             }
                         </div>
-                        
-                        contador++;                        
+                        contador++;
                     }
+
                 </div>
             </div>
         }
     </div>
-
     @if (CodCategoria == 1)
     {
         if (!FlagVencida && !Model.Avaliacao.FlagLiberada)

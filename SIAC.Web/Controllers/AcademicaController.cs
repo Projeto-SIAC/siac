@@ -575,7 +575,11 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult AlternarLiberar(string codAvaliacao)
         {
-            return Json(AvalAcademica.AlternarLiberar(codAvaliacao));
+            if (!String.IsNullOrEmpty(codAvaliacao))
+            {
+                return Json(Avaliacao.AlternarFlagLiberada(codAvaliacao));
+            }
+            return Json(false);
         }
 
         //GET: Avaliacao/Academica/Acompanhar/ACAD201520007

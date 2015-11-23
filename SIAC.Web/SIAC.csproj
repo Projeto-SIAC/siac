@@ -270,6 +270,7 @@
     <Compile Include="Helpers\Sessao.cs" />
     <Compile Include="Helpers\StringExt.cs" />
     <Compile Include="Helpers\TimeLog.cs" />
+    <Compile Include="Hubs\ReposicaoHub.cs" />
     <Compile Include="Hubs\AcademicaHub.cs" />
     <Compile Include="Hubs\CertificacaoHub.cs" />
     <Compile Include="Hubs\Models.cs" />
@@ -673,6 +674,7 @@
     <Content Include="Views\Shared\Partials\_AnexoCodigo.cshtml" />
     <Content Include="Views\Institucional\Configuracao.cshtml" />
     <Content Include="Views\Shared\Partials\_Anexo.cshtml" />
+    <Content Include="Views\Reposicao\Agendada.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

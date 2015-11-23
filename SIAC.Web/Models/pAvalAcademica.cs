@@ -99,15 +99,16 @@ namespace SIAC.Models
         {
             return contexto.AvalAcademica
                 .Where(a => 
-                    (
-                        a.Turma.Curso.CodColabCoordenador == codColaborador 
-                        || a.Turma.Curso.Diretoria.CodColaboradorDiretor == codColaborador 
-                        || a.Turma.Curso.Diretoria.Campus.CodColaboradorDiretor == codColaborador 
-                        || a.Turma.Curso.Diretoria.Campus.Instituicao.Reitoria.Where(r=>r.CodColaboradorReitor == codColaborador).Count() > 0
-                    )
-                    && a.Avaliacao.DtAplicacao.HasValue
+                    a.Avaliacao.DtAplicacao.HasValue
                     && a.Avaliacao.AvalPessoaResultado.Count == 0
-                    && !a.Avaliacao.FlagArquivo)
+                    && !a.Avaliacao.FlagArquivo
+                    &&
+                    (
+                        a.Turma.Curso.CodColabCoordenador == codColaborador
+                        || a.Turma.Curso.Diretoria.CodColaboradorDiretor == codColaborador
+                        || a.Turma.Curso.Diretoria.Campus.CodColaboradorDiretor == codColaborador
+                        || a.Turma.Curso.Diretoria.Campus.Instituicao.Reitoria.Where(r => r.CodColaboradorReitor == codColaborador).Count() > 0
+                    ))
                 .OrderBy(a => a.Avaliacao.DtAplicacao)
                 .ToList();
         }
@@ -198,15 +199,7 @@ namespace SIAC.Models
             }
             return null;
         }
-
-        public static bool AlternarLiberar(string codAvaliacao)
-        {
-            AvalAcademica avalAcad = ListarPorCodigoAvaliacao(codAvaliacao);
-            avalAcad.Avaliacao.FlagLiberada = !avalAcad.Avaliacao.FlagLiberada;
-            contexto.SaveChanges();
-            return avalAcad.Avaliacao.FlagLiberada;
-        }
-
+        
         public static void Persistir()
         {
             contexto.SaveChanges();

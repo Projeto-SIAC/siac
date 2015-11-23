@@ -85,5 +85,62 @@ namespace SIAC.Models
                 .OrderByDescending(a => a.Avaliacao.DtCadastro)
                 .ToList();
         }
+
+        public static List<AvalAcadReposicao> ListarAgendadaPorAluno(int codAluno)
+        {
+            var aluno = Aluno.ListarPorCodigo(codAluno);
+
+            return contexto.AvalAcadReposicao
+                .Where(a => a.Justificacao.FirstOrDefault(j => j.CodPessoaFisica == aluno.Usuario.CodPessoaFisica) != null
+                    && a.Avaliacao.DtAplicacao.HasValue
+                    && a.Avaliacao.AvalPessoaResultado.Count == 0
+                    && !a.Avaliacao.FlagArquivo)
+                .OrderBy(a => a.Avaliacao.DtAplicacao)
+                .ToList();
+        }
+
+        public static List<AvalAcadReposicao> ListarAgendadaPorProfessor(int codProfessor)
+        {
+            return contexto.AvalAcadReposicao
+                .Where(a => a.Justificacao.Count > 0 && a.Justificacao.FirstOrDefault().CodProfessor == codProfessor
+                    && a.Avaliacao.DtAplicacao.HasValue
+                    && a.Avaliacao.AvalPessoaResultado.Count == 0
+                    && !a.Avaliacao.FlagArquivo)
+                .OrderBy(a => a.Avaliacao.DtAplicacao)
+                .ToList();
+        }
+
+        public static List<AvalAcadReposicao> ListarAgendadaPorColaborador(int codColaborador)
+        {
+            return contexto.AvalAcadReposicao
+                .Where(a =>
+                    a.Justificacao.Count > 0
+                    && a.Avaliacao.DtAplicacao.HasValue
+                    && a.Avaliacao.AvalPessoaResultado.Count == 0
+                    && !a.Avaliacao.FlagArquivo &&
+                    (
+                        a.Justificacao.FirstOrDefault().AvalPessoaResultado.Avaliacao.AvalAcademica.Turma.Curso.CodColabCoordenador == codColaborador
+                        || a.Justificacao.FirstOrDefault().AvalPessoaResultado.Avaliacao.AvalAcademica.Turma.Curso.Diretoria.CodColaboradorDiretor == codColaborador
+                        || a.Justificacao.FirstOrDefault().AvalPessoaResultado.Avaliacao.AvalAcademica.Turma.Curso.Diretoria.Campus.CodColaboradorDiretor == codColaborador
+                        || a.Justificacao.FirstOrDefault().AvalPessoaResultado.Avaliacao.AvalAcademica.Turma.Curso.Diretoria.Campus.Instituicao.Reitoria.Where(r => r.CodColaboradorReitor == codColaborador).Count() > 0
+                    ))
+                .OrderBy(a => a.Avaliacao.DtAplicacao)
+                .ToList();
+        }
+
+        public static List<AvalAcadReposicao> ListarAgendadaPorUsuario(Usuario usuario)
+        {
+            switch (usuario.CodCategoria)
+            {
+                case 1:
+                    return ListarAgendadaPorAluno(usuario.Aluno.First().CodAluno);
+                case 2:
+                    return ListarAgendadaPorProfessor(usuario.Professor.First().CodProfessor);
+                case 3:
+                    return ListarAgendadaPorColaborador(usuario.Colaborador.First().CodColaborador);
+                default:
+                    return new List<AvalAcadReposicao>();
+            }
+        }
     }
 }
