@@ -552,6 +552,80 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [Filters.AutenticacaoFilter(Categorias = new[] { 1 })]
+        public ActionResult Realizar(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAcadReposicao aval = AvalAcadReposicao.ListarPorCodigoAvaliacao(codigo);
+                if (aval.Avaliacao.FlagPendente
+                    && aval.Avaliacao.FlagLiberada
+                    && aval.Avaliacao.FlagAgora
+                    && aval.Alunos.FirstOrDefault(a => a.MatrAluno == Sessao.UsuarioMatricula) != null)
+                {
+                    Sessao.Inserir("RealizandoAvaliacao", true);
+                    Sessao.Inserir("UsuarioAvaliacao", codigo);
+                    return View(aval);
+                }
+            }
+            return RedirectToAction("Agendada", new { codigo = codigo });
+        }
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 1 })]
+        public void Desistir(string codigo)
+        {
+            int codPessoaFisica = Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula);
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAcadReposicao aval = AvalAcadReposicao.ListarPorCodigoAvaliacao(codigo);
+                if (aval.Alunos.SingleOrDefault(a => a.MatrAluno == Sessao.UsuarioMatricula) != null && aval.Avaliacao.AvalPessoaResultado.SingleOrDefault(a => a.CodPessoaFisica == codPessoaFisica) == null)
+                {
+                    AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
+                    avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
+                    avalPessoaResultado.HoraTermino = DateTime.Now;
+                    avalPessoaResultado.QteAcertoObj = 0;
+                    avalPessoaResultado.Nota = 0;
+
+                    foreach (var avaliacaoTema in aval.Avaliacao.AvaliacaoTema)
+                    {
+                        foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                        {
+                            AvalQuesPessoaResposta avalQuesPessoaResposta = new AvalQuesPessoaResposta();
+                            avalQuesPessoaResposta.CodPessoaFisica = codPessoaFisica;
+                            if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1) avalQuesPessoaResposta.RespAlternativa = -1;
+                            avalQuesPessoaResposta.RespNota = 0;
+                            avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
+                        }
+                    }
+
+                    aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
+
+                    Repositorio.GetInstance().SaveChanges();
+                    Sessao.Inserir("RealizandoAvaliacao", false);
+                    Sessao.Inserir("UsuarioAvaliacao", String.Empty);
+                }
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult Printar(string codAvaliacao, string imageData)
+        {
+            if (Sessao.UsuarioCategoriaCodigo == 1)
+            {
+                Sistema.TempDataUrlImage[codAvaliacao] = imageData;
+                return Json(true);
+            }
+            else if (Sessao.UsuarioCategoriaCodigo == 2)
+            {
+                string temp = Sistema.TempDataUrlImage[codAvaliacao];
+                Sistema.TempDataUrlImage[codAvaliacao] = String.Empty;
+                return Json(temp);
+            }
+            return Json(false);
+        }
     }
 }
  

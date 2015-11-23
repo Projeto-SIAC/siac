@@ -154,6 +154,9 @@
         else if (/\/historico\/avaliacao\/reposicao\/agendada\/repo[0-9]+$/.test(pathname)) {
             siac.Reposicao.Agendada.iniciar();
         }
+        else if (/\/dashboard\/avaliacao\/reposicao\/realizar\/repo[0-9]+$/.test(pathname)) {
+            siac.Reposicao.Realizar.iniciar();
+        }
     }
 
     var HTML_MENSAGEM_TEMPLATE = '<div class="ui small mensagem modal">' +

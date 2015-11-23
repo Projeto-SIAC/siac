@@ -676,6 +676,8 @@
     <Content Include="Views\Shared\Partials\_Anexo.cshtml" />
     <Content Include="Views\Reposicao\Agendada.cshtml" />
     <Content Include="Views\Reposicao\Imprimir.cshtml" />
+    <Content Include="Views\Reposicao\Acompanhar.cshtml" />
+    <Content Include="Views\Reposicao\Realizar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

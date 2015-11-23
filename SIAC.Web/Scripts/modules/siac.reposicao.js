@@ -713,3 +713,427 @@ siac.Reposicao.Agendada = (function () {
         iniciar: iniciar
     }
 })();
+
+siac.Reposicao.Realizar = (function () {
+    var _codAvaliacao, _matriculaUsuario, _dtTermino;
+    var _controleInterval, _controleRestante;
+
+    function iniciar() {
+        var $elemento;
+
+        $elemento = $('[data-usuario]');
+        _matriculaUsuario = $elemento.attr('data-usuario');
+        $elemento.removeAttr('data-usuario');
+
+        _codAvaliacao = window.location.pathname.match(/repo[0-9]+$/)[0];
+
+        $elemento = $('[data-termino]');
+        _dtTermino = new Date();
+        _dtTermino.setTime(Date.parse($elemento.attr('data-termino')));
+        $elemento.removeAttr('data-termino');
+
+        window.onbeforeunload = function () {
+            return 'Você está realizando uma avaliação.';
+        };
+
+        setInterval(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/Acesso/Conectado'
+            });
+        }, 1000 * 60 * 15);
+
+        $('a[href]').on('click', function () {
+            $('.ui.confirmar.modal').modal('show');
+            $('.ui.confirmar.modal #txtRef').val($(this).attr('href'));
+            return false;
+        });
+
+        $('.ui.checkbox')
+            .checkbox()
+        ;
+
+        $('.ui.informacoes.modal')
+            .modal()
+        ;
+
+        $('.informacoes.button').click(function () {
+            $('.ui.informacoes.modal').modal('show');
+        });
+
+        $('.ui.confirmar.modal')
+            .modal({
+                onApprove: function () {
+                    desistir($('.ui.confirmar.modal #txtRef').val());
+                },
+                onDeny: function () {
+                    $('.ui.segment.loading').removeClass('loading');
+                }
+            })
+        ;
+
+        $('.ui.accordion')
+            .accordion({
+                animateChildren: false
+            })
+        ;
+
+        $('.trigger.button')
+            .popup({
+                inline: true,
+                on: 'click'
+            })
+        ;
+
+        $('.ui.gabarito.modal')
+            .modal({
+                onApprove: function () {
+                    $.ajax({
+                        type: 'GET',
+                        url: "/Acesso/Conectado",
+                        success: function () {
+                            finalizar();
+                        },
+                        error: function () {
+                            siac.mensagem('Conecte-se à internet antes de confirmar.');
+                        }
+                    });
+                    return false;
+                }
+            })
+        ;
+
+        siac.Anexo.iniciar();
+
+        $('.desistir.button').click(function () {
+            desistir();
+        });
+
+        var date = new Date();
+        $('#lblHoraInicio').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
+        $('#lblHoraTermino').text(_dtTermino.getHours() + 'h' + ("0" + (_dtTermino.getMinutes())).slice(-2) + 'min');
+
+        relogio();
+        temporizador(_dtTermino);
+        conectarHub(_codAvaliacao, _matriculaUsuario);
+    }
+
+    function relogio() {
+        setInterval(function () {
+            date = new Date();
+            $('#lblHoraAgora').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
+        }, 1000);
+    }
+
+    function temporizador(dtTermino) {
+        setInterval(function () {
+            var offset = dtTermino.getTimezoneOffset() * 60 * 1000;
+            var timeRestante = (dtTermino.getTime() + offset) - (new Date().getTime() + offset);
+
+            if (timeRestante > 0) {
+                var date = new Date();
+                date.setTime(timeRestante);
+                var offsetDate = date.getTimezoneOffset() * 60 * 1000;
+                date.setTime(date.getTime() + offsetDate);
+                var txtRestante = ("0" + date.getHours()).slice(-2) + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min';
+                $('#lblHoraRestante').text(txtRestante);
+                if (txtRestante != _controleRestante) {
+                    $('#lblHoraRestante').parent().transition('flash');
+                }
+                _controleRestante = txtRestante;
+                if (timeRestante < 1000 * 60 * 5 && !$('#lblHoraRestante').parent().hasClass('red')) {
+                    $('#lblHoraRestante').parent().addClass('red');
+                }
+            }
+            else {
+                alert('O tempo de aplicação acabou, sua prova será enviada automaticamente.');
+                $('.ui.global.loader').parent().dimmer('show');
+                finalizar();
+            }
+        }, 1000);
+    }
+
+    function finalizar() {
+        window.onbeforeunload = function () {
+            $('.ui.global.loader').parent().dimmer('show');
+        };
+        $('form').submit();
+    }
+
+    function verificar() {
+        $Objects = $('textarea[name^="txtResposta"], input[name^="rdoResposta"]');
+        var retorno = true;
+        for (var i = 0, length = $Objects.length; i < length; i++) {
+            var _this = $Objects.eq(i);
+            $label = _this.parents('.content').prev().find('.ui.label');
+            if (_this.attr('name').indexOf('rdo') > -1) {
+                if ($('input[name="' + _this.attr('name') + '"]:checked').length === 0) {
+                    $label.removeAttr('style').addClass('red').html('Não respondida').transition('tada');
+                    retorno = false;
+                }
+            }
+            else if (!_this.val()) {
+                $label.removeAttr('style').addClass('red').html('Não respondida').transition('tada');
+                retorno = false;
+            }
+        }
+        return retorno;
+    }
+
+    function confirmar() {
+        $modal = $('.ui.gabarito.modal');
+
+        $accordion = $('form .ui.accordion').clone();
+
+        $accordion.removeAttr('style');
+
+        $modal.find('.content').html($('<div class="ui form"></div>').append($accordion));
+
+        $modalAccordion = $modal.find('.ui.accordion');
+
+        $modalAccordion.accordion({
+            onChange: function () {
+                $('.ui.gabarito.modal').modal('refresh');
+            },
+            animateChildren: false
+        });
+
+        $lstInput = $modalAccordion.find(':input,a');
+
+        for (var i = 0, length = $lstInput.length; i < length; i++) {
+            $lstInput.eq(i)
+                .attr({
+                    'readonly': 'readonly'
+                })
+                .removeAttr('href onchange onclick')
+                .off()
+            ;
+        }
+
+        $modal.modal('show');
+    }
+
+    function desistir(url) {
+        $('.ui.global.loader').parent().dimmer('show');
+        $.ajax({
+            url: '/Dashboard/Avaliacao/Reposicao/Desistir/' + _codAvaliacao,
+            type: 'POST',
+            success: function () {
+                window.onbeforeunload = function () {
+                    $('.ui.global.loader').parent().dimmer('show');
+                };
+                if (!url) {
+                    url = '/dashboard';
+                }
+                window.location.href = url;
+            },
+            error: function () {
+                $('.ui.global.loader').parent().dimmer('hide');
+                siac.mensagem('Ocorreu um erro na tentativa de desistência');
+            }
+        });
+    }
+
+    function conectarHub(aval, usrMatr) {
+        var hub = $.connection.reposicaoHub;
+        $.connection.hub.start().done(function () {
+            hub.server.avaliadoConectou(aval, usrMatr);
+
+            finalizar = function () {
+                window.onbeforeunload = function () {
+                    $('.ui.global.loader').parent().dimmer('show');
+                };
+                hub.server.avaliadoFinalizou(aval, usrMatr);
+                $('form').submit();
+
+            };
+
+            $('.ui.continuar.modal')
+                .modal({
+                    onApprove: function () {
+                        hub.server.avaliadoVerificando(aval, usrMatr);
+                        confirmar();
+                    },
+                    onDeny: function () {
+                        $('html, body').animate({
+                            scrollTop: $(".title .label.red").offset().top
+                        }, 1000);
+                    }
+                })
+            ;
+
+            $('.finalizar.button').click(function () {
+                if (verificar()) {
+                    hub.server.avaliadoVerificando(aval, usrMatr);
+                    confirmar();
+                }
+                else {
+                    $('.continuar.modal').modal('show');
+                }
+            });
+
+            enviarMsg = function enviarMsg(_this) {
+                $msg = $('#txtChatMensagem');
+                $msg.val($msg.val().trim())
+                if ($msg.val()) {
+                    var mensagem = $msg.val().quebrarLinhaEm(30);
+                    hub.server.chatAvaliadoEnvia(aval, usrMatr, $msg.val());
+                    $('.chat.popup .content .comments').append('\
+                            <div class="comment" style="float:right;clear:both;">\
+                                <div class="content">\
+                                <div class="ui right pointing label">\
+                                    '+ mensagem + '\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+                    $msg.val('');
+                    var $comments = $('.chat.popup .content .comments');
+                    $($comments).animate({
+                        scrollTop: $comments.children().last().offset().top
+                    }, 100);
+                }
+            };
+            $('.enviar.icon').on('click', function () { enviarMsg(this) });
+            $('#txtChatMensagem').keypress(function (e) {
+                if (e.which == 13) {
+                    enviarMsg(this);
+                    return false;
+                }
+            });
+
+            $('textarea[name^="txtResposta"], input[name^="rdoResposta"]').change(function () {
+                $label = $(this).parents('.content').prev().find('.ui.label');
+                if ($(this).val()) {
+                    $label.removeClass('red');
+                    $label.removeAttr('style');
+                    $label.html('Respondida');
+                    var questao;
+                    if ($(this).attr('name').indexOf('rdo') > -1) {
+                        questao = $(this).attr('name').split('rdoResposta')[1];
+                        $label.find('.detail').remove();
+                        $label.append($('<div class="detail"></div>').text($('input[name="' + $(this).attr('name') + '"]:checked').next().find('b').text()));
+                    }
+                    else {
+                        questao = $(this).attr('name').split('txtResposta')[1];
+                    }
+                    hub.server.responderQuestao(aval, usrMatr, questao, true);
+                }
+                else {
+                    var questao;
+                    if ($(this).attr('name').indexOf('rdo') > -1) {
+                        questao = $(this).attr('name').split('rdoResposta')[1];
+                    }
+                    else {
+                        questao = $(this).attr('name').split('txtResposta')[1];
+                    }
+                    hub.server.responderQuestao(aval, usrMatr, questao, false);
+                    $label.attr('style', 'display:none');
+                }
+            });
+
+            $(window).on("blur focus", function (e) {
+                var prevType = $(this).data("prevType");
+
+                if (prevType != e.type) {
+                    switch (e.type) {
+                        case "blur":
+                            hub.server.focoAvaliacao(aval, usrMatr, false);
+                            break;
+                        case "focus":
+                            hub.server.focoAvaliacao(aval, usrMatr, true);
+                            break;
+                    }
+                }
+
+                $(this).data("prevType", e.type);
+            })
+        });
+
+        hub.client.alertar = function (mensagem) {
+            var timeAntes = new Date();
+            alert(mensagem);
+            var timeDepois = new Date();
+            if ((timeDepois - timeAntes) < 350) {
+                siac.mensagem(mensagem, 'O professor disse...');
+            }
+        }
+
+        hub.client.enviarAval = function (codAvaliacao) {
+            console.log('Envio');
+            html2canvas(document.body, {
+                onrendered: function (canvas) {
+                    var c = $(canvas);
+                    c.attr('id', 'mycanvas').hide();
+                    $('body').append(c);
+                    var canvas = document.getElementById("mycanvas");
+                    strData = canvas.toDataURL("image/png");
+                    console.log(strData);
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Dashboard/Avaliacao/Reposicao/Printar',
+                        data: {
+                            codAvaliacao: aval,
+                            imageData: strData
+                        },
+                        success: function (resp) {
+                            console.log(resp);
+                            if (resp) {
+                                hub.server.avalEnviada(aval, usrMatr);
+                            }
+                        },
+                        error: function () {
+                            // adicionar erro ao Feed do professor
+                        }
+                    });
+
+                    c.remove();
+                }
+            });
+        };
+
+        var chatQteMensagem = 0;
+        hub.client.chatAvaliadoRecebe = function (mensagem) {
+            if (mensagem) {
+                mensagem = mensagem.quebrarLinhaEm(30);
+                $('.chat.popup .comments').append('\
+                            <div class="comment" style="float:left;clear:both;">\
+                                <div class="content">\
+                                <div class="ui left pointing label">\
+                                    '+ mensagem + '\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+                var $comments = $('.chat.popup .comments');
+                $($comments).animate({
+                    scrollTop: $comments.children().last().offset().top
+                }, 0);
+
+                if (!$('.chat.popup').hasClass('visible')) {
+                    $btnChat = $('.icon.chat.button');
+                    $lblQteMsg = $('#lblQteMsg');
+                    $lblQteMsg.remove();
+                    chatQteMensagem++;
+                    $btnChat.addClass('blue').html('<i class="icon comments outline"></i> ' + chatQteMensagem);
+                    document.title = 'Você recebeu uma mensagem - SIAC';
+                    if (chatQteMensagem > 1) {
+                        document.title = 'Você recebeu ' + chatQteMensagem + ' mensagens - SIAC';
+                    }
+                    siac.aviso('Você recebeu uma mensagem')
+                }
+            }
+        };
+        $('.icon.chat.button').on('click', function () {
+            chatQteMensagem = 0;
+            $('#lblQteMsg').remove();
+            $(this).removeClass('blue').html('<i class="icon comments outline"></i>');
+            document.title = 'Realizar ' + _codAvaliacao;
+        });
+
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();

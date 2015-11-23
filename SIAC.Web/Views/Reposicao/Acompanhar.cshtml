@@ -1,0 +1,134 @@
+﻿@using SIAC.Models
+@model AvalAcademica
+@{
+    ViewBag.Title = "Acompanhar " + Model.Avaliacao.CodAvaliacao;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    // String html do gabarito para todos os alunos
+    string gabarito = "<table style='border:0!important' class=\"ui unstackable table\"><tbody><tr class='ui circular labels'>";
+    for (int i = 0, count = Model.Avaliacao.Questao.Count, linebreak = 5, countPerRow = 5; i < count; i++)
+    {
+        if (i == linebreak)
+        {
+            gabarito += "</tr><tr class='ui circular labels'>";
+            linebreak += countPerRow;
+        }
+        gabarito += "<td style='padding: 5px!important;box-sizing:border-box;' class='ui label' data-questao=\"" + Model.Avaliacao.Questao[i].CodQuestao + "\">" + i.GetIndiceQuestao() + "</td>";
+    }
+    gabarito += "</tr></tbody></table>";
+}
+@section Styles {
+    <style>
+        .feed {
+            max-height: 10em;
+            overflow-y: auto;
+        }
+
+        .printscreen.modal .content
+        {
+            height: 55vh;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain;
+        }
+    </style>    
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/academica")
+    @Scripts.Render("~/bundles/signalR")
+    <script src="~/signalr/hubs"></script>
+}
+
+<h2 data-usuario="@SIAC.Helpers.Sessao.UsuarioMatricula">
+    @ViewBag.Title 
+    <div class="ui trigger right floated button">
+        Alertar Todos
+    </div>
+    <div class="ui special popup">
+        <div class='ui content form'>
+            <div class='field'>
+                <label>Mensagem</label>
+                <textarea placeholder='Mensagem...'></textarea>
+            </div>
+            <div class='ui small alertar button'>Enviar</div>
+        </div>
+    </div>
+</h2>
+<div class="ui printscreen fullscreen modal">
+    <i class="icon close"></i>
+    <div class="header"></div>
+    <div class="image content">
+        <img class="image" id="imgProva" />
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Fechar</div>
+        <a href="" target="_blank" class="ui nova guia button">Abrir em Nova Guia</a>
+    </div>
+</div>
+
+<div class="ui labels">
+    <div class="ui label">Disciplina<div class="detail">@Model.Disciplina.Descricao</div></div>
+    <div class="ui label">Curso<div class="detail">@Model.Turma.Curso.Descricao</div></div>
+    <div class="ui label">Turma<div class="detail">@Model.Turma.CodTurma</div></div>
+    <div class="ui label">Início<div class="detail">@Model.Avaliacao.DtAplicacao.Value.ToString("HH'h'mm'min'")</div></div>
+    <div class="ui label">Término<div class="detail">@Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToString("HH'h'mm'min'")</div></div>
+</div>
+
+<div class="ui basic segment">
+    <div class="ui accordion">
+        @foreach (Aluno aluno in Model.Alunos.OrderBy(a => a.Usuario.PessoaFisica.Nome))
+        {
+            <div id="@aluno.MatrAluno" class="title">
+                <i class="dropdown icon" style="float:right"></i>
+                <div class="ui status mini empty circular label"></div>
+                <b class="nome">@aluno.Usuario.PessoaFisica.Nome</b> @aluno.MatrAluno                
+            </div>
+            <div id="@aluno.MatrAluno" class="content">
+                <div class="ui progress active" data-total="@Model.Avaliacao.Questao.Count">
+                    <div class="bar"><div class="progress"></div></div>
+                </div>
+               @* @Html.Raw(gabarito) *@
+                <div class="ui small feed">
+                    <h4 class="ui header">Atividade</h4>                       
+                </div>
+                <div class="ui disabled prova button">Ver Prova</div>
+                <div class="ui disabled trigger button">Alertar</div>
+                <div class="ui special popup">
+                    <div class='ui content form'>
+                        <div class='field'>
+                            <label>Mensagem</label>
+                            <textarea placeholder='Mensagem...'></textarea>
+                        </div>
+                        <div class='ui small alertar button'>Enviar</div>
+                    </div>
+                </div>
+
+                <div class="ui disabled trigger icon right floated chat button"><i class="icon comments outline"></i></div>
+                <div class="ui chat popup wide">
+                    <div class="header">
+                        @aluno.Usuario.PessoaFisica.Nome.Split(' ')[0]
+                    </div>
+                    <div class="content">
+                        <div class="ui comments" style="height: 200px;width:300px; overflow-y:scroll;">
+                        </div>
+                        <div class="ui icon fluid input">
+                            <input autofocus id="@(aluno.MatrAluno)msg" type="text" placeholder="Aperte enter para enviar..." maxlength="500" />
+                            <i class="send link icon enviar"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ui disabled trigger icon right floated gabarito button"><i class="icon table"></i></div>
+                <div class="ui gabarito popup wide" data-position="top right">
+                    <div class="header">
+                        Gabarito
+                    </div>
+                    <div class="content">
+                        @Html.Raw(gabarito)
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
