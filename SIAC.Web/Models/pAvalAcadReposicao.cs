@@ -7,6 +7,7 @@ namespace SIAC.Models
 {
     public partial class AvalAcadReposicao
     {
+        public AvalAcademica Academica => this.Justificacao.FirstOrDefault()?.AvalPessoaResultado.Avaliacao.AvalAcademica;
         public Disciplina Disciplina => this.Justificacao.FirstOrDefault()?.AvalPessoaResultado.Avaliacao.AvalAcademica.Disciplina;
         public Professor Professor => this.Justificacao.FirstOrDefault()?.Professor;
 

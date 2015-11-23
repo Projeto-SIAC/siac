@@ -535,6 +535,23 @@ namespace SIAC.Controllers
             }
             return Json(false);
         }
+
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult Imprimir(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                var aval = AvalAcadReposicao.ListarPorCodigoAvaliacao(codigo);
+                if (aval != null)
+                {
+                    if (Sessao.UsuarioMatricula == aval.Professor.MatrProfessor)
+                    {
+                        return View(aval);
+                    }
+                }
+            }
+            return RedirectToAction("Index");
+        }
     }
 }
  
