@@ -31,6 +31,7 @@ namespace SIAC.Controllers
             int codProfessor = Professor.ListarPorMatricula(strMatr).CodProfessor;
             var lst = AvalAcademica.ListarCorrecaoPendentePorProfessor(codProfessor).Select(a=>a.Avaliacao);
             lst = lst.Union(AvalCertificacao.ListarCorrecaoPendentePorProfessor(codProfessor).Select(a => a.Avaliacao));
+            lst = lst.Union(AvalAcadReposicao.ListarCorrecaoPendentePorProfessor(codProfessor).Select(a => a.Avaliacao));
 
             return View(lst.OrderBy(a=>a.DtAplicacao).ToList());
         }

@@ -170,5 +170,15 @@ namespace SIAC.Models
 
             return false;
         }
+
+        public static List<AvalAcadReposicao> ListarCorrecaoPendentePorProfessor(int codProfessor)
+        {
+            return contexto.AvalQuesPessoaResposta
+                .Where(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcadReposicao != null && !a.RespNota.HasValue && a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcadReposicao.Justificacao.Count > 0 && a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcadReposicao.Justificacao.FirstOrDefault().CodProfessor == codProfessor)
+                .OrderBy(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.DtAplicacao)
+                .Select(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcadReposicao)
+                .Distinct()
+                .ToList();
+        }
     }
 }
