@@ -317,6 +317,17 @@ siac.Utilitario = siac.Utilitario || (function () {
         }
     }
 
+    Number.prototype.inteiroParaLetraMinuscula = function () {
+        var numero = this;
+        var letras = " abcdefghijklmnopqrstuvxwyz";
+        if (numero < letras.length){
+            return letras[numero];
+        } 
+        else{
+            return numero;
+        }
+    }
+
     return {
         compararData: compararData,
         dataEFuturo: dataEFuturo

@@ -210,5 +210,30 @@ namespace SIAC.Controllers
             }
             return Json(false);
         }
+        // POST: institucional/EditarQuestao/{codigo}
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        public ActionResult EditarQuestao(string codigo,FormCollection form)/*, int modulo, int categoria, int indicador, int ordem)*/
+        {
+            AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
+            if (avi != null)
+            {
+                AviQuestao questao = new AviQuestao();
+
+                ///* Chave */
+                //questao.Ano = avi.Ano;
+                //questao.Semestre = avi.Semestre;
+                //questao.CodTipoAvaliacao = avi.CodTipoAvaliacao;
+                //questao.NumIdentificador = avi.NumIdentificador;
+                //questao.CodAviModulo = modulo;
+                //questao.CodAviCategoria = categoria;
+                //questao.CodAviIndicador = indicador;
+                //questao.CodOrdem = ordem;
+
+                //AviQuestao.Remover(questao);
+                return Json(form);
+            }
+            return Json(false);
+        }
     }
 }

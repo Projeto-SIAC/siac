@@ -113,7 +113,7 @@ siac.Institucional.Configurar = (function () {
         $('.ui.accordion').accordion({ animateChildren: false });
         $('.floated.remover.button').popup({ on: 'click', inline: true });
         $('.floated.editar.button').click(function () {
-            editarQuestao(this);
+            abrirModalEditar(this);
         })
         $('.tab.questoes .remover.button.tiny').click(function () {
             deletarQuestao(this);
@@ -333,8 +333,8 @@ siac.Institucional.Configurar = (function () {
                                                                             '<p>Essa ação não poderá ser desfeita.</p>' +
                                                                             '<div class="ui right aligned remover button tiny">Sim, remover</div>' +
                                                                         '</div>' +
-                                                                        '<div class="ui right floated editar button">Editar</div>'+
                                                                     '</div>' +
+                                                                    '<div class="ui right floated editar button">Editar</div>' +
                                                                     '<h3 class="ui dividing header" data-content="' + observacao + '">' + enunciado + '</h3>' +
                                                                     '<div class="ui very relaxed list">' +
                                                                     //    <div class="item">\
@@ -363,7 +363,7 @@ siac.Institucional.Configurar = (function () {
             }
             if ($('#chkAlternativaDiscursiva').is(':checked')) {
                 var alternativaDiscursiva = $('#txtAlternativaDiscursiva').val();
-                var alternativa = '<div class="item"><b>' + (list.length + 1) + ')</b> ' + alternativaDiscursiva + '<input class="input" placeholder="Resposta" type="text" readonly/></div>';
+                var alternativa = '<div class="item"><b>' + (list.length + 1) + ')</b> ' + alternativaDiscursiva + '<div class="ui left pointing label">Alternativa discursiva</div></div>';
                 $template.find('.very.relaxed.list').append(alternativa);
             }
         }
@@ -409,6 +409,9 @@ siac.Institucional.Configurar = (function () {
         $('.floated.remover.button').popup({ on: 'click', inline: true });
         $('.tab.questoes .remover.button.tiny').click(function () {
             deletarQuestao(this);
+        });
+        $('.tab.questoes .editar.button').click(function () {
+            abrirModalEditar(this);
         });
         $('.ui.accordion').accordion({ animateChildren: false });
         siac.aviso('Questão adicionada com sucesso!', 'green');
@@ -489,35 +492,72 @@ siac.Institucional.Configurar = (function () {
         });
     }
 
-    function editarQuestao(button) {
+    function abrirModalEditar(button) {
+        $('.ui.editar.modal .alternativas').html('');
+        var $content = $(button).parent().parent();
 
-        var content = $(button).parent().parent().parent().parent();
-
-        var enunciado = content.find('h3').text();
-        var observacao = content.find('h3').data('content');
+        var enunciado = $content.find('h3').text();
+        var observacao = $content.find('h3').data('content');
 
         $('#txtEditarEnunciado').val(enunciado);
         $('#txtEditarObservacao').val(observacao);
 
-        var qteAlternativas = content.find('item').length;
-        console.log(qteAlternativas);
+        var qteAlternativas = $content.find('.item').length;
         if (qteAlternativas > -1) {
             var indice = 1;
             
-            content.find('item').map(function () {
-
-                var alternativa = $(this).text();
-
-                var ALTERNATIVA_TEMPLATE = '<div class="field required">' +
-                                                '<label for="txtEditarAlternativa' + indice + '">Enunciado</label>' +
+            $content.find('.item').map(function () {
+                //Obter somente o texto do elemento 'DIV' Pai
+                var alternativa = $(this).clone().children().remove().end().text().trim();
+                
+                var $ALTERNATIVA_TEMPLATE = $('<div class="field required">' +
+                                                '<label for="txtEditarAlternativa' + indice + '">Alternativa '+indice+'</label>' +
                                                 '<textarea id="txtEditarAlternativa' + indice + '" name="txtEditarAlternativa' + indice + '" rows="2" required placeholder="Alternativa...">'+alternativa+'</textarea>' +
-                                            '</div>';
+                                            '</div>');
 
-                content.append(ALTERNATIVA_TEMPLATE);
+                //Caso a alternativa seja discursiva
+                if ($(this).find('.label').length > 0) {
+                    $ALTERNATIVA_TEMPLATE.find('label').text('Alternativa Discursiva');
+                    $ALTERNATIVA_TEMPLATE.find('textarea').attr('name','txtEditarAlternativaDiscursiva');
+                }
+
+                $('.ui.editar.modal .alternativas').append($ALTERNATIVA_TEMPLATE);
+                indice++;
             })
         }
 
-        $('.ui.editar.modal').modal('show');   
+        var modulo = $content.parents('[data-modulo]').data('modulo');
+        var categoria = $content.parents('[data-categoria]').data('categoria');
+        var indicador = $content.parents('[data-indicador]').data('indicador');
+        var ordem = $content.data('questao');
+        $('.ui.editar.modal').modal({
+            onApprove: function () {
+                editarQuestao(modulo,categoria,indicador,ordem);
+            }
+        }).modal('show');   
+    }
+
+    function editarQuestao(modulo, categoria, indicador, ordem) {
+        var $button = $('.editar.modal .aprrove.button');
+        $button.addClass('loading');
+        var form = $('form.edicao').serialize();
+        //$.extend(form, { modulo: modulo });
+        $.ajax({
+            type: 'POST',
+            url: '/institucional/EditarQuestao/' + _codAvaliacao,
+            data: form,
+            dataType: 'json',
+            success: function (form) {
+                console.log(form);
+            },
+            error: function (erro) {
+                siac.mensagem('Erro na edição de questão');
+                alert(erro);
+            },
+            complete: function () {
+                $button.removeClass('loading');
+            }
+        });
     }
 
     return {

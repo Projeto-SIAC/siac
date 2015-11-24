@@ -26,6 +26,9 @@
                 <label for="txtEditarObservacao">Observação</label>
                 <textarea id="txtEditarObservacao" name="txtEditarObservacao" rows="2" placeholder="Observação..."></textarea>
             </div>
+            <div class="alternativas">
+
+            </div>
         </form>
     </div>
     <div class="actions">
@@ -45,6 +48,7 @@
         <div class="item" data-tab="detalhes">Detalhes</div>
         <div class="item questao objetiva" data-tab="alternativas">Alternativas</div>
     </div>
+
     @* Questões da AVI *@
     <div class="ui bottom attached tab segment questoes" data-tab="questoes">
         <div class="ui fluid styled accordion">
@@ -93,6 +97,10 @@
                                                                         {
                                                                             <div class="item">
                                                                                 <b>@alternativa.CodAlternativa)</b> @alternativa.Enunciado
+                                                                                @if (alternativa.FlagAlternativaDiscursiva)
+                                                                                {
+                                                                                    <div class="ui left pointing label">Alternativa discursiva</div>
+                                                                                }
                                                                             </div>
                                                                         }
                                                                     </div>
