@@ -143,5 +143,42 @@ namespace SIAC.Models
                     return new List<AvalAcadReposicao>();
             }
         }
+
+        public static bool CorrigirQuestaoAluno(string codAvaliacao, string matrAluno, int codQuestao, double notaObtida, string profObservacao)
+        {
+            if (!String.IsNullOrEmpty(codAvaliacao) && !String.IsNullOrEmpty(matrAluno) && codQuestao != 0)
+            {
+                var aval = ListarPorCodigoAvaliacao(codAvaliacao);
+                var aluno = Aluno.ListarPorMatricula(matrAluno);
+                var codPessoaFisica = aluno.Usuario.PessoaFisica.CodPessoa;
+
+                AvalQuesPessoaResposta resposta = aval.Avaliacao.PessoaResposta.FirstOrDefault(pr => pr.CodQuestao == codQuestao && pr.CodPessoaFisica == codPessoaFisica);
+
+                resposta.RespNota = notaObtida;
+                resposta.ProfObservacao = profObservacao;
+
+                aval.Avaliacao.AvalPessoaResultado
+                    .Single(r => r.CodPessoaFisica == codPessoaFisica)
+                    .Nota = aval.Avaliacao.PessoaResposta
+                                .Where(pr => pr.CodPessoaFisica == codPessoaFisica)
+                                .Average(pr => pr.RespNota);
+
+                contexto.SaveChanges();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public static List<AvalAcadReposicao> ListarCorrecaoPendentePorProfessor(int codProfessor)
+        {
+            return contexto.AvalQuesPessoaResposta
+                .Where(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcadReposicao != null && !a.RespNota.HasValue && a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcadReposicao.Justificacao.Count > 0 && a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcadReposicao.Justificacao.FirstOrDefault().CodProfessor == codProfessor)
+                .OrderBy(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.DtAplicacao)
+                .Select(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcadReposicao)
+                .Distinct()
+                .ToList();
+        }
     }
 }

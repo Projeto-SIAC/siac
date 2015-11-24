@@ -679,6 +679,9 @@
     <Content Include="Views\Reposicao\Acompanhar.cshtml" />
     <Content Include="Views\Reposicao\Realizar.cshtml" />
     <Content Include="Views\Reposicao\Resultado.cshtml" />
+    <Content Include="Views\Reposicao\Corrigir.cshtml" />
+    <Content Include="Views\Reposicao\Detalhe.cshtml" />
+    <Content Include="Views\Reposicao\Partials\_Individual.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

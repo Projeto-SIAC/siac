@@ -703,12 +703,12 @@ namespace SIAC.Controllers
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
 
-                if (cert != null)
+                if (cert != null && cert.Avaliacao.FlagCorrecaoPendente && cert.Professor.MatrProfessor == Sessao.UsuarioMatricula)
                 {
                     return View(cert);
                 }
             }
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         //POST: Academica/Avaliacao/CarregarAlunos/{codigo}

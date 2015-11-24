@@ -75,6 +75,24 @@ namespace SIAC.Models
             }
         }
 
+        public List<AvalAcadReposicao> Reposicoes
+        {
+            get
+            {
+                List<AvalAcadReposicao> lstRetorno = new List<AvalAcadReposicao>();
+
+                foreach (var avalPessoaResultado in this.Avaliacao.AvalPessoaResultado)
+                {
+                    foreach (var justificacao in avalPessoaResultado.Justificacao)
+                    {
+                        lstRetorno.AddRange(justificacao.AvalAcadReposicao.ToList());
+                    }
+                }
+
+                return lstRetorno.Distinct().ToList();
+            }
+        }
+
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
         
         public static void Inserir(AvalAcademica avalAcademica)

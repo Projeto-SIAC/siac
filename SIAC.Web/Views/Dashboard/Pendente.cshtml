@@ -39,7 +39,21 @@
                             </div>
                         </div>
                     </a>
-
+                    break;
+                case 5:
+                    <a href="@Url.Action("Corrigir", "Reposicao", new { codigo = aval.CodAvaliacao })" class="card orange">
+                        <div class="content">
+                            <div class="header">@aval.CodAvaliacao</div>
+                            <div class="meta">
+                                <span title="@aval.DtAplicacao.Value.ToBrazilianString()">@aval.DtAplicacao.Value.ToElapsedTimeString()</span>
+                            </div>
+                            <div class="description">
+                                <p><b>Disciplina</b>: @aval.AvalAcadReposicao.Disciplina.Descricao</p>
+                                <p><b>Quantidade de Alunos</b>: @aval.AvalAcadReposicao.Alunos.Count</p>
+                                <p><b>Quantidade de Questões</b>: @aval.QteQuestoes()</p>
+                            </div>
+                        </div>
+                    </a>
                     break;
                 default:
                     break;

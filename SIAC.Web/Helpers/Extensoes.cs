@@ -24,7 +24,7 @@ namespace SIAC
             byte[] bytes = new byte[str.Length * sizeof(char)];
             Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
             return bytes;
-        }       
+        }
 
         public static string RemoveSpaces(this string aText)
         {
@@ -266,7 +266,7 @@ namespace SIAC
         {
             int qteQuestoes = 0;
 
-            foreach (var avaliacaoTema in lstAvaliacaoTema.Where(a=>a.Tema.CodDisciplina == codDisciplina))
+            foreach (var avaliacaoTema in lstAvaliacaoTema.Where(a => a.Tema.CodDisciplina == codDisciplina))
             {
                 var lstAvalTemaQuestao = avaliacaoTema.AvalTemaQuestao.ToList();
                 var lstAvalTemaQuestaoFiltrada = lstAvalTemaQuestao.Where(a => a.QuestaoTema.Questao.CodTipoQuestao == codTipoQuestao).ToList();
@@ -296,10 +296,10 @@ namespace SIAC
 
             foreach (var avaliacaoTema in lstAvaliacaoTema.Where(a => a.Tema.CodDisciplina == codDisciplina))
             {
-                var lstDificuldade = avaliacaoTema.AvalTemaQuestao.Select(a=>a.QuestaoTema.Questao.Dificuldade).ToList();
-                if (lstDificuldade.Count > 0 && lstDificuldade.Max(a=>a.CodDificuldade) > dificuldade.CodDificuldade)
+                var lstDificuldade = avaliacaoTema.AvalTemaQuestao.Select(a => a.QuestaoTema.Questao.Dificuldade).ToList();
+                if (lstDificuldade.Count > 0 && lstDificuldade.Max(a => a.CodDificuldade) > dificuldade.CodDificuldade)
                 {
-                    dificuldade = lstDificuldade.First(a=>a.CodDificuldade == lstDificuldade.Max(d => d.CodDificuldade));
+                    dificuldade = lstDificuldade.First(a => a.CodDificuldade == lstDificuldade.Max(d => d.CodDificuldade));
                 }
             }
 
@@ -394,6 +394,45 @@ namespace SIAC
                 );
 
             return lstResposta;
+        }
+
+        public static string ToJsonChart(this Questao questao, List<AvalQuesPessoaResposta> lstResposta)
+        {
+            var random = new Random();
+            string json = string.Empty;
+            json += "[";
+
+            for (int i = 0, length = questao.Alternativa.Count; i < length; i++)
+            {
+                string rgba = Helpers.CorDinamica.Rgba(random);
+
+                json += "{";
+
+                json += $"\"value\":\"{lstResposta.Where(r => r.RespAlternativa == i).Count()}\"";
+
+                json += ",";
+
+                json += $"\"label\":\"Alternativa {i.GetIndiceAlternativa()}\"";
+
+                json += ",";
+
+                json += $"\"color\":\"{rgba}\"";
+
+                json += ",";
+
+                json += $"\"highlight\":\"{rgba.Replace("1)", "0.8)")}\"";
+
+                json += "}";
+
+                if (i != length-1)
+                {
+                    json += ",";
+                }
+            }
+
+            json += "]";
+
+            return json;
         }
 
         #endregion

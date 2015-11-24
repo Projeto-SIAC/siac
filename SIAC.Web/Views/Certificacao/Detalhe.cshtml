@@ -164,16 +164,7 @@ else if (Model.Avaliacao.FlagRealizada)
                     <div id="@LstQuestao[i].CodQuestao" class="questao content">
                         <div class="ui segment">
                             <div class="ui dividing header" style="text-align:justify">
-                                @{
-                                    var enunciado = (@i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).Split('\n', '\r');
-                                    foreach (var strEnunciado in enunciado)
-                                    {
-                                        if (!String.IsNullOrWhiteSpace(strEnunciado))
-                                        {
-                                            <p>@strEnunciado</p>
-                                        }
-                                    }
-                                }
+                                @Html.Raw((i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).ToHtml("p"))
                             </div>
                             @if (LstQuestao[i].CodTipoQuestao == 1)
                             {
@@ -210,62 +201,36 @@ else if (Model.Avaliacao.FlagRealizada)
                                         <canvas style="display:inline" width="200" height="200"></canvas>
                                     </div>
                                 </div>
-                                <code class="dados" hidden>
-                                    @{ var random = new Random(); }
-                                    [@for (int j = 0, quant = LstQuestao[i].Alternativa.Count; j < quant; j++)
-                                    {
-                                        string rgba = SIAC.Helpers.CorDinamica.Rgba(random);
-                                        <text>
-                                            {
-                                            "value": "@lstResposta.Where(r => r.RespAlternativa == j).Count()" ,
-                                            "label": "Alternativa @j.GetIndiceAlternativa()",
-                                            "color": "@rgba",
-                                            "highlight": "@rgba.Replace("1)", "0.8)")"
-                                            }
-                                        </text>
-                                        if (j < (quant - 1))
-                                        {
-                                            @:,
-                                    }
-                                    }]
-                                </code>
+
+                                <code class="dados" hidden>@Html.Raw(LstQuestao[i].ToJsonChart(lstResposta.ToList()))</code>
+                            }
+                            else if (LstQuestao[i].CodTipoQuestao == 2)
+                            {
+                                <div class="ui stackable grid">
+                                    <div class="twelve wide column">
+                                        <div>
+                                            <a data-html="@(("<b>Comentário</b>: " + LstQuestao[i].Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui ribbon label">Chave de Resposta</a>
+                                            @Html.Raw(LstQuestao[i].ChaveDeResposta.ToHtml("p", "i"))
+                                        </div>
+                                    </div>
+                                    <div class="four wide column" style="text-align:center">
+                                        @{
+                                            var media = lstResposta.Average(r => r.RespNota);
                                         }
-                                        else if (LstQuestao[i].CodTipoQuestao == 2)
-                                        {
-                                            <div class="ui stackable grid">
-                                                <div class="twelve wide column">
-                                                    <div>
-                                                        <a data-html="@(("<b>Comentário</b>: " + LstQuestao[i].Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui ribbon label">Chave de Resposta</a>
-                                                        @{
-                                                            var chaveDeResposta = LstQuestao[i].ChaveDeResposta.Split('\n', '\r');
-                                                            foreach (var strChaveDeResposta in chaveDeResposta)
-                                                            {
-                                                                if (!String.IsNullOrWhiteSpace(strChaveDeResposta))
-                                                                {
-                                                                    <p><i>@strChaveDeResposta</i></p>
-                                                                }
-                                                            }
-                                                        }
-                                                    </div>
-                                                </div>
-                                                <div class="four wide column" style="text-align:center">
-                                                    @{ 
-                                                        var media = lstResposta.Average(r => r.RespNota);
-                                                    }
-                                                    <div class="ui statistic" style="display:inline">
-                                                        <div class="value">
-                                                            @(media != null ? media.Value.ToString("0.0") : "0")
-                                                        </div>
-                                                        <div class="label">
-                                                            Nota Média
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div class="ui statistic" style="display:inline">
+                                            <div class="value">
+                                                @(media != null ? media.Value.ToString("0.0") : "0")
                                             </div>
-                                                        }
+                                            <div class="label">
+                                                Nota Média
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
-                                                        }
+                }
             </div>
         </div>
         <div class="ui basic segment">
@@ -356,16 +321,7 @@ else if (Model.Avaliacao.FlagRealizada)
                         <div class="content">
                             <div class="ui segment">
                                 <div class="ui dividing header" style="text-align:justify">
-                                    @{
-                                        var enunciado = (i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).Split('\n', '\r');
-                                        foreach (var strEnunciado in enunciado)
-                                        {
-                                            if (!String.IsNullOrWhiteSpace(strEnunciado))
-                                            {
-                                                <p>@strEnunciado</p>
-                                            }
-                                        }
-                                    }
+                                    @Html.Raw((i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).ToHtml("p"))
                                 </div>
                                 @if (LstQuestao[i].CodTipoQuestao == 1)
                                 {
@@ -392,18 +348,9 @@ else if (Model.Avaliacao.FlagRealizada)
                                 {
                                     <div>
                                         <a class="ui ribbon label" data-html="@(("<b>Chave de Resposta</b>: "+LstQuestao[i].ChaveDeResposta).Replace("\n", "<br>"))" data-variation="very wide">Resposta</a>
-                                        @{
-                                            var respDiscursiva = resposta.RespDiscursiva.Split('\n', '\r');
-                                            foreach (var strRespDiscursiva in respDiscursiva)
-                                            {
-                                                if (!String.IsNullOrWhiteSpace(strRespDiscursiva))
-                                                {
-                                                    <p><i>@strRespDiscursiva</i></p>
-                                                }
-                                            }
-                                        }
+                                        @Html.Raw(resposta.RespDiscursiva.ToHtml("p", "i"))
                                     </div>
-                                            }
+                                }
                                 @if (LstQuestao[i].QuestaoAnexo.Count > 0)
                                 {
                                     <div class="accordion">
