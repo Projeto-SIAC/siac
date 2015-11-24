@@ -770,12 +770,12 @@ namespace SIAC.Controllers
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
 
-                if (acad != null)
+                if (acad != null && acad.Avaliacao.FlagCorrecaoPendente && acad.Professor.MatrProfessor == Helpers.Sessao.UsuarioMatricula)
                 {
                     return View(acad);
                 }
             }
-            return View("Index");
+            return RedirectToAction("Index");
         }
         
         // POST: Academica/Arquivar

@@ -163,6 +163,9 @@
         else if (/\/dashboard\/avaliacao\/reposicao\/resultado\/repo[0-9]+$/.test(pathname)) {
             siac.Reposicao.Resultado.iniciar();
         }
+        else if (/\/historico\/avaliacao\/reposicao\/corrigir\/repo[0-9]+$/.test(pathname)) {
+            siac.Reposicao.Corrigir.iniciar();
+        }
     }
 
     var HTML_MENSAGEM_TEMPLATE = '<div class="ui small mensagem modal">' +

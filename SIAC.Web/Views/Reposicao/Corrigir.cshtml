@@ -1,0 +1,252 @@
+﻿@model AvalAcadReposicao
+@{
+    ViewBag.Title = "Corrigir " + Model.Avaliacao.CodAvaliacao;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var lstQuestoes = Model.Avaliacao.Questao.OrderBy(q => q.CodQuestao).ToList();
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/reposicao")
+}
+
+<code class="questoes" hidden>
+    {
+    @for (int i = 0, length = lstQuestoes.Count; i < length; i++)
+    {
+    <text>
+        "@lstQuestoes[i].CodQuestao":"@i.GetIndiceQuestao()"
+        @if (i < (length-1))
+        {
+            @:,
+        }
+    </text>
+    }
+    }
+</code>
+
+<h2>
+    @ViewBag.Title
+    <div class="ui right floated button corrigir">Corrigir</div>
+    <div class="ui right floated button informacoes">Informações</div>
+</h2>
+
+@Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
+
+@* Placeholder da opção de Correção por Aluno *@
+<div id="templateCorrecaoAluno" class="ui basic segment questoes aluno" hidden>
+    <div id="{codQuestao}" class="ui fluid card">
+        <div class="content">
+            <div class="header">
+                <p>{questaoIndice}. {questaoEnunciado}
+            </div>
+            <a class="ui tiny ribbon label">Chave de Resposta</a>
+            <p><i>{questaoChaveResposta}</i></p>
+        </div>
+        <div class="segment">
+            <table class="ui striped table">
+                <thead>
+                    <tr>
+                        <th class="six wide">Resposta do Aluno</th>
+                        <th class="two wide">Nota Obtida</th>
+                        <th class="six wide">Comentário de Correção</th>
+                        <th class="three wide"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{alunoResposta}</td>
+                        <td>
+                            <div class="field required">
+                                <input type="number" value="@Parametro.Obter().ValorNotaMedia.ToValueHtml()" min="0" step="0.1" max="10" class="notaObtida" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field required">
+                                <textarea class="correcaoComentario" rows="3">{correcaoComentario}</textarea>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui button corrigir aluno">Salvar</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="ui dimmer">
+                <div class="content">
+                    <div class="center">
+                        <h2 class="ui inverted icon header">
+                            <i class="checkmark icon"></i>
+                            Questão Corrigida!
+                        </h2>
+                        <br />
+                        <p class="detail">Clique para recorrigir</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* Placeholder da opção de Correção por Questão *@
+<div id="templateCorrecaoQuestao" class="ui basic segment questoes aluno" hidden>
+    <div id="{codQuestao}" class="ui fluid card">
+        <div class="content">
+            <div class="header">
+                <p>{questaoIndice}. {questaoEnunciado}
+            </div>
+            <a class="ui tiny ribbon label">Chave de Resposta</a>
+            <p><i>{questaoChaveResposta}</i></p>
+        </div>
+        <div class="segment">
+            <table class="ui striped table">
+                <thead>
+                    <tr>
+                        <th class="six wide">{alunoNome}</th>
+                        <th class="two wide">Nota Obtida</th>
+                        <th class="six wide">Comentário de Correção</th>
+                        <th class="three wide"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{alunoResposta}</td>
+                        <td>
+                            <div class="field required">
+                                <input type="number" value="@Parametro.Obter().ValorNotaMedia.ToValueHtml()" min="0" step="0.1" max="10" class="notaObtida" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="field required">
+                                <textarea class="correcaoComentario" rows="3">{correcaoComentario}</textarea>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui button corrigir aluno">Salvar</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="ui dimmer">
+                <div class="content">
+                    <div class="center">
+                        <h2 class="ui inverted small icon header">
+                            <i class="checkmark icon"></i>
+                            Questão Corrigida!
+                        </h2>
+                        <br />
+                        <p class="detail">Clique para recorrigir</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui modal fullscreen corrigir">
+    <div class="header">
+        Corrigir Avaliação
+    </div>
+    <div class="content">
+        <form class="ui form">
+            <div class="fields">
+                <div class="four wide field required">
+                    <label for="">Corrigir por...</label>
+                    <select id="ddlCorrecaoModo" name="ddlCorrecaoModo" class="ui dropdown">
+                        <option value="">Corrigir por...</option>
+                        <option value="aluno">Aluno</option>
+                        <option value="questao">Questão</option>
+                    </select>
+                </div>
+                <div class="twelve wide field required">
+                    <label for="">Selecione </label>
+                    <select id="ddlCorrecaoValor" name="ddlCorrecaoValor" class="ui dropdown disabled" style="z-index:1005;"></select>
+                </div>
+            </div>
+            <div class="correcao conteudo">
+                
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="ui basic segment">
+    <div class="ui accordion">
+        @foreach (Aluno aluno in Model.Alunos.OrderBy(a => a.Usuario.PessoaFisica.Nome))
+        {
+            var lstResposta = Model.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == aluno.Usuario.CodPessoaFisica);
+
+            bool realizou = lstResposta.Count() != 0;
+
+            <div id="@aluno.MatrAluno" class="title">
+                <i class="dropdown icon" style="float:right"></i>
+                <b class="nome">@aluno.Usuario.PessoaFisica.Nome</b> @aluno.MatrAluno
+                @if (realizou)
+                {
+                    <div class="ui small label">Nota Parcial<div class="detail">@Model.Avaliacao.AvalPessoaResultado.Single(r=>r.CodPessoaFisica == aluno.Usuario.CodPessoaFisica).Nota.Value.ToString("0.0")</div></div>
+                }
+                else
+                {
+                    <div class="ui small label">Ausente</div>
+                }
+            </div>
+            <div id="@aluno.MatrAluno" class="content">
+                
+                <table class="ui very basic table">
+                    @{
+                        int questaoIndice = 0;
+                        int qteColunas = 10;
+                        int colunaIndice = 1;
+                    }
+                    
+                    <tr>
+                        @foreach (AvalQuesPessoaResposta resp in lstResposta.OrderBy(aqpr => aqpr.CodQuestao))
+                        {
+                            if (colunaIndice == qteColunas)
+                            {
+                                @:</tr><tr>
+                                colunaIndice = 1;
+                            }
+                            <td style="border:none!important;">
+                                <a @((resp.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 2)? "data-questao="+resp.CodQuestao:"") class="ui label">
+                                    @if (resp.RespAlternativa.HasValue) {
+                                    <i class="@(resp.RespNota == 10 ? "checkmark green" : "remove red") icon"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="write icon"></i>
+                                    }
+                                    @questaoIndice.GetIndiceQuestao()
+                                    @if (resp.RespAlternativa.HasValue)
+                                    {
+                                        if (resp.RespAlternativa.Value > -1)
+                                        {
+                                            <div class="detail">
+                                                @resp.RespAlternativa.Value.GetIndiceAlternativa()
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="detail">
+                                                <i class="icon thumbs down"></i>
+                                            </div>
+                                        }
+                                    }
+                                    else if (String.IsNullOrEmpty(resp.RespDiscursiva))
+                                    {
+                                        <div class="detail">
+                                            <i class="icon thumbs down"></i>
+                                        </div>
+                                    }
+                                </a>
+                            </td>
+                            questaoIndice+=1;
+                            colunaIndice++;
+                        }
+                    </tr>
+                </table>
+
+            </div>
+        }
+    </div>
+</div>
+
+<a href="@Url.Action("Detalhe", new { codigo = Model.Avaliacao.CodAvaliacao})" class="ui button">Sair</a>
