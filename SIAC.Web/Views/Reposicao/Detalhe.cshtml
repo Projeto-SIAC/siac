@@ -198,53 +198,35 @@ else if (Model.Avaliacao.FlagRealizada)
                                         <canvas style="display:inline" width="200" height="200"></canvas>
                                     </div>
                                 </div>
-                                <code class="dados" hidden>
-                                    @{ var random = new Random(); }
-                                    [@for (int j = 0, quant = LstQuestao[i].Alternativa.Count; j < quant; j++)
-                                    {
-                                        string rgba = SIAC.Helpers.CorDinamica.Rgba(random);
-                                        <text>
-                                            {
-                                            "value": "@lstResposta.Where(r => r.RespAlternativa == j).Count()" ,
-                                            "label": "Alternativa @j.GetIndiceAlternativa()",
-                                            "color": "@rgba",
-                                            "highlight": "@rgba.Replace("1)", "0.8)")"
-                                            }
-                                        </text>
-                                        if (j < (quant - 1))
-                                        {
-                                            @:,
-                                    }
-                                    }]
-                                </code>
+                                <code class="dados" hidden>@Html.Raw(LstQuestao[i].ToJsonChart(lstResposta.ToList()))</code>
+                            }
+                            else if (LstQuestao[i].CodTipoQuestao == 2)
+                            {
+                                <div class="ui stackable grid">
+                                    <div class="twelve wide column">
+                                        <div>
+                                            <a data-html="@(("<b>Comentário</b>: " + LstQuestao[i].Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui ribbon label">Chave de Resposta</a>
+                                            @Html.Raw(LstQuestao[i].ChaveDeResposta.ToHtml("p", "i"))
+                                        </div>
+                                    </div>
+                                    <div class="four wide column" style="text-align:center">
+                                        @{
+                                            var media = lstResposta.Average(r => r.RespNota);
                                         }
-                                        else if (LstQuestao[i].CodTipoQuestao == 2)
-                                        {
-                                            <div class="ui stackable grid">
-                                                <div class="twelve wide column">
-                                                    <div>
-                                                        <a data-html="@(("<b>Comentário</b>: " + LstQuestao[i].Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui ribbon label">Chave de Resposta</a>
-                                                        @Html.Raw(LstQuestao[i].ChaveDeResposta.ToHtml("p", "i"))
-                                                    </div>
-                                                </div>
-                                                <div class="four wide column" style="text-align:center">
-                                                    @{
-                                                        var media = lstResposta.Average(r => r.RespNota);
-                                                    }
-                                                    <div class="ui statistic" style="display:inline">
-                                                        <div class="value">
-                                                            @(media != null ? media.Value.ToString("0.0") : "0")
-                                                        </div>
-                                                        <div class="label">
-                                                            Nota Média
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div class="ui statistic" style="display:inline">
+                                            <div class="value">
+                                                @(media != null ? media.Value.ToString("0.0") : "0")
                                             </div>
-                                                        }
+                                            <div class="label">
+                                                Nota Média
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
-                                                        }
+                }
             </div>
         </div>
         <div class="ui basic segment">
@@ -265,126 +247,127 @@ else if (Model.Avaliacao.FlagRealizada)
             </div>
             <div class="partial"></div>
         </div>
-                                                        }
-                                                        else if (DateTime.Now < Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value))
-                                                        {
-                                                            <div class="ui message">
-                                                                <p>Você poderá conferir seu resultado assim que o tempo de aplicação da prova acabar.</p>
-                                                            </div>
-                                                        }
-                                                        else
-                                                        {
-                                                            int codPessoaFisica = Usuario.ObterPessoaFisica(SIAC.Helpers.Sessao.UsuarioMatricula);
-                                                            var lstPessoaResposta = LstResposta.Where(p => p.CodPessoaFisica == codPessoaFisica).ToList();
-                                                            var avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.FirstOrDefault(r => r.CodPessoaFisica == codPessoaFisica);
-                                                            int qteAcerto = lstPessoaResposta.Where(p => p.RespNota.HasValue && p.RespNota.Value == 10).Count();
-                                                            var percent = qteAcerto / LstQuestao.Count;
-                                                            if (avalPessoaResultado != null)
-                                                            {
-                                                                <div class="ui basic segment">
-                                                                    <div class="ui dividing header">
-                                                                        Desempenho
-                                                                    </div>
-                                                                    <div class="ui statistics">
-                                                                        <div class="statistic">
-                                                                            <div class="value">
-                                                                                @((((double)qteAcerto / (double)LstQuestao.Count) * 100).ToString("0.##'%'"))
-                                                                            </div>
-                                                                            <div class="label">
-                                                                                Porcentagem de Acerto
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="statistic">
-                                                                            <div class="value">
-                                                                                @qteAcerto/@LstQuestao.Count
-                                                                            </div>
-                                                                            <div class="label">
-                                                                                Quantidade de Acerto
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="statistic @(avalPessoaResultado.Nota.Value >= Parametro.Obter().ValorNotaMedia ? "green" : "red")">
-                                                                            <div class="value">
-                                                                                @avalPessoaResultado.Nota.Value.ToString("0.0")
-                                                                            </div>
-                                                                            <div class="label">
-                                                                                Nota @(lstPessoaResposta.Where(r => !r.RespNota.HasValue).Count() == 0 ? "" : "Parcial")
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="ui basic segment">
-                                                                    <div class="ui dividing header">
-                                                                        Resultado
-                                                                    </div>
-                                                                    <div class="ui accordion">
-                                                                        @for (int i = 0; i < LstQuestao.Count; i++)
-                                                                        {
-                                                                            var resposta = lstPessoaResposta.First(r => r.CodQuestao == LstQuestao[i].CodQuestao);
-                                                                            <div class="title">
-                                                                                <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).ToShortString(80))
-                                                                                @if (LstQuestao[i].CodTipoQuestao == 1)
+    }
+    else if (DateTime.Now < Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value))
+    {
+        <div class="ui message">
+            <p>Você poderá conferir seu resultado assim que o tempo de aplicação da prova acabar.</p>
+        </div>
+    }
+    else
+    {
+        int codPessoaFisica = Usuario.ObterPessoaFisica(SIAC.Helpers.Sessao.UsuarioMatricula);
+        var lstPessoaResposta = LstResposta.Where(p => p.CodPessoaFisica == codPessoaFisica).ToList();
+        var avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.FirstOrDefault(r => r.CodPessoaFisica == codPessoaFisica);
+        int qteAcerto = lstPessoaResposta.Where(p => p.RespNota.HasValue && p.RespNota.Value == 10).Count();
+        var percent = qteAcerto / LstQuestao.Count;
+        if (avalPessoaResultado != null)
+        {
+            <div class="ui basic segment">
+                <div class="ui dividing header">
+                    Desempenho
+                </div>
+                <div class="ui statistics">
+                    <div class="statistic">
+                        <div class="value">
+                            @((((double)qteAcerto / (double)LstQuestao.Count) * 100).ToString("0.##'%'"))
+                        </div>
+                        <div class="label">
+                            Porcentagem de Acerto
+                        </div>
+                    </div>
+                    <div class="statistic">
+                        <div class="value">
+                            @qteAcerto/@LstQuestao.Count
+                        </div>
+                        <div class="label">
+                            Quantidade de Acerto
+                        </div>
+                    </div>
+                    <div class="statistic @(avalPessoaResultado.Nota.Value >= Parametro.Obter().ValorNotaMedia ? "green" : "red")">
+                        <div class="value">
+                            @avalPessoaResultado.Nota.Value.ToString("0.0")
+                        </div>
+                        <div class="label">
+                            Nota @(lstPessoaResposta.Where(r => !r.RespNota.HasValue).Count() == 0 ? "" : "Parcial")
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui basic segment">
+                <div class="ui dividing header">
+                    Resultado
+                </div>
+                <div class="ui accordion">
+                    @for (int i = 0; i < LstQuestao.Count; i++)
+                    {
+                        var resposta = lstPessoaResposta.First(r => r.CodQuestao == LstQuestao[i].CodQuestao);
+                        <div class="title">
+                            <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).ToShortString(80))
+                            @if (LstQuestao[i].CodTipoQuestao == 1)
                             {
                                 var correta = LstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
-                                                                                    <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? Html.Raw("<i class=\"checkmark icon\"></i>Correta") : Html.Raw("<i class=\"remove icon\"></i>Incorreta") )</div>
-                                                                                }
-                                                                                else if (resposta.RespNota.HasValue)
-                                                                                {
-                                                                                    <div data-html="@(("<b>Observação</b>: " + resposta.ProfObservacao).Replace("\n", "<br>"))" data-variation="very wide" class="ui @(resposta.RespNota.Value > Parametro.Obter().ValorNotaMedia ? "green" : "red" ) label"><i class="icon write"></i><div class="detail">@resposta.RespNota.Value.ToString("0.0")</div></div>
-                                                                                }
-                                                                            </div>
-                                                                            <div class="content">
-                                                                                <div class="ui segment">
-                                                                                    <div class="ui dividing header" style="text-align:justify">
-                                                                                        @Html.Raw((i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).ToHtml("p"))
-                                                                                    </div>
-                                                                                    @if (LstQuestao[i].CodTipoQuestao == 1)
-                                                                                    {
-                                                                                        <div class="ui list">
-                                                                                            @foreach (var alternativa in LstQuestao[i].Alternativa)
-                                                                                            {
-                                                                                                <div class="item">
-                                                                                                    <div class="middle aligned content">
-                                                                                                        <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
-                                                                                                        @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
-                                                                                                        {
-                                                                                                            <a data-html="@(("<b>Comentário</b>: " + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
-                                                                                                        }
-                                                                                                        @if (alternativa.CodOrdem == resposta.RespAlternativa)
-                                                                                                        {
-                                                                                                            <a data-html="@(("<b>Comentário</b>: " + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Marcada</a>
-                                                                                                        }
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            }
-                                                                                        </div>
-                                                                                    }
-                                                                                    else
-                                                                                    {
-                                                                                        <div>
-                                                                                            <a class="ui ribbon label" data-html="@(("<b>Chave de Resposta</b>: "+LstQuestao[i].ChaveDeResposta).Replace("\n", "<br>"))" data-variation="very wide">Resposta</a>
-                                                                                            @Html.Raw(resposta.RespDiscursiva.ToHtml("p", "i")))
-                                                                                        </div>
-                                                                                    }
-                                                                                    @if (LstQuestao[i].QuestaoAnexo.Count > 0)
-                                                                                    {
-                                                                                        <div class="accordion">
-                                                                                            <div class="title"><i class="icon dropdown"></i>Anexos</div>
-                                                                                            <div class="content">
-                                                                                                @foreach (var anexo in LstQuestao[i].QuestaoAnexo)
-                                                                                                {
-                                                                                                    @Html.Partial("_Anexo", anexo)
-                                                                                                }
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    }
-                                                                                </div>
-                                                                            </div>
-                                                                        }
-                                                                    </div>
-                                                                </div>
-                                                                }
-                                                            }
-                                                        }
+                                <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? Html.Raw("<i class=\"checkmark icon\"></i>Correta") : Html.Raw("<i class=\"remove icon\"></i>Incorreta") )</div>
+                            }
+                            else if (resposta.RespNota.HasValue)
+                            {
+                                <div data-html="@(("<b>Observação</b>: " + resposta.ProfObservacao).Replace("\n", "<br>"))" data-variation="very wide" class="ui @(resposta.RespNota.Value > Parametro.Obter().ValorNotaMedia ? "green" : "red" ) label"><i class="icon write"></i><div class="detail">@resposta.RespNota.Value.ToString("0.0")</div></div>
+                            }
+                        </div>
+                        <div class="content">
+                            <div class="ui segment">
+                                <div class="ui dividing header" style="text-align:justify">
+                                    @Html.Raw((i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).ToHtml("p"))
+                                </div>
+                                @if (LstQuestao[i].CodTipoQuestao == 1)
+                                {
+                                    <div class="ui list">
+                                        @foreach (var alternativa in LstQuestao[i].Alternativa)
+                                        {
+                                            <div class="item">
+                                                <div class="middle aligned content">
+                                                    <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
+                                                    @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
+                                                    {
+                                                        <a data-html="@(("<b>Comentário</b>: " + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
+                                                    }
+                                                    @if (alternativa.CodOrdem == resposta.RespAlternativa)
+                                                    {
+                                                        <a data-html="@(("<b>Comentário</b>: " + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Marcada</a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div>
+                                        <a class="ui ribbon label" data-html="@(("<b>Chave de Resposta</b>: "+LstQuestao[i].ChaveDeResposta).Replace("\n", "<br>"))" data-variation="very wide">Resposta</a>
+                                        @Html.Raw(resposta.RespDiscursiva.ToHtml("p", "i")))
+                                    </div>
+                                }
+                                @if (LstQuestao[i].QuestaoAnexo.Count > 0)
+                                {
+                                    <div class="accordion">
+                                        <div class="title"><i class="icon dropdown"></i>Anexos</div>
+                                        <div class="content">
+                                            @foreach (var anexo in LstQuestao[i].QuestaoAnexo)
+                                            {
+                                                @Html.Partial("_Anexo", anexo)
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+}
+
 <a href="@Url.Action("Index")" class="ui button">Histórico</a>
 @if (Sessao.UsuarioCategoriaCodigo == 2)
 {
