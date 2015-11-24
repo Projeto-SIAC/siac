@@ -37,6 +37,21 @@
             <a href="@Url.Action("Justificar", "Reposicao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui right floated reposicao button">Reposição</a>
         }
     }
+    <br />
+    @if (Sessao.UsuarioCategoriaCodigo == 2)
+    {
+        foreach (var reposicao in Model.Reposicoes)
+        {
+            <a href="@Url.Action("Detalhe", "Reposicao", new { codigo = reposicao.Avaliacao.CodAvaliacao })" class="ui label">Reposição<span class="detail">@reposicao.Avaliacao.CodAvaliacao</span></a>
+        }
+    }
+    else
+    {
+        foreach (var reposicao in Model.Reposicoes.Where(r => r.Alunos.FirstOrDefault(a => a.MatrAluno == Sessao.UsuarioMatricula) != null))
+        {
+            <a href="@Url.Action("Detalhe", "Reposicao", new { codigo = reposicao.Avaliacao.CodAvaliacao })" class="ui label">Reposição<span class="detail">@reposicao.Avaliacao.CodAvaliacao</span></a>
+        }
+    }
 </h2>
 
 <div class="ui basic segment">
@@ -304,7 +319,7 @@ else if (Model.Avaliacao.FlagRealizada)
         var avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.FirstOrDefault(r => r.CodPessoaFisica == codPessoaFisica);
         int qteAcerto = lstPessoaResposta.Where(p => p.RespNota.HasValue && p.RespNota.Value == 10).Count();
         var percent = qteAcerto / LstQuestao.Count;
-        if (avalPessoaResultado != null)
+        if (avalPessoaResultado != null && avalPessoaResultado.Justificacao.Count == 0)
         {
             <div class="ui basic segment">
                 <div class="ui dividing header">
