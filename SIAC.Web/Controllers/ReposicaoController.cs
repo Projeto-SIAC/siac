@@ -843,5 +843,38 @@ namespace SIAC.Controllers
             return Json(false);
         }
 
+        public ActionResult Detalhe(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAcadReposicao aval = AvalAcadReposicao.ListarPorCodigoAvaliacao(codigo);
+                if (aval != null)
+                {
+                    return View(aval);
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult DetalheIndividual(string codigo, string matricula)
+        {
+            if (!StringExt.IsNullOrEmpty(codigo, matricula))
+            {
+                AvalAcadReposicao aval = AvalAcadReposicao.ListarPorCodigoAvaliacao(codigo);
+                if (aval != null)
+                {
+                    int codPessoaFisica = Usuario.ObterPessoaFisica(matricula);
+                    AvalPessoaResultado model = aval.Avaliacao.AvalPessoaResultado.FirstOrDefault(r => r.CodPessoaFisica == codPessoaFisica);
+                    if (model != null)
+                    {
+                        return PartialView("_Individual", model);
+                    }
+                }
+            }
+            return null;
+        }
     }
 }
