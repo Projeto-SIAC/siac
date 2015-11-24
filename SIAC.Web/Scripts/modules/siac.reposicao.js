@@ -1077,7 +1077,6 @@ siac.Reposicao.Realizar = (function () {
                             imageData: strData
                         },
                         success: function (resp) {
-                            console.log(resp);
                             if (resp) {
                                 hub.server.avalEnviada(aval, usrMatr);
                             }
@@ -1131,6 +1130,285 @@ siac.Reposicao.Realizar = (function () {
             document.title = 'Realizar ' + _codAvaliacao;
         });
 
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();
+
+siac.Reposicao.Acompanhar = (function () {
+    var _codAvaliacao, _matriculaUsuario;
+
+    function iniciar() {
+        $elemento = $('[data-usuario]');
+        _matriculaUsuario = $elemento.attr('data-usuario');
+        $elemento.removeAttr('data-usuario');
+
+        _codAvaliacao = window.location.pathname.match(/repo[0-9]+$/)[0];
+
+        conectarHub(_codAvaliacao, _matriculaUsuario);
+
+        $('.ui.accordion')
+            .accordion({
+                animateChildren: false
+            })
+        ;
+
+        $('.ui.progress')
+            .progress({
+                label: 'ratio',
+                text: {
+                    ratio: '{value} de {total}'
+                }
+            })
+        ;
+
+        $('.trigger.button')
+            .popup({
+                inline: true,
+                on: 'click'
+            })
+        ;
+    }
+
+    function conectarHub(aval, usrMatr) {
+        var hub = $.connection.reposicaoHub;
+        $.connection.hub.start().done(function () {
+
+            enviarMsg = function enviarMsg(_this) {
+                $content = $(_this).parents('.content[id]');
+                matr = $content.attr('id');
+                $msg = $('#' + matr + 'msg');
+                $msg.val($msg.val().trim());
+                if ($msg.val()) {
+                    var mensagem = $msg.val().quebrarLinhaEm(30);
+                    hub.server.chatProfessorEnvia(aval, matr, $msg.val());
+                    $('#' + matr + '.content .chat.popup .comments').append('\
+                            <div class="comment" style="float:right;clear:both;">\
+                                <div class="content">\
+                                <div class="ui right pointing label">\
+                                    '+ mensagem + '\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+                    $msg.val('');
+                    var $comments = $content.find('.comments');
+                    $($comments).animate({
+                        scrollTop: $comments.children().last().offset().top
+                    }, 0);
+                }
+            };
+
+            hub.server.professorConectou(aval, usrMatr);
+            $('.prova.button').on('click', function () {
+                matr = $(this).parent().attr('id');
+                hub.server.requererAval(aval, matr);
+                $('#' + matr + '.content .prova.button').addClass('loading').removeClass('transition visible');
+            });
+
+            $('.alertar.button').on('click', function () {
+                mensagem = $(this).prev().find('textarea').val();
+                matr = $(this).parent().parent().parent().attr('id');
+                hub.server.alertar(aval, mensagem, matr);
+                $(this).prev().find('textarea').val('');
+                $(this).popup('hide all');
+            });
+
+            $('.enviar.icon').on('click', function () { enviarMsg(this) });
+            $('.chat input').keypress(function (e) {
+                if (e.which == 13) {
+                    enviarMsg(this);
+                    return false;
+                }
+            });
+
+
+            setInterval(function () {
+                lstMatr = $('.accordion')
+                            .find('.title')
+                            .map(function () {
+                                hub.server.feed(aval, this.id);
+                            });
+            }, 3000);
+        });
+
+        hub.client.chatProfessorRecebe = function (usrMatricula, mensagem) {
+            $content = $('#' + usrMatricula + '.content[id]');
+            if (mensagem) {
+                mensagem = mensagem.quebrarLinhaEm(30);
+                $('#' + usrMatricula + '.content .chat.popup .comments').append('\
+                            <div class="comment" style="float:left;clear:both;">\
+                                <div class="content">\
+                                <div class="ui left pointing label">\
+                                    '+ mensagem + '\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+                var $comments = $content.find('.comments');
+                $($comments).animate({
+                    scrollTop: $comments.children().last().offset().top
+                }, 0);
+
+                chatQteMensagem = 0;
+                if ($('#' + usrMatricula + 'lblQteMsg').length) { chatQteMensagem = $('#' + usrMatricula + 'lblQteMsg').data('qte') }
+                if (!$('#' + usrMatricula + '.content .chat.popup').hasClass('visible')) {
+                    $accordionChat = $('#' + usrMatricula + '.title');
+                    $lblQteMsg = $('#' + usrMatricula + 'lblQteMsg');
+                    $lblQteMsg.remove();
+                    $accordionChat.append($('<div></div>').attr('id', usrMatricula + 'lblQteMsg').addClass('ui small blue label').append('<i class="ui comments icon"></i>'));
+                    chatQteMensagem++;
+                    $('#' + usrMatricula + 'lblQteMsg').data('qte', chatQteMensagem).append(chatQteMensagem);
+                }
+            }
+        };
+
+        $('.icon.chat.button').on('click', function () {
+            matr = ($(this).parents('.content[id]').attr('id'));
+            $('#' + matr + 'lblQteMsg').remove();
+        });
+
+        hub.client.atualizarFeed = function (alnMatricula, lstEvento) {
+            $feed = $('#' + alnMatricula + '.content .feed');
+            $feed.html('');
+            $feed.append('<h4 class="ui header">Atividade</h4>');
+            if (lstEvento) {
+                for (var i = lstEvento.length - 1; i > -1; i--) {
+                    $feed.append('\
+                        <div class="event">\
+                            <div class="label">\
+                                <i class="'+ lstEvento[i].Icone + ' icon"></i>\
+                            </div>\
+                            <div class="content">\
+                                <div class="summary">\
+                                    ' + lstEvento[i].Descricao + '\
+                                    <div class="date" title="'+ lstEvento[i].DataCompleta + '">' + lstEvento[i].Data + '</div>\
+                                </div>\
+                            </div>\
+                        </div>\
+                    ');
+                }
+
+                $('#' + alnMatricula + 'lblInfo').remove();
+                if (lstEvento[lstEvento.length - 1].Icone == "red warning sign" && !$('#' + alnMatricula + 'lblWarning').length && !$('#' + alnMatricula).hasClass('active')) {
+                    $accordionChat = $('#' + alnMatricula + '.title');
+                    $accordionChat.append($('<i></i>').attr('id', alnMatricula + 'lblWarning').addClass('red warning sign icon'));
+                }
+
+                else if (!$('#' + alnMatricula + 'lblWarning').length) {
+                    $accordionChat = $('#' + alnMatricula + '.title');
+                    $accordionChat.append($('<i></i>').attr('id', alnMatricula + 'lblInfo').addClass(lstEvento[lstEvento.length - 1].Icone + ' icon'));
+                }
+            }
+        }
+
+        $('.accordion .title').on('click', function () {
+            matr = ($(this).attr('id'));
+            $('#' + matr + 'lblWarning').remove();
+        });
+
+        hub.client.conectarAvaliado = function (usrMatricula) {
+            $('#' + usrMatricula + '.title .small.label').remove();
+            $('#' + usrMatricula + '.title .status.label').removeClass('red').addClass('green');
+            $('#' + usrMatricula + '.content .button').removeClass('disabled');
+        };
+
+        hub.client.desconectarAvaliado = function (usrMatricula) {
+            $('#' + usrMatricula + '.title').append('<div class="ui small label">Desconectado</div>');
+            $('#' + usrMatricula + '.title .status.label').removeClass('green');
+            $('#' + usrMatricula + '.content .button').addClass('disabled');
+        };
+
+        hub.client.avaliadoFinalizou = function (usrMatricula) {
+            $('#' + usrMatricula + '.title').append('<div class="ui small label">Finalizou</div>');
+            $('#' + usrMatricula + '.title .status.label').removeClass('green').addClass('red');
+            $('#' + usrMatricula + '.content .button').addClass('disabled');
+        };
+
+        hub.client.receberAval = function (alnMatricula) {
+            $.ajax({
+                type: 'POST',
+                url: '/Dashboard/Avaliacao/Reposicao/Printar',
+                data: {
+                    codAvaliacao: aval
+                },
+                success: function (data) {
+                    $('.printscreen.modal .header').text($('#' + alnMatricula + ' .nome').text() + ' (' + alnMatricula + ')');
+                    $('.printscreen.modal .content').css({
+                        'background-image': 'url(\'' + data + '\')'
+                    });
+                    $('.printscreen.modal .nova.guia.button').attr('href', data);
+                    $('.printscreen.modal').modal('show').modal('refresh');
+                },
+                error: function () {
+                    siac.mensagem('Ocorreu um erro inesperado. Tente novamente mais tarde.');
+                },
+                complete: function () {
+                    $('#' + alnMatricula + '.content .prova.button').removeClass('loading');
+                }
+            });
+        };
+
+        hub.client.atualizarProgresso = function (alnMatricula, value) {
+            if (value > 0) {
+                $('#' + alnMatricula + '.content .progress')
+                    .progress({
+                        value: value,
+                        label: 'ratio',
+                        text: {
+                            ratio: '{value} de {total}'
+                        }
+                    })
+                ;
+            }
+        }
+
+        hub.client.respondeuQuestao = function (alnMatricula, questao, flag) {
+            $questao = $('#' + alnMatricula + '.content [data-questao="' + questao + '"]');
+            $questao.removeClass('positive').find('i').remove();
+            if (flag) {
+                $questao.addClass('green');
+            }
+        }
+
+        hub.client.listarChat = function (alnMatricula, mensagens) {
+            for (var i = 0, length = mensagens.length; i < length; i++) {
+                if (mensagens[i].FlagAutor) {
+                    hub.client.chatProfessorRecebe(alnMatricula, mensagens[i].Texto);
+                }
+                else {
+                    var mensagem = mensagens[i].Texto.quebrarLinhaEm(30);
+                    $('#' + alnMatricula + '.content .chat.popup .comments').append('\
+                        <div class="comment" style="float:right;clear:both;">\
+                            <div class="content">\
+                            <div class="ui right pointing label">\
+                                '+ mensagem + '\
+                                </div>\
+                            </div>\
+                        </div>\
+                        ');
+
+                    var $comments = $('#' + alnMatricula + '.content .comments');
+                    $($comments).animate({
+                        scrollTop: $comments.children().last().offset().top
+                    }, 0);
+                }
+            }
+        }
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();
+
+siac.Reposicao.Resultado = (function () {
+    function iniciar() {
+        $('.ui.accordion').accordion({ animateChildren: false });
+        $('.label, div').popup();
+        siac.Anexo.iniciar();
     }
 
     return {

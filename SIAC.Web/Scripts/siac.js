@@ -157,6 +157,12 @@
         else if (/\/dashboard\/avaliacao\/reposicao\/realizar\/repo[0-9]+$/.test(pathname)) {
             siac.Reposicao.Realizar.iniciar();
         }
+        else if (/\/dashboard\/avaliacao\/reposicao\/acompanhar\/repo[0-9]+$/.test(pathname)) {
+            siac.Reposicao.Acompanhar.iniciar();
+        }
+        else if (/\/dashboard\/avaliacao\/reposicao\/resultado\/repo[0-9]+$/.test(pathname)) {
+            siac.Reposicao.Resultado.iniciar();
+        }
     }
 
     var HTML_MENSAGEM_TEMPLATE = '<div class="ui small mensagem modal">' +

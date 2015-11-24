@@ -609,7 +609,6 @@ namespace SIAC.Controllers
             }
         }
 
-
         [HttpPost]
         public ActionResult Printar(string codAvaliacao, string imageData)
         {
@@ -626,6 +625,93 @@ namespace SIAC.Controllers
             }
             return Json(false);
         }
+
+        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        public ActionResult Acompanhar(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAcadReposicao aval = AvalAcadReposicao.ListarPorCodigoAvaliacao(codigo);
+                if (aval != null && aval.Professor.MatrProfessor == Sessao.UsuarioMatricula && aval.Avaliacao.FlagAgendada && aval.Avaliacao.FlagAgora)
+                {
+                    return View(aval);
+                }
+            }
+            return RedirectToAction("Agendada", new { codigo = codigo });
+        }
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 1 })]
+        public ActionResult Resultado(string codigo, FormCollection form)
+        {
+            int codPessoaFisica = Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula);
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                var aval = AvalAcadReposicao.ListarPorCodigoAvaliacao(codigo);
+                if (aval.Alunos.SingleOrDefault(a => a.MatrAluno == Sessao.UsuarioMatricula) != null && aval.Avaliacao.AvalPessoaResultado.SingleOrDefault(a => a.CodPessoaFisica == codPessoaFisica) == null)
+                {
+                    AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
+                    avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
+                    avalPessoaResultado.HoraTermino = DateTime.Now;
+                    avalPessoaResultado.QteAcertoObj = 0;
+
+                    double qteObjetiva = 0;
+
+                    foreach (var avaliacaoTema in aval.Avaliacao.AvaliacaoTema)
+                    {
+                        foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                        {
+                            AvalQuesPessoaResposta avalQuesPessoaResposta = new AvalQuesPessoaResposta();
+                            avalQuesPessoaResposta.CodPessoaFisica = codPessoaFisica;
+                            if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1)
+                            {
+                                qteObjetiva++;
+                                int respAlternativa = -1;
+                                string strRespAlternativa = form["rdoResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao];
+                                if (!String.IsNullOrEmpty(strRespAlternativa))
+                                {
+                                    int.TryParse(strRespAlternativa, out respAlternativa);
+                                }
+                                avalQuesPessoaResposta.RespAlternativa = respAlternativa;
+                                if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q => q.FlagGabarito.HasValue && q.FlagGabarito.Value).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
+                                {
+                                    avalQuesPessoaResposta.RespNota = 10;
+                                    avalPessoaResultado.QteAcertoObj++;
+                                }
+                                else
+                                {
+                                    avalQuesPessoaResposta.RespNota = 0;
+                                }
+                            }
+                            else
+                            {
+                                avalQuesPessoaResposta.RespDiscursiva = form["txtResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim();
+                            }
+                            avalQuesPessoaResposta.RespComentario = !String.IsNullOrEmpty(form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]) ? form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim() : null;
+                            avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
+                        }
+
+                    }
+
+                    var lstAvalQuesPessoaResposta = aval.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == codPessoaFisica);
+
+                    avalPessoaResultado.Nota = lstAvalQuesPessoaResposta.Average(r => r.RespNota);
+                    aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
+
+                    Repositorio.GetInstance().SaveChanges();
+
+                    var model = new ViewModels.AvaliacaoResultadoViewModel();
+                    model.Avaliacao = aval.Avaliacao;
+                    model.Porcentagem = (avalPessoaResultado.QteAcertoObj.Value / qteObjetiva) * 100;
+
+                    Sessao.Inserir("RealizandoAvaliacao", false);
+                    Sessao.Inserir("UsuarioAvaliacao", String.Empty);
+
+                    return View(model);
+                }
+                return RedirectToAction("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao });
+            }
+            return RedirectToAction("Index");
+        }
     }
 }
- 

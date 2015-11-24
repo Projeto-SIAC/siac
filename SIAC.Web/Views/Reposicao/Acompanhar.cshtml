@@ -1,5 +1,5 @@
-﻿@using SIAC.Models
-@model AvalAcademica
+﻿@model AvalAcadReposicao
+
 @{
     ViewBag.Title = "Acompanhar " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -17,6 +17,7 @@
     }
     gabarito += "</tr></tbody></table>";
 }
+
 @section Styles {
     <style>
         .feed {
@@ -35,12 +36,12 @@
 }
 
 @section Scripts{
-    @Scripts.Render("~/bundles/js/academica")
+    @Scripts.Render("~/bundles/js/reposicao")
     @Scripts.Render("~/bundles/signalR")
     <script src="~/signalr/hubs"></script>
 }
 
-<h2 data-usuario="@SIAC.Helpers.Sessao.UsuarioMatricula">
+<h2 data-usuario="@Sessao.UsuarioMatricula">
     @ViewBag.Title 
     <div class="ui trigger right floated button">
         Alertar Todos
@@ -68,9 +69,8 @@
 </div>
 
 <div class="ui labels">
+    <div class="ui label">Acadêmica<div class="detail">@Model.Academica.Avaliacao.CodAvaliacao</div></div>
     <div class="ui label">Disciplina<div class="detail">@Model.Disciplina.Descricao</div></div>
-    <div class="ui label">Curso<div class="detail">@Model.Turma.Curso.Descricao</div></div>
-    <div class="ui label">Turma<div class="detail">@Model.Turma.CodTurma</div></div>
     <div class="ui label">Início<div class="detail">@Model.Avaliacao.DtAplicacao.Value.ToString("HH'h'mm'min'")</div></div>
     <div class="ui label">Término<div class="detail">@Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToString("HH'h'mm'min'")</div></div>
 </div>
@@ -88,7 +88,6 @@
                 <div class="ui progress active" data-total="@Model.Avaliacao.Questao.Count">
                     <div class="bar"><div class="progress"></div></div>
                 </div>
-               @* @Html.Raw(gabarito) *@
                 <div class="ui small feed">
                     <h4 class="ui header">Atividade</h4>                       
                 </div>
