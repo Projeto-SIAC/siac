@@ -63,9 +63,9 @@
 
 @if (Model.Avaliacao.AvalPessoaResultado.Count == 0)
 {
-    <a onclick="window.open('@Url.Action("Imprimir", new { codigo = Model.Avaliacao.CodAvaliacao })', '_blank');" class="ui button">Imprimir</a>
     if (!Model.Avaliacao.FlagArquivo)
     {
+        <a href="@Url.Action("Avaliacao","Impressao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Imprimir</a>
         <div class="ui arquivar button">Arquivar</div>
         <a href="@Url.Action("Realizar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Realizar</a>
     }

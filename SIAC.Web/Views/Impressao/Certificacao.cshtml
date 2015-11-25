@@ -1,11 +1,11 @@
-﻿@using SIAC.Models
-@model AvalAcademica
+﻿@model ImpressaoAvaliacaoViewModel
 
 @{
-    ViewBag.Title = "Avaliação Acadêmica " + Model.Avaliacao.CodAvaliacao;
+    ViewBag.Title = Model.Titulo;
     Layout = null;
     List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
 }
+
 <html lang="pt-br">
 <head>
     <meta charset="utf-8" />
@@ -47,7 +47,7 @@
                             <b>Instituição</b>
                         </td>
                         <td>
-                            @Model.Turma.Curso.Diretoria.Campus.Instituicao.PessoaJuridica.NomeFantasia
+                            @Model.Instituicao
                         </td>
                     </tr>
                     <tr>
@@ -55,39 +55,25 @@
                             <b>Professor</b>
                         </td>
                         <td>
-                            @Model.Professor.Usuario.PessoaFisica.Nome
+                            @Model.Professor
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <b>Nome</b>
-                        </td>
-                        <td>
-                            <div class="ui fluid input">
-                                <input type="text" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Turma</b>
-                        </td>
-                        <td>
-                            <div class="ui fluid input">
-                                <input type="text" />
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Data de Aplicação</b>
-                        </td>
-                        <td>
-                            <div class="ui fluid input">
-                                <input type="text" />
-                            </div>
-                        </td>
-                    </tr>
+                    @foreach (var campo in Model.Campos)
+                    {
+                        if (!String.IsNullOrWhiteSpace(campo))
+                        {
+                        <tr>
+                            <td>
+                                <b>@campo</b>
+                            </td>
+                            <td>
+                                <div class="ui fluid input">
+                                    <input type="text" />
+                                </div>
+                            </td>
+                        </tr>
+                        }
+                    }
                 </tbody>
             </table>
         </div>
@@ -108,25 +94,41 @@
                 <tbody>
                     <tr>
                         <td>
-                            <b>@Model.Disciplina.Descricao</b>
+                            <b>@Model.Avaliacao.AvalCertificacao.Disciplina.Descricao</b>
                         </td>
                         <td class="ui labels">
-                            @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == Model.CodDisciplina))
+                            @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == Model.Avaliacao.AvalCertificacao.CodDisciplina))
                             {
                             <div class="ui tag label">@avalTema.Tema.Descricao</div>
                             }
                         </td>
                         <td class="ui labels">
-                            <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.CodDisciplina, 1)</div></div>
-                            <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.CodDisciplina, 2)</div></div>
+                            <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.Avaliacao.AvalCertificacao.CodDisciplina, 1)</div></div>
+                            <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.Avaliacao.AvalCertificacao.CodDisciplina, 2)</div></div>
                         </td>
                         <td>
-                            @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(Model.CodDisciplina)
+                            @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(Model.Avaliacao.AvalCertificacao.CodDisciplina)
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+
+    @if (Model.Instrucoes.Length > 0)
+    {
+        <div class="ui vertical segment">
+            <div class="ui header dividing">
+                Instruções
+            </div>
+            @foreach (var instrucao in Model.Instrucoes)
+                {
+                    if (!String.IsNullOrWhiteSpace(instrucao))
+                    {
+                    <p>@instrucao.Trim()</p>
+                }
+            }
+        </div>
+    }
 
         <div class="ui parentQuestao vertical segment">
             <div class="ui header dividing">
@@ -212,12 +214,12 @@
     @Scripts.Render("~/bundles/js")
     <script>
         $('.ui.checkbox')
-                .checkbox()
+            .checkbox()
         ;
         var focused = false;
         window.print();
         focused = true;
-        setInterval(function () { if (focused === true) { window.close(); } }, 300);
+        var interval = setInterval(function () { if (focused === true) { clearInterval(interval); window.location.href = "@Url.Action("Detalhe", "Certificacao", new { codigo = Model.Avaliacao.CodAvaliacao })" } }, 300);
     </script>
 </body>
 </html>

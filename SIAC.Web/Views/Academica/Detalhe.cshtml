@@ -401,7 +401,10 @@ var correta = LstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a
             <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
         }
     }
-
+    if (!Model.Avaliacao.FlagArquivo)
+    {
+        <a href="@Url.Action("Avaliacao", "Impressao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Imprimir</a>
+    }
 }
 @if (Sessao.UsuarioCategoriaCodigo == 2 && Model.Avaliacao.FlagPendente)
 {

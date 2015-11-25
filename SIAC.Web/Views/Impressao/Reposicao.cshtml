@@ -1,9 +1,7 @@
-﻿@using SIAC.Models
-
-@model AvalAuto
+﻿@model ImpressaoAvaliacaoViewModel
 
 @{
-    ViewBag.Title = "Autoavaliação " + Model.Avaliacao.CodAvaliacao;
+    ViewBag.Title = Model.Titulo;
     Layout = null;
     List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
 }
@@ -48,33 +46,41 @@
                             <b>Instituição</b>
                         </td>
                         <td>
-                            Sistema Interativo de Avaliação de Conhecimento
+                            @Model.Instituicao
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <b>Nome</b>
+                            <b>Professor</b>
                         </td>
                         <td>
-                            @Model.PessoaFisica.Nome
+                            @Model.Professor
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <b>Data de Cadastro</b>
+                            <b>Avaliação para Reposição</b>
                         </td>
                         <td>
-                            @Model.Avaliacao.DtCadastro.ToShortDateString()
+                            @Model.Avaliacao.AvalAcadReposicao.Academica.Avaliacao.CodAvaliacao
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <b>Data de Impressão</b>
-                        </td>
-                        <td>
-                            @DateTime.Now.ToShortDateString()
-                        </td>
-                    </tr>
+                    @foreach (var campo in Model.Campos)
+                    {
+                        if (!String.IsNullOrWhiteSpace(campo))
+                        {
+                            <tr>
+                                <td>
+                                    <b>@campo</b>
+                                </td>
+                                <td>
+                                    <div class="ui fluid input">
+                                        <input type="text" />
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
                 </tbody>
             </table>
         </div>
@@ -93,27 +99,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
-            {
                     <tr>
                         <td>
-                            <b>@disc.Descricao</b>
+                            <b>@Model.Avaliacao.AvalAcadReposicao.Disciplina.Descricao</b>
                         </td>
                         <td class="ui labels">
-                            @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                            @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == Model.Avaliacao.AvalAcadReposicao.Disciplina.CodDisciplina))
                             {
                             <div class="ui tag label">@avalTema.Tema.Descricao</div>
                             }
                         </td>
                         <td class="ui labels">
-                            <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
-                            <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
+                            <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.Avaliacao.AvalAcadReposicao.Disciplina.CodDisciplina, 1)</div></div>
+                            <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.Avaliacao.AvalAcadReposicao.Disciplina.CodDisciplina, 2)</div></div>
                         </td>
                         <td>
-                            @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
+                            @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(Model.Avaliacao.AvalAcadReposicao.Disciplina.CodDisciplina)
                         </td>
                     </tr>
-                }
                 </tbody>
             </table>
         </div>
@@ -172,7 +175,17 @@
                                 switch (anexo.CodTipoAnexo)
                                 {
                                     case 1:
-                                        @Html.Partial("_AnexoImagem", anexo)
+                                        <div class="ui segment">
+                                            <img class="ui image" src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo, 0, anexo.Anexo.Length)" />
+                                            <div>
+                                                <b>
+                                                    @anexo.Legenda
+                                                </b>
+                                                <p>
+                                                    @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte não informada")
+                                                </p>
+                                            </div>
+                                        </div>
                                         break;
                                     default:
                                         break;
@@ -197,7 +210,7 @@
         var focused = false;
         window.print();
         focused = true;
-        setInterval(function () { if (focused === true) { window.close(); } }, 300);
+        var interval = setInterval(function () { if (focused === true) { clearInterval(interval); window.location.href = "@Url.Action("Detalhe", "Reposicao", new { codigo = Model.Avaliacao.CodAvaliacao })" } }, 300);
     </script>
 </body>
 </html>

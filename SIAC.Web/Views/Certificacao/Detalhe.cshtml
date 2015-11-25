@@ -382,6 +382,10 @@ else if (Model.Avaliacao.FlagRealizada)
             <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
         }
     }
+    if (!Model.Avaliacao.FlagArquivo)
+    {
+        <a href="@Url.Action("Avaliacao", "Impressao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Imprimir</a>
+    }
 }
 @if (FlagProfessor && Model.Avaliacao.FlagPendente)
 {

@@ -246,6 +246,7 @@
     <Compile Include="Controllers\AutoavaliacaoController.cs" />
     <Compile Include="Controllers\AcademicaController.cs" />
     <Compile Include="Controllers\CertificacaoController.cs" />
+    <Compile Include="Controllers\ImpressaoController.cs" />
     <Compile Include="Controllers\InstitucionalController.cs" />
     <Compile Include="Controllers\PerfilController.cs" />
     <Compile Include="Controllers\ReposicaoController.cs" />
@@ -557,6 +558,7 @@
     <Compile Include="ViewModels\AvaliacaoResultadoViewModel.cs" />
     <Compile Include="ViewModels\CertificacaoConfigurarViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracoesIndexViewModel.cs" />
+    <Compile Include="ViewModels\ImpressaoAvaliacaoViewModel.cs" />
     <Compile Include="ViewModels\InstitucionalGerarQuestaoViewModel.cs" />
     <Compile Include="ViewModels\QuestaoCadastrarViewModel.cs" />
     <Compile Include="ViewModels\QuestaoIndexViewModel.cs" />
@@ -604,7 +606,7 @@
     <Content Include="Views\Autoavaliacao\Novo.cshtml" />
     <Content Include="Views\Autoavaliacao\Resultado.cshtml" />
     <Content Include="Views\Autoavaliacao\Detalhe.cshtml" />
-    <Content Include="Views\Autoavaliacao\Imprimir.cshtml" />
+    <Content Include="Views\Impressao\Autoavaliacao.cshtml" />
     <Content Include="Views\Questao\Gerar.cshtml" />
     <Content Include="Views\Academica\Gerar.cshtml" />
     <Content Include="Views\Academica\Confirmar.cshtml" />
@@ -612,7 +614,6 @@
     <Content Include="Views\Academica\Agendar.cshtml" />
     <Content Include="Views\Academica\Detalhe.cshtml" />
     <Content Include="Views\Academica\Configurar.cshtml" />
-    <Content Include="Views\Academica\Imprimir.cshtml" />
     <Content Include="Views\Academica\Agendada.cshtml" />
     <Content Include="Views\Academica\Partials\_Questao.cshtml" />
     <Content Include="Views\Academica\Acompanhar.cshtml" />
@@ -661,7 +662,7 @@
     <Content Include="Views\Certificacao\Realizar.cshtml" />
     <Content Include="Views\Certificacao\Resultado.cshtml" />
     <Content Include="Views\Certificacao\Corrigir.cshtml" />
-    <Content Include="Views\Certificacao\Imprimir.cshtml" />
+    <Content Include="Views\Impressao\Certificacao.cshtml" />
     <Content Include="Views\Certificacao\Partials\_Individual.cshtml" />
     <Content Include="Views\Certificacao\Detalhe.cshtml" />
     <Content Include="Views\Reposicao\Justificar.cshtml" />
@@ -675,13 +676,15 @@
     <Content Include="Views\Institucional\Configuracao.cshtml" />
     <Content Include="Views\Shared\Partials\_Anexo.cshtml" />
     <Content Include="Views\Reposicao\Agendada.cshtml" />
-    <Content Include="Views\Reposicao\Imprimir.cshtml" />
+    <Content Include="Views\Impressao\Reposicao.cshtml" />
     <Content Include="Views\Reposicao\Acompanhar.cshtml" />
     <Content Include="Views\Reposicao\Realizar.cshtml" />
     <Content Include="Views\Reposicao\Resultado.cshtml" />
     <Content Include="Views\Reposicao\Corrigir.cshtml" />
     <Content Include="Views\Reposicao\Detalhe.cshtml" />
     <Content Include="Views\Reposicao\Partials\_Individual.cshtml" />
+    <Content Include="Views\Impressao\Avaliacao.cshtml" />
+    <Content Include="Views\Impressao\Academica.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

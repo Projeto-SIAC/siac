@@ -15,6 +15,24 @@ namespace SIAC.Models
             }
         }
 
+        public Professor Professor
+        {
+            get
+            {
+                switch (this.CodTipoAvaliacao)
+                {
+                    case 2:
+                        return this.AvalAcademica.Professor;
+                    case 3:
+                        return this.AvalCertificacao.Professor;
+                    case 5:
+                        return this.AvalAcadReposicao.Professor;
+                    default:
+                        return null;
+                }
+            }
+        }
+
         public List<Tema> Temas
         {
             get

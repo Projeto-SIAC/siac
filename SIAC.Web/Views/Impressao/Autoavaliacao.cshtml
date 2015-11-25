@@ -1,11 +1,10 @@
-﻿@model AvalCertificacao
+﻿@model ImpressaoAvaliacaoViewModel
 
 @{
-    ViewBag.Title = "Certificação " + Model.Avaliacao.CodAvaliacao;
+    ViewBag.Title = "Autoavaliação " + Model.Avaliacao.CodAvaliacao;
     Layout = null;
     List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
 }
-
 <html lang="pt-br">
 <head>
     <meta charset="utf-8" />
@@ -47,15 +46,7 @@
                             <b>Instituição</b>
                         </td>
                         <td>
-                            @Model.Professor.TurmaDiscProfHorario.First().Turma.Curso.Diretoria.Campus.Instituicao.PessoaJuridica.NomeFantasia
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Professor</b>
-                        </td>
-                        <td>
-                            @Model.Professor.Usuario.PessoaFisica.Nome
+                            Sistema Interativo de Avaliação de Conhecimento
                         </td>
                     </tr>
                     <tr>
@@ -63,19 +54,23 @@
                             <b>Nome</b>
                         </td>
                         <td>
-                            <div class="ui fluid input">
-                                <input type="text" />
-                            </div>
+                            @Model.Avaliacao.AvalAuto.PessoaFisica.Nome
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <b>Data de Aplicação</b>
+                            <b>Data de Cadastro</b>
                         </td>
                         <td>
-                            <div class="ui fluid input">
-                                <input type="text" />
-                            </div>
+                            @Model.Avaliacao.DtCadastro.ToShortDateString()
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Data de Impressão</b>
+                        </td>
+                        <td>
+                            @DateTime.Now.ToShortDateString()
                         </td>
                     </tr>
                 </tbody>
@@ -96,24 +91,27 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+            {
                     <tr>
                         <td>
-                            <b>@Model.Disciplina.Descricao</b>
+                            <b>@disc.Descricao</b>
                         </td>
                         <td class="ui labels">
-                            @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == Model.CodDisciplina))
+                            @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
                             {
                             <div class="ui tag label">@avalTema.Tema.Descricao</div>
                             }
                         </td>
                         <td class="ui labels">
-                            <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.CodDisciplina, 1)</div></div>
-                            <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.CodDisciplina, 2)</div></div>
+                            <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
+                            <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
                         </td>
                         <td>
-                            @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(Model.CodDisciplina)
+                            @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
                         </td>
                     </tr>
+                }
                 </tbody>
             </table>
         </div>
@@ -172,17 +170,7 @@
                                 switch (anexo.CodTipoAnexo)
                                 {
                                     case 1:
-                                        <div class="ui segment">
-                                            <img class="ui image" src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo, 0, anexo.Anexo.Length)" />
-                                            <div>
-                                                <b>
-                                                    @anexo.Legenda
-                                                </b>
-                                                <p>
-                                                    @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte não informada")
-                                                </p>
-                                            </div>
-                                        </div>
+                                        @Html.Partial("_AnexoImagem", anexo)
                                         break;
                                     default:
                                         break;
@@ -202,12 +190,12 @@
     @Scripts.Render("~/bundles/js")
     <script>
         $('.ui.checkbox')
-            .checkbox()
+                .checkbox()
         ;
         var focused = false;
         window.print();
         focused = true;
-        setInterval(function () { if (focused === true) { window.close(); } }, 300);
+        var interval = setInterval(function () { if (focused === true) { clearInterval(interval); window.location.href = "@Url.Action("Detalhe", "Autoavaliacao", new { codigo = Model.Avaliacao.CodAvaliacao })" } }, 300);
     </script>
 </body>
 </html>

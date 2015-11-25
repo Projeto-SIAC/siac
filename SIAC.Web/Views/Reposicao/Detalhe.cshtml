@@ -1,4 +1,4 @@
-﻿@model SIAC.Models.AvalAcadReposicao
+﻿@model AvalAcadReposicao
 @{
     ViewBag.Title = "Reposição " + Model.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -379,7 +379,10 @@ else if (Model.Avaliacao.FlagRealizada)
             <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
         }
     }
-
+    if (!Model.Avaliacao.FlagArquivo)
+    {
+        <a href="@Url.Action("Avaliacao", "Impressao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Imprimir</a>
+    }
 }
 @if (Sessao.UsuarioCategoriaCodigo == 2 && Model.Avaliacao.FlagPendente)
 {

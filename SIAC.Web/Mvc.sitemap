@@ -55,6 +55,7 @@
           </mvcSiteMapNode>
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Agenda" controller="Agenda" action="Index" />
+      <mvcSiteMapNode title="Impressão" controller="Impressao" action="Avaliacao" preservedRouteParameters="codigo" />
       <mvcSiteMapNode title="Correções Pendentes" controller="Dashboard" action="Pendente" />
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Histórico" controller="Historico" action="Index">

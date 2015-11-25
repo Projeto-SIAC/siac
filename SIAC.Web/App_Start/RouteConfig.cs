@@ -47,7 +47,7 @@ namespace SIAC
                 name: "Dashboard",
                 url: "Dashboard/{controller}/{action}/{codigo}",
                 defaults: new { controller = "Dashboard", action = "Index", codigo = UrlParameter.Optional },
-                constraints: new { controller = @"^(Questao|Autoavaliacao|Agenda)$" }
+                constraints: new { controller = @"^(Questao|Autoavaliacao|Agenda|Impressao)$" }
             );
 
             routes.MapRoute(
