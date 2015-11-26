@@ -69,17 +69,20 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult Configurar(string codigo)
         {
-            AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
-            if (avi != null)
+            if (!String.IsNullOrEmpty(codigo))
             {
-                ViewModels.InstitucionalGerarQuestaoViewModel model = new ViewModels.InstitucionalGerarQuestaoViewModel();
-                model.Modulos = AviModulo.ListarOrdenadamente();
-                model.Categorias = AviCategoria.ListarOrdenadamente();
-                model.Indicadores = AviIndicador.ListarOrdenadamente();
-                model.Tipos = TipoQuestao.ListarOrdenadamente();
-                model.Avi = avi;
+                AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
+                if (avi != null)
+                {
+                    ViewModels.InstitucionalGerarQuestaoViewModel model = new ViewModels.InstitucionalGerarQuestaoViewModel();
+                    model.Modulos = AviModulo.ListarOrdenadamente();
+                    model.Categorias = AviCategoria.ListarOrdenadamente();
+                    model.Indicadores = AviIndicador.ListarOrdenadamente();
+                    model.Tipos = TipoQuestao.ListarOrdenadamente();
+                    model.Avi = avi;
 
-                return View(model);
+                    return View(model);
+                }
             }
             return RedirectToAction("Index");
         }

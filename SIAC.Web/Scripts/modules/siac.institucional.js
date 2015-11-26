@@ -106,7 +106,7 @@ siac.Institucional.Configurar = (function () {
     var _codAvaliacao;
 
     function iniciar() {
-        _codAvaliacao = window.location.pathname.match(/avi[0-9]+$/)[0];
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/avi[0-9]+$/)[0];
         $('.ui.dropdown').dropdown();
         $('.tabular.menu .item').tab();
         $('h3').popup();
@@ -494,6 +494,7 @@ siac.Institucional.Configurar = (function () {
 
     function abrirModalEditar(button) {
         $('.ui.editar.modal .alternativas').html('');
+        $('.ui.editar.modal form').removeClass('error');
         var $content = $(button).parent().parent();
 
         var enunciado = $content.find('h3').text();
@@ -517,8 +518,8 @@ siac.Institucional.Configurar = (function () {
 
                 //Caso a alternativa seja discursiva
                 if ($(this).find('.label').length > 0) {
-                    $ALTERNATIVA_TEMPLATE.find('label').text('Alternativa Discursiva');
-                    $ALTERNATIVA_TEMPLATE.find('textarea').attr('name','txtEditarAlternativaDiscursiva');
+                    $ALTERNATIVA_TEMPLATE.find('label').text('Alternativa Discursiva').attr('for', 'txtEditarAlternativaDiscursiva');
+                    $ALTERNATIVA_TEMPLATE.find('textarea').attr('id', 'txtEditarAlternativaDiscursiva').attr('name', 'txtEditarAlternativaDiscursiva');
                 }
 
                 $('.ui.editar.modal .alternativas').append($ALTERNATIVA_TEMPLATE);
@@ -532,13 +533,26 @@ siac.Institucional.Configurar = (function () {
         var ordem = $content.data('questao');
         $('.ui.editar.modal').modal({
             onApprove: function () {
-                editarQuestao(modulo,categoria,indicador,ordem);
+                $modal = $(this);
+                var validado = true;
+                $modal.find(':input').map(function () {
+                    if (!$(this).val() && $(this).attr('id') != 'txtEditarObservacao') {
+                        $modal.find('.error.message .list').html('<li>Todos os campos obrigatórios devem ser preenchidos!');
+                        $modal.find('form').addClass('error');
+                        validado = false;
+                    }
+                });
+                if (validado) {
+                    $modal.find('form').removeClass('error');
+                    editarQuestao(modulo, categoria, indicador, ordem, $content);
+                }
+                return false;
             }
         }).modal('show');   
     }
 
-    function editarQuestao(modulo, categoria, indicador, ordem) {
-        var $button = $('.editar.modal .aprrove.button');
+    function editarQuestao(modulo, categoria, indicador, ordem,$content) {
+        var $button = $('.editar.modal .approve.button');
         $button.addClass('loading');
         var form = $('form.edicao').serialize();
         //$.extend(form, { modulo: modulo });
@@ -548,7 +562,27 @@ siac.Institucional.Configurar = (function () {
             data: form,
             dataType: 'json',
             success: function (form) {
-                console.log(form);
+                $content.find('h3').attr('data-content', $('#txtEditarObservacao').val()).popup().text($('#txtEditarEnunciado').val());
+
+                qteAlternativa = $content.find('.relaxed.list .item').length;
+
+                if (qteAlternativa > 0) {
+                    var indice = 1;
+                    $content.find('.relaxed.list .item').map(function () {
+                        var $alternativa = $(this);
+                        var alternativaFormTexto = '';
+
+                        if ($alternativa.find('.label').length > 0) { //Caso seja discursiva
+                            alternativaFormTexto = $('#txtEditarAlternativaDiscursiva').val();
+                            $alternativa.html('<b>' + indice + ')</b> ' + alternativaFormTexto + '<div class="ui left pointing label">Alternativa discursiva</div>');
+                        } else { //Caso seja objetiva
+                            alternativaFormTexto = $('#txtEditarAlternativa' + indice).val();
+                            $alternativa.html('<b>' + indice + ')</b> ' + alternativaFormTexto);
+                        }
+                        indice++;
+                    });
+                }
+
             },
             error: function (erro) {
                 siac.mensagem('Erro na edição de questão');
@@ -556,6 +590,7 @@ siac.Institucional.Configurar = (function () {
             },
             complete: function () {
                 $button.removeClass('loading');
+                $('.ui.editar.modal').modal('hide');
             }
         });
     }

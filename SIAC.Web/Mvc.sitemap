@@ -45,14 +45,14 @@
           </mvcSiteMapNode>
         </mvcSiteMapNode>
         <mvcSiteMapNode title="Reposição" url="~/historico/avaliacao/reposicao">
-            <mvcSiteMapNode title="Justificar" controller="Reposicao" action="Justificar" preservedRouteParameters="codigo"/>
-            <mvcSiteMapNode title="Agendar" controller="Reposicao" action="Agendar" preservedRouteParameters="codigo"/>
-            <mvcSiteMapNode title="Configurar" controller="Reposicao" action="Configurar" preservedRouteParameters="codigo"/>
-            <mvcSiteMapNode title="Acompanhar" controller="Reposicao" action="Acompanhar" preservedRouteParameters="codigo"/>
-            <mvcSiteMapNode title="Realizar" controller="Reposicao" action="Realizar" preservedRouteParameters="codigo">
-              <mvcSiteMapNode title="Resultado" controller="Reposicao" action="Resultado" preservedRouteParameters="codigo"/>
-            </mvcSiteMapNode>
+          <mvcSiteMapNode title="Justificar" controller="Reposicao" action="Justificar" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Agendar" controller="Reposicao" action="Agendar" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Configurar" controller="Reposicao" action="Configurar" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Acompanhar" controller="Reposicao" action="Acompanhar" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Realizar" controller="Reposicao" action="Realizar" preservedRouteParameters="codigo">
+            <mvcSiteMapNode title="Resultado" controller="Reposicao" action="Resultado" preservedRouteParameters="codigo"/>
           </mvcSiteMapNode>
+        </mvcSiteMapNode>
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Agenda" controller="Agenda" action="Index" />
       <mvcSiteMapNode title="Impressão" controller="Impressao" action="Avaliacao" preservedRouteParameters="codigo" />
@@ -85,7 +85,11 @@
       </mvcSiteMapNode>
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Configurações" controller="Configuracoes" action="Index">
-        <mvcSiteMapNode title="Parâmetros" controller="Configuracoes" action="Parametros" preservedRouteParameters="tab" />
-      </mvcSiteMapNode>
+      <mvcSiteMapNode title="Parâmetros" controller="Configuracoes" action="Parametros" preservedRouteParameters="tab" />
+    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Av. Institucional" controller="Institucional" action="Index">
+      <mvcSiteMapNode title="Gerar" controller="Institucional" action="Gerar"/>
+      <mvcSiteMapNode title="Configurar" controller="Institucional" action="Configurar" preservedRouteParameters="codigo"/>
+    </mvcSiteMapNode>
   </mvcSiteMapNode>
 </mvcSiteMap>
