@@ -7,11 +7,14 @@ namespace SIAC.Models
 {
     public partial class dbSIACEntities
     {
-        public override int SaveChanges()
+        public int SaveChanges(bool alertar = true)
         {
-            Sistema.AlertarMudanca.AddRange(Sistema.MatriculaAtivo);
-            Sistema.AlertarMudanca = Sistema.AlertarMudanca.Distinct().ToList();
-            Sistema.AlertarMudanca.Remove(Helpers.Sessao.UsuarioMatricula);
+            if (alertar)
+            {
+                Sistema.AlertarMudanca.AddRange(Sistema.UsuarioAtivo.Keys);
+                Sistema.AlertarMudanca = Sistema.AlertarMudanca.Distinct().ToList();
+                Sistema.AlertarMudanca.Remove(Helpers.Sessao.UsuarioMatricula);
+            }
             return base.SaveChanges();
         }
     }

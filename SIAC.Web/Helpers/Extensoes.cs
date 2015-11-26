@@ -445,5 +445,21 @@ namespace SIAC
             return s.Replace(',', '.');
         }
         #endregion
+
+        public static string RecuperarIp(this HttpContext contexto)
+        {
+            string ip = contexto.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+
+            if (!string.IsNullOrEmpty(ip))
+            {
+                string[] enderecos = ip.Split(',');
+                if (enderecos.Length != 0)
+                {
+                    return enderecos[0];
+                }
+            }
+
+            return contexto.Request.ServerVariables["REMOTE_ADDR"];
+        }
     }
 }

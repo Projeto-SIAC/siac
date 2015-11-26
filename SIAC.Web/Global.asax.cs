@@ -21,8 +21,29 @@ namespace SIAC
 
         protected void Session_End(object sender, EventArgs e)
         {
-            Models.Sistema.MatriculaAtivo.Remove((string)Session["UsuarioMatricula"]);
+            Models.Sistema.UsuarioAtivo.Remove((string)Session["UsuarioMatricula"]);
         }    
+        
+        protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
+        {
+            if (Context.Handler is System.Web.SessionState.IRequiresSessionState || Context.Handler is System.Web.SessionState.IReadOnlySessionState)
+            {
+                if (Helpers.Sessao.UsuarioMatricula != null && Models.Sistema.UsuarioAtivo.Keys.Contains(Helpers.Sessao.UsuarioMatricula))
+                {
+                    var acesso = Models.Sistema.UsuarioAtivo[Helpers.Sessao.UsuarioMatricula];
+                    var acessos = acesso.UsuarioAcessoPagina;
+                    int numIdentificador = acessos.Count > 0 ? acesso.UsuarioAcessoPagina.Max(a => a.NumIdentificador) : 0;
+                    acesso.UsuarioAcessoPagina.Add(new Models.UsuarioAcessoPagina()
+                    {
+                        NumIdentificador = numIdentificador + 1,
+                        Titulo = HttpContext.Current.Request.Url.PathAndQuery.ToString(),
+                        DtAbertura = DateTime.Now,
+                        PaginaReferencia = HttpContext.Current.Request.UrlReferrer.PathAndQuery.ToString()
+                    });
+                    Models.Repositorio.GetInstance().SaveChanges(false);
+                }
+            }
+        }
     }
 
     public class SIACViewEngine : RazorViewEngine
@@ -36,6 +57,5 @@ namespace SIAC
         {
             base.PartialViewLocationFormats = base.PartialViewLocationFormats.Union(NewPartialViewFormats).ToArray();
         }
-
     }
 }
