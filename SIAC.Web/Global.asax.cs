@@ -38,7 +38,7 @@ namespace SIAC
                         NumIdentificador = numIdentificador + 1,
                         Titulo = HttpContext.Current.Request.Url.PathAndQuery.ToString(),
                         DtAbertura = DateTime.Now,
-                        PaginaReferencia = HttpContext.Current.Request.UrlReferrer.PathAndQuery.ToString()
+                        PaginaReferencia = HttpContext.Current.Request.UrlReferrer?.PathAndQuery.ToString()
                     });
                     Models.Repositorio.GetInstance().SaveChanges(false);
                 }
