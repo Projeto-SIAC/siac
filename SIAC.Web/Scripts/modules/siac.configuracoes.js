@@ -42,7 +42,7 @@ siac.Configuracoes.Parametros = (function () {
         $.ajax({
             type: 'POST',
             data: form,
-            url: "/Configuracoes",
+            url: "/configuracoes/parametros",
             success: function () {
                 $('#btnAtualizar').addClass('green').text('Atualizado');
                 $('#btnAtualizar').removeClass('loading');
