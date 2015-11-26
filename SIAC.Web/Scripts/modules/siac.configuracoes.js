@@ -1,6 +1,6 @@
 ﻿siac.Configuracoes = siac.Configuracoes || {};
 
-siac.Configuracoes = (function () {
+siac.Configuracoes.Parametros = (function () {
     var MatrizCount = 2;
     var HorarioCount = 2;
 
@@ -12,7 +12,7 @@ siac.Configuracoes = (function () {
         $('.tabular.menu .item').tab({
             history: true,
             historyType: 'state',
-            path: window.location.pathname
+            path: '/configuracoes/parametros'
         });
 
         $('.tab.geral :input, .tab.termo :input').change(function () {

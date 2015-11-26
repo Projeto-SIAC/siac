@@ -14,7 +14,13 @@ namespace SIAC.Controllers
         // GET: /Configuracoes
         public ActionResult Index()
         {
-            var model = new ViewModels.ConfiguracoesIndexViewModel();
+            return View();
+        }
+
+
+        public ActionResult Parametros()
+        {
+            var model = new ViewModels.ConfiguracoesParametrosViewModel();
             model.Parametro = Parametro.Obter();
 
             model.Disciplinas = Disciplina.ListarOrdenadamente();

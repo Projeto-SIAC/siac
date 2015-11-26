@@ -557,7 +557,7 @@
     <Compile Include="ViewModels\AvaliacaoIndexViewModel.cs" />
     <Compile Include="ViewModels\AvaliacaoResultadoViewModel.cs" />
     <Compile Include="ViewModels\CertificacaoConfigurarViewModel.cs" />
-    <Compile Include="ViewModels\ConfiguracoesIndexViewModel.cs" />
+    <Compile Include="ViewModels\ConfiguracoesParametrosViewModel.cs" />
     <Compile Include="ViewModels\ImpressaoAvaliacaoViewModel.cs" />
     <Compile Include="ViewModels\InstitucionalGerarQuestaoViewModel.cs" />
     <Compile Include="ViewModels\QuestaoCadastrarViewModel.cs" />
@@ -597,7 +597,7 @@
     <Content Include="Views\Questao\Cadastrar.cshtml" />
     <Content Include="Views\Erro\Index.cshtml" />
     <Content Include="Views\Questao\Detalhe.cshtml" />
-    <Content Include="Views\Configuracoes\Index.cshtml" />
+    <Content Include="Views\Configuracoes\Parametros.cshtml" />
     <Content Include="Views\Autoavaliacao\Gerar.cshtml" />
     <Content Include="Views\Autoavaliacao\Index.cshtml" />
     <Content Include="Views\Autoavaliacao\Realizar.cshtml" />
@@ -685,6 +685,7 @@
     <Content Include="Views\Reposicao\Partials\_Individual.cshtml" />
     <Content Include="Views\Impressao\Avaliacao.cshtml" />
     <Content Include="Views\Impressao\Academica.cshtml" />
+    <Content Include="Views\Configuracoes\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

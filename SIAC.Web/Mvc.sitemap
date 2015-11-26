@@ -84,5 +84,8 @@
         </mvcSiteMapNode>
       </mvcSiteMapNode>
     </mvcSiteMapNode>
+    <mvcSiteMapNode title="Configurações" controller="Configuracoes" action="Index">
+        <mvcSiteMapNode title="Parâmetros" controller="Configuracoes" action="Parametros" preservedRouteParameters="tab" />
+      </mvcSiteMapNode>
   </mvcSiteMapNode>
 </mvcSiteMap>
