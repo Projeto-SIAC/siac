@@ -106,7 +106,7 @@ siac.Institucional.Configurar = (function () {
     var _codAvaliacao;
 
     function iniciar() {
-        _codAvaliacao = window.location.pathname.match(/avi[0-9]+$/)[0];
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/avi[0-9]+$/)[0];
         $('.ui.dropdown').dropdown();
         $('.tabular.menu .item').tab();
         $('h3').popup();
