@@ -89,7 +89,7 @@
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Av. Institucional" controller="Institucional" action="Index">
       <mvcSiteMapNode title="Gerar" controller="Institucional" action="Gerar"/>
-      <mvcSiteMapNode title="Configurar" controller="Institucional" action="Configurar" preservedRouteParameters="codigo"/>
+      <mvcSiteMapNode title="Questionário" controller="Institucional" action="Questionario" preservedRouteParameters="codigo"/>
     </mvcSiteMapNode>
   </mvcSiteMapNode>
 </mvcSiteMap>

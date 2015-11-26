@@ -63,13 +63,13 @@ namespace SIAC.Controllers
 
                 AvalAvi.Inserir(avi);
 
-                return RedirectToAction("Configurar", new { codigo = avi.Avaliacao.CodAvaliacao });
+                return RedirectToAction("Questionario", new { codigo = avi.Avaliacao.CodAvaliacao });
             }
             return RedirectToAction("Gerar");
         }
-        // GET: institucional/Configurar
+        // GET: institucional/Questionario
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
-        public ActionResult Configurar(string codigo)
+        public ActionResult Questionario(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))
             {
@@ -101,7 +101,7 @@ namespace SIAC.Controllers
 
             AviModulo.Inserir(modulo);
 
-            return RedirectToAction("Configurar");
+            return RedirectToAction("Configuracao");
         }
         // POST: institucional/CadastrarCategoria
         [HttpPost]
@@ -115,7 +115,7 @@ namespace SIAC.Controllers
 
             AviCategoria.Inserir(categoria);
 
-            return RedirectToAction("Configurar");
+            return RedirectToAction("Configuracao");
         }
         // POST: institucional/CadastrarIndicador
         [HttpPost]
@@ -129,7 +129,7 @@ namespace SIAC.Controllers
 
             AviIndicador.Inserir(indicador);
 
-            return RedirectToAction("Configurar");
+            return RedirectToAction("Configuracao");
         }
         // POST: institucional/CadastrarQuestao/{codigo}
         [HttpPost]

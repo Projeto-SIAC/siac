@@ -133,8 +133,8 @@
         else if (/\/institucional\/configuracao(|\/indicador|\/categoria|\/modulo)$/.test(pathname)) {
             siac.Institucional.Configuracao.iniciar();
         }
-        else if (/\/institucional\/configurar\/avi[0-9]+$/.test(pathname)) {
-            siac.Institucional.Configurar.iniciar();
+        else if (/\/institucional\/questionario\/avi[0-9]+$/.test(pathname)) {
+            siac.Institucional.Questionario.iniciar();
         }
         else if (/\/historico\/avaliacao\/certificacao\/detalhe\/cert[0-9]+$/.test(pathname)) {
             siac.Certificacao.Detalhe.iniciar();

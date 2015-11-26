@@ -656,7 +656,7 @@
     <Content Include="Views\Certificacao\Avaliados.cshtml" />
     <Content Include="Views\Certificacao\Partials\_ListaQuestaoDetalhe.cshtml" />
     <Content Include="Views\Certificacao\Agendada.cshtml" />
-    <Content Include="Views\Institucional\Configurar.cshtml" />
+    <Content Include="Views\Institucional\Questionario.cshtml" />
     <Content Include="Scripts\modules\siac.institucional.js" />
     <Content Include="Views\Certificacao\Acompanhar.cshtml" />
     <Content Include="Views\Certificacao\Realizar.cshtml" />

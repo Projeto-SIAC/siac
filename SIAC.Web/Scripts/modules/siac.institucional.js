@@ -78,7 +78,7 @@ siac.Institucional.Gerar = (function () {
     }
 })();
 
-siac.Institucional.Configurar = (function () {
+siac.Institucional.Questionario = (function () {
     var _codAvaliacao;
 
     function iniciar() {
