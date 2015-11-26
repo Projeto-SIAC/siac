@@ -729,8 +729,11 @@
           <Property Name="NumeracaoAlternativa" Type="int" Nullable="false" />
           <Property Name="QteSemestres" Type="int" Nullable="false" />
           <Property Name="TermoResponsabilidade" Type="text" Nullable="false" />
-          <Property Name="NotaUso" Type="text" Nullable="false" />
+          <Property Name="NotaUsoAcademica" Type="text" Nullable="false" />
           <Property Name="ValorNotaMedia" Type="float" Nullable="false" />
+          <Property Name="NotaUsoReposicao" Type="text" Nullable="false" />
+          <Property Name="NotaUsoCertificacao" Type="text" Nullable="false" />
+          <Property Name="NotaUsoInstitucional" Type="text" Nullable="false" />
         </EntityType>
         <EntityType Name="Pessoa">
           <Key>
@@ -4652,8 +4655,11 @@
           <Property Name="NumeracaoAlternativa" Type="Int32" Nullable="false" />
           <Property Name="QteSemestres" Type="Int32" Nullable="false" />
           <Property Name="TermoResponsabilidade" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="NotaUso" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ValorNotaMedia" Type="Double" Nullable="false" />
+          <Property Name="NotaUsoAcademica" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="NotaUsoReposicao" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="NotaUsoCertificacao" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="NotaUsoInstitucional" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Pessoa">
           <Key>
@@ -6975,8 +6981,11 @@
           <EntitySetMapping Name="Parametro">
             <EntityTypeMapping TypeName="dbSIACModel.Parametro">
               <MappingFragment StoreEntitySet="Parametro">
+                <ScalarProperty Name="NotaUsoInstitucional" ColumnName="NotaUsoInstitucional" />
+                <ScalarProperty Name="NotaUsoCertificacao" ColumnName="NotaUsoCertificacao" />
+                <ScalarProperty Name="NotaUsoReposicao" ColumnName="NotaUsoReposicao" />
+                <ScalarProperty Name="NotaUsoAcademica" ColumnName="NotaUsoAcademica" />
                 <ScalarProperty Name="ValorNotaMedia" ColumnName="ValorNotaMedia" />
-                <ScalarProperty Name="NotaUso" ColumnName="NotaUso" />
                 <ScalarProperty Name="TermoResponsabilidade" ColumnName="TermoResponsabilidade" />
                 <ScalarProperty Name="QteSemestres" ColumnName="QteSemestres" />
                 <ScalarProperty Name="NumeracaoAlternativa" ColumnName="NumeracaoAlternativa" />

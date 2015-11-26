@@ -20,7 +20,10 @@ namespace SIAC.Models
         public int NumeracaoAlternativa { get; set; }
         public int QteSemestres { get; set; }
         public string TermoResponsabilidade { get; set; }
-        public string NotaUso { get; set; }
         public double ValorNotaMedia { get; set; }
+        public string NotaUsoAcademica { get; set; }
+        public string NotaUsoReposicao { get; set; }
+        public string NotaUsoCertificacao { get; set; }
+        public string NotaUsoInstitucional { get; set; }
     }
 }

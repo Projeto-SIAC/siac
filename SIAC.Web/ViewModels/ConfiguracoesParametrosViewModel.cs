@@ -6,7 +6,7 @@ using SIAC.Models;
 
 namespace SIAC.ViewModels
 {
-    public class ConfiguracoesIndexViewModel
+    public class ConfiguracoesParametrosViewModel
     {
         public Parametro Parametro { get; set; }
         public List<Disciplina> Disciplinas { get; set; }

@@ -110,7 +110,7 @@ namespace SIAC.Controllers
             var model = new ViewModels.AvaliacaoGerarViewModel();
             model.Disciplinas = /*Helpers.Sessao.UsuarioCategoriaCodigo == 2 ? */Disciplina.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula)/*: Disciplina.ListarOrdenadamente()*/;
             model.Dificuldades = Dificuldade.ListarOrdenadamente();
-            model.Termo = Parametro.Obter().NotaUso;
+            model.Termo = Parametro.Obter().NotaUsoCertificacao;
             return View(model);
         }
 

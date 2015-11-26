@@ -14,7 +14,13 @@ namespace SIAC.Controllers
         // GET: /Configuracoes
         public ActionResult Index()
         {
-            var model = new ViewModels.ConfiguracoesIndexViewModel();
+            return View();
+        }
+
+
+        public ActionResult Parametros()
+        {
+            var model = new ViewModels.ConfiguracoesParametrosViewModel();
             model.Parametro = Parametro.Obter();
 
             model.Disciplinas = Disciplina.ListarOrdenadamente();
@@ -35,10 +41,9 @@ namespace SIAC.Controllers
 
             return View(model);
         }
-
-        //POST: /Configuracoes
+        
         [HttpPost]
-        public ActionResult Index(FormCollection formCollection)
+        public ActionResult Parametros(FormCollection formCollection)
         {
             if (formCollection.HasKeys())
             {
@@ -48,7 +53,10 @@ namespace SIAC.Controllers
                 temp.NumeracaoAlternativa = int.Parse(formCollection["ddlNumeracaoAlternativa"]);
                 temp.QteSemestres = int.Parse(formCollection["txtQteSemestre"]);
                 temp.TermoResponsabilidade = formCollection["txtTermoResponsabilidade"];
-                temp.NotaUso = formCollection["txtNotaUso"];
+                temp.NotaUsoAcademica = formCollection["txtNotaUsoAcademica"];
+                temp.NotaUsoCertificacao = formCollection["txtNotaUsoCertificacao"];
+                temp.NotaUsoInstitucional = formCollection["txtNotaUsoInstitucional"];
+                temp.NotaUsoReposicao = formCollection["txtNotaUsoReposicao"];
                 temp.ValorNotaMedia = double.Parse(formCollection["txtValorNotaMedia"].Replace('.', ','));
                 Parametro.Atualizar(temp);
             }

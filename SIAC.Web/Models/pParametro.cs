@@ -35,8 +35,11 @@ namespace SIAC.Models
             temp.NumeracaoAlternativa = parametro.NumeracaoAlternativa;
             temp.QteSemestres = parametro.QteSemestres;
             temp.TermoResponsabilidade = parametro.TermoResponsabilidade.Trim();
-            temp.NotaUso = parametro.NotaUso.Trim();
             temp.ValorNotaMedia = parametro.ValorNotaMedia;
+            temp.NotaUsoAcademica = parametro.NotaUsoAcademica.Trim();
+            temp.NotaUsoCertificacao = parametro.NotaUsoCertificacao.Trim();
+            temp.NotaUsoInstitucional = parametro.NotaUsoInstitucional.Trim();
+            temp.NotaUsoReposicao = parametro.NotaUsoReposicao.Trim();
 
             contexto.SaveChanges();
         }

@@ -46,8 +46,8 @@
         else if (/\/historico\/questao\/editar\/[0-9]+$/.test(pathname)) {
             siac.Questao.Editar.iniciar();
         }
-        else if (pathname == '/configuracoes') {
-            siac.Configuracoes.iniciar();
+        else if (/\/configuracoes\/parametros/.test(pathname)) {
+            siac.Configuracoes.Parametros.iniciar();
         }
         else if (pathname == '/historico/autoavaliacao') {
             siac.Autoavaliacao.Index.iniciar();

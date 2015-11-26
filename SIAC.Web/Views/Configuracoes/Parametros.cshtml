@@ -1,0 +1,865 @@
+﻿@model ConfiguracoesParametrosViewModel
+
+@{
+    ViewBag.Title = "Parâmetros";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="ui form">
+    @* Modal de Conclusão *@
+    <div class="ui erro basic modal">
+        <i class="close icon"></i>
+        <div class="ui icon header">
+            <i class="close red icon"></i>
+            Parametros atualizados com erro!
+        </div>
+    </div>
+
+    @* Menu das Abas *@
+    <div class="ui top attached tabular menu">
+        <a class="active item" data-tab="gerais">Gerais</a>
+        <a class="item" data-tab="termo">Termos e Notas</a>
+        <a class="item" data-tab="cadastro">Cadastros</a>
+    </div>
+
+    @* Tab Geral *@
+    <div class="ui bottom attached active tab segment geral" data-tab="gerais">
+
+        <div class="field required">
+            <label>Tempo de Inatividade (em dias)</label>
+            <input type="number" value="@Model.Parametro.TempoInatividade" name="txtTempoInatividade" placeholder="Tempo de Inatividade" required />
+        </div>
+        <div class="field required">
+            <label>Tipo de Numeração das Questões</label>
+            <select name="ddlNumeracaoQuestao" class="ui dropdown" required>
+                <option value="1" @(@Model.Parametro.NumeracaoQuestao == 1 ? "selected" : "")>Algarismos indo-arábicos</option>
+                <option value="2" @(@Model.Parametro.NumeracaoQuestao == 2 ? "selected" : "")>Algarismos romanos</option>
+                <option value="3" @(@Model.Parametro.NumeracaoQuestao == 3 ? "selected" : "")>Letras em caixa baixa</option>
+                <option value="4" @(@Model.Parametro.NumeracaoQuestao == 4 ? "selected" : "")>Letras em caixa alta</option>
+            </select>
+        </div>
+        <div class="field required">
+            <label>Tipo de Numeração das Alternativas</label>
+            <select name="ddlNumeracaoAlternativa" class="ui dropdown" required>
+                <option value="1" @(@Model.Parametro.NumeracaoAlternativa == 1 ? "selected" : "")>Algarismos indo-arábicos</option>
+                <option value="2" @(@Model.Parametro.NumeracaoAlternativa == 2 ? "selected" : "")>Algarismos romanos</option>
+                <option value="3" @(@Model.Parametro.NumeracaoAlternativa == 3 ? "selected" : "")>Letras em caixa baixa</option>
+                <option value="4" @(@Model.Parametro.NumeracaoAlternativa == 4 ? "selected" : "")>Letras em caixa alta</option>
+            </select>
+        </div>
+        <div class="field required">
+            <label>Quantidade de Semestres</label>
+            <input name="txtQteSemestre" type="number" value="@Model.Parametro.QteSemestres" placeholder="Quantidade de Semestres" required />
+        </div>
+        <div class="field required">
+            <label>Valor da Nota Média</label>
+            <input name="txtValorNotaMedia" type="number" min="1" max="10" step="0.1" value="@Model.Parametro.ValorNotaMedia.ToValueHtml()" placeholder="Valor da Nota Média" required />
+        </div>
+    </div>
+
+    @* Termo *@
+    <div class="ui bottom attached tab segment termo" data-tab="termo">
+        <div class="field required">
+            <label>Termo de Responsabilidade</label>
+            <textarea rows="7" name="txtTermoResponsabilidade" placeholder="Digite aqui o Termo de Responsabilidade..." required >@Model.Parametro.TermoResponsabilidade</textarea>
+        </div>
+        <div class="field required">
+            <label>Nota de Uso para Av. Acadêmica</label>
+            <textarea rows="7" name="txtNotaUsoAcademica" placeholder="Digite aqui a Nota de Uso..." required >@Model.Parametro.NotaUsoAcademica</textarea>
+        </div>
+
+        <div class="field required">
+            <label>Nota de Uso para Reposição</label>
+            <textarea rows="7" name="txtNotaUsoReposicao" placeholder="Digite aqui a Nota de Uso..." required>@Model.Parametro.NotaUsoReposicao</textarea>
+        </div>
+
+        <div class="field required">
+            <label>Nota de Uso para Certificação</label>
+            <textarea rows="7" name="txtNotaUsoCertificacao" placeholder="Digite aqui a Nota de Uso..." required>@Model.Parametro.NotaUsoCertificacao</textarea>
+        </div>
+
+        <div class="field required">
+            <label>Nota de Uso para Av. Institucional</label>
+            <textarea rows="7" name="txtNotaUsoInstitucional" placeholder="Digite aqui a Nota de Uso..." required>@Model.Parametro.NotaUsoInstitucional</textarea>
+        </div>
+    </div>
+
+    @* Cadastros *@
+    <div class="ui bottom attached tab segment cadastro" data-tab="cadastro">
+        <div class="ui top attached tabular menu">
+            <a class="active item" data-tab="usuarios">Usuários</a>
+            <a class="item" data-tab="academicos">Acadêmicos</a>
+            <a class="item" data-tab="institucionais">Institucionais</a>
+        </div> 
+
+        <div class="ui bottom attached active tab segment" data-tab="usuarios">
+            <div class="ui top attached tabular menu">
+                <a class="active item" data-tab="aluno">Aluno</a>
+                <a class="item" data-tab="professor">Professor</a>
+                <a class="item" data-tab="colaborador">Colaborador</a>
+            </div>
+            @* Aluno *@
+            <div class="ui bottom attached active tab segment aluno" data-tab="aluno">
+                <div class="ui styled fluid accordion">
+                    <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                    <div class="content">
+                        <table class="ui striped table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Matricula</th>
+                                    <th>Curso</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (Aluno aluno in Model.Alunos)
+                                {
+                                    <tr>
+                                        <td>@aluno.Usuario.PessoaFisica.Nome</td>
+                                        <td>@aluno.MatrAluno</td>
+                                        <td>@aluno.Curso.Descricao</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+                <form id="alunoForm" method="post" action="/Configuracoes/CadastrarAluno">
+                    <div class="ui text loader">Inserindo</div>
+                    <div class="field required">
+                        <label>Nome</label>
+                        <input type="text" name="txtAlunoNome" placeholder="Nome..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Matrícula</label>
+                        <input type="text" name="txtAlunoMatricula" placeholder="Matrícula..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Curso</label>
+                        <select name="ddlAlunoCurso" class="ui fluid search dropdown" required">
+                            <option value="">Curso...</option>
+                            @foreach (Curso c in Model.Cursos)
+                            {
+                                <option value="@c.CodCurso">@c.Descricao</option>
+                            }
+                        </select>
+                    </div>
+                    <br />
+                    <input type="submit" class="ui button" value="Cadastrar" />
+                </form>
+            </div>
+
+            @* Professor *@
+            <div class="ui bottom attached tab segment professor" data-tab="professor">
+                <div class="ui styled fluid accordion">
+                    <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                    <div class="content">
+                        <table class="ui striped table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Matricula</th>
+                                    <th>Disciplina(s)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (Professor prof in Model.Professores)
+                                {
+                                    <tr>
+                                        <td>@prof.Usuario.PessoaFisica.Nome</td>
+                                        <td>@prof.MatrProfessor</td>
+                                        <td class="ui labels">
+                                            @foreach (var disc in prof.Disciplina)
+                                            {
+                                                <span class="ui tag label">@disc.Descricao</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+                <form id="professorForm" method="post" action="/Configuracoes/CadastrarProfessor">
+                    <div class="ui text loader">Inserindo</div>
+                    <div class="field required">
+                        <label>Nome</label>
+                        <input type="text" name="txtProfessorNome" placeholder="Nome..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Matrícula</label>
+                        <input type="text" name="txtProfessorMatricula" placeholder="Matrícula..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Disciplinas</label>
+                        <select name="ddlProfessorDisciplinas" class="ui fluid search dropdown" multiple="" required">
+                            <option value="">Disciplinas...</option>
+                            @foreach (var d in Model.Disciplinas)
+                            {
+                                <option value="@d.CodDisciplina">@d.Descricao</option>
+                            }
+                        </select>
+                    </div>
+                    <br />
+                    <input type="submit" class="ui button" value="Cadastrar" />
+                </form>
+            </div>
+
+            @* Colaborador *@
+            <div class="ui bottom attached tab segment colaborador" data-tab="colaborador">
+                <div class="ui styled fluid accordion">
+                    <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                    <div class="content">
+                        <table class="ui striped table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Matricula</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (Colaborador col in Model.Colaboradores)
+                                {
+                                    <tr>
+                                        <td>@col.Usuario.PessoaFisica.Nome</td>
+                                        <td>@col.MatrColaborador</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+                <form id="colaboradorForm" method="post" action="/Configuracoes/CadastrarColaborador">
+                    <div class="field required">
+                        <label>Nome</label>
+                        <input type="text" name="txtColaboradorNome" placeholder="Nome..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Matrícula</label>
+                        <input type="text" name="txtColaboradorMatricula" placeholder="Matrícula..." required />
+                    </div>
+                    <br />
+                    <input type="submit" class="ui button" value="Cadastrar" />
+                </form>
+            </div>
+        </div>
+
+        <div class="ui bottom attached tab segment" data-tab="academicos">
+            <div class="ui top attached tabular menu">
+                <a class="item" data-tab="turma">Turma</a>
+                <a class="item" data-tab="disciplina">Disciplina</a>
+                <a class="item" data-tab="tema">Tema</a>
+                <a class="item" data-tab="sala">Sala</a>
+                <a class="item" data-tab="matriz">Matriz</a>
+                <a class="item" data-tab="horario">Horário</a>
+            </div>
+            @* Turma *@
+            <div class="ui bottom attached tab segment turma" data-tab="turma">
+                <div class="ui styled fluid accordion">
+                    <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                    <div class="content">
+                        <table class="ui striped table">
+                            <thead>
+                                <tr>
+                                    <th>Turma</th>
+                                    <th>Curso</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (Turma tur in Model.Turmas)
+                                {
+                                    <tr>
+                                        <td>@tur.Periodo.@tur.CodCurso.@tur.NumTurma.@tur.CodTurno</td>
+                                        <td>@tur.Curso.Descricao</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+                <form id="turmaForm" method="post" action="/Configuracoes/CadastrarTurma">
+                    <div class="field required">
+                        <label>Periodo</label>
+                        <input type="number" name="txtTurmaPeriodo" required />
+                    </div>
+                    <div class="field required">
+                        <label>Curso</label>
+                        <select name="ddlTurmaCurso" class="ui fluid search dropdown" required>
+                            <option value="">Curso...</option>
+                            @foreach (Curso cur in Model.Cursos)
+                            {
+                                <option value="@cur.CodCurso">@cur.Descricao</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="field required">
+                        <label>Turno</label>
+                        <select name="ddlTurmaTurno" class="ui fluid search dropdown" required>
+                            <option value="">Turno...</option>
+                            @foreach (Turno tur in Model.Turnos)
+                            {
+                                <option value="@tur.CodTurno">@tur.Descricao</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="field required">
+                        <label>Nome</label>
+                        <input type="text" name="txtTurmaNome" placeholder="Nome..." required />
+                    </div>
+                    <br />
+                    <input type="submit" class="ui button" value="Cadastrar" />
+                </form>
+            </div>
+
+            @* Disciplina *@
+            <div class="ui bottom attached tab segment disciplina" data-tab="disciplina">
+                <div class="ui styled fluid accordion">
+                    <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                    <div class="content">
+                        <table class="ui striped table">
+                            <thead>
+                                <tr>
+                                    <th>Disciplina</th>
+                                    <th>Sigla</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (Disciplina disc in Model.Disciplinas)
+                                {
+                                    <tr>
+                                        <td>@disc.Descricao</td>
+                                        <td>@disc.Sigla</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <br />
+                <form id="disciplinaForm" class="ui form" method="post" action="/Configuracoes/CadastrarDisciplina">
+                    <div class="field required">
+                        <label>Disciplina</label>
+                        <input type="text" name="txtDisciplina" placeholder="Disciplina..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Sigla da Disciplina</label>
+                        <input type="text" name="txtSigla" placeholder="Sigla..." required />
+                    </div>
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="chkEletivaOptativa" />
+                        <label><b>Eletiva / Optativa</b></label>
+                        <br />
+                    </div>
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="chkFlexivel" />
+                        <label><b>Flexível</b></label>
+                        <br />
+                    </div>
+                    <div class="field required">
+                        <label>Temas (use ' ; ' para separar cada tema)</label>
+                        <input type="text" name="txtTema" placeholder="Temas..." required />
+                    </div>
+                    <input type="submit" class="ui button" value="Cadastrar" />
+                </form>
+            </div>
+
+            @* Tema *@
+            <div class="ui bottom attached tab segment tema" data-tab="tema">
+                <div class="ui styled fluid accordion">
+                    <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                    <div class="content">
+                        <table class="ui striped table">
+                            <thead>
+                                <tr>
+                                    <th>Disciplina</th>
+                                    <th>Tema(s)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (Disciplina disc in Model.Disciplinas)
+                                {
+                                    <tr>
+                                        <td>@disc.Descricao</td>
+                                        <td class="ui labels">
+                                            @foreach (Tema tema in Model.Temas)
+                                            {
+                                                if (tema.CodDisciplina == disc.CodDisciplina)
+                                                {
+                                                    <span class="ui tag label">@tema.Descricao</span>
+                                                }
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+                <form id="temaForm" class="ui form" method="post" action="/Configuracoes/CadastrarTema">
+                    <div class="field required">
+                        <label>Disciplina</label>
+                        <select name="ddlTemaDisciplina" class="ui fluid search dropdown" required>
+                            <option value="">Disciplina</option>
+                            @foreach (var d in Model.Disciplinas)
+                            {
+                                <option value="@d.CodDisciplina">@d.Descricao</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="field required">
+                        <label>Tema</label>
+                        <input type="text" name="txtTemaDescricao" placeholder="Temas" required />
+                    </div>
+                    <input type="submit" class="ui button" onclick="$(this).parent().addClass('loading')" value="Cadastrar" />
+                </form>
+            </div>
+
+            @* Sala *@
+            <div class="ui bottom attached tab segment sala" data-tab="sala">
+                <div class="ui styled fluid accordion">
+                    <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                    <div class="content">
+                        <table class="ui striped table">
+                            <thead>
+                                <tr>
+                                    <th>Descrição</th>
+                                    <th>Sigla</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (Sala sala in Model.Salas)
+                                {
+                                    <tr>
+                                        <td>@sala.Descricao</td>
+                                        <td>@sala.Sigla</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+                <form id="salaForm" class="ui form" method="post" action="/Configuracoes/CadastrarSala">
+                    <div class="field required">
+                        <label>Campus</label>
+                        <select name="ddlSalaCampus" class="ui fluid search dropdown" required>
+                            <option value="">Campus...</option>
+                            @foreach (Campus c in Model.Campi)
+                            {
+                                <option value="@c.CodComposto">@c.Sigla</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="field required">
+                        <label>Descrição</label>
+                        <input type="text" name="txtSalaDescricao" maxlength="50" placeholder="Descrição..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Sigla</label>
+                        <input type="text" name="txtSalaSigla" maxlength="15" placeholder="Sigla..." required />
+                    </div>
+                    <input type="submit" class="ui button" value="Cadastrar" />
+                </form>
+            </div>
+
+            @* Matriz Curricular *@
+            <div class="ui bottom attached tab segment matriz" data-tab="matriz">
+                <div class="ui styled fluid accordion">
+                    <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                    <div class="content">
+                        @foreach (MatrizCurricular matriz in Model.Matrizes)
+                        {
+                            <div class="accordion">
+                                <div class="title"><i class="icon dropdown"></i>@matriz.Curso.Descricao - @matriz.CodMatriz</div>
+                                <div class="content">
+
+                                    <table class="ui striped table">
+                                        <thead>
+                                            <tr>
+                                                <th>Disciplina</th>
+                                                <th>Carga Horária CH</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (MatrizCurricularDisciplina matdisc in matriz.MatrizCurricularDisciplina)
+                                            {
+                                                <tr>
+                                                    <td>@matdisc.Disciplina.Descricao</td>
+                                                    <td>@matdisc.DiscCargaHoraria</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <br />
+                <form id="matrizForm" class="ui form" method="post" action="/Configuracoes/CadastrarMatriz">
+                    <div class="field required">
+                        <label>Curso</label>
+                        <select name="ddlMatrizCurso" class="ui search dropdown" required>
+                            <option value="">Curso...</option>
+                            @foreach (Curso curso in Model.Cursos)
+                            {
+                                <option value="@curso.CodCurso">@curso.Descricao</option>
+                            }
+                        </select>
+                    </div>
+                    <table class="ui striped table">
+                        <thead>
+                            <tr>
+                                <th>Período</th>
+                                <th>Disciplina</th>
+                                <th>Carga Horária</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table body">
+                            <tr>
+                                <td>
+                                    <div class="field required">
+                                        <input type="number" name="txtPeriodo1" placeholder="Periodo..." required />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="field required">
+                                        <select name="ddlDisciplina1" class="ui fluid search dropdown" required>
+                                            <option value="">Disciplina...</option>
+                                            @foreach (Disciplina d in Model.Disciplinas)
+                                            {
+                                                <option value="@d.CodDisciplina">@d.Descricao</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="field required">
+                                        <input type="number" name="txtCH1" placeholder="Carga Horária..." required />
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <input id="matrizQte" name="matrizQte" value="" hidden />
+                    <div class="ui floated right button adicionar disciplina">Adicionar Disciplina</div>
+                    <input type="submit" class="ui button" value="Cadastrar" />
+                </form>
+            </div>
+
+            @* Horario *@
+            <div class="ui bottom attached tab segment horario" data-tab="horario">
+                <div class="ui styled fluid accordion">
+                    <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                    <div class="content">
+                        <table class="ui striped table">
+                            <thead>
+                                <tr>
+                                    <th>Turno</th>
+                                    <th>Grupo</th>
+                                    <th>Horário</th>
+                                    <th>Ínicio</th>
+                                    <th>Término</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (Horario horario in Model.Horarios)
+                                {
+                                    <tr>
+                                        <td>@horario.Turno.Descricao</td>
+                                        <td>@horario.CodGrupo</td>
+                                        <td>@horario.CodHorario</td>
+                                        <td>@(DateTime.Parse(horario.HoraInicio.ToString()).ToString("HH:mm"))</td>
+                                        <td>@(DateTime.Parse(horario.HoraTermino.ToString()).ToString("HH:mm"))</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <br />
+                <form id="horarioForm" class="ui form" method="post" action="/Configuracoes/CadastrarHorario">
+                    <div class="field required">
+                        <label>Turno</label>
+                        <select name="ddlHorarioTurno" class="ui search dropdown" required>
+                            <option value="">Turno...</option>
+                            @foreach (Turno turno in Model.Turnos)
+                            {
+                                <option value="@turno.CodTurno">@turno.Descricao</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="field required">
+                        <label>Grupo</label>
+                        <input type="number" name="txtHorarioGrupo" class="ui search dropdown" required />
+                    </div>
+                    <table class="ui striped table">
+                        <thead>
+                            <tr>
+                                <th>Horário</th>
+                                <th>Ínicio</th>
+                                <th>Término</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table body horario">
+                            <tr>
+                                <td>
+                                    <div class="field required">
+                                        <input type="number" value="1" name="txtHorario1" placeholder="Horário..." disabled required />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="field required">
+                                        <input type="time" name="txtInicio1" placeholder="Ínicio..." required />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="field required">
+                                        <input type="time" name="txtTermino1" placeholder="Término..." required />
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <input id="horarioQte" name="horarioQte" value="" hidden />
+                    <div class="ui floated right button adicionar horario">Adicionar Horário</div>
+                    <input type="submit" class="ui button" value="Cadastrar" />
+                </form>
+            </div>
+
+        </div>
+
+        <div class="ui bottom attached tab segment" data-tab="institucionais">
+            <div class="ui top attached tabular menu">
+                <a class="item" data-tab="campus">Campus</a>
+                <a class="item" data-tab="diretoria">Diretoria</a>
+                <a class="item" data-tab="curso">Curso</a>
+            </div>
+
+            @* Campus *@
+            <div class="ui bottom attached tab segment campus" data-tab="campus">
+                <div class="ui styled fluid accordion">
+                    <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                    <div class="content">
+                        <table class="ui striped table">
+                            <thead>
+                                <tr>
+                                    <th>Campus</th>
+                                    <th>Instituição</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (Campus camp in Model.Campi)
+                                {
+                                    <tr>
+                                        <td>@camp.Sigla</td>
+                                        <td>@camp.Instituicao.Sigla</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+                <form id="campusForm" method="post" action="/Configuracoes/CadastrarCampus">
+                    <div class="field required">
+                        <label>Instituição</label>
+                        <select name="ddlCampusInstituicao" class="ui fluid search dropdown" required>
+                            <option value="">Instituição...</option>
+                            @foreach (Instituicao inst in Model.Instituicoes)
+                            {
+                                <option value="@inst.CodInstituicao">@inst.Sigla</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="field required">
+                        <label>Razão Social</label>
+                        <input type="text" name="txtCampusRazaoSocial" placeholder="Razão Social..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Nome Fantasia</label>
+                        <input type="text" name="txtCampusNomeFantasia" placeholder="Nome Fantasia..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Sigla</label>
+                        <input type="text" name="txtCampusSigla" placeholder="Sigla..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Portal</label>
+                        <input type="text" name="txtCampusPortal" placeholder="Portal..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Diretor</label>
+                        <select name="ddlCampusDiretor" class="ui fluid search dropdown" required>
+                            <option value="">Diretor...</option>
+                            @foreach (Colaborador col in Model.Colaboradores)
+                            {
+                                <option value="@col.CodColaborador">@col.Usuario.PessoaFisica.Nome</option>
+                            }
+                        </select>
+                    </div>
+                    <br />
+                    <input type="submit" class="ui button" value="Cadastrar" />
+                </form>
+            </div>
+
+            @* Diretoria *@
+            <div class="ui bottom attached tab segment diretoria" data-tab="diretoria">
+                <div class="ui styled fluid accordion">
+                    <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                    <div class="content">
+                        <table class="ui striped table">
+                            <thead>
+                                <tr>
+                                    <th>Diretoria</th>
+                                    <th>Campus</th>
+                                    <th>Instituição</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (Diretoria dir in Model.Diretorias)
+                                {
+                                    <tr>
+                                        <td>@dir.Sigla</td>
+                                        <td>@dir.Campus.Sigla</td>
+                                        <td>@dir.Campus.Instituicao.Sigla</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+                <form id="diretoriaForm" method="post" action="/Configuracoes/CadastrarDiretoria">
+                    <div class="field required">
+                        <label>Campus</label>
+                        <select name="ddlDiretoriaCampus" class="ui fluid search dropdown" required>
+                            <option value="">Campus...</option>
+                            @foreach (Campus camp in Model.Campi)
+                            {
+                                <option value="@camp.CodComposto">@camp.Sigla</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="field required">
+                        <label>Razão Social</label>
+                        <input type="text" name="txtDiretoriaRazaoSocial" placeholder="Razão Social..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Nome Fantasia</label>
+                        <input type="text" name="txtDiretoriaNomeFantasia" placeholder="Nome Fantasia..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Sigla</label>
+                        <input type="text" name="txtDiretoriaSigla" placeholder="Sigla..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Portal</label>
+                        <input type="text" name="txtDiretoriaPortal" placeholder="Portal..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Diretor</label>
+                        <select name="ddlDiretoriaDiretor" class="ui fluid search dropdown" required>
+                            <option value="">Diretor...</option>
+                            @foreach (Colaborador col in Model.Colaboradores)
+                            {
+                                <option value="@col.CodColaborador">@col.Usuario.PessoaFisica.Nome</option>
+                            }
+                        </select>
+                    </div>
+                    <br />
+                    <input type="submit" class="ui button" value="Cadastrar" />
+                </form>
+            </div>
+
+            @* Curso *@
+            <div class="ui bottom attached tab segment curso" data-tab="curso">
+                <div class="ui styled fluid accordion">
+                    <div class="title"><i class="icon dropdown"></i>Cadastrados</div>
+                    <div class="content">
+                        <table class="ui striped table">
+                            <thead>
+                                <tr>
+                                    <th>Curso</th>
+                                    <th>Campus</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (Curso cur in Model.Cursos)
+                                {
+                                    <tr>
+                                        <td>@cur.Descricao</td>
+                                        <td>@cur.Diretoria.Campus.Sigla</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br />
+                <form id="cursoForm" method="post" action="/Configuracoes/CadastrarCurso">
+                    <div class="field required">
+                        <label>Diretoria</label>
+                        <select name="ddlCursoDiretoria" class="ui fluid search dropdown" required>
+                            <option value="">Diretoria...</option>
+                            @foreach (Diretoria dir in Model.Diretorias)
+                            {
+                                <option value="@dir.CodComposto">@dir.Sigla</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="field required">
+                        <label>Nível Ensino</label>
+                        <select name="ddlCursoNivelEnsino" class="ui fluid search dropdown" required>
+                            <option value="">Nível Ensino...</option>
+                            @foreach (NivelEnsino ne in Model.NiveisEnsino)
+                            {
+                                <option value="@ne.CodNivelEnsino">@ne.Descricao</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="field required">
+                        <label>Descrição</label>
+                        <input type="text" name="txtCursoDescricao" placeholder="Descrição..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Sigla</label>
+                        <input type="text" name="txtCursoSigla" placeholder="Sigla..." required />
+                    </div>
+                    <div class="field required">
+                        <label>Coordenador</label>
+                        <select name="ddlCursoCoordenador" class="ui fluid search dropdown" required>
+                            <option value="">Coordenador...</option>
+                            @foreach (Colaborador col in Model.Colaboradores)
+                            {
+                                <option value="@col.CodColaborador">@col.Usuario.PessoaFisica.Nome</option>
+                            }
+                        </select>
+                    </div>
+                    <br />
+                    <input type="submit" class="ui button" value="Cadastrar" />
+                </form>
+            </div>
+        </div>
+
+    </div> 
+    
+    <br />
+    <div id="btnAtualizar" type="button" class="ui button">Atualizar</div>
+
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/configuracoes")    
+}
