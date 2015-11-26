@@ -53,11 +53,6 @@ siac.Institucional.Gerar = (function () {
             valido = false;
         }
 
-        if (!$('#txtDataTermino').val()) {
-            $errorList.append('<li>Insira a data de término</li>');
-            valido = false;
-        }
-
         if (valido) {
             confirmar();
         }
@@ -71,28 +66,9 @@ siac.Institucional.Gerar = (function () {
 
     function confirmar() {
         $modal = $('.ui.confirmar.modal');
-        //$ddlDisciplina = $('#ddlDisciplina :selected');
-        //$ddlTipo = $('#ddlTipo');
-        //$table = $modal.find('tbody').html('');
 
-        //$tr = $('<tr></tr>');
-        //$tdDisciplina = $('<td></td>').html('<b>' + $ddlDisciplina.text() + '</b>');
-        //$tdTemas = $('<td class="ui labels"></td>');
-
-        //$ddlTemas = $('#ddlTemas :selected');
-        //for (var i = 0; i < $ddlTemas.length; i++) {
-        //    $tdTemas.append($('<div class="ui tag label"></div>').text($ddlTemas.eq(i).text()));
-        //}
-        //$tdQteQuestoes = $('<td class="ui labels"></td>');
-        //if ($ddlTipo.val() == 1 || $ddlTipo.val() == 3) {
-        //    $tdQteQuestoes.append($('<div class="ui label"></div>').html('Objetiva<div class="detail">' + $('#txtQteObjetiva').val() + '</div>'));
-        //}
-        //if ($ddlTipo.val() == 2 || $ddlTipo.val() == 3) {
-        //    $tdQteQuestoes.append($('<div class="ui label"></div>').html('Discursiva<div class="detail">' + $('#txtQteDiscursiva').val() + '</div>'));
-        //}
-        //$tdDificuldade = $('<td></td>').text($('#ddlDificuldade :selected').text());
-
-        //$table.append($tr.append($tdDisciplina).append($tdTemas).append($tdQteQuestoes).append($tdDificuldade));
+        $('#txtModalTitulo').val($('#txtTitulo').val());
+        $('#txtModalObjetivo').val($('#txtObjetivo').val());
 
         $modal.modal('show');
     }

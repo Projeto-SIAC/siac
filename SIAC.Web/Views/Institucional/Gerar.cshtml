@@ -26,20 +26,14 @@
 <div class="ui confirmar modal">
     <div class="header">Verificação e confirmação</div>
     <div class="content">
-        <table class="ui very basic table">
-            <tr>
-                <th>Título</th>
-                <td></td>
-            </tr>
-            <tr>
-                <th>Objetivo</th>
-                <td></td>
-            </tr>
-            <tr>
-                <th>Período</th>
-                <td></td>
-            </tr>
-        </table>
+        <div class="field">
+            <label>Título</label>
+            <input id="txtModalTitulo" name="txtTitulo" placeholder="Título" readonly/>
+        </div>
+        <div class="field">
+            <label>Objetivo</label>
+            <textarea id="txtModalObjetivo" name="txtObjetivo" rows="5" readonly></textarea>
+        </div>
     </div>
     <div class="actions">
         <div class="ui negative button">Voltar</div>
@@ -64,7 +58,7 @@
         <label>Objetivo</label>
         <textarea id="txtObjetivo" name="txtObjetivo" rows="5" placeholder="Objetivo" required></textarea>
     </div>
-    @* Período *@
+    @*@* Período *@
     <div class="two fields">
         <div class="field required">
             <label>Data de Aplicação</label>
@@ -74,7 +68,7 @@
             <label>Data de Término</label>
             <input id="txtDataTermino" name="txtDataTermino" type="date" data-mask="0000-00-00" placeholder="Data de Termino" required />
         </div>
-    </div>
+    </div>*@
     <div class="field">
         <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("Index")' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
         <div class="ui prosseguir button">Prosseguir</div>
