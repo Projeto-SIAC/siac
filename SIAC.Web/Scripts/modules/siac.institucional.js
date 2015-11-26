@@ -43,12 +43,12 @@ siac.Institucional.Gerar = (function () {
 
         var valido = true;
 
-        if (!$('#txtTitulo').val()) {
+        if (!$('#txtTitulo').val().trim()) {
             $errorList.append('<li>Insira o título</li>');
             valido = false;
         }
 
-        if (!$('#txtObjetivo').val()) {
+        if (!($('#txtObjetivo').val().trim())) {
             $errorList.append('<li>Insira o objetivo</li>');
             valido = false;
         }

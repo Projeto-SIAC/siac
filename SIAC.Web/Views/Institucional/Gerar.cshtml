@@ -6,16 +6,7 @@
 <div class="ui termo modal">
     <div class="header">Você está ciente de...</div>
     <div class="content">
-        @*{
-            var termo = Model.Termo.Split('\n', '\r');
-            foreach (var str in termo)
-            {
-                if (!String.IsNullOrWhiteSpace(str))
-                {
-                    <p>@str</p>
-                }
-            }
-        }*@
+        @Html.Raw(Parametro.Obter().NotaUsoInstitucional.ToHtml("p"))
     </div>
     <div class="actions">
         <a href="/Institucional" class="ui cancel button">Cancelar</a>
@@ -26,13 +17,15 @@
 <div class="ui confirmar modal">
     <div class="header">Verificação e confirmação</div>
     <div class="content">
-        <div class="field">
-            <label>Título</label>
-            <input id="txtModalTitulo" name="txtTitulo" placeholder="Título" readonly/>
-        </div>
-        <div class="field">
-            <label>Objetivo</label>
-            <textarea id="txtModalObjetivo" name="txtObjetivo" rows="5" readonly></textarea>
+        <div class="ui form">
+            <div class="field">
+                <label>Título</label>
+                <input id="txtModalTitulo" name="txtTitulo" placeholder="Título" readonly />
+            </div>
+            <div class="field">
+                <label>Objetivo</label>
+                <textarea id="txtModalObjetivo" name="txtObjetivo" rows="5" readonly></textarea>
+            </div>
         </div>
     </div>
     <div class="actions">
@@ -51,14 +44,14 @@
     @* Título *@
     <div class="field required">
         <label>Título</label>
-        <input id="txtTitulo" name="txtTitulo" placeholder="Título" required />
+        <input id="txtTitulo" name="txtTitulo" maxlength="250" placeholder="Título" required />
     </div>
     @* Objetivo *@
     <div class="field required">
         <label>Objetivo</label>
         <textarea id="txtObjetivo" name="txtObjetivo" rows="5" placeholder="Objetivo" required></textarea>
     </div>
-    @*@* Período *@
+    @*@* Período 
     <div class="two fields">
         <div class="field required">
             <label>Data de Aplicação</label>

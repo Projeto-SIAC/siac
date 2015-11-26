@@ -39,29 +39,33 @@ namespace SIAC.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult Gerar(FormCollection form)
         {
-            AvalAvi avi = new AvalAvi();
-            /* Chave */
-            avi.Avaliacao = new Avaliacao();
-            DateTime hoje = DateTime.Now;
-            avi.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(4);
-            avi.Avaliacao.Ano = hoje.Year;
-            avi.Avaliacao.Semestre = hoje.Month > 6 ? 2 : 1;
-            avi.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(4);
-            avi.Avaliacao.DtCadastro = hoje;
-            avi.Avaliacao.FlagLiberada = false;
+            if (!Helpers.StringExt.IsNullOrWhiteSpace(form["txtTitulo"], form["txtObjetivo"]))
+            {
+                AvalAvi avi = new AvalAvi();
+                /* Chave */
+                avi.Avaliacao = new Avaliacao();
+                DateTime hoje = DateTime.Now;
+                avi.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(4);
+                avi.Avaliacao.Ano = hoje.Year;
+                avi.Avaliacao.Semestre = hoje.Month > 6 ? 2 : 1;
+                avi.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(4);
+                avi.Avaliacao.DtCadastro = hoje;
+                avi.Avaliacao.FlagLiberada = false;
 
-            /* AVI */
-            avi.Titulo = form["txtTitulo"];
-            avi.Objetivo = form["txtObjetivo"];
+                /* AVI */
+                avi.Titulo = form["txtTitulo"];
+                avi.Objetivo = form["txtObjetivo"];
 
-            /* Colaborador */
-            Colaborador colaborador = Colaborador.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-            avi.CodColabCoordenador = colaborador.CodColaborador;
-            avi.Colaborador = colaborador;
+                /* Colaborador */
+                Colaborador colaborador = Colaborador.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
+                avi.CodColabCoordenador = colaborador.CodColaborador;
+                avi.Colaborador = colaborador;
 
-            AvalAvi.Inserir(avi);
-            
-            return RedirectToAction("Configurar", new { codigo = avi.Avaliacao.CodAvaliacao });
+                AvalAvi.Inserir(avi);
+
+                return RedirectToAction("Configurar", new { codigo = avi.Avaliacao.CodAvaliacao });
+            }
+            return RedirectToAction("Gerar");
         }
         // GET: institucional/Configurar
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
