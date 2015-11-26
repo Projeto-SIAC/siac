@@ -172,7 +172,7 @@ siac.Certificacao.Configurar = (function () {
 
     function iniciar() {
         //Obtendo Dados da Página
-        _codAvaliacao = window.location.pathname.match(/cert[0-9]+$/)[0];
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/cert[0-9]+$/)[0];
 
         _qteMaxObjetiva = $('.informacoes .objetiva.label .detail').html();
         _qteMaxDiscursiva = $('.informacoes .discursiva.label .detail').html();
@@ -896,7 +896,7 @@ siac.Certificacao.Agendada = (function () {
         }
 
         if (!_codAvaliacao) {
-            _codAvaliacao = window.location.pathname.match(/cert[0-9]+$/)[0];
+            _codAvaliacao = window.location.pathname.toLowerCase().match(/cert[0-9]+$/)[0];
         }
 
         $('.ui.accordion').accordion({
@@ -1082,7 +1082,7 @@ siac.Certificacao.Realizar = (function () {
         _dtTermino.setTime(Date.parse($elemento.attr('data-termino')));
         $elemento.removeAttr('data-termino');
 
-        _codAvaliacao = window.location.pathname.match(/cert[0-9]+$/)[0];
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/cert[0-9]+$/)[0];
 
         window.onbeforeunload = function () {
             return 'Você está realizando uma avaliação.';
@@ -1488,7 +1488,7 @@ siac.Certificacao.Acompanhar = (function () {
 
     function iniciar() {
         $elemento = $('[data-usuario]');
-        _codAvaliacao = window.location.pathname.match(/cert[0-9]+$/)[0];
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/cert[0-9]+$/)[0];
         _matriculaUsuario = $elemento.attr('data-usuario');
         $elemento.removeAttr('data-usuario');
 
@@ -1763,7 +1763,7 @@ siac.Certificacao.Corrigir = (function () {
     var _codAvaliacao;
 
     function iniciar() {
-        _codAvaliacao = window.location.pathname.match(/cert[0-9]+$/)[0];
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/cert[0-9]+$/)[0];
 
         var $elementoJson = $('code.questoes');
         _dicQuestoes = JSON.parse($elementoJson.html());
@@ -2052,7 +2052,7 @@ siac.Certificacao.Detalhe = (function () {
 
     function iniciar() {
 
-        _codAvaliacao = window.location.pathname.match(/cert[0-9]+$/)[0];
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/cert[0-9]+$/)[0];
 
         $('.ui.accordion').accordion({
             animateChildren: false,

@@ -167,7 +167,7 @@ siac.Reposicao.Configurar = (function () {
     var _codAvaliacao;
 
     function iniciar() {
-        _codAvaliacao = window.location.pathname.match(/repo[0-9]+$/)[0];
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/repo[0-9]+$/)[0];
 
         $('.ui.informacoes.modal').modal();
 
@@ -544,7 +544,7 @@ siac.Reposicao.Agendada = (function () {
         }
 
         if (!_codAvaliacao) {
-            _codAvaliacao = window.location.pathname.match(/repo[0-9]+$/)[0];
+            _codAvaliacao = window.location.pathname.toLowerCase().match(/repo[0-9]+$/)[0];
         }
 
         $('.ui.accordion').accordion({
@@ -725,7 +725,7 @@ siac.Reposicao.Realizar = (function () {
         _matriculaUsuario = $elemento.attr('data-usuario');
         $elemento.removeAttr('data-usuario');
 
-        _codAvaliacao = window.location.pathname.match(/repo[0-9]+$/)[0];
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/repo[0-9]+$/)[0];
 
         $elemento = $('[data-termino]');
         _dtTermino = new Date();
@@ -1145,7 +1145,7 @@ siac.Reposicao.Acompanhar = (function () {
         _matriculaUsuario = $elemento.attr('data-usuario');
         $elemento.removeAttr('data-usuario');
 
-        _codAvaliacao = window.location.pathname.match(/repo[0-9]+$/)[0];
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/repo[0-9]+$/)[0];
 
         conectarHub(_codAvaliacao, _matriculaUsuario);
 
@@ -1421,7 +1421,7 @@ siac.Reposicao.Corrigir = (function () {
     var _codAvaliacao;
 
     function iniciar() {
-        _codAvaliacao = window.location.pathname.match(/repo[0-9]+$/)[0];
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/repo[0-9]+$/)[0];
 
         var $elementoJson = $('code.questoes');
         _dicQuestoes = JSON.parse($elementoJson.html());
@@ -1710,7 +1710,7 @@ siac.Reposicao.Detalhe = (function () {
     var _codAvaliacao, _controleAjax;
 
     function iniciar() {
-        _codAvaliacao = window.location.pathname.match(/repo[0-9]+$/)[0];
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/repo[0-9]+$/)[0];
 
         $('.ui.accordion').accordion({
             animateChildren: false,

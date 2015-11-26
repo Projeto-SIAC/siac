@@ -156,7 +156,7 @@ siac.Autoavaliacao.Detalhe = (function () {
     var _codAvaliacao;
 
     function iniciar() {
-        _codAvaliacao = window.location.pathname.match(/auto[0-9]+$/)[0];
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/auto[0-9]+$/)[0];
 
         $('.ui.accordion').accordion({
             animateChildren: false
@@ -216,7 +216,7 @@ siac.Autoavaliacao.Realizar = (function () {
     var _controleRestante;
 
     function iniciar() {
-        _codAvaliacao = window.location.pathname.match(/auto[0-9]+$/)[0];
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/auto[0-9]+$/)[0];
 
         (function () {
             setInterval(function () {
