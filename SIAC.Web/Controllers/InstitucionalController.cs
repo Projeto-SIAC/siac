@@ -218,19 +218,35 @@ namespace SIAC.Controllers
             AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
             if (avi != null)
             {
-                AviQuestao questao = new AviQuestao();
+                int modulo = int.Parse(Request.QueryString["modulo"]);
+                int categoria = int.Parse(Request.QueryString["categoria"]);
+                int indicador = int.Parse(Request.QueryString["indicador"]);
+                int ordem = int.Parse(Request.QueryString["ordem"]);
 
-                ///* Chave */
-                //questao.Ano = avi.Ano;
-                //questao.Semestre = avi.Semestre;
-                //questao.CodTipoAvaliacao = avi.CodTipoAvaliacao;
-                //questao.NumIdentificador = avi.NumIdentificador;
-                //questao.CodAviModulo = modulo;
-                //questao.CodAviCategoria = categoria;
-                //questao.CodAviIndicador = indicador;
-                //questao.CodOrdem = ordem;
+                AviQuestao questao = avi.ObterQuestao(modulo, categoria, indicador, ordem);
 
-                //AviQuestao.Remover(questao);
+                if(questao != null)
+                {
+                    questao.Enunciado = form["txtEditarEnunciado"];
+                    questao.Observacao = !String.IsNullOrEmpty(form["txtEditarObservacao"]) ? form["txtEditarObservacao"] : null;
+
+                    int indice = 1;
+                    while(!String.IsNullOrEmpty(form["txtEditarAlternativa"+indice]))
+                    {
+                        AviQuestaoAlternativa alternativa = questao.AviQuestaoAlternativa.FirstOrDefault(a => a.CodAlternativa == indice);
+                        alternativa.Enunciado = form["txtEditarAlternativa" + indice];
+                        indice++;
+                    }
+
+                    if (!String.IsNullOrEmpty(form["txtEditarAlternativaDiscursiva"]))
+                    {
+                        AviQuestaoAlternativa alternativa = questao.AviQuestaoAlternativa.FirstOrDefault(a => a.FlagAlternativaDiscursiva);
+                        alternativa.Enunciado = form["txtEditarAlternativaDiscursiva"];
+                    }
+
+                    AviQuestao.Atualizar(questao);
+
+                }
                 return Json(form);
             }
             return Json(false);

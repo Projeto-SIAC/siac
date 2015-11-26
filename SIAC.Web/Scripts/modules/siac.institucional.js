@@ -544,7 +544,7 @@ siac.Institucional.Configurar = (function () {
         //$.extend(form, { modulo: modulo });
         $.ajax({
             type: 'POST',
-            url: '/institucional/EditarQuestao/' + _codAvaliacao,
+            url: '/institucional/EditarQuestao/' + _codAvaliacao+'?modulo='+modulo+'&categoria='+categoria+'&indicador='+indicador+'&ordem='+ordem,
             data: form,
             dataType: 'json',
             success: function (form) {

@@ -68,6 +68,14 @@ namespace SIAC.Models
             }
         }
 
+        public AviQuestao ObterQuestao(int modulo, int categoria, int indicador, int ordem)
+        {
+            return this.AviQuestao.FirstOrDefault(q => q.CodAviModulo == modulo
+                                                  && q.CodAviCategoria == categoria
+                                                  && q.CodAviIndicador == indicador
+                                                  && q.CodOrdem == ordem);
+        }
+
         public static void Inserir(AvalAvi avi)
         {
             contexto.AvalAvi.Add(avi);

@@ -46,5 +46,22 @@ namespace SIAC.Models
                 contexto.SaveChanges();
             }
         }
+
+        public static void Atualizar(AviQuestao questao)
+        {
+            AviQuestao temp = contexto.AviQuestao.FirstOrDefault(q => q.Ano == questao.Ano
+                                                                   && q.Semestre == questao.Semestre
+                                                                   && q.CodTipoAvaliacao == questao.CodTipoAvaliacao
+                                                                   && q.NumIdentificador == questao.NumIdentificador
+                                                                   && q.CodAviModulo == questao.CodAviModulo
+                                                                   && q.CodAviCategoria == questao.CodAviCategoria
+                                                                   && q.CodAviIndicador == questao.CodAviIndicador
+                                                                   && q.CodOrdem == questao.CodOrdem);
+            temp.Enunciado = questao.Enunciado;
+            temp.Observacao = questao.Observacao;
+            temp.AviQuestaoAlternativa = questao.AviQuestaoAlternativa;
+
+            contexto.SaveChanges();
+        }
     }
 }
