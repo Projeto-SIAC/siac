@@ -14,7 +14,7 @@ namespace SIAC.Controllers
         public ActionResult Index()
         {
             Parametro.ObterAsync();
-            if (Helpers.Sessao.Autenticado)
+            if (Models.Sistema.Autenticado(Helpers.Sessao.UsuarioMatricula))
             {
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -39,7 +39,7 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult Index(FormCollection formCollection)
         {
-            if (Helpers.Sessao.Autenticado)
+            if (Models.Sistema.Autenticado(Helpers.Sessao.UsuarioMatricula))
             {
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -60,11 +60,11 @@ namespace SIAC.Controllers
                     if (usuario != null)
                     {
                         valido = true;
-                        Helpers.Sessao.Inserir("Autenticado", true);
                         Helpers.Sessao.Inserir("UsuarioMatricula", usuario.Matricula);
                         Helpers.Sessao.Inserir("UsuarioNome", usuario.PessoaFisica.Nome);
                         Helpers.Sessao.Inserir("UsuarioCategoriaCodigo", usuario.CodCategoria);
                         Helpers.Sessao.Inserir("UsuarioCategoria", usuario.Categoria.Descricao);
+                        Usuario.RegistrarAcesso(usuario.Matricula);
                     }
                 }
             }
@@ -83,7 +83,7 @@ namespace SIAC.Controllers
                 model.Matricula = formCollection.HasKeys() ? formCollection["txtMatricula"] : "";
                 //ViewBag.Acao = "$('.modal').modal('show');";
                 model.Erro = true;
-                if (!String.IsNullOrEmpty(model.Matricula) && Sistema.MatriculaAtivo.Contains(model.Matricula))
+                if (!String.IsNullOrEmpty(model.Matricula) && Sistema.UsuarioAtivo.Keys.Contains(model.Matricula))
                 {
                     model.Mensagens = new string[] { "Seu usuário já está conectado." };
                 }
@@ -100,7 +100,7 @@ namespace SIAC.Controllers
         // GET: Acesso/Sair
         public ActionResult Sair()
         {
-            Sistema.MatriculaAtivo.Remove(Helpers.Sessao.UsuarioMatricula);
+            Sistema.UsuarioAtivo.Remove(Helpers.Sessao.UsuarioMatricula);
             Helpers.Sessao.Limpar();
             return Redirect("~/");
         }

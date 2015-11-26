@@ -14,7 +14,7 @@ namespace SIAC.Models
 
         public static Usuario Autenticar(string matricula, string senha)
         {
-            if (!Sistema.MatriculaAtivo.Contains(matricula))
+            if (!Sistema.UsuarioAtivo.Keys.Contains(matricula))
             {
                 Usuario usuario = contexto.Usuario.SingleOrDefault(u => u.Matricula == matricula);
 
@@ -24,12 +24,33 @@ namespace SIAC.Models
 
                     if (usuario.Senha == strSenha)
                     {
-                        Sistema.MatriculaAtivo.Add(matricula);
                         return usuario;
                     }
                 }
             }
             return null;
+        }
+
+        public static void RegistrarAcesso(string matricula)
+        {
+            if (!String.IsNullOrWhiteSpace(matricula))
+            {
+                Usuario usuario = contexto.Usuario.SingleOrDefault(u => u.Matricula == matricula);
+
+                if (usuario != null)
+                {
+                    var acesso = new UsuarioAcesso();
+                    var acessos = contexto.UsuarioAcesso.Where(a => a.Matricula == matricula);
+                    int codOrdem = acessos.Count() > 0 ? acessos.Max(a => a.CodOrdem) : 0;
+                    acesso.CodOrdem = codOrdem + 1;
+                    acesso.Usuario = usuario;
+                    acesso.DtAcesso = DateTime.Now;
+                    acesso.IpAcesso = HttpContext.Current.RecuperarIp();
+                    contexto.UsuarioAcesso.Add(acesso);
+                    contexto.SaveChanges();
+                    Sistema.UsuarioAtivo.Add(matricula, acesso);
+                }
+            }
         }
 
         public static bool Verificar(string senha)

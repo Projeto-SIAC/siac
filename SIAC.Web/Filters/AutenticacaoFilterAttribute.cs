@@ -12,7 +12,9 @@ namespace SIAC.Filters
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (!Helpers.Sessao.Autenticado)
+            var autenticado = Models.Sistema.Autenticado(Helpers.Sessao.UsuarioMatricula);
+                   
+            if (!autenticado)
             {
                 filterContext.Result = new RedirectResult("~/?continuar="+filterContext.HttpContext.Request.Path);
             }

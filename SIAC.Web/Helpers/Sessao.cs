@@ -12,18 +12,6 @@ namespace SIAC.Helpers
             get { return HttpContext.Current; }
         }
 
-        public static bool Autenticado
-        {
-            get
-            {
-                if (context != null)
-                {
-                    return context.Session["Autenticado"] != null ? (bool)HttpContext.Current.Session["Autenticado"] : false;
-                }
-                return false;
-            }
-        }
-
         public static bool RealizandoAvaliacao
         {
             get
