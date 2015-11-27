@@ -27,6 +27,49 @@ namespace SIAC.Controllers
 
             return View(model);
         }
+        // POST: institucional/CadastrarModulo
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        public ActionResult CadastrarModulo(FormCollection form)
+        {
+            AviModulo modulo = new AviModulo();
+
+            modulo.Descricao = form["txtTitulo"];
+            modulo.Objetivo = form["txtObjetivo"];
+            modulo.Observacao = form["txtObservacao"];
+
+            AviModulo.Inserir(modulo);
+
+            return RedirectToAction("Configuracao");
+        }
+        // POST: institucional/CadastrarCategoria
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        public ActionResult CadastrarCategoria(FormCollection form)
+        {
+            AviCategoria categoria = new AviCategoria();
+
+            categoria.Descricao = form["txtTitulo"];
+            categoria.Observacao = form["txtObservacao"];
+
+            AviCategoria.Inserir(categoria);
+
+            return RedirectToAction("Configuracao");
+        }
+        // POST: institucional/CadastrarIndicador
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        public ActionResult CadastrarIndicador(FormCollection form)
+        {
+            AviIndicador indicador = new AviIndicador();
+
+            indicador.Descricao = form["txtTitulo"];
+            indicador.Observacao = form["txtObservacao"];
+
+            AviIndicador.Inserir(indicador);
+
+            return RedirectToAction("Configuracao");
+        }
         // GET: institucional/Gerar
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         [AcceptVerbs(HttpVerbs.Get)]
@@ -87,49 +130,6 @@ namespace SIAC.Controllers
                 }
             }
             return RedirectToAction("Index");
-        }
-        // POST: institucional/CadastrarModulo
-        [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
-        public ActionResult CadastrarModulo(FormCollection form)
-        {
-            AviModulo modulo = new AviModulo();
-
-            modulo.Descricao = form["txtTitulo"];
-            modulo.Objetivo = form["txtObjetivo"];
-            modulo.Observacao = form["txtObservacao"];
-
-            AviModulo.Inserir(modulo);
-
-            return RedirectToAction("Configuracao");
-        }
-        // POST: institucional/CadastrarCategoria
-        [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
-        public ActionResult CadastrarCategoria(FormCollection form)
-        {
-            AviCategoria categoria = new AviCategoria();
-
-            categoria.Descricao = form["txtTitulo"];
-            categoria.Observacao = form["txtObservacao"];
-
-            AviCategoria.Inserir(categoria);
-
-            return RedirectToAction("Configuracao");
-        }
-        // POST: institucional/CadastrarIndicador
-        [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
-        public ActionResult CadastrarIndicador(FormCollection form)
-        {
-            AviIndicador indicador = new AviIndicador();
-
-            indicador.Descricao = form["txtTitulo"];
-            indicador.Observacao = form["txtObservacao"];
-
-            AviIndicador.Inserir(indicador);
-
-            return RedirectToAction("Configuracao");
         }
         // POST: institucional/CadastrarQuestao/{codigo}
         [HttpPost]
@@ -218,7 +218,7 @@ namespace SIAC.Controllers
         // POST: institucional/EditarQuestao/{codigo}
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
-        public ActionResult EditarQuestao(string codigo,FormCollection form)/*, int modulo, int categoria, int indicador, int ordem)*/
+        public ActionResult EditarQuestao(string codigo,FormCollection form)
         {
             AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
             if (avi != null)
@@ -255,6 +255,51 @@ namespace SIAC.Controllers
                 return Json(form);
             }
             return Json(false);
+        }
+        // GET: institucional/configurar
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        public ActionResult Configurar(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
+
+                if (avi != null)
+                {
+                    return View(avi);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+        // GET: institucional/publico
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        public ActionResult Publico(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
+
+                if (avi != null)
+                {
+                    return View(avi);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+        // GET: institucional/agendar
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        public ActionResult Agendar(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
+
+                if (avi != null)
+                {
+                    return View(avi);
+                }
+            }
+            return RedirectToAction("Index");
         }
     }
 }

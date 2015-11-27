@@ -90,6 +90,9 @@
     <mvcSiteMapNode title="Av. Institucional" controller="Institucional" action="Index">
       <mvcSiteMapNode title="Gerar" controller="Institucional" action="Gerar"/>
       <mvcSiteMapNode title="Questionário" controller="Institucional" action="Questionario" preservedRouteParameters="codigo"/>
+      <mvcSiteMapNode title="Configurar" controller="Institucional" action="Configurar" preservedRouteParameters="codigo"/>
+      <mvcSiteMapNode title="Público" controller="Institucional" action="Publico" preservedRouteParameters="codigo"/>
+      <mvcSiteMapNode title="Agendar" controller="Institucional" action="Agendar" preservedRouteParameters="codigo"/>
     </mvcSiteMapNode>
   </mvcSiteMapNode>
 </mvcSiteMap>

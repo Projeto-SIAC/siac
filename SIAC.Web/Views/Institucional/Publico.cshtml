@@ -1,0 +1,37 @@
+﻿@model SIAC.Models.AvalAvi
+@{
+    ViewBag.Title = "Público "+Model.Avaliacao.CodAvaliacao;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="ui basic confirmar modal">
+    <div class="ui icon header">
+        <i class="help icon"></i>
+        Prosseguir operação?
+    </div>
+    <div class="content">
+        <p>Deseja encerrar o cadastramento de questões e continuar a geração de Av. Institucional?</p>
+    </div>
+    <div class="actions">
+        <div class="ui cancel red basic inverted button"><i class="remove icon"></i>Não</div>
+        <div class="ui approve green basic inverted button"><i class="checkmark icon"></i>Sim</div>
+    </div>
+</div>
+
+
+<div class="ui cancelar button">Cancelar</div>
+<div class="ui special popup">
+    <div class='header'>Tem certeza?</div>
+    <div class='content'>
+        <p>Você perderá todos os dados</p>
+        <a href='@Url.Action("Index")' class='ui small button'>Sim, cancelar</a>
+    </div>
+</div>
+<div class="ui right floated prosseguir button">Prosseguir</div>
+
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/institucional")
+}
