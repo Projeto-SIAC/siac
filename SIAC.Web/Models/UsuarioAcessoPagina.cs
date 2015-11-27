@@ -17,9 +17,10 @@ namespace SIAC.Models
         public int NumIdentificador { get; set; }
         public string Matricula { get; set; }
         public int CodOrdem { get; set; }
-        public string Titulo { get; set; }
         public Nullable<System.DateTime> DtAbertura { get; set; }
         public string PaginaReferencia { get; set; }
+        public string Pagina { get; set; }
+        public string Dados { get; set; }
     
         public virtual UsuarioAcesso UsuarioAcesso { get; set; }
     }

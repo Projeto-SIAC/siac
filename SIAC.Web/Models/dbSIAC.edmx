@@ -1028,9 +1028,10 @@
           <Property Name="NumIdentificador" Type="int" Nullable="false" />
           <Property Name="Matricula" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="CodOrdem" Type="int" Nullable="false" />
-          <Property Name="Titulo" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Pagina" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="DtAbertura" Type="datetime" />
           <Property Name="PaginaReferencia" Type="varchar" MaxLength="200" />
+          <Property Name="Dados" Type="text" />
         </EntityType>
         <EntityType Name="UsuarioOpiniao">
           <Key>
@@ -5023,10 +5024,11 @@
           <Property Name="NumIdentificador" Type="Int32" Nullable="false" />
           <Property Name="Matricula" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="CodOrdem" Type="Int32" Nullable="false" />
-          <Property Name="Titulo" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="DtAbertura" Type="DateTime" Precision="3" />
           <Property Name="PaginaReferencia" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="UsuarioAcesso" Relationship="dbSIACModel.FK__UsuarioAcessoPag__200DB40D" FromRole="UsuarioAcessoPagina" ToRole="UsuarioAcesso" />
+          <Property Name="Pagina" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Dados" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="UsuarioOpiniao">
           <Key>
@@ -7249,9 +7251,10 @@
           <EntitySetMapping Name="UsuarioAcessoPagina">
             <EntityTypeMapping TypeName="dbSIACModel.UsuarioAcessoPagina">
               <MappingFragment StoreEntitySet="UsuarioAcessoPagina">
+                <ScalarProperty Name="Dados" ColumnName="Dados" />
+                <ScalarProperty Name="Pagina" ColumnName="Pagina" />
                 <ScalarProperty Name="PaginaReferencia" ColumnName="PaginaReferencia" />
                 <ScalarProperty Name="DtAbertura" ColumnName="DtAbertura" />
-                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
                 <ScalarProperty Name="CodOrdem" ColumnName="CodOrdem" />
                 <ScalarProperty Name="Matricula" ColumnName="Matricula" />
                 <ScalarProperty Name="NumIdentificador" ColumnName="NumIdentificador" />

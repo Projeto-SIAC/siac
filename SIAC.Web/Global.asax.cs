@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Newtonsoft.Json;
 
 namespace SIAC
 {
@@ -36,9 +37,10 @@ namespace SIAC
                     acesso.UsuarioAcessoPagina.Add(new Models.UsuarioAcessoPagina()
                     {
                         NumIdentificador = numIdentificador + 1,
-                        Titulo = HttpContext.Current.Request.Url.PathAndQuery.ToString(),
+                        Pagina = HttpContext.Current.Request.Url.PathAndQuery.ToString(),
                         DtAbertura = DateTime.Now,
-                        PaginaReferencia = HttpContext.Current.Request.UrlReferrer?.PathAndQuery.ToString()
+                        PaginaReferencia = HttpContext.Current.Request.UrlReferrer?.PathAndQuery.ToString(),
+                        Dados = HttpContext.Current.Request.Form.HasKeys() ? HttpContext.Current.Request.Form.ToString() : null 
                     });
                     Models.Repositorio.GetInstance().SaveChanges(false);
                 }
