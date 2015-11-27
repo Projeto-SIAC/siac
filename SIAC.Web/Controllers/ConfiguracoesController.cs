@@ -17,7 +17,6 @@ namespace SIAC.Controllers
             return View();
         }
 
-
         public ActionResult Parametros()
         {
             var model = new ViewModels.ConfiguracoesParametrosViewModel();

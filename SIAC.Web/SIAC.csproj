@@ -250,6 +250,7 @@
     <Compile Include="Controllers\InstitucionalController.cs" />
     <Compile Include="Controllers\PerfilController.cs" />
     <Compile Include="Controllers\ReposicaoController.cs" />
+    <Compile Include="Controllers\VisitanteController.cs" />
     <Compile Include="Filters\AutenticacaoFilterAttribute.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\AcessoController.cs" />
@@ -686,6 +687,8 @@
     <Content Include="Views\Impressao\Avaliacao.cshtml" />
     <Content Include="Views\Impressao\Academica.cshtml" />
     <Content Include="Views\Configuracoes\Index.cshtml" />
+    <Content Include="Views\Visitante\Index.cshtml" />
+    <Content Include="Views\Visitante\Cadastrar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

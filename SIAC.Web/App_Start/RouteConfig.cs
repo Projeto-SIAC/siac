@@ -50,6 +50,14 @@ namespace SIAC
                 constraints: new { controller = @"^(Questao|Autoavaliacao|Agenda|Impressao)$" }
             );
 
+
+            routes.MapRoute(
+                name: "Configuracoes",
+                url: "Configuracoes/{controller}/{action}/{codigo}",
+                defaults: new { controller = "Configuracoes", action = "Index", codigo = UrlParameter.Optional },
+                constraints: new { controller = @"^(Visitante)$" }
+            );
+
             routes.MapRoute(
                 name: "Acesso",
                 url: "Acesso/{action}",

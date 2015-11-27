@@ -6,11 +6,31 @@
 <h2>@ViewBag.Title</h2>
 
 <div class="ui stackable grid dashmenu">
-    <div class="stackable doubling four columns centered row">
+    <div class="stackable doubling four columns centered row">        
+        @Html.Partial("_Atalho", new ViewDataDictionary() {
+            { "Url", Url.Action("Index", "Usuario") },
+            { "Icone", "users" },
+            { "Descricao", "Usuários" }
+        })  
         @Html.Partial("_Atalho", new ViewDataDictionary() {
             { "Url", Url.Action("Parametros") },
             { "Icone", "options" },
             { "Descricao", "Parâmetros" }
+        })
+        @Html.Partial("_Atalho", new ViewDataDictionary() {
+            { "Url", Url.Action("Index", "Visitante") },
+            { "Icone", "spy" },
+            { "Descricao", "Visitantes" }
+        })
+        @Html.Partial("_Atalho", new ViewDataDictionary() {
+            { "Url", Url.Action("Institucional", new { tab= "Coordenadores" }) },
+            { "Icone", "doctor" },
+            { "Descricao", "Coordenadores de Av. Institucional" }
+        })
+        @Html.Partial("_Atalho", new ViewDataDictionary() {
+            { "Url", Url.Action("Index", "Opiniao") },
+            { "Icone", "bookmark" },
+            { "Descricao", "Abrir Opiniões" }
         })
     </div>
 </div>
