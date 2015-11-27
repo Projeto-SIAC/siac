@@ -727,6 +727,25 @@ siac.Questao.Cadastrar = (function () {
                                     </div>'
                     );
                 }
+                else if (tipoAnexo == 2) {
+                    $('#mdlCardAnexos')
+                        .append('<div class="ui card">\
+                                        <div class="content">\
+                                            <div class="header">\
+                                                <code>' + $('#txtAnexo' + (i + 1)).val().encurtarTextoEm(50).substituirTodos('&', '&gt;').substituirTodos('<', '&lt;').substituirTodos('>', '&gt;') + '</code>\
+                                            </div>\
+                                            <div class="description">\
+                                            ' + $('#txtAnexoLegenda' + (i + 1)).val() + '\
+                                            </div>\
+                                        </div>\
+                                        <div class="extra content">\
+                                            <div class="description">\
+                                            ' + $('#txtAnexoFonte' + (i + 1)).val() + '\
+                                            </div>\
+                                        </div>\
+                                    </div>'
+                    );
+                }
             }
             $('#mdlAccordionAnexos').removeAttr('style');
         }
@@ -929,7 +948,7 @@ siac.Questao.Editar = (function () {
         _qteAnexo = $elemento.attr('data-questao-anexo');
         $elemento.removeAttr('data-questao-tipo data-questao-anexo');
 
-        $('.disabled').parent().popup({
+        $('.disabled, pre').parent().popup({
             html: '<i class="icon red warning"></i>Este campo não pode ser modificado',
             variation: 'wide'
         });
@@ -1011,6 +1030,25 @@ siac.Questao.Editar = (function () {
                                     </div>'
                     );
                 }
+                else if (tipoAnexo == 2) {
+                    $('#mdlCardAnexos')
+                        .append('<div class="ui card">\
+                                        <div class="content">\
+                                            <div class="header">\
+                                                <code>' + $('#txtAnexo' + (i + 1)).text().encurtarTextoEm(50).substituirTodos('&', '&gt;').substituirTodos('<', '&lt;').substituirTodos('>', '&gt;') + '</code>\
+                                            </div>\
+                                            <div class="description">\
+                                            ' + $('#txtAnexoLegenda' + (i + 1)).val() + '\
+                                            </div>\
+                                        </div>\
+                                        <div class="extra content">\
+                                            <div class="description">\
+                                            ' + $('#txtAnexoFonte' + (i + 1)).val() + '\
+                                            </div>\
+                                        </div>\
+                                    </div>'
+                    );
+                }
             }
             $('#mdlAccordionAnexos').removeAttr('style');
         }
@@ -1024,7 +1062,7 @@ siac.Questao.Editar = (function () {
     function verificar() {
         $('.ui.error.message .list').html('');
         var validado = false;
-        if ($('#txtEnunciado').val() != '') {
+        if ($('#txtEnunciado').val()) {
             if (_tipo == 1) {
                 var qteAlternativas = $('.alternativas .title').length;
                 var ok = true;
@@ -1052,7 +1090,7 @@ siac.Questao.Editar = (function () {
                 }
             }
             else if (_tipo == 2) {
-                if ($('#txtChaveDeResposta').val() != '') {
+                if ($('#txtChaveDeResposta').val()) {
                     validado = true;
                 }
                 else {

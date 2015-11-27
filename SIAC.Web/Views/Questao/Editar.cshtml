@@ -156,26 +156,55 @@
         <div class="ui anexos fluid accordion">
             @foreach (var ane in Model.QuestaoAnexo)
             {
-                <div class="title">
-                    <input name="txtAnexoTipo@(ane.CodOrdem + 1)" id="txtAnexoTipo@(ane.CodOrdem + 1)" value="@ane.CodTipoAnexo" hidden />
-                    <i class="dropdown icon"></i>Anexo @(ane.CodOrdem + 1)
-                    <span class="ui label" id="txtAnexoTipoDescricao@(ane.CodOrdem + 1)">@ane.TipoAnexo.Descricao</span>
-                </div>
-                <div class="content ui segment">
-                    <div class="field required">
-                        <div class="ui card">
-                            <div class="image"><img name="preImagem@(ane.CodOrdem + 1)" id="preImagem@(ane.CodOrdem + 1)" src="data:image/png;base64,@Convert.ToBase64String(ane.Anexo,0, ane.Anexo.Length)" /></div>
+                switch (ane.CodTipoAnexo)
+                {
+                    case 1:
+                        <div class="title">
+                            <input name="txtAnexoTipo@(ane.CodOrdem + 1)" id="txtAnexoTipo@(ane.CodOrdem + 1)" value="@ane.CodTipoAnexo" hidden />
+                            <i class="dropdown icon"></i>Anexo @(ane.CodOrdem + 1)
+                            <span class="ui label" id="txtAnexoTipoDescricao@(ane.CodOrdem + 1)">@ane.TipoAnexo.Descricao</span>
                         </div>
-                    </div>
-                    <div class="field required">
-                        <label for="txtAnexoLegenda@(ane.CodOrdem + 1)">Legenda</label>
-                        <textarea required maxlength="250" id="txtAnexoLegenda@(ane.CodOrdem + 1)" name="txtAnexoLegenda@(ane.CodOrdem + 1)" rows="2" placeholder="Legenda...">@ane.Legenda</textarea>
-                    </div>
-                    <div class="field">
-                        <label for="txtAnexoFonte@(ane.CodOrdem + 1)">Fonte</label>
-                        <input maxlength="250" type="text" id="txtAnexoFonte@(ane.CodOrdem + 1)" name="txtAnexoFonte@(ane.CodOrdem + 1)" placeholder="Fonte..." value="@ane.Fonte">
-                    </div>
-                </div>
+                        <div class="content ui segment">
+                            <div class="field required">
+                                <div class="ui card">
+                                    <div class="image"><img name="preImagem@(ane.CodOrdem + 1)" id="preImagem@(ane.CodOrdem + 1)" src="data:image/png;base64,@Convert.ToBase64String(ane.Anexo,0, ane.Anexo.Length)" /></div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="txtAnexoLegenda@(ane.CodOrdem + 1)">Legenda</label>
+                                <textarea required maxlength="250" id="txtAnexoLegenda@(ane.CodOrdem + 1)" name="txtAnexoLegenda@(ane.CodOrdem + 1)" rows="2" placeholder="Legenda...">@ane.Legenda</textarea>
+                            </div>
+                            <div class="field">
+                                <label for="txtAnexoFonte@(ane.CodOrdem + 1)">Fonte</label>
+                                <input maxlength="250" type="text" id="txtAnexoFonte@(ane.CodOrdem + 1)" name="txtAnexoFonte@(ane.CodOrdem + 1)" placeholder="Fonte..." value="@ane.Fonte">
+                            </div>
+                        </div>
+                        break;
+                    case 2:
+                        <div class="title">
+                            <input name="txtAnexoTipo@(ane.CodOrdem + 1)" id="txtAnexoTipo@(ane.CodOrdem + 1)" value="@ane.CodTipoAnexo" hidden />
+                            <i class="dropdown icon"></i>Anexo @(ane.CodOrdem + 1)
+                            <span class="ui label" id="txtAnexoTipoDescricao@(ane.CodOrdem + 1)">@ane.TipoAnexo.Descricao</span>
+                        </div>
+                        <div class="content ui segment">
+                            <div class="field required">
+                                <div class="ui segment">
+                                    <pre style="max-height:20em"><code id="txtAnexo@(ane.CodOrdem + 1)">@ane.Anexo.GetString().Trim()</code></pre>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="txtAnexoLegenda@(ane.CodOrdem + 1)">Observação</label>
+                                <textarea required maxlength="250" id="txtAnexoLegenda@(ane.CodOrdem + 1)" name="txtAnexoLegenda@(ane.CodOrdem + 1)" rows="2" placeholder="Observação...">@ane.Legenda</textarea>
+                            </div>
+                            <div class="field">
+                                <label for="txtAnexoFonte@(ane.CodOrdem + 1)">Fonte</label>
+                                <input maxlength="250" type="text" id="txtAnexoFonte@(ane.CodOrdem + 1)" name="txtAnexoFonte@(ane.CodOrdem + 1)" placeholder="Fonte..." value="@ane.Fonte">
+                            </div>
+                        </div>
+                        break;
+                    default:
+                        break;
+                }
             }
         </div>
     </div>
