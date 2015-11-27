@@ -1,0 +1,95 @@
+﻿@model SIAC.Models.AvalAvi
+@{
+    ViewBag.Title = "Configurar " + Model.Avaliacao.CodAvaliacao;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="ui basic confirmar modal">
+    <div class="ui icon header">
+        <i class="help icon"></i>
+        Prosseguir operação?
+    </div>
+    <div class="content">
+        <p>Deseja encerrar o cadastramento de questões e continuar a geração de Av. Institucional?</p>
+    </div>
+    <div class="actions">
+        <div class="ui cancel red basic inverted button"><i class="remove icon"></i>Não</div>
+        <div class="ui approve green basic inverted button"><i class="checkmark icon"></i>Sim</div>
+    </div>
+</div>
+
+<div class="ui fluid styled accordion form">
+    @foreach (var modulo in Model.MapQuestoes)
+            {
+        <div class="title"><i class="dropdown icon"></i>@modulo.Modulo.Descricao <div class="ui right floated icon subir mini button"><i class="arrow up icon"></i></div><div class="ui right floated icon descer mini button"><i class="arrow down icon"></i></div></div>
+                <div class="content" data-modulo="@modulo.Modulo.CodAviModulo">
+                    <div class="accordion">
+                        @foreach (var categoria in modulo.Categorias)
+                        {
+                            <div class="title"><i class="dropdown icon"></i>@categoria.Categoria.Descricao</div>
+                            <div class="content" data-categoria="@categoria.Categoria.CodAviCategoria">
+                                <div class="accordion">
+                                    @foreach (var indicador in categoria.Indicadores)
+                                    {
+                                        <div class="title"><i class="dropdown icon"></i>@indicador.Indicador.Descricao</div>
+                                        <div class="content" data-indicador="@indicador.Indicador.CodAviIndicador">
+                                            <div class="accordion">
+                                                @foreach (var questao in indicador.Questoes)
+                                                {
+                                                    <div class="title">
+                                                        <i class="dropdown icon"></i>
+                                                        @questao.Enunciado.ToShortString(50)
+                                                    </div>
+                                                    <div class="content" data-questao="@questao.CodOrdem">
+                                                        <div class="ui segment">
+                                                            <h3 class="ui dividing header" data-content="@questao.Observacao">@questao.Enunciado.Replace(Environment.NewLine, "</br>")</h3>
+
+                                                            @if (questao.FlagDiscursiva.HasValue && questao.FlagDiscursiva.Value)
+                                                            {
+                                                                <input class="input" placeholder="Resposta" type="text" readonly />
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="ui very relaxed list">
+                                                                    @foreach (var alternativa in questao.AviQuestaoAlternativa)
+                                                                    {
+                                                                        <div class="item">
+                                                                            <b>@alternativa.CodAlternativa)</b> @alternativa.Enunciado
+                                                                            @if (alternativa.FlagAlternativaDiscursiva)
+                                                                            {
+                                                                                <div class="ui left pointing label">Alternativa discursiva</div>
+                                                                            }
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+    }
+</div>
+<br />
+<div class="ui cancelar button">Cancelar</div>
+<div class="ui special popup">
+    <div class='header'>Tem certeza?</div>
+    <div class='content'>
+        <p>Você perderá todos os dados</p>
+        <a href='@Url.Action("Index")' class='ui small button'>Sim, cancelar</a>
+    </div>
+</div>
+<div class="ui right floated prosseguir button">Prosseguir</div>
+
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/institucional")
+}

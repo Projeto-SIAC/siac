@@ -133,6 +133,9 @@ siac.Institucional.Questionario = (function () {
         $('.adicionar.questao.button').click(function () {
             verificar();
         })
+        $('.prosseguir.button').click(function () {
+            prosseguir();
+        });
     }
 
     function adicionarAlternativa() {
@@ -569,6 +572,115 @@ siac.Institucional.Questionario = (function () {
                 $('.ui.editar.modal').modal('hide');
             }
         });
+    }
+
+    function prosseguir() {
+        $('form.cadastro').removeClass('error');
+        var qteQuestoes = $('.tab.questoes .accordion .title').length;
+
+        if (qteQuestoes <= 0) {
+            $('.ui.error.message .list').html('<li>É necessário cadastrar o questionário antes de prosseguir</li>');
+            $('form.cadastro').addClass('error');
+        }
+        else {
+            $('.basic.confirmar.modal').modal({
+                onApprove: function () {
+                    window.location.href = '/institucional/configurar/' + _codAvaliacao;
+                }
+            }).modal('show');
+        }
+    }
+    return {
+        iniciar: iniciar
+    }
+})();
+
+siac.Institucional.Configurar = (function () {
+    var _codAvaliacao;
+    function iniciar() {
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/avi[0-9]+$/)[0];
+
+        $('.ui.accordion').accordion({ animateChildren: false });
+        $('.cancelar.button').popup({ on: 'click', inline: true });
+        $('.prosseguir.button').click(function () { prosseguir(); });
+        $('h3').popup();
+
+        $('.subir.button').click(function () {
+            subirElemento(this);
+            return false;
+        });
+        $('.descer.button').click(function () {
+            descerElemento(this);
+            return false;
+        })
+    }
+
+    function prosseguir() {
+        $('.basic.confirmar.modal').modal({
+            onApprove: function () {
+                window.location.href = '/institucional/publico/' + _codAvaliacao;
+            }
+        }).modal('show');
+    }
+
+    function subirElemento(button) {
+        var $title = $(button).parent();
+        var $content = $title.next();
+
+        //var lst = $title.parent().find('.title');
+        //for (var i = 0, length = lst.length; i < length; i++) {
+        //    if (lst.eq(i) == $title) {
+        //        $title.insertBefore(lst.eq(i-1));
+        //    }
+        //}
+                
+        $title.insertBefore($title.prev().prev());
+        $content.insertBefore($content.prev().prev());
+
+    }
+
+    function descerElemento(button) {
+        var $title = $(button).parent();
+        var $content = $title.next();
+
+        $title.insertAfter($title.next().next());
+        $content.insertAfter($content.next().next().next());
+
+    }
+
+	return {
+		iniciar: iniciar
+	}
+})();
+
+siac.Institucional.Publico = (function () {
+    var _codAvaliacao;
+    function iniciar() {
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/avi[0-9]+$/)[0];
+        $('.cancelar.button').popup({ on: 'click', inline: true });
+        $('.prosseguir.button').click(function () {
+            prosseguir();
+        });
+    }
+
+    function prosseguir() {
+        $('.basic.confirmar.modal').modal({
+            onApprove: function () {
+                window.location.href = '/institucional/agendar/' + _codAvaliacao;
+            }
+        }).modal('show');
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();
+
+siac.Institucional.Agendar = (function () {
+    var _codAvaliacao;
+    function iniciar() {
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/avi[0-9]+$/)[0];
+        $('.cancelar.button').popup({ on: 'click', inline: true });
     }
 
     return {

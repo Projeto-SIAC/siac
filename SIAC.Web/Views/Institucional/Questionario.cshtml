@@ -1,11 +1,24 @@
 ﻿@model SIAC.ViewModels.InstitucionalGerarQuestaoViewModel
 @{
-    ViewBag.Title = Model.Avi.Avaliacao.CodAvaliacao + " Questionário";
+    ViewBag.Title = "Questionário " + Model.Avi.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
 
+<div class="ui basic confirmar modal">
+    <div class="ui icon header">
+        <i class="help icon"></i>
+        Prosseguir operação?
+    </div>
+    <div class="content">
+        <p>Deseja encerrar o cadastramento de questões e continuar a geração de Av. Institucional?</p>
+    </div>
+    <div class="actions">
+        <div class="ui cancel red basic inverted button"><i class="remove icon"></i>Não</div>
+        <div class="ui approve green basic inverted button"><i class="checkmark icon"></i>Sim</div>
+    </div>
+</div>
 
 <div class="ui editar modal">
     <i class="close icon"></i>

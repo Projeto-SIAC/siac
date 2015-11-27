@@ -689,6 +689,9 @@
     <Content Include="Views\Configuracoes\Index.cshtml" />
     <Content Include="Views\Visitante\Index.cshtml" />
     <Content Include="Views\Visitante\Cadastrar.cshtml" />
+    <Content Include="Views\Institucional\Configurar.cshtml" />
+    <Content Include="Views\Institucional\Publico.cshtml" />
+    <Content Include="Views\Institucional\Agendar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
