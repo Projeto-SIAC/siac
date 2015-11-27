@@ -602,9 +602,17 @@ siac.Institucional.Configurar = (function () {
 
         $('.ui.accordion').accordion({ animateChildren: false });
         $('.cancelar.button').popup({ on: 'click', inline: true });
-        $('.prosseguir.button').click(function () {
-            prosseguir();
+        $('.prosseguir.button').click(function () { prosseguir(); });
+        $('h3').popup();
+
+        $('.subir.button').click(function () {
+            subirElemento(this);
+            return false;
         });
+        $('.descer.button').click(function () {
+            descerElemento(this);
+            return false;
+        })
     }
 
     function prosseguir() {
@@ -613,6 +621,31 @@ siac.Institucional.Configurar = (function () {
                 window.location.href = '/institucional/publico/' + _codAvaliacao;
             }
         }).modal('show');
+    }
+
+    function subirElemento(button) {
+        var $title = $(button).parent();
+        var $content = $title.next();
+
+        //var lst = $title.parent().find('.title');
+        //for (var i = 0, length = lst.length; i < length; i++) {
+        //    if (lst.eq(i) == $title) {
+        //        $title.insertBefore(lst.eq(i-1));
+        //    }
+        //}
+                
+        $title.insertBefore($title.prev().prev());
+        $content.insertBefore($content.prev().prev());
+
+    }
+
+    function descerElemento(button) {
+        var $title = $(button).parent();
+        var $content = $title.next();
+
+        $title.insertAfter($title.next().next());
+        $content.insertAfter($content.next().next().next());
+
     }
 
 	return {
