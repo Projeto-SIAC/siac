@@ -914,7 +914,7 @@ siac.Questao.Detalhe = (function () {
             var $_this = $(this);
             $_this.addClass('loading');
             $.ajax({
-                url: '/Historico/Questao/Arquivar/' + $_this.attr('data-questao'),
+                url: '/Dashboard/Questao/Arquivar/' + $_this.attr('data-questao'),
                 type: 'POST',
                 success: function (flag) {
                     if (flag) {
