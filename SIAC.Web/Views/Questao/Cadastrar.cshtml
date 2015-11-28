@@ -9,15 +9,21 @@
     <i class="icon close"></i>
     <div class="header">Pesquisar questão</div>
     <div class="content">
-        <form class="ui form">
+        <div class="ui form">
             <div class="field">
-                <label>Palavras-chave (separados por ";")</label>
-                <div class="ui action input">
+                <label>Palavras-chave</label>
+                <!--<div class="ui action input">
                     <input id="txtPalavraChave" type="text" class="ui input text" placeholder="Palavras-chave..." />
-                    <button tabindex="0" class="ui button pesquisar">Pesquisar</button>
-                </div>
+                </div>-->
+                <select tabindex="0" class="ui search dropdown" multiple>
+                    <option value="">Palavra-chave</option>
+                </select>
             </div>
-        </form>
+            <div class="field">
+                <button tabindex="0" class="ui button limpar">Limpar</button>
+                <button tabindex="0" class="ui button pesquisar">Pesquisar</button>
+            </div>
+        </div>
         <div class="ui shape">
             <div class="sides">
                 <div class="active side">

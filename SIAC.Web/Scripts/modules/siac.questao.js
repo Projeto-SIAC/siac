@@ -210,8 +210,18 @@ siac.Questao.Cadastrar = (function () {
         });
 
         $('.pesquisa.modal .pesquisar.button').click(function () {
-            palavraChave($('#txtPalavraChave').val());
-            return false;
+            palavraChave($('.pesquisa.modal .search.dropdown').dropdown('get value'));
+        });
+
+        $('.pesquisa.modal .limpar.button').click(function () {
+            $('.pesquisa.modal .search.dropdown').dropdown('clear');
+            $('#divQuestoes').children().remove();
+            $('.pesquisa.modal .resultado.label').remove();
+            if (!$('.pesquisa.modal .ui.shape .sides:first-child').hasClass('active')) $('.shape').shape('flip left');
+        });
+
+        $('.pesquisa.modal .search.dropdown').dropdown({
+            allowAdditions: true
         });
 
         $('.captcha.icon').click(function () {
@@ -238,7 +248,7 @@ siac.Questao.Cadastrar = (function () {
             adicionarAnexo();
         });
 
-        $('.ui.shape').shape({
+        $('.pesquisa.modal .ui.shape').shape({
             onChange: function () {
                 $('.pesquisa.modal').modal('refresh');
             }
@@ -757,66 +767,68 @@ siac.Questao.Cadastrar = (function () {
     }
 
     function palavraChave(palavras) {
-        palavras = palavras.toLowerCase();
+        //palavras = palavras.toLowerCase();
 
-        if (palavras.indexOf(";") > -1) {
-            palavras = palavras.split(';');
-        } else {
-            palavras[0] = palavras;
-        }
-        $('.ui.pesquisa.modal .pesquisar').addClass('loading');
-        $.ajax({
-            type: 'POST',
-            data: { "palavras": palavras },
-            url: '/Dashboard/Questao/PalavrasChave',
-            success: function (data) {
-                $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
-                $('#divQuestoes').html('');
-                if (data.length != 0) {
-                    var $div = $('#divQuestoes');
-                    $div.parent().find('.ui.resultado.label').remove();
-                    $div.parent().append('<div class="ui resultado label"> Resultado(s)<div class="detail">' + data.length + '</div></div>');
-                    for (var i = 0, length = data.length; i < length; i++) {
-                        $div.append('\
-                        <div class="item">\
-                            <div class="content">\
-                                <a data-questao="' + data[i].CodQuestao + '" class="header">' + data[i].Enunciado.encurtarTextoEm(140) + '</a>\
-                                <div class="description ui labels">\
-                                    <span class="ui label">' + data[i].Disciplina + '</span>\
-                                    <span class="ui label">' + data[i].Dificuldade + '</span>\
-                                    <span class="ui label">' + data[i].TipoQuestao + '</span>\
-                                    <span class="ui label">' + data[i].Professor + '</span>\
+        //if (palavras.indexOf(",") > -1) {
+        //    palavras = palavras.split(',');
+        //} else {
+        //    palavras[0] = palavras;
+        //}
+        if (palavras) {
+            $('.ui.pesquisa.modal .pesquisar').addClass('loading');
+            $.ajax({
+                type: 'POST',
+                data: { "palavras": palavras },
+                url: '/Dashboard/Questao/PalavrasChave',
+                success: function (data) {
+                    $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
+                    $('#divQuestoes').html('');
+                    if (data.length != 0) {
+                        var $div = $('#divQuestoes');
+                        $div.parent().find('.ui.resultado.label').remove();
+                        $div.parent().append('<div class="ui resultado label"> Resultado(s)<div class="detail">' + data.length + '</div></div>');
+                        for (var i = 0, length = data.length; i < length; i++) {
+                            $div.append('\
+                            <div class="item">\
+                                <div class="content">\
+                                    <a data-questao="' + data[i].CodQuestao + '" class="header">' + data[i].Enunciado.encurtarTextoEm(140) + '</a>\
+                                    <div class="description ui labels">\
+                                        <span class="ui label">' + data[i].Disciplina + '</span>\
+                                        <span class="ui label">' + data[i].Dificuldade + '</span>\
+                                        <span class="ui label">' + data[i].TipoQuestao + '</span>\
+                                        <span class="ui label">' + data[i].Professor + '</span>\
+                                    </div>\
                                 </div>\
                             </div>\
-                        </div>\
-                        ');
-                        if (i < (length - 1)) {
-                            $div.append('\
-                            <div class="ui horizontal divider">\
-                                <i class="icon folder open"></i>\
-                              </div>');
+                            ');
+                            if (i < (length - 1)) {
+                                $div.append('\
+                                <div class="ui horizontal divider">\
+                                    <i class="icon folder open"></i>\
+                                  </div>');
+                            }
                         }
-                    }
-                } else {
-                    $('#divQuestoes').append('\
-                        <div class="item">\
-                            <div class="content">\
-                            <div class="header">Nenhuma questão foi encontrada</div>\
+                    } else {
+                        $('#divQuestoes').append('\
+                            <div class="item">\
+                                <div class="content">\
+                                <div class="header">Nenhuma questão foi encontrada</div>\
+                                </div>\
                             </div>\
-                        </div>\
-                        ');
+                            ');
+                    }
+                    $('.ui.pesquisa.modal').modal('refresh');
+                    $('a[data-questao]').click(function () {
+                        var cod = $(this).attr('data-questao');
+                        apresentarQuestao(cod);
+                        $('.shape').shape('flip right');
+                    });
+                },
+                error: function () {
+                    siac.mensagem('Erro na pesquisa. Por favor, tente novamente.');
                 }
-                $('.ui.pesquisa.modal').modal('refresh');
-                $('a[data-questao]').click(function () {
-                    var cod = $(this).attr('data-questao');
-                    apresentarQuestao(cod);
-                    $('.shape').shape('flip right');
-                });
-            },
-            error: function () {
-                siac.mensagem('Erro na pesquisa. Por favor, tente novamente.');
-            }
-        });
+            });
+        }
     }
 
     function apresentarQuestao(codQuestao) {
