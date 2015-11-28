@@ -618,7 +618,23 @@ siac.Institucional.Configurar = (function () {
     function prosseguir() {
         $('.basic.confirmar.modal').modal({
             onApprove: function () {
-                window.location.href = '/institucional/publico/' + _codAvaliacao;
+                $('.prosseguir.button').addClass('loading');
+                $.ajax({
+                    type: 'POST',
+                    url: '/institucional/Configurar/' + _codAvaliacao,
+                    data: {
+                        questoes: obterQuestoesOrdem()
+                    },
+                    success: function () {
+                        window.location.href = '/institucional/publico/' + _codAvaliacao;
+                    },
+                    error: function () {
+
+                    },
+                    complete: function () {
+                        $('.prosseguir.button').removeClass('loading');
+                    }
+                })
             }
         }).modal('show');
     }
@@ -626,13 +642,6 @@ siac.Institucional.Configurar = (function () {
     function subirElemento(button) {
         var $title = $(button).parent();
         var $content = $title.next();
-
-        //var lst = $title.parent().find('.title');
-        //for (var i = 0, length = lst.length; i < length; i++) {
-        //    if (lst.eq(i) == $title) {
-        //        $title.insertBefore(lst.eq(i-1));
-        //    }
-        //}
                 
         $title.insertBefore($title.prev().prev());
         $content.insertBefore($content.prev().prev());
@@ -643,9 +652,24 @@ siac.Institucional.Configurar = (function () {
         var $title = $(button).parent();
         var $content = $title.next();
 
-        $title.insertAfter($title.next().next());
+        $title.insertAfter($title.next().next().next());
         $content.insertAfter($content.next().next().next());
 
+    }
+
+    function obterQuestoesOrdem() {
+        var _arrayQuestoesOrdem = [];
+        $('[data-questao]').map(function () {
+            var $questao = $(this);
+
+            var modulo = $questao.parents('[data-modulo]').data('modulo');
+            var categoria = $questao.parents('[data-categoria]').data('categoria');
+            var indicador = $questao.parents('[data-indicador]').data('indicador');
+            var questao = $questao.data('questao');
+
+            _arrayQuestoesOrdem.push(modulo + '.' + categoria + '.' + indicador + '.' + questao);
+        });
+        return _arrayQuestoesOrdem;
     }
 
 	return {
