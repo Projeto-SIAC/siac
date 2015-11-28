@@ -128,7 +128,7 @@ namespace SIAC.Controllers
                 }
                 else
                 {
-                    visitante.DtValidade = DateTime.Parse(form["txtDtValidade"]);
+                    visitante.DtValidade = DateTime.Parse(form["txtDtValidade"] + " 23:59:59");
                 }
 
                 Repositorio.GetInstance().SaveChanges();
@@ -169,6 +169,24 @@ namespace SIAC.Controllers
                 }
             }
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public void AlterarValidade(string matricula, bool chkDtValidade, string txtDtValidade)
+        {
+            if (!StringExt.IsNullOrWhiteSpace(matricula))
+            {
+                Visitante visitante = Visitante.ListarPorMatricula(matricula);
+                if (chkDtValidade)
+                {
+                    visitante.DtValidade = DateTime.Parse(txtDtValidade + " 23:59:59");
+                }
+                else
+                {
+                    visitante.DtValidade = null;
+                }
+                Repositorio.GetInstance().SaveChanges();
+            }
         }
     }
 }

@@ -178,11 +178,14 @@
         else if (/\/historico\/avaliacao\/reposicao\/detalhe\/repo[0-9]+$/.test(pathname)) {
             siac.Reposicao.Detalhe.iniciar();
         }
-        else if (/\/configuracoes\/visitante\/cadastrar/.test(pathname)) {
+        else if (/\/configuracoes\/visitante\/cadastrar$/.test(pathname)) {
             siac.Visitante.Cadastrar.iniciar();
         }
-        else if (/\/configuracoes\/visitante/.test(pathname)) {
+        else if (/\/configuracoes\/visitante$/.test(pathname)) {
             siac.Visitante.Index.iniciar();
+        }
+        else if (/\/configuracoes\/visitante\/detalhe\/vis[0-9]+$/.test(pathname)) {
+            siac.Visitante.Detalhe.iniciar();
         }
     }
 

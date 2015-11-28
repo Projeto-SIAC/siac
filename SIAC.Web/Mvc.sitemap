@@ -89,7 +89,8 @@
       <mvcSiteMapNode title="Controle de Visitantes" controller="Visitante" action="Index">
         <mvcSiteMapNode title="Cadastrar" controller="Visitante" action="Cadastrar">
           <mvcSiteMapNode title="Confirmação" controller="Visitante" action="Confirmar" />
-        </mvcSiteMapNode>
+        </mvcSiteMapNode>      
+        <mvcSiteMapNode title="Detalhe" controller="Visitante" action="Detalhe" preservedRouteParameters="codigo"/>
       </mvcSiteMapNode>
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Av. Institucional" controller="Institucional" action="Index">

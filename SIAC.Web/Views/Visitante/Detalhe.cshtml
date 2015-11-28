@@ -4,6 +4,8 @@
     ViewBag.Title = "Visitante " + Model.Usuario.PessoaFisica.PrimeiroNome;
 }
 
+@section Scripts { @Scripts.Render("~/bundles/js/visitante") }
+
 <h2>
     @ViewBag.Title
     <span class="ui label">
@@ -11,6 +13,35 @@
         <span class="detail">@Model.MatrVisitante</span>
     </span>
 </h2>
+
+<div class="ui validade modal">
+    <i class="close icon"></i>
+    <div class="header">Alterar Validade</div>
+    <div class="content">
+        <div class="ui form">
+            <div class="field">
+                <label>Data de Validade</label>
+                <div class="two fields">
+                    <div class="field">
+                        <div class="ui basic segment">
+                            <div class="ui toggle checkbox">
+                                <input type="checkbox" name="chkDtValidade" @(Model.DtValidade.HasValue ? "checked" : "")>
+                                <label>Possui data de validade</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <input type="date" name="txtDtValidade" data-mask="0000-00-00" placeholder="Data de Validade" value="@(Model.DtValidade?.ToString("yyyy-MM-dd"))" @(Model.DtValidade.HasValue ? "" : "disabled") />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Cancelar</div>
+        <div class="ui approve button">Alterar</div>
+    </div>
+</div>
 
 <div class="ui basic segment">
     <div class="ui dividing header">
@@ -55,5 +86,5 @@
 <a href="@Url.Action("Index")" class="ui button">Voltar</a>
 <a href="@Url.Action("Detalhe","Usuario", new { codigo = Model.MatrVisitante })" class="ui button">Abrir Usuário</a>
 <a href="@Url.Action("Usuario","Opiniao", new { codigo = Model.MatrVisitante })" class="ui button">Abrir Opiniões</a>
-<div class="ui button">Alterar Validade</div>
+<div class="ui validade button">Alterar Validade</div>
 
