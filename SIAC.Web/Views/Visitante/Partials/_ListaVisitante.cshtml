@@ -1,0 +1,20 @@
+﻿@model List<Visitante>
+@foreach (var vis in Model)
+{
+    <tr>
+        <td>
+            @vis.Usuario.PessoaFisica.Nome
+            <span class="ui label">@(vis.FlagAtivo ? "Ativo" : "Inativo" )</span>
+        </td>
+        <td>
+            <time datetime="@vis.Usuario.DtCadastro.ToString()" title="@vis.Usuario.DtCadastro.ToBrazilianString()">
+                @vis.Usuario.DtCadastro.ToElapsedTimeString()
+            </time>
+        </td>
+        <td>
+            <a href="@Url.Action("Detalhe", new { codigo = vis.MatrVisitante })" class="ui small button">
+                Abrir
+            </a>
+        </td>
+    </tr>
+}

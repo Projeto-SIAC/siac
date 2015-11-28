@@ -17,13 +17,49 @@ namespace SIAC.Controllers
         {
             get
             {
-                return new List<Visitante>();
+                return Visitante.Listar();
             }
         }
 
-        public ActionResult Listar()
+        [HttpPost]
+        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias)
         {
-            return Json(null);
+            var qte = 10;
+            var visitantes = Visitantes;
+            pagina = pagina ?? 1;
+
+            if (!String.IsNullOrWhiteSpace(pesquisa))
+            {
+                string strPesquisa = pesquisa.Trim().ToLower();
+                visitantes = visitantes.Where(q => q.MatrVisitante.ToLower().Contains(strPesquisa) || q.Usuario.PessoaFisica.Nome.ToLower().Contains(strPesquisa)).ToList();
+            }
+
+            if (categorias != null)
+            {
+                if (categorias.Contains("ativo") && !categorias.Contains("inativo"))
+                {
+                    visitantes = visitantes.Where(q => q.FlagAtivo).ToList();
+                }
+                else if (!categorias.Contains("ativo") && categorias.Contains("inativo"))
+                {
+                    visitantes = visitantes.Where(q => !q.FlagAtivo).ToList();
+                }
+            }
+
+            switch (ordenar)
+            {
+                case "data_desc":
+                    visitantes = visitantes.OrderByDescending(q => q.FlagAtivo).ThenByDescending(q => q.Usuario.DtCadastro).ToList();
+                    break;
+                case "data":
+                    visitantes = visitantes.OrderByDescending(q => q.FlagAtivo).ThenBy(q => q.Usuario.DtCadastro).ToList();
+                    break;
+                default:
+                    visitantes = visitantes.OrderByDescending(q => q.FlagAtivo).ThenByDescending(q => q.Usuario.DtCadastro).ToList();
+                    break;
+            }
+
+            return PartialView("_ListaVisitante", visitantes.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
         }
 
         public ActionResult Index()
@@ -58,7 +94,7 @@ namespace SIAC.Controllers
                         pf.Nome = nome;
                         pf.Cpf = cpf;
                         pf.Categoria.Add(Categoria.ListarPorCodigo(4));
-                        
+
                         PessoaFisica.Inserir(pf);
                     }
 

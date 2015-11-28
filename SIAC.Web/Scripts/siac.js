@@ -181,6 +181,9 @@
         else if (/\/configuracoes\/visitante\/cadastrar/.test(pathname)) {
             siac.Visitante.Cadastrar.iniciar();
         }
+        else if (/\/configuracoes\/visitante/.test(pathname)) {
+            siac.Visitante.Index.iniciar();
+        }
     }
 
     var HTML_MENSAGEM_TEMPLATE = '<div class="ui small mensagem modal">' +

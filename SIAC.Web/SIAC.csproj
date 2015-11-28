@@ -695,6 +695,7 @@
     <Content Include="Views\Institucional\Publico.cshtml" />
     <Content Include="Views\Institucional\Agendar.cshtml" />
     <Content Include="Views\Visitante\Confirmar.cshtml" />
+    <Content Include="Views\Visitante\Partials\_ListaVisitante.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
