@@ -1,0 +1,25 @@
+﻿@model Visitante
+@{
+    ViewBag.Title = "Confirmação";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="ui icon message positive">
+    <i class="icon checkmark"></i>
+    <div class="content">
+        <div class="header">Visitante criado com sucesso.</div>
+        <p>Bom trabalho. Usuário <b>@Model.MatrVisitante</b> (@Model.Usuario.PessoaFisica.Nome) está criado.</p>
+        @if (Model.Usuario.UsuarioAcesso.Count == 0)
+        {
+            <p>O visitante será indicado para alterar sua senha no primeiro acesso. Senha padrão: <b>primeironome@@3primeirosdigitosdocpf</b>.</p>
+        }
+    </div>
+</div>
+
+<a href="@Url.Action("Index")" class="ui button">
+    Voltar
+</a>
+<a href="@Url.Action("Detalhe", new { codigo = Model.MatrVisitante })" class="ui button">
+    Abrir visitante
+</a>

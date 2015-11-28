@@ -7,6 +7,9 @@ namespace SIAC.Models
 {
     public partial class PessoaFisica
     {
+        public string PrimeiroNome => this.Nome.Split(' ').First();
+        public string UltimoNome => this.Nome.Split(' ').Last();
+
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         public static int Inserir(PessoaFisica pessoaFisica)
@@ -21,9 +24,14 @@ namespace SIAC.Models
             return contexto.PessoaFisica.ToList();
         }
 
+        public static PessoaFisica ListarPorCpf(string cpf)
+        {
+            return contexto.PessoaFisica.FirstOrDefault(p => p.Cpf == cpf);
+        }
+
         public static PessoaFisica ListarPorCodigo(int codPessoaFisica)
         {
-            return contexto.PessoaFisica.SingleOrDefault(p=>p.CodPessoa == codPessoaFisica);
+            return contexto.PessoaFisica.FirstOrDefault(p=>p.CodPessoa == codPessoaFisica);
         }
 
         public static List<PessoaFisica> ListarPorTurma(string codTurma)

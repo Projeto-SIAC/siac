@@ -11,6 +11,7 @@ namespace SIAC.Models
         public static Dictionary<int, int> NumIdentificador = new Dictionary<int, int>();
         public static List<string> AlertarMudanca = new List<string>();
         public static Dictionary<string, string> TempDataUrlImage = new Dictionary<string, string>();
+        public static int? ProxCodVisitante = null;
 
         public static bool Autenticado(string matricula)
         {

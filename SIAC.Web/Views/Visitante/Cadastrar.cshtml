@@ -3,29 +3,45 @@
     ViewBag.Title = "Cadastrar";
 }
 
+@section Scripts { 
+    @Scripts.Render("~/bundles/js/visitante")   
+}
+
 <h2>@ViewBag.Title</h2>
 
-<form method="post" class="ui form">
+<div class="ui confirmar modal">
+    <i class="close icon"></i>
+    <div class="header">Verifique e confirme</div>
+    <div class="content">
+        <div class="ui form"></div>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Voltar</div>
+        <div class="ui approve button">Continuar</div>
+    </div>
+</div>
+
+<form action="@Url.Action("Confirmar")" method="post" class="ui form">
     <div class="field">
         <div class="ui dividing header">Informações Pessoais</div>
         <div class="fields">
             <div class="twelve wide field required">
                 <label>Nome</label>
-                <input type="text" placeholder="Nome" required />
+                <input type="text" name="txtNome" placeholder="Nome" required />
             </div>
             <div class="four wide field required">
                 <label>CPF</label>
-                <input type="text" data-mask="000.000.000-00" placeholder="CPF" required />
+                <input type="text" name="txtCpf" data-mask="000.000.000-00" placeholder="CPF" required />
             </div>
         </div>
         <div class="two fields">
             <div class="field">
                 <label>Data de Nascimento</label>
-                <input type="date" data-mask="0000-00-00" />
+                <input type="date" name="txtDtNasc" data-mask="0000-00-00" />
             </div>
             <div class="field">
                 <label>Sexo</label>
-                <select class="ui dropdown">
+                <select name="ddlSexo" class="ui dropdown">
                     <option value="">Sexo</option>
                     <option value="F">Feminino</option>
                     <option value="M">Masculino</option>
@@ -42,19 +58,24 @@
                 <div class="field">
                     <div class="ui basic segment">
                         <div class="ui toggle checkbox">
-                            <input type="checkbox" name="chkValidade">
+                            <input type="checkbox" name="chkDtValidade">
                             <label>Possui data de validade</label>
                         </div>
                     </div>
                 </div>
                 <div class="field">
-                    <input type="date" name="txtValidade" data-mask="0000-00-00" placeholder="Data de Validade" disabled />
+                    <input type="date" name="txtDtValidade" data-mask="0000-00-00" placeholder="Data de Validade" disabled />
                 </div>
             </div>
         </div>
     </div>
     <div class="field">
-        <div class="ui button" tabindex="0">Cancelar</div>
-        <div class="ui button" tabindex="0">Continuar</div>
+        <div class="ui cancelar button" tabindex="0">Cancelar</div>
+        <div class="ui popup">
+            <div class="header">Tem certeza?</div>
+            <div class="content">Você perderá todos os dados informados.</div>
+            <div class="content"><a href="@Url.Action("Index")" class="ui small button">Sim, cancelar</a></div>
+        </div>
+        <div class="ui continuar button" tabindex="0">Continuar</div>
     </div>
 </form>

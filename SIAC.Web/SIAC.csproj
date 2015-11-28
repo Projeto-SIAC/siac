@@ -204,6 +204,7 @@
       <DependentUpon>siac.certificacao.js</DependentUpon>
     </Content>
     <Content Include="Scripts\modules\siac.reposicao.js" />
+    <Content Include="Scripts\modules\siac.visitante.js" />
     <Content Include="Scripts\plugins\jquery.address-1.6.min.js" />
     <Content Include="Scripts\plugins\jquery.mask-1.13.4.min.js" />
     <Content Include="Scripts\libs\jquery.min.js" />
@@ -435,6 +436,7 @@
     <Compile Include="Models\ProReitoria.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\pVisitante.cs" />
     <Compile Include="Models\Questao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -692,6 +694,7 @@
     <Content Include="Views\Institucional\Configurar.cshtml" />
     <Content Include="Views\Institucional\Publico.cshtml" />
     <Content Include="Views\Institucional\Agendar.cshtml" />
+    <Content Include="Views\Visitante\Confirmar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

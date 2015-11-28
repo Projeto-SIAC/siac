@@ -14,7 +14,7 @@
                     $('.ui.global.loader').parent().dimmer('hide');
                 }
             });
-            
+
             $('.ui.global.loader').parent().click(function () {
                 try {
                     window.stop();
@@ -128,7 +128,7 @@
             siac.Certificacao.Detalhe.iniciar();
         }
         else if (pathname == '/institucional/gerar') {
-            siac.Institucional.Gerar.iniciar();            
+            siac.Institucional.Gerar.iniciar();
         }
         else if (/\/institucional\/configuracao(|\/indicador|\/categoria|\/modulo)$/.test(pathname)) {
             siac.Institucional.Configuracao.iniciar();
@@ -177,6 +177,9 @@
         }
         else if (/\/historico\/avaliacao\/reposicao\/detalhe\/repo[0-9]+$/.test(pathname)) {
             siac.Reposicao.Detalhe.iniciar();
+        }
+        else if (/\/configuracoes\/visitante\/cadastrar/.test(pathname)) {
+            siac.Visitante.Cadastrar.iniciar();
         }
     }
 
@@ -265,6 +268,21 @@ siac.Utilitario = siac.Utilitario || (function () {
         return (timeData > timeDataAgora);
     }
 
+    function validarCPF(strCPF) {
+        var Soma;
+        var Resto;
+        Soma = 0;
+        if (strCPF == "00000000000") return false;
+        for (i = 1; i <= 9; i++) Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
+        Resto = (Soma * 10) % 11; if ((Resto == 10) || (Resto == 11)) Resto = 0;
+        if (Resto != parseInt(strCPF.substring(9, 10))) return false;
+        Soma = 0;
+        for (i = 1; i <= 10; i++) Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (12 - i);
+        Resto = (Soma * 10) % 11; if ((Resto == 10) || (Resto == 11)) Resto = 0;
+        if (Resto != parseInt(strCPF.substring(10, 11))) return false;
+        return true;
+    }
+
     String.prototype.encurtarTextoEm = function (length) {
         var text = '';
         var str = this;
@@ -335,17 +353,18 @@ siac.Utilitario = siac.Utilitario || (function () {
     Number.prototype.inteiroParaLetraMinuscula = function () {
         var numero = this;
         var letras = " abcdefghijklmnopqrstuvxwyz";
-        if (numero < letras.length){
+        if (numero < letras.length) {
             return letras[numero];
-        } 
-        else{
+        }
+        else {
             return numero;
         }
     }
 
     return {
         compararData: compararData,
-        dataEFuturo: dataEFuturo
+        dataEFuturo: dataEFuturo,
+        validarCPF: validarCPF
     }
 })();
 
@@ -363,7 +382,7 @@ siac.Anexo = siac.Anexo || (function () {
         $('.card.anexo.codigo').off().click(function () {
             var $this = $(this);
             var codigo = $this.find('textarea.codigo').val();
-            
+
             $description = $this.find(':not(.extra).content .description');
             var observacao = $description.data('observacao') ? $description.data('observacao') : $description.text();
 
