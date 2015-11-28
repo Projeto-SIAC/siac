@@ -1,0 +1,59 @@
+﻿@model Visitante
+
+@{
+    ViewBag.Title = "Visitante " + Model.Usuario.PessoaFisica.PrimeiroNome;
+}
+
+<h2>
+    @ViewBag.Title
+    <span class="ui label">
+        Matrícula
+        <span class="detail">@Model.MatrVisitante</span>
+    </span>
+</h2>
+
+<div class="ui basic segment">
+    <div class="ui dividing header">
+        Estatísticas
+    </div>
+    <div class="ui four statistics">
+        <div class="statistic">
+            <div class="value">
+                @(Model.FlagAtivo ? "Ativo" : "Inativo")
+            </div>
+            <div class="label">
+                Situação
+            </div>
+        </div>
+        <div class="statistic">
+            <div class="value" title="@(Model.DtValidade?.ToBrazilianString())">
+                @(Model.DtValidade?.ToString("dd MMM") ?? "Sempre")
+            </div>
+            <div class="label">
+                Validade
+            </div>
+        </div>
+        <div class="statistic">
+            <div class="value">
+                @Model.Usuario.UsuarioAcesso.Count
+            </div>
+            <div class="label">
+                Acessos
+            </div>
+        </div>
+        <div class="statistic">
+            <div class="value">
+                @Model.Usuario.PessoaFisica.AvalAuto.Count
+            </div>
+            <div class="label">
+                Autoavaliações
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="@Url.Action("Index")" class="ui button">Voltar</a>
+<a href="@Url.Action("Detalhe","Usuario", new { codigo = Model.MatrVisitante })" class="ui button">Abrir Usuário</a>
+<a href="@Url.Action("Usuario","Opiniao", new { codigo = Model.MatrVisitante })" class="ui button">Abrir Opiniões</a>
+<div class="ui button">Alterar Validade</div>
+

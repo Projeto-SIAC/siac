@@ -47,5 +47,8 @@ namespace SIAC.Models
         {
             return contexto.Visitante.ToList();
         }
+
+        public static Visitante ListarPorMatricula(string matricula) => 
+            contexto.Visitante.FirstOrDefault(v=>v.MatrVisitante.ToLower() == matricula.ToLower());        
     }
 }

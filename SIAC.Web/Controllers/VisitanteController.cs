@@ -149,13 +149,26 @@ namespace SIAC.Controllers
                     var r = new
                     {
                         Nome = p.Nome,
-                        DtNasc = p.DtNascimento?.ToString("YYYY-MM-DD"),
+                        DtNasc = p.DtNascimento?.ToString("yyyy-MM-dd"),
                         Sexo = p.Sexo
                     };
                     return Json(r);
                 }
             }
             return null;
+        }
+
+        public ActionResult Detalhe(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                var v = Visitante.ListarPorMatricula(codigo);
+                if (v != null)
+                {
+                    return View(v);
+                }
+            }
+            return RedirectToAction("Index");
         }
     }
 }
