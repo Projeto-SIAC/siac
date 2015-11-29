@@ -9,6 +9,8 @@ namespace SIAC.Models
     {
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
+        public bool FlagAtivo => this.DtValidade.HasValue ? (this.DtValidade.Value > DateTime.Now) : true;
+
         public static int ProxCodigo
         {
             get
@@ -40,5 +42,13 @@ namespace SIAC.Models
             contexto.Visitante.Add(visitante);
             contexto.SaveChanges();
         }
+
+        public static List<Visitante> Listar()
+        {
+            return contexto.Visitante.ToList();
+        }
+
+        public static Visitante ListarPorMatricula(string matricula) => 
+            contexto.Visitante.FirstOrDefault(v=>v.MatrVisitante.ToLower() == matricula.ToLower());        
     }
 }

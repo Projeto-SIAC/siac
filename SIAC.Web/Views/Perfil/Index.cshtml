@@ -1,0 +1,134 @@
+﻿@model Usuario
+@{
+    ViewBag.Title = "Perfil";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="ui stackable grid" style="clear:both">
+    <div class="eight wide column">
+        <div class="ui dividing header">
+            Informações Pessoais
+        </div>
+        <div class="ui relaxed list">
+            <div class="item">
+                <div class="header">Nome</div>
+                @Model.PessoaFisica.Nome
+            </div>
+            <div class="item">
+                <div class="header">Matricula</div>
+                @Model.Matricula
+            </div>
+            <div class="item">
+                <div class="header">Data de Cadastro</div>
+                @(Model.DtCadastro.ToString("dd/MM/yyyy"))
+            </div>
+        </div>
+
+        @if (Model.CodCategoria < 3)
+        {
+            <h3 class="ui dividing header" data-html="Ano de referência: <b>@(DateTime.Today.Year)</b>.">
+                Informações Acadêmicas
+            </h3>
+            <div class="ui relaxed list">
+                @switch (Model.CodCategoria)
+                {
+                    case 1:
+                        <div class="item">
+                            <div class="header">Instituição</div>
+                            @Model.Aluno.Last().Turma.Curso.Diretoria.Campus.Instituicao.PessoaJuridica.NomeFantasia
+                        </div>
+
+                        <div class="item">
+                            <div class="header">Campus</div>
+                            @Model.Aluno.Last().Turma.Curso.Diretoria.Campus.PessoaJuridica.NomeFantasia
+                        </div>
+
+                        <div class="item">
+                            <div class="header">Curso</div>
+                            @Model.Aluno.Last().Turma.Curso.Descricao
+                        </div>
+
+                        <div class="item">
+                            <div class="header">Turma</div>
+                            @Model.Aluno.Last().Turma.CodTurma
+                        </div>
+
+                        <div class="item">
+                            <div class="header">Disciplinas</div>
+                            <div class="list">
+                                @foreach (var disciplina in Model.Aluno.Last().Disciplinas)
+                                {
+                                    <div class="item">@disciplina.Descricao</div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="header">Professores</div>
+                            <div class="list">
+                                @foreach (var professor in Model.Aluno.Last().Professores)
+                                {
+                                    <div class="item">@professor.Usuario.PessoaFisica.PrimeiroNome @professor.Usuario.PessoaFisica.UltimoNome</div>
+                                }
+                            </div>
+                        </div>
+                        break;
+                    case 2:
+                        <div class="item">
+                            <div class="header">Instituição</div>
+                            @Model.Professor.Last().Instituicao.PessoaJuridica.NomeFantasia
+                        </div>
+
+                        <div class="item">
+                            <div class="header">Campus</div>
+                            @Model.Professor.Last().Campus.PessoaJuridica.NomeFantasia
+                        </div>
+
+                        <div class="item">
+                            <div class="header">Disciplinas</div>
+                            <div class="ui list">
+                                @foreach (var disciplina in Model.Professor.Last().Disciplina)
+                                {
+                                    <div class="item">
+                                        @disciplina.Descricao
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        break;
+                    default:
+                        break;
+                }
+            </div>
+        }
+    </div>
+    <div id="estatisticas" class="eight wide column">        
+        <div class="ui active centered text loader">Carregando estatísticas...</div>
+    </div>
+</div>
+
+<div class="ui opiniao modal">
+    <i class="close icon"></i>
+    <div class="header">Enviar opinião</div>
+    <div class="content">
+        <p>Este espaço é reservado para você enviar uma opinião sobre o Sistema. Queremos saber suas críticas, sugestões e impressões.</p>
+        <div class="ui form">
+            <div class="field">
+                <label for="txtOpiniao">Opinião</label>
+                <textarea id="txtOpiniao" rows="3" placeholder="Opinião..."></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Cancelar</div>
+        <div class="ui approve button">Enviar</div>
+    </div>
+</div>
+
+<div class="ui opiniao button">Enviar opinião</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/perfil")  
+}
+

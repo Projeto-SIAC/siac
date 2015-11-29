@@ -1,0 +1,48 @@
+﻿@model Usuario
+
+<div class="ui dividing header">
+    Informações Estatísticas
+</div>
+
+<div class="ui relaxed list">
+    @if (Model.CodCategoria == 2)
+            {
+        <div class="item">
+            <div class="header">Questões Cadastradas</div>
+            @Model.Professor.Last().Questao.Count
+        </div>
+                <div class="item">
+                    <div class="header">Avaliações Aplicadas</div>
+                    @(Model.Professor.Last().AvalAcademica.Count + Model.Professor.Last().AvalCertificacao.Count)
+                </div>
+    }
+    <div class="item">
+        <div class="header">Avaliações Realizadas</div>
+        @Model.PessoaFisica.AvalPessoaResultado.Where(a => a.CodTipoAvaliacao > 1).Count()
+    </div>
+    <div class="item">
+        <div class="header">Autoavaliações Realizadas</div>
+        @Model.PessoaFisica.AvalPessoaResultado.Where(a => a.CodTipoAvaliacao == 1).Count()
+    </div>
+    <div class="item">
+        <div class="header">Nota Média Geral</div>
+        @(Model.PessoaFisica.AvalPessoaResultado.Average(a => a.Nota)?.ToString("0.##") ?? "0")
+    </div>
+    <div class="item">
+        <div class="header">Maior Nota</div>
+        @(Model.PessoaFisica.AvalPessoaResultado.Max(a => a.Nota)?.ToString("0.##") ?? "0")
+    </div>
+    <div class="item">
+        <div class="header">Menor Nota</div>
+        @(Model.PessoaFisica.AvalPessoaResultado.Min(a => a.Nota)?.ToString("0.##") ?? "0")
+    </div>
+    <div class="item">
+        <div class="header">Melhor Disciplina</div>
+        @(Model.MelhorDisciplina?.Descricao ?? "Nenhuma")
+    </div>
+    <div class="item">
+        <div class="header">Pior Disciplina</div>
+        @(Model.PiorDisciplina?.Descricao ?? "Nenhuma")
+    </div>
+</div>
+

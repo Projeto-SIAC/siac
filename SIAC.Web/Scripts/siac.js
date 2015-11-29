@@ -31,155 +31,195 @@
 
     function carregar() {
         var pathname = window.location.pathname.toLowerCase();
-        if (pathname == '/historico/questao') {
-            siac.Questao.Index.iniciar();
+
+        if (pathname.startsWith('/dashboard/')) {
+            if (pathname.indexOf('/questao') >= 0) {
+                if (/\/dashboard\/questao\/cadastrar/.test(pathname)) {
+                    siac.Questao.Cadastrar.iniciar();
+                }
+            }
+            else if (pathname.indexOf('/autoavaliacao') >= 0) {
+                if (/\/dashboard\/autoavaliacao\/realizar\/auto[0-9]+$/.test(pathname)) {
+                    siac.Autoavaliacao.Realizar.iniciar();
+                }
+                else if (/\/dashboard\/autoavaliacao\/resultado\/auto[0-9]+$/.test(pathname)) {
+                    siac.Autoavaliacao.Resultado.iniciar();
+                }
+                else if (pathname == '/dashboard/autoavaliacao/gerar') {
+                    siac.Autoavaliacao.Gerar.iniciar();
+                }
+            }
+            else if (pathname.indexOf('/academica') >= 0) {
+                if (pathname == '/dashboard/avaliacao/academica/gerar') {
+                    siac.Academica.Gerar.iniciar();
+                }
+                else if (/\/dashboard\/avaliacao\/academica\/agendar\/acad[0-9]+$/.test(pathname)) {
+                    siac.Academica.Agendar.iniciar();
+                }
+                else if (/\/dashboard\/avaliacao\/academica\/resultado\/acad[0-9]+$/.test(pathname)) {
+                    siac.Academica.Resultado.iniciar();
+                }
+                else if (/\/dashboard\/avaliacao\/academica\/configurar\/acad[0-9]+$/.test(pathname)) {
+                    siac.Academica.Configurar.iniciar();
+                }
+                else if (/\/dashboard\/avaliacao\/academica\/realizar\/acad[0-9]+$/.test(pathname)) {
+                    siac.Academica.Realizar.iniciar();
+                }
+                else if (/\/dashboard\/avaliacao\/academica\/acompanhar\/acad[0-9]+$/.test(pathname)) {
+                    siac.Academica.Acompanhar.iniciar();
+                }
+            }
+            else if (pathname.indexOf('/reposicao') >= 0) {
+                if (/\/dashboard\/avaliacao\/reposicao\/justificar\/acad[0-9]+$/.test(pathname)) {
+                    siac.Reposicao.Justificar.iniciar();
+                }
+                else if (/\/dashboard\/avaliacao\/reposicao\/configurar\/repo[0-9]+$/.test(pathname)) {
+                    siac.Reposicao.Configurar.iniciar();
+                }
+                else if (/\/dashboard\/avaliacao\/reposicao\/agendar\/repo[0-9]+$/.test(pathname)) {
+                    siac.Reposicao.Agendar.iniciar();
+                }
+                else if (/\/dashboard\/avaliacao\/reposicao\/realizar\/repo[0-9]+$/.test(pathname)) {
+                    siac.Reposicao.Realizar.iniciar();
+                }
+                else if (/\/dashboard\/avaliacao\/reposicao\/acompanhar\/repo[0-9]+$/.test(pathname)) {
+                    siac.Reposicao.Acompanhar.iniciar();
+                }
+                else if (/\/dashboard\/avaliacao\/reposicao\/resultado\/repo[0-9]+$/.test(pathname)) {
+                    siac.Reposicao.Resultado.iniciar();
+                }
+            }
+            else if (pathname.indexOf('/certificacao') >= 0) {
+                if (pathname == '/dashboard/avaliacao/certificacao/gerar') {
+                    siac.Certificacao.Gerar.iniciar();
+                }
+                else if (/\/dashboard\/avaliacao\/certificacao\/configurar\/cert[0-9]+$/.test(pathname)) {
+                    siac.Certificacao.Configurar.iniciar();
+                }
+                else if (/\/dashboard\/avaliacao\/certificacao\/agendar\/cert[0-9]+$/.test(pathname)) {
+                    siac.Certificacao.Agendar.iniciar();
+                }
+                else if (/\/dashboard\/avaliacao\/certificacao\/avaliados\/cert[0-9]+$/.test(pathname)) {
+                    siac.Certificacao.Avaliados.iniciar();
+                }
+                else if (/\/dashboard\/avaliacao\/certificacao\/realizar\/cert[0-9]+$/.test(pathname)) {
+                    siac.Certificacao.Realizar.iniciar();
+                }
+                else if (/\/dashboard\/avaliacao\/certificacao\/acompanhar\/cert[0-9]+$/.test(pathname)) {
+                    siac.Certificacao.Acompanhar.iniciar();
+                }
+                else if (/\/dashboard\/avaliacao\/certificacao\/resultado\/cert[0-9]+$/.test(pathname)) {
+                    siac.Certificacao.Resultado.iniciar();
+                }
+            }
         }
-        else if (/\/dashboard\/questao\/cadastrar/.test(pathname)) {
-            siac.Questao.Cadastrar.iniciar();
+        else if (pathname.startsWith('/historico/')) {
+            if (pathname.indexOf('/questao') >= 0) {
+                if (pathname == '/historico/questao') {
+                    siac.Questao.Index.iniciar();
+                }
+                else if (pathname == '/historico/questao/gerar') {
+                    siac.Questao.Gerar.iniciar();
+                }
+                else if (/\/historico\/questao\/detalhe\/[0-9]+$/.test(pathname)) {
+                    siac.Questao.Detalhe.iniciar();
+                }
+                else if (/\/historico\/questao\/editar\/[0-9]+$/.test(pathname)) {
+                    siac.Questao.Editar.iniciar();
+                }
+            }
+            else if (pathname.indexOf('/autoavaliacao') >= 0) {
+                if (pathname == '/historico/autoavaliacao') {
+                    siac.Autoavaliacao.Index.iniciar();
+                }
+                else if (/\/historico\/autoavaliacao\/detalhe\/auto[0-9]+$/.test(pathname)) {
+                    siac.Autoavaliacao.Detalhe.iniciar();
+                }
+            }
+            else if (pathname.indexOf('/academica') >= 0) {
+                if (pathname == '/historico/avaliacao/academica') {
+                    siac.Academica.Index.iniciar();
+                }
+                else if (/\/historico\/avaliacao\/academica\/detalhe\/acad[0-9]+$/.test(pathname)) {
+                    siac.Academica.Detalhe.iniciar();
+                }
+                else if (/\/historico\/avaliacao\/academica\/agendada\/acad[0-9]+$/.test(pathname)) {
+                    siac.Academica.Agendada.iniciar();
+                }
+                else if (/\/historico\/avaliacao\/academica\/corrigir\/acad[0-9]+$/.test(pathname)) {
+                    siac.Academica.Corrigir.iniciar();
+                }
+            }
+            else if (pathname.indexOf('/reposicao') >= 0) {
+                if (pathname == '/historico/avaliacao/reposicao') {
+                    siac.Reposicao.Index.iniciar();
+                }
+                else if (/\/historico\/avaliacao\/reposicao\/agendada\/repo[0-9]+$/.test(pathname)) {
+                    siac.Reposicao.Agendada.iniciar();
+                }
+                else if (/\/historico\/avaliacao\/reposicao\/corrigir\/repo[0-9]+$/.test(pathname)) {
+                    siac.Reposicao.Corrigir.iniciar();
+                }
+                else if (/\/historico\/avaliacao\/reposicao\/detalhe\/repo[0-9]+$/.test(pathname)) {
+                    siac.Reposicao.Detalhe.iniciar();
+                }
+            }
+            else if (pathname.indexOf('/certificacao') >= 0) {
+                if (pathname == '/historico/avaliacao/certificacao') {
+                    siac.Certificacao.Index.iniciar();
+                }
+                else if (/\/historico\/avaliacao\/certificacao\/agendada\/cert[0-9]+$/.test(pathname)) {
+                    siac.Certificacao.Agendada.iniciar();
+                }
+                else if (/\/historico\/avaliacao\/certificacao\/corrigir\/cert[0-9]+$/.test(pathname)) {
+                    siac.Certificacao.Corrigir.iniciar();
+                }
+                else if (/\/historico\/avaliacao\/certificacao\/detalhe\/cert[0-9]+$/.test(pathname)) {
+                    siac.Certificacao.Detalhe.iniciar();
+                }
+                else if (/\/historico\/avaliacao\/certificacao\/detalhe\/cert[0-9]+$/.test(pathname)) {
+                    siac.Certificacao.Detalhe.iniciar();
+                }
+            }
         }
-        else if (pathname == '/historico/questao/gerar') {
-            siac.Questao.Gerar.iniciar();
+        else if (pathname.startsWith('/configuracoes/')) {
+            if (/\/configuracoes\/parametros/.test(pathname)) {
+                siac.Configuracoes.Parametros.iniciar();
+            }
+            else if (pathname.indexOf('/visitante') >= 0) {
+                if (/\/configuracoes\/visitante\/cadastrar$/.test(pathname)) {
+                    siac.Visitante.Cadastrar.iniciar();
+                }
+                else if (/\/configuracoes\/visitante$/.test(pathname)) {
+                    siac.Visitante.Index.iniciar();
+                }
+                else if (/\/configuracoes\/visitante\/detalhe\/vis[0-9]+$/.test(pathname)) {
+                    siac.Visitante.Detalhe.iniciar();
+                }
+            }
         }
-        else if (/\/historico\/questao\/detalhe\/[0-9]+$/.test(pathname)) {
-            siac.Questao.Detalhe.iniciar();
+        else if (pathname.startsWith('/institucional/')) {
+            if (pathname == '/institucional/gerar') {
+                siac.Institucional.Gerar.iniciar();
+            }
+            else if (/\/institucional\/configuracao(|\/indicador|\/categoria|\/modulo)$/.test(pathname)) {
+                siac.Institucional.Configuracao.iniciar();
+            }
+            else if (/\/institucional\/questionario\/avi[0-9]+$/.test(pathname)) {
+                siac.Institucional.Questionario.iniciar();
+            }
+            else if (/\/institucional\/configurar\/avi[0-9]+$/.test(pathname)) {
+                siac.Institucional.Configurar.iniciar();
+            }
+            else if (/\/institucional\/publico\/avi[0-9]+$/.test(pathname)) {
+                siac.Institucional.Publico.iniciar();
+            }
+            else if (/\/institucional\/agendar\/avi[0-9]+$/.test(pathname)) {
+                siac.Institucional.Agendar.iniciar();
+            }
         }
-        else if (/\/historico\/questao\/editar\/[0-9]+$/.test(pathname)) {
-            siac.Questao.Editar.iniciar();
-        }
-        else if (/\/configuracoes\/parametros/.test(pathname)) {
-            siac.Configuracoes.Parametros.iniciar();
-        }
-        else if (pathname == '/historico/autoavaliacao') {
-            siac.Autoavaliacao.Index.iniciar();
-        }
-        else if (/\/historico\/autoavaliacao\/detalhe\/auto[0-9]+$/.test(pathname)) {
-            siac.Autoavaliacao.Detalhe.iniciar();
-        }
-        else if (/\/dashboard\/autoavaliacao\/realizar\/auto[0-9]+$/.test(pathname)) {
-            siac.Autoavaliacao.Realizar.iniciar();
-        }
-        else if (/\/dashboard\/autoavaliacao\/resultado\/auto[0-9]+$/.test(pathname)) {
-            siac.Autoavaliacao.Resultado.iniciar();
-        }
-        else if (pathname == '/dashboard/autoavaliacao/gerar') {
-            siac.Autoavaliacao.Gerar.iniciar();
-        }
-        else if (pathname == '/historico/avaliacao/academica') {
-            siac.Academica.Index.iniciar();
-        }
-        else if (pathname == '/historico/avaliacao/certificacao') {
-            siac.Certificacao.Index.iniciar();
-        }
-        else if (pathname == '/dashboard/avaliacao/academica/gerar') {
-            siac.Academica.Gerar.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/academica\/agendar\/acad[0-9]+$/.test(pathname)) {
-            siac.Academica.Agendar.iniciar();
-        }
-        else if (/\/historico\/avaliacao\/academica\/detalhe\/acad[0-9]+$/.test(pathname)) {
-            siac.Academica.Detalhe.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/academica\/resultado\/acad[0-9]+$/.test(pathname)) {
-            siac.Academica.Resultado.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/academica\/configurar\/acad[0-9]+$/.test(pathname)) {
-            siac.Academica.Configurar.iniciar();
-        }
-        else if (/\/historico\/avaliacao\/academica\/agendada\/acad[0-9]+$/.test(pathname)) {
-            siac.Academica.Agendada.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/academica\/realizar\/acad[0-9]+$/.test(pathname)) {
-            siac.Academica.Realizar.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/academica\/acompanhar\/acad[0-9]+$/.test(pathname)) {
-            siac.Academica.Acompanhar.iniciar();
-        }
-        else if (/\/historico\/avaliacao\/academica\/corrigir\/acad[0-9]+$/.test(pathname)) {
-            siac.Academica.Corrigir.iniciar();
-        }
-        else if (pathname == '/dashboard/avaliacao/certificacao/gerar') {
-            siac.Certificacao.Gerar.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/certificacao\/configurar\/cert[0-9]+$/.test(pathname)) {
-            siac.Certificacao.Configurar.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/certificacao\/agendar\/cert[0-9]+$/.test(pathname)) {
-            siac.Certificacao.Agendar.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/certificacao\/avaliados\/cert[0-9]+$/.test(pathname)) {
-            siac.Certificacao.Avaliados.iniciar();
-        }
-        else if (/\/historico\/avaliacao\/certificacao\/agendada\/cert[0-9]+$/.test(pathname)) {
-            siac.Certificacao.Agendada.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/certificacao\/realizar\/cert[0-9]+$/.test(pathname)) {
-            siac.Certificacao.Realizar.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/certificacao\/acompanhar\/cert[0-9]+$/.test(pathname)) {
-            siac.Certificacao.Acompanhar.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/certificacao\/resultado\/cert[0-9]+$/.test(pathname)) {
-            siac.Certificacao.Resultado.iniciar();
-        }
-        else if (/\/historico\/avaliacao\/certificacao\/corrigir\/cert[0-9]+$/.test(pathname)) {
-            siac.Certificacao.Corrigir.iniciar();
-        }
-        else if (/\/historico\/avaliacao\/certificacao\/detalhe\/cert[0-9]+$/.test(pathname)) {
-            siac.Certificacao.Detalhe.iniciar();
-        }
-        else if (pathname == '/institucional/gerar') {
-            siac.Institucional.Gerar.iniciar();
-        }
-        else if (/\/institucional\/configuracao(|\/indicador|\/categoria|\/modulo)$/.test(pathname)) {
-            siac.Institucional.Configuracao.iniciar();
-        }
-        else if (/\/institucional\/questionario\/avi[0-9]+$/.test(pathname)) {
-            siac.Institucional.Questionario.iniciar();
-        }
-        else if (/\/institucional\/configurar\/avi[0-9]+$/.test(pathname)) {
-            siac.Institucional.Configurar.iniciar();
-        }
-        else if (/\/institucional\/publico\/avi[0-9]+$/.test(pathname)) {
-            siac.Institucional.Publico.iniciar();
-        }
-        else if (/\/institucional\/agendar\/avi[0-9]+$/.test(pathname)) {
-            siac.Institucional.Agendar.iniciar();
-        }
-        else if (/\/historico\/avaliacao\/certificacao\/detalhe\/cert[0-9]+$/.test(pathname)) {
-            siac.Certificacao.Detalhe.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/reposicao\/justificar\/acad[0-9]+$/.test(pathname)) {
-            siac.Reposicao.Justificar.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/reposicao\/configurar\/repo[0-9]+$/.test(pathname)) {
-            siac.Reposicao.Configurar.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/reposicao\/agendar\/repo[0-9]+$/.test(pathname)) {
-            siac.Reposicao.Agendar.iniciar();
-        }
-        else if (pathname == '/historico/avaliacao/reposicao') {
-            siac.Reposicao.Index.iniciar();
-        }
-        else if (/\/historico\/avaliacao\/reposicao\/agendada\/repo[0-9]+$/.test(pathname)) {
-            siac.Reposicao.Agendada.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/reposicao\/realizar\/repo[0-9]+$/.test(pathname)) {
-            siac.Reposicao.Realizar.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/reposicao\/acompanhar\/repo[0-9]+$/.test(pathname)) {
-            siac.Reposicao.Acompanhar.iniciar();
-        }
-        else if (/\/dashboard\/avaliacao\/reposicao\/resultado\/repo[0-9]+$/.test(pathname)) {
-            siac.Reposicao.Resultado.iniciar();
-        }
-        else if (/\/historico\/avaliacao\/reposicao\/corrigir\/repo[0-9]+$/.test(pathname)) {
-            siac.Reposicao.Corrigir.iniciar();
-        }
-        else if (/\/historico\/avaliacao\/reposicao\/detalhe\/repo[0-9]+$/.test(pathname)) {
-            siac.Reposicao.Detalhe.iniciar();
-        }
-        else if (/\/configuracoes\/visitante\/cadastrar/.test(pathname)) {
-            siac.Visitante.Cadastrar.iniciar();
+        else if (pathname.startsWith('/perfil')) {
+            siac.Perfil.iniciar();
         }
     }
 

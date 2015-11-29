@@ -7,7 +7,8 @@ namespace SIAC.Models
 {
     public partial class Professor
     {
-        public Instituicao Instituicao => this.TurmaDiscProfHorario.LastOrDefault()?.Turma.Curso.Diretoria.Campus.Instituicao;
+        public Instituicao Instituicao => this.TurmaDiscProfHorario.OrderBy(t=>t.AnoLetivo).LastOrDefault()?.Turma.Curso.Diretoria.Campus.Instituicao;
+        public Campus Campus => this.TurmaDiscProfHorario.OrderBy(t => t.AnoLetivo).LastOrDefault()?.Turma.Curso.Diretoria.Campus;
 
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
