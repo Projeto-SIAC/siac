@@ -250,8 +250,10 @@ siac.Visitante.Detalhe = (function () {
         $('.ui.validade.modal').modal({
             onApprove: function () {
                 if (verificar()) alterarValidade();
-                else $('.validade.modal .form').addClass('error');
-                return false;
+                else {
+                    $('.validade.modal .form').addClass('error');
+                    return false;
+                }
             }
         });
         $('.ui.checkbox').checkbox();
