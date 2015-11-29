@@ -28,12 +28,12 @@
                     <div class="accordion">
                         @foreach (var categoria in modulo.Categorias)
                         {
-                            <div class="title"><i class="dropdown icon"></i>@categoria.Categoria.Descricao</div>
+                            <div class="title"><i class="dropdown icon"></i>@categoria.Categoria.Descricao <div class="ui right floated icon subir mini button"><i class="arrow up icon"></i></div><div class="ui right floated icon descer mini button"><i class="arrow down icon"></i></div></div>
                             <div class="content" data-categoria="@categoria.Categoria.CodAviCategoria">
                                 <div class="accordion">
                                     @foreach (var indicador in categoria.Indicadores)
                                     {
-                                        <div class="title"><i class="dropdown icon"></i>@indicador.Indicador.Descricao</div>
+                                        <div class="title"><i class="dropdown icon"></i>@indicador.Indicador.Descricao <div class="ui right floated icon subir mini button"><i class="arrow up icon"></i></div><div class="ui right floated icon descer mini button"><i class="arrow down icon"></i></div></div>
                                         <div class="content" data-indicador="@indicador.Indicador.CodAviIndicador">
                                             <div class="accordion">
                                                 @foreach (var questao in indicador.Questoes)
@@ -41,6 +41,7 @@
                                                     <div class="title">
                                                         <i class="dropdown icon"></i>
                                                         @questao.Enunciado.ToShortString(50)
+                                                        <div class="ui right floated icon subir mini button"><i class="arrow up icon"></i></div><div class="ui right floated icon descer mini button"><i class="arrow down icon"></i></div>
                                                     </div>
                                                     <div class="content" data-questao="@questao.CodOrdem">
                                                         <div class="ui segment">

@@ -256,7 +256,7 @@ namespace SIAC.Controllers
             }
             return Json(false);
         }
-        // GET: institucional/configurar
+        // GET: institucional/configurar/{codigo}
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult Configurar(string codigo)
         {
@@ -266,6 +266,24 @@ namespace SIAC.Controllers
 
                 if (avi != null)
                 {
+                    return View(avi);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+        // POST: institucional/configurar/{codigo}
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        public ActionResult Configurar(string codigo,string[] questoes)
+        {
+            if (!String.IsNullOrEmpty(codigo) && questoes.Length > 0)
+            {
+                AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
+
+                if (avi != null)
+                {
+                    avi.OrdenarQuestoes(questoes);
+
                     return View(avi);
                 }
             }

@@ -19,10 +19,11 @@ namespace SIAC.Models
                                                        && q.Semestre == this.Semestre
                                                        && q.CodTipoAvaliacao == this.CodTipoAvaliacao
                                                        && q.NumIdentificador == this.NumIdentificador)
-                                                       .OrderBy(q=>q.CodAviModulo)
-                                                       .ThenBy(q => q.CodAviCategoria)
-                                                       .ThenBy(q => q.CodAviIndicador)
-                                                       .ThenBy(q => q.CodOrdem)
+                                                       .OrderBy(q => q.CodOrdem)
+                                                       //.OrderBy(q=>q.CodAviModulo)
+                                                       //.ThenBy(q => q.CodAviCategoria)
+                                                       //.ThenBy(q => q.CodAviIndicador)
+                                                       //.ThenBy(q => q.CodOrdem)
                                                        .ToList();
 
                 return questoes;
@@ -105,6 +106,61 @@ namespace SIAC.Models
                 return avalAvi;
             }
             return null;
+        }
+
+        public void OrdenarQuestoes(string[] questoes)
+        {
+            List<AviQuestao> aviQuestoes = this.Questoes;
+            List<AviQuestao> aviQuestoesNova = new List<Models.AviQuestao>();
+            if (questoes.Length > 0)
+            {
+                for (int i = 0; i < questoes.Length; i++)
+                {
+                    string[] valores = questoes[i].Split('.');
+
+                    int modulo = int.Parse(valores[0]);
+                    int categoria = int.Parse(valores[1]);
+                    int indicador = int.Parse(valores[2]);
+                    int ordem = int.Parse(valores[3]);
+
+                    AviQuestao questaoAntiga = aviQuestoes.FirstOrDefault(q => q.CodAviModulo == modulo
+                                                                           && q.CodAviCategoria == categoria
+                                                                           && q.CodAviIndicador == indicador
+                                                                           && q.CodOrdem == ordem);
+
+                    if(questaoAntiga != null)
+                    {
+                        AviQuestao questaoNova = questaoAntiga;
+                        List<AviQuestaoAlternativa> alternativas = questaoNova.AviQuestaoAlternativa.ToList();
+                        Models.AviQuestao.Remover(questaoAntiga);
+                        //contexto.AviQuestao.Remove(questaoAntiga); Não funcionou assim '-'
+                        questaoNova.CodOrdem = i + 1;
+                        if(alternativas.Count > 0)
+                        {
+                            foreach (AviQuestaoAlternativa alternativa in alternativas)
+                            {
+                                alternativa.CodOrdem = questaoNova.CodOrdem;
+                                questaoNova.AviQuestaoAlternativa.Add(alternativa);
+                            }
+                        }
+                        aviQuestoesNova.Add(questaoNova);
+                    }
+                }
+
+                if(aviQuestoesNova.Count > 0)
+                {
+                    //this.Questoes.Clear();
+                    //contexto.AviQuestao.RemoveRange(contexto.AviQuestao.Where(aq => aq.Ano == this.Ano
+                    //                           && aq.Semestre == this.Semestre
+                    //                           && aq.CodTipoAvaliacao == this.CodTipoAvaliacao
+                    //                           && aq.NumIdentificador == this.NumIdentificador).ToList());
+
+                    //contexto.AviQuestao.RemoveRange(aviQuestoes);
+                    contexto.AviQuestao.AddRange(aviQuestoesNova);
+
+                    contexto.SaveChanges();
+                }
+            }
         }
     }
 }
