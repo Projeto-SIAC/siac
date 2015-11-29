@@ -268,6 +268,12 @@ siac.Utilitario = siac.Utilitario || (function () {
         return (timeData > timeDataAgora);
     }
 
+    function dataEPassado(strData) {
+        timeDataAgora = new Date().getTime();
+        timeData = Date.parse(strData);
+        return (timeData < timeDataAgora);
+    }
+
     function validarCPF(strCPF) {
         var Soma;
         var Resto;
@@ -364,6 +370,7 @@ siac.Utilitario = siac.Utilitario || (function () {
     return {
         compararData: compararData,
         dataEFuturo: dataEFuturo,
+        dataEPassado: dataEPassado,
         validarCPF: validarCPF
     }
 })();

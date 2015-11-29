@@ -20,7 +20,23 @@
     </div>
 </div>
 
-
+<form class="ui form" method="post" action="@Url.Action("Agendar")">
+    <div class="ui error message">
+        <div class="header">Verifique</div>
+        <ul class="list"></ul>
+    </div>
+    <div class="two fields">
+        <div class="eight wide field required">
+            <label>Data de Ínicio</label>
+            <input id="txtDataInicio" name="txtDataInicio" placeholder="Data de Início" type="date" data-mask="0000-00-00" required />
+        </div>
+        <div class="eight wide field required">
+            <label>Data de Término</label>
+            <input id="txtDataTermino" name="txtDataTermino" placeholder="Data de Término" type="date" data-mask="0000-00-00" required />
+        </div>
+    </div>
+</form>
+<br />
 <div class="ui cancelar button">Cancelar</div>
 <div class="ui special popup">
     <div class='header'>Tem certeza?</div>

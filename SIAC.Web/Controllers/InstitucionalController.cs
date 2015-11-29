@@ -304,7 +304,7 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
-        // GET: institucional/agendar
+        // GET: institucional/agendar/{codigo}
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult Agendar(string codigo)
         {
@@ -314,7 +314,36 @@ namespace SIAC.Controllers
 
                 if (avi != null)
                 {
-                    return View(avi);
+                    if(avi.Questoes.Count > 0)
+                    {
+                        return View(avi);
+                    }
+                    return RedirectToAction("Questionario", new { codigo = codigo });
+                }
+            }
+            return RedirectToAction("Index");
+        }
+        // POST: institucional/agendar/{codigo}
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        public ActionResult Agendar(string codigo,FormCollection form)
+        {
+            if (!String.IsNullOrEmpty(codigo) && !Helpers.StringExt.IsNullOrEmpty(form["txtDataInicio"], form["txtDataTermino"]))
+            {
+                AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
+
+                if (avi != null)
+                {
+                    if (avi.Questoes.Count > 0)
+                    {
+                        avi.Avaliacao.DtAplicacao = DateTime.Parse(form["txtDataInicio"]);
+                        avi.DtTermino = DateTime.Parse(form["txtDataTermino"]);
+
+                        Repositorio.GetInstance().SaveChanges();
+
+                        return RedirectToAction("Historico");
+                    }
+                    return RedirectToAction("Questionario", new { codigo = codigo });
                 }
             }
             return RedirectToAction("Index");

@@ -705,6 +705,50 @@ siac.Institucional.Agendar = (function () {
     function iniciar() {
         _codAvaliacao = window.location.pathname.toLowerCase().match(/avi[0-9]+$/)[0];
         $('.cancelar.button').popup({ on: 'click', inline: true });
+
+        $('.prosseguir.button').click(function () {
+            verificar();
+        });
+    }
+
+    function verificar() {
+        $('form').removeClass('error');
+        $('.error.message .list').html('');
+        var dataInicio = $('#txtDataInicio').val();
+        var dataTermino = $('#txtDataTermino').val();
+        var valido = true;
+
+        if (!$('#txtDataInicio').val()) {
+            $('.error.message .list').append('<li>Preencha a Data de Início</li>');
+            valido = false;
+        }
+        if (!$('#txtDataTermino').val()) {
+            $('.error.message .list').append('<li>Preencha a Data de Término</li>');
+            valido = false;
+        }
+        if (siac.Utilitario.compararData(dataInicio, dataTermino) == 1) {
+            $('.error.message .list').append('<li>A Data de Início não pode ser posterior à Data de Término</li>');
+            valido = false;
+        }
+        else if (siac.Utilitario.dataEPassado(dataInicio)) {
+            $('.error.message .list').append('<li>A Data de Início não pode ser inferior à Data de Hoje</li>');
+            valido = false;
+        }
+
+        if (valido) {
+            prosseguir();
+        }
+        else {
+            $('.form').addClass('error');
+        }
+    }
+
+    function prosseguir() {
+        $('.confirmar.modal').modal({
+            onApprove: function () {
+                $('form').submit();
+            }
+        }).modal('show');
     }
 
     return {
