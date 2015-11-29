@@ -218,6 +218,9 @@
                 siac.Institucional.Agendar.iniciar();
             }
         }
+        else if (pathname.startsWith('/perfil')) {
+            siac.Perfil.iniciar();
+        }
     }
 
     var HTML_MENSAGEM_TEMPLATE = '<div class="ui small mensagem modal">' +

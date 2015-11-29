@@ -100,5 +100,6 @@
       <mvcSiteMapNode title="Público" controller="Institucional" action="Publico" preservedRouteParameters="codigo"/>
       <mvcSiteMapNode title="Agendar" controller="Institucional" action="Agendar" preservedRouteParameters="codigo"/>
     </mvcSiteMapNode>
+    <mvcSiteMapNode title="Perfil" controller="Perfil" action="Index" />
   </mvcSiteMapNode>
 </mvcSiteMap>

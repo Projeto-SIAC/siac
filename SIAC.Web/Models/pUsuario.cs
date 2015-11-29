@@ -8,7 +8,33 @@ namespace SIAC.Models
 {
     public partial class Usuario
     {
-        //private static dbSIACEntities contexto { get { return DataContextSIAC.GetInstance(); } }
+        public Dictionary<Disciplina, double?> DisciplinaMedia
+        {
+            get
+            {
+                Dictionary<Disciplina, double?> retorno = new Dictionary<Disciplina, double?>();
+                List<Disciplina> lstDisciplina = this.PessoaFisica.AvalQuesPessoaResposta.Select(a => a.AvalTemaQuestao.AvaliacaoTema.Tema.Disciplina).Distinct().ToList();
+                for (int i = 0, length = lstDisciplina.Count; i < length; i++)
+                {
+                    retorno.Add(lstDisciplina[i], this.PessoaFisica.AvalQuesPessoaResposta.Where(a=>a.CodDisciplina == lstDisciplina[i].CodDisciplina).Average(a=>a.RespNota));
+                }
+                return retorno;
+            }
+        }
+        public Disciplina MelhorDisciplina
+        {
+            get
+            {
+                return DisciplinaMedia.FirstOrDefault(d => d.Value == DisciplinaMedia.Values.Max()).Key;
+            }
+        }
+        public Disciplina PiorDisciplina
+        {
+            get
+            {
+                return DisciplinaMedia.FirstOrDefault(d => d.Value == DisciplinaMedia.Values.Min()).Key;
+            }
+        }
 
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 

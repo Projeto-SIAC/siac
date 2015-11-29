@@ -258,6 +258,11 @@ namespace SIAC
             }
             return s;
         }
+
+        public static int SemestreAtual(this DateTime dt)
+        {
+            return dt.Month > 6 ? 2 : 1;
+        }
         #endregion
 
         // List<AvaliacaoTema>

@@ -203,6 +203,7 @@
     <Content Include="Scripts\modules\siac.certificacao.min.js">
       <DependentUpon>siac.certificacao.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\modules\siac.perfil.js" />
     <Content Include="Scripts\modules\siac.reposicao.js" />
     <Content Include="Scripts\modules\siac.visitante.js" />
     <Content Include="Scripts\plugins\jquery.address-1.6.min.js" />
@@ -697,6 +698,8 @@
     <Content Include="Views\Visitante\Confirmar.cshtml" />
     <Content Include="Views\Visitante\Partials\_ListaVisitante.cshtml" />
     <Content Include="Views\Visitante\Detalhe.cshtml" />
+    <Content Include="Views\Perfil\Index.cshtml" />
+    <Content Include="Views\Perfil\Partials\_Estatisticas.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -707,7 +710,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\LeroLero\" />
-    <Folder Include="Views\Perfil\" />
     <Folder Include="Views\Tema\" />
   </ItemGroup>
   <ItemGroup>
