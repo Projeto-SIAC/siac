@@ -734,6 +734,7 @@
           <Property Name="NotaUsoReposicao" Type="text" Nullable="false" />
           <Property Name="NotaUsoCertificacao" Type="text" Nullable="false" />
           <Property Name="NotaUsoInstitucional" Type="text" Nullable="false" />
+          <Property Name="CoordenadorAVI" Type="text" Nullable="false" />
         </EntityType>
         <EntityType Name="Pessoa">
           <Key>
@@ -4661,6 +4662,7 @@
           <Property Name="NotaUsoReposicao" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="NotaUsoCertificacao" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="NotaUsoInstitucional" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CoordenadorAVI" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Pessoa">
           <Key>
@@ -6983,6 +6985,7 @@
           <EntitySetMapping Name="Parametro">
             <EntityTypeMapping TypeName="dbSIACModel.Parametro">
               <MappingFragment StoreEntitySet="Parametro">
+                <ScalarProperty Name="CoordenadorAVI" ColumnName="CoordenadorAVI" />
                 <ScalarProperty Name="NotaUsoInstitucional" ColumnName="NotaUsoInstitucional" />
                 <ScalarProperty Name="NotaUsoCertificacao" ColumnName="NotaUsoCertificacao" />
                 <ScalarProperty Name="NotaUsoReposicao" ColumnName="NotaUsoReposicao" />

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SIAC.Models;
+using SIAC.ViewModels;
 using SIAC.Helpers;
 
 namespace SIAC.Controllers
@@ -80,6 +81,18 @@ namespace SIAC.Controllers
             model.Matrizes = MatrizCurricular.ListarOrdenadamente();
             model.Horarios = Horario.ListarOrdenadamente();
 
+            return View(model);
+        }
+
+        public ActionResult Institucional(string tab)
+        {
+            if (String.IsNullOrEmpty(tab))
+            {
+                return RedirectToAction("Institucional", new { tab = "Coordenadores" });
+            }
+            var model = new ConfiguracoesInstitucionalViewModel();
+            model.Ocupacoes = Repositorio.GetInstance().Ocupacao.Where(o=>o.CodOcupacao != 5 && o.CodOcupacao != 6).ToList();
+            model.Coordenadores = Repositorio.GetInstance().Ocupacao.FirstOrDefault(o => o.CodOcupacao == 5)?.PessoaFisica.ToList();
             return View(model);
         }
         

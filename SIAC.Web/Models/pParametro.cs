@@ -8,6 +8,8 @@ namespace SIAC.Models
 {
     public partial class Parametro
     {
+        public int[] OcupacaoCoordenadorAvi => Newtonsoft.Json.JsonConvert.DeserializeObject<int[]>(parametro.CoordenadorAVI).Union(new int[] { 5 }).ToArray();
+
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         private static Parametro parametro;

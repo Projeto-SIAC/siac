@@ -1,0 +1,95 @@
+﻿@model ConfiguracoesInstitucionalViewModel
+
+@{
+    ViewBag.Title = "Coordenadores de Av. Institucional";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="ui stackable grid" style="clear:both">
+    <div class="eight wide column">
+        <div class="ui dividing header">
+            Ocupações
+        </div>
+        <div class="ui form">
+            <div class="grouped fields">
+                @foreach (var ocupacao in Model.Ocupacoes)
+                {
+                    <div class="field">
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" name="chkOcupacao@(ocupacao.CodOcupacao)" @( Parametro.Obter().OcupacaoCoordenadorAvi.Contains(ocupacao.CodOcupacao) ? "checked" : ""  )>
+                            <label>@ocupacao.Descricao</label>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="field">
+                <div class="ui button">Salvar</div>
+            </div>
+        </div>
+    </div>
+    <div class="eight wide column">
+        <div class="ui dividing header">
+            Coordenadores
+        </div> 
+        <div class="ui form">
+            <div class="grouped fields">
+                @foreach (var coordenador in Model.Coordenadores)
+                {
+                    <div class="field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" name="chkCoordenador@(coordenador.CodPessoa)">
+                            <label>@coordenador.PrimeiroNome @coordenador.UltimoNome</label>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="field">
+                <div class="ui disabled button">Remover</div>
+                <div class="ui popup">
+                    <div class="header">
+                        Tem certeza?
+                    </div>
+                    <div class="content">
+                        Confirme sua decisão de remover este usuário da lista de Coordenadores de Av. Institucional.
+                        <br />
+                        <div class="ui small button">Sim, remover</div>
+                    </div>
+                </div>
+                <div class="ui button">Novo</div>
+            </div>
+        </div>         
+    </div>
+</div>
+
+<div class="ui coordenador modal">
+    <i class="close icon"></i>
+    <div class="header">Novo coordenador</div>
+    <div class="content">
+        <div class="ui form">
+            <div class="field">
+                <label for="txtPesquisa">Pesquisa</label>
+                <input type="text" id="txtPesquisa" placeholder="Pesquisar por Nome, Matrícula ou CPF..." />
+            </div>
+            <div class="field">
+                <div class="ui button">Pesquisar</div>
+            </div>
+        </div>
+        <div class="ui list">
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Cancelar</div>
+        <div class="ui approve button">Adicionar</div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/configuracoes")
+}
+
+
+
+
+

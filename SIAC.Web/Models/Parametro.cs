@@ -25,5 +25,6 @@ namespace SIAC.Models
         public string NotaUsoReposicao { get; set; }
         public string NotaUsoCertificacao { get; set; }
         public string NotaUsoInstitucional { get; set; }
+        public string CoordenadorAVI { get; set; }
     }
 }

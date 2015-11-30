@@ -9,6 +9,7 @@ namespace SIAC.Filters
     public class AutenticacaoFilterAttribute : ActionFilterAttribute
     {
         public int[] Categorias { get; set; }
+        public int[] Ocupacoes { get; set; }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -21,6 +22,10 @@ namespace SIAC.Filters
             else if (Categorias != null && !Categorias.Contains(Helpers.Sessao.UsuarioCategoriaCodigo))
             {
                 filterContext.Result = new RedirectResult("~/?continuar="+filterContext.HttpContext.Request.Path);
+            }
+            else if (Ocupacoes != null && !Ocupacoes.ContainsOne(Models.Sistema.UsuarioAtivo[Helpers.Sessao.UsuarioMatricula].Usuario.PessoaFisica.Ocupacao.Select(a=>a.CodOcupacao).ToArray()))
+            {
+                filterContext.Result = new RedirectResult("~/?continuar=" + filterContext.HttpContext.Request.Path);
             }
             else if (Helpers.Sessao.RealizandoAvaliacao)
             {

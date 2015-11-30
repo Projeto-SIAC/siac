@@ -49,22 +49,22 @@
                         </div>
                     </div>
                     <div class="ui vertical fluid secondary menu" style="margin: auto 0">
-                        <a href="@Url.Action("Index", "Dashboard")" class="@(Request.Url.ToString().Contains("dashboard")? "active blue" : "") item">
+                        <a href="@Url.Action("Index", "Dashboard")" class="@(Request.Url.PathAndQuery.ToString().StartsWith("/dashboard")? "active blue" : "") item">
                             <i class="block layout icon"></i><span class="content">Dashboard</span>
                         </a>
-                        <a href="@Url.Action("Index", "Historico")" class="@(Request.Url.ToString().Contains("historico")? "active blue" : "") item">
+                        <a href="@Url.Action("Index", "Historico")" class="@(Request.Url.PathAndQuery.ToString().StartsWith("/historico")? "active blue" : "") item">
                             <i class="time icon"></i><span class="content">Histórico</span>
                         </a>
-                        <a href="@Url.Action("Index", "Institucional")" class="@(Request.Url.ToString().Contains("institucional")? "active blue" : "") item">
+                        <a href="@Url.Action("Index", "Institucional")" class="@(Request.Url.PathAndQuery.ToString().StartsWith("/institucional")? "active blue" : "") item">
                             <i class="file text outline icon"></i><span class="content">Av. Instituicional</span>
                         </a>
-                        <a href="@Url.Action("Index", "Perfil")" class="@(Request.Url.ToString().Contains("perfil")? "active blue" : "") item">
+                        <a href="@Url.Action("Index", "Perfil")" class="@(Request.Url.PathAndQuery.ToString().StartsWith("/perfil")? "active blue" : "") item">
                             <i class="user icon"></i><span class="content">Perfil</span>
                         </a>
 
                         @if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 3)
                         {
-                            <a href="@Url.Action("Index", "Configuracoes")" class="@(Request.Url.ToString().Contains("configuracoes")? "active blue" : "") item">
+                            <a href="@Url.Action("Index", "Configuracoes")" class="@(Request.Url.PathAndQuery.ToString().StartsWith("/configuracoes")? "active blue" : "") item">
                                 <i class="setting icon"></i><span class="content">Configurações</span>
                             </a>
                         }

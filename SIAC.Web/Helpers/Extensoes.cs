@@ -179,6 +179,18 @@ namespace SIAC
         {
             return paraCaixaBaixa(number).ToUpper();
         }
+
+        public static bool ContainsOne(this int[] i, int[] j)
+        {
+            foreach (var k in j)
+            {
+                if (i.Contains(k))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         #endregion
 
         // DateTime
