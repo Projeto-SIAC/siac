@@ -418,7 +418,7 @@ namespace SIAC.Models
             List<Questao> todas = Questao.Listar();
             List<Questao> retorno = new List<Questao>();
             List<string> tags = new List<string>();
-            string tagsReservadas = "ão das do da porque que como isso quais porquê quê por abaixo porém mas a e o as os para cujo quais";
+            string tagsReservadas = "ão das de dos das do da porque que como isso quais porquê quê por abaixo porém mas a e o as os para cujo quais";
 
             for (int i = 0; i < palavraChave.Length; i++)
             {

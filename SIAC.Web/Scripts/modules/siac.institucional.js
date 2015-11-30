@@ -679,11 +679,55 @@ siac.Institucional.Configurar = (function () {
 
 siac.Institucional.Publico = (function () {
     var _codAvaliacao;
+    var _controleAjax;
+    var _results = [];
+    var _content = [];
+    var _result;
     function iniciar() {
         _codAvaliacao = window.location.pathname.toLowerCase().match(/avi[0-9]+$/)[0];
         $('.cancelar.button').popup({ on: 'click', inline: true });
         $('.prosseguir.button').click(function () {
             prosseguir();
+        });
+
+        $('.ui.modal').modal();
+        $('.ui.dropdown').dropdown();
+
+        //$('.ui.continuar.modal').modal({ closable: false }).modal('show');
+        
+        $('#ddlFiltro').change(function () {
+            filtrar($(this).val());
+        });
+
+        $('.ui.search').search();
+
+        $('.ui.accordion').accordion({
+            animateChildren: false
+        });
+
+        $('.selecionar.button').click(function () {
+            selecionar();
+        });
+
+        //$('.cancelar.button').popup({ inline: true, on: 'click' });
+
+        //$('.ui.confirmar.modal').modal({
+        //    onApprove: function () {
+        //        salvar();
+        //    }
+        //});
+
+        //$('.informacoes.button').click(function () {
+        //    $('.informacoes.modal').modal('show');
+        //});
+
+        $('.salvar.button').click(function () {
+            if (!_results || _results.length <= 0) {
+                siac.aviso('Você ainda não selecionou os avaliados ou grupos.', 'red', 'warning sign');
+            }
+            else {
+                confirmar();
+            }
         });
     }
 
@@ -693,6 +737,132 @@ siac.Institucional.Publico = (function () {
                 window.location.href = '/institucional/agendar/' + _codAvaliacao;
             }
         }).modal('show');
+    }
+
+    function filtrar(filtro) {
+        if (_controleAjax && _controleAjax.readyState != 4) {
+            _controleAjax.abort();
+        }
+
+        $buscar = $('.ui.search');
+
+        $buscar.addClass('loading');
+
+        _controleAjax = $.ajax({
+            type: 'POST',
+            url: '/institucional/FiltrarPublico/' + filtro,
+            success: function (data) {
+                _content = data;
+                $buscar
+                  .search({
+                      source: _content,
+                      onSelect: function onSelect(result, response) {
+                          _result = result;
+                          $('.selecionar.button').removeClass('disabled');
+                      },
+                      minCharacters: 3
+                  })
+                ;
+                $buscar.find('input').val('');
+            },
+            error: function () {
+                siac.mensagem('Um erro ocorreu.');
+            },
+            complete: function () {
+                $('.selecionar.button').addClass('disabled');
+                $buscar.removeClass('loading');
+            }
+        });
+    }
+
+    function selecionar() {
+        $buscar = $('.ui.search');
+        $buscar.find('input').val('');
+        if (_result) {
+            var flagSelecionado = false;
+            for (var i = 0, length = _results.length; i < length; i++) {
+                if (_results[i].id == _result.id) {
+                    flagSelecionado = true;
+                    siac.aviso(_result.title + ' já foi selecionado!');
+                }
+            }
+
+            if (!flagSelecionado) {
+                _results.push(_result);
+
+                $tbody = $('table.selecionados > tbody');
+                $tbody
+                    .append($('<tr data-selecionado="' + _result.id + '"></tr>')
+                        .append($('<td></td>')
+                            .text(_result.title)
+                        )
+                        .append($('<td></td>')
+                            .append($('<a class="ui label"></a>')
+                                .text(_result.category)
+                            )
+
+                        )
+                        .append($('<td></td>')
+                            .append($('<div class="ui small icon remover button"></div>')
+                                .html('<i class="remove icon"></i> Remover')
+                            )
+                        )
+                    )
+                ;
+            }
+
+            _result = null;
+        }
+
+        $('.remover.button').off().click(function () {
+            remover($(this));
+        });
+
+        $('.selecionar.button').addClass('disabled');
+    }
+
+    function remover($this) {
+        var $tr = $this.parents('tr');
+        var id = $tr.data('selecionado');
+        $tr.remove();
+        var _tempResults = _results;
+        _results = [];
+        for (var i = 0, length = _tempResults.length; i < length; i++) {
+            if (_tempResults[i].id != id) {
+                _results.push(_tempResults[i]);
+            }
+        }
+    }
+
+    function confirmar() {
+        var $table = $('table.selecionados').clone();
+
+        $table.removeClass('selecionados');
+        $table.find('.button').remove();
+
+        var $model = $('.confirmar.modal');
+        $model.find('.content').html($table);
+
+        $model.modal('show');
+    }
+
+    function salvar() {
+        $('.ui.global.loader').parent().dimmer('show');
+
+        $.ajax({
+            type: 'post',
+            url: window.location.pathname,
+            data: {
+                selecao: _results
+            },
+            success: function (url) {
+                window.location.href = url;
+            },
+            error: function () {
+                siac.mensagem('Ocorreu um erro ao tentar conectar com o Servidor.');
+                $('.ui.global.loader').parent().dimmer('hide');
+            }
+        });
     }
 
     return {

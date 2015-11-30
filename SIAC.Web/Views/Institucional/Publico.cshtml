@@ -21,6 +21,55 @@
 </div>
 
 
+<div class="ui segment">
+    <div class="ui form">
+        <div class="fields">
+            <div class="four wide field">
+                <label>Filtro</label>
+                <select id="ddlFiltro" name="ddlFiltro" class="ui dropdown">
+                    <option value="">Filtro</option>
+                    <option value="1">Pessoa</option>
+                    <option value="2">Turma</option>
+                    <option value="3">Curso</option>
+                    <option value="4">Diretoria</option>
+                    <option value="5">Campus</option>
+                    <option value="6">Pró-Reitoria</option>
+                    <option value="7">Reitoria</option>
+                    <option value="8">Instituição</option>
+                </select>
+            </div>
+            <div class="twelve wide field">
+                <label>Buscar</label>
+                <div class="ui search">
+                    <div class="ui icon input">
+                        <input class="prompt" type="text" placeholder="Buscar...">
+                        <i class="search icon"></i>
+                    </div>
+                    <div class="results"></div>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <div class="ui right floated disabled selecionar button">Selecionar</div>
+        </div>
+        <br />
+    </div>
+</div>
+
+<div class="ui basic segment">
+    <table class="ui selecionados table">
+        <thead>
+            <tr>
+                <th>Selecionados</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
 <div class="ui cancelar button">Cancelar</div>
 <div class="ui special popup">
     <div class='header'>Tem certeza?</div>

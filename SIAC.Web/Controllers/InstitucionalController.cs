@@ -348,5 +348,94 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        // POST: Institucional/FiltrarPublico/AVI201520001
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        public ActionResult FiltrarPublico(int codigo)
+        {
+            object lstResultado = null;
+
+            switch (codigo)
+            {
+                case 1:
+                    lstResultado = Usuario.Listar().Select(a => new Selecao
+                    {
+                        id = a.CodPessoaFisica.ToString(),
+                        description = a.Matricula,
+                        title = a.PessoaFisica.Nome,
+                        category = "Pessoa"
+                    });
+                    break;
+                case 2:
+                    lstResultado = Turma.ListarOrdenadamente().Select(a => new Selecao
+                    {
+                        id = a.CodTurma,
+                        description = a.CodTurma,
+                        title = $"{a.Curso.Descricao} ({a.CodTurma})",
+                        category = "Turma"
+                    });
+                    break;
+                case 3:
+                    lstResultado = Curso.ListarOrdenadamente().Select(a => new Selecao
+                    {
+                        id = a.CodCurso.ToString(),
+                        description = a.Sigla,
+                        title = a.Descricao,
+                        category = "Curso"
+                    });
+                    break;
+                case 4:
+                    lstResultado = Diretoria.ListarOrdenadamente().Select(a => new Selecao
+                    {
+                        id = a.CodComposto,
+                        description = $"{a.Campus.PessoaJuridica.NomeFantasia} ({a.Campus.Instituicao.Sigla})",
+                        title = a.PessoaJuridica.NomeFantasia,
+                        category = "Diretoria"
+                    });
+                    break;
+                case 5:
+                    lstResultado = Campus.ListarOrdenadamente().Select(a => new Selecao
+                    {
+                        id = a.CodComposto,
+                        description = a.Instituicao.PessoaJuridica.NomeFantasia,
+                        title = a.PessoaJuridica.NomeFantasia,
+                        category = "Campus"
+                    });
+                    break;
+                case 6:
+                    lstResultado = ProReitoria.ListarOrdenadamente().Select(a => new Selecao
+                    {
+                        id = a.CodComposto,
+                        description = a.Instituicao.PessoaJuridica.NomeFantasia,
+                        title = a.PessoaJuridica.NomeFantasia,
+                        category = "Pró-Reitoria"
+                    });
+                    break;
+                case 7:
+                    lstResultado = Reitoria.ListarOrdenadamente().Select(a => new Selecao
+                    {
+                        id = a.CodComposto,
+                        description = a.Instituicao.PessoaJuridica.NomeFantasia,
+                        title = a.PessoaJuridica.NomeFantasia,
+                        category = "Reitoria"
+                    });
+                    break;
+                case 8:
+                    lstResultado = Instituicao.ListarOrdenadamente().Select(a => new Selecao
+                    {
+                        id = a.CodInstituicao.ToString(),
+                        description = a.PessoaJuridica.NomeFantasia,
+                        title = a.Sigla,
+                        category = "Instituição"
+                    });
+                    break;
+
+                default:
+                    break;
+            }
+
+            return Json(lstResultado);
+        }
     }
 }
