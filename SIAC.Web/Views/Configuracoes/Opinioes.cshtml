@@ -1,0 +1,61 @@
+﻿
+@model string
+
+@{
+    ViewBag.Title = "Opiniões";
+}
+
+@section Scripts { @Scripts.Render("~/bundles/js/configuracoes") }
+
+<h2>@ViewBag.Title</h2>
+
+<div class="ui opiniao modal">
+    <i class="close icon"></i>
+    <div class="header"></div>
+    <div class="content"></div>
+    <div class="actions">
+        <div class="ui cancel button">Fechar</div>
+    </div>
+</div>
+
+<div class="ui stackable grid" style="clear:both">
+    <div class="sixteen wide column">
+        <div class="ui fluid icon pesquisa input">
+            <input type="text" placeholder="Pesquisar..." value="@Model" />
+            <i class="search icon"></i>
+        </div>
+    </div>
+    <div class="sixteen wide column">
+        <div class="ui text menu" style="margin-bottom:0">
+            <div class="header item">Ordenar</div>
+            <a class="active ordenar item" data-ordenar="data_desc">
+                Mais recentes
+            </a>
+            <a class="ordenar item" data-ordenar="data">
+                Mais antigos
+            </a>
+        </div>
+    </div>
+    <div class="sixteen wide column">
+        <div class="ui basic segment">
+            <table class="ui table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Usuário</th>
+                        <th>Opinião</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                    <tr>
+                        <td><a class="ui carregar button">Carregar mais</a></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="ui right floated icon button topo"><i class="icon angle up"></i></div>
+    </div>
+</div>
+

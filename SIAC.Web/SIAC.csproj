@@ -700,6 +700,8 @@
     <Content Include="Views\Visitante\Detalhe.cshtml" />
     <Content Include="Views\Perfil\Index.cshtml" />
     <Content Include="Views\Perfil\Partials\_Estatisticas.cshtml" />
+    <Content Include="Views\Configuracoes\Opinioes.cshtml" />
+    <Content Include="Views\Configuracoes\Partials\_ListaOpinioes.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

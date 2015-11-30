@@ -102,3 +102,114 @@ siac.Configuracoes.Parametros = (function () {
         iniciar: iniciar
     }
 })();
+
+siac.Configuracoes.Opinioes = (function () {
+    var _controleTimeout, _controlePartial, _controleQte = 10, _controleAjax;
+
+    var pagina = 1;
+    var ordenar = "data_desc";
+    var pesquisa = "";
+
+    function iniciar() {
+        $('.ui.dropdown').dropdown();
+        $('.ui.modal').modal();
+
+        $('.pesquisa input').keyup(function () {
+            var _this = this;
+            if (_controleTimeout) {
+                clearTimeout(_controleTimeout);
+            }
+            _controleTimeout = setTimeout(function () {
+                pesquisa = _this.value;
+                pagina = 1;
+                listar();
+            }, 500);
+        });
+
+        $('.button.topo').click(function () {
+            topo();
+        });
+
+        $('.ordenar.item').click(function () {
+            var $_this = $(this);
+            pagina = 1;
+            ordenar = $_this.attr('data-ordenar');
+            listar();
+
+            $('.ordenar.item').removeClass('active');
+            $_this.addClass('active');
+        });
+
+        $('.carregar.button').click(function () {
+            if ($('.table .tbody .tr').length == (_controleQte * pagina)) {
+                pagina++;
+                listar();
+            }
+        });
+
+        pesquisa = $('.pesquisa input').val();
+
+        listar();
+    };
+
+    function listar() {
+        if (_controleAjax && _controleAjax.readyState != 4) {
+            _controleAjax.abort();
+        }
+        $table = $('.ui.table');
+        $table.parent().addClass('loading');
+        _controleAjax = $.ajax({
+            url: '/configuracoes/listaropinioes',
+            data: {
+                pagina: pagina,
+                ordenar: ordenar,
+                pesquisa: pesquisa
+            },
+            method: 'POST',
+            success: function (partial) {
+                if (partial != _controlePartial) {
+                    if (pagina == 1) {
+                        $table.find('tbody').html(partial);
+                    }
+                    else {
+                        $table.find('tbody').append(partial);
+                    }
+                    _controlePartial = partial;
+                }
+            },
+            complete: function () {
+                $table.parent().removeClass('loading');
+                if ($('.table .tbody .tr').length < (_controleQte * pagina)) {
+                    $('.carregar.button').parents('tfoot').remove();
+                }
+                $('.table tbody .button').off().click(function () {
+                    var $this = $(this);
+                    var $tr = $this.parents('tr');
+                    var usuario = $tr.find('[data-usuario]').data('usuario');
+                    var matricula = $tr.find('[data-matricula]').data('matricula');
+                    var opiniao = $tr.find('[data-opiniao]').data('opiniao');
+                    var date = $tr.find('time').attr('title');
+
+                    var $modal = $('.opiniao.modal');
+
+                    $modal.find('.header').text(usuario + ' (' + matricula + ')');
+                    $modal.find('.content').html($('<blockquote></blockquote>').html(opiniao));
+                    $modal.find('.content').append($('<i/>').text('– ' + date+'.'));
+
+                    $modal.modal('show');
+                });
+            }
+        });
+    }
+
+    function topo() {
+        $("html, body").animate({
+            scrollTop: 0
+        }, 500);
+        return false;
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();
