@@ -197,6 +197,9 @@
                     siac.Visitante.Detalhe.iniciar();
                 }
             }
+            else if (/\/configuracoes\/opinioes/.test(pathname)) {
+                siac.Configuracoes.Opinioes.iniciar();
+            }
         }
         else if (pathname.startsWith('/institucional/')) {
             if (pathname == '/institucional/gerar') {

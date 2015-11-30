@@ -1,0 +1,22 @@
+﻿@model List<UsuarioOpiniao>
+@foreach (var opiniao in Model)
+{
+    <tr>
+        <td>
+            <time datetime="@(opiniao.DtEnvio?.ToString())" title="@(opiniao.DtEnvio?.ToBrazilianString())">
+                @(opiniao.DtEnvio?.ToElapsedTimeString())
+            </time>
+        </td>
+        <td data-usuario="@opiniao.Usuario.PessoaFisica.Nome" data-matricula="@opiniao.Matricula">
+            @opiniao.Usuario.PessoaFisica.PrimeiroNome
+        </td>
+        <td data-opiniao="@(opiniao.Opiniao.ToHtml("p"))">
+            @opiniao.Opiniao.ToShortString(50)
+        </td>
+        <td>
+            <div class="ui small button">
+                Abrir
+            </div>
+        </td>
+    </tr>
+}

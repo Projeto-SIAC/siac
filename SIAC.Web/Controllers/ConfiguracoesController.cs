@@ -11,10 +11,52 @@ namespace SIAC.Controllers
     [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
     public class ConfiguracoesController : Controller
     {
+        public List<UsuarioOpiniao> opinioes
+        {
+            get
+            {
+                return Repositorio.GetInstance().UsuarioOpiniao.ToList();
+            }
+        }
+
         // GET: /Configuracoes
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult Opinioes(string tab)
+        {
+            return View((object)tab);
+        }
+
+        [HttpPost]
+        public ActionResult ListarOpinioes(int? pagina, string pesquisa, string ordenar)
+        {
+            var qte = 10;
+            var lstOpinioes = opinioes;
+            pagina = pagina ?? 1;
+
+            if (!String.IsNullOrWhiteSpace(pesquisa))
+            {
+                string strPesquisa = pesquisa.Trim().ToLower();
+                lstOpinioes = lstOpinioes.Where(q => q.Usuario.Matricula.ToLower().Contains(strPesquisa) || q.Usuario.PessoaFisica.Nome.ToLower().Contains(strPesquisa) || q.Opiniao.ToLower().Contains(strPesquisa)).ToList();
+            }
+
+            switch (ordenar)
+            {
+                case "data_desc":
+                    lstOpinioes = lstOpinioes.OrderByDescending(q => q.DtEnvio).ToList();
+                    break;
+                case "data":
+                    lstOpinioes = lstOpinioes.OrderBy(q => q.DtEnvio).ToList();
+                    break;
+                default:
+                    lstOpinioes = lstOpinioes.OrderByDescending(q => q.DtEnvio).ToList();
+                    break;
+            }
+
+            return PartialView("_ListaOpinioes", lstOpinioes.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
         }
 
         public ActionResult Parametros()
