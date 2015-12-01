@@ -686,6 +686,21 @@ siac.Institucional.Publico = (function () {
     function iniciar() {
         _codAvaliacao = window.location.pathname.toLowerCase().match(/avi[0-9]+$/)[0];
         $('.cancelar.button').popup({ on: 'click', inline: true });
+        $('.ui.modal').modal();
+        $('.ui.dropdown').dropdown();
+        $('.ui.search').search();
+        $('.ui.accordion').accordion({
+            animateChildren: false
+        });
+        
+        $('#ddlFiltro').change(function () {
+            filtrar($(this).val());
+        });
+
+        $('.selecionar.button').click(function () {
+            selecionar();
+        });
+
         $('.prosseguir.button').click(function () {
             if (!_results || _results.length <= 0) {
                 siac.aviso('Você ainda não selecionou os avaliados ou grupos.', 'red', 'warning sign');
@@ -694,24 +709,6 @@ siac.Institucional.Publico = (function () {
                 prosseguir();
             }
         });
-
-        $('.ui.modal').modal();
-        $('.ui.dropdown').dropdown();
-        
-        $('#ddlFiltro').change(function () {
-            filtrar($(this).val());
-        });
-
-        $('.ui.search').search();
-
-        $('.ui.accordion').accordion({
-            animateChildren: false
-        });
-
-        $('.selecionar.button').click(function () {
-            selecionar();
-        });
-
         //$('.salvar.button').click(function () {
         //    if (!_results || _results.length <= 0) {
         //        siac.aviso('Você ainda não selecionou os avaliados ou grupos.', 'red', 'warning sign');

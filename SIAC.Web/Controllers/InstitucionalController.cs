@@ -448,35 +448,7 @@ namespace SIAC.Controllers
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
                 if (avi.Colaborador.MatrColaborador == Helpers.Sessao.UsuarioMatricula)
                 {
-                    //cert.PessoaFisica.Clear();
-                    //List<PessoaFisica> lstPessoaFisica = new List<PessoaFisica>();
-
-                    //foreach (var item in selecao)
-                    //{
-                    //    switch (item.category)
-                    //    {
-                    //        case "Pessoa":
-                    //            lstPessoaFisica.Add(PessoaFisica.ListarPorCodigo(int.Parse(item.id)));
-                    //            break;
-                    //        case "Turma":
-                    //            lstPessoaFisica.AddRange(PessoaFisica.ListarPorTurma(item.id));
-                    //            break;
-                    //        case "Curso":
-                    //            lstPessoaFisica.AddRange(PessoaFisica.ListarPorCurso(int.Parse(item.id)));
-                    //            break;
-                    //        case "Diretoria":
-                    //            lstPessoaFisica.AddRange(PessoaFisica.ListarPorDiretoria(item.id));
-                    //            break;
-                    //        case "Campus":
-                    //            lstPessoaFisica.AddRange(PessoaFisica.ListarPorCampus(item.id));
-                    //            break;
-                    //        default:
-                    //            break;
-                    //    }
-                    //}
-
-                    //cert.PessoaFisica = lstPessoaFisica.Distinct().ToList();
-                    //Repositorio.GetInstance().SaveChanges();
+                    avi.InserirPublico(selecao);
                 }
             }
             return Json("/institucional/agendar/" + codigo);

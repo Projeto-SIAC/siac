@@ -165,29 +165,87 @@ namespace SIAC.Models
 
         public void InserirPublico(List<Selecao> publico)
         {
+            int ordem = 1;
             foreach (var item in publico)
             {
-                //switch (item.category)
-                //{
-                //    case "Pessoa":
-                //        lstPessoaFisica.Add(PessoaFisica.ListarPorCodigo(int.Parse(item.id)));
-                //        break;
-                //    case "Turma":
-                //        lstPessoaFisica.AddRange(PessoaFisica.ListarPorTurma(item.id));
-                //        break;
-                //    case "Curso":
-                //        lstPessoaFisica.AddRange(PessoaFisica.ListarPorCurso(int.Parse(item.id)));
-                //        break;
-                //    case "Diretoria":
-                //        lstPessoaFisica.AddRange(PessoaFisica.ListarPorDiretoria(item.id));
-                //        break;
-                //    case "Campus":
-                //        lstPessoaFisica.AddRange(PessoaFisica.ListarPorCampus(item.id));
-                //        break;
-                //    default:
-                //        break;
-                //}
+                switch (item.category)
+                {
+                    case "Pessoa":
+                        AviPublico pessoa = new AviPublico {
+                            CodAviTipoPublico = 8,
+                            CodOrdem = ordem,
+                            PessoaFisica = PessoaFisica.ListarPorCodigo(int.Parse(item.id))
+                        };
+                        this.AviPublico.Add(pessoa);
+                        break;
+                    case "Turma":
+                        AviPublico turma = new AviPublico {
+                            CodAviTipoPublico = 7,
+                            CodOrdem = ordem,
+                            Turma = Turma.ListarPorCodigo(item.id)
+                        };
+                        this.AviPublico.Add(turma);
+                        break;
+                    case "Curso":
+                        AviPublico curso = new AviPublico
+                        {
+                            CodAviTipoPublico = 6,
+                            CodOrdem = ordem,
+                            Curso = Curso.ListarPorCodigo(int.Parse(item.id))
+                        };
+                        this.AviPublico.Add(curso);
+                        break;
+                    case "Diretoria":
+                        AviPublico diretoria = new AviPublico
+                        {
+                            CodAviTipoPublico = 5,
+                            CodOrdem = ordem,
+                            Diretoria = Diretoria.ListarPorCodigo(item.id)
+                        };
+                        this.AviPublico.Add(diretoria);
+                        break;
+                    case "Campus":
+                        AviPublico campus = new AviPublico
+                        {
+                            CodAviTipoPublico = 4,
+                            CodOrdem = ordem,
+                            Campus = Campus.ListarPorCodigo(item.id)
+                        };
+                        this.AviPublico.Add(campus);
+                        break;
+                    case "Pró-Reitoria":
+                        AviPublico proReitoria = new AviPublico
+                        {
+                            CodAviTipoPublico = 3,
+                            CodOrdem = ordem,
+                            ProReitoria = ProReitoria.ListarPorCodigo(item.id)
+                        };
+                        this.AviPublico.Add(proReitoria);
+                        break;
+                    case "Reitoria":
+                        AviPublico reitoria = new AviPublico
+                        {
+                            CodAviTipoPublico = 2,
+                            CodOrdem = ordem,
+                            Reitoria = Reitoria.ListarPorCodigo(item.id)
+                        };
+                        this.AviPublico.Add(reitoria);
+                        break;
+                    case "Instituição":
+                        AviPublico instituicao = new AviPublico
+                        {
+                            CodAviTipoPublico = 1,
+                            CodOrdem = ordem,
+                            Instituicao = Instituicao.ListarPorCodigo(int.Parse(item.id))
+                        };
+                        this.AviPublico.Add(instituicao);
+                        break;
+                    default:
+                        break;
+                }
+                ordem++;
             }
+            contexto.SaveChanges();
         }
     }
 }
