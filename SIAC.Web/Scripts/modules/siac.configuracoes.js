@@ -20,7 +20,7 @@ siac.Configuracoes.Parametros = (function () {
         });
 
         $('form input[type="submit"]').click(function () {
-            cadastrar('#'+$(this).parents('form').attr('id'));
+            cadastrar('#' + $(this).parents('form').attr('id'));
         });
 
         $('.adicionar.disciplina').click(function () {
@@ -81,7 +81,7 @@ siac.Configuracoes.Parametros = (function () {
         $('.ui.dropdown').dropdown();
         MatrizCount++;
     }
-    
+
     function adicionarHorario() {
         var horario = $('[name="txtHorario1"').clone();
         var inicio = $('[name="txtInicio1"').clone();
@@ -194,7 +194,7 @@ siac.Configuracoes.Opinioes = (function () {
 
                     $modal.find('.header').text(usuario + ' (' + matricula + ')');
                     $modal.find('.content').html($('<blockquote></blockquote>').html(opiniao));
-                    $modal.find('.content').append($('<i/>').text('– ' + date+'.'));
+                    $modal.find('.content').append($('<i/>').text('– ' + date + '.'));
 
                     $modal.modal('show');
                 });
@@ -212,4 +212,43 @@ siac.Configuracoes.Opinioes = (function () {
     return {
         iniciar: iniciar
     }
+})();
+
+siac.Configuracoes.Institucional = (function () {
+    function iniciar() {
+        $('.ui.checkbox').checkbox();
+        $('[name^=chkOcupacao]').change(function () {
+            $('.salvar.button').removeClass('active').text('Salvar');
+        });
+        $('.salvar.button').click(function () {
+            alterarOcupacoesCoordenadores();
+        });
+    }
+
+    function alterarOcupacoesCoordenadores() {
+        var $btnSalvar = $('.salvar.button');
+        $btnSalvar.addClass('loading');
+        var arrOcupacoes = [];
+        var $chkOcupacao = $('[name^=chkOcupacao]');
+
+        for (var i = 0, length = $chkOcupacao.length; i < length; i++) {
+            if ($chkOcupacao.eq(i).is(':checked')) {
+                var codOcupacao = $chkOcupacao.eq(i).attr('name').split('chkOcupacao')[1];
+                arrOcupacoes.push(parseInt(codOcupacao));
+            }
+        }
+
+        $.ajax({
+            url: '/configuracoes/alterarocupacoescoordenadores',
+            type: 'post',
+            data: {
+                ocupacoes: arrOcupacoes
+            },
+            success: function () { $btnSalvar.removeClass('loading'); },
+            error: function () { $btnSalvar.removeClass('loading'); },
+            complete: function () { $btnSalvar.addClass('active').text('Salvo'); }
+        });
+    }
+
+    return { iniciar: iniciar }
 })();

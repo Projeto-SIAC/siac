@@ -7,6 +7,9 @@ namespace SIAC.Models
 {
     public class Sistema
     {
+        public const int CodOcupacaoCoordenadorAvi = 5;
+        public const int CodOcupacaoAdministradorSIAC = 6;
+
         public static Dictionary<string, UsuarioAcesso> UsuarioAtivo = new Dictionary<string, UsuarioAcesso>();
         public static Dictionary<int, int> NumIdentificador = new Dictionary<int, int>();
         public static List<string> AlertarMudanca = new List<string>();

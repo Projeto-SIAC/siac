@@ -200,6 +200,9 @@
             else if (/\/configuracoes\/opinioes/.test(pathname)) {
                 siac.Configuracoes.Opinioes.iniciar();
             }
+            else if (/\/configuracoes\/institucional\/coordenadores/.test(pathname)) {
+                siac.Configuracoes.Institucional.iniciar();
+            }
         }
         else if (pathname.startsWith('/institucional/')) {
             if (pathname == '/institucional/gerar') {

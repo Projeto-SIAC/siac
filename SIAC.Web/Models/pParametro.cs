@@ -8,7 +8,7 @@ namespace SIAC.Models
 {
     public partial class Parametro
     {
-        public int[] OcupacaoCoordenadorAvi => Newtonsoft.Json.JsonConvert.DeserializeObject<int[]>(parametro.CoordenadorAVI).Union(new int[] { 5 }).ToArray();
+        public int[] OcupacaoCoordenadorAvi => Newtonsoft.Json.JsonConvert.DeserializeObject<int[]>(parametro.CoordenadorAVI).Union(new int[] { Sistema.CodOcupacaoCoordenadorAvi }).ToArray();
 
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
@@ -43,6 +43,13 @@ namespace SIAC.Models
             temp.NotaUsoInstitucional = parametro.NotaUsoInstitucional.Trim();
             temp.NotaUsoReposicao = parametro.NotaUsoReposicao.Trim();
 
+            contexto.SaveChanges();
+        }
+
+        public static void AtualizarOcupacoesCoordenadores(int[] ocupacoes)
+        {
+            parametro.CoordenadorAVI = Newtonsoft.Json.JsonConvert.SerializeObject(ocupacoes);
+            contexto.Parametro.FirstOrDefault().CoordenadorAVI = parametro.CoordenadorAVI;
             contexto.SaveChanges();
         }
 

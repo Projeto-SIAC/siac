@@ -86,14 +86,19 @@ namespace SIAC.Controllers
 
         public ActionResult Institucional(string tab)
         {
-            if (String.IsNullOrEmpty(tab))
+            if (String.IsNullOrEmpty(tab) || tab.ToLower() != "coordenadores")
             {
                 return RedirectToAction("Institucional", new { tab = "Coordenadores" });
             }
             var model = new ConfiguracoesInstitucionalViewModel();
-            model.Ocupacoes = Repositorio.GetInstance().Ocupacao.Where(o=>o.CodOcupacao != 5 && o.CodOcupacao != 6).ToList();
-            model.Coordenadores = Repositorio.GetInstance().Ocupacao.FirstOrDefault(o => o.CodOcupacao == 5)?.PessoaFisica.ToList();
+            model.Ocupacoes = Repositorio.GetInstance().Ocupacao.Where(o=>o.CodOcupacao != Sistema.CodOcupacaoCoordenadorAvi && o.CodOcupacao != Sistema.CodOcupacaoAdministradorSIAC).ToList();
+            model.Coordenadores = Repositorio.GetInstance().Ocupacao.FirstOrDefault(o => o.CodOcupacao == Sistema.CodOcupacaoCoordenadorAvi)?.PessoaFisica.ToList();
             return View(model);
+        }
+
+        public void AlterarOcupacoesCoordenadores(int[] ocupacoes)
+        {
+            Parametro.AtualizarOcupacoesCoordenadores(ocupacoes);
         }
         
         [HttpPost]
