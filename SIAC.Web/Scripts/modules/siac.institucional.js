@@ -687,13 +687,16 @@ siac.Institucional.Publico = (function () {
         _codAvaliacao = window.location.pathname.toLowerCase().match(/avi[0-9]+$/)[0];
         $('.cancelar.button').popup({ on: 'click', inline: true });
         $('.prosseguir.button').click(function () {
-            prosseguir();
+            if (!_results || _results.length <= 0) {
+                siac.aviso('Você ainda não selecionou os avaliados ou grupos.', 'red', 'warning sign');
+            }
+            else {
+                prosseguir();
+            }
         });
 
         $('.ui.modal').modal();
         $('.ui.dropdown').dropdown();
-
-        //$('.ui.continuar.modal').modal({ closable: false }).modal('show');
         
         $('#ddlFiltro').change(function () {
             filtrar($(this).val());
@@ -709,32 +712,21 @@ siac.Institucional.Publico = (function () {
             selecionar();
         });
 
-        //$('.cancelar.button').popup({ inline: true, on: 'click' });
-
-        //$('.ui.confirmar.modal').modal({
-        //    onApprove: function () {
-        //        salvar();
+        //$('.salvar.button').click(function () {
+        //    if (!_results || _results.length <= 0) {
+        //        siac.aviso('Você ainda não selecionou os avaliados ou grupos.', 'red', 'warning sign');
+        //    }
+        //    else {
+        //        confirmar();
         //    }
         //});
-
-        //$('.informacoes.button').click(function () {
-        //    $('.informacoes.modal').modal('show');
-        //});
-
-        $('.salvar.button').click(function () {
-            if (!_results || _results.length <= 0) {
-                siac.aviso('Você ainda não selecionou os avaliados ou grupos.', 'red', 'warning sign');
-            }
-            else {
-                confirmar();
-            }
-        });
     }
 
     function prosseguir() {
         $('.basic.confirmar.modal').modal({
             onApprove: function () {
-                window.location.href = '/institucional/agendar/' + _codAvaliacao;
+                //window.location.href = '/institucional/agendar/' + _codAvaliacao;
+                salvar();
             }
         }).modal('show');
     }
@@ -851,7 +843,7 @@ siac.Institucional.Publico = (function () {
 
         $.ajax({
             type: 'post',
-            url: window.location.pathname,
+            url: '/institucional/SalvarPublico/'+_codAvaliacao,
             data: {
                 selecao: _results
             },

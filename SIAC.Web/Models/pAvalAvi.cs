@@ -162,5 +162,32 @@ namespace SIAC.Models
                 }
             }
         }
+
+        public void InserirPublico(List<Selecao> publico)
+        {
+            foreach (var item in publico)
+            {
+                //switch (item.category)
+                //{
+                //    case "Pessoa":
+                //        lstPessoaFisica.Add(PessoaFisica.ListarPorCodigo(int.Parse(item.id)));
+                //        break;
+                //    case "Turma":
+                //        lstPessoaFisica.AddRange(PessoaFisica.ListarPorTurma(item.id));
+                //        break;
+                //    case "Curso":
+                //        lstPessoaFisica.AddRange(PessoaFisica.ListarPorCurso(int.Parse(item.id)));
+                //        break;
+                //    case "Diretoria":
+                //        lstPessoaFisica.AddRange(PessoaFisica.ListarPorDiretoria(item.id));
+                //        break;
+                //    case "Campus":
+                //        lstPessoaFisica.AddRange(PessoaFisica.ListarPorCampus(item.id));
+                //        break;
+                //    default:
+                //        break;
+                //}
+            }
+        }
     }
 }
