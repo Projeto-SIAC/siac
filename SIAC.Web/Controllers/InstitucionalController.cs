@@ -117,7 +117,7 @@ namespace SIAC.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
-                if (avi != null)
+                if (avi != null && !avi.FlagAndamento)
                 {
                     ViewModels.InstitucionalGerarQuestaoViewModel model = new ViewModels.InstitucionalGerarQuestaoViewModel();
                     model.Modulos = AviModulo.ListarOrdenadamente();
@@ -264,7 +264,7 @@ namespace SIAC.Controllers
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
 
-                if (avi != null)
+                if (avi != null && !avi.FlagAndamento)
                 {
                     return View(avi);
                 }
@@ -280,7 +280,7 @@ namespace SIAC.Controllers
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
 
-                if (avi != null)
+                if (avi != null && !avi.FlagAndamento)
                 {
                     avi.OrdenarQuestoes(questoes);
 
@@ -297,7 +297,7 @@ namespace SIAC.Controllers
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
 
-                if (avi != null)
+                if (avi != null && !avi.FlagAndamento)
                 {
                     ViewModels.InstitucionalPublicoViewModel viewModel = new ViewModels.InstitucionalPublicoViewModel();
                     viewModel.Avi = avi;
@@ -315,7 +315,7 @@ namespace SIAC.Controllers
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
 
-                if (avi != null)
+                if (avi != null && !avi.FlagAndamento)
                 {
                     if(avi.Questoes.Count > 0)
                     {
@@ -335,7 +335,7 @@ namespace SIAC.Controllers
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
 
-                if (avi != null)
+                if (avi != null && !avi.FlagAndamento)
                 {
                     if (avi.Questoes.Count > 0)
                     {
@@ -449,9 +449,12 @@ namespace SIAC.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
-                if (avi.Colaborador.MatrColaborador == Helpers.Sessao.UsuarioMatricula)
+                if (avi != null && !avi.FlagAndamento)
                 {
-                    avi.InserirPublico(selecao);
+                    if (avi.Colaborador.MatrColaborador == Helpers.Sessao.UsuarioMatricula)
+                    {
+                        avi.InserirPublico(selecao);
+                    }
                 }
             }
             return Json("/institucional/agendar/" + codigo);

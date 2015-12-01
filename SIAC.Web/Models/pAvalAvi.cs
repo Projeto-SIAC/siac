@@ -7,8 +7,6 @@ namespace SIAC.Models
 {
     public partial class AvalAvi
     {
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
-
         public List<AviQuestao> Questoes
         {
             get
@@ -68,6 +66,23 @@ namespace SIAC.Models
                 return modulos;
             }
         }
+
+        public bool FlagAndamento
+        {
+            get
+            {
+                if (this.Avaliacao.DtAplicacao.HasValue && this.DtTermino.HasValue)
+                {
+                    if (this.Avaliacao.DtAplicacao.Value <= DateTime.Now && this.DtTermino.Value >= DateTime.Now)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         public AviQuestao ObterQuestao(int modulo, int categoria, int indicador, int ordem)
         {
