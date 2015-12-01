@@ -415,7 +415,9 @@
     <Compile Include="Models\pAviCategoria.cs" />
     <Compile Include="Models\pAviIndicador.cs" />
     <Compile Include="Models\pAviModulo.cs" />
+    <Compile Include="Models\pAviPublico.cs" />
     <Compile Include="Models\pAviQuestao.cs" />
+    <Compile Include="Models\pAviTipoPublico.cs" />
     <Compile Include="Models\pdbSIACEntities.cs" />
     <Compile Include="Models\Pessoa.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
@@ -565,6 +567,7 @@
     <Compile Include="ViewModels\ConfiguracoesParametrosViewModel.cs" />
     <Compile Include="ViewModels\ImpressaoAvaliacaoViewModel.cs" />
     <Compile Include="ViewModels\InstitucionalGerarQuestaoViewModel.cs" />
+    <Compile Include="ViewModels\InstitucionalPublicoViewModel.cs" />
     <Compile Include="ViewModels\QuestaoCadastrarViewModel.cs" />
     <Compile Include="ViewModels\QuestaoIndexViewModel.cs" />
   </ItemGroup>

@@ -299,7 +299,10 @@ namespace SIAC.Controllers
 
                 if (avi != null)
                 {
-                    return View(avi);
+                    ViewModels.InstitucionalPublicoViewModel viewModel = new ViewModels.InstitucionalPublicoViewModel();
+                    viewModel.Avi = avi;
+                    viewModel.TiposPublico = AviTipoPublico.ListarOrdenadamente();
+                    return View(viewModel);
                 }
             }
             return RedirectToAction("Index");

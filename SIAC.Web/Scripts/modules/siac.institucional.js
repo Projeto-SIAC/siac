@@ -619,6 +619,7 @@ siac.Institucional.Configurar = (function () {
         $('.basic.confirmar.modal').modal({
             onApprove: function () {
                 $('.prosseguir.button').addClass('loading');
+                $('.ui.global.loader').parent().dimmer('show');
                 $.ajax({
                     type: 'POST',
                     url: '/institucional/Configurar/' + _codAvaliacao,
@@ -629,7 +630,7 @@ siac.Institucional.Configurar = (function () {
                         window.location.href = '/institucional/publico/' + _codAvaliacao;
                     },
                     error: function () {
-
+                        $('.ui.global.loader').parent().dimmer('hide');
                     },
                     complete: function () {
                         $('.prosseguir.button').removeClass('loading');
@@ -701,6 +702,10 @@ siac.Institucional.Publico = (function () {
             selecionar();
         });
 
+        $('.remover.button').off().click(function () {
+            remover($(this));
+        });
+
         $('.prosseguir.button').click(function () {
             if (!_results || _results.length <= 0) {
                 siac.aviso('Você ainda não selecionou os avaliados ou grupos.', 'red', 'warning sign');
@@ -742,16 +747,14 @@ siac.Institucional.Publico = (function () {
             url: '/institucional/FiltrarPublico/' + filtro,
             success: function (data) {
                 _content = data;
-                $buscar
-                  .search({
+                $buscar.search({
                       source: _content,
                       onSelect: function onSelect(result, response) {
                           _result = result;
                           $('.selecionar.button').removeClass('disabled');
                       },
                       minCharacters: 3
-                  })
-                ;
+                  });
                 $buscar.find('input').val('');
             },
             error: function () {
