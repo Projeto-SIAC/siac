@@ -189,7 +189,7 @@ siac.Visitante.Index = (function () {
         });
 
         $('.carregar.button').click(function () {            
-            if ($('.table .tbody .tr').length == (_controleQte * pagina)) {
+            if ($('.table tbody tr').length == (_controleQte * pagina)) {
                 pagina++;
                 listar();
             }
@@ -226,8 +226,11 @@ siac.Visitante.Index = (function () {
             },
             complete: function () {
                 $table.parent().removeClass('loading');
-                if ($('.table .tbody .tr').length < (_controleQte * pagina)) {
-                    $('.carregar.button').parents('tfoot').remove();
+                if ($('.table tbody tr').length < (_controleQte * pagina)) {
+                    $('.carregar.button').parents('tfoot').hide();
+                }
+                else {
+                    $('.carregar.button').parents('tfoot').show();
                 }
             }
         });

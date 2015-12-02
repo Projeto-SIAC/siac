@@ -205,6 +205,7 @@
     </Content>
     <Content Include="Scripts\modules\siac.perfil.js" />
     <Content Include="Scripts\modules\siac.reposicao.js" />
+    <Content Include="Scripts\modules\siac.usuario.js" />
     <Content Include="Scripts\modules\siac.visitante.js" />
     <Content Include="Scripts\plugins\jquery.address-1.6.min.js" />
     <Content Include="Scripts\plugins\jquery.mask-1.13.4.min.js" />
@@ -252,6 +253,7 @@
     <Compile Include="Controllers\InstitucionalController.cs" />
     <Compile Include="Controllers\PerfilController.cs" />
     <Compile Include="Controllers\ReposicaoController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\VisitanteController.cs" />
     <Compile Include="Filters\AutenticacaoFilterAttribute.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -571,6 +573,7 @@
     <Compile Include="ViewModels\InstitucionalPublicoViewModel.cs" />
     <Compile Include="ViewModels\QuestaoCadastrarViewModel.cs" />
     <Compile Include="ViewModels\QuestaoIndexViewModel.cs" />
+    <Compile Include="ViewModels\UsuarioIndexViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -708,6 +711,8 @@
     <Content Include="Views\Configuracoes\Opinioes.cshtml" />
     <Content Include="Views\Configuracoes\Partials\_ListaOpinioes.cshtml" />
     <Content Include="Views\Configuracoes\Institucional.cshtml" />
+    <Content Include="Views\Usuario\Index.cshtml" />
+    <Content Include="Views\Usuario\Partials\_ListaUsuario.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -203,6 +203,9 @@
             else if (/\/configuracoes\/institucional\/coordenadores/.test(pathname)) {
                 siac.Configuracoes.Institucional.iniciar();
             }
+            else if (/\/configuracoes\/usuario$/.test(pathname)) {
+                siac.Usuario.Index.iniciar();
+            }
         }
         else if (pathname.startsWith('/institucional/')) {
             if (pathname == '/institucional/gerar') {

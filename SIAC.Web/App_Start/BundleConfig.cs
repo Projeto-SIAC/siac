@@ -32,6 +32,10 @@ namespace SIAC
                 "~/scripts/modules/siac.configuracoes.js"
             ));
 
+            bundles.Add(new ScriptBundle("~/bundles/js/usuario").Include(
+                "~/scripts/modules/siac.usuario.js"
+            ));
+
             bundles.Add(new ScriptBundle("~/bundles/js/autoavaliacao").Include(
                 "~/scripts/modules/siac.autoavaliacao.js"
             ));

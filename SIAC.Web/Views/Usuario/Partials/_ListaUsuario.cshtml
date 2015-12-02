@@ -1,0 +1,22 @@
+﻿@model List<Usuario>
+@foreach (var usu in Model)
+{
+    <tr>
+        <td>
+            @($"{usu.PessoaFisica.PrimeiroNome} {usu.PessoaFisica.UltimoNome}")
+        </td>
+        <td>
+            @usu.Matricula
+        </td>
+        <td>
+            <time datetime="@(usu.UsuarioAcesso.LastOrDefault()?.DtAcesso.ToString())" title="@(usu.UsuarioAcesso.LastOrDefault()?.DtAcesso.ToBrazilianString())">
+                @(usu.UsuarioAcesso.LastOrDefault()?.DtAcesso.ToElapsedTimeString() ?? "Nunca acessou")
+            </time>
+        </td>
+        <td>
+            <a href="@Url.Action("Detalhe", new { codigo = usu.Matricula })" class="ui small button">
+                Abrir
+            </a>
+        </td>
+    </tr>
+}

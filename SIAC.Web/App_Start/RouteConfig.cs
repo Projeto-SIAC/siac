@@ -55,7 +55,7 @@ namespace SIAC
                 name: "Configuracoes",
                 url: "Configuracoes/{controller}/{action}/{codigo}",
                 defaults: new { controller = "Configuracoes", action = "Index", codigo = UrlParameter.Optional },
-                constraints: new { controller = @"^(Visitante)$" }
+                constraints: new { controller = @"^(Visitante|Usuario)$" }
             );
 
             routes.MapRoute(

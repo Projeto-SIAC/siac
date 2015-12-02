@@ -1,0 +1,72 @@
+﻿@model UsuarioIndexViewModel
+
+@{
+    ViewBag.Title = "Usuários";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/usuario")
+}
+
+<h2>
+    @ViewBag.Title
+</h2>
+
+<div class="ui stackable grid" style="clear:both">
+    <div class="sixteen wide column">
+        <div class="ui fluid icon pesquisa input">
+            <input type="text" placeholder="Pesquisar..." />
+            <i class="search icon"></i>
+        </div>
+    </div>
+    <div class="six wide column">
+        <div class="ui text menu" style="margin-bottom:0">
+            <div class="header item">Ordenar</div>
+            <a class="active ordenar item" data-ordenar="data_desc">
+                Mais recentes
+            </a>
+            <a class="ordenar item" data-ordenar="data">
+                Mais antigos
+            </a>
+        </div>
+    </div>
+    <div class="ten wide column">
+        <div class="ui text menu">            
+            <div class="ui dropdown item">
+                Categoria
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <a class="categoria item active selected" data-categoria="">Todos</a>
+                    @foreach (Categoria categoria in Model.Categorias)
+                    {
+                        <a class="categoria item" data-categoria="@categoria.CodCategoria">
+                            @categoria.Descricao
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sixteen wide column">
+        <div class="ui basic segment">
+            <table class="ui table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Matrícula</th>
+                        <th>Último acesso</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot>
+                    <tr>
+                        <td><a class="ui carregar button">Carregar mais</a></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="ui right floated icon button topo"><i class="icon angle up"></i></div>
+    </div>
+</div>
