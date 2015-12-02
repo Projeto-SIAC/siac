@@ -72,7 +72,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
-        public ActionResult ListarAcesso(string matricula, int codOrdem)
+        public ActionResult ListarAcessoPagina(string matricula, int codOrdem)
         {
             if (!String.IsNullOrEmpty(matricula))
             {
@@ -83,6 +83,20 @@ namespace SIAC.Controllers
                 }
             }
             return null;
+        }
+
+        [HttpPost]
+        public ActionResult ListarAcesso(string matricula, int? pagina)
+        {
+            var lista = Usuario.ListarPorMatricula(matricula)?.UsuarioAcesso.OrderByDescending(a=>a.DtAcesso);
+
+            var qte = 10;
+
+            var usuarios = Usuarios;
+
+            pagina = pagina ?? 1;
+
+            return PartialView("_ListaAcesso", lista.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
         }
     }
 }

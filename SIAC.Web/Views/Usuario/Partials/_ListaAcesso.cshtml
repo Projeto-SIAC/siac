@@ -1,0 +1,10 @@
+﻿@model List<UsuarioAcesso>
+@foreach (var acesso in Model)
+{
+    <tr data-acesso="@acesso.CodOrdem">
+        <td>@acesso.IpAcesso</td>
+        <td><time datetime="@acesso.DtAcesso.ToString()" title="@acesso.DtAcesso.ToBrazilianString()">@acesso.DtAcesso.ToElapsedTimeString()</time></td>
+        <td><div class="ui small icon expandir button"><i class="search icon"></i></div></td>
+    </tr>
+}
+
