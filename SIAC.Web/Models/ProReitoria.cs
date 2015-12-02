@@ -17,6 +17,7 @@ namespace SIAC.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ProReitoria()
         {
+            this.PessoaLocalTrabalho = new HashSet<PessoaLocalTrabalho>();
             this.AviPublico = new HashSet<AviPublico>();
         }
     
@@ -29,6 +30,8 @@ namespace SIAC.Models
         public virtual Colaborador Colaborador { get; set; }
         public virtual Instituicao Instituicao { get; set; }
         public virtual PessoaJuridica PessoaJuridica { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PessoaLocalTrabalho> PessoaLocalTrabalho { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AviPublico> AviPublico { get; set; }
     }

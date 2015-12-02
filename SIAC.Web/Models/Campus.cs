@@ -18,6 +18,7 @@ namespace SIAC.Models
         public Campus()
         {
             this.Diretoria = new HashSet<Diretoria>();
+            this.PessoaLocalTrabalho = new HashSet<PessoaLocalTrabalho>();
             this.Sala = new HashSet<Sala>();
             this.AviPublico = new HashSet<AviPublico>();
         }
@@ -33,6 +34,8 @@ namespace SIAC.Models
         public virtual PessoaJuridica PessoaJuridica { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Diretoria> Diretoria { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PessoaLocalTrabalho> PessoaLocalTrabalho { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sala> Sala { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

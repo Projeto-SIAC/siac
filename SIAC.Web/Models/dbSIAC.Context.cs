@@ -72,6 +72,7 @@ namespace SIAC.Models
         public virtual DbSet<PessoaFisica> PessoaFisica { get; set; }
         public virtual DbSet<PessoaFormacao> PessoaFormacao { get; set; }
         public virtual DbSet<PessoaJuridica> PessoaJuridica { get; set; }
+        public virtual DbSet<PessoaLocalTrabalho> PessoaLocalTrabalho { get; set; }
         public virtual DbSet<Professor> Professor { get; set; }
         public virtual DbSet<ProReitoria> ProReitoria { get; set; }
         public virtual DbSet<Questao> Questao { get; set; }
