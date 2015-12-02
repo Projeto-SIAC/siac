@@ -57,5 +57,18 @@ namespace SIAC.Controllers
             model.Categorias = Usuarios.Select(a => a.Categoria).Distinct().ToList();
             return View(model);
         }
+
+        public ActionResult Detalhe(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                var u = Usuario.ListarPorMatricula(codigo);
+                if (u != null)
+                {
+                    return View(u);
+                }
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

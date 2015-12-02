@@ -1,0 +1,222 @@
+﻿@model Usuario
+
+@{
+    ViewBag.Title = $"{Model.Categoria.Descricao} {Model.PessoaFisica.PrimeiroNome}";
+}
+
+@section Scripts { @Scripts.Render("~/bundles/js/usuario") }
+
+<h2>
+    @ViewBag.Title
+    <span class="ui label">
+        Matrícula
+        <span class="detail">@Model.Matricula</span>
+    </span>
+</h2>
+
+<div class="ui basic segment">
+    <div class="ui dividing header">Informações</div>
+    @if (Model.CodCategoria < 3)
+    {
+        <div class="ui three horizontal segments">
+            <div class="ui basic segment">
+                <div class="ui relaxed list">
+                    <div class="item">
+                        <div class="header">Nome</div>
+                        @Model.PessoaFisica.Nome
+                    </div>
+                    <div class="item">
+                        <div class="header">Matrícula</div>
+                        @Model.Matricula
+                    </div>
+                    <div class="item">
+                        <div class="header">Data de Cadastro</div>
+                        @(Model.DtCadastro.ToString("dd/MM/yyyy"))
+                    </div>
+                </div>
+            </div>
+            <div class="ui basic segment">
+                <div class="ui relaxed list">
+                    @switch (Model.CodCategoria)
+                {
+                    case 1:
+                <div class="item">
+                    <div class="header">Instituição</div>
+                    @Model.Aluno.Last().Turma.Curso.Diretoria.Campus.Instituicao.PessoaJuridica.NomeFantasia
+                </div>
+
+                <div class="item">
+                    <div class="header">Campus</div>
+                    @Model.Aluno.Last().Turma.Curso.Diretoria.Campus.PessoaJuridica.NomeFantasia
+                </div>
+
+                <div class="item">
+                    <div class="header">Curso</div>
+                    @Model.Aluno.Last().Turma.Curso.Descricao
+                </div>
+
+                <div class="item">
+                    <div class="header">Turma</div>
+                    @Model.Aluno.Last().Turma.CodTurma
+                </div>
+                        break;
+                    case 2:
+                <div class="item">
+                    <div class="header">Instituição</div>
+                    @Model.Professor.Last().Instituicao.PessoaJuridica.NomeFantasia
+                </div>
+
+                <div class="item">
+                    <div class="header">Campus</div>
+                    @Model.Professor.Last().Campus.PessoaJuridica.NomeFantasia
+                </div>
+                        break;
+                    default:
+                        break;
+                }
+                </div>
+            </div>
+            <div class="ui basic segment">
+                <div class="ui relaxed list">
+                    @switch (Model.CodCategoria)
+                {
+                    case 1:
+                <div class="item">
+                    <div class="header">Disciplinas</div>
+                    <div class="list">
+                        @foreach (var disciplina in Model.Aluno.Last().Disciplinas)
+                                {
+                                <div class="item">@disciplina.Descricao</div>
+                                }
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="header">Professores</div>
+                    <div class="list">
+                        @foreach (var professor in Model.Aluno.Last().Professores)
+                                {
+                                <div class="item">@professor.Usuario.PessoaFisica.PrimeiroNome @professor.Usuario.PessoaFisica.UltimoNome</div>
+                                }
+                    </div>
+                </div>
+                        break;
+                    case 2:
+                <div class="item">
+                    <div class="header">Disciplinas</div>
+                    <div class="ui list">
+                        @foreach (var disciplina in Model.Professor.Last().Disciplina)
+                                {
+                                <div class="item">
+                                    @disciplina.Descricao
+                                </div>
+                                }
+                    </div>
+                </div>
+                        break;
+                    default:
+                        break;
+                }
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="ui relaxed list">
+            <div class="item">
+                <div class="header">Nome</div>
+                @Model.PessoaFisica.Nome
+            </div>
+            <div class="item">
+                <div class="header">Matrícula</div>
+                @Model.Matricula
+            </div>
+            <div class="item">
+                <div class="header">Data de Cadastro</div>
+                @(Model.DtCadastro.ToString("dd/MM/yyyy"))
+            </div>
+        </div>
+    }
+</div>
+
+<div class="ui basic segment">
+    <div class="ui dividing header">
+        Estatísticas
+    </div>
+    <div class="ui 
+         @switch (Model.CodCategoria)
+         {
+             case 1:
+                 @:three
+                 break;
+             case 2:
+                 @:four
+                 break;
+             case 3:
+                 @:three
+                 break;
+             case 4:
+                 @:two
+                 break;
+             default:
+                 break;
+         }
+         statistics">
+        <div class="statistic">
+            <div class="value">
+                @Model.UsuarioAcesso.Count
+            </div>
+            <div class="label">
+                Acessos
+            </div>
+        </div>
+        @if (Model.CodCategoria == 2)
+        {
+            <div class="statistic">
+                <div class="value">
+                    @Model.Professor.Sum(a => a.Questao.Count)
+                </div>
+                <div class="label">
+                    Questões
+                </div>
+            </div>
+        }
+        <div class="statistic">
+            <div class="value">
+                @Model.PessoaFisica.AvalAuto.Count
+            </div>
+            <div class="label">
+                Autoavaliações
+            </div>
+        </div>
+        @if (Model.CodCategoria <= 3)
+        {
+            <div class="statistic">
+                <div class="value">
+                    @switch (Model.CodCategoria)
+                    {
+                        case 2:
+                            @(Model.Professor.Sum(a => a.AvalAcademica.Count) + Model.Professor.Sum(a => a.AvalCertificacao.Count))
+                            break;
+                        default:
+                            @Model.PessoaFisica.AvalPessoaResultado.Where(a => a.CodTipoAvaliacao > 1).Count()
+                            break;
+                    }
+                </div>
+                <div class="label">
+                    Avaliações
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="ui basic segment">
+    <div class="ui dividing header">Acessos</div>
+
+</div>
+
+<a href="@Url.Action("Index")" class="ui button">Voltar</a>
+<a href="@Url.Action("Opinioes","Configuracoes", new { tab = Model.Matricula })" class="ui button">Abrir Opiniões</a>
+

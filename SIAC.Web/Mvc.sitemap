@@ -94,6 +94,9 @@
         </mvcSiteMapNode>      
         <mvcSiteMapNode title="Detalhe" controller="Visitante" action="Detalhe" preservedRouteParameters="codigo"/>
       </mvcSiteMapNode>
+      <mvcSiteMapNode title="Usuários" controller="Usuario" action="Index">
+        <mvcSiteMapNode title="Detalhe" controller="Usuario" action="Detalhe" preservedRouteParameters="codigo"/>
+      </mvcSiteMapNode>
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Av. Institucional" controller="Institucional" action="Index">
       <mvcSiteMapNode title="Gerar" controller="Institucional" action="Gerar"/>
