@@ -19,6 +19,20 @@ namespace SIAC.Models
             return pessoaFisica.CodPessoa;
         }
 
+        public static void AdicionarOcupacao(int codPessoaFisica, int codOcupacao)
+        {
+            var pessoa = ListarPorCodigo(codPessoaFisica);
+            pessoa?.Ocupacao.Add(Models.Ocupacao.ListarPorCodigo(codOcupacao));
+            contexto.SaveChanges();
+        }
+
+        public static void RemoverOcupacao(int codPessoaFisica, int codOcupacao)
+        {
+            var pessoa = ListarPorCodigo(codPessoaFisica);
+            pessoa?.Ocupacao.Remove(Models.Ocupacao.ListarPorCodigo(codOcupacao));
+            contexto.SaveChanges();
+        }
+
         public static List<PessoaFisica> Listar()
         {
             return contexto.PessoaFisica.ToList();

@@ -45,18 +45,18 @@
                 }
             </div>
             <div class="field">
-                <div class="ui disabled button">Remover</div>
+                <div class="ui disabled trigger button">Remover</div>
                 <div class="ui popup">
                     <div class="header">
                         Tem certeza?
                     </div>
                     <div class="content">
-                        Confirme sua decisão de remover este usuário da lista de Coordenadores de Av. Institucional.
+                        Confirme sua decisão de remover este(s) usuário(s) selecionado(s) da lista de Coordenadores de Av. Institucional.
                         <br />
-                        <div class="ui small button">Sim, remover</div>
+                        <div class="ui remover small button">Sim, remover</div>
                     </div>
                 </div>
-                <div class="ui button">Novo</div>
+                <div class="ui coordenador button">Novo</div>
             </div>
         </div>         
     </div>
@@ -72,10 +72,12 @@
                 <input type="text" id="txtPesquisa" placeholder="Pesquisar por Nome, Matrícula ou CPF..." />
             </div>
             <div class="field">
-                <div class="ui button">Pesquisar</div>
+                <div class="ui pesquisar button">Pesquisar</div>
             </div>
         </div>
-        <div class="ui list">
+        <div class="ui segment">
+            <div class="ui relaxed list">
+            </div>
         </div>
     </div>
     <div class="actions">
@@ -83,7 +85,6 @@
         <div class="ui approve button">Adicionar</div>
     </div>
 </div>
-
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/configuracoes")

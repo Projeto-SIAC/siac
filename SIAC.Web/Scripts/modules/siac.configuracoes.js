@@ -220,9 +220,46 @@ siac.Configuracoes.Institucional = (function () {
         $('[name^=chkOcupacao]').change(function () {
             $('.salvar.button').removeClass('active').text('Salvar');
         });
+        $('[name^=chkCoordenador]').change(function () {
+            if ($('[name^=chkCoordenador]:checked').length) {
+                $('.trigger.button').removeClass('disabled');
+            }
+            else {
+                $('.trigger.button').addClass('disabled');
+            }
+        });
         $('.salvar.button').click(function () {
             alterarOcupacoesCoordenadores();
         });
+        $('.trigger.button').popup({ inline: true, on: 'click', position: 'right center' });
+        $('.coordenador.button').click(function () {
+            $('.coordenador.modal').modal('show');
+        });
+        $('.pesquisar.button').click(function () {
+            var strPesquisa = $('#txtPesquisa').val();
+            if (strPesquisa && strPesquisa.length > 3) {
+                $(this).parents('.form').addClass('loading');
+                pesquisar(strPesquisa);
+            }
+        });
+        $('.coordenador.modal').modal({
+            onApprove: function () {
+                if ($('[name=rdoPessoa]:checked').length) {
+                    var codPessoa = $('[name=rdoPessoa]:checked').val();
+                    adicionarOcupacaoCoordenador(codPessoa);
+                    $('.approve.button').addClass('loading');
+                }
+                else {
+                    siac.mensagem('Ops... Você ainda não selecionou nenhuma pessoa!');
+                }
+                return false;
+            },
+            onDeny: function () {
+                $('.coordenador.modal #txtPesquisa').val('');
+                $('.coordenador.modal .ui.list').html('');
+            }
+        });
+        $('.remover.button').click(function () { removerOcupacaoCoordenador(); });
     }
 
     function alterarOcupacoesCoordenadores() {
@@ -248,6 +285,73 @@ siac.Configuracoes.Institucional = (function () {
             error: function () { $btnSalvar.removeClass('loading'); },
             complete: function () { $btnSalvar.addClass('active').text('Salvo'); }
         });
+    }
+
+    function adicionarOcupacaoCoordenador(codPessoa) {
+        if (codPessoa) {
+            $.ajax({
+                url: '/configuracoes/adicionarocupacaocoordenador',
+                type: 'post',
+                data: { codPessoaFisica: codPessoa },
+                success: function () { window.location.reload(); },
+                error: function () { siac.mensagem('Ocorreu um erro com sua solicitação. Por favor, tente novamente mais tarde.'); }
+            });
+        }
+    }
+
+    function pesquisar(pesquisa) {
+        if (pesquisa && pesquisa.length > 3) {
+            var $modal = $('.coordenador.modal');
+            $.ajax({
+                url: '/configuracoes/listarpessoa',
+                type: 'post',
+                data: {
+                    pesquisa: pesquisa
+                },
+                success: function (data) {
+                    if (data) {
+                        var $list = $modal.find('.ui.list');
+                        $list.html('');
+                        for (var i = 0, length = data.length; i < length; i++) {
+                            var $item = $('<div class="item"></div>')
+                                .html(' <div class="ui slider checkbox">' +
+                                          '<input type="radio" name="rdoPessoa" value="'+ data[i].CodPessoa +'">'+
+                                          '<label>' + data[i].Nome + '</label>' +
+                                        '</div>');
+                            $list.append($item);
+                        }
+                        $modal.find('.ui.checkbox').checkbox();
+                    }
+                },
+                error: function () { siac.mensagem('Ocorreu um erro com sua solicitação. Por favor, tente novamente mais tarde.'); },
+                complete: function () {
+                    $modal.find('.form').removeClass('loading');
+                }
+            });
+        }
+    }
+
+    function removerOcupacaoCoordenador() {
+        var $btnRemover = $('.remover.button');
+        $btnRemover.addClass('loading');
+        var arrPessoas = [];
+        var $chkCoordenadores = $('[name^=chkCoordenador]');
+
+        for (var i = 0, length = $chkCoordenadores.length; i < length; i++) {
+            if ($chkCoordenadores.eq(i).is(':checked')) {
+                var codPessoa = $chkCoordenadores.eq(i).attr('name').split('chkCoordenador')[1];
+                arrPessoas.push(parseInt(codPessoa));
+            }
+        }
+
+        $.ajax({
+            url: '/configuracoes/removerocupacaocoordenador',
+            type: 'post',
+            data: { codPessoaFisica: arrPessoas },
+            success: function () { window.location.reload(); },
+            error: function () { siac.mensagem('Ocorreu um erro com sua solicitação. Por favor, tente novamente mais tarde.'); },
+            complete: function () { $btnRemover.removeClass('loading'); }
+        });        
     }
 
     return { iniciar: iniciar }

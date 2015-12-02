@@ -431,6 +431,7 @@
     <Compile Include="Models\PessoaJuridica.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\pOcupacao.cs" />
     <Compile Include="Models\pProReitoria.cs" />
     <Compile Include="Models\pReitoria.cs" />
     <Compile Include="Models\Professor.cs">

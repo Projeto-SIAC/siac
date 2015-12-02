@@ -96,9 +96,41 @@ namespace SIAC.Controllers
             return View(model);
         }
 
+        [HttpPost]
         public void AlterarOcupacoesCoordenadores(int[] ocupacoes)
         {
             Parametro.AtualizarOcupacoesCoordenadores(ocupacoes);
+        }
+
+        [HttpPost]
+        public void AdicionarOcupacaoCoordenador(int codPessoaFisica)
+        {
+            PessoaFisica.AdicionarOcupacao(codPessoaFisica, Sistema.CodOcupacaoCoordenadorAvi);            
+        }
+
+        [HttpPost]
+        public void RemoverOcupacaoCoordenador(int[] codPessoaFisica)
+        {
+            foreach (var codPessoa in codPessoaFisica)
+            {
+                PessoaFisica.RemoverOcupacao(codPessoa, Sistema.CodOcupacaoCoordenadorAvi);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ListarPessoa(string pesquisa)
+        {
+            if (!String.IsNullOrWhiteSpace(pesquisa))
+            {
+                string strPesquisa = pesquisa.Trim().ToLower();
+                var lstPessoas = PessoaFisica.Listar().Where(p =>
+                    p.Nome.ToLower().Contains(strPesquisa) ||
+                    (!String.IsNullOrEmpty(p.Cpf) && p.Cpf.Contains(strPesquisa)) ||
+                    p.Usuario.FirstOrDefault(u => u.Matricula.ToLower().Contains(strPesquisa)) != null
+                );
+                return Json(lstPessoas.Select(p => new { CodPessoa = p.CodPessoa, Nome = p.Nome }));
+            }
+            return null;
         }
         
         [HttpPost]
