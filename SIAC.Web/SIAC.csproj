@@ -358,6 +358,21 @@
     <Compile Include="Models\Curso.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\dbSIAC.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbSIAC.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\dbSIAC.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\dbSIAC.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dbSIAC.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\DiaSemana.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -380,6 +395,7 @@
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Evento.cs" />
+    <Compile Include="Models\AviMapping.cs" />
     <Compile Include="Models\Horario.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -389,7 +405,6 @@
     <Compile Include="Models\Justificacao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\AviMapping.cs" />
     <Compile Include="Models\MatrizCurricular.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -433,6 +448,9 @@
     <Compile Include="Models\PessoaJuridica.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PessoaLocalTrabalho.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\pOcupacao.cs" />
     <Compile Include="Models\pProReitoria.cs" />
     <Compile Include="Models\pReitoria.cs" />
@@ -456,21 +474,6 @@
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Repositorio.cs" />
-    <Compile Include="Models\dbSIAC.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dbSIAC.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\dbSIAC.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dbSIAC.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\dbSIAC.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dbSIAC.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\pAluno.cs" />
     <Compile Include="Models\pAnexo.cs" />
     <Compile Include="Models\pAvalAcademica.cs" />
@@ -589,6 +592,7 @@
     <Content Include="Views\Dashboard\Index.cshtml" />
     <Content Include="Views\Acesso\Index.cshtml" />
     <Content Include="Resources\videos\background.webm" />
+    <None Include="bundleconfig.json" />
     <EntityDeploy Include="Models\dbSIAC.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>dbSIAC.Designer.cs</LastGenOutput>
@@ -596,7 +600,6 @@
     <Content Include="Models\dbSIAC.edmx.diagram">
       <DependentUpon>dbSIAC.edmx</DependentUpon>
     </Content>
-    <None Include="bundleconfig.json" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -716,6 +719,7 @@
     <Content Include="Views\Usuario\Detalhe.cshtml" />
     <Content Include="Views\Usuario\Partials\_ListaAcessoUsuario.cshtml" />
     <Content Include="Views\Usuario\Partials\_ListaAcesso.cshtml" />
+    <Content Include="Views\Institucional\Realizar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

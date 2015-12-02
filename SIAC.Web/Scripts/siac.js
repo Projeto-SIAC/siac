@@ -231,6 +231,9 @@
             else if (/\/institucional\/agendar\/avi[0-9]+$/.test(pathname)) {
                 siac.Institucional.Agendar.iniciar();
             }
+            else if (/\/institucional\/realizar\/avi[0-9]+$/.test(pathname)) {
+                siac.Institucional.Realizar.iniciar();
+            }
         }
         else if (pathname.startsWith('/perfil')) {
             siac.Perfil.iniciar();

@@ -351,7 +351,6 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
-
         // POST: Institucional/FiltrarPublico/AVI201520001
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
@@ -440,7 +439,6 @@ namespace SIAC.Controllers
 
             return Json(lstResultado);
         }
-
         // POST: Institucional/SalvarPublico/AVI201520001
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
@@ -459,6 +457,20 @@ namespace SIAC.Controllers
             }
             return Json("/institucional/agendar/" + codigo);
             
+        }
+        //GET: institucional/realizar/{codigo}
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        public ActionResult Realizar(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
+                if (avi != null && !avi.FlagAndamento)
+                {
+                    return View(avi);
+                }
+            }
+            return RedirectToAction("Index");
         }
     }
 }

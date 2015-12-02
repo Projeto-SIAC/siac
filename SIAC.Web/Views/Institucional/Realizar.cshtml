@@ -1,0 +1,12 @@
+﻿@model SIAC.Models.AvalAvi
+@{
+    ViewBag.Title = "Realizar "+Model.Avaliacao.CodAvaliacao;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/institucional")
+}

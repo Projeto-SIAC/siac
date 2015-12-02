@@ -18,6 +18,7 @@ namespace SIAC.Models
         public Instituicao()
         {
             this.Campus = new HashSet<Campus>();
+            this.PessoaLocalTrabalho = new HashSet<PessoaLocalTrabalho>();
             this.ProReitoria = new HashSet<ProReitoria>();
             this.Reitoria = new HashSet<Reitoria>();
             this.AviPublico = new HashSet<AviPublico>();
@@ -30,6 +31,8 @@ namespace SIAC.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Campus> Campus { get; set; }
         public virtual PessoaJuridica PessoaJuridica { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PessoaLocalTrabalho> PessoaLocalTrabalho { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProReitoria> ProReitoria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
