@@ -458,7 +458,7 @@ namespace SIAC.Controllers
             return Json("/institucional/agendar/" + codigo);
             
         }
-        [HttpPost]
+        //GET: institucional/realizar/{codigo}
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult Realizar(string codigo)
         {
@@ -467,10 +467,7 @@ namespace SIAC.Controllers
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
                 if (avi != null && !avi.FlagAndamento)
                 {
-                    //if (avi.Colaborador.MatrColaborador == Helpers.Sessao.UsuarioMatricula)
-                    {
-                        return View();
-                    }
+                    return View(avi);
                 }
             }
             return RedirectToAction("Index");

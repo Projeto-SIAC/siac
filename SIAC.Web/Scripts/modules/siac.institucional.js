@@ -917,3 +917,13 @@ siac.Institucional.Agendar = (function () {
         iniciar: iniciar
     }
 })();
+
+siac.Institucional.Realizar = (function () {
+    var _codAvaliacao;
+    function iniciar() {
+        _codAvaliacao = window.location.pathname.toLowerCase().match(/avi[0-9]+$/)[0];
+    }
+    return {
+        iniciar: iniciar
+    }
+})();

@@ -262,5 +262,28 @@ namespace SIAC.Models
             }
             contexto.SaveChanges();
         }
+
+        //VERIFICAÇÃO PARA FILTRAR OS REALIZADORES DA AVI... INCOMPLETO
+        public bool ERealizadaPor(string usuarioMatricula,int usuarioCodCategoria)
+        {
+            Usuario usuario = Usuario.ListarPorMatricula(usuarioMatricula);
+
+            if(usuario!= null)
+            {
+                switch (usuarioCodCategoria)
+                {
+                    case 1: /*Estudante*/
+                        
+                        return true;
+                    case 2: /*Professor*/
+                        return true;
+                    case 3: /*Colaborador*/
+                        return true;
+                    default: /*Visitante || qualquer valor*/
+                        return false;
+                }
+            }
+            return false;
+        }
     }
 }
