@@ -70,5 +70,19 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public ActionResult ListarAcesso(string matricula, int codOrdem)
+        {
+            if (!String.IsNullOrEmpty(matricula))
+            {
+                var usuario = Usuario.ListarPorMatricula(matricula);
+                if (usuario != null)
+                {
+                    return PartialView("_ListaAcessoUsuario", usuario.UsuarioAcesso.FirstOrDefault(a => a.CodOrdem == codOrdem));
+                }
+            }
+            return null;
+        }
     }
 }

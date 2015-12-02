@@ -197,14 +197,19 @@
                     siac.Visitante.Detalhe.iniciar();
                 }
             }
+            else if (pathname.indexOf('/usuario') >= 0) {
+                if (/\/configuracoes\/usuario$/.test(pathname)) {
+                    siac.Usuario.Index.iniciar();
+                }
+                else if (/\/configuracoes\/usuario\/detalhe/.test(pathname)) {
+                    siac.Usuario.Detalhe.iniciar();
+                }
+            }
             else if (/\/configuracoes\/opinioes/.test(pathname)) {
                 siac.Configuracoes.Opinioes.iniciar();
             }
             else if (/\/configuracoes\/institucional\/coordenadores/.test(pathname)) {
                 siac.Configuracoes.Institucional.iniciar();
-            }
-            else if (/\/configuracoes\/usuario$/.test(pathname)) {
-                siac.Usuario.Index.iniciar();
             }
         }
         else if (pathname.startsWith('/institucional/')) {

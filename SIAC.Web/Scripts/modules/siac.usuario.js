@@ -103,3 +103,44 @@ siac.Usuario.Index = (function () {
         iniciar: iniciar
     }
 })();
+
+siac.Usuario.Detalhe = (function () {
+    function iniciar() {
+        $('.ui.modal').modal();
+        $('.acesso.table .expandir.button').click(function () {
+            var $this = $(this);
+            $this.addClass('loading');
+            var $tr = $this.parents('tr');
+            var matricula = window.location.pathname.split('/configuracoes/usuario/detalhe/')[1];
+            var acesso = $tr.data('acesso');
+            var header = $tr.find('time').attr('title');
+            $.ajax({
+                url: '/configuracoes/usuario/ListarAcesso',
+                type: 'post',
+                data: {
+                    matricula: matricula,
+                    codOrdem: acesso
+                },
+                success: function (partial) {
+                    if (partial) {
+                        var $modal = $('.acesso.modal');
+                        $modal.find('.header').text(header);
+                        $modal.find('.content').html(partial);
+                        $modal.modal('show');
+                    }
+                    $modal.find('i').popup();
+                },
+                error: function () {
+                    siac.mensagem('Ocorreu um erro durante sua solicitação. Tente novamente mais tarde, por favor.');
+                },
+                complete: function () {
+                    $this.removeClass('loading');
+                }
+            });
+        });
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();

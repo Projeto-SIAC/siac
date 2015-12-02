@@ -714,6 +714,7 @@
     <Content Include="Views\Usuario\Index.cshtml" />
     <Content Include="Views\Usuario\Partials\_ListaUsuario.cshtml" />
     <Content Include="Views\Usuario\Detalhe.cshtml" />
+    <Content Include="Views\Usuario\Partials\_ListaAcessoUsuario.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

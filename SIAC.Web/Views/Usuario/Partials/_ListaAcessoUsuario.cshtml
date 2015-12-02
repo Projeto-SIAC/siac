@@ -1,0 +1,28 @@
+﻿@model UsuarioAcesso
+<div class="ui feed">
+    @foreach (var pagina in Model.UsuarioAcessoPagina.OrderBy(a => a.DtAbertura))
+    {
+        <div class="event">
+            <div class="label">
+                @if (String.IsNullOrEmpty(pagina.PaginaReferencia))
+                {
+                    <i data-content="Acesso direto." class="sign in icon"></i>
+                }
+                else if (String.IsNullOrEmpty(pagina.Dados))
+                {
+                    <i data-content="Navegação casual." class="exchange icon"></i>
+                }
+                else
+                {
+                    <i data-content="Ocorreu um envio de dados." class="edit icon"></i>
+                }
+            </div>
+            <div class="content">
+                <div class="summary">
+                    @pagina.Pagina
+                    <div class="date"><time datetime="@(pagina.DtAbertura?.ToString())" title="@(pagina.DtAbertura?.ToBrazilianString())">@(pagina.DtAbertura?.ToShortTimeString())</time></div>
+                </div>              
+            </div>
+        </div>
+    }    
+</div>
