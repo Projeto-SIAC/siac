@@ -30,6 +30,7 @@
                 { "Descricao", "Abrir Opiniões" }
             });
         }
+
         @if (Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.FlagCoordenadorAvi)
         {
             @Html.Partial("_Atalho", new ViewDataDictionary() {

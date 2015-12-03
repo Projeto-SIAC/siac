@@ -126,10 +126,11 @@ namespace SIAC.Controllers
             if (!String.IsNullOrWhiteSpace(pesquisa))
             {
                 string strPesquisa = pesquisa.Trim().ToLower();
-                var lstPessoas = PessoaFisica.Listar().Where(p =>
-                    p.Nome.ToLower().Contains(strPesquisa) ||
+                var lstPessoas = PessoaFisica.Listar().Where(p => 
+                    (p.Usuario.FirstOrDefault(u=>u.Professor.Count > 0 || u.Colaborador.Count > 0) != null) &&
+                    (p.Nome.ToLower().Contains(strPesquisa) ||
                     (!String.IsNullOrEmpty(p.Cpf) && p.Cpf.Contains(strPesquisa)) ||
-                    p.Usuario.FirstOrDefault(u => u.Matricula.ToLower().Contains(strPesquisa)) != null
+                    p.Usuario.FirstOrDefault(u => u.Matricula.ToLower().Contains(strPesquisa)) != null)
                 );
                 return Json(lstPessoas.Select(p => new { CodPessoa = p.CodPessoa, Nome = p.Nome }));
             }
