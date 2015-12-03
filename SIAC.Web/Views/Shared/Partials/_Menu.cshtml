@@ -1,0 +1,30 @@
+﻿@{
+    var path = Request.Url.PathAndQuery.ToString();
+}
+
+<div class="ui vertical fluid secondary menu" style="margin: auto 0">
+    <a href="@Url.Action("Index", "Dashboard")" class="@(path.StartsWith("/dashboard")? "active blue" : "") item">
+        <i class="block layout icon"></i><span class="content">Dashboard</span>
+    </a>
+    <a href="@Url.Action("Index", "Historico")" class="@(path.StartsWith("/historico")? "active blue" : "") item">
+        <i class="time icon"></i><span class="content">Histórico</span>
+    </a>
+    <a href="@Url.Action("Index", "Institucional")" class="@(path.StartsWith("/institucional")? "active blue" : "") item">
+        <i class="file text outline icon"></i><span class="content">Av. Instituicional</span>
+    </a>
+    <a href="@Url.Action("Index", "Perfil")" class="@(path.StartsWith("/perfil")? "active blue" : "") item">
+        <i class="user icon"></i><span class="content">Perfil</span>
+    </a>
+
+    @if (Sessao.UsuarioCategoriaCodigo == 3 || Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.FlagCoordenadorAvi)
+    {
+        <a href="@Url.Action("Index", "Configuracoes")" class="@(path.StartsWith("/configuracoes")? "active blue" : "") item">
+            <i class="setting icon"></i><span class="content">Configurações</span>
+        </a>
+    }
+
+    <a href="@Url.Action("Sair", "Acesso")" class="item">
+        <i class="power icon"></i><span class="content">Sair</span>
+    </a>
+</div>
+

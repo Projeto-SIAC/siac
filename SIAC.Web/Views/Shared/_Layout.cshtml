@@ -48,31 +48,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="ui vertical fluid secondary menu" style="margin: auto 0">
-                        <a href="@Url.Action("Index", "Dashboard")" class="@(Request.Url.PathAndQuery.ToString().StartsWith("/dashboard")? "active blue" : "") item">
-                            <i class="block layout icon"></i><span class="content">Dashboard</span>
-                        </a>
-                        <a href="@Url.Action("Index", "Historico")" class="@(Request.Url.PathAndQuery.ToString().StartsWith("/historico")? "active blue" : "") item">
-                            <i class="time icon"></i><span class="content">Histórico</span>
-                        </a>
-                        <a href="@Url.Action("Index", "Institucional")" class="@(Request.Url.PathAndQuery.ToString().StartsWith("/institucional")? "active blue" : "") item">
-                            <i class="file text outline icon"></i><span class="content">Av. Instituicional</span>
-                        </a>
-                        <a href="@Url.Action("Index", "Perfil")" class="@(Request.Url.PathAndQuery.ToString().StartsWith("/perfil")? "active blue" : "") item">
-                            <i class="user icon"></i><span class="content">Perfil</span>
-                        </a>
-
-                        @if (Sessao.UsuarioCategoriaCodigo == 3 || Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.FlagCoordenadorAvi)
-                        {
-                            <a href="@Url.Action("Index", "Configuracoes")" class="@(Request.Url.PathAndQuery.ToString().StartsWith("/configuracoes")? "active blue" : "") item">
-                                <i class="setting icon"></i><span class="content">Configurações</span>
-                            </a>
-                        }
-
-                        <a href="@Url.Action("Sair", "Acesso")" class="item">
-                            <i class="power icon"></i><span class="content">Sair</span>
-                        </a>
-                    </div>
+                    @Html.Partial("_Menu")
                 </div>
             </div>
             <div class="thirteen wide column" style="height:100%">
