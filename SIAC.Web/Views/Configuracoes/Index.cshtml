@@ -24,19 +24,19 @@
                 { "Icone", "spy" },
                 { "Descricao", "Visitantes" }
             });
-        }
-        @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Institucional", new { tab = "Coordenadores" }) },
-            { "Icone", "doctor" },
-            { "Descricao", "Coordenadores de Av. Institucional" }
-        });
-        @if (Sessao.UsuarioCategoriaCodigo == 3)
-        {
             Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Opinioes") },
                 { "Icone", "bookmark" },
                 { "Descricao", "Abrir Opiniões" }
             });
         }
+        @if (Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.FlagCoordenadorAvi)
+        {
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
+                { "Url", Url.Action("Institucional", new { tab = "Coordenadores" }) },
+                { "Icone", "doctor" },
+                { "Descricao", "Coordenadores de Av. Institucional" }
+            });
+        }        
     </div>
 </div>

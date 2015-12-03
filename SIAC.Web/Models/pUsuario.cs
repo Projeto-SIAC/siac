@@ -38,6 +38,8 @@ namespace SIAC.Models
             }
         }
 
+        public bool FlagCoordenadorAvi => this.PessoaFisica.Ocupacao.Select(a => a.CodOcupacao).ToArray().ContainsOne(Parametro.Obter().OcupacaoCoordenadorAvi);
+
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         public static Usuario Autenticar(string matricula, string senha)
