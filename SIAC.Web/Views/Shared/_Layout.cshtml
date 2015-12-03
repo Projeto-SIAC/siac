@@ -62,7 +62,7 @@
                             <i class="user icon"></i><span class="content">Perfil</span>
                         </a>
 
-                        @if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 3)
+                        @if (SIAC.Helpers.Sessao.UsuarioCategoriaCodigo == 3 || Sessao.UsuarioCategoriaCodigo==2)
                         {
                             <a href="@Url.Action("Index", "Configuracoes")" class="@(Request.Url.PathAndQuery.ToString().StartsWith("/configuracoes")? "active blue" : "") item">
                                 <i class="setting icon"></i><span class="content">Configurações</span>
