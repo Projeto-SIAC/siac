@@ -67,6 +67,17 @@ namespace SIAC.Models
             }
         }
 
+        public List<AviPublico> Publico
+        {
+            get
+            {
+                if (FlagPublico)
+                    return this.AviPublico.ToList();
+                else
+                    return null;
+            }
+        }
+
         public bool FlagAndamento
         {
             get
@@ -79,6 +90,22 @@ namespace SIAC.Models
                     }
                 }
                 return false;
+            }
+        }
+
+        public bool FlagPublico
+        {
+            get
+            {
+                return this.AviPublico.Count > 0;
+            }
+        }
+
+        public bool FlagQuestionario
+        {
+            get
+            {
+                return this.Questoes.Count > 0;
             }
         }
 

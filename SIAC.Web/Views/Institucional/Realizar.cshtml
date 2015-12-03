@@ -4,8 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
+<h2>
+    @ViewBag.Title
+    <div class="ui right floated informacoes button">Informações</div>
+</h2>
 
+@Html.Partial("_InstitucionalInformacoes", Model)
 
 @section Scripts{
     @Scripts.Render("~/bundles/js/institucional")

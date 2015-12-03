@@ -720,6 +720,7 @@
     <Content Include="Views\Usuario\Partials\_ListaAcessoUsuario.cshtml" />
     <Content Include="Views\Usuario\Partials\_ListaAcesso.cshtml" />
     <Content Include="Views\Institucional\Realizar.cshtml" />
+    <Content Include="Views\Shared\Partials\_InstitucionalInformacoes.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

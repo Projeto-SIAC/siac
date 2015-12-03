@@ -922,6 +922,15 @@ siac.Institucional.Realizar = (function () {
     var _codAvaliacao;
     function iniciar() {
         _codAvaliacao = window.location.pathname.toLowerCase().match(/avi[0-9]+$/)[0];
+        $('.informacoes.button').click(function () {
+            $('.ui.accordion').accordion({
+                animateChildren: false,
+                onChange: function () {
+                    $('.informacoes.modal').modal('refresh');
+                }
+            });
+            $('.informacoes.modal').modal('show');
+        });
     }
     return {
         iniciar: iniciar

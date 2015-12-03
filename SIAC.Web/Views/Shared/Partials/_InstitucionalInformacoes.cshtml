@@ -1,0 +1,106 @@
+﻿@model SIAC.Models.AvalAvi
+<div class="ui informacoes modal">
+    <i class="icon close"></i>
+    <div class="header">Informações sobre a Av. Institucional</div>
+    <div class="content">
+        <div class="ui fluid styled accordion">
+            @* Dados gerais *@
+            <div class="active title"><i class="dropdown icon"></i>Dados Gerais</div>
+            <div class="active content">
+                <div class="ui basic segment">
+                    <table class="ui geral table">
+                        <tbody>
+                            <tr>
+                                <td><b>Título</b></td>
+                                <td>@Model.Titulo</td>
+                            </tr>
+                            <tr>
+                                <td><b>Objetivo</b></td>
+                                <td>@Html.Raw(Model.Objetivo.ToHtml("p"))</td>
+                            </tr>
+                            <tr>
+                                <td><b>Coordenador</b></td>
+                                <td>@Model.Colaborador.Usuario.PessoaFisica.Nome</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @* Questionário *@
+            @if (Model.FlagQuestionario)
+            {
+                <div class="title"><i class="dropdown icon"></i>Questionário</div>
+                <div class="content">
+                    <div class="ui basic segment">
+                        @foreach (MapAviModulo modulo in Model.MapQuestoes)
+                        {
+                            <div class="title"><i class="dropdown icon"></i>@modulo.Modulo.Descricao</div>
+                            <div class="content">
+                                <div class="accordion">
+                                    @foreach (MapAviCategoria categoria in modulo.Categorias)
+                                    {
+                                        <div class="title"><i class="dropdown icon"></i>@categoria.Categoria.Descricao</div>
+                                        <div class="content">
+                                            <div class="accordion">
+                                                @foreach (MapAviIndicador indicador in categoria.Indicadores)
+                                                {
+                                                    <div class="title">@indicador.Indicador.Descricao  <a class="ui label">@indicador.Questoes.Count Questões</a></div>
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+            @* Público *@
+            @if (Model.FlagPublico)
+            {
+                <div class="title"><i class="dropdown icon"></i>Público</div>
+                <div class="content">
+                    <div class="ui basic segment">
+                        <table class="ui selecionados table">
+                            <tbody>
+                                @foreach (AviPublico publico in Model.AviPublico)
+                                {
+                                <tr @*data-selecionado="@publico.CodPublico"*@>
+                                    <td>@publico.Descricao</td>
+                                    <td><a class="ui label">@publico.AviTipoPublico.Descricao</a></td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+
+            @* Prazo *@
+            @if (Model.FlagAndamento)
+            {
+                <div class="title"><i class="dropdown icon"></i>Prazo</div>
+                <div class="content">
+                    <div class="ui basic segment">
+                        <table class="ui prazo table">
+                            <thead>
+                                <tr>
+                                    <th>Data de Início</th>
+                                    <th>Data de Término</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>@Model.Avaliacao.DtAplicacao.Value.ToShortDateString()</td>
+                                    <td>@Model.DtTermino.Value.ToShortDateString()</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

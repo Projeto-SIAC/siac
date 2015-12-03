@@ -266,7 +266,10 @@ namespace SIAC.Controllers
 
                 if (avi != null && !avi.FlagAndamento)
                 {
-                    return View(avi);
+                    if (avi.FlagQuestionario)
+                        return View(avi);
+                    else
+                        return RedirectToAction("Questionario", new { codigo = codigo });
                 }
             }
             return RedirectToAction("Index");
@@ -299,10 +302,15 @@ namespace SIAC.Controllers
 
                 if (avi != null && !avi.FlagAndamento)
                 {
-                    ViewModels.InstitucionalPublicoViewModel viewModel = new ViewModels.InstitucionalPublicoViewModel();
-                    viewModel.Avi = avi;
-                    viewModel.TiposPublico = AviTipoPublico.ListarOrdenadamente();
-                    return View(viewModel);
+                    if (avi.FlagQuestionario)
+                    {
+                        ViewModels.InstitucionalPublicoViewModel viewModel = new ViewModels.InstitucionalPublicoViewModel();
+                        viewModel.Avi = avi;
+                        viewModel.TiposPublico = AviTipoPublico.ListarOrdenadamente();
+                        return View(viewModel);
+                    }
+                    else
+                        return RedirectToAction("Questionario", new { codigo = codigo });
                 }
             }
             return RedirectToAction("Index");
@@ -317,7 +325,7 @@ namespace SIAC.Controllers
 
                 if (avi != null && !avi.FlagAndamento)
                 {
-                    if(avi.Questoes.Count > 0)
+                    if(avi.FlagPublico)
                     {
                         return View(avi);
                     }
@@ -465,7 +473,7 @@ namespace SIAC.Controllers
             if (!String.IsNullOrEmpty(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
-                if (avi != null && !avi.FlagAndamento)
+                if (avi != null && avi.FlagAndamento)
                 {
                     return View(avi);
                 }
