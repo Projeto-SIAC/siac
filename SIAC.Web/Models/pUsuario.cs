@@ -8,6 +8,8 @@ namespace SIAC.Models
 {
     public partial class Usuario
     {
+        public List<Ocupacao> Ocupacao => this.PessoaFisica.Ocupacao.ToList();
+
         public Dictionary<Disciplina, double?> DisciplinaMedia
         {
             get

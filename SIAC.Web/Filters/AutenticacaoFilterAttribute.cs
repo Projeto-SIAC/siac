@@ -10,20 +10,25 @@ namespace SIAC.Filters
     {
         public int[] Categorias { get; set; }
         public int[] Ocupacoes { get; set; }
+        public bool CoordenadoresAvi { get; set; } = false;
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var autenticado = Models.Sistema.Autenticado(Helpers.Sessao.UsuarioMatricula);
-                   
+
             if (!autenticado)
             {
-                filterContext.Result = new RedirectResult("~/?continuar="+filterContext.HttpContext.Request.Path);
+                filterContext.Result = new RedirectResult("~/?continuar=" + filterContext.HttpContext.Request.Path);
             }
             else if (Categorias != null && !Categorias.Contains(Helpers.Sessao.UsuarioCategoriaCodigo))
             {
-                filterContext.Result = new RedirectResult("~/?continuar="+filterContext.HttpContext.Request.Path);
+                filterContext.Result = new RedirectResult("~/?continuar=" + filterContext.HttpContext.Request.Path);
             }
-            else if (Ocupacoes != null && !Ocupacoes.ContainsOne(Models.Sistema.UsuarioAtivo[Helpers.Sessao.UsuarioMatricula].Usuario.PessoaFisica.Ocupacao.Select(a=>a.CodOcupacao).ToArray()))
+            else if (Ocupacoes != null && !Ocupacoes.ContainsOne(Models.Sistema.UsuarioAtivo[Helpers.Sessao.UsuarioMatricula].Usuario.Ocupacao.Select(a => a.CodOcupacao).ToArray()))
+            {
+                filterContext.Result = new RedirectResult("~/?continuar=" + filterContext.HttpContext.Request.Path);
+            }
+            else if (CoordenadoresAvi && !Models.Parametro.Obter().OcupacaoCoordenadorAvi.ContainsOne(Models.Sistema.UsuarioAtivo[Helpers.Sessao.UsuarioMatricula].Usuario.Ocupacao.Select(a => a.CodOcupacao).ToArray()))
             {
                 filterContext.Result = new RedirectResult("~/?continuar=" + filterContext.HttpContext.Request.Path);
             }
@@ -33,7 +38,7 @@ namespace SIAC.Filters
                 if (paths.Length > 0)
                 {
                     string codigo = paths[paths.Length - 1];
-                    if ((!paths.Contains("printar") && !paths.Contains("desistir") && !paths.Contains("resultado") && !paths.Contains("realizar")) && codigo != Helpers.Sessao.UsuarioAvaliacao) 
+                    if ((!paths.Contains("printar") && !paths.Contains("desistir") && !paths.Contains("resultado") && !paths.Contains("realizar")) && codigo != Helpers.Sessao.UsuarioAvaliacao)
                     {
                         // como sei se é acadêmica ou certificacao ou reposicao? '-'
                         filterContext.Result = new RedirectResult("~/dashboard/avaliacao/academica/realizar/" + Helpers.Sessao.UsuarioAvaliacao);

@@ -9,7 +9,7 @@ using SIAC.Helpers;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { 3, 2 })]
     public class ConfiguracoesController : Controller
     {
         public List<UsuarioOpiniao> opinioes
@@ -26,6 +26,7 @@ namespace SIAC.Controllers
             return View();
         }
 
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult Opinioes(string tab)
         {
             return View((object)tab);
@@ -60,6 +61,7 @@ namespace SIAC.Controllers
             return PartialView("_ListaOpinioes", lstOpinioes.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
         }
 
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult Parametros()
         {
             var model = new ViewModels.ConfiguracoesParametrosViewModel();
@@ -84,6 +86,7 @@ namespace SIAC.Controllers
             return View(model);
         }
 
+        [Filters.AutenticacaoFilter(CoordenadoresAvi = true)]
         public ActionResult Institucional(string tab)
         {
             if (String.IsNullOrEmpty(tab) || tab.ToLower() != "coordenadores")
