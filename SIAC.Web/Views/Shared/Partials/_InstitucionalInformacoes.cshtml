@@ -32,7 +32,7 @@
             {
                 <div class="title"><i class="dropdown icon"></i>Questionário</div>
                 <div class="content">
-                    <div class="ui basic segment">
+                    <div class="accordion">
                         @foreach (MapAviModulo modulo in Model.MapQuestoes)
                         {
                             <div class="title"><i class="dropdown icon"></i>@modulo.Modulo.Descricao</div>
@@ -42,10 +42,10 @@
                                     {
                                         <div class="title"><i class="dropdown icon"></i>@categoria.Categoria.Descricao</div>
                                         <div class="content">
-                                            <div class="accordion">
+                                            <div class="ui bulleted list">
                                                 @foreach (MapAviIndicador indicador in categoria.Indicadores)
                                                 {
-                                                    <div class="title">@indicador.Indicador.Descricao  <a class="ui label">@indicador.Questoes.Count Questões</a></div>
+                                                    <div class="item">@indicador.Indicador.Descricao  <a class="ui label">@indicador.Questoes.Count Questões</a></div>
                                                 }
                                             </div>
                                         </div>
