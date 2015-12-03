@@ -305,8 +305,8 @@
 siac.Utilitario = siac.Utilitario || (function () {
     // return 1 = a is bigger than b, 0 = a and b are same, -1 = a is smaller than b
     function compararData(strDateA, strDateB) {
-        timeDateA = Date.parse(strDateA);
-        timeDateB = Date.parse(strDateB);
+        var timeDateA = Date.parse(strDateA);
+        var timeDateB = Date.parse(strDateB);
         if (timeDateA > timeDateB) {
             return 1;
         }
@@ -323,12 +323,6 @@ siac.Utilitario = siac.Utilitario || (function () {
         timeDataAgora = new Date().getTime();
         timeData = Date.parse(strData);
         return (timeData > timeDataAgora);
-    }
-
-    function dataEPassado(strData) {
-        timeDataAgora = new Date().getTime();
-        timeData = Date.parse(strData);
-        return (timeData < timeDataAgora);
     }
 
     function validarCPF(strCPF) {
@@ -427,7 +421,6 @@ siac.Utilitario = siac.Utilitario || (function () {
     return {
         compararData: compararData,
         dataEFuturo: dataEFuturo,
-        dataEPassado: dataEPassado,
         validarCPF: validarCPF
     }
 })();

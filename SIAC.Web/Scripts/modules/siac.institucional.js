@@ -880,11 +880,11 @@ siac.Institucional.Agendar = (function () {
         var dataTermino = $('#txtDataTermino').val();
         var valido = true;
 
-        if (!$('#txtDataInicio').val()) {
+        if (!dataInicio) {
             $('.error.message .list').append('<li>Preencha a Data de Início</li>');
             valido = false;
         }
-        if (!$('#txtDataTermino').val()) {
+        if (!dataTermino) {
             $('.error.message .list').append('<li>Preencha a Data de Término</li>');
             valido = false;
         }
@@ -892,7 +892,7 @@ siac.Institucional.Agendar = (function () {
             $('.error.message .list').append('<li>A Data de Início não pode ser posterior à Data de Término</li>');
             valido = false;
         }
-        else if (siac.Utilitario.dataEPassado(dataInicio)) {
+        else if (siac.Utilitario.compararData(dataInicio,new Date().toJSON().slice(0,10)) == -1) {
             $('.error.message .list').append('<li>A Data de Início não pode ser inferior à Data de Hoje</li>');
             valido = false;
         }
@@ -931,6 +931,7 @@ siac.Institucional.Realizar = (function () {
             });
             $('.informacoes.modal').modal('show');
         });
+        $('.ui.modal').modal();
     }
     return {
         iniciar: iniciar

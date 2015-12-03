@@ -323,13 +323,13 @@ namespace SIAC.Controllers
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
 
-                if (avi != null && !avi.FlagAndamento)
+                if (avi != null && !avi.FlagRealizada)
                 {
                     if(avi.FlagPublico)
                     {
                         return View(avi);
                     }
-                    return RedirectToAction("Questionario", new { codigo = codigo });
+                    return RedirectToAction("Publico", new { codigo = codigo });
                 }
             }
             return RedirectToAction("Index");
@@ -343,7 +343,7 @@ namespace SIAC.Controllers
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
 
-                if (avi != null && !avi.FlagAndamento)
+                if (avi != null && !avi.FlagRealizada)
                 {
                     if (avi.Questoes.Count > 0)
                     {
@@ -368,7 +368,7 @@ namespace SIAC.Controllers
 
             switch (codigo)
             {
-                case 1:
+                case 8:
                     lstResultado = Usuario.Listar().Select(a => new Selecao
                     {
                         id = a.CodPessoaFisica.ToString(),
@@ -377,7 +377,7 @@ namespace SIAC.Controllers
                         category = "Pessoa"
                     });
                     break;
-                case 2:
+                case 7:
                     lstResultado = Turma.ListarOrdenadamente().Select(a => new Selecao
                     {
                         id = a.CodTurma,
@@ -386,7 +386,7 @@ namespace SIAC.Controllers
                         category = "Turma"
                     });
                     break;
-                case 3:
+                case 6:
                     lstResultado = Curso.ListarOrdenadamente().Select(a => new Selecao
                     {
                         id = a.CodCurso.ToString(),
@@ -395,7 +395,7 @@ namespace SIAC.Controllers
                         category = "Curso"
                     });
                     break;
-                case 4:
+                case 5:
                     lstResultado = Diretoria.ListarOrdenadamente().Select(a => new Selecao
                     {
                         id = a.CodComposto,
@@ -404,7 +404,7 @@ namespace SIAC.Controllers
                         category = "Diretoria"
                     });
                     break;
-                case 5:
+                case 4:
                     lstResultado = Campus.ListarOrdenadamente().Select(a => new Selecao
                     {
                         id = a.CodComposto,
@@ -413,7 +413,7 @@ namespace SIAC.Controllers
                         category = "Campus"
                     });
                     break;
-                case 6:
+                case 3:
                     lstResultado = ProReitoria.ListarOrdenadamente().Select(a => new Selecao
                     {
                         id = a.CodComposto,
@@ -422,7 +422,7 @@ namespace SIAC.Controllers
                         category = "Pró-Reitoria"
                     });
                     break;
-                case 7:
+                case 2:
                     lstResultado = Reitoria.ListarOrdenadamente().Select(a => new Selecao
                     {
                         id = a.CodComposto,
@@ -431,7 +431,7 @@ namespace SIAC.Controllers
                         category = "Reitoria"
                     });
                     break;
-                case 8:
+                case 1:
                     lstResultado = Instituicao.ListarOrdenadamente().Select(a => new Selecao
                     {
                         id = a.CodInstituicao.ToString(),

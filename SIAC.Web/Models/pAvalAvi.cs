@@ -67,16 +67,7 @@ namespace SIAC.Models
             }
         }
 
-        public List<AviPublico> Publico
-        {
-            get
-            {
-                if (FlagPublico)
-                    return this.AviPublico.ToList();
-                else
-                    return null;
-            }
-        }
+        public List<AviPublico> Publico => this.FlagPublico ? this.AviPublico.ToList() : null;
 
         public bool FlagAndamento
         {
@@ -93,21 +84,12 @@ namespace SIAC.Models
             }
         }
 
-        public bool FlagPublico
-        {
-            get
-            {
-                return this.AviPublico.Count > 0;
-            }
-        }
+        public bool FlagRealizada => this.Questoes.FirstOrDefault(a => a.AviQuestaoPessoaResposta.Count > 0) != null;
 
-        public bool FlagQuestionario
-        {
-            get
-            {
-                return this.Questoes.Count > 0;
-            }
-        }
+        public bool FlagPublico => this.AviPublico.Count > 0;
+
+        public bool FlagQuestionario => this.Questoes.Count > 0;
+
 
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
