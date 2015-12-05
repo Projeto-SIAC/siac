@@ -10,7 +10,9 @@
             $('.ui.checkbox').checkbox();
             $('.ui.accordion').accordion();
             $('.ui.modal').modal();
-
+            $('.ui.search.dropdown').dropdown({
+                allowAdditions: true
+            });
             $('.informacoes.button').click(function () {
                 $('.informacoes.modal').modal('show');
             });
@@ -41,7 +43,14 @@
     <div class="two fields">
         <div class="field">
             <label>Campos</label>
-            <textarea name="txtCampos" placeholder="Campos">@Html.Raw("Nome\nData")</textarea>
+            @*<textarea name="txtCampos" placeholder="Campos">@Html.Raw("Nome\nData")</textarea>*@
+            <select name="ddlCampos" tabindex="0" class="ui search dropdown" multiple>
+                <option value="">Campos</option>
+                <option value="Nome" selected>Nome</option>
+                <option value="Data">Data</option>
+                <option value="Turma">Turma</option>
+                <option value="Curso">Curso</option>
+            </select>
         </div>
         <div class="field">
             <label>Instruções</label>

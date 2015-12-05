@@ -9,22 +9,22 @@
     <div class="stackable doubling four columns centered row">
         @if (Sessao.UsuarioCategoriaCodigo == 3)
         {
-            Html.Partial("_Atalho", new ViewDataDictionary() {
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Index", "Usuario") },
                 { "Icone", "users" },
                 { "Descricao", "Usuários" }
             });
-            Html.Partial("_Atalho", new ViewDataDictionary() {
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Parametros") },
                 { "Icone", "options" },
                 { "Descricao", "Parâmetros" }
             });
-            Html.Partial("_Atalho", new ViewDataDictionary() {
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Index", "Visitante") },
                 { "Icone", "spy" },
                 { "Descricao", "Visitantes" }
             });
-            Html.Partial("_Atalho", new ViewDataDictionary() {
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Opinioes") },
                 { "Icone", "bookmark" },
                 { "Descricao", "Abrir Opiniões" }
