@@ -73,9 +73,9 @@ namespace SIAC.Controllers
                     {
                         model.Instrucoes = form["txtInstrucoes"].Split('\n');
                     }
-                    if (!String.IsNullOrEmpty(form["txtCampos"]))
+                    if (!String.IsNullOrEmpty(form["ddlCampos"]))
                     {
-                        model.Campos = form["txtCampos"].Split('\n');
+                        model.Campos = form["ddlCampos"].Split(',');
                     }
 
                     if (model.Arquivar)
