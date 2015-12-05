@@ -100,18 +100,21 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Filters.AutenticacaoFilter(CoordenadoresAvi = true)]
         public void AlterarOcupacoesCoordenadores(int[] ocupacoes)
         {
             Parametro.AtualizarOcupacoesCoordenadores(ocupacoes);
         }
 
         [HttpPost]
+        [Filters.AutenticacaoFilter(CoordenadoresAvi = true)]
         public void AdicionarOcupacaoCoordenador(int codPessoaFisica)
         {
             PessoaFisica.AdicionarOcupacao(codPessoaFisica, Sistema.CodOcupacaoCoordenadorAvi);            
         }
 
         [HttpPost]
+        [Filters.AutenticacaoFilter(CoordenadoresAvi = true)]
         public void RemoverOcupacaoCoordenador(int[] codPessoaFisica)
         {
             foreach (var codPessoa in codPessoaFisica)
@@ -121,6 +124,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Filters.AutenticacaoFilter(CoordenadoresAvi = true)]
         public ActionResult ListarPessoa(string pesquisa)
         {
             if (!String.IsNullOrWhiteSpace(pesquisa))
