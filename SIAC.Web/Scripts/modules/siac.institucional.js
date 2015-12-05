@@ -931,8 +931,71 @@ siac.Institucional.Realizar = (function () {
             });
             $('.informacoes.modal').modal('show');
         });
+        $('.ui.accordion').accordion({ animateChildren: false });
         $('.ui.modal').modal();
+
+        $('input[type="radio"]').change(function () {
+            //var _questao = $(this).parents('[data-questao]');
+            //var id = $(this).attr('id');
+            //var _alternativaDiscursiva = _questao.find($('#'+id));
+            //if(_alternativaDiscursiva.length > 0){
+            //    _alternativaDiscursiva.removeAttr('readonly');
+            //    alert('inquerito');
+            //}
+            //else {
+                enviarRespostaObjetiva(this);
+            //}
+        });
+
+        $('textarea').change(function () {
+            enviarRespostaDiscursiva(this);
+        });
     }
+
+    function enviarRespostaObjetiva(input) {
+        var questaoOrdem = $(input).parents('[data-questao]').data('questao');
+        var alternativa = $(input).val();
+        $.ajax({
+            type: 'POST',
+            url: '/institucional/EnviarRespostaObjetiva/' + _codAvaliacao,
+            data: {
+                ordem: questaoOrdem,
+                alternativa: alternativa
+            },
+            error: function (data) {
+                console.log(data);
+            },
+            success: function(){
+                //$(input).parents('[data-questao]').addClass('green');
+            },
+            complete: function () {
+                console.log(questaoOrdem, alternativa);
+            }
+        })
+    }
+
+    function enviarRespostaDiscursiva(textarea) {
+        var questaoOrdem = $(textarea).parents('[data-questao]').data('questao');
+        var resposta = $(textarea).val();
+        $.ajax({
+            type: 'POST',
+            url: '/institucional/EnviarRespostaDiscursiva/' + _codAvaliacao,
+            data: {
+                ordem: questaoOrdem,
+                resposta: resposta
+            },
+            error: function (data) {
+                console.log(data);
+            },
+            success: function () {
+                //$(input).parents('[data-questao]').addClass('green');
+            },
+            complete: function () {
+                console.log(questaoOrdem, resposta);
+            }
+        })
+    }
+
     return {
         iniciar: iniciar
     }

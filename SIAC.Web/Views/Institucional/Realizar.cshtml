@@ -1,15 +1,76 @@
-﻿@model SIAC.Models.AvalAvi
+﻿@model SIAC.ViewModels.InstitucionalRealizarViewModel
 @{
-    ViewBag.Title = "Realizar "+Model.Avaliacao.CodAvaliacao;
+    ViewBag.Title = "Realizar " + Model.Avi.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    int indMod = 1;
+    int indCat = 1;
+    int indInd = 1;
+    int indQue = 1;
 }
 
 <h2>
     @ViewBag.Title
     <div class="ui right floated informacoes button">Informações</div>
 </h2>
-
-@Html.Partial("_InstitucionalInformacoes", Model)
+<br />
+<form class="ui form">
+    @foreach (MapAviModulo modulo in Model.Avi.MapQuestoes)
+    {
+        <h2 class="ui header">@(indMod + ". " + modulo.Modulo.Descricao)</h2>
+        foreach (MapAviCategoria categoria in modulo.Categorias)
+        {
+            <h3 class="ui header">@(indMod + "." + indCat + ". " + categoria.Categoria.Descricao)</h3>
+            foreach (MapAviIndicador indicador in categoria.Indicadores)
+            {
+                <h4 class="ui header">@(indMod + "." + indCat + "." + indInd + ". " + indicador.Indicador.Descricao)</h4>
+                foreach (AviQuestao questao in indicador.Questoes)
+                {
+                    AviQuestaoPessoaResposta resposta = Model.Respostas.FirstOrDefault(pr => pr.CodOrdem == questao.CodOrdem);
+                    <div class="ui segment" data-questao="@questao.CodOrdem">
+                        <h4 class="ui dividing header" data-content="@questao.Observacao">
+                            @(indMod + "." + indCat + "." + indInd + "." + indQue + ". " + questao.Enunciado.Replace(Environment.NewLine, "</br>"))
+                        </h4>
+                        @if (questao.FlagDiscursiva.HasValue && questao.FlagDiscursiva.Value)
+                        {
+                            <textarea rows="3" name="txtResposta@(questao.CodOrdem)" class="input" placeholder="Resposta">@(resposta?.RespDiscursiva.RemoveSpaces())</textarea>
+                        }
+                        else
+                        {
+                            int marcada = resposta != null ? resposta.RespAlternativa.Value : -1;
+                            <div class="ui very relaxed list">
+                                @foreach (AviQuestaoAlternativa alternativa in questao.AviQuestaoAlternativa)
+                                {
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" name="rdoResposta@(questao.CodOrdem)" value="@alternativa.CodAlternativa" @(marcada == alternativa.CodAlternativa ? "checked" : "")/>
+                                            <label><b>@((alternativa.CodAlternativa - 1).GetIndiceAlternativa())</b>) @alternativa.Enunciado</label>
+                                        </div>
+                                    </div>
+                                    if (alternativa.FlagAlternativaDiscursiva)
+                                    {
+                                        <div class="field">
+                                            <input type="text" readonly id="rdoResposta@(questao.CodOrdem)" placeholder="@alternativa.Enunciado"/>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+                    indQue++;
+                }
+                indQue = 1;
+                indInd++;
+            }
+            indInd = 1;
+            indCat++;
+        }
+        indCat = 1;
+        indMod++;
+    }
+</form>
+@Html.Partial("_InstitucionalInformacoes", Model.Avi)
 
 @section Scripts{
     @Scripts.Render("~/bundles/js/institucional")

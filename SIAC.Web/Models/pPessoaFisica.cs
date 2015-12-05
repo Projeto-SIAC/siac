@@ -48,6 +48,11 @@ namespace SIAC.Models
             return contexto.PessoaFisica.FirstOrDefault(p=>p.CodPessoa == codPessoaFisica);
         }
 
+        public static PessoaFisica ListarPorMatricula(string matricula)
+        {
+            return contexto.Usuario.FirstOrDefault(u => u.Matricula == matricula)?.PessoaFisica;
+        }
+
         public static List<PessoaFisica> ListarPorTurma(string codTurma)
         {
             var dtHoje = DateTime.Now;

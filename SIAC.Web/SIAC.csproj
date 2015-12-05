@@ -434,6 +434,7 @@
     <Compile Include="Models\pAviModulo.cs" />
     <Compile Include="Models\pAviPublico.cs" />
     <Compile Include="Models\pAviQuestao.cs" />
+    <Compile Include="Models\pAviQuestaoPessoaResposta.cs" />
     <Compile Include="Models\pAviTipoPublico.cs" />
     <Compile Include="Models\pdbSIACEntities.cs" />
     <Compile Include="Models\Pessoa.cs">
@@ -574,6 +575,7 @@
     <Compile Include="ViewModels\ImpressaoAvaliacaoViewModel.cs" />
     <Compile Include="ViewModels\InstitucionalGerarQuestaoViewModel.cs" />
     <Compile Include="ViewModels\InstitucionalPublicoViewModel.cs" />
+    <Compile Include="ViewModels\InstitucionalRealizarViewModel.cs" />
     <Compile Include="ViewModels\QuestaoCadastrarViewModel.cs" />
     <Compile Include="ViewModels\QuestaoIndexViewModel.cs" />
     <Compile Include="ViewModels\UsuarioIndexViewModel.cs" />

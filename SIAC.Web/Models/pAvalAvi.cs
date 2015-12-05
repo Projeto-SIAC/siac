@@ -101,6 +101,11 @@ namespace SIAC.Models
                                                   && q.CodOrdem == ordem);
         }
 
+        public AviQuestao ObterQuestao(int ordem)
+        {
+            return this.AviQuestao.FirstOrDefault(q => q.CodOrdem == ordem);
+        }
+
         public static void Inserir(AvalAvi avi)
         {
             contexto.AvalAvi.Add(avi);
