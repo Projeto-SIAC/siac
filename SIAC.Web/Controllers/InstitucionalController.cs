@@ -522,5 +522,23 @@ namespace SIAC.Controllers
             return Json("/institucional/agendar/" + codigo);
 
         }
+        // POST: institucional/EnviarAlternativaDiscursiva/{codigo}
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        public ActionResult EnviarAlternativaDiscursiva(string codigo, int ordem, int alternativa,string resposta)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
+                if (avi != null /*&& !avi.FlagAndamento*/)
+                {
+                    AviQuestao questao = avi.ObterQuestao(ordem);
+
+                    AviQuestaoPessoaResposta.InserirResposta(questao, PessoaFisica.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula), alternativa, resposta);
+                }
+            }
+            return Json("/institucional/agendar/" + codigo);
+
+        }
     }
 }

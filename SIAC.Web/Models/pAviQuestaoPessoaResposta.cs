@@ -20,7 +20,7 @@ namespace SIAC.Models
                                                         .OrderByDescending(pr => pr.CodRespostaOrdem)
                                                         .FirstOrDefault();
 
-            int novaOrdemResposta = resposta != null ? resposta.CodRespostaOrdem : 1;
+            int novaOrdemResposta = resposta != null ? resposta.CodRespostaOrdem + 1 : 1;
 
             AviQuestaoPessoaResposta novaResposta = new AviQuestaoPessoaResposta
             {
@@ -28,7 +28,7 @@ namespace SIAC.Models
                 PessoaFisica = pessoa
             };
 
-            novaResposta.CodRespostaOrdem = novaOrdemResposta + 1;
+            novaResposta.CodRespostaOrdem = novaOrdemResposta;
             novaResposta.RespAlternativa = alternativa;
             novaResposta.RespData = DateTime.Now;
 
@@ -47,7 +47,7 @@ namespace SIAC.Models
                                                         .OrderByDescending(pr => pr.CodRespostaOrdem)
                                                         .FirstOrDefault();
 
-            int novaOrdemResposta = resposta != null ? resposta.CodRespostaOrdem : 1;
+            int novaOrdemResposta = resposta != null ? resposta.CodRespostaOrdem + 1 : 1;
 
             AviQuestaoPessoaResposta novaResposta = new AviQuestaoPessoaResposta
             {
@@ -55,7 +55,35 @@ namespace SIAC.Models
                 PessoaFisica = pessoa
             };
 
-            novaResposta.CodRespostaOrdem = novaOrdemResposta + 1;
+            novaResposta.CodRespostaOrdem = novaOrdemResposta;
+            novaResposta.RespDiscursiva = texto;
+            novaResposta.RespData = DateTime.Now;
+
+            contexto.AviQuestaoPessoaResposta.Add(novaResposta);
+            contexto.SaveChanges();
+        }
+
+        public static void InserirResposta(AviQuestao questao, PessoaFisica pessoa, int alternativa, string texto)
+        {
+            AviQuestaoPessoaResposta resposta = contexto.AviQuestaoPessoaResposta
+                                                        .Where(pr => pr.Ano == questao.Ano
+                                                                && pr.Semestre == questao.Semestre
+                                                                && pr.CodTipoAvaliacao == questao.CodTipoAvaliacao
+                                                                && pr.NumIdentificador == questao.NumIdentificador
+                                                                && pr.CodOrdem == questao.CodOrdem)
+                                                        .OrderByDescending(pr => pr.CodRespostaOrdem)
+                                                        .FirstOrDefault();
+
+            int novaOrdemResposta = resposta != null ? resposta.CodRespostaOrdem + 1 : 1;
+
+            AviQuestaoPessoaResposta novaResposta = new AviQuestaoPessoaResposta
+            {
+                AviQuestao = questao,
+                PessoaFisica = pessoa
+            };
+
+            novaResposta.CodRespostaOrdem = novaOrdemResposta;
+            novaResposta.RespAlternativa = alternativa;
             novaResposta.RespDiscursiva = texto;
             novaResposta.RespData = DateTime.Now;
 

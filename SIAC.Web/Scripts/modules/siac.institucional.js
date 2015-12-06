@@ -935,16 +935,28 @@ siac.Institucional.Realizar = (function () {
         $('.ui.modal').modal();
 
         $('input[type="radio"]').change(function () {
-            //var _questao = $(this).parents('[data-questao]');
-            //var id = $(this).attr('id');
-            //var _alternativaDiscursiva = _questao.find($('#'+id));
-            //if(_alternativaDiscursiva.length > 0){
-            //    _alternativaDiscursiva.removeAttr('readonly');
-            //    alert('inquerito');
-            //}
-            //else {
+            var _questao = $(this).parents('[data-questao]');
+            var alternativa = $(this).data('alternativa');
+            var _alternativaDiscursiva = _questao.find($('input[type=text]'));
+            
+            if(_alternativaDiscursiva.attr('id') == alternativa){
+                _alternativaDiscursiva.removeAttr('readonly').focus();
+            }
+            else {
+                _alternativaDiscursiva.attr('readonly','readonly');
                 enviarRespostaObjetiva(this);
-            //}
+            }
+        });
+
+        $('input[type="text"]').change(function () {
+            var _questao = $(this).parents('[data-questao]');
+            var id = $(this).attr('id');
+
+            var $input = _questao.find('[data-alternativa=' + id + ']');
+
+            if ($input.is(':checked')) {
+                enviarRespostaAlternativaDiscursiva(this);
+            }
         });
 
         $('textarea').change(function () {
@@ -992,6 +1004,31 @@ siac.Institucional.Realizar = (function () {
             },
             complete: function () {
                 console.log(questaoOrdem, resposta);
+            }
+        })
+    }
+
+    function enviarRespostaAlternativaDiscursiva(input) {
+        var _questao = $(input).parents('[data-questao]');
+        var questaoOrdem = _questao.data('questao');
+        var resposta = $(input).val();
+        var alternativa = _questao.find(':checked').val();
+        $.ajax({
+            type: 'POST',
+            url: '/institucional/EnviarAlternativaDiscursiva/' + _codAvaliacao,
+            data: {
+                ordem: questaoOrdem,
+                alternativa: alternativa,
+                resposta: resposta
+            },
+            error: function (data) {
+                console.log(data);
+            },
+            success: function () {
+                //$(input).parents('[data-questao]').addClass('green');
+            },
+            complete: function () {
+                console.log(questaoOrdem, alternativa);
             }
         })
     }

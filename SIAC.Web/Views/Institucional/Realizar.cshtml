@@ -44,14 +44,14 @@
                                 {
                                     <div class="field">
                                         <div class="ui radio checkbox">
-                                            <input type="radio" name="rdoResposta@(questao.CodOrdem)" value="@alternativa.CodAlternativa" @(marcada == alternativa.CodAlternativa ? "checked" : "")/>
+                                            <input type="radio" data-alternativa="txtAlternativa@(alternativa.CodAlternativa)" name="rdoResposta@(questao.CodOrdem)" value="@alternativa.CodAlternativa" @(marcada == alternativa.CodAlternativa ? "checked" : "")/>
                                             <label><b>@((alternativa.CodAlternativa - 1).GetIndiceAlternativa())</b>) @alternativa.Enunciado</label>
                                         </div>
                                     </div>
                                     if (alternativa.FlagAlternativaDiscursiva)
                                     {
                                         <div class="field">
-                                            <input type="text" readonly id="rdoResposta@(questao.CodOrdem)" placeholder="@alternativa.Enunciado"/>
+                                            <input type="text" @(marcada == alternativa.CodAlternativa ?"" : "readonly") id="txtAlternativa@(alternativa.CodAlternativa)" placeholder="@alternativa.Enunciado" value="@(marcada == alternativa.CodAlternativa ? resposta.RespDiscursiva : "")"/>
                                         </div>
                                     }
                                 }
