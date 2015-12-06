@@ -69,11 +69,19 @@ namespace SIAC.Models
 
         public List<AviPublico> Publico => this.FlagPublico ? this.AviPublico.ToList() : null;
 
+        public bool FlagQuestionario => this.Questoes.Count > 0;
+
+        public bool FlagPublico => this.AviPublico.Count > 0;
+
+        public bool FlagAgendada => this.Avaliacao.DtAplicacao.HasValue && this.DtTermino.HasValue;
+
+        public bool FlagRealizada => this.Questoes.FirstOrDefault(a => a.AviQuestaoPessoaResposta.Count > 0) != null;
+
         public bool FlagAndamento
         {
             get
             {
-                if (this.Avaliacao.DtAplicacao.HasValue && this.DtTermino.HasValue)
+                if (this.FlagAgendada)
                 {
                     if (this.Avaliacao.DtAplicacao.Value <= DateTime.Now && this.DtTermino.Value >= DateTime.Now)
                     {
@@ -84,12 +92,9 @@ namespace SIAC.Models
             }
         }
 
-        public bool FlagRealizada => this.Questoes.FirstOrDefault(a => a.AviQuestaoPessoaResposta.Count > 0) != null;
+        public bool FlagConcluida => this.DtTermino < DateTime.Now;
 
-        public bool FlagPublico => this.AviPublico.Count > 0;
-
-        public bool FlagQuestionario => this.Questoes.Count > 0;
-
+        public int QteQuestoes => this.Questoes.Count;
 
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
@@ -110,6 +115,22 @@ namespace SIAC.Models
         {
             contexto.AvalAvi.Add(avi);
             contexto.SaveChanges();
+        }
+
+        public static List<AvalAvi> Listar()
+        {
+            return contexto.AvalAvi.ToList();
+        }
+
+        public static List<AvalAvi> ListarPorColaborador(string matricula)
+        {
+            Models.Colaborador colaborador = Models.Colaborador.ListarPorMatricula(matricula);
+
+            if (colaborador != null)
+            {
+                return contexto.AvalAvi.Where(avi => avi.CodColabCoordenador == colaborador.CodColaborador).ToList();
+            }
+            return new List<AvalAvi>();
         }
 
         public static AvalAvi ListarPorCodigoAvaliacao(string codigo)
@@ -277,6 +298,7 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
+        
         //VERIFICAÇÃO PARA FILTRAR OS REALIZADORES DA AVI... INCOMPLETO
         public bool ERealizadaPor(string usuarioMatricula,int usuarioCodCategoria)
         {

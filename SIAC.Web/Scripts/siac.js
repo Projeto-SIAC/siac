@@ -216,6 +216,9 @@
             if (pathname == '/institucional/gerar') {
                 siac.Institucional.Gerar.iniciar();
             }
+            else if (pathname == '/institucional/historico') {
+                siac.Institucional.Historico.iniciar();
+            }
             else if (/\/institucional\/configuracao(|\/indicador|\/categoria|\/modulo)$/.test(pathname)) {
                 siac.Institucional.Configuracao.iniciar();
             }

@@ -10,11 +10,31 @@ namespace SIAC.Controllers
     [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2, 3 })]
     public class InstitucionalController : Controller
     {
+        public List<AvalAvi> Institucionais
+        {
+            get
+            {
+                if (Helpers.Sessao.UsuarioCategoriaCodigo == 3)
+                {
+                    return AvalAvi.ListarPorColaborador(Helpers.Sessao.UsuarioMatricula);
+                }
+                else
+                {
+                    return AvalAvi.Listar();
+                }
+            }
+        }
+
         // GET: institucional/
         public ActionResult Index()
         {
             Usuario usuario = Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
             return View(usuario);
+        }
+        // GET: institucional/Historico
+        public ActionResult Historico()
+        {
+            return View();
         }
         // GET: institucional/Configuracao
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
@@ -26,6 +46,64 @@ namespace SIAC.Controllers
             model.Indicadores = AviIndicador.ListarOrdenadamente();
 
             return View(model);
+        }
+        // POST: institucional/Listar
+        [HttpPost]
+        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias)
+        {
+            var qte = 12;
+            var institucionais = Institucionais;
+            pagina = pagina ?? 1;
+            if (!String.IsNullOrWhiteSpace(pesquisa))
+            {
+                institucionais = Institucionais.Where(a => a.Avaliacao.CodAvaliacao.ToLower().Contains(pesquisa.ToLower())).ToList();
+            }
+            //if (!String.IsNullOrWhiteSpace(disciplina))
+            //{
+            //    academicas = academicas.Where(a => a.CodDisciplina == int.Parse(disciplina)).ToList();
+            //}
+            if (categorias != null)
+            {
+                if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    institucionais = institucionais.Where(a => a.Avaliacao.FlagAgendada).ToList();
+                }
+                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    institucionais = institucionais.Where(a => a.Avaliacao.FlagArquivo).ToList();
+                }
+                else if (!categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    institucionais = institucionais.Where(a => a.Avaliacao.FlagRealizada).ToList();
+                }
+                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    institucionais = institucionais.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagArquivo).ToList();
+                }
+                else if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                {
+                    institucionais = institucionais.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagAgendada).ToList();
+                }
+                else if (categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                {
+                    institucionais = institucionais.Where(a => a.Avaliacao.FlagArquivo || a.Avaliacao.FlagAgendada).ToList();
+                }
+            }
+
+            switch (ordenar)
+            {
+                case "data_desc":
+                    institucionais = institucionais.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+                case "data":
+                    institucionais = institucionais.OrderBy(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+                default:
+                    institucionais = institucionais.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
+                    break;
+            }
+
+            return PartialView("_ListaInstitucional", institucionais.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
         }
         // POST: institucional/CadastrarModulo
         [HttpPost]

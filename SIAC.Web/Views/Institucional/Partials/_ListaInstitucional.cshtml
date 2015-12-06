@@ -1,0 +1,86 @@
+﻿@model List<AvalAvi>
+
+@foreach (var avi in Model)
+{
+    <div class="card">
+        <div class="content">
+            <a href="@Url.Action("Realizar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="header">
+                @avi.Avaliacao.CodAvaliacao
+            </a>
+            <div class="meta">
+                <span title="@avi.Avaliacao.DtCadastro.ToBrazilianString()">@avi.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
+            </div>
+            <div class="description">
+                @if (avi.FlagQuestionario)
+                {
+                    <p><b>Quantidade de Questões</b>: @avi.QteQuestoes</p>
+                }
+                @*@if (avi.FlagAgendada)
+                {
+                    <p><b>Início</b>: @avi.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy")</p>
+                    <p><b>Término</b>: @avi.DtTermino.Value.ToString("dd/MM/yyyy")</p>
+                }*@
+            </div>
+        </div>
+        <div class="extra content">
+            @if (avi.FlagAgendada)
+                {
+                <div class="ui label">Início:<div class="detail">@avi.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy")</div></div>
+                <div class="ui label">Término:<div class="detail">@avi.DtTermino.Value.ToString("dd/MM/yyyy")</div></div>
+            }
+            @*<div class="ui tag right label">
+                @acad.Disciplina.Descricao
+                Disciplina
+            </div>*@
+        </div>
+        @*@if (avi.FlagRealizada)
+        {
+            @*if (Sessao.UsuarioCategoriaCodigo == 1)
+            {
+                if (acad.AlunosRealizaram.Where(a => a.MatrAluno == Sessao.UsuarioMatricula).Count() > 0)
+                {
+                    <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
+                    <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+                }
+                else
+                {
+                    <span class="ui attached top right label"><i class="remove icon"></i>Ausente</span>
+                    <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
+                }
+            }
+            else
+            {
+                <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
+                <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+            }        }
+        else*@
+            @if (avi.FlagConcluida /*acad.Avaliacao.FlagArquivo*/)
+            {
+                <span class="ui attached top right label"><i class="checkmark icon"></i>Concluída</span>
+                if (Sessao.UsuarioCategoriaCodigo == 3)
+                {
+                    <a href="@Url.Action("Resultado", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+                }
+            }
+            else if (avi.FlagAndamento)
+            {
+                <span class="ui attached top right label"><i class="clock icon"></i>Agendada</span>
+                if (Sessao.UsuarioCategoriaCodigo == 2)
+                {
+                    <a href="@Url.Action("Agendada", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Aplicar</a>
+                }
+            }
+            else if (Sessao.UsuarioCategoriaCodigo == 2)
+            {
+                <div class="ui buttons">
+                    <a href="@Url.Action("Configurar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
+                    <a href="@Url.Action("Agendar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
+                </div>
+            }
+            @if (Sessao.UsuarioCategoriaCodigo == 1)
+            {
+                <a href="@Url.Action("Detalhe", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
+            }
+    </div>
+}
+

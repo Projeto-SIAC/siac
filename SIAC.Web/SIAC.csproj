@@ -724,6 +724,8 @@
     <Content Include="Views\Institucional\Realizar.cshtml" />
     <Content Include="Views\Shared\Partials\_InstitucionalInformacoes.cshtml" />
     <Content Include="Views\Shared\Partials\_Menu.cshtml" />
+    <Content Include="Views\Institucional\Historico.cshtml" />
+    <Content Include="Views\Institucional\Partials\_ListaInstitucional.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
