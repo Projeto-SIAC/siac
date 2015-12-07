@@ -58,38 +58,33 @@ namespace SIAC.Controllers
             {
                 institucionais = Institucionais.Where(a => a.Avaliacao.CodAvaliacao.ToLower().Contains(pesquisa.ToLower())).ToList();
             }
-            //if (!String.IsNullOrWhiteSpace(disciplina))
-            //{
-            //    academicas = academicas.Where(a => a.CodDisciplina == int.Parse(disciplina)).ToList();
-            //}
             if (categorias != null)
             {
-                if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                if (categorias.Contains("gerada") && !categorias.Contains("andamento") && !categorias.Contains("concluida"))
                 {
-                    institucionais = institucionais.Where(a => a.Avaliacao.FlagAgendada).ToList();
+                    institucionais = institucionais.Where(a => !a.FlagAndamento && !a.FlagConcluida).ToList();
                 }
-                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                else if (!categorias.Contains("gerada") && categorias.Contains("andamento") && !categorias.Contains("concluida"))
                 {
-                    institucionais = institucionais.Where(a => a.Avaliacao.FlagArquivo).ToList();
+                    institucionais = institucionais.Where(a => a.FlagAndamento && !a.FlagConcluida).ToList();
                 }
-                else if (!categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                else if (!categorias.Contains("gerada") && !categorias.Contains("andamento") && categorias.Contains("concluida"))
                 {
-                    institucionais = institucionais.Where(a => a.Avaliacao.FlagRealizada).ToList();
+                    institucionais = institucionais.Where(a => a.FlagConcluida).ToList();
                 }
-                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                else if (!categorias.Contains("gerada") && categorias.Contains("andamento") && categorias.Contains("concluida"))
                 {
-                    institucionais = institucionais.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagArquivo).ToList();
+                    institucionais = institucionais.Where(a => a.FlagAndamento || a.FlagConcluida).ToList();
                 }
-                else if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
+                else if (categorias.Contains("gerada") && !categorias.Contains("andamento") && categorias.Contains("concluida"))
                 {
-                    institucionais = institucionais.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagAgendada).ToList();
+                    institucionais = institucionais.Where(a => !a.FlagAndamento || a.FlagConcluida).ToList();
                 }
-                else if (categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
+                else if (categorias.Contains("gerada") && categorias.Contains("andamento") && !categorias.Contains("concluida"))
                 {
-                    institucionais = institucionais.Where(a => a.Avaliacao.FlagArquivo || a.Avaliacao.FlagAgendada).ToList();
+                    institucionais = institucionais.Where(a => a.FlagAndamento || !a.FlagConcluida).ToList();
                 }
             }
-
             switch (ordenar)
             {
                 case "data_desc":

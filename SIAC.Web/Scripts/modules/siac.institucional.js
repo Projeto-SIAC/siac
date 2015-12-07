@@ -1048,6 +1048,7 @@ siac.Institucional.Historico = (function () {
     var pesquisa = "";
 
     function iniciar() {
+
         $(window).scroll(function () {
             if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
                 if ($('.cards .card').length == (_controleQte * pagina)) {
@@ -1056,7 +1057,7 @@ siac.Institucional.Historico = (function () {
                 }
             }
         });
-        $('.ui.dropdown').dropdown();
+        //$('.ui.dropdown').dropdown();
 
         $('.pesquisa input').keyup(function () {
             var _this = this;
@@ -1095,12 +1096,12 @@ siac.Institucional.Historico = (function () {
             listar();
         });
 
-        $('.disciplina.item').click(function () {
-            var $_this = $(this);
-            pagina = 1;
-            disciplina = $_this.attr('data-disciplina');
-            listar();
-        });
+        //$('.disciplina.item').click(function () {
+        //    var $_this = $(this);
+        //    pagina = 1;
+        //    disciplina = $_this.attr('data-disciplina');
+        //    listar();
+        //});
 
         $('.ordenar.item').click(function () {
             var $_this = $(this);

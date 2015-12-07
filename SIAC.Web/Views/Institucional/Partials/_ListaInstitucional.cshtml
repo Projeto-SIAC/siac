@@ -16,71 +16,77 @@
                     <p><b>Quantidade de Questões</b>: @avi.QteQuestoes</p>
                 }
                 @*@if (avi.FlagAgendada)
-                {
-                    <p><b>Início</b>: @avi.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy")</p>
-                    <p><b>Término</b>: @avi.DtTermino.Value.ToString("dd/MM/yyyy")</p>
-                }*@
+                    {
+                        <p><b>Início</b>: @avi.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy")</p>
+                        <p><b>Término</b>: @avi.DtTermino.Value.ToString("dd/MM/yyyy")</p>
+                    }*@
             </div>
         </div>
         <div class="extra content">
             @if (avi.FlagAgendada)
-                {
+            {
                 <div class="ui label">Início:<div class="detail">@avi.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy")</div></div>
                 <div class="ui label">Término:<div class="detail">@avi.DtTermino.Value.ToString("dd/MM/yyyy")</div></div>
             }
             @*<div class="ui tag right label">
-                @acad.Disciplina.Descricao
-                Disciplina
-            </div>*@
+                    @acad.Disciplina.Descricao
+                    Disciplina
+                </div>*@
         </div>
         @*@if (avi.FlagRealizada)
-        {
-            @*if (Sessao.UsuarioCategoriaCodigo == 1)
             {
-                if (acad.AlunosRealizaram.Where(a => a.MatrAluno == Sessao.UsuarioMatricula).Count() > 0)
+                @*if (Sessao.UsuarioCategoriaCodigo == 1)
                 {
-                    <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
-                    <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+                    if (acad.AlunosRealizaram.Where(a => a.MatrAluno == Sessao.UsuarioMatricula).Count() > 0)
+                    {
+                        <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
+                        <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+                    }
+                    else
+                    {
+                        <span class="ui attached top right label"><i class="remove icon"></i>Ausente</span>
+                        <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
+                    }
                 }
                 else
                 {
-                    <span class="ui attached top right label"><i class="remove icon"></i>Ausente</span>
-                    <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
-                }
-            }
-            else
+                    <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
+                    <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+                }        }
+            else*@
+        @if (Sessao.UsuarioCategoriaCodigo == 3)
+        {
+            if (!avi.FlagQuestionario)
             {
-                <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
-                <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
-            }        }
-        else*@
-            @if (avi.FlagConcluida /*acad.Avaliacao.FlagArquivo*/)
+                <span class="ui attached top right label"><i class="certificate icon"></i>Gerada</span>
+                <a href="@Url.Action("Questionario", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Questionário</a>
+            }
+            else if (!avi.FlagPublico)
+            {
+                <span class="ui attached top right label"><i class="list icon"></i>Preenchida</span>
+                <a href="@Url.Action("Publico", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Público</a>
+            }
+            else if (!avi.FlagAgendada)
+            {
+                <span class="ui attached top right label"><i class="users icon"></i>Destinada</span>
+                <a href="@Url.Action("Agendar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
+            }
+            else if (!avi.FlagAndamento && !avi.FlagConcluida)
+            {
+                <span class="ui attached top right label"><i class="wait icon"></i>Configurada</span>
+                <a href="@Url.Action("Agendar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
+            }
+            else if (!avi.FlagConcluida)
+            {
+                <span class="ui attached top right label"><i class="write icon"></i>Andamento</span>
+                <a href="@Url.Action("Resultado", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+            }
+            else if (avi.FlagConcluida)
             {
                 <span class="ui attached top right label"><i class="checkmark icon"></i>Concluída</span>
-                if (Sessao.UsuarioCategoriaCodigo == 3)
-                {
-                    <a href="@Url.Action("Resultado", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
-                }
+                <a href="@Url.Action("Resultado", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
             }
-            else if (avi.FlagAndamento)
-            {
-                <span class="ui attached top right label"><i class="clock icon"></i>Agendada</span>
-                if (Sessao.UsuarioCategoriaCodigo == 2)
-                {
-                    <a href="@Url.Action("Agendada", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Aplicar</a>
-                }
-            }
-            else if (Sessao.UsuarioCategoriaCodigo == 2)
-            {
-                <div class="ui buttons">
-                    <a href="@Url.Action("Configurar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
-                    <a href="@Url.Action("Agendar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
-                </div>
-            }
-            @if (Sessao.UsuarioCategoriaCodigo == 1)
-            {
-                <a href="@Url.Action("Detalhe", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
-            }
+        }
     </div>
 }
 
