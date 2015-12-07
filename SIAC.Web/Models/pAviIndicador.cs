@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class AviIndicador
     {
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public static List<AviIndicador> ListarOrdenadamente()
-        {
-            return contexto.AviIndicador.OrderBy(i => i.Descricao).ToList();
-        }
+        public static List<AviIndicador> ListarOrdenadamente() => contexto.AviIndicador.OrderBy(i => i.Descricao).ToList();
 
         public static void Inserir(AviIndicador indicador)
         {

@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class AvalAcademica
     {
-        public List<Aluno> Alunos
-        {
-            get
-            {                
-                return this.Turma.TurmaDiscAluno.Select(t => t.Aluno).ToList();
-            }
-        }
+        public List<Aluno> Alunos => this.Turma.TurmaDiscAluno.Select(t => t.Aluno).ToList();
 
         public List<Aluno> AlunosRealizaram
         {
@@ -53,7 +46,7 @@ namespace SIAC.Models
 
                 foreach (var aluno in this.AlunoAusente)
                 {
-                    if (this.Avaliacao.AvalPessoaResultado.FirstOrDefault(j=>j.CodPessoaFisica == aluno.Usuario.CodPessoaFisica) == null)
+                    if (this.Avaliacao.AvalPessoaResultado.FirstOrDefault(j => j.CodPessoaFisica == aluno.Usuario.CodPessoaFisica) == null)
                     {
                         lstRetorno.Add(aluno);
                     }
@@ -65,11 +58,12 @@ namespace SIAC.Models
 
         public List<Justificacao> Justificacoes
         {
-            get {
+            get
+            {
                 List<Justificacao> lstRetorno = new List<Justificacao>();
                 foreach (var avalPessoaResultado in this.Avaliacao.AvalPessoaResultado)
                 {
-                    lstRetorno.AddRange(avalPessoaResultado.Justificacao.Where(j=>j.AvalAcadReposicao.Count == 0));
+                    lstRetorno.AddRange(avalPessoaResultado.Justificacao.Where(j => j.AvalAcadReposicao.Count == 0));
                 }
                 return lstRetorno;
             }
@@ -93,8 +87,8 @@ namespace SIAC.Models
             }
         }
 
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
-        
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
+
         public static void Inserir(AvalAcademica avalAcademica)
         {
             contexto.AvalAcademica.Add(avalAcademica);
@@ -113,10 +107,9 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
-        public static List<AvalAcademica> ListarAgendadaPorColaborador(int codColaborador)
-        {
-            return contexto.AvalAcademica
-                .Where(a => 
+        public static List<AvalAcademica> ListarAgendadaPorColaborador(int codColaborador) =>
+             contexto.AvalAcademica
+                .Where(a =>
                     a.Avaliacao.DtAplicacao.HasValue
                     && a.Avaliacao.AvalPessoaResultado.Count == 0
                     && !a.Avaliacao.FlagArquivo
@@ -129,54 +122,43 @@ namespace SIAC.Models
                     ))
                 .OrderBy(a => a.Avaliacao.DtAplicacao)
                 .ToList();
-        }
 
-        public static List<AvalAcademica> ListarPorProfessor(int codProfessor)
-        {
-            return contexto.AvalAcademica.Where(ac => ac.CodProfessor == codProfessor)
+        public static List<AvalAcademica> ListarPorProfessor(int codProfessor) =>
+             contexto.AvalAcademica.Where(ac => ac.CodProfessor == codProfessor)
                                          .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
                                          .ToList();
-        }
 
-        public static List<AvalAcademica> ListarAgendadaPorProfessor(int codProfessor)
-        {
-            return contexto.AvalAcademica
+        public static List<AvalAcademica> ListarAgendadaPorProfessor(int codProfessor) =>
+             contexto.AvalAcademica
                 .Where(a => a.CodProfessor == codProfessor
                     && a.Avaliacao.DtAplicacao.HasValue
                     && a.Avaliacao.AvalPessoaResultado.Count == 0
                     && !a.Avaliacao.FlagArquivo)
                 .OrderBy(a => a.Avaliacao.DtAplicacao)
                 .ToList();
-        }
 
-        public static List<AvalAcademica> ListarCorrecaoPendentePorProfessor(int codProfessor)
-        {
-            return contexto.AvalQuesPessoaResposta
+        public static List<AvalAcademica> ListarCorrecaoPendentePorProfessor(int codProfessor) =>
+             contexto.AvalQuesPessoaResposta
                 .Where(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcademica.CodProfessor == codProfessor && !a.RespNota.HasValue)
                 .OrderBy(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.DtAplicacao)
-                .Select(a=>a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcademica)
+                .Select(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcademica)
                 .Distinct()
                 .ToList();
-        }
 
-        public static List<AvalAcademica> ListarPorAluno(int codAluno)
-        {
-            return contexto.AvalAcademica
+        public static List<AvalAcademica> ListarPorAluno(int codAluno) =>
+             contexto.AvalAcademica
                 .Where(a => a.Turma.TurmaDiscAluno.Where(t => t.CodAluno == codAluno).Count() > 0)
                 .OrderByDescending(a => a.Avaliacao.DtCadastro)
                 .ToList();
-        }
 
-        public static List<AvalAcademica> ListarAgendadaPorAluno(int codAluno)
-        {          
-            return contexto.AvalAcademica
-                .Where(a => a.Turma.TurmaDiscAluno.Where(t => t.CodAluno == codAluno).Count() > 0 
-                    && a.Avaliacao.DtAplicacao.HasValue 
+        public static List<AvalAcademica> ListarAgendadaPorAluno(int codAluno) =>
+             contexto.AvalAcademica
+                .Where(a => a.Turma.TurmaDiscAluno.Where(t => t.CodAluno == codAluno).Count() > 0
+                    && a.Avaliacao.DtAplicacao.HasValue
                     && a.Avaliacao.AvalPessoaResultado.Count == 0
                     && !a.Avaliacao.FlagArquivo)
                 .OrderBy(a => a.Avaliacao.DtAplicacao)
                 .ToList();
-        }
 
         public static List<AvalAcademica> ListarAgendadaPorUsuario(Usuario usuario)
         {
@@ -217,13 +199,10 @@ namespace SIAC.Models
             }
             return null;
         }
-        
-        public static void Persistir()
-        {
-            contexto.SaveChanges();
-        }
 
-        public static bool CorrigirQuestaoAluno(string codAvaliacao, string matrAluno, int codQuestao,double notaObtida,string profObservacao)
+        public static void Persistir() => contexto.SaveChanges();
+
+        public static bool CorrigirQuestaoAluno(string codAvaliacao, string matrAluno, int codQuestao, double notaObtida, string profObservacao)
         {
             if (!String.IsNullOrEmpty(codAvaliacao) && !String.IsNullOrEmpty(matrAluno) && codQuestao != 0)
             {
@@ -256,7 +235,7 @@ namespace SIAC.Models
             {
                 foreach (var avalPessoaResultado in acad.Avaliacao.AvalPessoaResultado)
                 {
-                    foreach (var pessoaResposta in acad.Avaliacao.PessoaResposta.Where(r=>r.CodPessoaFisica == avalPessoaResultado.CodPessoaFisica).ToList())
+                    foreach (var pessoaResposta in acad.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == avalPessoaResultado.CodPessoaFisica).ToList())
                     {
                         if (pessoaResposta.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1)
                         {

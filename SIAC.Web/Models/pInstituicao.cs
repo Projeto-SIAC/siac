@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class Instituicao
     {
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public static List<Instituicao> ListarOrdenadamente()
-        {
-            return contexto.Instituicao.OrderBy(ins => ins.Sigla).ToList();
-        }
+        public static List<Instituicao> ListarOrdenadamente() => contexto.Instituicao.OrderBy(ins => ins.Sigla).ToList();
 
-        public static Instituicao ListarPorCodigo(int codInstituicao)
-        {
-            return contexto.Instituicao.FirstOrDefault(ins => ins.CodInstituicao == codInstituicao);
-        }
+        public static Instituicao ListarPorCodigo(int codInstituicao) => contexto.Instituicao.FirstOrDefault(ins => ins.CodInstituicao == codInstituicao);
     }
 }

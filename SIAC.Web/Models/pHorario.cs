@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class Horario
     {
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public static List<Horario> ListarOrdenadamente()
-        {
-            return contexto.Horario.OrderBy(h => h.CodTurno).OrderBy(h=>h.CodGrupo).ToList();
-        }
+        public static List<Horario> ListarOrdenadamente()=> contexto.Horario.OrderBy(h => h.CodTurno).OrderBy(h => h.CodGrupo).ToList();
 
         public static void Inserir(Horario horario)
         {

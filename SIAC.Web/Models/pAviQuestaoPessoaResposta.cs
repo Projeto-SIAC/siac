@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class AviQuestaoPessoaResposta
     {
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public static void InserirResposta(AviQuestao questao, PessoaFisica pessoa,int alternativa)
+        public static void InserirResposta(AviQuestao questao, PessoaFisica pessoa, int alternativa)
         {
             AviQuestaoPessoaResposta resposta = contexto.AviQuestaoPessoaResposta
                                                         .Where(pr => pr.Ano == questao.Ano

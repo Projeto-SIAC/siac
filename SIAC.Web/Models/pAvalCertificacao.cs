@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
@@ -22,23 +21,21 @@ namespace SIAC.Models
             }
         }
 
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         public static void Inserir(AvalCertificacao avalCertificacao)
         {
             contexto.AvalCertificacao.Add(avalCertificacao);
             contexto.SaveChanges();
-        }        
+        }
 
-        public static List<AvalCertificacao> ListarCorrecaoPendentePorProfessor(int codProfessor)
-        {
-            return contexto.AvalQuesPessoaResposta
+        public static List<AvalCertificacao> ListarCorrecaoPendentePorProfessor(int codProfessor) =>
+            contexto.AvalQuesPessoaResposta
                 .Where(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalCertificacao.CodProfessor == codProfessor && !a.RespNota.HasValue)
                 .OrderBy(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.DtAplicacao)
                 .Select(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalCertificacao)
                 .Distinct()
                 .ToList();
-        }
 
         public static AvalCertificacao ListarPorCodigoAvaliacao(string codigo)
         {
@@ -65,49 +62,38 @@ namespace SIAC.Models
             return null;
         }
 
-        public static List<AvalCertificacao> ListarPorPessoa(int codPessoaFisica)
-        {
-            return contexto.AvalCertificacao.Where(ac => ac.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica) != null)
+        public static List<AvalCertificacao> ListarPorPessoa(int codPessoaFisica) =>
+            contexto.AvalCertificacao.Where(ac => ac.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica) != null)
                                          .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
                                          .ToList();
-        }
 
-        public static List<AvalCertificacao> ListarPorProfessor(int codProfessor)
-        {
-            return contexto.AvalCertificacao.Where(ac => ac.CodProfessor == codProfessor)
+        public static List<AvalCertificacao> ListarPorProfessor(int codProfessor) =>
+            contexto.AvalCertificacao.Where(ac => ac.CodProfessor == codProfessor)
                                          .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
                                          .ToList();
-        }
 
-        public static List<AvalCertificacao> ListarAgendada()
-        {
-            return contexto.AvalCertificacao
+        public static List<AvalCertificacao> ListarAgendada() =>
+            contexto.AvalCertificacao
                 .Where(a => a.Avaliacao.DtAplicacao.HasValue
                     && a.Avaliacao.AvalPessoaResultado.Count == 0
                     && !a.Avaliacao.FlagArquivo)
                 .OrderBy(a => a.Avaliacao.DtAplicacao)
                 .ToList();
-        }
 
-        public static List<AvalCertificacao> ListarAgendadaPorProfessor(int codProfessor)
-        {
-            return ListarAgendada()
+        public static List<AvalCertificacao> ListarAgendadaPorProfessor(int codProfessor) =>
+            ListarAgendada()
                 .Where(a => a.CodProfessor == codProfessor)
                 .OrderBy(a => a.Avaliacao.DtAplicacao)
                 .ToList();
-        }
 
-        public static List<AvalCertificacao> ListarAgendadaPorPessoa(int codPessoaFisica)
-        {
-            return ListarAgendada()
+        public static List<AvalCertificacao> ListarAgendadaPorPessoa(int codPessoaFisica) =>
+            ListarAgendada()
                 .Where(ac => ac.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica) != null)
                 .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
                 .ToList();
-        }
 
-        public static List<AvalCertificacao> ListarAgendadaPorColaborador(int codColaborador)
-        {
-            return ListarAgendada()
+        public static List<AvalCertificacao> ListarAgendadaPorColaborador(int codColaborador) =>
+            ListarAgendada()
                 .Where(a =>
                         a.Professor.TurmaDiscProfHorario.Where(t => t.Turma.Curso.CodColabCoordenador == codColaborador
                         || t.Turma.Curso.Diretoria.CodColaboradorDiretor == codColaborador
@@ -115,7 +101,6 @@ namespace SIAC.Models
                         || t.Turma.Curso.Diretoria.Campus.Instituicao.Reitoria.Where(r => r.CodColaboradorReitor == codColaborador).Count() > 0).Count() > 0)
                 .OrderBy(a => a.Avaliacao.DtAplicacao)
                 .ToList();
-        }
 
         public static List<AvalCertificacao> ListarAgendadaPorUsuario(Usuario usuario)
         {

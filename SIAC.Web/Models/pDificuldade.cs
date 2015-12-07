@@ -1,22 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class Dificuldade
     {
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public static List<Dificuldade> ListarOrdenadamente()
-        {
-            return contexto.Dificuldade.OrderBy(d => d.CodDificuldade).ToList();
-        }
+        public static List<Dificuldade> ListarOrdenadamente() => contexto.Dificuldade.OrderBy(d => d.CodDificuldade).ToList();
 
-        public static Dificuldade ListarPorCodigo(int CodDificuldade)
-        {
-            return contexto.Dificuldade.SingleOrDefault(d => d.CodDificuldade == CodDificuldade);
-        }
+        public static Dificuldade ListarPorCodigo(int CodDificuldade) => contexto.Dificuldade.SingleOrDefault(d => d.CodDificuldade == CodDificuldade);
     }
 }

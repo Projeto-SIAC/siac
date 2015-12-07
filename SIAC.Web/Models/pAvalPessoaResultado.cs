@@ -1,21 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class AvalPessoaResultado
     {
-        public bool FlagParcial
-        {
-            get
-            {
-                return Avaliacao.PessoaResposta.Where(r=>!r.RespNota.HasValue && r.CodPessoaFisica == CodPessoaFisica).Count() > 0;
-            }
-        }
+        public bool FlagParcial => Avaliacao.PessoaResposta.Where(r=>!r.RespNota.HasValue && r.CodPessoaFisica == CodPessoaFisica).Count() > 0;
 
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         public static void Inserir(AvalPessoaResultado avalPessoaResultado)
         {

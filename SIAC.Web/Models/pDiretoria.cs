@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
@@ -9,7 +7,7 @@ namespace SIAC.Models
     {
         public string CodComposto => $"{CodInstituicao}.{CodCampus}.{CodDiretoria}";
 
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         public static void Inserir(Diretoria diretoria)
         {
@@ -24,10 +22,7 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
-        public static List<Diretoria> ListarOrdenadamente()
-        {
-            return contexto.Diretoria.OrderBy(d => d.Sigla).ToList();
-        }
+        public static List<Diretoria> ListarOrdenadamente() => contexto.Diretoria.OrderBy(d => d.Sigla).ToList();
 
         public static Diretoria ListarPorCodigo(string codComposto)
         {

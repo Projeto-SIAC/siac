@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
@@ -77,39 +76,21 @@ namespace SIAC.Models
 
         public bool FlagRealizada => this.Questoes.FirstOrDefault(a => a.AviQuestaoPessoaResposta.Count > 0) != null;
 
-        public bool FlagAndamento
-        {
-            get
-            {
-                if (this.FlagAgendada)
-                {
-                    if (this.Avaliacao.DtAplicacao.Value <= DateTime.Now && this.DtTermino.Value >= DateTime.Now)
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
+        public bool FlagAndamento => this.FlagAgendada && this.Avaliacao.DtAplicacao.Value <= DateTime.Now && this.DtTermino.Value >= DateTime.Now;
 
         public bool FlagConcluida => this.DtTermino < DateTime.Now;
 
         public int QteQuestoes => this.Questoes.Count;
 
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public AviQuestao ObterQuestao(int modulo, int categoria, int indicador, int ordem)
-        {
-            return this.AviQuestao.FirstOrDefault(q => q.CodAviModulo == modulo
-                                                  && q.CodAviCategoria == categoria
-                                                  && q.CodAviIndicador == indicador
-                                                  && q.CodOrdem == ordem);
-        }
+        public AviQuestao ObterQuestao(int modulo, int categoria, int indicador, int ordem) =>
+            this.AviQuestao.FirstOrDefault(q => q.CodAviModulo == modulo
+                && q.CodAviCategoria == categoria
+                && q.CodAviIndicador == indicador
+                && q.CodOrdem == ordem);
 
-        public AviQuestao ObterQuestao(int ordem)
-        {
-            return this.AviQuestao.FirstOrDefault(q => q.CodOrdem == ordem);
-        }
+        public AviQuestao ObterQuestao(int ordem) => this.AviQuestao.FirstOrDefault(q => q.CodOrdem == ordem);
 
         public static void Inserir(AvalAvi avi)
         {
@@ -117,10 +98,7 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
-        public static List<AvalAvi> Listar()
-        {
-            return contexto.AvalAvi.ToList();
-        }
+        public static List<AvalAvi> Listar() => contexto.AvalAvi.ToList();
 
         public static List<AvalAvi> ListarPorColaborador(string matricula)
         {
@@ -178,14 +156,14 @@ namespace SIAC.Models
                                                                            && q.CodAviIndicador == indicador
                                                                            && q.CodOrdem == ordem);
 
-                    if(questaoAntiga != null)
+                    if (questaoAntiga != null)
                     {
                         AviQuestao questaoNova = questaoAntiga;
                         List<AviQuestaoAlternativa> alternativas = questaoNova.AviQuestaoAlternativa.ToList();
                         Models.AviQuestao.Remover(questaoAntiga);
                         //contexto.AviQuestao.Remove(questaoAntiga); Não funcionou assim '-'
                         questaoNova.CodOrdem = i + 1;
-                        if(alternativas.Count > 0)
+                        if (alternativas.Count > 0)
                         {
                             foreach (AviQuestaoAlternativa alternativa in alternativas)
                             {
@@ -197,7 +175,7 @@ namespace SIAC.Models
                     }
                 }
 
-                if(aviQuestoesNova.Count > 0)
+                if (aviQuestoesNova.Count > 0)
                 {
                     //this.Questoes.Clear();
                     //contexto.AviQuestao.RemoveRange(contexto.AviQuestao.Where(aq => aq.Ano == this.Ano
@@ -221,7 +199,8 @@ namespace SIAC.Models
                 switch (item.category)
                 {
                     case "Pessoa":
-                        AviPublico pessoa = new AviPublico {
+                        AviPublico pessoa = new AviPublico
+                        {
                             CodAviTipoPublico = 8,
                             CodOrdem = ordem,
                             PessoaFisica = PessoaFisica.ListarPorCodigo(int.Parse(item.id))
@@ -229,7 +208,8 @@ namespace SIAC.Models
                         this.AviPublico.Add(pessoa);
                         break;
                     case "Turma":
-                        AviPublico turma = new AviPublico {
+                        AviPublico turma = new AviPublico
+                        {
                             CodAviTipoPublico = 7,
                             CodOrdem = ordem,
                             Turma = Turma.ListarPorCodigo(item.id)
@@ -298,18 +278,18 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
-        
+
         //VERIFICAÇÃO PARA FILTRAR OS REALIZADORES DA AVI... INCOMPLETO
-        public bool ERealizadaPor(string usuarioMatricula,int usuarioCodCategoria)
+        public bool ERealizadaPor(string usuarioMatricula, int usuarioCodCategoria)
         {
             Usuario usuario = Usuario.ListarPorMatricula(usuarioMatricula);
 
-            if(usuario!= null)
+            if (usuario != null)
             {
                 switch (usuarioCodCategoria)
                 {
                     case 1: /*Estudante*/
-                        
+
                         return true;
                     case 2: /*Professor*/
                         return true;

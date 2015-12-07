@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class AvalAuto
-    {     
-        public List<Disciplina> Disciplina
-        {
-            get
-            {
-                return Avaliacao.AvaliacaoTema.Select(at => at.Tema.Disciplina).Distinct().ToList();
-            }
-        }
+    {
+        public List<Disciplina> Disciplina => this.Avaliacao.AvaliacaoTema.Select(at => at.Tema.Disciplina).Distinct().ToList();
 
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         public static void Inserir(AvalAuto AvalAuto)
         {
@@ -23,10 +15,7 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
-        public static List<AvalAuto> ListarPorPessoa(int codPessoaFisica)
-        {
-            return contexto.AvalAuto.Where(auto => auto.CodPessoaFisica == codPessoaFisica).OrderByDescending(auto => auto.Avaliacao.DtCadastro).ToList();
-        }
+        public static List<AvalAuto> ListarPorPessoa(int codPessoaFisica) => contexto.AvalAuto.Where(auto => auto.CodPessoaFisica == codPessoaFisica).OrderByDescending(auto => auto.Avaliacao.DtCadastro).ToList();
 
         public static AvalAuto ListarPorCodigoAvaliacao(string codigo)
         {
@@ -48,6 +37,6 @@ namespace SIAC.Models
         {
             List<AvalAuto> lst = contexto.AvalAuto.Where(auto => auto.CodPessoaFisica == codPessoaFisica).ToList();
             return lst.Where(a => a.Avaliacao.FlagPendente).ToList();
-        }        
+        }
     }
 }

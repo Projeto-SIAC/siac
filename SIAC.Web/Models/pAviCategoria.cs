@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class AviCategoria
     {
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public static List<AviCategoria> ListarOrdenadamente()
-        {
-            return contexto.AviCategoria.OrderBy(c => c.Descricao).ToList();
-        }
+        public static List<AviCategoria> ListarOrdenadamente() => contexto.AviCategoria.OrderBy(c => c.Descricao).ToList();
 
         public static void Inserir(AviCategoria categoria)
         {

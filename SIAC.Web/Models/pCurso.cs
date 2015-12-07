@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class Curso
     {
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public static List<Curso> ListarOrdenadamente()
-        {
-            return contexto.Curso.OrderBy(c => c.Descricao).ToList();
-        }
+        public static List<Curso> ListarOrdenadamente() => contexto.Curso.OrderBy(c => c.Descricao).ToList();
 
-        public static Curso ListarPorCodigo(int codCurso) {
-            return contexto.Curso.SingleOrDefault(c => c.CodCurso == codCurso);
-        }
+        public static Curso ListarPorCodigo(int codCurso) => contexto.Curso.SingleOrDefault(c => c.CodCurso == codCurso);
 
         public static void Inserir(Curso curso)
         {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
@@ -19,7 +18,7 @@ namespace SIAC.Models
                 var retorno = new List<Aluno>();
                 foreach (var a in alunos)
                 {
-                    if (this.Justificacao.FirstOrDefault(j=>j.CodPessoaFisica == a.Usuario.CodPessoaFisica) != null)
+                    if (this.Justificacao.FirstOrDefault(j => j.CodPessoaFisica == a.Usuario.CodPessoaFisica) != null)
                     {
                         retorno.Add(a);
                     }
@@ -43,7 +42,7 @@ namespace SIAC.Models
             }
         }
 
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         public static AvalAcadReposicao ListarPorCodigoAvaliacao(string codigo)
         {
@@ -70,12 +69,10 @@ namespace SIAC.Models
             return null;
         }
 
-        public static List<AvalAcadReposicao> ListarPorProfessor(int codProfessor)
-        {
-            return contexto.AvalAcadReposicao.Where(ac => ac.Justificacao.FirstOrDefault().Professor.CodProfessor == codProfessor)
-                                         .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
-                                         .ToList();
-        }
+        public static List<AvalAcadReposicao> ListarPorProfessor(int codProfessor) =>
+            contexto.AvalAcadReposicao.Where(ac => ac.Justificacao.FirstOrDefault().Professor.CodProfessor == codProfessor)
+                .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
+                .ToList();
 
         public static List<AvalAcadReposicao> ListarPorAluno(int codAluno)
         {
@@ -100,20 +97,17 @@ namespace SIAC.Models
                 .ToList();
         }
 
-        public static List<AvalAcadReposicao> ListarAgendadaPorProfessor(int codProfessor)
-        {
-            return contexto.AvalAcadReposicao
+        public static List<AvalAcadReposicao> ListarAgendadaPorProfessor(int codProfessor) =>
+             contexto.AvalAcadReposicao
                 .Where(a => a.Justificacao.Count > 0 && a.Justificacao.FirstOrDefault().CodProfessor == codProfessor
                     && a.Avaliacao.DtAplicacao.HasValue
                     && a.Avaliacao.AvalPessoaResultado.Count == 0
                     && !a.Avaliacao.FlagArquivo)
                 .OrderBy(a => a.Avaliacao.DtAplicacao)
                 .ToList();
-        }
 
-        public static List<AvalAcadReposicao> ListarAgendadaPorColaborador(int codColaborador)
-        {
-            return contexto.AvalAcadReposicao
+        public static List<AvalAcadReposicao> ListarAgendadaPorColaborador(int codColaborador) =>
+             contexto.AvalAcadReposicao
                 .Where(a =>
                     a.Justificacao.Count > 0
                     && a.Avaliacao.DtAplicacao.HasValue
@@ -127,7 +121,6 @@ namespace SIAC.Models
                     ))
                 .OrderBy(a => a.Avaliacao.DtAplicacao)
                 .ToList();
-        }
 
         public static List<AvalAcadReposicao> ListarAgendadaPorUsuario(Usuario usuario)
         {
@@ -171,14 +164,12 @@ namespace SIAC.Models
             return false;
         }
 
-        public static List<AvalAcadReposicao> ListarCorrecaoPendentePorProfessor(int codProfessor)
-        {
-            return contexto.AvalQuesPessoaResposta
+        public static List<AvalAcadReposicao> ListarCorrecaoPendentePorProfessor(int codProfessor) =>
+            contexto.AvalQuesPessoaResposta
                 .Where(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcadReposicao != null && !a.RespNota.HasValue && a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcadReposicao.Justificacao.Count > 0 && a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcadReposicao.Justificacao.FirstOrDefault().CodProfessor == codProfessor)
                 .OrderBy(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.DtAplicacao)
                 .Select(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcadReposicao)
                 .Distinct()
                 .ToList();
-        }
     }
 }

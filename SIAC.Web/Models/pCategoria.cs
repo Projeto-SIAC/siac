@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class Categoria
     {
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public static Categoria ListarPorCodigo(int codCategoria)
-        {
-            return contexto.Categoria.FirstOrDefault(c => c.CodCategoria == codCategoria);
-        }
+        public static Categoria ListarPorCodigo(int codCategoria) => contexto.Categoria.FirstOrDefault(c => c.CodCategoria == codCategoria);
     }
 }

@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class AviPublico
     {
-        public string CodPublico {
+        public string CodPublico
+        {
             get
             {
                 switch (this.CodAviTipoPublico)

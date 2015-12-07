@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class Avaliacao
     {
-        public string CodAvaliacao
-        {
-            get
-            {
-                return String.Format("{0}{1}{2}{3}", TipoAvaliacao.Sigla.ToUpper(), Ano, Semestre, NumIdentificador.ToString("0000"));
-            }
-        }
+        public string CodAvaliacao => $"{TipoAvaliacao.Sigla.ToUpper()}{Ano}{Semestre}{NumIdentificador.ToString("0000")}";
 
         public Professor Professor
         {
@@ -33,15 +26,7 @@ namespace SIAC.Models
             }
         }
 
-        public List<Tema> Temas
-        {
-            get
-            {
-                List<Tema> temas = (from t in AvaliacaoTema
-                                    select t.Tema).Distinct().ToList();
-                return temas;
-            }
-        }
+        public List<Tema> Temas => (from t in AvaliacaoTema select t.Tema).Distinct().ToList();
 
         public List<Questao> Questao
         {
@@ -91,13 +76,7 @@ namespace SIAC.Models
             }
         }
 
-        public int CodDificuldade
-        {
-            get
-            {
-                return Questao.Max(q => q.CodDificuldade);
-            }
-        }
+        public int CodDificuldade => Questao.Max(q => q.CodDificuldade);
 
         public int TipoQuestoes
         {
@@ -135,29 +114,11 @@ namespace SIAC.Models
             }
         }
 
-        public bool FlagPendente
-        {
-            get
-            {
-                return this.AvalPessoaResultado.Count > 0 || this.FlagArquivo ? false : true;
-            }
-        }
+        public bool FlagPendente => this.AvalPessoaResultado.Count > 0 || this.FlagArquivo ? false : true;
 
-        public bool FlagRealizada
-        {
-            get
-            {
-                return this.AvalPessoaResultado.Count > 0;
-            }
-        }
+        public bool FlagRealizada => this.AvalPessoaResultado.Count > 0;
 
-        public bool FlagAgendada
-        {
-            get
-            {
-                return this.DtAplicacao.HasValue && this.FlagPendente;
-            }
-        }
+        public bool FlagAgendada => this.DtAplicacao.HasValue && this.FlagPendente;
 
         public bool FlagAgora
         {
@@ -168,42 +129,30 @@ namespace SIAC.Models
             }
         }
 
-        public bool FlagVencida
-        {
-            get
-            {
-                return (DateTime.Now - DtAplicacao.Value).TotalMinutes > (Duracao / 2);
-            }
-        }
+        public bool FlagVencida => (DateTime.Now - DtAplicacao.Value).TotalMinutes > (Duracao / 2);
 
-        public bool FlagCorrecaoPendente
-        {
-            get
-            {
-                return this.FlagRealizada && this.PessoaResposta.Where(pr => !pr.RespNota.HasValue).Count() > 0;
-            }
-        }
+        public bool FlagCorrecaoPendente => this.FlagRealizada && this.PessoaResposta.Where(pr => !pr.RespNota.HasValue).Count() > 0;
 
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         public static int ObterNumIdentificador(int codTipoAvaliacao)
         {
             if (Sistema.NumIdentificador.Count == 0)
             {
-                for (int i = 1; i <= contexto.TipoAvaliacao.Max(t=>t.CodTipoAvaliacao); i++)
+                for (int i = 1; i <= contexto.TipoAvaliacao.Max(t => t.CodTipoAvaliacao); i++)
                 {
                     int ano = DateTime.Now.Year;
                     int semestre = (DateTime.Now.Month > 6) ? 2 : 1;
                     Avaliacao avalTemp = contexto.Avaliacao
-                        .Where(a => a.Ano == ano 
-                            && a.Semestre == semestre 
+                        .Where(a => a.Ano == ano
+                            && a.Semestre == semestre
                             && a.CodTipoAvaliacao == i)
                         .OrderByDescending(a => a.NumIdentificador)
                         .FirstOrDefault();
                     if (avalTemp != null)
                     {
                         Sistema.NumIdentificador.Add(i, avalTemp.NumIdentificador + 1);
-                    } 
+                    }
                     else
                     {
                         Sistema.NumIdentificador.Add(i, 1);
@@ -213,14 +162,15 @@ namespace SIAC.Models
             return Sistema.NumIdentificador[codTipoAvaliacao]++;
         }
 
-        public void TrocarQuestao(int codQuestaoAntiga,QuestaoTema novoQuestaoTema)
+        public void TrocarQuestao(int codQuestaoAntiga, QuestaoTema novoQuestaoTema)
         {
             AvalTemaQuestao aqtAntiga = (from atq in contexto.AvalTemaQuestao
-                                    where atq.Ano == Ano
-                                    && atq.Semestre == Semestre
-                                    && atq.CodTipoAvaliacao == CodTipoAvaliacao
-                                    && atq.NumIdentificador == NumIdentificador
-                                    && atq.CodQuestao == codQuestaoAntiga select atq).FirstOrDefault();
+                                         where atq.Ano == Ano
+                                         && atq.Semestre == Semestre
+                                         && atq.CodTipoAvaliacao == CodTipoAvaliacao
+                                         && atq.NumIdentificador == NumIdentificador
+                                         && atq.CodQuestao == codQuestaoAntiga
+                                         select atq).FirstOrDefault();
 
             contexto.AvalTemaQuestao.Remove(aqtAntiga);
 
@@ -271,7 +221,7 @@ namespace SIAC.Models
             return aval.FlagLiberada;
         }
 
-        public static void AtualizarQuestoes(string codigo,int[] questoes)
+        public static void AtualizarQuestoes(string codigo, int[] questoes)
         {
             Avaliacao aval = ListarPorCodigoAvaliacao(codigo);
 
@@ -280,13 +230,13 @@ namespace SIAC.Models
             foreach (int questao in questoes)
             {
                 List<QuestaoTema> qtTemp = (from qt in contexto.QuestaoTema
-                                                  where qt.CodQuestao == questao
-                                                  select qt).ToList();
+                                            where qt.CodQuestao == questao
+                                            select qt).ToList();
 
                 questoesTema.AddRange(qtTemp);
             }
-            
-            if(questoesTema.Count > 0)
+
+            if (questoesTema.Count > 0)
             {
                 //Deletar questões antigas
                 List<AvalTemaQuestao> questoesAntigas = contexto.AvalTemaQuestao
@@ -298,7 +248,7 @@ namespace SIAC.Models
                 contexto.AvalTemaQuestao.RemoveRange(questoesAntigas);
 
                 List<AvalTemaQuestao> questoesAdicionadas = new List<AvalTemaQuestao>();
-                
+
                 foreach (Tema tema in aval.Temas)
                 {
                     List<QuestaoTema> questaoTema = questoesTema.Where(qt => qt.Tema == tema).ToList();
@@ -321,7 +271,7 @@ namespace SIAC.Models
                                                                    && atq.CodTipoAvaliacao == aval.CodTipoAvaliacao
                                                                    && atq.NumIdentificador == aval.NumIdentificador
                                                                    && atq.CodQuestao == qt.CodQuestao).ToList().Count == 0)
-                            
+
                             {
                                 contexto.AvalTemaQuestao.Add(proximaQuestao);
                                 questoesAdicionadas.Add(proximaQuestao);

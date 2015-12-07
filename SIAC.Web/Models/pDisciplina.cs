@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class Disciplina
     {
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public static List<Disciplina> ListarOrdenadamente()
-        {
-            return contexto.Disciplina.OrderBy(d => d.Descricao).ToList();
-        }
+        public static List<Disciplina> ListarOrdenadamente() => contexto.Disciplina.OrderBy(d => d.Descricao).ToList();
 
-        public static Disciplina ListarPorCodigo(int codDisciplina)
-        {
-            return contexto.Disciplina.FirstOrDefault(d => d.CodDisciplina == codDisciplina);
-        }
+        public static Disciplina ListarPorCodigo(int codDisciplina) => contexto.Disciplina.FirstOrDefault(d => d.CodDisciplina == codDisciplina);
 
         public static int Inserir(Disciplina disciplina)
         {
@@ -26,18 +18,13 @@ namespace SIAC.Models
             return disciplina.CodDisciplina;
         }
 
-        public static List<Disciplina> ListarTemQuestoes()
-        {
-            return (from qt in contexto.QuestaoTema
-                    select qt.Tema.Disciplina).
-                    Distinct().
-                    OrderBy(d => d.Descricao).
-                    ToList();
-        }
+        public static List<Disciplina> ListarTemQuestoes() =>
+            (from qt in contexto.QuestaoTema
+             select qt.Tema.Disciplina)
+            .Distinct()
+            .OrderBy(d => d.Descricao)
+            .ToList();
 
-        public static List<Disciplina> ListarPorProfessor(string matrProfessor)
-        {
-            return contexto.Professor.FirstOrDefault(p => p.MatrProfessor == matrProfessor).Disciplina.ToList();
-        }
+        public static List<Disciplina> ListarPorProfessor(string matrProfessor) => contexto.Professor.FirstOrDefault(p => p.MatrProfessor == matrProfessor).Disciplina.ToList();
     }
 }
