@@ -1,0 +1,50 @@
+﻿@model QuestaoAnexo
+@switch (Model.CodTipoAnexo)
+{
+    case 1:
+        <div class="ui segment">
+            <img class="ui image" src="@Model.Anexo.GetImageSource()" />
+            @if (!String.IsNullOrWhiteSpace(Model.Legenda) || !String.IsNullOrWhiteSpace(Model.Fonte))
+            {
+                <div>
+                    @if (!String.IsNullOrWhiteSpace(Model.Legenda))
+                    {
+                        <b>
+                            @Model.Legenda
+                        </b>
+                    }
+                    @if (!String.IsNullOrWhiteSpace(Model.Fonte))
+                    {
+                        <p>
+                            @Model.Fonte
+                        </p>
+                    }
+                </div>
+            }
+        </div>
+        break;
+    case 2:
+        <div class="ui segment">
+            @if (!String.IsNullOrWhiteSpace(Model.Legenda) || !String.IsNullOrWhiteSpace(Model.Fonte))
+            {
+                <div>
+                    @if (!String.IsNullOrWhiteSpace(Model.Legenda))
+                    {
+                        <b>
+                            @Model.Legenda
+                        </b>
+                    }
+                    @if (!String.IsNullOrWhiteSpace(Model.Fonte))
+                    {
+                        <p>
+                            @Model.Fonte
+                        </p>
+                    }
+                </div>
+            }
+            <pre><code>@Model.Anexo.GetString().Trim()</code></pre>
+        </div>
+        break;
+    default:
+        break;
+}

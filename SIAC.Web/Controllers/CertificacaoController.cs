@@ -474,7 +474,7 @@ namespace SIAC.Controllers
             {
                 var usuario = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula);
                 var cert = AvalCertificacao.ListarAgendadaPorUsuario(usuario).FirstOrDefault(a => a.Avaliacao.CodAvaliacao.ToLower() == codigo.ToLower());
-                if (cert != null)
+                if (cert != null && cert.PessoaFisica.Count > 0)
                 {
                     return View(cert);
                 }

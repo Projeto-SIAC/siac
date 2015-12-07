@@ -167,14 +167,7 @@
                             <label>Anexos</label>
                             @foreach (var anexo in lstQuestao[i].QuestaoAnexo)
                             {
-                                switch (anexo.CodTipoAnexo)
-                                {
-                                    case 1:
-                                        @Html.Partial("_AnexoImagem", anexo)
-                                        break;
-                                    default:
-                                        break;
-                                }
+                               @Html.Partial("_AnexoImpressao", anexo);
                             }
                         </div>
                         }

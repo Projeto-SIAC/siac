@@ -34,7 +34,7 @@
     </div>
     <div class="field required">
         <label>Instituição</label>
-        <input type="text" name="txtInstituicao" placeholder="Título" value="@($"{Model.Avaliacao.Professor.Instituicao.PessoaJuridica.NomeFantasia}")" required />
+        <input type="text" name="txtInstituicao" placeholder="Título" value="@($"{Model.Avaliacao.Professor.Instituicao?.PessoaJuridica.NomeFantasia}")" required />
     </div>
     <div class="field required">
         <label>Professor</label>

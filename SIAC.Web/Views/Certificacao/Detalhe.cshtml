@@ -391,7 +391,11 @@ else if (Model.Avaliacao.FlagRealizada)
 {
     <a href="@Url.Action("Agendar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">@(Model.Avaliacao.FlagAgendada ? "Reagendar" : "Agendar")</a>
 }
-@if (Model.Avaliacao.FlagAgendada)
+@if (Model.PessoaFisica.Count == 0)
+{
+    <a href="@Url.Action("Avaliados", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Avaliados</a>
+}
+else if (Model.Avaliacao.FlagAgendada)
 {
     <a href="@Url.Action("Agendada", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">@(FlagProfessor ? "Aplicar" : "Realizar" )</a>
 }

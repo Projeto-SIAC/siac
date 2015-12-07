@@ -172,24 +172,7 @@
                             <label>Anexos</label>
                             @foreach (var anexo in lstQuestao[i].QuestaoAnexo)
                             {
-                                switch (anexo.CodTipoAnexo)
-                                {
-                                    case 1:
-                                        <div class="ui segment">
-                                            <img class="ui image" src="data:image/png;base64,@Convert.ToBase64String(anexo.Anexo, 0, anexo.Anexo.Length)" />
-                                            <div>
-                                                <b>
-                                                    @anexo.Legenda
-                                                </b>
-                                                <p>
-                                                    @(!String.IsNullOrEmpty(anexo.Fonte) ? anexo.Fonte : "Fonte não informada")
-                                                </p>
-                                            </div>
-                                        </div>
-                                        break;
-                                    default:
-                                        break;
-                                }
+                                @Html.Partial("_AnexoImpressao", anexo);
                             }
                         </div>
                         }
