@@ -1143,8 +1143,8 @@ siac.Institucional.Historico = (function () {
                 }
             },
             complete: function () {
-                console.log(pesquisa);
                 $cards.parent().removeClass('loading');
+                ativarInformacaoCard();
             }
         });
     }
@@ -1154,6 +1154,39 @@ siac.Institucional.Historico = (function () {
             scrollTop: 0
         }, 500);
         return false;
+    }
+
+    function carregarInformacao(header) {
+        var codigo = $(header).text().trim();
+        var $_card = $(header).parent().parent();
+        $_card.dimmer('show');
+        $.ajax({
+            type: 'POST',
+            url: '/institucional/Informacao/' + codigo,
+            success: function (view) {
+                $('.informacoes.modal').remove();
+                $('body').append(view);
+                $('.ui.accordion').accordion({
+                    animateChildren: false,
+                    onChange: function () {
+                        $('.informacoes.modal').modal('refresh');
+                    }
+                });
+                $('.informacoes.modal').modal('show');
+            },
+            error: function (erro) {
+
+            },
+            complete: function (view) {
+                $_card.dimmer('hide');
+            }
+        })
+    }
+
+    function ativarInformacaoCard() {
+        $('.card a.header').off().click(function () {
+            carregarInformacao(this);
+        });
     }
 
     return {

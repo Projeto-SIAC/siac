@@ -3,8 +3,11 @@
 @foreach (var avi in Model)
 {
     <div class="card">
+        <div class="ui dimmer">
+            <div class="ui text loader">Carregando</div>
+        </div>
         <div class="content">
-            <a href="@Url.Action("Realizar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="header">
+            <a @*href="@Url.Action("Realizar", new { codigo = avi.Avaliacao.CodAvaliacao })"*@ class="header">
                 @avi.Avaliacao.CodAvaliacao
             </a>
             <div class="meta">
@@ -33,27 +36,6 @@
                     Disciplina
                 </div>*@
         </div>
-        @*@if (avi.FlagRealizada)
-            {
-                @*if (Sessao.UsuarioCategoriaCodigo == 1)
-                {
-                    if (acad.AlunosRealizaram.Where(a => a.MatrAluno == Sessao.UsuarioMatricula).Count() > 0)
-                    {
-                        <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
-                        <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
-                    }
-                    else
-                    {
-                        <span class="ui attached top right label"><i class="remove icon"></i>Ausente</span>
-                        <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
-                    }
-                }
-                else
-                {
-                    <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
-                    <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
-                }        }
-            else*@
         @if (Sessao.UsuarioCategoriaCodigo == 3)
         {
             if (!avi.FlagQuestionario)

@@ -100,6 +100,20 @@ namespace SIAC.Controllers
 
             return PartialView("_ListaInstitucional", institucionais.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
         }
+        // POST: institucional/Informacao/{codigo}
+        [HttpPost]
+        public ActionResult Informacao(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
+                if (avi != null)
+                {
+                    return PartialView("_InstitucionalInformacoes",avi);
+                }
+            }
+            return null;
+        }
         // POST: institucional/CadastrarModulo
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]

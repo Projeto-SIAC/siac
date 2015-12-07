@@ -11,6 +11,10 @@
                     <table class="ui geral table">
                         <tbody>
                             <tr>
+                                <td><b>Código</b></td>
+                                <td>@Model.Avaliacao.CodAvaliacao</td>
+                            </tr>
+                            <tr>
                                 <td><b>Título</b></td>
                                 <td>@Model.Titulo</td>
                             </tr>
@@ -79,7 +83,7 @@
             }
 
             @* Prazo *@
-            @if (Model.FlagAndamento)
+            @if (Model.FlagAgendada)
             {
                 <div class="title"><i class="dropdown icon"></i>Prazo</div>
                 <div class="content">
