@@ -18,10 +18,7 @@ namespace SIAC.Controllers
                 {
                     return AvalAvi.ListarPorColaborador(Helpers.Sessao.UsuarioMatricula);
                 }
-                else
-                {
-                    return AvalAvi.Listar();
-                }
+                return new List<AvalAvi>();
             }
         }
 
@@ -36,8 +33,14 @@ namespace SIAC.Controllers
         {
             return View();
         }
+        // GET: institucional/Andamento
+        public ActionResult Andamento()
+        {
+            List<AvalAvi> model = AvalAvi.ListarPorUsuario(Helpers.Sessao.UsuarioMatricula);
+            return View(model);
+        }
         // GET: institucional/Configuracao
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 }, CoordenadoresAvi = true)]
         public ActionResult Configuracao()
         {
             ViewModels.InstitucionalGerarQuestaoViewModel model = new ViewModels.InstitucionalGerarQuestaoViewModel();
@@ -554,7 +557,6 @@ namespace SIAC.Controllers
             
         }
         //GET: institucional/realizar/{codigo}
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult Realizar(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))
@@ -562,14 +564,20 @@ namespace SIAC.Controllers
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
                 if (avi != null /*&& avi.FlagAndamento*/)
                 {
-                    ViewModels.InstitucionalRealizarViewModel viewModel = new ViewModels.InstitucionalRealizarViewModel();
-                    viewModel.Avi = avi;
-                    viewModel.Respostas = AviQuestaoPessoaResposta.ObterRespostasPessoa(avi, PessoaFisica.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula));
+                    PessoaFisica pessoa = PessoaFisica.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
 
-                    return View(viewModel);
+                    if (avi.Pessoas.Contains(pessoa))
+                    {
+
+                        ViewModels.InstitucionalRealizarViewModel viewModel = new ViewModels.InstitucionalRealizarViewModel();
+                        viewModel.Avi = avi;
+                        viewModel.Respostas = AviQuestaoPessoaResposta.ObterRespostasPessoa(avi, PessoaFisica.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula));
+
+                        return View(viewModel);
+                    }
                 }
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Andamento");
         }
         // POST: institucional/EnviarRespostaObjetiva/{codigo}
         [HttpPost]

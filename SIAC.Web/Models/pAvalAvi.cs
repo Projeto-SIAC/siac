@@ -154,6 +154,28 @@ namespace SIAC.Models
             return new List<AvalAvi>();
         }
 
+        public static List<AvalAvi> ListarPorUsuario(string matricula)
+        {
+            PessoaFisica pessoa = PessoaFisica.ListarPorMatricula(matricula);
+
+            if (pessoa != null)
+            {
+                List<AvalAvi> institucionais = contexto.AvalAvi.Where(avi =>avi.Avaliacao.DtAplicacao <= DateTime.Now && avi.DtTermino >= DateTime.Now).ToList();
+
+                List<AvalAvi> retorno = new List<AvalAvi>();
+
+                foreach (AvalAvi avi in institucionais)
+                {
+                    if (avi.Pessoas.Contains(pessoa))
+                    {
+                        retorno.Add(avi);
+                    }
+                }
+                return retorno;
+            }
+            return new List<AvalAvi>();
+        }
+
         public static AvalAvi ListarPorCodigoAvaliacao(string codigo)
         {
             int numIdentificador = 0;
@@ -319,30 +341,6 @@ namespace SIAC.Models
                 ordem++;
             }
             contexto.SaveChanges();
-        }
-
-
-        //VERIFICAÇÃO PARA FILTRAR OS REALIZADORES DA AVI... INCOMPLETO
-        public bool ERealizadaPor(string usuarioMatricula, int usuarioCodCategoria)
-        {
-            Usuario usuario = Usuario.ListarPorMatricula(usuarioMatricula);
-
-            if (usuario != null)
-            {
-                switch (usuarioCodCategoria)
-                {
-                    case 1: /*Estudante*/
-
-                        return true;
-                    case 2: /*Professor*/
-                        return true;
-                    case 3: /*Colaborador*/
-                        return true;
-                    default: /*Visitante || qualquer valor*/
-                        return false;
-                }
-            }
-            return false;
         }
     }
 }

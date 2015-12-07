@@ -727,6 +727,7 @@
     <Content Include="Views\Shared\Partials\_Menu.cshtml" />
     <Content Include="Views\Institucional\Historico.cshtml" />
     <Content Include="Views\Institucional\Partials\_ListaInstitucional.cshtml" />
+    <Content Include="Views\Institucional\Andamento.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

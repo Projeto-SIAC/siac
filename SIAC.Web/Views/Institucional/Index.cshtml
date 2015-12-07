@@ -13,7 +13,7 @@
         {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Gerar") },
-                { "Icone", "file text outline" },
+                { "Icone", "add circle" },
                 { "Descricao", "Gerar Nova" }
             })
 
@@ -22,13 +22,19 @@
                 { "Icone", "settings" },
                 { "Descricao", "Configurar" }
             })
-        }
-
-        @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Historico") },
+            
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
+                { "Url", Url.Action("Historico", "Institucional") },
                 { "Icone", "file text outline" },
                 { "Descricao", "Histórico de Av. Institucional" }
             })
+        }
+
+        @Html.Partial("_Atalho", new ViewDataDictionary() {
+                { "Url", Url.Action("Andamento") },
+                { "Icone", "wait" },
+                { "Descricao", "Av. Institucional em Andamento" }
+        })
 
     </div>
 </div>
