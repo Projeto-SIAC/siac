@@ -453,6 +453,7 @@
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\pOcupacao.cs" />
+    <Compile Include="Models\pPessoaLocalTrabalho.cs" />
     <Compile Include="Models\pProReitoria.cs" />
     <Compile Include="Models\pReitoria.cs" />
     <Compile Include="Models\Professor.cs">

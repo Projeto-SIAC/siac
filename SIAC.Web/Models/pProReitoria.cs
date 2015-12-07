@@ -6,6 +6,25 @@ namespace SIAC.Models
     public partial class ProReitoria
     {
         public string CodComposto => $"{CodInstituicao}.{CodProReitoria}";
+        
+        public List<PessoaFisica> Pessoas
+        {
+            get
+            {
+                List<PessoaFisica> pessoas = new List<PessoaFisica>();
+                
+                /*Pro-reitor*/
+                pessoas.Add(this.Colaborador.Usuario.PessoaFisica);
+
+                /*Professores e Colaboradores*/
+                foreach (PessoaLocalTrabalho plt in this.PessoaLocalTrabalho)
+                {
+                    pessoas.Add(plt.PessoaFisica);
+                }
+
+                return pessoas;
+            }
+        }
 
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 

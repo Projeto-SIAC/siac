@@ -7,6 +7,28 @@ namespace SIAC.Models
     {
         public string CodComposto => $"{CodInstituicao}.{CodCampus}.{CodDiretoria}";
 
+        public List<PessoaFisica> Pessoas
+        {
+            get
+            {
+                List<PessoaFisica> pessoas = new List<PessoaFisica>();
+                
+                /*Alunos*/
+                pessoas.AddRange(PessoaFisica.ListarPorDiretoria(this.CodComposto));
+
+                /*Diretor*/
+                pessoas.Add(this.Colaborador.Usuario.PessoaFisica);
+
+                /*Professores e Colaboradores*/
+                foreach (PessoaLocalTrabalho plt in this.PessoaLocalTrabalho)
+                {
+                    pessoas.Add(plt.PessoaFisica);
+                }
+
+                return pessoas;
+            }
+        }
+
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         public static void Inserir(Diretoria diretoria)
@@ -35,5 +57,6 @@ namespace SIAC.Models
                                                        && d.CodCampus == codCampus
                                                        && d.CodDiretoria == codDiretoria);
         }
+        
     }
 }
