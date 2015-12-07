@@ -9,6 +9,25 @@ namespace SIAC.Models
     {
         public string CodComposto => $"{CodInstituicao}.{CodProReitoria}";
 
+        public List<PessoaFisica> Pessoas
+        {
+            get
+            {
+                List<PessoaFisica> pessoas = new List<PessoaFisica>();
+                
+                /*Pro-reitor*/
+                pessoas.Add(this.Colaborador.Usuario.PessoaFisica);
+
+                /*Professores e Colaboradores*/
+                foreach (PessoaLocalTrabalho plt in this.PessoaLocalTrabalho)
+                {
+                    pessoas.Add(plt.PessoaFisica);
+                }
+
+                return pessoas;
+            }
+        }
+
         private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
 
         public static List<ProReitoria> ListarOrdenadamente()

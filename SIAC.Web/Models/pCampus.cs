@@ -7,6 +7,25 @@ namespace SIAC.Models
     {
         public string CodComposto => $"{CodInstituicao}.{CodCampus}";
 
+        public List<PessoaFisica> Pessoas
+        {
+            get
+            {
+                List<PessoaFisica> pessoas = new List<PessoaFisica>();
+
+                /*Alunos*/
+                pessoas.AddRange(PessoaFisica.ListarPorCampus(this.CodComposto));
+
+                /*Diretor-geral*/
+                pessoas.Add(this.Colaborador.Usuario.PessoaFisica);
+
+                /*Professores e Colaboradores*/
+                pessoas.AddRange(Models.PessoaLocalTrabalho.ListarPorCampus(this.CodComposto));
+                
+                return pessoas;
+            }
+        }
+
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         public static List<Campus> ListarOrdenadamente() => contexto.Campus.OrderBy(c => c.Sigla).ToList();

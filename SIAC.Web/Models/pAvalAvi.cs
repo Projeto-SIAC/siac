@@ -27,6 +27,49 @@ namespace SIAC.Models
             }
         }
 
+        public List<PessoaFisica> Pessoas
+        {
+            get
+            {
+                List<PessoaFisica> pessoas = new List<PessoaFisica>();
+
+                foreach (AviPublico publico in this.Publico)
+                {
+                    switch (publico.CodAviTipoPublico)
+                    {
+                        case 1: /*Institução*/
+                            pessoas.AddRange(publico.Instituicao.Pessoas);
+                            break;
+                        case 2: /*Reitoria*/
+                            pessoas.AddRange(publico.Reitoria.Pessoas);
+                            break;
+                        case 3: /*Pró-Reitoria*/
+                            pessoas.AddRange(publico.ProReitoria.Pessoas);
+                            break;
+                        case 4: /*Campus*/
+                            pessoas.AddRange(publico.Campus.Pessoas);
+                            break;
+                        case 5: /*Diretoria*/
+                            pessoas.AddRange(publico.Diretoria.Pessoas);
+                            break;
+                        case 6: /*Curso*/
+                            pessoas.AddRange(PessoaFisica.ListarPorCurso(publico.Curso.CodCurso));
+                            break;
+                        case 7: /*Turma*/
+                            pessoas.AddRange(PessoaFisica.ListarPorTurma(publico.Turma.CodTurma));
+                            break;
+                        case 8: /*Pessoa*/
+                            pessoas.Add(publico.PessoaFisica);
+                            break;
+                        default: /*Default*/
+                            break;
+                    }
+                }
+
+                return pessoas.Distinct().ToList();
+            }
+        }
+
         public List<MapAviModulo> MapQuestoes
         {
             get
