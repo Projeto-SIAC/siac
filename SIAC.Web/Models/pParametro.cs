@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace SIAC.Models
 {
@@ -10,7 +7,7 @@ namespace SIAC.Models
     {
         public int[] OcupacaoCoordenadorAvi => Newtonsoft.Json.JsonConvert.DeserializeObject<int[]>(parametro.CoordenadorAVI).Union(new int[] { Sistema.CodOcupacaoCoordenadorAvi }).ToArray();
 
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         private static Parametro parametro;
 
@@ -53,9 +50,6 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
-        public async static Task<Parametro> ObterAsync()
-        {
-            return await contexto.Parametro.FindAsync(1);
-        }
+        public async static Task<Parametro> ObterAsync() => await contexto.Parametro.FindAsync(1);
     }
 }

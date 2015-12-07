@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class Professor
     {
         public Instituicao Instituicao => this.TurmaDiscProfHorario.OrderBy(t=>t.AnoLetivo).LastOrDefault()?.Turma.Curso.Diretoria.Campus.Instituicao;
+
         public Campus Campus => this.TurmaDiscProfHorario.OrderBy(t => t.AnoLetivo).LastOrDefault()?.Turma.Curso.Diretoria.Campus;
 
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public static Professor ListarPorMatricula(string matricula)
-        {
-            return contexto.Professor.SingleOrDefault(p => p.MatrProfessor == matricula);
-        }
+        public static Professor ListarPorMatricula(string matricula) => contexto.Professor.FirstOrDefault(p => p.MatrProfessor == matricula);
 
         public static void Inserir(Professor professor)
         {
@@ -23,20 +19,10 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
-        public static List<Disciplina> ObterDisciplinas(int codProfessor)
-        {
-            return contexto.Professor.Single(p=>p.CodProfessor == codProfessor).Disciplina.OrderBy(d => d.Descricao).ToList();
-        }
+        public static List<Disciplina> ObterDisciplinas(int codProfessor) => contexto.Professor.Single(p=>p.CodProfessor == codProfessor).Disciplina.OrderBy(d => d.Descricao).ToList();
 
+        public static List<Disciplina> ObterDisciplinas(string matrProfessor) => contexto.Professor.Single(p => p.MatrProfessor == matrProfessor).Disciplina.OrderBy(d=>d.Descricao).ToList();
 
-        public static List<Disciplina> ObterDisciplinas(string matrProfessor)
-        {
-            return contexto.Professor.Single(p => p.MatrProfessor == matrProfessor).Disciplina.OrderBy(d=>d.Descricao).ToList();
-        }
-
-        public static List<Professor> ListarOrdenadamente()
-        {
-            return contexto.Professor.OrderBy(p => p.Usuario.PessoaFisica.Nome).ToList();
-        }
+        public static List<Professor> ListarOrdenadamente() => contexto.Professor.OrderBy(p => p.Usuario.PessoaFisica.Nome).ToList();
     }
 }

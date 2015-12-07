@@ -1,22 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class Questao
     {
-        public Disciplina Disciplina
-        {
-            get
-            {
-                return this.QuestaoTema.First().Tema.Disciplina;
-            }
-        }
+        public Disciplina Disciplina => this.QuestaoTema.FirstOrDefault()?.Tema.Disciplina;
 
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         public static void Inserir(Questao questao)
         {
@@ -71,28 +63,16 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
-        public static List<Questao> ListarPorProfessor(string matricula)
-        {
-            int codProfessor = contexto.Professor.SingleOrDefault(p => p.MatrProfessor == matricula).CodProfessor;
+        public static List<Questao> ListarPorProfessor(string matricula) => contexto.Questao.Where(q => q.Professor.MatrProfessor.ToLower() == matricula.ToLower()).ToList();
 
-            return contexto.Questao.Where(q => q.CodProfessor == codProfessor).ToList();
-        }
+        public static Questao ListarPorCodigo(int codigo) => contexto.Questao.SingleOrDefault(q => q.CodQuestao == codigo);
 
-        public static Questao ListarPorCodigo(int codigo)
-        {
-            return contexto.Questao.SingleOrDefault(q => q.CodQuestao == codigo);
-        }
+        public static List<Questao> ListarPorTema(int codTema) =>
+            (from qt in contexto.QuestaoTema
+             where qt.CodTema == codTema
+             select qt.Questao).ToList();
 
-        public static List<Questao> ListarPorTema(int codTema)
-        {
-            List<Questao> questoes = (from qt in contexto.QuestaoTema
-                                      where qt.CodTema == codTema
-                                      select qt.Questao).ToList();
-
-            return questoes;
-        }
-
-        public static List<QuestaoTema> ListarPorDisciplina(int codDisciplina, string[] Temas, int dificulDisc,int tipo, int qteQuestoes)
+        public static List<QuestaoTema> ListarPorDisciplina(int codDisciplina, string[] Temas, int dificulDisc, int tipo, int qteQuestoes)
         {
             List<QuestaoTema> QuestoesTemas = new List<QuestaoTema>(); //LISTA DE QUESTÕES PARA AVALIAÇÃO
             List<QuestaoTema> QuestoesTotal = new List<QuestaoTema>(); //LISTA DE TODAS AS QUESTÕES DO BANCO
@@ -407,11 +387,8 @@ namespace SIAC.Models
             return QuestoesTemas;
         }
 
-        public static List<Questao> Listar()
-        {
-            return contexto.Questao.ToList();
-        }
-        
+        public static List<Questao> Listar() => contexto.Questao.ToList();
+
         //MÉTODO PARA USAR EM AJAX 
         public static List<Questao> ListarPorPalavraChave(string[] palavraChave)
         {
@@ -445,7 +422,7 @@ namespace SIAC.Models
             }
             return retorno;
         }
-        
+
         public static List<QuestaoTema> ObterNovasQuestoes(List<QuestaoTema> QuestoesOriginais, int codTipoQuestao)
         {
             if (QuestoesOriginais.Count > 0)
@@ -469,7 +446,7 @@ namespace SIAC.Models
                                                  && !qt.Questao.FlagArquivo
                                                  select qt).ToList();
 
-                    qstTemp = Models.QuestaoTema.LimparRepeticao(qstTemp, QuestoesOriginais,questoes);
+                    qstTemp = Models.QuestaoTema.LimparRepeticao(qstTemp, QuestoesOriginais, questoes);
 
                     if (qstTemp.Count > 0)
                     {
@@ -488,16 +465,16 @@ namespace SIAC.Models
         public static List<Questao> ListarQuestoesFiltradas(int codDisciplina, int[] Temas, int dificulDisc, int tipo)
         {
             List<QuestaoTema> QuestoesTotal = new List<QuestaoTema>();
-             
+
             foreach (int tema in Temas)
             {
                 List<QuestaoTema> temp = (from qt in contexto.QuestaoTema
-                                            where qt.Questao.CodTipoQuestao == tipo
-                                            && qt.Questao.CodDificuldade == dificulDisc
-                                            && qt.CodDisciplina == codDisciplina
-                                            && qt.CodTema == tema
-                                            && !qt.Questao.FlagArquivo
-                                            select qt).ToList();
+                                          where qt.Questao.CodTipoQuestao == tipo
+                                          && qt.Questao.CodDificuldade == dificulDisc
+                                          && qt.CodDisciplina == codDisciplina
+                                          && qt.CodTema == tema
+                                          && !qt.Questao.FlagArquivo
+                                          select qt).ToList();
 
                 temp = Models.QuestaoTema.LimparRepeticao(temp, QuestoesTotal);
 
@@ -506,7 +483,7 @@ namespace SIAC.Models
                     QuestoesTotal.AddRange(temp);
                 }
             }
-            if(QuestoesTotal.Count > 0)
+            if (QuestoesTotal.Count > 0)
             {
                 List<Questao> questoes = (from qt in QuestoesTotal
                                           select qt.Questao).ToList();
