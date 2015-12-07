@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 
 namespace SIAC.Helpers
 {
     public class Sessao
     {
-        private static HttpContext context
-        {
-            get { return HttpContext.Current; }
-        }
+        private static HttpContext context => HttpContext.Current;
 
         public static bool RealizandoAvaliacao
         {
@@ -24,53 +19,13 @@ namespace SIAC.Helpers
             }
         }
 
-        public static string UsuarioMatricula
-        {
-            get
-            {
-                if (context!=null)
-                {
-                    return (string)HttpContext.Current.Session["UsuarioMatricula"];
-                }
-                return String.Empty;
-            }
-        }
+        public static string UsuarioMatricula => (string)context?.Session["UsuarioMatricula"] ?? String.Empty;
 
-        public static string UsuarioNome
-        {
-            get
-            {
-                if (context != null)
-                {
-                    return (string)context.Session["UsuarioNome"];
-                }
-                return String.Empty;
-            }
-        }
+        public static string UsuarioNome => (string)context?.Session["UsuarioNome"] ?? String.Empty;
 
-        public static string UsuarioCategoria
-        {
-            get
-            {
-                if (context != null)
-                {
-                    return (string)HttpContext.Current.Session["UsuarioCategoria"];
-                }
-                return String.Empty;
-            }
-        }
+        public static string UsuarioCategoria => (string)context?.Session["UsuarioCategoria"] ?? String.Empty;
 
-        public static int UsuarioCategoriaCodigo
-        {
-            get
-            {                
-                if (context != null)
-                {
-                    return (int)context.Session["UsuarioCategoriaCodigo"];
-                }
-                return 0;
-            }
-        }
+        public static int UsuarioCategoriaCodigo => (int)context?.Session["UsuarioCategoriaCodigo"];
 
         public static string UsuarioAvaliacao
         {
@@ -84,29 +39,10 @@ namespace SIAC.Helpers
             }
         }
 
-        public static void Inserir(string chave, object valor)
-        {
-            if (context != null)
-            {
-                context.Session[chave] = valor;
-            }
-        }
+        public static void Inserir(string chave, object valor) => context.Session[chave] = valor;
 
-        public static object Retornar(string chave)
-        {
-            if (context != null)
-            {
-                return context.Session[chave];
-            }
-            return null;
-        }
+        public static object Retornar(string chave) => context?.Session[chave];
 
-        public static void Limpar()
-        {
-            if (context != null)
-            {
-                context.Session.Clear();
-            }
-        }
+        public static void Limpar() => context?.Session.Clear();
     }
 }

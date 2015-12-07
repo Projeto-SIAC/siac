@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace SIAC.Helpers
 {
@@ -21,7 +18,7 @@ namespace SIAC.Helpers
         public static void Parar()
         {
             var total = (DateTime.Now - tempo).TotalSeconds;
-            Debug.WriteLine("TimeLog: {0} segundos para realizar {1} [{2}]", total.ToString(), teste, tempo.ToString());
+            Debug.WriteLine($"TimeLog: {total.ToString()} segundos para realizar {teste} [{tempo.ToString()}]");
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using SIAC.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using SIAC.Models;
 
 namespace SIAC
 {
@@ -175,10 +175,7 @@ namespace SIAC
             return value;
         }
 
-        public static string paraCaixaAlta(int number)
-        {
-            return paraCaixaBaixa(number).ToUpper();
-        }
+        public static string paraCaixaAlta(int number) => paraCaixaBaixa(number).ToUpper();
 
         public static bool ContainsOne(this int[] i, int[] j)
         {
@@ -235,7 +232,7 @@ namespace SIAC
             }
             else
             {
-                s = dt.ToBrazilianString();
+                s = dt.ToShortDateString();
             }
             return s;
         }
@@ -271,10 +268,7 @@ namespace SIAC
             return s;
         }
 
-        public static int SemestreAtual(this DateTime dt)
-        {
-            return dt.Month > 6 ? 2 : 1;
-        }
+        public static int SemestreAtual(this DateTime dt) => dt.Month > 6 ? 2 : 1;
         #endregion
 
         // List<AvaliacaoTema>
@@ -441,7 +435,7 @@ namespace SIAC
 
                 json += "}";
 
-                if (i != length-1)
+                if (i != length - 1)
                 {
                     json += ",";
                 }
@@ -456,11 +450,7 @@ namespace SIAC
 
         //Double
         #region Double
-        public static string ToValueHtml(this double value)
-        {
-            string s = value.ToString();
-            return s.Replace(',', '.');
-        }
+        public static string ToValueHtml(this double value) => value.ToString().Replace(',', '.');
         #endregion
 
         public static string RecuperarIp(this HttpContext contexto)
