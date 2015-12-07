@@ -582,7 +582,6 @@ namespace SIAC.Controllers
         }
         // POST: institucional/EnviarRespostaObjetiva/{codigo}
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult EnviarRespostaObjetiva(string codigo,int ordem,int alternativa)
         {
             if (!String.IsNullOrEmpty(codigo))
@@ -602,7 +601,6 @@ namespace SIAC.Controllers
         }
         // POST: institucional/EnviarRespostaDiscursiva/{codigo}
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult EnviarRespostaDiscursiva(string codigo, int ordem, string resposta)
         {
             if (!String.IsNullOrEmpty(codigo))
@@ -620,7 +618,6 @@ namespace SIAC.Controllers
         }
         // POST: institucional/EnviarAlternativaDiscursiva/{codigo}
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult EnviarAlternativaDiscursiva(string codigo, int ordem, int alternativa,string resposta)
         {
             if (!String.IsNullOrEmpty(codigo))

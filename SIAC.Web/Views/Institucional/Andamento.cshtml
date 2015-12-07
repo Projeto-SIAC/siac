@@ -11,6 +11,8 @@
         <div class="ui stackable three cards">
             @foreach (AvalAvi avi in Model)
             {
+                int quantidadeQuestoes = avi.QteQuestoes;
+                int quantidadeRespostas = AviQuestaoPessoaResposta.ObterRespostasPessoa(avi, PessoaFisica.ListarPorMatricula(SIAC.Helpers.Sessao.UsuarioMatricula)).Count;
                 <div class="card">
                     <div class="content">
                         <a href="@Url.Action("Realizar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="header">@avi.Avaliacao.CodAvaliacao</a>
@@ -19,12 +21,15 @@
                         </div>
 
                         <div class="description">
-                            @*<p>
-                                <b>Dificuldade</b>: @auto.Dificuldade.Descricao
-                            </p>*@
                             <p>
                                 <b>Quantidade de Questões</b>: @avi.QteQuestoes
                             </p>
+                            @if (quantidadeRespostas > 0)
+                            {
+                                <p>
+                                    <b>Quantidade de Respostas</b>: @quantidadeRespostas
+                                </p>
+                            }
                         </div>
 
                     </div>
@@ -37,7 +42,18 @@
                     <a href="@Url.Action("Realizar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">
                         Realizar
                     </a>
-                    <span class="ui attached top right label"><i class="write icon"></i>Andamento</span>
+                    @if (quantidadeRespostas == quantidadeQuestoes)
+                    {
+                        <span class="ui attached top right label"><i class="checkmark icon"></i>Concluída</span>
+                    }
+                    else if (quantidadeRespostas > 0)
+                    {
+                        <span class="ui attached top right label"><i class="write icon"></i>Realizando</span>
+                    }
+                    else
+                    {
+                        <span class="ui attached top right label"><i class="warning icon"></i>Nova</span>
+                    }
                 </div>
             }
         </div>
