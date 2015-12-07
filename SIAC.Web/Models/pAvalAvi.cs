@@ -12,16 +12,13 @@ namespace SIAC.Models
             {
                 List<AviQuestao> questoes = new List<AviQuestao>();
 
-                questoes = contexto.AviQuestao.Where(q => q.Ano == this.Ano
-                                                       && q.Semestre == this.Semestre
-                                                       && q.CodTipoAvaliacao == this.CodTipoAvaliacao
-                                                       && q.NumIdentificador == this.NumIdentificador)
-                                                       .OrderBy(q => q.CodOrdem)
-                                                       //.OrderBy(q=>q.CodAviModulo)
-                                                       //.ThenBy(q => q.CodAviCategoria)
-                                                       //.ThenBy(q => q.CodAviIndicador)
-                                                       //.ThenBy(q => q.CodOrdem)
-                                                       .ToList();
+                questoes = contexto.AviQuestao
+                    .Where(q => q.Ano == this.Ano
+                        && q.Semestre == this.Semestre
+                        && q.CodTipoAvaliacao == this.CodTipoAvaliacao
+                        && q.NumIdentificador == this.NumIdentificador)
+                    .OrderBy(q => q.CodOrdem)
+                    .ToList();
 
                 return questoes;
             }

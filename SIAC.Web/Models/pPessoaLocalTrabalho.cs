@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
@@ -9,13 +7,11 @@ namespace SIAC.Models
     {
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public static List<PessoaFisica> ListarPorInstituicao(int codInstituicao)
-        {
-            return contexto.PessoaLocalTrabalho
+        public static List<PessoaFisica> ListarPorInstituicao(int codInstituicao)=>
+            contexto.PessoaLocalTrabalho
                 .Where(plt => plt.CodInstituicao == codInstituicao)
                 .Select(plt => plt.PessoaFisica)
                 .ToList();
-        }
 
         public static List<PessoaFisica> ListarPorCampus(string codComposto)
         {
