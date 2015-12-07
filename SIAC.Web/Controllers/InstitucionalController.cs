@@ -29,6 +29,7 @@ namespace SIAC.Controllers
             return View(usuario);
         }
         // GET: institucional/Historico
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 }, CoordenadoresAvi = true)]
         public ActionResult Historico()
         {
             return View();

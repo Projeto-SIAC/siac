@@ -9,7 +9,7 @@
 <div class="ui stackable grid dashmenu">
     <div class="stackable doubling four columns centered row">
         
-        @if (Model.CodCategoria == 3)
+        @if (Model.CodCategoria == 3 && Model.FlagCoordenadorAvi)
         {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Gerar") },
