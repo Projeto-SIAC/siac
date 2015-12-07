@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class Turno
     {
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public static List<Turno> ListarOrdenadamente()
-        {
-            return contexto.Turno.ToList();
-        }
+        public static List<Turno> ListarOrdenadamente() => contexto.Turno.ToList();
     }
 }

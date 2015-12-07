@@ -1,26 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class Turma
     {
-        public string CodTurma
-        {
-            get
-            {
-                return String.Format("{0}.{1}.{2}{3}", Periodo, CodCurso.ToString("00000"), NumTurma, CodTurno);
-            }
-        }
+        public string CodTurma => $"{Periodo}.{CodCurso.ToString("00000")}.{NumTurma}{CodTurno}";
 
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public static List<Turma> ListarOrdenadamente()
-        {
-            return contexto.Turma.OrderBy(t => t.Nome).ToList();
-        }
+        public static List<Turma> ListarOrdenadamente() => contexto.Turma.OrderBy(t => t.Nome).ToList();
 
         public static void Inserir(Turma turma)
         {
@@ -54,7 +43,7 @@ namespace SIAC.Models
             List<Turma> turmas = contexto.Turma.Where(t => t.CodCurso == codCurso && t.CodTurno == codTurno && t.Periodo == periodo).ToList();
             if (turmas.Count() > 0)
             {
-                codNumTurma = turmas.Max(t => t.NumTurma)+1;
+                codNumTurma = turmas.Max(t => t.NumTurma) + 1;
             }
             return codNumTurma;
         }

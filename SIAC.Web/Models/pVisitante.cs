@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
     public partial class Visitante
     {
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         public bool FlagAtivo => this.DtValidade.HasValue ? (this.DtValidade.Value > DateTime.Now) : true;
 
@@ -22,11 +21,11 @@ namespace SIAC.Models
                     if (v.Count > 0)
                     {
                         Sistema.ProxCodVisitante = v.Max(vis => vis.CodVisitante) + 1;
-                    }  
+                    }
                     else
                     {
                         Sistema.ProxCodVisitante = 0;
-                    }          
+                    }
                 }
                 else
                 {
@@ -43,12 +42,9 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
-        public static List<Visitante> Listar()
-        {
-            return contexto.Visitante.ToList();
-        }
+        public static List<Visitante> Listar() => contexto.Visitante.ToList();
 
-        public static Visitante ListarPorMatricula(string matricula) => 
-            contexto.Visitante.FirstOrDefault(v=>v.MatrVisitante.ToLower() == matricula.ToLower());        
+        public static Visitante ListarPorMatricula(string matricula) =>
+            contexto.Visitante.FirstOrDefault(v => v.MatrVisitante.ToLower() == matricula.ToLower());
     }
 }

@@ -16,16 +16,6 @@ namespace SIAC.Models
         public static Dictionary<string, string> TempDataUrlImage = new Dictionary<string, string>();
         public static int? ProxCodVisitante = null;
 
-        public static bool Autenticado(string matricula)
-        {
-            if (!String.IsNullOrEmpty(matricula) && UsuarioAtivo.Keys.Contains(matricula))
-            {
-                if (UsuarioAtivo[matricula].IpAcesso == HttpContext.Current.RecuperarIp())
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        public static bool Autenticado(string matricula) => !String.IsNullOrEmpty(matricula) && UsuarioAtivo.Keys.Contains(matricula) && UsuarioAtivo[matricula].IpAcesso == HttpContext.Current.RecuperarIp();
     }
 }

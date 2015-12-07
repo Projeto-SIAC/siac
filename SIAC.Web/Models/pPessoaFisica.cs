@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
@@ -10,7 +9,7 @@ namespace SIAC.Models
         public string PrimeiroNome => this.Nome.Split(' ').First();
         public string UltimoNome => this.Nome.Split(' ').Last();
 
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         public static int Inserir(PessoaFisica pessoaFisica)
         {
@@ -33,32 +32,20 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
-        public static List<PessoaFisica> Listar()
-        {
-            return contexto.PessoaFisica.ToList();
-        }
+        public static List<PessoaFisica> Listar() => contexto.PessoaFisica.ToList();
 
-        public static PessoaFisica ListarPorCpf(string cpf)
-        {
-            return contexto.PessoaFisica.FirstOrDefault(p => p.Cpf == cpf);
-        }
+        public static PessoaFisica ListarPorCpf(string cpf) => contexto.PessoaFisica.FirstOrDefault(p => p.Cpf == cpf);
 
-        public static PessoaFisica ListarPorCodigo(int codPessoaFisica)
-        {
-            return contexto.PessoaFisica.FirstOrDefault(p=>p.CodPessoa == codPessoaFisica);
-        }
+        public static PessoaFisica ListarPorCodigo(int codPessoaFisica) => contexto.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica);
 
-        public static PessoaFisica ListarPorMatricula(string matricula)
-        {
-            return contexto.Usuario.FirstOrDefault(u => u.Matricula == matricula)?.PessoaFisica;
-        }
+        public static PessoaFisica ListarPorMatricula(string matricula) => contexto.Usuario.FirstOrDefault(u => u.Matricula == matricula)?.PessoaFisica;
 
         public static List<PessoaFisica> ListarPorTurma(string codTurma)
         {
             var dtHoje = DateTime.Now;
             var ano = dtHoje.Year;
             var semestre = dtHoje.Month > 6 ? 2 : 1;
-            return Turma.ListarPorCodigo(codTurma).TurmaDiscAluno.Where(a=>a.AnoLetivo == ano && a.SemestreLetivo == semestre).Select(a => a.Aluno.Usuario.PessoaFisica).ToList();
+            return Turma.ListarPorCodigo(codTurma).TurmaDiscAluno.Where(a => a.AnoLetivo == ano && a.SemestreLetivo == semestre).Select(a => a.Aluno.Usuario.PessoaFisica).ToList();
         }
 
         public static List<PessoaFisica> ListarPorCurso(int codCurso)

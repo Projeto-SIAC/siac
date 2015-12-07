@@ -1,22 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class TipoAvaliacao
     {
-        private static dbSIACEntities contexto { get { return Repositorio.GetInstance(); } }
+        private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public static TipoAvaliacao ListarPorCodigo(int codTipoAvaliacao)
-        {
-            return contexto.TipoAvaliacao.FirstOrDefault(ta => ta.CodTipoAvaliacao == codTipoAvaliacao);
-        }
+        public static TipoAvaliacao ListarPorCodigo(int codTipoAvaliacao) => contexto.TipoAvaliacao.FirstOrDefault(ta => ta.CodTipoAvaliacao == codTipoAvaliacao);
 
-        public static TipoAvaliacao ListarPorSigla(string sigla)
-        {
-            return contexto.TipoAvaliacao.FirstOrDefault(ta => ta.Sigla == sigla);
-        }
+        public static TipoAvaliacao ListarPorSigla(string sigla) => contexto.TipoAvaliacao.FirstOrDefault(ta => ta.Sigla == sigla);
     }
 }
