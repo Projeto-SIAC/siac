@@ -41,7 +41,7 @@ namespace SIAC.Controllers
                     {
                         return RedirectToAction("Index", "Dashboard");
                     }
-                    return View(model);
+                    return View("PreImpressao", model);
                 }
             }
             return RedirectToAction("Index", "Dashboard");
@@ -84,17 +84,18 @@ namespace SIAC.Controllers
                         Repositorio.GetInstance().SaveChanges();
                     }
 
-                    switch (model.Avaliacao.CodTipoAvaliacao)
-                    { 
-                        case 2:
-                            return View("Academica", model);
-                        case 3:
-                            return View("Certificacao", model);
-                        case 5:
-                            return View("Reposicao", model);
-                        default:
-                            break;
-                    }
+                    return View(model);
+                    //switch (model.Avaliacao.CodTipoAvaliacao)
+                    //{ 
+                    //    case 2:
+                    //        return View("Academica", model);
+                    //    case 3:
+                    //        return View("Certificacao", model);
+                    //    case 5:
+                    //        return View("Reposicao", model);
+                    //    default:
+                    //        break;
+                    //}
                 }
             }
 

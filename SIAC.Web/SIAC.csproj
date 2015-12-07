@@ -680,7 +680,7 @@
     <Content Include="Views\Certificacao\Realizar.cshtml" />
     <Content Include="Views\Certificacao\Resultado.cshtml" />
     <Content Include="Views\Certificacao\Corrigir.cshtml" />
-    <Content Include="Views\Impressao\Certificacao.cshtml" />
+    <Content Include="Views\Impressao\Partials\_Certificacao.cshtml" />
     <Content Include="Views\Certificacao\Partials\_Individual.cshtml" />
     <Content Include="Views\Certificacao\Detalhe.cshtml" />
     <Content Include="Views\Reposicao\Justificar.cshtml" />
@@ -694,15 +694,15 @@
     <Content Include="Views\Institucional\Configuracao.cshtml" />
     <Content Include="Views\Shared\Partials\_Anexo.cshtml" />
     <Content Include="Views\Reposicao\Agendada.cshtml" />
-    <Content Include="Views\Impressao\Reposicao.cshtml" />
+    <Content Include="Views\Impressao\Partials\_Reposicao.cshtml" />
     <Content Include="Views\Reposicao\Acompanhar.cshtml" />
     <Content Include="Views\Reposicao\Realizar.cshtml" />
     <Content Include="Views\Reposicao\Resultado.cshtml" />
     <Content Include="Views\Reposicao\Corrigir.cshtml" />
     <Content Include="Views\Reposicao\Detalhe.cshtml" />
     <Content Include="Views\Reposicao\Partials\_Individual.cshtml" />
-    <Content Include="Views\Impressao\Avaliacao.cshtml" />
-    <Content Include="Views\Impressao\Academica.cshtml" />
+    <Content Include="Views\Impressao\PreImpressao.cshtml" />
+    <Content Include="Views\Impressao\Partials\_Academica.cshtml" />
     <Content Include="Views\Configuracoes\Index.cshtml" />
     <Content Include="Views\Visitante\Index.cshtml" />
     <Content Include="Views\Visitante\Cadastrar.cshtml" />
@@ -728,6 +728,8 @@
     <Content Include="Views\Institucional\Historico.cshtml" />
     <Content Include="Views\Institucional\Partials\_ListaInstitucional.cshtml" />
     <Content Include="Views\Impressao\Partials\_AnexoImpressao.cshtml" />
+    <Content Include="Views\Impressao\Avaliacao.cshtml" />
+    <Content Include="Views\Impressao\Partials\_Questoes.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

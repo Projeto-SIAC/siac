@@ -1,68 +1,141 @@
 ﻿@model ImpressaoAvaliacaoViewModel
 
 @{
-    ViewBag.Title = "Imprimir " + Model.Avaliacao.CodAvaliacao;
+    ViewBag.Title = Model.Titulo;
+    Layout = null;
+    List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
 }
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - SIAC</title>
+    <link href="~/Resources/images/layout/logo-black.png" rel="shortcut icon" />
+    @Styles.Render("~/bundles/css")
+    <style>
+        @@media print {
+            div.parentQuestao {
+                page-break-before: always;
+            }
 
-@section Scripts {
-    <script>
-        $(function () {
-            $('.ui.checkbox').checkbox();
-            $('.ui.accordion').accordion();
-            $('.ui.modal').modal();
-            $('.ui.search.dropdown').dropdown({
-                allowAdditions: true
-            });
-            $('.informacoes.button').click(function () {
-                $('.informacoes.modal').modal('show');
-            });
-        });
-    </script>
-}
+            div.questao {
+                padding-top: 2.5em;
+                page-break-inside: avoid;
+            }
 
-<h2>
-    @ViewBag.Title
-    <div class="ui right floated button informacoes">Informações</div>
-</h2>
+            div.form > :first-child {
+                padding-top: unset;
+                page-break-inside: avoid;
+            }
 
-@Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
-
-<form class="ui form" method="post">
-    <div class="field required">
-        <label>Título</label>
-        <input type="text" name="txtTitulo" placeholder="Título" value="@($"{Model.Avaliacao.TipoAvaliacao.Descricao} {Model.Avaliacao.CodAvaliacao}")" required />        
+            div.questao .ui.header {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ui text content">
+        <h2>@ViewBag.Title</h2>
     </div>
-    <div class="field required">
-        <label>Instituição</label>
-        <input type="text" name="txtInstituicao" placeholder="Título" value="@($"{Model.Avaliacao.Professor.Instituicao?.PessoaJuridica.NomeFantasia}")" required />
-    </div>
-    <div class="field required">
-        <label>Professor</label>
-        <input type="text" name="txtProfessor" placeholder="Título" value="@($"{Model.Avaliacao.Professor.Usuario.PessoaFisica.Nome}")" required />
-    </div>
-    <div class="field">
-        <label>Campos</label>
-        <select name="ddlCampos" tabindex="0" class="ui search dropdown" multiple>
-            <option value="">Campos</option>
-            <option value="Nome" selected>Nome</option>
-            <option value="Data">Data</option>
-            <option value="Nº">Nº</option>
-            <option value="Turma">Turma</option>
-            <option value="Curso">Curso</option>
-        </select>
-    </div>
-    <div class="field">
-        <label>Instruções</label>
-        <textarea name="txtInstrucoes" placeholder="Instruções"></textarea>
-    </div>
-    <div class="field">
-        <div class="ui toggle checkbox">
-            <input type="checkbox" name="chkArquivar" checked>
-            <label>Arquivar após imprimir</label>
+    <div class="ui vertical segment">
+        <div class="ui header dividing">
+            Cabeçalho
         </div>
+        <table class="ui very basic table">
+            <tbody>
+                <tr>
+                    <td>
+                        <b>Instituição</b>
+                    </td>
+                    <td>
+                        @Model.Instituicao
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Professor</b>
+                    </td>
+                    <td>
+                        @Model.Professor
+                    </td>
+                </tr>
+                @if (Model.Avaliacao.CodTipoAvaliacao == 5)
+                {
+                    <tr>
+                        <td>
+                            <b>Avaliação para Reposição</b>
+                        </td>
+                        <td>
+                            @Model.Avaliacao.AvalAcadReposicao.Academica.Avaliacao.CodAvaliacao
+                        </td>
+                    </tr>
+                }
+                @foreach (var campo in Model.Campos)
+                {
+                    if (!String.IsNullOrWhiteSpace(campo))
+                    {
+                        <tr>
+                            <td>
+                                <b>@campo</b>
+                            </td>
+                            <td>
+                                <div class="ui fluid input">
+                                    <input type="text" />
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
     </div>
-    <div class="field">
-        <input type="submit" class="ui button" value="Imprimir" />
-    </div>
-</form>
 
+    @switch (Model.Avaliacao.CodTipoAvaliacao)
+    {
+        case 2:
+            @Html.Partial("_Academica", Model.Avaliacao.AvalAcademica);
+            break;
+        case 3:
+            @Html.Partial("_Certificacao", Model.Avaliacao.AvalCertificacao);
+            break;
+        case 5:
+            @Html.Partial("_Reposicao", Model.Avaliacao.AvalAcadReposicao);
+            break;
+        default:
+            break;
+    }
+
+    @if (Model.Instrucoes.Length > 0)
+    {
+        <div class="ui vertical segment">
+            <div class="ui header dividing">
+                Instruções
+            </div>
+            @foreach (var instrucao in Model.Instrucoes)
+            {
+                if (!String.IsNullOrWhiteSpace(instrucao))
+                {
+                    <p>@instrucao.Trim()</p>
+                }
+            }
+        </div>
+    }
+
+    @Html.Partial("_Questoes", lstQuestao)
+
+    <div class="ui vertical inverted segment">
+        <h5 class="ui centered header">&copy; SIAC - Sistema Interativo de Avaliação de Conhecimento</h5>
+    </div>
+
+    @Scripts.Render("~/bundles/js")
+    <script>
+        $('.ui.checkbox')
+                .checkbox()
+        ;
+        var focused = false;
+        window.print();
+        focused = true;
+        var interval = setInterval(function () { if (focused === true) { clearInterval(interval); window.location.href = "@Url.Action("Detalhe", "Academica", new { codigo = Model.Avaliacao.CodAvaliacao })" } }, 300);
+    </script>
+</body>
+</html>

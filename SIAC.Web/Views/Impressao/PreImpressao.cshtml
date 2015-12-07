@@ -1,0 +1,68 @@
+﻿@model ImpressaoAvaliacaoViewModel
+
+@{
+    ViewBag.Title = "Imprimir " + Model.Avaliacao.CodAvaliacao;
+}
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('.ui.checkbox').checkbox();
+            $('.ui.accordion').accordion();
+            $('.ui.modal').modal();
+            $('.ui.search.dropdown').dropdown({
+                allowAdditions: true
+            });
+            $('.informacoes.button').click(function () {
+                $('.informacoes.modal').modal('show');
+            });
+        });
+    </script>
+}
+
+<h2>
+    @ViewBag.Title
+    <div class="ui right floated button informacoes">Informações</div>
+</h2>
+
+@Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
+
+<form class="ui form" method="post">
+    <div class="field required">
+        <label>Título</label>
+        <input type="text" name="txtTitulo" placeholder="Título" value="@($"{Model.Avaliacao.TipoAvaliacao.Descricao} {Model.Avaliacao.CodAvaliacao}")" required />        
+    </div>
+    <div class="field required">
+        <label>Instituição</label>
+        <input type="text" name="txtInstituicao" placeholder="Título" value="@($"{Model.Avaliacao.Professor.Instituicao?.PessoaJuridica.NomeFantasia}")" required />
+    </div>
+    <div class="field required">
+        <label>Professor</label>
+        <input type="text" name="txtProfessor" placeholder="Título" value="@($"{Model.Avaliacao.Professor.Usuario.PessoaFisica.Nome}")" required />
+    </div>
+    <div class="field">
+        <label>Campos</label>
+        <select name="ddlCampos" tabindex="0" class="ui search dropdown" multiple>
+            <option value="">Campos</option>
+            <option value="Nome" selected>Nome</option>
+            <option value="Data">Data</option>
+            <option value="Nº">Nº</option>
+            <option value="Turma">Turma</option>
+            <option value="Curso">Curso</option>
+        </select>
+    </div>
+    <div class="field">
+        <label>Instruções</label>
+        <textarea name="txtInstrucoes" placeholder="Instruções"></textarea>
+    </div>
+    <div class="field">
+        <div class="ui toggle checkbox">
+            <input type="checkbox" name="chkArquivar" checked>
+            <label>Arquivar após imprimir</label>
+        </div>
+    </div>
+    <div class="field">
+        <input type="submit" class="ui button" value="Imprimir" />
+    </div>
+</form>
+
