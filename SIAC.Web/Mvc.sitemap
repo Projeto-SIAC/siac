@@ -106,6 +106,7 @@
       <mvcSiteMapNode title="Agendar" controller="Institucional" action="Agendar" preservedRouteParameters="codigo"/>
       <mvcSiteMapNode title="Realizar" controller="Institucional" action="Realizar" preservedRouteParameters="codigo"/>
       <mvcSiteMapNode title="Histórico" controller="Institucional" action="Historico"/>
+      <mvcSiteMapNode title="Andamento" controller="Institucional" action="Andamento"/>
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Perfil" controller="Perfil" action="Index" />
   </mvcSiteMapNode>

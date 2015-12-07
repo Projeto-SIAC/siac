@@ -18,10 +18,7 @@ namespace SIAC.Controllers
                 {
                     return AvalAvi.ListarPorColaborador(Helpers.Sessao.UsuarioMatricula);
                 }
-                else
-                {
-                    return AvalAvi.Listar();
-                }
+                return new List<AvalAvi>();
             }
         }
 
@@ -32,12 +29,19 @@ namespace SIAC.Controllers
             return View(usuario);
         }
         // GET: institucional/Historico
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 }, CoordenadoresAvi = true)]
         public ActionResult Historico()
         {
             return View();
         }
+        // GET: institucional/Andamento
+        public ActionResult Andamento()
+        {
+            List<AvalAvi> model = AvalAvi.ListarPorUsuario(Helpers.Sessao.UsuarioMatricula);
+            return View(model);
+        }
         // GET: institucional/Configuracao
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { 3 }, CoordenadoresAvi = true)]
         public ActionResult Configuracao()
         {
             ViewModels.InstitucionalGerarQuestaoViewModel model = new ViewModels.InstitucionalGerarQuestaoViewModel();
@@ -554,7 +558,6 @@ namespace SIAC.Controllers
             
         }
         //GET: institucional/realizar/{codigo}
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult Realizar(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))
@@ -562,18 +565,23 @@ namespace SIAC.Controllers
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
                 if (avi != null /*&& avi.FlagAndamento*/)
                 {
-                    ViewModels.InstitucionalRealizarViewModel viewModel = new ViewModels.InstitucionalRealizarViewModel();
-                    viewModel.Avi = avi;
-                    viewModel.Respostas = AviQuestaoPessoaResposta.ObterRespostasPessoa(avi, PessoaFisica.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula));
+                    PessoaFisica pessoa = PessoaFisica.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
 
-                    return View(viewModel);
+                    if (avi.Pessoas.Contains(pessoa))
+                    {
+
+                        ViewModels.InstitucionalRealizarViewModel viewModel = new ViewModels.InstitucionalRealizarViewModel();
+                        viewModel.Avi = avi;
+                        viewModel.Respostas = AviQuestaoPessoaResposta.ObterRespostasPessoa(avi, PessoaFisica.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula));
+
+                        return View(viewModel);
+                    }
                 }
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Andamento");
         }
         // POST: institucional/EnviarRespostaObjetiva/{codigo}
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult EnviarRespostaObjetiva(string codigo,int ordem,int alternativa)
         {
             if (!String.IsNullOrEmpty(codigo))
@@ -593,7 +601,6 @@ namespace SIAC.Controllers
         }
         // POST: institucional/EnviarRespostaDiscursiva/{codigo}
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult EnviarRespostaDiscursiva(string codigo, int ordem, string resposta)
         {
             if (!String.IsNullOrEmpty(codigo))
@@ -611,7 +618,6 @@ namespace SIAC.Controllers
         }
         // POST: institucional/EnviarAlternativaDiscursiva/{codigo}
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
         public ActionResult EnviarAlternativaDiscursiva(string codigo, int ordem, int alternativa,string resposta)
         {
             if (!String.IsNullOrEmpty(codigo))

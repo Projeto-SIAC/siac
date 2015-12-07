@@ -1,0 +1,71 @@
+﻿@model List<AvalAvi>
+@{
+    ViewBag.Title = "Avaliações Institucionais em Andamento";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.Count > 0)
+{
+    <h2>@ViewBag.Title</h2>
+    <div class="ui basic segment">
+        <div class="ui stackable three cards">
+            @foreach (AvalAvi avi in Model)
+            {
+                int quantidadeQuestoes = avi.QteQuestoes;
+                int quantidadeRespostas = AviQuestaoPessoaResposta.ObterRespostasPessoa(avi, PessoaFisica.ListarPorMatricula(SIAC.Helpers.Sessao.UsuarioMatricula)).Count;
+                <div class="card">
+                    <div class="content">
+                        <a href="@Url.Action("Realizar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="header">@avi.Avaliacao.CodAvaliacao</a>
+                        <div class="meta">
+                            <span>@avi.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
+                        </div>
+
+                        <div class="description">
+                            <p>
+                                <b>Quantidade de Questões</b>: @avi.QteQuestoes
+                            </p>
+                            @if (quantidadeRespostas > 0)
+                            {
+                                <p>
+                                    <b>Quantidade de Respostas</b>: @quantidadeRespostas
+                                </p>
+                            }
+                        </div>
+
+                    </div>
+                    <div class="extra content">
+                        <div class="extra content">
+                            <div class="ui label">Início:<div class="detail">@avi.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy")</div></div>
+                            <div class="ui label">Término:<div class="detail">@avi.DtTermino.Value.ToString("dd/MM/yyyy")</div></div>
+                        </div>
+                    </div>
+                    <a href="@Url.Action("Realizar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">
+                        Realizar
+                    </a>
+                    @if (quantidadeRespostas == quantidadeQuestoes)
+                    {
+                        <span class="ui attached top right label"><i class="checkmark icon"></i>Concluída</span>
+                    }
+                    else if (quantidadeRespostas > 0)
+                    {
+                        <span class="ui attached top right label"><i class="write icon"></i>Realizando</span>
+                    }
+                    else
+                    {
+                        <span class="ui attached top right label"><i class="warning icon"></i>Nova</span>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="ui grid row centered">
+        <h2 class="ui icon header">
+            <i class="icon frown"></i>
+            Não existe nenhuma Avaliação Institucional em andamento para o seu usuário
+            @*<div class="sub header">Desejar gerar uma agora? <a href="@Url.Action("Gerar")">Gerar</a></div>*@
+        </h2>
+    </div>
+}

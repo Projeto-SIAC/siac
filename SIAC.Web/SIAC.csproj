@@ -730,6 +730,7 @@
     <Content Include="Views\Impressao\Partials\_AnexoImpressao.cshtml" />
     <Content Include="Views\Impressao\Avaliacao.cshtml" />
     <Content Include="Views\Impressao\Partials\_Questoes.cshtml" />
+    <Content Include="Views\Institucional\Andamento.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
