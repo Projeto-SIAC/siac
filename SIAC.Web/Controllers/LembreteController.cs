@@ -56,5 +56,26 @@ namespace SIAC.Controllers
 
             return Json(Menu);
         }
+
+        [HttpPost]
+        public ActionResult Lembretes()
+        {
+            if (Sessao.Retornar("Lembretes") == null)
+            {
+                string matricula = Sessao.UsuarioMatricula;
+                var Lembretes = new List<Dictionary<string, string>> ();
+                if (AvalAvi.ListarPorUsuario(Sessao.UsuarioMatricula).Count > 0)
+                {
+                    Lembretes.Add(new Dictionary<string, string>() {
+                        { "Mensagem", "Há Av. Institucionais em andamento no momento." },
+                        { "Botao", "Abrir" },
+                        { "Url", "/institucional/andamento" }
+                    });
+                }
+                Sessao.Inserir("Lembretes", true);
+                return Json(Lembretes);
+            }
+            return null;
+        }
     }
 }

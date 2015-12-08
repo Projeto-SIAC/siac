@@ -11,10 +11,16 @@ namespace SIAC
                 "~/scripts/libs/modernizr.js"
             ));
 
+            bundles.Add(new ScriptBundle("~/bundles/js/acesso").Include(
+                "~/scripts/libs/jquery.min.js",
+                "~/scripts/libs/semantic.min.js"
+            ));
+
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
                 "~/scripts/libs/jquery.min.js",
                 "~/scripts/libs/semantic.min.js",
                 "~/scripts/libs/html2canvas.min.js",
+                "~/scripts/libs/alertify.min.js",
                 "~/scripts/plugins/jquery.mask-1.13.4.min.js",
                 "~/scripts/plugins/jquery.address-1.6.min.js",
                 "~/scripts/siac.js",
@@ -79,6 +85,8 @@ namespace SIAC
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                 "~/styles/semantic.min.css",
+                "~/styles/themes/semantic.min.css",
+                "~/styles/alertify.min.css",
                 "~/styles/siac.min.css"
             ));
 

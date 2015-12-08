@@ -180,6 +180,7 @@
     <Content Include="Resources\images\content\acesso\avatar.png" />
     <Content Include="Resources\images\layout\loader.gif" />
     <Content Include="Resources\images\layout\ogimage.jpg" />
+    <Content Include="Scripts\libs\alertify.min.js" />
     <Content Include="Scripts\libs\chart.min.js" />
     <Content Include="Scripts\libs\fullcalendar.min.js" />
     <Content Include="Scripts\libs\fullcalendar.pt-br.min.js" />
@@ -224,6 +225,7 @@
     <Content Include="Scripts\siac.min.js">
       <DependentUpon>siac.js</DependentUpon>
     </Content>
+    <Content Include="Styles\alertify.min.css" />
     <Content Include="Styles\fullcalendar.css" />
     <Content Include="Styles\fullcalendar.print.css" />
     <Content Include="Styles\semantic.min.css" />
@@ -242,6 +244,7 @@
     <Content Include="Global.asax" />
     <Content Include="Resources\videos\background.mp4" />
     <Content Include="Scripts\plugins\jquery.signalR-2.2.0.min.js" />
+    <Content Include="Styles\themes\semantic.min.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

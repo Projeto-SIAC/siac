@@ -1,8 +1,12 @@
 ﻿siac.Lembrete = siac.Lembrete || {};
 
 siac.Lembrete.iniciar = function () {
-    var pathname = window.location.pathname.toLowerCase();
+    //alertify.set('notifier', 'position', 'top-right');
+    
+    siac.Lembrete.Lembretes.iniciar();
     siac.Lembrete.Menu.iniciar();
+
+    var pathname = window.location.pathname.toLowerCase();
     if (pathname == "/dashboard") {
         siac.Lembrete.Dashboard.iniciar();
     }
@@ -10,6 +14,32 @@ siac.Lembrete.iniciar = function () {
         siac.Lembrete.Institucional.iniciar();
     }
 };
+
+siac.Lembrete.Lembretes = siac.Lembrete.Lembretes || (function () {
+    function iniciar() {
+        $.ajax({
+            url: '/lembrete/lembretes',
+            type: 'post',
+            cache: true,
+            success: function (data) {
+                if (data) {
+                    for (var i in data) {
+                        if (data[i]['Botao']) {
+                            var str = '<p>'+data[i]['Mensagem']+'</p>'+
+                                       '<a href="' + data[i]['Url'] + '" class="ui black basic button">' + data[i]['Botao'] + '</a>';
+                            alertify.notify(str, 'label', 0);
+                        }
+                        else {
+                            alertify.notify(data[i]['Mensagem'], 'label', 0);
+                        }
+                    }
+                }                
+            }
+        });
+    }
+
+    return { iniciar: iniciar }
+})();
 
 siac.Lembrete.Menu = siac.Lembrete.Menu || (function () {
     function iniciar() {
