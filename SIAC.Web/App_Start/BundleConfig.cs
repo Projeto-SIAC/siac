@@ -17,7 +17,10 @@ namespace SIAC
                 "~/scripts/libs/html2canvas.min.js",
                 "~/scripts/plugins/jquery.mask-1.13.4.min.js",
                 "~/scripts/plugins/jquery.address-1.6.min.js",
-                "~/scripts/siac.js"
+                "~/scripts/siac.js",
+                "~/scripts/modules/siac.lembrete.js",
+                "~/scripts/modules/siac.anexo.js",
+                "~/scripts/modules/siac.utilitario.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/js/questao").Include(

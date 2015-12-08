@@ -196,6 +196,7 @@
     <Content Include="Scripts\modules\siac.academica.min.js">
       <DependentUpon>siac.academica.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\modules\siac.anexo.js" />
     <Content Include="Scripts\modules\siac.autoavaliacao.js" />
     <Content Include="Scripts\modules\siac.autoavaliacao.min.js">
       <DependentUpon>siac.autoavaliacao.js</DependentUpon>
@@ -203,6 +204,7 @@
     <Content Include="Scripts\modules\siac.certificacao.min.js">
       <DependentUpon>siac.certificacao.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\modules\siac.lembrete.js" />
     <Content Include="Scripts\modules\siac.perfil.js" />
     <Content Include="Scripts\modules\siac.reposicao.js" />
     <Content Include="Scripts\modules\siac.usuario.js" />
@@ -733,6 +735,7 @@
     <Content Include="Views\Impressao\Partials\_Questoes.cshtml" />
     <Content Include="Views\Institucional\Andamento.cshtml" />
     <Content Include="Views\Institucional\Resultado.cshtml" />
+    <Content Include="Scripts\modules\siac.utilitario.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
