@@ -2,8 +2,7 @@
 @{
     ViewBag.Title = "Realizar " + Model.Avi.Avaliacao.CodAvaliacao;
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-@{
+
     int indMod = 1;
     int indCat = 1;
     int indInd = 1;
@@ -70,6 +69,7 @@
         indMod++;
     }
 </form>
+
 @Html.Partial("_InstitucionalInformacoes", Model.Avi)
 
 @section Scripts{

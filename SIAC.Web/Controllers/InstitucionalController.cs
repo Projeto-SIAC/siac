@@ -633,5 +633,25 @@ namespace SIAC.Controllers
             return Json("/institucional/agendar/" + codigo);
 
         }
+
+        // GET: institucional/Resultado/{codigo}
+        [Filters.AutenticacaoFilter(Categorias = new [] { 3 },CoordenadoresAvi = true)]
+        public ActionResult Resultado(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
+                if (avi != null)
+                {
+                    Colaborador colaborador = Colaborador.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
+
+                    if (avi.CodColabCoordenador == colaborador.CodColaborador)
+                    {
+                        return View(avi);
+                    }
+                }
+            }
+            return RedirectToAction("Andamento");
+        }
     }
 }
