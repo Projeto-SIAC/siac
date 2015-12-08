@@ -26,15 +26,13 @@
             });
 
             carregar();
+            siac.Lembrete.iniciar();
         });
     }
 
     function carregar() {
         var pathname = window.location.pathname.toLowerCase();
-        if (pathname == "/dashboard") {
-            siac.Lembrete.iniciar();
-        }
-        else if (pathname.startsWith('/dashboard/')) {
+        if (pathname.startsWith('/dashboard/')) {
             if (pathname.indexOf('/questao') >= 0) {
                 if (/\/dashboard\/questao\/cadastrar/.test(pathname)) {
                     siac.Questao.Cadastrar.iniciar();
@@ -503,9 +501,42 @@ siac.Anexo = siac.Anexo || (function () {
     }
 })();
 
-siac.Lembrete = siac.Lembrete || (function () {
-    // <div class="ui floating small red label">0</div>
+siac.Lembrete = siac.Lembrete || {};
 
+siac.Lembrete.iniciar = function () {
+    var pathname = window.location.pathname.toLowerCase();
+    siac.Lembrete.Menu.iniciar();
+    if (pathname == "/dashboard") {
+        siac.Lembrete.Dashboard.iniciar();
+    }
+    else if (pathname == "/institucional") {
+        siac.Lembrete.Institucional.iniciar();
+    }
+};
+
+siac.Lembrete.Menu = siac.Lembrete.Menu || (function () {
+    function iniciar() {
+        $.ajax({
+            url: '/lembrete/menu',
+            type: 'post',
+            cache: true,
+            success: function (data) {
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        if (data[key] > 0) {
+                            $('.menu [data-lembrete=' + key + '] .icon').remove();
+                            $('.menu [data-lembrete=' + key + ']').append('<div class="ui label">' + data[key] + '</div>');
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    return { iniciar: iniciar }
+})();
+
+siac.Lembrete.Dashboard = siac.Lembrete.Dashboard || (function () {
     function iniciar() {
         contadores();
     }
@@ -516,17 +547,43 @@ siac.Lembrete = siac.Lembrete || (function () {
             type: 'post',
             cache: true,
             success: function (data) {
-                console.log(data);
                 for (var key in data) {
                     if (data.hasOwnProperty(key)) {
-                        $('[data-lembrete=' + key + ']').append('<div class="ui floating small red label">' + data[key] + '</div>');
+                        if (data[key] > 0) {
+                            $('[data-lembrete=' + key + ']').append('<div class="ui floating small red label">' + data[key] + '</div>');
+                        }
                     }
-                }                
+                }
             }
         });
     }
 
-    return {iniciar: iniciar}
+    return { iniciar: iniciar }
+})();
+
+siac.Lembrete.Institucional = siac.Lembrete.Institucional || (function () {
+    function iniciar() {
+        contadores();
+    }
+
+    function contadores() {
+        $.ajax({
+            url: '/lembrete/institucional',
+            type: 'post',
+            cache: true,
+            success: function (data) {
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        if (data[key] > 0) {
+                            $('[data-lembrete=' + key + ']').append('<div class="ui floating small red label">' + data[key] + '</div>');
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    return { iniciar: iniciar }
 })();
 
 siac.iniciar();
