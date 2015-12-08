@@ -11,7 +11,8 @@
         @Html.Partial("_Atalho", new ViewDataDictionary() {
             { "Url", Url.Action("Realizar", "Autoavaliacao") },
             { "Icone", "file outline" },
-            { "Descricao", "Realizar Autoavaliação" }
+            { "Descricao", "Realizar Autoavaliação" },
+            { "Lembrete", "autoavaliacao" }
         })
         @if (Model.CodCategoria == 2)
         {
@@ -50,7 +51,8 @@
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Pendente") },
                 { "Icone", "edit" },
-                { "Descricao", "Correções Pendentes" }
+                { "Descricao", "Correções Pendentes" },
+                { "Lembrete", "correcao" }
             })
         }
         @Html.Partial("_Atalho", new ViewDataDictionary() {

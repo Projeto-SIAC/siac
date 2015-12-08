@@ -251,6 +251,7 @@
     <Compile Include="Controllers\CertificacaoController.cs" />
     <Compile Include="Controllers\ImpressaoController.cs" />
     <Compile Include="Controllers\InstitucionalController.cs" />
+    <Compile Include="Controllers\LembreteController.cs" />
     <Compile Include="Controllers\PerfilController.cs" />
     <Compile Include="Controllers\ReposicaoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
@@ -741,6 +742,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Lembrete\" />
     <Folder Include="Views\LeroLero\" />
     <Folder Include="Views\Tema\" />
   </ItemGroup>

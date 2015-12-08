@@ -31,8 +31,10 @@
 
     function carregar() {
         var pathname = window.location.pathname.toLowerCase();
-
-        if (pathname.startsWith('/dashboard/')) {
+        if (pathname == "/dashboard") {
+            siac.Lembrete.iniciar();
+        }
+        else if (pathname.startsWith('/dashboard/')) {
             if (pathname.indexOf('/questao') >= 0) {
                 if (/\/dashboard\/questao\/cadastrar/.test(pathname)) {
                     siac.Questao.Cadastrar.iniciar();
@@ -499,6 +501,32 @@ siac.Anexo = siac.Anexo || (function () {
     return {
         iniciar: iniciar
     }
+})();
+
+siac.Lembrete = siac.Lembrete || (function () {
+    // <div class="ui floating small red label">0</div>
+
+    function iniciar() {
+        contadores();
+    }
+
+    function contadores() {
+        $.ajax({
+            url: '/lembrete/dashboard',
+            type: 'post',
+            cache: true,
+            success: function (data) {
+                console.log(data);
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        $('[data-lembrete=' + key + ']').append('<div class="ui floating small red label">' + data[key] + '</div>');
+                    }
+                }                
+            }
+        });
+    }
+
+    return {iniciar: iniciar}
 })();
 
 siac.iniciar();
