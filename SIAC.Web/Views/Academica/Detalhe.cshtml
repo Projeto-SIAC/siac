@@ -168,6 +168,12 @@ else if (Model.Avaliacao.FlagRealizada)
         </div>
         <div class="ui basic segment">
             <div class="ui dividing header">
+                Classificação
+            </div>
+            @Html.Partial("_AvaliacaoResultadoClassificacao", Model.Avaliacao.AvalPessoaResultado.ToList())
+        </div>
+        <div class="ui basic segment">
+            <div class="ui dividing header">
                 Resultados
             </div>
             <div class="ui accordion">

@@ -739,6 +739,7 @@
     <Content Include="Views\Institucional\Andamento.cshtml" />
     <Content Include="Views\Institucional\Resultado.cshtml" />
     <Content Include="Scripts\modules\siac.utilitario.js" />
+    <Content Include="Views\Shared\Partials\_AvaliacaoResultadoClassificacao.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,57 @@
+﻿@model List<AvalPessoaResultado>
+
+@{
+    var podio = Model.OrderByDescending(r => r.Nota).Select(r => r.Nota).Distinct().Take(3).ToArray();
+}
+
+<table class="ui table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Nota</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var resultado in Model)
+        {
+            <tr>
+                <td>@resultado.PessoaFisica.Nome</td>
+                <td>@(resultado.Nota?.ToString("0.0") ?? "0")</td>
+                <td>
+                    @if (podio.Contains(resultado.Nota))
+                    {
+                        var colocacao = Array.IndexOf(podio, resultado.Nota);
+
+                        switch (colocacao)
+                        {
+                            case 0:
+                                <div class="ui star rating">
+                                    <i class="icon active"></i>
+                                    <i class="icon active"></i>
+                                    <i class="icon active"></i>
+                                </div>
+                                break;
+                            case 1:
+                                <div class="ui star rating">
+                                    <i class="icon active"></i>
+                                    <i class="icon active"></i>
+                                    <i class="icon "></i>
+                                </div>
+                                break;
+                            case 2:
+                                <div class="ui star rating">
+                                    <i class="icon active"></i>
+                                    <i class="icon "></i>
+                                    <i class="icon "></i>
+                                </div>
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
