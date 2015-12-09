@@ -1,0 +1,202 @@
+﻿@model AvalAvi
+
+@{
+    ViewBag.Title = Model.Titulo;
+    Layout = null;
+    //List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
+
+    int indMod = 1;
+    int indCat = 1;
+    int indInd = 1;
+    int indQue = 1;
+}
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - SIAC</title>
+    <link href="~/Resources/images/layout/logo-black.png" rel="shortcut icon" />
+    @Styles.Render("~/bundles/css")
+    <style>
+        @@media print {
+            div.parentQuestao {
+                page-break-before: always;
+            }
+
+            div.questao {
+                padding-top: 2.5em;
+                page-break-inside: avoid;
+            }
+
+            div.form > :first-child {
+                padding-top: unset;
+                page-break-inside: avoid;
+            }
+
+            div.questao .ui.header {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ui text content">
+        <h2>@ViewBag.Title</h2>
+    </div>
+    <div class="ui vertical segment">
+        <div class="ui header dividing">
+            Cabeçalho
+        </div>
+        <table class="ui very basic table">
+            <tbody>
+                <tr>
+                    <td>
+                        <b>Instituição</b>
+                    </td>
+                    <td>
+                        @*@Model.Instituicao*@
+                        @Model.Colaborador.Usuario.PessoaFisica.PessoaLocalTrabalho.Instituicao.Sigla
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Coordenador</b>
+                    </td>
+                    <td>
+                        @Model.Colaborador.Usuario.PessoaFisica.Nome
+                    </td>
+                </tr>
+                @*@if (Model.Avaliacao.CodTipoAvaliacao == 5)
+                {
+                    <tr>
+                        <td>
+                            <b>Avaliação para Reposição</b>
+                        </td>
+                        <td>
+                            @Model.Avaliacao.AvalAcadReposicao.Academica.Avaliacao.CodAvaliacao
+                        </td>
+                    </tr>
+                }*@
+                @*@foreach (var campo in Model.Campos)
+                {
+                    if (!String.IsNullOrWhiteSpace(campo))
+                    {
+                        <tr>
+                            <td>
+                                <b>@campo</b>
+                            </td>
+                            <td>
+                                <div class="ui fluid input">
+                                    <input type="text" />
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }*@
+            </tbody>
+        </table>
+    </div>
+
+    @*@switch (Model.Avaliacao.CodTipoAvaliacao)
+    {
+        case 2:
+            @Html.Partial("_Academica", Model.Avaliacao.AvalAcademica);
+            break;
+        case 3:
+            @Html.Partial("_Certificacao", Model.Avaliacao.AvalCertificacao);
+            break;
+        case 5:
+            @Html.Partial("_Reposicao", Model.Avaliacao.AvalAcadReposicao);
+            break;
+        default:
+            break;
+    }*@
+
+    @*@if (Model.Instrucoes.Length > 0)
+    {
+        <div class="ui vertical segment">
+            <div class="ui header dividing">
+                Instruções
+            </div>
+            @foreach (var instrucao in Model.Instrucoes)
+            {
+                if (!String.IsNullOrWhiteSpace(instrucao))
+                {
+                    <p>@instrucao.Trim()</p>
+                }
+            }
+        </div>
+    }*@
+
+    @foreach (MapAviModulo modulo in Model.MapQuestoes)
+    {
+        <h3 class="ui header">@(indMod + ". " + modulo.Modulo.Descricao)</h3>
+        foreach (MapAviCategoria categoria in modulo.Categorias)
+        {
+            <h4 class="ui header">@(indMod + "." + indCat + ". " + categoria.Categoria.Descricao)</h4>
+            foreach (MapAviIndicador indicador in categoria.Indicadores)
+            {
+                <h5 class="ui header">@(indMod + "." + indCat + "." + indInd + ". " + indicador.Indicador.Descricao)</h5>
+                foreach (AviQuestao questao in indicador.Questoes)
+                {
+                    //AviQuestaoPessoaResposta resposta = Model.Respostas.FirstOrDefault(pr => pr.CodOrdem == questao.CodOrdem);
+                    <div class="ui segment" data-questao="@questao.CodOrdem">
+                        <h4 class="ui dividing header" data-content="@questao.Observacao">
+                            @(indMod + "." + indCat + "." + indInd + "." + indQue + ". " + questao.Enunciado.Replace(Environment.NewLine, "</br>"))
+                        </h4>
+                        @if (questao.FlagDiscursiva.HasValue && questao.FlagDiscursiva.Value)
+                            {
+                            <textarea rows="3" name="txtResposta@(questao.CodOrdem)" class="input" placeholder="Resposta"></textarea>
+                        }
+                        else
+                        {
+                            //int marcada = resposta != null ? resposta.RespAlternativa.Value : -1;
+                            <div class="ui very relaxed list">
+                                @foreach (AviQuestaoAlternativa alternativa in questao.AviQuestaoAlternativa)
+                                {
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" data-alternativa="txtAlternativa@(alternativa.CodAlternativa)" name="rdoResposta@(questao.CodOrdem)" value="@alternativa.CodAlternativa" />
+                                            <label><b>@((alternativa.CodAlternativa - 1).GetIndiceAlternativa())</b>) @alternativa.Enunciado</label>
+                                        </div>
+                                    </div>
+                                    if (alternativa.FlagAlternativaDiscursiva)
+                                    {
+                                        <div class="field">
+                                            <input type="text" id="txtAlternativa@(alternativa.CodAlternativa)" placeholder="@alternativa.Enunciado" />
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+                    indQue++;
+                }
+                indQue = 1;
+                indInd++;
+            }
+            indInd = 1;
+            indCat++;
+        }
+        indCat = 1;
+        indMod++;
+    }
+
+
+    @*@Html.Partial("_Questoes", lstQuestao)*@
+
+    <div class="ui vertical inverted segment">
+        <h5 class="ui centered header">&copy; SIAC - Sistema Interativo de Avaliação de Conhecimento</h5>
+    </div>
+
+    @Scripts.Render("~/bundles/js")
+    <script>
+        $('.ui.checkbox')
+                .checkbox()
+        ;
+        var focused = false;
+        window.print();
+        focused = true;
+        var interval = setInterval(function () { if (focused === true) { clearInterval(interval); window.location.href = "@Url.Action("Detalhe", "Academica", new { codigo = Model.Avaliacao.CodAvaliacao })" } }, 300);
+    </script>
+</body>
+</html>

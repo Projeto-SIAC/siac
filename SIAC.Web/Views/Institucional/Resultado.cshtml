@@ -12,6 +12,7 @@
 <h2>
     @ViewBag.Title
     <div class="ui right floated informacoes button">Informações</div>
+    <a href="@Url.Action("Institucional", "Impressao",new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui right floated imprimir button">Imprimir</a>
 </h2>
 
 <div class="ui fluid styled accordion form">

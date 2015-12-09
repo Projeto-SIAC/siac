@@ -101,5 +101,19 @@ namespace SIAC.Controllers
 
             return RedirectToAction("Index", "Dashboard");
         }
+
+        [HttpGet]
+        public ActionResult Institucional(string codigo)
+        {
+            if (!String.IsNullOrEmpty(codigo))
+            {
+                AvalAvi model = AvalAvi.ListarPorCodigoAvaliacao(codigo);
+                if (model != null && model.CodColabCoordenador == Colaborador.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodColaborador)
+                {
+                    return View(model);
+                }
+            }
+            return RedirectToAction("Index", "Dashboard");
+        }
     }
 }
