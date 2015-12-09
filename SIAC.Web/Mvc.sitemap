@@ -105,8 +105,9 @@
       <mvcSiteMapNode title="Público" controller="Institucional" action="Publico" preservedRouteParameters="codigo"/>
       <mvcSiteMapNode title="Agendar" controller="Institucional" action="Agendar" preservedRouteParameters="codigo"/>
       <mvcSiteMapNode title="Realizar" controller="Institucional" action="Realizar" preservedRouteParameters="codigo"/>
-      <mvcSiteMapNode title="Resultado" controller="Institucional" action="Resultado" preservedRouteParameters="codigo"/>
-      <mvcSiteMapNode title="Histórico" controller="Institucional" action="Historico"/>
+      <mvcSiteMapNode title="Histórico" controller="Institucional" action="Historico">
+        <mvcSiteMapNode title="Resultado" controller="Institucional" action="Resultado" preservedRouteParameters="codigo"/>
+      </mvcSiteMapNode>
       <mvcSiteMapNode title="Andamento" controller="Institucional" action="Andamento"/>
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Perfil" controller="Perfil" action="Index" />
