@@ -1208,7 +1208,18 @@ siac.Institucional.Resultado = (function () {
             })
             $('.informacoes.modal').modal('show');
         });
-        $('.ui.accordion').accordion({ animateChildren: false });
+        $('.ui.accordion').accordion({
+            animateChildren: false,
+            onOpen: function () {
+                var $content = $('.content[data-questao].active');
+                var $canvas = $content.find('canvas').get(0);
+                if ($content && $canvas) {
+                    var ctx = $canvas.getContext("2d");
+                    var data = JSON.parse($content.find('code.dados').html());
+                    var chart = new Chart(ctx).Doughnut(data);
+                }
+            }
+        });
     }
     return {
         iniciar: iniciar

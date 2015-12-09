@@ -60,7 +60,7 @@
                                                                     @foreach (AviQuestaoAlternativa alternativa in questao.AviQuestaoAlternativa)
                                                                     {
                                                                         <div class="item">
-                                                                            <b>@alternativa.CodAlternativa)</b> @alternativa.Enunciado
+                                                                            <b>@((alternativa.CodAlternativa -1).GetIndiceAlternativa()))</b> @alternativa.Enunciado
                                                                             @if (alternativa.FlagAlternativaDiscursiva)
                                                                             {
                                                                                 <div class="ui left pointing label">Alternativa discursiva</div>
@@ -73,6 +73,7 @@
                                                                 <canvas style="display:inline" width="200" height="200"></canvas>
                                                             </div>
                                                         </div>
+                                                        <code class="dados" hidden>@Html.Raw(questao.ToJsonChart())</code>
                                                     }
                                                 </div>
                                             </div>
@@ -147,4 +148,5 @@
 
 @section Scripts{
     @Scripts.Render("~/bundles/js/institucional")
+    @Scripts.Render("~/bundles/chart")
 }

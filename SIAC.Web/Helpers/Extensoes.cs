@@ -453,6 +453,47 @@ namespace SIAC
             return json;
         }
 
+        public static string ToJsonChart(this AviQuestao questao, List<AviQuestaoPessoaResposta> respostas = null)
+        {
+            respostas = questao.Respostas;
+            var random = new Random();
+            string json = string.Empty;
+            json += "[";
+
+            for (int i = 1, length = questao.AviQuestaoAlternativa.Count; i <= length; i++)
+            {
+                string rgba = Helpers.CorDinamica.Rgba(random);
+
+                json += "{";
+
+                json += $"\"value\":\"{respostas.Where(r => r.RespAlternativa == i).Count()}\"";
+
+                json += ",";
+
+                json += $"\"label\":\"Alternativa {(i-1).GetIndiceAlternativa()}\"";
+
+                json += ",";
+
+                json += $"\"color\":\"{rgba}\"";
+
+                json += ",";
+
+                json += $"\"highlight\":\"{rgba.Replace("1)", "0.8)")}\"";
+
+                json += "}";
+
+                if (i != length)
+                {
+                    json += ",";
+                }
+            }
+
+            json += "]";
+
+            return json;
+        }
+
+
         #endregion
 
         //Double
