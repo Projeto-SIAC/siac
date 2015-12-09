@@ -107,7 +107,7 @@ namespace SIAC.Models
         }
 
         public List<AviPublico> Publico => this.FlagPublico ? this.AviPublico.ToList() : null;
-
+        
         public bool FlagQuestionario => this.Questoes.Count > 0;
 
         public bool FlagPublico => this.AviPublico.Count > 0;

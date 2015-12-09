@@ -1,9 +1,44 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class AviQuestao
     {
+        public List<AviQuestaoPessoaResposta> Respostas
+        {
+            get
+            {
+                //List<AviQuestaoPessoaResposta> respostas = contexto.AviQuestaoPessoaResposta
+                //                                            .Where(pr => pr.Ano == this.Ano
+                //                                                    && pr.Semestre == this.Semestre
+                //                                                    && pr.CodTipoAvaliacao == this.CodTipoAvaliacao
+                //                                                    && pr.NumIdentificador == this.NumIdentificador
+                //                                                    && pr.CodOrdem == this.CodOrdem)
+                //                                            .ToList();
+                List<PessoaFisica> pessoas = this.AviQuestaoPessoaResposta.Select(pr => pr.PessoaFisica).Distinct().ToList();
+                
+                List<AviQuestaoPessoaResposta> retorno = new List<AviQuestaoPessoaResposta>();
+                if (pessoas.Count > 0)
+                {
+                    //int quantidadeQuestoes = 0s;
+                    foreach (PessoaFisica pessoa in pessoas)
+                    { 
+                        AviQuestaoPessoaResposta resposta = this.AviQuestaoPessoaResposta
+                                                                    .Where(pr => pr.CodOrdem == this.CodOrdem 
+                                                                              && pr.CodPessoaFisica == pessoa.CodPessoa)
+                                                                    .OrderByDescending(pr => pr.CodRespostaOrdem)
+                                                                    .FirstOrDefault();
+                        if (resposta != null)
+                        {
+                            retorno.Add(resposta);
+                        }
+                    }
+                }
+                return retorno;
+            }
+        }
+
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         public static void Inserir(AviQuestao questao)
