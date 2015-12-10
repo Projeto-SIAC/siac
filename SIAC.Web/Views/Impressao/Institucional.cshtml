@@ -18,23 +18,24 @@
     @Styles.Render("~/bundles/css")
     <style>
         @@media print {
-            div.parentQuestao {
+            div.parentQuestao, div.parentPublico, div.parentModulo {
                 page-break-before: always;
             }
 
-            div.questao {
-                padding-top: 2.5em;
+            div.questao,div.parentCategoria,div.parentIndicador {
+                /*padding-top: 2.5em;*/
                 page-break-inside: avoid;
             }
 
-            div.form > :first-child {
-                padding-top: unset;
-                page-break-inside: avoid;
-            }
+                /*div.form > :first-child {*/
+                div.questao > :first-child {
+                    padding-top: unset;
+                    page-break-inside: avoid;
+                }
 
-            div.questao .ui.header {
-                font-size: 1em;
-            }
+                div.questao .ui.header {
+                    font-size: 1em;
+                }
         }
     </style>
 </head>
@@ -66,137 +67,190 @@
                     </td>
                 </tr>
                 @*@if (Model.Avaliacao.CodTipoAvaliacao == 5)
-                {
-                    <tr>
-                        <td>
-                            <b>Avaliação para Reposição</b>
-                        </td>
-                        <td>
-                            @Model.Avaliacao.AvalAcadReposicao.Academica.Avaliacao.CodAvaliacao
-                        </td>
-                    </tr>
-                }*@
-                @*@foreach (var campo in Model.Campos)
-                {
-                    if (!String.IsNullOrWhiteSpace(campo))
                     {
                         <tr>
                             <td>
-                                <b>@campo</b>
+                                <b>Avaliação para Reposição</b>
                             </td>
                             <td>
-                                <div class="ui fluid input">
-                                    <input type="text" />
-                                </div>
+                                @Model.Avaliacao.AvalAcadReposicao.Academica.Avaliacao.CodAvaliacao
                             </td>
                         </tr>
-                    }
-                }*@
+                    }*@
+                @*@foreach (var campo in Model.Campos)
+                    {
+                        if (!String.IsNullOrWhiteSpace(campo))
+                        {
+                            <tr>
+                                <td>
+                                    <b>@campo</b>
+                                </td>
+                                <td>
+                                    <div class="ui fluid input">
+                                        <input type="text" />
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }*@
             </tbody>
         </table>
     </div>
 
-    @*@switch (Model.Avaliacao.CodTipoAvaliacao)
-    {
-        case 2:
-            @Html.Partial("_Academica", Model.Avaliacao.AvalAcademica);
-            break;
-        case 3:
-            @Html.Partial("_Certificacao", Model.Avaliacao.AvalCertificacao);
-            break;
-        case 5:
-            @Html.Partial("_Reposicao", Model.Avaliacao.AvalAcadReposicao);
-            break;
-        default:
-            break;
-    }*@
-
-    @*@if (Model.Instrucoes.Length > 0)
-    {
-        <div class="ui vertical segment">
-            <div class="ui header dividing">
-                Instruções
-            </div>
-            @foreach (var instrucao in Model.Instrucoes)
-            {
-                if (!String.IsNullOrWhiteSpace(instrucao))
-                {
-                    <p>@instrucao.Trim()</p>
-                }
-            }
+    <div class="ui vertical segment">
+        <div class="ui header dividing">
+            Informações
         </div>
-    }*@
-
-    @foreach (MapAviModulo modulo in Model.MapQuestoes)
-    {
-        <h3 class="ui header">@(indMod + ". " + modulo.Modulo.Descricao)</h3>
-        foreach (MapAviCategoria categoria in modulo.Categorias)
+        <table class="ui striped table">
+            <tbody>
+                <tr>
+                    <td><b>Código</b></td>
+                    <td>@Model.Avaliacao.CodAvaliacao</td>
+                </tr>
+                <tr>
+                    <td><b>Título</b></td>
+                    <td>@Model.Titulo</td>
+                </tr>
+                <tr>
+                    <td><b>Objetivo</b></td>
+                    <td>@Html.Raw(Model.Objetivo.ToHtml("p"))</td>
+                </tr>
+                <tr>
+                    <td><b>Coordenador</b></td>
+                    <td>@Model.Colaborador.Usuario.PessoaFisica.Nome</td>
+                </tr>
+            </tbody>
+        </table>
+        @* Prazo *@
+        @if (Model.FlagAgendada)
         {
-            <h4 class="ui header">@(indMod + "." + indCat + ". " + categoria.Categoria.Descricao)</h4>
-            foreach (MapAviIndicador indicador in categoria.Indicadores)
-            {
-                <h5 class="ui header">@(indMod + "." + indCat + "." + indInd + ". " + indicador.Indicador.Descricao)</h5>
-                foreach (AviQuestao questao in indicador.Questoes)
-                {
-                    //AviQuestaoPessoaResposta resposta = Model.Respostas.FirstOrDefault(pr => pr.CodOrdem == questao.CodOrdem);
-                    <div class="ui segment" data-questao="@questao.CodOrdem">
-                        <h4 class="ui dividing header" data-content="@questao.Observacao">
-                            @(indMod + "." + indCat + "." + indInd + "." + indQue + ". " + questao.Enunciado.Replace(Environment.NewLine, "</br>"))
-                        </h4>
-                        @if (questao.FlagDiscursiva.HasValue && questao.FlagDiscursiva.Value)
-                            {
-                            <textarea rows="3" name="txtResposta@(questao.CodOrdem)" class="input" placeholder="Resposta"></textarea>
-                        }
-                        else
+            <div class="ui header dividing">
+                Prazo
+            </div>
+            <table class="ui striped table">
+                <thead>
+                    <tr>
+                        <th>Data de Início</th>
+                        <th>Data de Término</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.Avaliacao.DtAplicacao.Value.ToShortDateString()</td>
+                        <td>@Model.DtTermino.Value.ToShortDateString()</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        @* Público *@
+        @if (Model.FlagPublico)
+        {
+            <div class="parentPublico">
+                <div class="ui header dividing">
+                    Público
+                </div>
+                <table class="ui striped table">
+                    <tbody>
+                        @foreach (AviPublico publico in Model.AviPublico)
                         {
-                            //int marcada = resposta != null ? resposta.RespAlternativa.Value : -1;
-                            <div class="ui very relaxed list">
-                                @foreach (AviQuestaoAlternativa alternativa in questao.AviQuestaoAlternativa)
+                            <tr>
+                                <td>@publico.Descricao</td>
+                                <td><a class="ui label">@publico.AviTipoPublico.Descricao</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+
+    <div class="ui form parentQuestao">
+        <div class="ui header dividing">
+            Questões
+        </div>
+        @foreach (MapAviModulo modulo in Model.MapQuestoes)
+        {
+            <div class="parentModulo">
+                <h3 class="ui header">@(indMod + ". " + modulo.Modulo.Descricao)</h3>
+                @foreach (MapAviCategoria categoria in modulo.Categorias)
+                {
+                    <div class="parentCategoria">
+                        <h4 class="ui header">@(indMod + "." + indCat + ". " + categoria.Categoria.Descricao)</h4>
+                        @foreach (MapAviIndicador indicador in categoria.Indicadores)
+                        {
+                            <div class="parentIndicador">
+                                <h5 class="ui header">@(indMod + "." + indCat + "." + indInd + ". " + indicador.Indicador.Descricao)</h5>
+                                @foreach (AviQuestao questao in indicador.Questoes)
                                 {
+                                    <div class="questao">
+                                        <div class="ui basic segment" data-questao="@questao.CodOrdem">
+                                            <h4 class="ui dividing header" data-content="@questao.Observacao">
+                                                @(indMod + "." + indCat + "." + indInd + "." + indQue + ". " + questao.Enunciado.Replace(Environment.NewLine, "</br>"))
+                                            </h4>
+                                            @if (questao.FlagDiscursiva.HasValue && questao.FlagDiscursiva.Value)
+                                    {
                                     <div class="field">
-                                        <div class="ui radio checkbox">
-                                            <input type="radio" data-alternativa="txtAlternativa@(alternativa.CodAlternativa)" name="rdoResposta@(questao.CodOrdem)" value="@alternativa.CodAlternativa" />
-                                            <label><b>@((alternativa.CodAlternativa - 1).GetIndiceAlternativa())</b>) @alternativa.Enunciado</label>
+                                        <label>Resposta</label>
+                                        <textarea></textarea>
+                                    </div>
+                                            }
+                                            else
+                                            {
+                                    <div class="ui very relaxed list">
+                                        @foreach (AviQuestaoAlternativa alternativa in questao.AviQuestaoAlternativa)
+                                        {
+                                            <div class="field">
+                                                <div class="ui radio checkbox">
+                                                    <input type="radio" data-alternativa="txtAlternativa@(alternativa.CodAlternativa)" name="rdoResposta@(questao.CodOrdem)" value="@alternativa.CodAlternativa" />
+                                                    <label><b>@((alternativa.CodAlternativa - 1).GetIndiceAlternativa())</b>) @alternativa.Enunciado</label>
+                                                </div>
+                                            </div>
+                                            //if (alternativa.FlagAlternativaDiscursiva)
+                                            //{
+                                            //}
+                                        }
+                                    </div>
+                                            }
                                         </div>
                                     </div>
-                                    if (alternativa.FlagAlternativaDiscursiva)
-                                    {
-                                        <div class="field">
-                                            <input type="text" id="txtAlternativa@(alternativa.CodAlternativa)" placeholder="@alternativa.Enunciado" />
-                                        </div>
-                                    }
                                 }
                             </div>
                         }
+                        indQue++;
                     </div>
-                    indQue++;
                 }
                 indQue = 1;
                 indInd++;
-            }
-            indInd = 1;
-            indCat++;
+            </div>
         }
-        indCat = 1;
-        indMod++;
-    }
+            
+                        indInd = 1;
+                        indCat++;
+                        }
+                        @{
+                            indCat = 1;
+                            indMod++;
+                        }
+                    </div>
+                            }
+        }
+            </div>
 
+            @*@Html.Partial("_Questoes", lstQuestao)*@
 
-    @*@Html.Partial("_Questoes", lstQuestao)*@
+                            <div class="ui vertical inverted segment">
+                                <h5 class="ui centered header">&copy; SIAC - Sistema Interativo de Avaliação de Conhecimento</h5>
+                            </div>
 
-    <div class="ui vertical inverted segment">
-        <h5 class="ui centered header">&copy; SIAC - Sistema Interativo de Avaliação de Conhecimento</h5>
-    </div>
-
-    @Scripts.Render("~/bundles/js")
-    <script>
-        $('.ui.checkbox')
-                .checkbox()
-        ;
-        var focused = false;
-        window.print();
-        focused = true;
-        var interval = setInterval(function () { if (focused === true) { clearInterval(interval); window.location.href = "@Url.Action("Detalhe", "Academica", new { codigo = Model.Avaliacao.CodAvaliacao })" } }, 300);
-    </script>
-</body>
-</html>
+                            @Scripts.Render("~/bundles/js")
+                            <script>
+                                $('.ui.checkbox')
+                                        .checkbox()
+                                ;
+                                var focused = false;
+                                window.print();
+                                focused = true;
+                                var interval = setInterval(function () { if (focused === true) { clearInterval(interval); window.location.href = "@Url.Action("Resultado", "Institucional", new { codigo = Model.Avaliacao.CodAvaliacao })" } }, 300);
+                            </script>
+                        </body>
+                    </html>
