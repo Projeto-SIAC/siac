@@ -9,6 +9,9 @@
             @usu.Matricula
         </td>
         <td>
+            <div class="ui label">@usu.Categoria.Descricao</div>
+        </td>
+        <td>
             <time datetime="@(usu.UsuarioAcesso.LastOrDefault()?.DtAcesso.ToString())" title="@(usu.UsuarioAcesso.LastOrDefault()?.DtAcesso.ToBrazilianString())">
                 @(usu.UsuarioAcesso.LastOrDefault()?.DtAcesso.ToElapsedTimeString() ?? "Nunca acessou")
             </time>
