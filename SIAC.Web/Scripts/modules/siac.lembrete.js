@@ -27,15 +27,24 @@ siac.Lembrete.Lembretes = siac.Lembrete.Lembretes || (function () {
                         if (data[i]['Botao']) {
                             var str = '<p>'+data[i]['Mensagem']+'</p>'+
                                        '<a href="' + data[i]['Url'] + '" class="ui black basic button">' + data[i]['Botao'] + '</a>';
-                            alertify.notify(str, 'label', 0);
+                            alertify.notify(str, 'label', 0, function (clicado) { lembreteVisualizado(clicado) });
                         }
                         else {
-                            alertify.notify(data[i]['Mensagem'], 'label', 0);
+                            alertify.notify(data[i]['Mensagem'], 'label', 0, function (clicado) { lembreteVisualizado(clicado) });
                         }
                     }
                 }                
             }
         });
+    }
+
+    function lembreteVisualizado(clicado) {
+        if (clicado) {
+            $.ajax({
+                url: '/lembrete/lembretesvisualizados',
+                type: 'post'
+            });
+        }
     }
 
     return { iniciar: iniciar }

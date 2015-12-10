@@ -88,10 +88,15 @@ namespace SIAC.Controllers
                     }
                     Sessao.Inserir("LembretesMensagem", Lembretes);
                 }
-                Sessao.Inserir("Lembretes", DateTime.Now);
                 return Json(Sessao.Retornar("LembretesMensagem"));                
             }
             return null;
+        }
+
+        [HttpPost]
+        public void LembretesVisualizados()
+        {
+            Sessao.Inserir("Lembretes", DateTime.Now);
         }
     }
 }
