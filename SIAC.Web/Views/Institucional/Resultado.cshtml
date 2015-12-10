@@ -12,9 +12,8 @@
 <h2>
     @ViewBag.Title
     <div class="ui right floated informacoes button">Informações</div>
-    <a href="@Url.Action("Institucional", "Impressao",new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui right floated imprimir button">Imprimir</a>
 </h2>
-
+<div class="ui basic segment">
 <div class="ui fluid styled accordion form">
     @foreach (MapAviModulo modulo in Model.MapQuestoes)
     {
@@ -160,6 +159,8 @@
             indMod++;
         }
     </form>*@
+</div>
+<a class="ui imprimir button" href="@Url.Action("Institucional", "Impressao",new { codigo = Model.Avaliacao.CodAvaliacao })">Imprimir</a>
 @Html.Partial("_InstitucionalInformacoes", Model)
 
 @section Scripts{
