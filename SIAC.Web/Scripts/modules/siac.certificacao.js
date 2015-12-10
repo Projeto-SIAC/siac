@@ -1257,7 +1257,7 @@ siac.Certificacao.Realizar = (function () {
                 .attr({
                     'readonly': 'readonly'
                 })
-                .removeAttr('href onchange onclick')
+                .removeAttr('id name href onchange onclick')
                 .off()
             ;
         }

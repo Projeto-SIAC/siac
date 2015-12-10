@@ -890,7 +890,7 @@ siac.Academica.Realizar = (function () {
                 .attr({
                     'readonly': 'readonly'
                 })
-                .removeAttr('href onchange onclick')
+                .removeAttr('id name href onchange onclick')
                 .off()
             ;
         }

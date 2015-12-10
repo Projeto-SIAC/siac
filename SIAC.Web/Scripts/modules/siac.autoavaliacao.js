@@ -222,12 +222,12 @@ siac.Autoavaliacao.Realizar = (function () {
             setInterval(function () {
                 $.ajax({
                     type: 'GET',
-                    url: '/Acesso/Conectado'
+                    url: '/acesso/conectado'
                 });
             }, 1000 * 60 * 15);
         })();
 
-        definirAlturaDiv();
+        //definirAlturaDiv();
 
         $('a[href]').on('click', function () {
             $('.ui.confirmar.modal').modal('show');
@@ -243,7 +243,6 @@ siac.Autoavaliacao.Realizar = (function () {
             .modal({
                 closable: false,
                 transition: 'vertical flip',
-                blurring: true,
                 onHide: function () {
                     window.onbeforeunload = function () {
                         return 'Você está realizando uma autoavaliação.';
@@ -312,14 +311,16 @@ siac.Autoavaliacao.Realizar = (function () {
 
         $('textarea[name^="txtResposta"], input[name^="rdoResposta"]').change(function () {
             var $_this = $(this);
-            $label = $_this.parents('.content').prev().find('.ui.label');
+            $label = $_this.closest('.segment').find('.ui.ribbon.label');
             if ($_this.val()) {
                 $label.removeClass('red');
                 $label.removeAttr('style');
+                $label.addClass('green');
                 $label.html('Respondida');
                 if ($_this.attr('name').indexOf('rdo') > -1) {
+                    console.log($('input[name=' + $_this.attr('name') + ']:checked').next().find('b').text());
                     $label.find('.detail').remove();
-                    $label.append($('<div class="detail"></div>').text($('input[name="' + $_this.attr('name') + '"]:checked').next().find('b').text()));
+                    $label.append($('<div class="detail"></div>').text($('input[name=' + $_this.attr('name') + ']:checked').next().find('b').text()));
                 }
             }
             else {
@@ -349,14 +350,14 @@ siac.Autoavaliacao.Realizar = (function () {
         ;
     }
 
-    function definirAlturaDiv() {
-        var tamTela = $(window).height();
-        var tamDesejado = tamTela * 0.6;
-        $('.ui.accordion').css({
-            'max-height': tamDesejado + 'px',
-            'overflow-y': 'auto'
-        });
-    }
+    //function definirAlturaDiv() {
+        //var tamTela = $(window).height();
+        //var tamDesejado = tamTela * 0.6;
+        //$('.ui.basic.segment').css({
+        //    'max-height': tamDesejado + 'px',
+        //    'overflow-y': 'auto'
+        //});
+    //}
 
     function relogio() {
         setInterval(function () {
@@ -397,15 +398,15 @@ siac.Autoavaliacao.Realizar = (function () {
         $objects = $('textarea[name^="txtResposta"], input[name^="rdoResposta"]');
         for (var i = 0, length = $objects.length; i < length; i++) {
             var _this = $objects.eq(i);
-            $label = _this.parents('.content').prev().find('.ui.label');
+            $label = _this.closest('.segment').find('.ui.ribbon.label');
             if (_this.attr('name').indexOf('rdo') > -1) {
                 if ($('input[name="' + _this.attr('name') + '"]:checked').length === 0) {
-                    $label.removeAttr('style').addClass('red').html('Não respondida').transition('tada');
+                    $label.removeAttr('style').addClass('red').html('Não respondida').transition('flash');
                     finalizada = false;
                 }
             }
             else if (!_this.val()) {
-                $label.removeAttr('style').addClass('red').html('Não respondida').transition('tada');
+                $label.removeAttr('style').addClass('red').html('Não respondida').transition('flash');
                 finalizada = false;
             }
         }
@@ -414,34 +415,32 @@ siac.Autoavaliacao.Realizar = (function () {
             confirmar();
         }
         else {
-            definirAlturaDiv();
+            //definirAlturaDiv();
             $('html, body').animate({
-                scrollTop: $(".title .label.red").offset().top
-            }, 1000);
+                scrollTop: $(".label.red.ribbon").closest('.segment').offset().top
+            }, 500);
         }
     }
 
     function confirmar() {
         $modal = $('.ui.gabarito.modal');
-        $accordion = $('form .ui.accordion').clone();
-        $accordion.removeAttr('style');
-        $modal.find('.content').html($('<div class="ui form"></div>').append($accordion));
-        $modalAccordion = $modal.find('.ui.accordion');
-        $modalAccordion.accordion({
+        $basicSegment = $('form .ui.basic.segment').clone();
+        $basicSegment.removeAttr('style');
+        $modal.find('.content').html($('<div class="ui form"></div>').append($basicSegment));
+        $modalBasicSegment = $modal.find('.ui.basic.segment');
+        $modal.find('.ui.accordion').accordion({
             onChange: function () {
                 $('.ui.gabarito.modal').modal('refresh');
             },
             animateChildren: false
         });
-        $lstInput = $modalAccordion.find(':input,a');
+        $lstInput = $modalBasicSegment.find(':input,a');
         for (var i = 0; i < $lstInput.length; i++) {
             $lstInput.eq(i)
                 .attr({
                     'readonly': 'readonly'
                 })
-                .removeAttr('href')
-                .removeAttr('onchange')
-                .removeAttr('onclick')
+                .removeAttr('id name href onchange onclick')
                 .off()
             ;
         }
@@ -452,7 +451,7 @@ siac.Autoavaliacao.Realizar = (function () {
         $.ajax({
             type: 'POST',
             data: { codigo: _codAvaliacao },
-            url: "/Dashboard/Autoavaliacao/Arquivar",
+            url: "/dashboard/autoavaliacao/arquivar",
             success: function () {
                 window.onbeforeunload = function () { $('.ui.global.loader').parent().dimmer('show'); };
                 window.location.href = '/historico/autoavaliacao/detalhe/' + _codAvaliacao;

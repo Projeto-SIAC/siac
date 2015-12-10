@@ -35,28 +35,28 @@
             <tbody>
                 @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
             {
-                <tr>
-                    <td>
-                        @* disciplina *@
-                        <b>@disc.Descricao</b>
-                    </td>
-                    <td class="ui labels">
-                        @* temas *@
-                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                    <tr>
+                        <td>
+                            @* disciplina *@
+                            <b>@disc.Descricao</b>
+                        </td>
+                        <td class="ui labels">
+                            @* temas *@
+                            @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
                             {
-                            <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                                <div class="ui tag label">@avalTema.Tema.Descricao</div>
                             }
-                    </td>
-                    <td class="ui labels">
-                        @* qte de questões *@
-                        <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
-                        <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
-                    </td>
-                    <td>
-                        @* dificuldade *@
-                        @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
-                    </td>
-                </tr>
+                        </td>
+                        <td class="ui labels">
+                            @* qte de questões *@
+                            <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
+                            <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
+                        </td>
+                        <td>
+                            @* dificuldade *@
+                            @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -124,13 +124,59 @@
 </div>
 
 <form class="ui form" action="@Url.Action("Resultado", new { codigo = Model.Avaliacao.CodAvaliacao })" method="post">
-    <div class="ui accordion">
+    <div class="ui basic segment">
         @for (int i = 0; i < lstQuestao.Count; i++)
         {
-            @Html.Partial("_QuestaoRealizar", lstQuestao[i], new ViewDataDictionary() { { "Index", i } })
+            <div id="@lstQuestao[i].CodQuestao" class="ui segment">
+                <div class="ui dividing header" style="text-align:justify">
+                    @Html.Raw((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToHtml("p"))
+                </div>
+                <div class="ui ribbon label" style="display:none">Respondida</div>
+                @if (lstQuestao[i].CodTipoQuestao == 1)
+                {
+                    var lstAlternativa = lstQuestao[i].EmbaralharAlternativa();
+                    <div class="grouped fields">
+                        <label>Selecione a alternativa</label>
+                        @for (int j = 0; j < lstAlternativa.Count; j++)
+                        {
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="rdoResposta@(lstQuestao[i].CodQuestao)" value="@lstAlternativa[j].CodOrdem" />
+                                    <label><b>@j.GetIndiceAlternativa()</b>) @lstAlternativa[j].Enunciado</label>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="field">
+                        <label>Resposta</label>
+                        <textarea name="txtResposta@(lstQuestao[i].CodQuestao)" id="txtResposta@(lstQuestao[i].CodQuestao)" placeholder="Resposta..." rows="3"></textarea>
+                    </div>
+                }
+                <div class="ui accordion">
+                    @if (lstQuestao[i].QuestaoAnexo.Count > 0)
+                    {
+                        <div class="title"><i class="icon dropdown"></i>Anexos</div>
+                        <div class="content">
+                            @foreach (var anexo in lstQuestao[i].QuestaoAnexo)
+                    {
+                                @Html.Partial("_Anexo", anexo)
+                            }
+                        </div>
+                    }
+                    <div class="title"><i class="icon dropdown"></i>Comentário</div>
+                    <div class="content">
+                        <div class="field">
+                            <label>Comentário</label>
+                            <textarea name="txtComentario@(lstQuestao[i].CodQuestao)" id="txtComentario@(lstQuestao[i].CodQuestao)" placeholder="Comentário..." rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
     </div>
-    <br />
     <div class="ui right floated finalizar button green">Finalizar</div>
     <a href="@Url.Action("Realizar")" class="ui button">Cancelar</a>
 </form>
