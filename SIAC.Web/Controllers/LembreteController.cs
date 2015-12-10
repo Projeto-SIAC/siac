@@ -16,45 +16,57 @@ namespace SIAC.Controllers
         public ActionResult Index() => RedirectToAction("Index", "Acesso");
 
         [HttpPost]
-        [OutputCache(Duration = 120)]
+        //[OutputCache(Duration = 120)]
         public ActionResult Dashboard()
         {
-            string matricula = Sessao.UsuarioMatricula;
-            var Atalho = new Dictionary<string, int>();
-            Atalho.Add("autoavaliacao", AvalAuto.ListarNaoRealizadaPorPessoa(Sistema.UsuarioAtivo[matricula].Usuario.CodPessoaFisica).Count);
-
-            if (Sessao.UsuarioCategoriaCodigo == 2)
+            if (Sessao.Retornar("ContadoresDashboard") == null)
             {
-                int codProfessor = Professor.ListarPorMatricula(matricula).CodProfessor;
-                var lst = AvalAcademica.ListarCorrecaoPendentePorProfessor(codProfessor).Select(a => a.Avaliacao);
-                lst = lst.Union(AvalCertificacao.ListarCorrecaoPendentePorProfessor(codProfessor).Select(a => a.Avaliacao));
-                lst = lst.Union(AvalAcadReposicao.ListarCorrecaoPendentePorProfessor(codProfessor).Select(a => a.Avaliacao));
-                Atalho.Add("correcao", lst.Count());
+                string matricula = Sessao.UsuarioMatricula;
+                var Atalho = new Dictionary<string, int>();
+                Atalho.Add("autoavaliacao", AvalAuto.ListarNaoRealizadaPorPessoa(Sistema.UsuarioAtivo[matricula].Usuario.CodPessoaFisica).Count);
+
+                if (Sessao.UsuarioCategoriaCodigo == 2)
+                {
+                    int codProfessor = Professor.ListarPorMatricula(matricula).CodProfessor;
+                    var lst = AvalAcademica.ListarCorrecaoPendentePorProfessor(codProfessor).Select(a => a.Avaliacao);
+                    lst = lst.Union(AvalCertificacao.ListarCorrecaoPendentePorProfessor(codProfessor).Select(a => a.Avaliacao));
+                    lst = lst.Union(AvalAcadReposicao.ListarCorrecaoPendentePorProfessor(codProfessor).Select(a => a.Avaliacao));
+                    Atalho.Add("correcao", lst.Count());
+                }
+
+                Sessao.Inserir("ContadoresDashboard", Atalho);
             }
 
-            return Json(Atalho);
+            return Json(Sessao.Retornar("ContadoresDashboard"));
         }
 
         [HttpPost]
-        [OutputCache(Duration = 120)]
+        //[OutputCache(Duration = 120)]
         public ActionResult Institucional()
         {
-            string matricula = Sessao.UsuarioMatricula;
-            var Atalho = new Dictionary<string, int>();
-            Atalho.Add("andamento", AvalAvi.ListarPorUsuario(Sessao.UsuarioMatricula).Count);
-
-            return Json(Atalho);
+            if (Sessao.Retornar("ContadoresInstitucional") == null)
+            {
+                string matricula = Sessao.UsuarioMatricula;
+                var Atalho = new Dictionary<string, int>();
+                Atalho.Add("andamento", AvalAvi.ListarPorUsuario(Sessao.UsuarioMatricula).Count);
+                Sessao.Inserir("ContadoresInstitucional", Atalho);
+            }   
+            return Json(Sessao.Retornar("ContadoresInstitucional"));
         }
 
         [HttpPost]
-        [OutputCache(Duration = 600)]
+        //[OutputCache(Duration = 600)]
         public ActionResult Menu()
         {
-            string matricula = Sessao.UsuarioMatricula;
-            var Menu = new Dictionary<string, int>();
-            Menu.Add("avi", AvalAvi.ListarPorUsuario(Sessao.UsuarioMatricula).Count);
+            if (Sessao.Retornar("ContadoresMenu") == null)
+            {
+                string matricula = Sessao.UsuarioMatricula;
+                var Menu = new Dictionary<string, int>();
+                Menu.Add("avi", AvalAvi.ListarPorUsuario(Sessao.UsuarioMatricula).Count);
+                Sessao.Inserir("ContadoresMenu", Menu);
+            }
 
-            return Json(Menu);
+            return Json(Sessao.Retornar("ContadoresMenu"));
         }
 
         [HttpPost]
@@ -62,18 +74,22 @@ namespace SIAC.Controllers
         {
             if (Sessao.Retornar("Lembretes") == null)
             {
-                string matricula = Sessao.UsuarioMatricula;
-                var Lembretes = new List<Dictionary<string, string>> ();
-                if (AvalAvi.ListarPorUsuario(Sessao.UsuarioMatricula).Count > 0)
+                if (Sessao.Retornar("LembretesMensagem") == null)
                 {
-                    Lembretes.Add(new Dictionary<string, string>() {
-                        { "Mensagem", "Há Av. Institucionais em andamento no momento." },
-                        { "Botao", "Abrir" },
-                        { "Url", "/institucional/andamento" }
-                    });
+                    string matricula = Sessao.UsuarioMatricula;
+                    var Lembretes = new List<Dictionary<string, string>>();
+                    if (AvalAvi.ListarPorUsuario(Sessao.UsuarioMatricula).Count > 0)
+                    {
+                        Lembretes.Add(new Dictionary<string, string>() {
+                            { "Mensagem", "Há Av. Institucionais em andamento no momento." },
+                            { "Botao", "Abrir" },
+                            { "Url", "/institucional/andamento" }
+                        });
+                    }
+                    Sessao.Inserir("LembretesMensagem", Lembretes);
                 }
-                Sessao.Inserir("Lembretes", true);
-                return Json(Lembretes);
+                Sessao.Inserir("Lembretes", DateTime.Now);
+                return Json(Sessao.Retornar("LembretesMensagem"));                
             }
             return null;
         }
