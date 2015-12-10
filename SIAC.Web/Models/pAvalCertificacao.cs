@@ -119,6 +119,24 @@ namespace SIAC.Models
             }
         }
 
+        public static List<AvalCertificacao> ListarAgendadaParaHojePorUsuario(Usuario usuario)
+        {
+            var inicio = DateTime.Today;
+            var termino = DateTime.Today.AddHours(24);
+            switch (usuario.CodCategoria)
+            {
+                case 1:
+                    return ListarAgendadaPorPessoa(usuario.CodPessoaFisica).Where(a=>a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino).ToList();
+                case 2:
+                    return Models.AvalCertificacao.ListarAgendadaPorProfessor(usuario.Professor.First().CodProfessor).Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino).ToList();
+                case 3:
+                    return Models.AvalCertificacao.ListarAgendadaPorPessoa(usuario.CodPessoaFisica)
+                        .Union(Models.AvalCertificacao.ListarAgendadaPorColaborador(usuario.Colaborador.First().CodColaborador))
+                        .Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino).ToList();
+                default:
+                    return new List<AvalCertificacao>();
+            }
+        }
 
         public static bool CorrigirQuestaoAluno(string codAvaliacao, string matrAluno, int codQuestao, double notaObtida, string profObservacao)
         {

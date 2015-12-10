@@ -137,6 +137,24 @@ namespace SIAC.Models
             }
         }
 
+
+        public static List<AvalAcadReposicao> ListarAgendadaParaHojePorUsuario(Usuario usuario)
+        {
+            var inicio = DateTime.Today;
+            var termino = DateTime.Today.AddHours(24);
+            switch (usuario.CodCategoria)
+            {
+                case 1:
+                    return ListarAgendadaPorAluno(usuario.Aluno.First().CodAluno).Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino).ToList();
+                case 2:
+                    return ListarAgendadaPorProfessor(usuario.Professor.First().CodProfessor).Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino).ToList();
+                case 3:
+                    return ListarAgendadaPorColaborador(usuario.Colaborador.First().CodColaborador).Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino).ToList();
+                default:
+                    return new List<AvalAcadReposicao>();
+            }
+        }
+
         public static bool CorrigirQuestaoAluno(string codAvaliacao, string matrAluno, int codQuestao, double notaObtida, string profObservacao)
         {
             if (!String.IsNullOrEmpty(codAvaliacao) && !String.IsNullOrEmpty(matrAluno) && codQuestao != 0)

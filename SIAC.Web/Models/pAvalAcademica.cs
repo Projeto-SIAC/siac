@@ -175,6 +175,23 @@ namespace SIAC.Models
             }
         }
 
+        public static List<AvalAcademica> ListarAgendadaParaHojePorUsuario(Usuario usuario)
+        {
+            var inicio = DateTime.Today;
+            var termino = DateTime.Today.AddHours(24);
+            switch (usuario.CodCategoria)
+            {
+                case 1:
+                    return ListarAgendadaPorAluno(usuario.Aluno.First().CodAluno).Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino).ToList();
+                case 2:
+                    return ListarAgendadaPorProfessor(usuario.Professor.First().CodProfessor).Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino).ToList();
+                case 3:
+                    return ListarAgendadaPorColaborador(usuario.Colaborador.First().CodColaborador).Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino).ToList();
+                default:
+                    return new List<AvalAcademica>();
+            }
+        }
+
         public static AvalAcademica ListarPorCodigoAvaliacao(string codigo)
         {
             int numIdentificador = 0;

@@ -76,14 +76,39 @@ namespace SIAC.Controllers
             {
                 if (Sessao.Retornar("LembretesMensagem") == null)
                 {
+                    var usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
                     string matricula = Sessao.UsuarioMatricula;
                     var Lembretes = new List<Dictionary<string, string>>();
-                    if (AvalAvi.ListarPorUsuario(Sessao.UsuarioMatricula).Count > 0)
+                    if (AvalAvi.ListarPorUsuario(usuario.Matricula).Count > 0)
                     {
                         Lembretes.Add(new Dictionary<string, string>() {
                             { "Mensagem", "Há Av. Institucionais em andamento no momento." },
-                            { "Botao", "Abrir" },
+                            { "Botao", "Visualizar" },
                             { "Url", "/institucional/andamento" }
+                        });
+                    }
+                    if (AvalAcademica.ListarAgendadaParaHojePorUsuario(usuario).Count > 0)
+                    {
+                        Lembretes.Add(new Dictionary<string, string>() {
+                            { "Mensagem", "Há Avaliações Acadêmicas agendadas para hoje." },
+                            { "Botao", "Visualizar" },
+                            { "Url", "/dashboard/agenda" }
+                        });
+                    }
+                    if (AvalCertificacao.ListarAgendadaParaHojePorUsuario(usuario).Count > 0)
+                    {
+                        Lembretes.Add(new Dictionary<string, string>() {
+                            { "Mensagem", "Há Avaliações de Certificações agendadas para hoje." },
+                            { "Botao", "Visualizar" },
+                            { "Url", "/dashboard/agenda" }
+                        });
+                    }
+                    if (AvalAcadReposicao.ListarAgendadaPorUsuario(usuario).Count > 0)
+                    {
+                        Lembretes.Add(new Dictionary<string, string>() {
+                            { "Mensagem", "Há Reposições agendadas para hoje." },
+                            { "Botao", "Visualizar" },
+                            { "Url", "/dashboard/agenda" }
                         });
                     }
                     Sessao.Inserir("LembretesMensagem", Lembretes);
