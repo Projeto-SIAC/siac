@@ -208,11 +208,41 @@ siac.Academica.Detalhe = (function () {
             content: 'Esta avaliação possui correções pendentes.'
         }).popup('show');
 
-
         $('.reposicao.button').popup({
             title: 'Agende a reposição',
             content: 'Esta avaliação possui alunos ausentes.'
         }).popup('show');
+
+        $('[data-ordenar-id]').click(function () {
+            var $this = $(this);
+            ordenar(this, $this.data('ordenarId'), $this.data('ordenarTipo'))
+        });
+    }
+
+    function ordenar(contexto, id, tipo) {
+        var valores = [];
+        var $tabela = $(contexto).closest('table');
+        var $corpo = $tabela.find('tbody');
+        var $linhas = $corpo.find('tr').clone();
+
+        for (var i = 0, length = $linhas.length; i < length; i++) {
+            valores.push($linhas.eq(i).find('[data-ordenar=' + id + ']').attr('data-ordenar-valor'));
+        }
+        if (tipo.toLowerCase() == 'desc') {
+            valores.sort().reverse();
+            $(contexto).data('ordenarTipo', 'asc');
+        }
+        else {
+            valores.sort();
+            $(contexto).data('ordenarTipo', 'desc');
+        }
+        console.log(valores);
+
+        $corpo.html('');
+
+        for (var i = 0, length = valores.length; i < length; i++) {
+            $corpo.append($linhas.find('[data-ordenar-valor="' + valores[i] + '"]').parents('tr'));
+        }
     }
 
     return {

@@ -4,11 +4,11 @@
     var podio = Model.OrderByDescending(r => r.Nota).Select(r => r.Nota).Distinct().Take(3).ToArray();
 }
 
-<table class="ui table">
+<table class="ui sortable celled table">
     <thead>
         <tr>
-            <th>Nome</th>
-            <th>Nota</th>
+            <th data-ordenar-id="nome" data-ordenar-tipo="desc">Nome</th>
+            <th data-ordenar-id="nota" data-ordenar-tipo="asc">Nota</th>
             <th></th>
         </tr>
     </thead>
@@ -16,8 +16,14 @@
         @foreach (var resultado in Model)
         {
             <tr>
-                <td>@resultado.PessoaFisica.Nome</td>
-                <td>@(resultado.Nota?.ToString("0.0") ?? "0")</td>
+                <td data-ordenar="nome" data-ordenar-valor="@resultado.PessoaFisica.Nome">
+                    @resultado.PessoaFisica.Nome 
+                    @if(resultado.Justificacao.Count > 0)
+                    {
+                        <span class="ui small label" data-content="Este aluno esteve ausente durante a aplicação, mas foi justificado.">Justificado</span>
+                    }
+                </td>
+                <td data-ordenar="nota" data-ordenar-valor="@(resultado.Nota?.ToString("0.#") ?? "0")">@(resultado.Nota?.ToString("0.0") ?? "0")</td>
                 <td>
                     @if (podio.Contains(resultado.Nota))
                     {
