@@ -70,69 +70,93 @@ namespace SIAC.Models
         public static List<AvalCertificacao> ListarPorProfessor(int codProfessor) =>
             contexto.AvalCertificacao.Where(ac => ac.CodProfessor == codProfessor)
                                          .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
-                                         .ToList();
-
-        public static List<AvalCertificacao> ListarAgendada() =>
-            contexto.AvalCertificacao
-                .Where(a => a.Avaliacao.DtAplicacao.HasValue
-                    && a.Avaliacao.AvalPessoaResultado.Count == 0
-                    && !a.Avaliacao.FlagArquivo)
-                .OrderBy(a => a.Avaliacao.DtAplicacao)
-                .ToList();
-
-        public static List<AvalCertificacao> ListarAgendadaPorProfessor(int codProfessor) =>
-            ListarAgendada()
-                .Where(a => a.CodProfessor == codProfessor)
-                .OrderBy(a => a.Avaliacao.DtAplicacao)
-                .ToList();
-
-        public static List<AvalCertificacao> ListarAgendadaPorPessoa(int codPessoaFisica) =>
-            ListarAgendada()
-                .Where(ac => ac.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica) != null)
-                .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
-                .ToList();
-
-        public static List<AvalCertificacao> ListarAgendadaPorColaborador(int codColaborador) =>
-            ListarAgendada()
-                .Where(a =>
-                        a.Professor.TurmaDiscProfHorario.Where(t => t.Turma.Curso.CodColabCoordenador == codColaborador
-                        || t.Turma.Curso.Diretoria.CodColaboradorDiretor == codColaborador
-                        || t.Turma.Curso.Diretoria.Campus.CodColaboradorDiretor == codColaborador
-                        || t.Turma.Curso.Diretoria.Campus.Instituicao.Reitoria.Where(r => r.CodColaboradorReitor == codColaborador).Count() > 0).Count() > 0)
-                .OrderBy(a => a.Avaliacao.DtAplicacao)
-                .ToList();
+                                         .ToList();            
 
         public static List<AvalCertificacao> ListarAgendadaPorUsuario(Usuario usuario)
         {
+            var codPessoaFisica = usuario.CodPessoaFisica;
             switch (usuario.CodCategoria)
             {
                 case 1:
-                    return ListarAgendadaPorPessoa(usuario.CodPessoaFisica);
+                    return contexto.AvalCertificacao
+                        .Where(a => a.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica) != null
+                            && a.Avaliacao.DtAplicacao.HasValue
+                            && a.Avaliacao.AvalPessoaResultado.Count == 0
+                            && !a.Avaliacao.FlagArquivo)
+                        .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
+                        .ToList();
                 case 2:
-                    return Models.AvalCertificacao.ListarAgendadaPorProfessor(usuario.Professor.First().CodProfessor);
+                    var codProfessor = usuario.Professor.First().CodProfessor;
+                    return contexto.AvalCertificacao
+                        .Where(a => a.CodProfessor == codProfessor
+                            && a.Avaliacao.DtAplicacao.HasValue
+                            && a.Avaliacao.AvalPessoaResultado.Count == 0
+                            && !a.Avaliacao.FlagArquivo)
+                        .OrderBy(a => a.Avaliacao.DtAplicacao)
+                        .ToList();
                 case 3:
-                    return Models.AvalCertificacao.ListarAgendadaPorPessoa(usuario.CodPessoaFisica)
-                        .Union(Models.AvalCertificacao.ListarAgendadaPorColaborador(usuario.Colaborador.First().CodColaborador))
+                    var codColaborador = usuario.Colaborador.First().CodColaborador;
+                    return contexto.AvalCertificacao
+                        .Where(a =>
+                            a.Avaliacao.DtAplicacao.HasValue
+                            && a.Avaliacao.AvalPessoaResultado.Count == 0
+                            && !a.Avaliacao.FlagArquivo &&
+                            (
+                                (a.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica) != null) 
+                                || (a.Professor.TurmaDiscProfHorario.Where(t => t.Turma.Curso.CodColabCoordenador == codColaborador
+                                        || t.Turma.Curso.Diretoria.CodColaboradorDiretor == codColaborador
+                                        || t.Turma.Curso.Diretoria.Campus.CodColaboradorDiretor == codColaborador
+                                        || t.Turma.Curso.Diretoria.Campus.Instituicao.Reitoria.Where(r => r.CodColaboradorReitor == codColaborador).Count() > 0).Count() > 0
+                                    )
+                            )
+                        )
+                        .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
                 default:
                     return new List<AvalCertificacao>();
             }
         }
 
-        public static List<AvalCertificacao> ListarAgendadaParaHojePorUsuario(Usuario usuario)
+        public static List<AvalCertificacao> ListarAgendadaPorUsuario(Usuario usuario, DateTime inicio, DateTime termino)
         {
-            var inicio = DateTime.Today;
-            var termino = DateTime.Today.AddHours(24);
+            var codPessoaFisica = usuario.CodPessoaFisica;
             switch (usuario.CodCategoria)
             {
                 case 1:
-                    return ListarAgendadaPorPessoa(usuario.CodPessoaFisica).Where(a=>a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino).ToList();
+                    return contexto.AvalCertificacao
+                        .Where(a => a.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica) != null
+                            && a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino
+                            && a.Avaliacao.AvalPessoaResultado.Count == 0
+                            && !a.Avaliacao.FlagArquivo)
+                        .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
+                        .ToList();
                 case 2:
-                    return Models.AvalCertificacao.ListarAgendadaPorProfessor(usuario.Professor.First().CodProfessor).Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino).ToList();
+                    var codProfessor = usuario.Professor.First().CodProfessor;
+                    return contexto.AvalCertificacao
+                        .Where(a => a.CodProfessor == codProfessor
+                            && a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino
+                            && a.Avaliacao.AvalPessoaResultado.Count == 0
+                            && !a.Avaliacao.FlagArquivo)
+                        .OrderBy(a => a.Avaliacao.DtAplicacao)
+                        .ToList();
                 case 3:
-                    return Models.AvalCertificacao.ListarAgendadaPorPessoa(usuario.CodPessoaFisica)
-                        .Union(Models.AvalCertificacao.ListarAgendadaPorColaborador(usuario.Colaborador.First().CodColaborador))
-                        .Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino).ToList();
+                    var codColaborador = usuario.Colaborador.First().CodColaborador;
+                    return contexto.AvalCertificacao
+                        .Where(a =>
+                            a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino
+                            && a.Avaliacao.AvalPessoaResultado.Count == 0
+                            && !a.Avaliacao.FlagArquivo &&
+                            (
+                                (a.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica) != null)
+                                || (a.Professor.TurmaDiscProfHorario.Where(t => t.Turma.Curso.CodColabCoordenador == codColaborador
+                                        || t.Turma.Curso.Diretoria.CodColaboradorDiretor == codColaborador
+                                        || t.Turma.Curso.Diretoria.Campus.CodColaboradorDiretor == codColaborador
+                                        || t.Turma.Curso.Diretoria.Campus.Instituicao.Reitoria.Where(r => r.CodColaboradorReitor == codColaborador).Count() > 0).Count() > 0
+                                    )
+                            )
+                        )
+                        .OrderBy(a => a.Avaliacao.DtAplicacao)
+                        .ToList();
                 default:
                     return new List<AvalCertificacao>();
             }

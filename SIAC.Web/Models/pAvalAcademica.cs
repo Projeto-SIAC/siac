@@ -107,38 +107,13 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
-        public static List<AvalAcademica> ListarAgendadaPorColaborador(int codColaborador) =>
-             contexto.AvalAcademica
-                .Where(a =>
-                    a.Avaliacao.DtAplicacao.HasValue
-                    && a.Avaliacao.AvalPessoaResultado.Count == 0
-                    && !a.Avaliacao.FlagArquivo
-                    &&
-                    (
-                        a.Turma.Curso.CodColabCoordenador == codColaborador
-                        || a.Turma.Curso.Diretoria.CodColaboradorDiretor == codColaborador
-                        || a.Turma.Curso.Diretoria.Campus.CodColaboradorDiretor == codColaborador
-                        || a.Turma.Curso.Diretoria.Campus.Instituicao.Reitoria.Where(r => r.CodColaboradorReitor == codColaborador).Count() > 0
-                    ))
-                .OrderBy(a => a.Avaliacao.DtAplicacao)
-                .ToList();
-
         public static List<AvalAcademica> ListarPorProfessor(int codProfessor) =>
-             contexto.AvalAcademica.Where(ac => ac.CodProfessor == codProfessor)
-                                         .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
-                                         .ToList();
-
-        public static List<AvalAcademica> ListarAgendadaPorProfessor(int codProfessor) =>
-             contexto.AvalAcademica
-                .Where(a => a.CodProfessor == codProfessor
-                    && a.Avaliacao.DtAplicacao.HasValue
-                    && a.Avaliacao.AvalPessoaResultado.Count == 0
-                    && !a.Avaliacao.FlagArquivo)
-                .OrderBy(a => a.Avaliacao.DtAplicacao)
+            contexto.AvalAcademica.Where(ac => ac.CodProfessor == codProfessor)
+                .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
                 .ToList();
 
         public static List<AvalAcademica> ListarCorrecaoPendentePorProfessor(int codProfessor) =>
-             contexto.AvalQuesPessoaResposta
+            contexto.AvalQuesPessoaResposta
                 .Where(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcademica.CodProfessor == codProfessor && !a.RespNota.HasValue)
                 .OrderBy(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.DtAplicacao)
                 .Select(a => a.AvalTemaQuestao.AvaliacaoTema.Avaliacao.AvalAcademica)
@@ -146,18 +121,9 @@ namespace SIAC.Models
                 .ToList();
 
         public static List<AvalAcademica> ListarPorAluno(int codAluno) =>
-             contexto.AvalAcademica
-                .Where(a => a.Turma.TurmaDiscAluno.Where(t => t.CodAluno == codAluno).Count() > 0)
+            contexto.AvalAcademica
+                .Where(a => a.Turma.TurmaDiscAluno.FirstOrDefault(t => t.CodAluno == codAluno) != null)
                 .OrderByDescending(a => a.Avaliacao.DtCadastro)
-                .ToList();
-
-        public static List<AvalAcademica> ListarAgendadaPorAluno(int codAluno) =>
-             contexto.AvalAcademica
-                .Where(a => a.Turma.TurmaDiscAluno.Where(t => t.CodAluno == codAluno).Count() > 0
-                    && a.Avaliacao.DtAplicacao.HasValue
-                    && a.Avaliacao.AvalPessoaResultado.Count == 0
-                    && !a.Avaliacao.FlagArquivo)
-                .OrderBy(a => a.Avaliacao.DtAplicacao)
                 .ToList();
 
         public static List<AvalAcademica> ListarAgendadaPorUsuario(Usuario usuario)
@@ -165,28 +131,83 @@ namespace SIAC.Models
             switch (usuario.CodCategoria)
             {
                 case 1:
-                    return ListarAgendadaPorAluno(usuario.Aluno.First().CodAluno);
+                    var codAluno = usuario.Aluno.First().CodAluno;
+                    return contexto.AvalAcademica
+                        .Where(a => a.Turma.TurmaDiscAluno.FirstOrDefault(t => t.CodAluno == codAluno) != null
+                            && a.Avaliacao.DtAplicacao.HasValue
+                            && a.Avaliacao.AvalPessoaResultado.Count == 0
+                            && !a.Avaliacao.FlagArquivo)
+                        .OrderBy(a => a.Avaliacao.DtAplicacao)
+                        .ToList();
                 case 2:
-                    return ListarAgendadaPorProfessor(usuario.Professor.First().CodProfessor);
+                    var codProfessor = usuario.Professor.First().CodProfessor;
+                    return contexto.AvalAcademica
+                        .Where(a => a.CodProfessor == codProfessor
+                            && a.Avaliacao.DtAplicacao.HasValue
+                            && a.Avaliacao.AvalPessoaResultado.Count == 0
+                            && !a.Avaliacao.FlagArquivo)
+                        .OrderBy(a => a.Avaliacao.DtAplicacao)
+                        .ToList();
                 case 3:
-                    return ListarAgendadaPorColaborador(usuario.Colaborador.First().CodColaborador);
+                    var codColaborador = usuario.Colaborador.First().CodColaborador;
+                    return contexto.AvalAcademica
+                        .Where(a =>
+                            a.Avaliacao.DtAplicacao.HasValue
+                            && a.Avaliacao.AvalPessoaResultado.Count == 0
+                            && !a.Avaliacao.FlagArquivo
+                            &&
+                            (
+                                a.Turma.Curso.CodColabCoordenador == codColaborador
+                                || a.Turma.Curso.Diretoria.CodColaboradorDiretor == codColaborador
+                                || a.Turma.Curso.Diretoria.Campus.CodColaboradorDiretor == codColaborador
+                                || a.Turma.Curso.Diretoria.Campus.Instituicao.Reitoria.Where(r => r.CodColaboradorReitor == codColaborador).Count() > 0
+                            ))
+                        .OrderBy(a => a.Avaliacao.DtAplicacao)
+                        .ToList();
                 default:
                     return new List<AvalAcademica>();
             }
         }
 
-        public static List<AvalAcademica> ListarAgendadaParaHojePorUsuario(Usuario usuario)
+        public static List<AvalAcademica> ListarAgendadaPorUsuario(Usuario usuario, DateTime inicio, DateTime termino)
         {
-            var inicio = DateTime.Today;
-            var termino = DateTime.Today.AddHours(24);
             switch (usuario.CodCategoria)
             {
                 case 1:
-                    return ListarAgendadaPorAluno(usuario.Aluno.First().CodAluno).Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino).ToList();
+                    var codAluno = usuario.Aluno.First().CodAluno;
+                    return contexto.AvalAcademica
+                        .Where(a =>
+                            a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino
+                            && a.Turma.TurmaDiscAluno.FirstOrDefault(t => t.CodAluno == codAluno) != null
+                            && a.Avaliacao.AvalPessoaResultado.Count == 0
+                            && !a.Avaliacao.FlagArquivo)
+                        .OrderBy(a => a.Avaliacao.DtAplicacao)
+                        .ToList();
                 case 2:
-                    return ListarAgendadaPorProfessor(usuario.Professor.First().CodProfessor).Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino).ToList();
+                    var codProfessor = usuario.Professor.First().CodProfessor;
+                    return contexto.AvalAcademica
+                        .Where(a => a.CodProfessor == codProfessor
+                            && a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino
+                            && a.Avaliacao.AvalPessoaResultado.Count == 0
+                            && !a.Avaliacao.FlagArquivo)
+                        .OrderBy(a => a.Avaliacao.DtAplicacao)
+                        .ToList();
                 case 3:
-                    return ListarAgendadaPorColaborador(usuario.Colaborador.First().CodColaborador).Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino).ToList();
+                    var codColaborador = usuario.Colaborador.First().CodColaborador;
+                    return contexto.AvalAcademica
+                        .Where(a =>
+                            a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino
+                            && a.Avaliacao.AvalPessoaResultado.Count == 0
+                            && !a.Avaliacao.FlagArquivo
+                            &&
+                            (
+                                a.Turma.Curso.CodColabCoordenador == codColaborador
+                                || a.Turma.Curso.Diretoria.CodColaboradorDiretor == codColaborador
+                                || a.Turma.Curso.Diretoria.Campus.CodColaboradorDiretor == codColaborador
+                                || a.Turma.Curso.Diretoria.Campus.Instituicao.Reitoria.Where(r => r.CodColaboradorReitor == codColaborador).Count() > 0
+                            ))
+                        .OrderBy(a => a.Avaliacao.DtAplicacao)
+                        .ToList();
                 default:
                     return new List<AvalAcademica>();
             }

@@ -87,26 +87,26 @@ namespace SIAC.Controllers
                             { "Url", "/institucional/andamento" }
                         });
                     }
-                    if (AvalAcademica.ListarAgendadaParaHojePorUsuario(usuario).Count > 0)
+                    if (AvalAcademica.ListarAgendadaPorUsuario(usuario, DateTime.Now, DateTime.Now.AddHours(24)).Count > 0)
                     {
                         Lembretes.Add(new Dictionary<string, string>() {
-                            { "Mensagem", "Há Avaliações Acadêmicas agendadas para hoje." },
+                            { "Mensagem", "Há Avaliações Acadêmicas agendadas para as próximas 24 horas." },
                             { "Botao", "Visualizar" },
                             { "Url", "/dashboard/agenda" }
                         });
                     }
-                    if (AvalCertificacao.ListarAgendadaParaHojePorUsuario(usuario).Count > 0)
+                    if (AvalCertificacao.ListarAgendadaPorUsuario(usuario, DateTime.Now, DateTime.Now.AddHours(24)).Count > 0)
                     {
                         Lembretes.Add(new Dictionary<string, string>() {
-                            { "Mensagem", "Há Avaliações de Certificações agendadas para hoje." },
+                            { "Mensagem", "Há Avaliações de Certificações agendadas para as próximas 24 horas." },
                             { "Botao", "Visualizar" },
                             { "Url", "/dashboard/agenda" }
                         });
                     }
-                    if (AvalAcadReposicao.ListarAgendadaPorUsuario(usuario).Count > 0)
+                    if (AvalAcadReposicao.ListarAgendadaPorUsuario(usuario, DateTime.Now, DateTime.Now.AddHours(24)).Count > 0)
                     {
                         Lembretes.Add(new Dictionary<string, string>() {
-                            { "Mensagem", "Há Reposições agendadas para hoje." },
+                            { "Mensagem", "Há Reposições agendadas para as próximas 24 horas." },
                             { "Botao", "Visualizar" },
                             { "Url", "/dashboard/agenda" }
                         });

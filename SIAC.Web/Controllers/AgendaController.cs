@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+using SIAC.Models;
+using SIAC.Helpers;
+
 namespace SIAC.Controllers
 {
     [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2, 3 })]
@@ -22,10 +25,10 @@ namespace SIAC.Controllers
             var inicio = DateTime.Parse(start);
             var termino = DateTime.Parse(end);
 
-            var usuario = Models.Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-            var lstAgendadas = Models.AvalAcademica.ListarAgendadaPorUsuario(usuario);    
+            var usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;//Models.Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
+            var lstAgendadas = AvalAcademica.ListarAgendadaPorUsuario(usuario, inicio, termino);    
 
-            var retorno = lstAgendadas.Select(a => new Models.Evento
+            var retorno = lstAgendadas.Select(a => new Evento
             {
                 id = a.Avaliacao.CodAvaliacao,
                 title = a.Avaliacao.CodAvaliacao,
@@ -44,10 +47,10 @@ namespace SIAC.Controllers
             var inicio = DateTime.Parse(start);
             var termino = DateTime.Parse(end);
 
-            var usuario = Models.Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-            var lstAgendadas = Models.AvalAcadReposicao.ListarAgendadaPorUsuario(usuario);
+            var usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;//Models.Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
+            var lstAgendadas = AvalAcadReposicao.ListarAgendadaPorUsuario(usuario, inicio, termino);
 
-            var retorno = lstAgendadas.Select(a => new Models.Evento
+            var retorno = lstAgendadas.Select(a => new Evento
             {
                 id = a.Avaliacao.CodAvaliacao,
                 title = a.Avaliacao.CodAvaliacao,
@@ -66,10 +69,10 @@ namespace SIAC.Controllers
             var inicio = DateTime.Parse(start);
             var termino = DateTime.Parse(end);
 
-            var usuario = Models.Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-            var lstAgendadas = Models.AvalCertificacao.ListarAgendadaPorUsuario(usuario);
+            var usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;//Models.Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
+            var lstAgendadas = AvalCertificacao.ListarAgendadaPorUsuario(usuario, inicio, termino);
 
-            var retorno = lstAgendadas.Select(a => new Models.Evento
+            var retorno = lstAgendadas.Select(a => new Evento
             {
                 id = a.Avaliacao.CodAvaliacao,
                 title = a.Avaliacao.CodAvaliacao,
@@ -90,14 +93,14 @@ namespace SIAC.Controllers
             var inicio = DateTime.Parse(start);
             var termino = DateTime.Parse(end);
 
-            var usuario = Models.Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-            var lstHorarios = new List<Models.TurmaDiscProfHorario>();
+            var usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;//Models.Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
+            var lstHorarios = new List<TurmaDiscProfHorario>();
 
             switch (usuario.CodCategoria)
             {
                 case 1:
                     var codAluno = usuario.Aluno.First().CodAluno;
-                    lstHorarios = (from h in Models.Repositorio.GetInstance().TurmaDiscProfHorario
+                    lstHorarios = (from h in Repositorio.GetInstance().TurmaDiscProfHorario
                                    where h.Turma.TurmaDiscAluno.FirstOrDefault(t=>t.CodAluno == codAluno) != null
                                    && h.AnoLetivo == ano
                                    && h.SemestreLetivo == semestre
@@ -105,7 +108,7 @@ namespace SIAC.Controllers
                     break;
                 case 2:
                     var codProfessor = usuario.Professor.First().CodProfessor;
-                    lstHorarios = (from h in Models.Repositorio.GetInstance().TurmaDiscProfHorario
+                    lstHorarios = (from h in Repositorio.GetInstance().TurmaDiscProfHorario
                                   where h.CodProfessor == codProfessor
                                   && h.AnoLetivo == ano
                                   && h.SemestreLetivo == semestre
@@ -115,13 +118,13 @@ namespace SIAC.Controllers
                     break;
             }            
 
-            var retorno = new List<Models.Evento>();
+            var retorno = new List<Evento>();
 
             while (inicio < termino)
             {
                 foreach (var hor in lstHorarios.Where(h => h.CodDia - 1 == (int)inicio.DayOfWeek))
                 {
-                    retorno.Add(new Models.Evento
+                    retorno.Add(new Evento
                     {
                         title = hor.Turma.CodTurma,
                         start = inicio.ToString("yyyy'-'MM'-'dd") + hor.Horario.HoraInicio.Value.ToString("'T'HH':'mm':'ss"),
