@@ -60,25 +60,25 @@
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Histórico" controller="Historico" action="Index">
       <mvcSiteMapNode title="Questão" controller="Questao" action="Index">
-        <mvcSiteMapNode title="Detalhe" controller="Questao" action="Detalhe" preservedRouteParameters="codigo"/>
+        <mvcSiteMapNode title="Detalhes" controller="Questao" action="Detalhe" preservedRouteParameters="codigo"/>
         <mvcSiteMapNode title="Editar" controller="Questao" action="Editar" preservedRouteParameters="codigo"/>
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Autoavaliação" controller="Autoavaliacao" action="Index">
-        <mvcSiteMapNode title="Detalhe" controller="Autoavaliacao" action="Detalhe" preservedRouteParameters="codigo"/>
+        <mvcSiteMapNode title="Detalhes" controller="Autoavaliacao" action="Detalhe" preservedRouteParameters="codigo"/>
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Avaliação" controller="Historico" action="Avaliacao">
         <mvcSiteMapNode title="Acadêmica" controller="Academica" action="Index">
           <mvcSiteMapNode title="Agendada" controller="Academica" action="Agendada" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Detalhe" controller="Academica" action="Detalhe" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Detalhes" controller="Academica" action="Detalhe" preservedRouteParameters="codigo"/>
           <mvcSiteMapNode title="Corrigir" controller="Academica" action="Corrigir" preservedRouteParameters="codigo"/>
         </mvcSiteMapNode>
         <mvcSiteMapNode title="Certificação" controller="Certificacao" action="Index">
-          <mvcSiteMapNode title="Detalhe" controller="Certificacao" action="Detalhe" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Detalhes" controller="Certificacao" action="Detalhe" preservedRouteParameters="codigo"/>
           <mvcSiteMapNode title="Agendada" controller="Certificacao" action="Agendada" preservedRouteParameters="codigo"/>
           <mvcSiteMapNode title="Corrigir" controller="Certificacao" action="Corrigir" preservedRouteParameters="codigo"/>
         </mvcSiteMapNode>
         <mvcSiteMapNode title="Reposição" controller="Reposicao" action="Index">
-          <mvcSiteMapNode title="Detalhe" controller="Reposicao" action="Detalhe" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Detalhes" controller="Reposicao" action="Detalhe" preservedRouteParameters="codigo"/>
           <mvcSiteMapNode title="Agendada" controller="Reposicao" action="Agendada" preservedRouteParameters="codigo"/>
           <mvcSiteMapNode title="Corrigir" controller="Reposicao" action="Corrigir" preservedRouteParameters="codigo"/>
         </mvcSiteMapNode>
@@ -89,13 +89,13 @@
       <mvcSiteMapNode title="Opiniões" controller="Configuracoes" action="Opinioes" preservedRouteParameters="tab" />
       <mvcSiteMapNode title="Coordenadores de Av. Institucional" controller="Configuracoes" action="Institucional" preservedRouteParameters="tab" />
       <mvcSiteMapNode title="Controle de Visitantes" controller="Visitante" action="Index">
-        <mvcSiteMapNode title="Cadastrar" controller="Visitante" action="Cadastrar">
-          <mvcSiteMapNode title="Confirmação" controller="Visitante" action="Confirmar" />
+        <mvcSiteMapNode title="Cadastrar Visitante" controller="Visitante" action="Cadastrar">
+          <mvcSiteMapNode title="Confirmação de Cadastro" controller="Visitante" action="Confirmar" />
         </mvcSiteMapNode>      
-        <mvcSiteMapNode title="Detalhe" controller="Visitante" action="Detalhe" preservedRouteParameters="codigo"/>
+        <mvcSiteMapNode title="Detalhes" controller="Visitante" action="Detalhe" preservedRouteParameters="codigo"/>
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Usuários" controller="Usuario" action="Index">
-        <mvcSiteMapNode title="Detalhe" controller="Usuario" action="Detalhe" preservedRouteParameters="codigo"/>
+        <mvcSiteMapNode title="Detalhes" controller="Usuario" action="Detalhe" preservedRouteParameters="codigo"/>
       </mvcSiteMapNode>
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Av. Institucional" controller="Institucional" action="Index">
