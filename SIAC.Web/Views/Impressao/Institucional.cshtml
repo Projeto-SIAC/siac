@@ -3,8 +3,7 @@
 @{
     ViewBag.Title = Model.Titulo;
     Layout = null;
-    //List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
-
+    
     int indMod = 1;
     int indCat = 1;
     int indInd = 1;
@@ -22,16 +21,10 @@
                 page-break-before: always;
             }
 
-            /*div.parentModulo :first-child{
-                page-break-before: auto;
-            }*/
-
             div.questao{
-                /*padding-top: 2.5em;*/
                 page-break-inside: avoid;
             }
 
-                /*div.form > :first-child {*/
                 div.questao > :first-child {
                     padding-top: unset;
                     page-break-inside: avoid;
@@ -70,33 +63,6 @@
                         @Model.Colaborador.Usuario.PessoaFisica.Nome
                     </td>
                 </tr>
-                @*@if (Model.Avaliacao.CodTipoAvaliacao == 5)
-                    {
-                        <tr>
-                            <td>
-                                <b>Avaliação para Reposição</b>
-                            </td>
-                            <td>
-                                @Model.Avaliacao.AvalAcadReposicao.Academica.Avaliacao.CodAvaliacao
-                            </td>
-                        </tr>
-                    }*@
-                @*@foreach (var campo in Model.Campos)
-                    {
-                        if (!String.IsNullOrWhiteSpace(campo))
-                        {
-                            <tr>
-                                <td>
-                                    <b>@campo</b>
-                                </td>
-                                <td>
-                                    <div class="ui fluid input">
-                                        <input type="text" />
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    }*@
             </tbody>
         </table>
     </div>
@@ -226,33 +192,10 @@
                                                         }
                                                     </div>
                                                 </div>
-                                                <div class="five wide column" style="text-align:center">
-                                                    <canvas hidden style="display:inline" width="200" height="200"></canvas>
-                                                    @*<div class="ui teal progress" data-percent="74" id="example1">
-                                                        <div class="bar"></div>
-                                                        <div class="label">74% Funded</div>
-                                                    </div>
-                                                    <table class="ui table">
-                                                        <tr>
-                                                            <td>a</td>
-                                                            <td>
-                                                                <div class="ui teal progress" data-percent="74" id="example1">
-                                                                    <div class="bar"></div>
-                                                                    <div class="label">74% Funded</div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>b</td>
-                                                            <td>
-                                                                <div class="ui progress">
-                                                                    <div class="progress">
-                                                                        32
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </table>*@
+                                                <div class="five wide column">
+                                                    <table style="border: none !important;" class="ui basic table">
+                                                        @*Gráficos das Alternativas*@
+                                                    </table>
                                                 </div>
                                             </div>
                                             <code class="dados" hidden>@Html.Raw(questao.ToJsonChart())</code>
@@ -275,8 +218,6 @@
         }
     </div>
 
-    @*@Html.Partial("_Questoes", lstQuestao)*@
-
     <div class="ui vertical inverted segment">
         <h5 class="ui centered header">&copy; SIAC - Sistema Interativo de Avaliação de Conhecimento</h5>
     </div>
@@ -286,29 +227,12 @@
     <script>
         function mostrarGraficos() {
             var contador = 1;
-            var graficos = $('body').find('canvas').length;
-            $('body').find('canvas').map(function () {
-                $canvas = $(this).get(0);
-                $content = $(this).parents('[data-questao]');
-                //console.log($canvas)
-                if ($content && $canvas) {
-                    //var ctx = $canvas.getContext("2d");
-                    var data = JSON.parse($content.find('code.dados').html());
+            var graficos = $('body').find('.five.wide.column').length;
+            $('body').find('.five.wide.column').map(function () {
+                $content = $(this);
+                if ($content){
+                    var data = JSON.parse($content.parents('[data-questao]').find('code.dados').html());
                     adicionarValoresAlternativas($content, data);
-                    $canvas.remove();
-                    @*var chart = new Chart(ctx).Doughnut(data, {
-                        onAnimationComplete: function () {
-                            if (contador == graficos) {
-                                var focused = false;
-                                //window.print();
-                                focused = true;
-                                //var interval = setInterval(function () { if (focused === true) { clearInterval(interval); window.location.href = "@Url.Action("Resultado", "Institucional", new { codigo = Model.Avaliacao.CodAvaliacao })" } }, 300);
-                            }
-                            else {
-                                contador++;
-                            }
-                        }
-                    });*@
                 }
             })
         };
@@ -319,44 +243,44 @@
             for (var i = 0; i < data.length; i++) {
                 total += parseInt(data[i].value);
             }
-            $div = $content.find('canvas').parent();
+            $div = $content.find('table');
             for (var i = 0; i < data.length; i++) {
                 var alternativa = data[i].label;
                 var valor = data[i].value;
                 if (valor > 0) {
-                    $div.append('<div class="ui blue progress" data-value="'+valor+'" data-total="'+total+'">'+
-                                                        '<div class="bar">'+
-                                                            '<div class="progress">'+valor+'</div>'+
-                                                        '</div>'+
-                                                        '<div class="label">'+alternativa+'</div>'+
-                                                    '</div>');
-                        
-                    //$div.append('<div class="ui label">' + alternativa + ' = ' + valor + '</div>');
-                    //<div class="ui teal progress" data-percent="74" id="example1">
-                    //                                    <div class="bar"></div>
-                    //                                    <div class="label">74% Funded</div>
-                    //                                </div>
+                    var $barra = $(
+                        '<tr><td>'+
+                            '<div style="position:relative;">' +
+                                '<canvas width="180" height="20" style="position: absolute; border:1px solid #ccc;">' +
+                                    'Seu browser não suporta a tag canvas do HTML5.' +
+                                '</canvas>' +
+                                '<label style="position:absolute;margin: 2px 5px;">' + ((valor / total) * 100).toFixed(2) + '%</label>' +
+                            '</div></td></tr><tr><td>' +
+                            '<b>'+alternativa+'</b></td>'+
+                        '</tr>');
+                    $barra.find('td').map(function () {
+                        $(this).css('border', 'none', 'important');
+                    });
+
+                    $div.append($barra);
+
+                    var ctx = $barra.find('canvas').get(0).getContext("2d");
+                    ctx.fillStyle = "#ccc";
+                    ctx.fillRect(0, 0, ((valor / total) * 200), 20);
                 }
             }
-            $('.progress').progress();
         }
-            //});
-            //var $content = $('.content[data-questao].active');
-            //var $canvas = $content.find('canvas').get(0);
-            //if ($content && $canvas) {
-            //    var ctx = $canvas.getContext("2d");
-            //    var data = JSON.parse($content.find('code.dados').html());
-            //    var chart = new Chart(ctx).Doughnut(data);
-            //}
         mostrarGraficos();
 
-        $('.ui.checkbox')
-        .checkbox()
-        ;
-        @*var focused = false;
+        var focused = false;
         window.print();
         focused = true;
-        var interval = setInterval(function () { if (focused === true) { clearInterval(interval); window.location.href = "@Url.Action("Resultado", "Institucional", new { codigo = Model.Avaliacao.CodAvaliacao })" } }, 300);*@
+        var interval = setInterval(function () {
+            if (focused === true) {
+                clearInterval(interval);
+                window.location.href = "@Url.Action("Resultado", "Institucional", new { codigo = Model.Avaliacao.CodAvaliacao })"
+            }
+        }, 300);
         
     </script>
 </body>
