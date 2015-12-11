@@ -501,7 +501,7 @@ namespace SIAC.Controllers
             AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codAvaliacao);
             string strTempo = cert.Avaliacao.DtAplicacao.Value.ToLeftTimeString();
             int qteMilissegundo = 0;
-            bool flagLiberada = cert.Avaliacao.FlagLiberada && cert.Avaliacao.DtAplicacao.Value.AddMinutes(cert.Avaliacao.Duracao.Value) > DateTime.Now;
+            bool flagLiberada = cert.Avaliacao.FlagLiberada && cert.Avaliacao.DtTermino > DateTime.Now;
             if (strTempo != "Agora")
             {
                 char tipo = strTempo[(strTempo.IndexOf(' ')) + 1];

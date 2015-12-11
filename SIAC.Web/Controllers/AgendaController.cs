@@ -33,7 +33,7 @@ namespace SIAC.Controllers
                 id = a.Avaliacao.CodAvaliacao,
                 title = a.Avaliacao.CodAvaliacao,
                 start = a.Avaliacao.DtAplicacao.Value.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"),
-                end = a.Avaliacao.DtAplicacao.Value.AddMinutes(a.Avaliacao.Duracao.Value).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"),
+                end = a.Avaliacao.DtTermino.Value.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"),
                 url = Url.Action("Agendada", "Academica", new { codigo = a.Avaliacao.CodAvaliacao })
             });
 
@@ -55,7 +55,7 @@ namespace SIAC.Controllers
                 id = a.Avaliacao.CodAvaliacao,
                 title = a.Avaliacao.CodAvaliacao,
                 start = a.Avaliacao.DtAplicacao.Value.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"),
-                end = a.Avaliacao.DtAplicacao.Value.AddMinutes(a.Avaliacao.Duracao.Value).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"),
+                end = a.Avaliacao.DtTermino.Value.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"),
                 url = Url.Action("Agendada", "Reposicao", new { codigo = a.Avaliacao.CodAvaliacao })
             });
 
@@ -77,7 +77,7 @@ namespace SIAC.Controllers
                 id = a.Avaliacao.CodAvaliacao,
                 title = a.Avaliacao.CodAvaliacao,
                 start = a.Avaliacao.DtAplicacao.Value.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"),
-                end = a.Avaliacao.DtAplicacao.Value.AddMinutes(a.Avaliacao.Duracao.Value).ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"),
+                end = a.Avaliacao.DtTermino.Value.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"),
                 url = Url.Action("Agendada", "Certificacao", new { codigo = a.Avaliacao.CodAvaliacao })
             });
 

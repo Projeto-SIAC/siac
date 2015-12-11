@@ -46,7 +46,7 @@
         </div>
         <div class="field required">
             <label>Hora de Término</label>
-            <input id="txtHoraTermino" name="txtHoraTermino" type="time" data-mask="00:00" placeholder="Hora de término" value="@(Model.Avaliacao.DtAplicacao.HasValue && Model.Avaliacao.Duracao.HasValue ? Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToString("HH:mm") : "")" required />
+            <input id="txtHoraTermino" name="txtHoraTermino" type="time" data-mask="00:00" placeholder="Hora de término" value="@(Model.Avaliacao.DtTermino.HasValue ? Model.Avaliacao.DtTermino.Value.ToString("HH:mm") : "")" required />
         </div>
     </div>
     <div class="field required">

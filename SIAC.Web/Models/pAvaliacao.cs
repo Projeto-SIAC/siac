@@ -8,6 +8,8 @@ namespace SIAC.Models
     {
         public string CodAvaliacao => $"{TipoAvaliacao.Sigla.ToUpper()}{Ano}{Semestre}{NumIdentificador.ToString("0000")}";
 
+        public DateTime? DtTermino => this.DtAplicacao.HasValue && this.Duracao.HasValue ? this.DtAplicacao.Value.AddMinutes(this.Duracao.Value) : new Nullable<DateTime>();
+
         public Professor Professor
         {
             get

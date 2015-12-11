@@ -41,7 +41,7 @@
         </div>
     </div>
 </div>
-@if (DateTime.Now > Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value))
+@if (DateTime.Now > Model.Avaliacao.DtTermino)
 {
     <div class="ui basic segment">
         <div class="ui dividing header">

@@ -103,7 +103,7 @@
                         @Model.Avaliacao.DtAplicacao.Value.ToShortDateString()
                     </td>
                     <td>
-                        Das @Model.Avaliacao.DtAplicacao.Value.ToShortTimeString() até @Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToShortTimeString()
+                        Das @Model.Avaliacao.DtAplicacao.Value.ToShortTimeString() até @Model.Avaliacao.DtTermino.Value.ToShortTimeString()
                     </td>
                     <td>
                         @Model.Sala.Descricao
@@ -248,7 +248,7 @@ else if (Model.Avaliacao.FlagRealizada)
             <div class="partial"></div>
         </div>
     }
-    else if (DateTime.Now < Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value))
+    else if (DateTime.Now < Model.Avaliacao.DtTermino)
     {
         <div class="ui message">
             <p>Você poderá conferir seu resultado assim que o tempo de aplicação da prova acabar.</p>
