@@ -145,7 +145,7 @@ siac.Academica.Detalhe = (function () {
             var $_this = $(this);
             $_this.addClass('loading');
             $.ajax({
-                url: '/Dashboard/Avaliacao/Academica/Arquivar/' + _codAvaliacao,
+                url: '/Principal/Avaliacao/Academica/Arquivar/' + _codAvaliacao,
                 type: 'POST',
                 success: function (data) {
                     window.location.reload();
@@ -179,7 +179,7 @@ siac.Academica.Detalhe = (function () {
             $('.loader.global').parent().addClass('active');
 
             _controleAjax = $.ajax({
-                url: '/Dashboard/Avaliacao/Academica/DetalheIndividual/' + _codAvaliacao,
+                url: '/Principal/Avaliacao/Academica/DetalheIndividual/' + _codAvaliacao,
                 data: {
                     matricula: matricula
                 },
@@ -449,7 +449,7 @@ siac.Academica.Configurar = (function () {
         $('#CardQuestao' + indice + ' div').popup('hide');
         $.ajax({
             type: "POST",
-            url: '/Dashboard/Avaliacao/Academica/TrocarQuestao',
+            url: '/Principal/Avaliacao/Academica/TrocarQuestao',
             data: {
                 codigoAvaliacao: _codAvaliacao,
                 tipo: codTipoQuestao,
@@ -487,7 +487,7 @@ siac.Academica.Configurar = (function () {
         $('#CardQuestao' + indice + ' div').popup('hide');
         $.ajax({
             type: 'POST',
-            url: '/Dashboard/Avaliacao/Academica/Desfazer',
+            url: '/Principal/Avaliacao/Academica/Desfazer',
             data: {
                 codigoAvaliacao: _codAvaliacao,
                 tipo: codTipoQuestao,
@@ -540,11 +540,11 @@ siac.Academica.Agendada = (function () {
             var $_this = $(this);
             $_this.addClass('loading');
             $.ajax({
-                url: '/Dashboard/Avaliacao/Academica/Arquivar/' + _codAvaliacao,
+                url: '/Principal/Avaliacao/Academica/Arquivar/' + _codAvaliacao,
                 type: 'POST',
                 success: function (data) {
                     if (data) {
-                        window.location.href = '/dashboard/avaliacao/academica/detalhe/' + _codAvaliacao;
+                        window.location.href = '/principal/avaliacao/academica/detalhe/' + _codAvaliacao;
                     }
                 },
                 error: function () {
@@ -565,7 +565,7 @@ siac.Academica.Agendada = (function () {
         setTimeout(function () {
             $.ajax({
                 type: 'POST',
-                url: '/Dashboard/Avaliacao/Academica/ContagemRegressiva',
+                url: '/Principal/Avaliacao/Academica/ContagemRegressiva',
                 data: { codAvaliacao: _codAvaliacao },
                 success: function (data) {
                     $('#contagem').text(data.Tempo).parent().transition('flash');
@@ -595,7 +595,7 @@ siac.Academica.Agendada = (function () {
             acadHub.client.liberar = function (strCodigo) {
                 $.ajax({
                     type: 'POST',
-                    url: '/Dashboard/Avaliacao/Academica/ContagemRegressiva',
+                    url: '/Principal/Avaliacao/Academica/ContagemRegressiva',
                     data: { codAvaliacao: _codAvaliacao },
                     success: function (data) {
                         alert('O professor liberou a avaliação.');
@@ -626,7 +626,7 @@ siac.Academica.Agendada = (function () {
                 
                 $.ajax({
                     type: 'POST',
-                    url: '/Dashboard/Avaliacao/Academica/ContagemRegressiva',
+                    url: '/Principal/Avaliacao/Academica/ContagemRegressiva',
                     data: { codAvaliacao: _codAvaliacao },
                     success: function (data) {
                         if (data.FlagLiberada == false) {
@@ -652,7 +652,7 @@ siac.Academica.Agendada = (function () {
                 $('.liberar.button').click(function () {
                     $('.liberar.button').addClass('loading');
                     $.ajax({
-                        url: '/Dashboard/Avaliacao/Academica/AlternarLiberar',
+                        url: '/Principal/Avaliacao/Academica/AlternarLiberar',
                         type: 'POST',
                         data: { codAvaliacao: _codAvaliacao },
                         success: function (data) {
@@ -661,7 +661,7 @@ siac.Academica.Agendada = (function () {
                                 $('.liberar.button').addClass('active').removeClass('loading').text('Liberada');
                                 $.ajax({
                                     type: 'POST',
-                                    url: '/Dashboard/Avaliacao/Academica/ContagemRegressiva',
+                                    url: '/Principal/Avaliacao/Academica/ContagemRegressiva',
                                     data: { codAvaliacao: _codAvaliacao },
                                     success: function (data) {
                                         if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
@@ -901,14 +901,14 @@ siac.Academica.Realizar = (function () {
     function desistir(url) {
         $('.ui.global.loader').parent().dimmer('show');
         $.ajax({
-            url: '/Dashboard/Avaliacao/Academica/Desistir/' + _codAvaliacao,
+            url: '/Principal/Avaliacao/Academica/Desistir/' + _codAvaliacao,
             type: 'POST',
             success: function () {
                 window.onbeforeunload = function () {
                     $('.ui.global.loader').parent().dimmer('show');
                 };
                 if (!url) {
-                    url = '/Dashboard';
+                    url = '/Principal';
                 }
                 window.location.href = url;
             },
@@ -1056,7 +1056,7 @@ siac.Academica.Realizar = (function () {
                     console.log(strData);
                     $.ajax({
                         type: 'POST',
-                        url: '/Dashboard/Avaliacao/Academica/Printar',
+                        url: '/Principal/Avaliacao/Academica/Printar',
                         data: {
                             codAvaliacao: avalAcad,
                             imageData: strData
@@ -1316,7 +1316,7 @@ siac.Academica.Acompanhar = (function () {
         acadHub.client.receberAval = function (alnMatricula) {
             $.ajax({
                 type: 'POST',
-                url: '/Dashboard/Avaliacao/Academica/Printar',
+                url: '/Principal/Avaliacao/Academica/Printar',
                 data: {
                     codAvaliacao: avalAcad
                 },
@@ -1473,7 +1473,7 @@ siac.Academica.Index = (function () {
         $cards = $('.ui.cards');
         $cards.parent().addClass('loading');
         _controleAjax = $.ajax({
-            url: '/Dashboard/Avaliacao/Academica/Listar',
+            url: '/Principal/Avaliacao/Academica/Listar',
             data: {
                 pagina: pagina,
                 ordenar: ordenar,
@@ -1548,7 +1548,7 @@ siac.Academica.Corrigir = (function () {
                 $.ajax({
                     cache: false,
                     type: 'POST',
-                    url: '/Dashboard/Avaliacao/Academica/CarregarAlunos/' + _codAvaliacao,
+                    url: '/Principal/Avaliacao/Academica/CarregarAlunos/' + _codAvaliacao,
                     success: function (data) {
                         $ddlCorrecaoValor.html('<option value="">Selecione o aluno</option>');
                         $ddlCorrecaoValor.parents('.field').find('label').text('Selecione o aluno');
@@ -1573,7 +1573,7 @@ siac.Academica.Corrigir = (function () {
                 $.ajax({
                     cache: false,
                     type: 'POST',
-                    url: '/Dashboard/Avaliacao/Academica/CarregarQuestoesDiscursivas/' + _codAvaliacao,
+                    url: '/Principal/Avaliacao/Academica/CarregarQuestoesDiscursivas/' + _codAvaliacao,
                     success: function (data) {
                         $ddlCorrecaoValor.parents('.field').find('label').text('Selecione a questão');
                         $ddlCorrecaoValor.html('');
@@ -1609,7 +1609,7 @@ siac.Academica.Corrigir = (function () {
                     $conteudoQuestao = $('#templateCorrecaoAluno');
                     $.ajax({
                         type: 'POST',
-                        url: '/Dashboard/Avaliacao/Academica/CarregarRespostasDiscursivas/' + _codAvaliacao,
+                        url: '/Principal/Avaliacao/Academica/CarregarRespostasDiscursivas/' + _codAvaliacao,
                         data: {
                             matrAluno: valor
                         },
@@ -1661,7 +1661,7 @@ siac.Academica.Corrigir = (function () {
                     $conteudoQuestao = $('#templateCorrecaoQuestao');
                     $.ajax({
                         type: 'POST',
-                        url: '/Dashboard/Avaliacao/Academica/CarregarRespostasPorQuestao/' + _codAvaliacao,
+                        url: '/Principal/Avaliacao/Academica/CarregarRespostasPorQuestao/' + _codAvaliacao,
                         data: {
                             codQuestao: valor
                         },
@@ -1768,7 +1768,7 @@ siac.Academica.Corrigir = (function () {
 
         $.ajax({
             type: 'POST',
-            url: '/Dashboard/Avaliacao/Academica/CorrigirQuestaoAluno/' + _codAvaliacao,
+            url: '/Principal/Avaliacao/Academica/CorrigirQuestaoAluno/' + _codAvaliacao,
             data: {
                 matrAluno: matrAluno,
                 codQuestao: codQuestao,

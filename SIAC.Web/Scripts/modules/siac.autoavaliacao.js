@@ -135,7 +135,7 @@ siac.Autoavaliacao.Index = (function () {
             $.ajax({
                 type: 'POST',
                 data: { codigo: codAvaliacao },
-                url: '/Dashboard/Autoavaliacao/Arquivar',
+                url: '/Principal/Autoavaliacao/Arquivar',
                 success: function () {
                     window.location.href = '/historico/autoavaliacao/detalhe/' + codAvaliacao;
                 },
@@ -170,7 +170,7 @@ siac.Autoavaliacao.Detalhe = (function () {
             $.ajax({
                 type: 'POST',
                 data: { codigo: _codAvaliacao },
-                url: '/Dashboard/Autoavaliacao/Arquivar',
+                url: '/Principal/Autoavaliacao/Arquivar',
                 success: function () {
                     window.location.href = '/historico/autoavaliacao/detalhe/' + _codAvaliacao;
                 },
@@ -451,7 +451,7 @@ siac.Autoavaliacao.Realizar = (function () {
         $.ajax({
             type: 'POST',
             data: { codigo: _codAvaliacao },
-            url: "/dashboard/autoavaliacao/arquivar",
+            url: "/principal/autoavaliacao/arquivar",
             success: function () {
                 window.onbeforeunload = function () { $('.ui.global.loader').parent().dimmer('show'); };
                 window.location.href = '/historico/autoavaliacao/detalhe/' + _codAvaliacao;

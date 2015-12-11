@@ -189,7 +189,7 @@ siac.Questao.Cadastrar = (function () {
         $('.tabular.menu .item').tab({
             history: true,
             historyType: 'state',
-            path: '/dashboard/questao/cadastrar'
+            path: '/principal/questao/cadastrar'
         });
 
         mostrarCamposPorTipo();
@@ -779,7 +779,7 @@ siac.Questao.Cadastrar = (function () {
             $.ajax({
                 type: 'POST',
                 data: { "palavras": palavras },
-                url: '/Dashboard/Questao/PalavrasChave',
+                url: '/Principal/Questao/PalavrasChave',
                 success: function (data) {
                     $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
                     $('#divQuestoes').html('');
@@ -834,7 +834,7 @@ siac.Questao.Cadastrar = (function () {
     function apresentarQuestao(codQuestao) {
         if (codQuestao) {
             $.ajax({
-                url: '/Dashboard/Questao/Apresentar',
+                url: '/Principal/Questao/Apresentar',
                 type: 'POST',
                 data: { codigo: codQuestao },
                 success: function (partial) {
@@ -862,7 +862,7 @@ siac.Questao.Cadastrar = (function () {
         $.ajax({
             type: 'POST',
             data: { captcha: $('#txtCaptcha').val() },
-            url: "/Dashboard/Questao/ChequeCaptcha",
+            url: "/Principal/Questao/ChequeCaptcha",
             success: function (resp) {
                 if (resp == "true") {
                     $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
@@ -887,7 +887,7 @@ siac.Questao.Cadastrar = (function () {
     function novoCaptcha() {
         $.ajax({
             type: 'POST',
-            url: "/Dashboard/Questao/NovoCaptcha",
+            url: "/Principal/Questao/NovoCaptcha",
             success: function (strBase64) {
                 if (strBase64) {
                     $('#imgCaptcha').attr('src', 'data:image/png;base64,' + strBase64);
@@ -926,7 +926,7 @@ siac.Questao.Detalhe = (function () {
             var $_this = $(this);
             $_this.addClass('loading');
             $.ajax({
-                url: '/Dashboard/Questao/Arquivar/' + $_this.attr('data-questao'),
+                url: '/Principal/Questao/Arquivar/' + $_this.attr('data-questao'),
                 type: 'POST',
                 success: function (flag) {
                     if (flag) {
@@ -1135,7 +1135,7 @@ siac.Questao.Gerar = (function () {
         strQte = $('#txtQuantidade').val();
         $.ajax({
             type: 'GET',
-            url: '/Dashboard/Questao/Gerar',
+            url: '/Principal/Questao/Gerar',
             data: { "strQte": strQte },
             success: function (data) {
                 $questoes = $('div.questoes');

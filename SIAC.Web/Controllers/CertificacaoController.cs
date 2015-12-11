@@ -34,7 +34,7 @@ namespace SIAC.Controllers
         // GET: Certificacao
         public ActionResult Index()
         {
-            if (Request.Url.ToString().ToLower().Contains("dashboard"))
+            if (Request.Url.ToString().ToLower().Contains("principal"))
             {
                 return Redirect("~/historico/avaliacao/certificacao");
             }

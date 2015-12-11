@@ -20,7 +20,7 @@ namespace SIAC.Controllers
         // GET: Questao
         public ActionResult Index()
         {
-            if (Request.Url.ToString().ToLower().Contains("dashboard"))
+            if (Request.Url.ToString().ToLower().Contains("principal"))
             {
                 return Redirect("~/Historico/Questao");
             }
@@ -234,7 +234,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Detalhe", new { codigo = questao.CodQuestao });
         }
 
-        //GET: Dashboard/Questão/Editar/5
+        //GET: Principal/Questão/Editar/5
         [HttpGet]
         public ActionResult Editar(string codigo)
         {
@@ -252,7 +252,7 @@ namespace SIAC.Controllers
             return View(questao);
         }
 
-        //POST: Dashboard/Questão/Editar/5
+        //POST: Principal/Questão/Editar/5
         [HttpPost]
         public ActionResult Editar(string codigo, FormCollection formCollection)
         {
@@ -296,7 +296,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Detalhe", new { codigo = questao.CodQuestao });
         }
 
-        //GET: Dashboard/Questao/Detalhe/4
+        //GET: Principal/Questao/Detalhe/4
         public ActionResult Detalhe(string codigo)
         {
             int codQuestao = 0;
@@ -329,7 +329,7 @@ namespace SIAC.Controllers
             return Json(false);
         }
 
-        //GET: Dashboard/Questao/Gerar/50
+        //GET: Principal/Questao/Gerar/50
         [HttpGet]
         public ActionResult Gerar(string strQte)
         {
@@ -360,7 +360,7 @@ namespace SIAC.Controllers
             }
         }
 
-        //POST: Dashboard/Questao/Gerar
+        //POST: Principal/Questao/Gerar
         [HttpPost]
         public ActionResult Gerar()
         {

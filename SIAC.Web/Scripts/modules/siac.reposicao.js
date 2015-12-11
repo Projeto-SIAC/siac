@@ -142,7 +142,7 @@ siac.Reposicao.Justificar = (function () {
         }
 
         $.ajax({
-            url: '/dashboard/avaliacao/reposicao/gerar/' + window.location.pathname.match(/acad[0-9]+$/)[0],
+            url: '/principal/avaliacao/reposicao/gerar/' + window.location.pathname.match(/acad[0-9]+$/)[0],
             type: 'POST',
             data: {
                 justificaticoes: arrJustificaticoes,
@@ -229,7 +229,7 @@ siac.Reposicao.Configurar = (function () {
         $('#CardQuestao' + indice + ' div').popup('hide');
         $.ajax({
             type: "POST",
-            url: '/Dashboard/Avaliacao/Reposicao/TrocarQuestao',
+            url: '/Principal/Avaliacao/Reposicao/TrocarQuestao',
             data: {
                 codigoAvaliacao: _codAvaliacao,
                 tipo: codTipoQuestao,
@@ -267,7 +267,7 @@ siac.Reposicao.Configurar = (function () {
         $('#CardQuestao' + indice + ' div').popup('hide');
         $.ajax({
             type: 'POST',
-            url: '/Dashboard/Avaliacao/Reposicao/Desfazer',
+            url: '/Principal/Avaliacao/Reposicao/Desfazer',
             data: {
                 codigoAvaliacao: _codAvaliacao,
                 tipo: codTipoQuestao,
@@ -494,7 +494,7 @@ siac.Reposicao.Index = (function () {
         $cards = $('.ui.cards');
         $cards.parent().addClass('loading');
         _controleAjax = $.ajax({
-            url: '/Dashboard/Avaliacao/Reposicao/Listar',
+            url: '/Principal/Avaliacao/Reposicao/Listar',
             data: {
                 pagina: pagina,
                 ordenar: ordenar,
@@ -555,11 +555,11 @@ siac.Reposicao.Agendada = (function () {
             var $_this = $(this);
             $_this.addClass('loading');
             $.ajax({
-                url: '/Dashboard/Avaliacao/Reposicao/Arquivar/' + _codAvaliacao,
+                url: '/Principal/Avaliacao/Reposicao/Arquivar/' + _codAvaliacao,
                 type: 'POST',
                 success: function (data) {
                     if (data) {
-                        window.location.href = '/dashboard/avaliacao/reposicao/detalhe/' + _codAvaliacao;
+                        window.location.href = '/principal/avaliacao/reposicao/detalhe/' + _codAvaliacao;
                     }
                 },
                 error: function () {
@@ -580,7 +580,7 @@ siac.Reposicao.Agendada = (function () {
         setTimeout(function () {
             $.ajax({
                 type: 'POST',
-                url: '/Dashboard/Avaliacao/Reposicao/ContagemRegressiva',
+                url: '/Principal/Avaliacao/Reposicao/ContagemRegressiva',
                 data: { codAvaliacao: _codAvaliacao },
                 success: function (data) {
                     $('#contagem').text(data.Tempo).parent().transition('flash');
@@ -610,7 +610,7 @@ siac.Reposicao.Agendada = (function () {
             hub.client.liberar = function (strCodigo) {
                 $.ajax({
                     type: 'POST',
-                    url: '/Dashboard/Avaliacao/Reposicao/ContagemRegressiva',
+                    url: '/Principal/Avaliacao/Reposicao/ContagemRegressiva',
                     data: { codAvaliacao: _codAvaliacao },
                     success: function (data) {
                         alert('O professor liberou a avaliação.');
@@ -641,7 +641,7 @@ siac.Reposicao.Agendada = (function () {
 
                 $.ajax({
                     type: 'POST',
-                    url: '/Dashboard/Avaliacao/Reposicao/ContagemRegressiva',
+                    url: '/Principal/Avaliacao/Reposicao/ContagemRegressiva',
                     data: { codAvaliacao: _codAvaliacao },
                     success: function (data) {
                         if (data.FlagLiberada == false) {
@@ -667,7 +667,7 @@ siac.Reposicao.Agendada = (function () {
                 $('.liberar.button').click(function () {
                     $('.liberar.button').addClass('loading');
                     $.ajax({
-                        url: '/Dashboard/Avaliacao/Reposicao/AlternarLiberar',
+                        url: '/Principal/Avaliacao/Reposicao/AlternarLiberar',
                         type: 'POST',
                         data: { codAvaliacao: _codAvaliacao },
                         success: function (data) {
@@ -676,7 +676,7 @@ siac.Reposicao.Agendada = (function () {
                                 $('.liberar.button').addClass('active').removeClass('loading').text('Liberada');
                                 $.ajax({
                                     type: 'POST',
-                                    url: '/Dashboard/Avaliacao/Reposicao/ContagemRegressiva',
+                                    url: '/Principal/Avaliacao/Reposicao/ContagemRegressiva',
                                     data: { codAvaliacao: _codAvaliacao },
                                     success: function (data) {
                                         if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
@@ -916,14 +916,14 @@ siac.Reposicao.Realizar = (function () {
     function desistir(url) {
         $('.ui.global.loader').parent().dimmer('show');
         $.ajax({
-            url: '/Dashboard/Avaliacao/Reposicao/Desistir/' + _codAvaliacao,
+            url: '/Principal/Avaliacao/Reposicao/Desistir/' + _codAvaliacao,
             type: 'POST',
             success: function () {
                 window.onbeforeunload = function () {
                     $('.ui.global.loader').parent().dimmer('show');
                 };
                 if (!url) {
-                    url = '/dashboard';
+                    url = '/principal';
                 }
                 window.location.href = url;
             },
@@ -1071,7 +1071,7 @@ siac.Reposicao.Realizar = (function () {
                     console.log(strData);
                     $.ajax({
                         type: 'POST',
-                        url: '/Dashboard/Avaliacao/Reposicao/Printar',
+                        url: '/Principal/Avaliacao/Reposicao/Printar',
                         data: {
                             codAvaliacao: aval,
                             imageData: strData
@@ -1330,7 +1330,7 @@ siac.Reposicao.Acompanhar = (function () {
         hub.client.receberAval = function (alnMatricula) {
             $.ajax({
                 type: 'POST',
-                url: '/Dashboard/Avaliacao/Reposicao/Printar',
+                url: '/Principal/Avaliacao/Reposicao/Printar',
                 data: {
                     codAvaliacao: aval
                 },
@@ -1452,7 +1452,7 @@ siac.Reposicao.Corrigir = (function () {
                 $.ajax({
                     cache: false,
                     type: 'POST',
-                    url: '/Dashboard/Avaliacao/Reposicao/CarregarAlunos/' + _codAvaliacao,
+                    url: '/Principal/Avaliacao/Reposicao/CarregarAlunos/' + _codAvaliacao,
                     success: function (data) {
                         $ddlCorrecaoValor.html('<option value="">Selecione o aluno</option>');
                         $ddlCorrecaoValor.parents('.field').find('label').text('Selecione o aluno');
@@ -1477,7 +1477,7 @@ siac.Reposicao.Corrigir = (function () {
                 $.ajax({
                     cache: false,
                     type: 'POST',
-                    url: '/Dashboard/Avaliacao/Reposicao/CarregarQuestoesDiscursivas/' + _codAvaliacao,
+                    url: '/Principal/Avaliacao/Reposicao/CarregarQuestoesDiscursivas/' + _codAvaliacao,
                     success: function (data) {
                         $ddlCorrecaoValor.parents('.field').find('label').text('Selecione a questão');
                         $ddlCorrecaoValor.html('');
@@ -1513,7 +1513,7 @@ siac.Reposicao.Corrigir = (function () {
                     $conteudoQuestao = $('#templateCorrecaoAluno');
                     $.ajax({
                         type: 'POST',
-                        url: '/Dashboard/Avaliacao/Reposicao/CarregarRespostasDiscursivas/' + _codAvaliacao,
+                        url: '/Principal/Avaliacao/Reposicao/CarregarRespostasDiscursivas/' + _codAvaliacao,
                         data: {
                             matrAluno: valor
                         },
@@ -1565,7 +1565,7 @@ siac.Reposicao.Corrigir = (function () {
                     $conteudoQuestao = $('#templateCorrecaoQuestao');
                     $.ajax({
                         type: 'POST',
-                        url: '/Dashboard/Avaliacao/Reposicao/CarregarRespostasPorQuestao/' + _codAvaliacao,
+                        url: '/Principal/Avaliacao/Reposicao/CarregarRespostasPorQuestao/' + _codAvaliacao,
                         data: {
                             codQuestao: valor
                         },
@@ -1659,7 +1659,7 @@ siac.Reposicao.Corrigir = (function () {
 
         $.ajax({
             type: 'POST',
-            url: '/Dashboard/Avaliacao/Reposicao/CorrigirQuestaoAluno/' + _codAvaliacao,
+            url: '/Principal/Avaliacao/Reposicao/CorrigirQuestaoAluno/' + _codAvaliacao,
             data: {
                 matrAluno: matrAluno,
                 codQuestao: codQuestao,
@@ -1731,7 +1731,7 @@ siac.Reposicao.Detalhe = (function () {
             var $_this = $(this);
             $_this.addClass('loading');
             $.ajax({
-                url: '/Dashboard/Avaliacao/Reposicao/Arquivar/' + _codAvaliacao,
+                url: '/Principal/Avaliacao/Reposicao/Arquivar/' + _codAvaliacao,
                 type: 'POST',
                 success: function (data) {
                     if (data) {
@@ -1765,7 +1765,7 @@ siac.Reposicao.Detalhe = (function () {
             $('.loader.global').parent().addClass('active');
 
             _controleAjax = $.ajax({
-                url: '/Dashboard/Avaliacao/Reposicao/DetalheIndividual/' + _codAvaliacao,
+                url: '/Principal/Avaliacao/Reposicao/DetalheIndividual/' + _codAvaliacao,
                 data: {
                     matricula: matricula
                 },

@@ -32,83 +32,83 @@
 
     function carregar() {
         var pathname = window.location.pathname.toLowerCase();
-        if (pathname.startsWith('/dashboard/')) {
+        if (pathname.startsWith('/principal/')) {
             if (pathname.indexOf('/questao') >= 0) {
-                if (/\/dashboard\/questao\/cadastrar/.test(pathname)) {
+                if (/\/principal\/questao\/cadastrar/.test(pathname)) {
                     siac.Questao.Cadastrar.iniciar();
                 }
             }
             else if (pathname.indexOf('/autoavaliacao') >= 0) {
-                if (/\/dashboard\/autoavaliacao\/realizar\/auto[0-9]+$/.test(pathname)) {
+                if (/\/principal\/autoavaliacao\/realizar\/auto[0-9]+$/.test(pathname)) {
                     siac.Autoavaliacao.Realizar.iniciar();
                 }
-                else if (/\/dashboard\/autoavaliacao\/resultado\/auto[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/autoavaliacao\/resultado\/auto[0-9]+$/.test(pathname)) {
                     siac.Autoavaliacao.Resultado.iniciar();
                 }
-                else if (pathname == '/dashboard/autoavaliacao/gerar') {
+                else if (pathname == '/principal/autoavaliacao/gerar') {
                     siac.Autoavaliacao.Gerar.iniciar();
                 }
             }
             else if (pathname.indexOf('/academica') >= 0) {
-                if (pathname == '/dashboard/avaliacao/academica/gerar') {
+                if (pathname == '/principal/avaliacao/academica/gerar') {
                     siac.Academica.Gerar.iniciar();
                 }
-                else if (/\/dashboard\/avaliacao\/academica\/agendar\/acad[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/avaliacao\/academica\/agendar\/acad[0-9]+$/.test(pathname)) {
                     siac.Academica.Agendar.iniciar();
                 }
-                else if (/\/dashboard\/avaliacao\/academica\/resultado\/acad[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/avaliacao\/academica\/resultado\/acad[0-9]+$/.test(pathname)) {
                     siac.Academica.Resultado.iniciar();
                 }
-                else if (/\/dashboard\/avaliacao\/academica\/configurar\/acad[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/avaliacao\/academica\/configurar\/acad[0-9]+$/.test(pathname)) {
                     siac.Academica.Configurar.iniciar();
                 }
-                else if (/\/dashboard\/avaliacao\/academica\/realizar\/acad[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/avaliacao\/academica\/realizar\/acad[0-9]+$/.test(pathname)) {
                     siac.Academica.Realizar.iniciar();
                 }
-                else if (/\/dashboard\/avaliacao\/academica\/acompanhar\/acad[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/avaliacao\/academica\/acompanhar\/acad[0-9]+$/.test(pathname)) {
                     siac.Academica.Acompanhar.iniciar();
                 }
             }
             else if (pathname.indexOf('/reposicao') >= 0) {
-                if (/\/dashboard\/avaliacao\/reposicao\/justificar\/acad[0-9]+$/.test(pathname)) {
+                if (/\/principal\/avaliacao\/reposicao\/justificar\/acad[0-9]+$/.test(pathname)) {
                     siac.Reposicao.Justificar.iniciar();
                 }
-                else if (/\/dashboard\/avaliacao\/reposicao\/configurar\/repo[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/avaliacao\/reposicao\/configurar\/repo[0-9]+$/.test(pathname)) {
                     siac.Reposicao.Configurar.iniciar();
                 }
-                else if (/\/dashboard\/avaliacao\/reposicao\/agendar\/repo[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/avaliacao\/reposicao\/agendar\/repo[0-9]+$/.test(pathname)) {
                     siac.Reposicao.Agendar.iniciar();
                 }
-                else if (/\/dashboard\/avaliacao\/reposicao\/realizar\/repo[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/avaliacao\/reposicao\/realizar\/repo[0-9]+$/.test(pathname)) {
                     siac.Reposicao.Realizar.iniciar();
                 }
-                else if (/\/dashboard\/avaliacao\/reposicao\/acompanhar\/repo[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/avaliacao\/reposicao\/acompanhar\/repo[0-9]+$/.test(pathname)) {
                     siac.Reposicao.Acompanhar.iniciar();
                 }
-                else if (/\/dashboard\/avaliacao\/reposicao\/resultado\/repo[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/avaliacao\/reposicao\/resultado\/repo[0-9]+$/.test(pathname)) {
                     siac.Reposicao.Resultado.iniciar();
                 }
             }
             else if (pathname.indexOf('/certificacao') >= 0) {
-                if (pathname == '/dashboard/avaliacao/certificacao/gerar') {
+                if (pathname == '/principal/avaliacao/certificacao/gerar') {
                     siac.Certificacao.Gerar.iniciar();
                 }
-                else if (/\/dashboard\/avaliacao\/certificacao\/configurar\/cert[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/avaliacao\/certificacao\/configurar\/cert[0-9]+$/.test(pathname)) {
                     siac.Certificacao.Configurar.iniciar();
                 }
-                else if (/\/dashboard\/avaliacao\/certificacao\/agendar\/cert[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/avaliacao\/certificacao\/agendar\/cert[0-9]+$/.test(pathname)) {
                     siac.Certificacao.Agendar.iniciar();
                 }
-                else if (/\/dashboard\/avaliacao\/certificacao\/avaliados\/cert[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/avaliacao\/certificacao\/avaliados\/cert[0-9]+$/.test(pathname)) {
                     siac.Certificacao.Avaliados.iniciar();
                 }
-                else if (/\/dashboard\/avaliacao\/certificacao\/realizar\/cert[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/avaliacao\/certificacao\/realizar\/cert[0-9]+$/.test(pathname)) {
                     siac.Certificacao.Realizar.iniciar();
                 }
-                else if (/\/dashboard\/avaliacao\/certificacao\/acompanhar\/cert[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/avaliacao\/certificacao\/acompanhar\/cert[0-9]+$/.test(pathname)) {
                     siac.Certificacao.Acompanhar.iniciar();
                 }
-                else if (/\/dashboard\/avaliacao\/certificacao\/resultado\/cert[0-9]+$/.test(pathname)) {
+                else if (/\/principal\/avaliacao\/certificacao\/resultado\/cert[0-9]+$/.test(pathname)) {
                     siac.Certificacao.Resultado.iniciar();
                 }
             }

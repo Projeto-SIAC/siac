@@ -37,16 +37,16 @@ namespace SIAC
 
 
             routes.MapRoute(
-                name: "DashboardAvaliacao",
-                url: "Dashboard/Avaliacao/{controller}/{action}/{codigo}",
-                defaults: new { controller = "Dashboard", action = "Index", codigo = UrlParameter.Optional },
+                name: "PrincipalAvaliacao",
+                url: "Principal/Avaliacao/{controller}/{action}/{codigo}",
+                defaults: new { controller = "Principal", action = "Index", codigo = UrlParameter.Optional },
                 constraints: new { controller = @"^(Academica|Reposicao|Certificacao)$" }
             );
 
             routes.MapRoute(
-                name: "Dashboard",
-                url: "Dashboard/{controller}/{action}/{codigo}",
-                defaults: new { controller = "Dashboard", action = "Index", codigo = UrlParameter.Optional },
+                name: "Principal",
+                url: "Principal/{controller}/{action}/{codigo}",
+                defaults: new { controller = "Principal", action = "Index", codigo = UrlParameter.Optional },
                 constraints: new { controller = @"^(Questao|Autoavaliacao|Agenda|Impressao)$" }
             );
 
@@ -74,7 +74,7 @@ namespace SIAC
                 name: "Default",
                 url: "{controller}/{action}/{tab}",
                 defaults: new { controller = "Acesso", action = "Index", tab = UrlParameter.Optional },
-                constraints: new { controller = @"^(Dashboard|Historico|Institucional|Perfil|Acesso|Erro|Configuracoes|Tema|Lembrete)$" }
+                constraints: new { controller = @"^(Principal|Historico|Institucional|Perfil|Acesso|Erro|Configuracoes|Tema|Lembrete)$" }
             );           
 
             routes.MapRoute(

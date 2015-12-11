@@ -8,9 +8,9 @@ using System.Web.Mvc;
 namespace SIAC.Controllers
 {
     [Filters.AutenticacaoFilter]
-    public class DashboardController : Controller
+    public class PrincipalController : Controller
     {
-        // GET: Dashboard
+        // GET: Principal
         public ActionResult Index()
         {
             Lembrete.AdicionarNotificacao("Este é sua tela principal.", Lembrete.Info);
@@ -18,13 +18,13 @@ namespace SIAC.Controllers
             return View(usuario);            
         }
 
-        // GET: Dashboard/Avaliacao
+        // GET: Principal/Avaliacao
         public ActionResult Avaliacao()
         {
             return RedirectToAction("Index");
         }
 
-        // GET: Dashboard/Pendente
+        // GET: Principal/Pendente
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Pendente()
         {

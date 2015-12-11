@@ -15,7 +15,7 @@ namespace SIAC.Controllers
     {
         public ActionResult Index()
         {
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("Index", "Principal");
         }
 
         [HttpGet]
@@ -35,16 +35,16 @@ namespace SIAC.Controllers
                 {
                     if (model.Avaliacao.CodTipoAvaliacao > 1 && Sessao.UsuarioCategoriaCodigo < 2)
                     {
-                        return RedirectToAction("Index", "Dashboard");
+                        return RedirectToAction("Index", "Principal");
                     }
                     else if (model.Avaliacao.Professor.MatrProfessor != Sessao.UsuarioMatricula)
                     {
-                        return RedirectToAction("Index", "Dashboard");
+                        return RedirectToAction("Index", "Principal");
                     }
                     return View("PreImpressao", model);
                 }
             }
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("Index", "Principal");
         }
 
         [HttpPost]
@@ -58,11 +58,11 @@ namespace SIAC.Controllers
                 {
                     if (model.Avaliacao.CodTipoAvaliacao > 1 && Sessao.UsuarioCategoriaCodigo < 2)
                     {
-                        return RedirectToAction("Index", "Dashboard");
+                        return RedirectToAction("Index", "Principal");
                     }
                     else if (model.Avaliacao.Professor.MatrProfessor != Sessao.UsuarioMatricula)
                     {
-                        return RedirectToAction("Index", "Dashboard");
+                        return RedirectToAction("Index", "Principal");
                     }
 
                     model.Titulo = form["txtTitulo"];
@@ -99,7 +99,7 @@ namespace SIAC.Controllers
                 }
             }
 
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("Index", "Principal");
         }
 
         [HttpGet]
@@ -113,7 +113,7 @@ namespace SIAC.Controllers
                     return View(model);
                 }
             }
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("Index", "Principal");
         }
     }
 }

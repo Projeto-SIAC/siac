@@ -6,7 +6,7 @@
   <mvcSiteMapNode title="Acesso" controller="Acesso" action="Index">
     <mvcSiteMapNode title="Entrar" controller="Acesso" action="Entrar"/>
     <mvcSiteMapNode title="Sair" controller="Acesso" action="Sair"/>
-    <mvcSiteMapNode title="Dashboard" controller="Dashboard" action="Index">
+    <mvcSiteMapNode title="Principal" controller="Principal" action="Index">
       <mvcSiteMapNode title="Questão" url="~/Historico/Questao">
         <mvcSiteMapNode title="Cadastrar" controller="Questao" action="Cadastrar" preservedRouteParameters="codigo">
           <mvcSiteMapNode title="Confirmação" controller="Questao" action="Confirmar"/>
@@ -21,7 +21,7 @@
           <mvcSiteMapNode title="Resultado" controller="Autoavaliacao" action="Resultado" preservedRouteParameters="codigo"/>
         </mvcSiteMapNode>
       </mvcSiteMapNode>
-      <mvcSiteMapNode title="Avaliação" controller="Dashboard" action="Avaliacao">
+      <mvcSiteMapNode title="Avaliação" controller="Principal" action="Avaliacao">
         <mvcSiteMapNode title="Acadêmica" url="~/historico/avaliacao/academica">
           <mvcSiteMapNode title="Gerar" controller="Academica" action="Gerar">
             <mvcSiteMapNode title="Confirmação" controller="Academica" action="Confirmar"/>
@@ -56,7 +56,7 @@
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Agenda" controller="Agenda" action="Index" />
       <mvcSiteMapNode title="Impressão" controller="Impressao" action="Avaliacao" preservedRouteParameters="codigo" />
-      <mvcSiteMapNode title="Correções Pendentes" controller="Dashboard" action="Pendente" />
+      <mvcSiteMapNode title="Correções Pendentes" controller="Principal" action="Pendente" />
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Histórico" controller="Historico" action="Index">
       <mvcSiteMapNode title="Questão" controller="Questao" action="Index">

@@ -207,14 +207,14 @@ siac.Certificacao.Configurar = (function () {
                 $('.confirmar.button').addClass('loading');
                 $.ajax({
                     type: 'POST',
-                    url: '/dashboard/avaliacao/certificacao/Configurar/',
+                    url: '/principal/avaliacao/certificacao/Configurar/',
                     data: {
                         codigo: _codAvaliacao,
                         questoes: _arrayQuestoes
                     },
                     success: function (data) {
                         if (data) {
-                            window.location.href = "/dashboard/avaliacao/certificacao/agendar/" + _codAvaliacao;
+                            window.location.href = "/principal/avaliacao/certificacao/agendar/" + _codAvaliacao;
                         }
                     },
                     error: function (data) {
@@ -270,7 +270,7 @@ siac.Certificacao.Configurar = (function () {
             $resultado.addClass('form loading')
             $.ajax({
                 type: 'POST',
-                url: '/dashboard/avaliacao/certificacao/CarregarQuestoes/',
+                url: '/principal/avaliacao/certificacao/CarregarQuestoes/',
                 data: {
                     codigo: _codAvaliacao,
                     temas: temas,
@@ -375,7 +375,7 @@ siac.Certificacao.Configurar = (function () {
         $_this.addClass('loading');
         $.ajax({
             type: 'POST',
-            url: '/dashboard/avaliacao/certificacao/CarregarQuestao/',
+            url: '/principal/avaliacao/certificacao/CarregarQuestao/',
             data: {
                 codQuestao: codQuestao
             },
@@ -408,7 +408,7 @@ siac.Certificacao.Configurar = (function () {
         $modal = $('.confirmar.modal');
         $.ajax({
             type: 'POST',
-            url: '/dashboard/avaliacao/certificacao/CarregarListaQuestaoDetalhe',
+            url: '/principal/avaliacao/certificacao/CarregarListaQuestaoDetalhe',
             data: {
                 codQuestoes: _arrayQuestoes
             },
@@ -665,7 +665,7 @@ siac.Certificacao.Index = (function () {
         $cards = $('.ui.cards');
         $cards.parent().addClass('loading');
         _controleAjax = $.ajax({
-            url: '/Dashboard/Avaliacao/Certificacao/Listar',
+            url: '/Principal/Avaliacao/Certificacao/Listar',
             data: {
                 pagina: pagina,
                 ordenar: ordenar,
@@ -765,7 +765,7 @@ siac.Certificacao.Avaliados = (function () {
 
         _controleAjax = $.ajax({
             type: 'POST',
-            url: '/dashboard/avaliacao/certificacao/filtrar/' + filtro,
+            url: '/principal/avaliacao/certificacao/filtrar/' + filtro,
             success: function (data) {
                 _content = data;
                 $buscar
@@ -907,11 +907,11 @@ siac.Certificacao.Agendada = (function () {
             var $_this = $(this);
             $_this.addClass('loading');
             $.ajax({
-                url: '/Dashboard/Avaliacao/Certificacao/Arquivar/' + _codAvaliacao,
+                url: '/Principal/Avaliacao/Certificacao/Arquivar/' + _codAvaliacao,
                 type: 'POST',
                 success: function (data) {
                     if (data) {
-                        window.location.href = '/dashboard/avaliacao/certificacao/detalhe/' + _codAvaliacao;
+                        window.location.href = '/principal/avaliacao/certificacao/detalhe/' + _codAvaliacao;
                     }
                 },
                 error: function () {
@@ -932,7 +932,7 @@ siac.Certificacao.Agendada = (function () {
         setTimeout(function () {
             $.ajax({
                 type: 'POST',
-                url: '/Dashboard/Avaliacao/Certificacao/ContagemRegressiva',
+                url: '/Principal/Avaliacao/Certificacao/ContagemRegressiva',
                 data: { codAvaliacao: _codAvaliacao },
                 success: function (data) {
                     $('#contagem').text(data.Tempo).parent().transition('flash');
@@ -963,7 +963,7 @@ siac.Certificacao.Agendada = (function () {
             certHub.client.liberar = function (strCodigo) {
                 $.ajax({
                     type: 'POST',
-                    url: '/Dashboard/Avaliacao/Certificacao/ContagemRegressiva',
+                    url: '/Principal/Avaliacao/Certificacao/ContagemRegressiva',
                     data: { codAvaliacao: _codAvaliacao },
                     success: function (data) {
                         alert('O professor liberou a avaliação.');
@@ -993,7 +993,7 @@ siac.Certificacao.Agendada = (function () {
             certHub.client.bloquear = function (strCodigo) {
                 $.ajax({
                     type: 'POST',
-                    url: '/Dashboard/Avaliacao/Certificacao/ContagemRegressiva',
+                    url: '/Principal/Avaliacao/Certificacao/ContagemRegressiva',
                     data: { codAvaliacao: _codAvaliacao },
                     success: function (data) {
                         if (data.FlagLiberada == false) {
@@ -1019,7 +1019,7 @@ siac.Certificacao.Agendada = (function () {
                 $('.liberar.button').click(function () {
                     $('.liberar.button').addClass('loading');
                     $.ajax({
-                        url: '/Dashboard/Avaliacao/Certificacao/AlternarLiberar',
+                        url: '/Principal/Avaliacao/Certificacao/AlternarLiberar',
                         type: 'POST',
                         data: { codAvaliacao: _codAvaliacao },
                         success: function (data) {
@@ -1028,7 +1028,7 @@ siac.Certificacao.Agendada = (function () {
                                 $('.liberar.button').addClass('active').removeClass('loading').text('Liberada');
                                 $.ajax({
                                     type: 'POST',
-                                    url: '/Dashboard/Avaliacao/Certificacao/ContagemRegressiva',
+                                    url: '/Principal/Avaliacao/Certificacao/ContagemRegressiva',
                                     data: { codAvaliacao: _codAvaliacao },
                                     success: function (data) {
                                         if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
@@ -1268,14 +1268,14 @@ siac.Certificacao.Realizar = (function () {
     function desistir(url) {
         $('.ui.global.loader').parent().dimmer('show');
         $.ajax({
-            url: '/Dashboard/Avaliacao/Certificacao/Desistir/' + _codAvaliacao,
+            url: '/Principal/Avaliacao/Certificacao/Desistir/' + _codAvaliacao,
             type: 'POST',
             success: function () {
                 window.onbeforeunload = function () {
                     $('.ui.global.loader').parent().dimmer('show');
                 };
                 if (!url) {
-                    url = '/Dashboard';
+                    url = '/Principal';
                 }
                 window.location.href = url;
             },
@@ -1419,7 +1419,7 @@ siac.Certificacao.Realizar = (function () {
                     data = canvas.toDataURL("image/png");
                     $.ajax({
                         type: 'POST',
-                        url: '/Dashboard/Avaliacao/Certificacao/Printar',
+                        url: '/Principal/Avaliacao/Certificacao/Printar',
                         data: {
                             codAvaliacao: codAval,
                             imageData: data
@@ -1676,7 +1676,7 @@ siac.Certificacao.Acompanhar = (function () {
         certHub.client.receberAval = function (alnMatricula) {
             $.ajax({
                 type: 'POST',
-                url: '/Dashboard/Avaliacao/Certificacao/Printar',
+                url: '/Principal/Avaliacao/Certificacao/Printar',
                 data: {
                     codAvaliacao: codAval
                 },
@@ -1794,7 +1794,7 @@ siac.Certificacao.Corrigir = (function () {
                 $.ajax({
                     cache: false,
                     type: 'POST',
-                    url: '/Dashboard/Avaliacao/Certificacao/CarregarAlunos/' + _codAvaliacao,
+                    url: '/Principal/Avaliacao/Certificacao/CarregarAlunos/' + _codAvaliacao,
                     success: function (data) {
                         $ddlCorrecaoValor.html('<option value="">Selecione o avaliado</option>');
                         $ddlCorrecaoValor.parents('.field').find('label').text('Selecione o avaliado');
@@ -1819,7 +1819,7 @@ siac.Certificacao.Corrigir = (function () {
                 $.ajax({
                     cache: false,
                     type: 'POST',
-                    url: '/Dashboard/Avaliacao/Certificacao/CarregarQuestoesDiscursivas/' + _codAvaliacao,
+                    url: '/Principal/Avaliacao/Certificacao/CarregarQuestoesDiscursivas/' + _codAvaliacao,
                     success: function (data) {
                         $ddlCorrecaoValor.parents('.field').find('label').text('Selecione a questão');
                         $ddlCorrecaoValor.html('');
@@ -1855,7 +1855,7 @@ siac.Certificacao.Corrigir = (function () {
                     $conteudoQuestao = $('#templateCorrecaoAluno');
                     $.ajax({
                         type: 'POST',
-                        url: '/Dashboard/Avaliacao/Certificacao/CarregarRespostasDiscursivas/' + _codAvaliacao,
+                        url: '/Principal/Avaliacao/Certificacao/CarregarRespostasDiscursivas/' + _codAvaliacao,
                         data: {
                             matrAluno: valor
                         },
@@ -1907,7 +1907,7 @@ siac.Certificacao.Corrigir = (function () {
                     $conteudoQuestao = $('#templateCorrecaoQuestao');
                     $.ajax({
                         type: 'POST',
-                        url: '/Dashboard/Avaliacao/Certificacao/CarregarRespostasPorQuestao/' + _codAvaliacao,
+                        url: '/Principal/Avaliacao/Certificacao/CarregarRespostasPorQuestao/' + _codAvaliacao,
                         data: {
                             codQuestao: valor
                         },
@@ -2001,7 +2001,7 @@ siac.Certificacao.Corrigir = (function () {
 
         $.ajax({
             type: 'POST',
-            url: '/Dashboard/Avaliacao/Certificacao/CorrigirQuestaoAluno/' + _codAvaliacao,
+            url: '/Principal/Avaliacao/Certificacao/CorrigirQuestaoAluno/' + _codAvaliacao,
             data: {
                 matrAluno: matrAluno,
                 codQuestao: codQuestao,
@@ -2073,7 +2073,7 @@ siac.Certificacao.Detalhe = (function () {
             var $_this = $(this);
             $_this.addClass('loading');
             $.ajax({
-                url: '/Dashboard/Avaliacao/Certificacao/Arquivar/' + _codAvaliacao,
+                url: '/Principal/Avaliacao/Certificacao/Arquivar/' + _codAvaliacao,
                 type: 'POST',
                 success: function (data) {
                     window.location.reload();
@@ -2107,7 +2107,7 @@ siac.Certificacao.Detalhe = (function () {
             $('.loader.global').parent().addClass('active');
 
             _controleAjax = $.ajax({
-                url: '/Dashboard/Avaliacao/Certificacao/DetalheIndividual/' + _codAvaliacao,
+                url: '/Principal/Avaliacao/Certificacao/DetalheIndividual/' + _codAvaliacao,
                 data: {
                     pessoa: codPessoa
                 },

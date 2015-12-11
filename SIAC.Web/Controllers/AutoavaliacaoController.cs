@@ -21,7 +21,7 @@ namespace SIAC.Controllers
         // GET: Autoavaliacao
         public ActionResult Index()
         {
-            if (Request.Url.ToString().ToLower().Contains("dashboard"))
+            if (Request.Url.ToString().ToLower().Contains("principal"))
             {
                 return Redirect("~/Historico/Autoavaliacao");
             }

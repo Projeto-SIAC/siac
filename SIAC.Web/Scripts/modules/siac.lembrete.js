@@ -8,8 +8,8 @@ siac.Lembrete.iniciar = function () {
     siac.Lembrete.Menu.iniciar();
 
     var pathname = window.location.pathname.toLowerCase();
-    if (pathname == "/dashboard") {
-        siac.Lembrete.Dashboard.iniciar();
+    if (pathname == "/principal") {
+        siac.Lembrete.Principal.iniciar();
     }
     else if (pathname == "/institucional") {
         siac.Lembrete.Institucional.iniciar();
@@ -109,14 +109,14 @@ siac.Lembrete.Menu = siac.Lembrete.Menu || (function () {
     return { iniciar: iniciar }
 })();
 
-siac.Lembrete.Dashboard = siac.Lembrete.Dashboard || (function () {
+siac.Lembrete.Principal = siac.Lembrete.Principal || (function () {
     function iniciar() {
         contadores();
     }
 
     function contadores() {
         $.ajax({
-            url: '/lembrete/dashboard',
+            url: '/lembrete/principal',
             type: 'post',
             cache: true,
             success: function (data) {

@@ -17,9 +17,9 @@ namespace SIAC.Controllers
 
         [HttpPost]
         //[OutputCache(Duration = 120)]
-        public ActionResult Dashboard()
+        public ActionResult Principal()
         {
-            if (Sessao.Retornar("ContadoresDashboard") == null)
+            if (Sessao.Retornar("ContadoresPrincipal") == null)
             {
                 string matricula = Sessao.UsuarioMatricula;
                 var Atalho = new Dictionary<string, int>();
@@ -34,10 +34,10 @@ namespace SIAC.Controllers
                     Atalho.Add("correcao", lst.Count());
                 }
 
-                Sessao.Inserir("ContadoresDashboard", Atalho);
+                Sessao.Inserir("ContadoresPrincipal", Atalho);
             }
 
-            return Json(Sessao.Retornar("ContadoresDashboard"));
+            return Json(Sessao.Retornar("ContadoresPrincipal"));
         }
 
         [HttpPost]
@@ -95,7 +95,7 @@ namespace SIAC.Controllers
                             { "Id", "LembreteAcademica" },
                             { "Mensagem", "Há Avaliações Acadêmicas agendadas para as próximas 24 horas." },
                             { "Botao", "Visualizar" },
-                            { "Url", "/dashboard/agenda" }
+                            { "Url", "/principal/agenda" }
                         });
                 }
             }
@@ -107,7 +107,7 @@ namespace SIAC.Controllers
                             { "Id", "LembreteCertificacao" },
                             { "Mensagem", "Há Avaliações de Certificações agendadas para as próximas 24 horas." },
                             { "Botao", "Visualizar" },
-                            { "Url", "/dashboard/agenda" }
+                            { "Url", "/principal/agenda" }
                         });
                 }
             }
@@ -119,7 +119,7 @@ namespace SIAC.Controllers
                             { "Id", "LembreteReposicao" },
                             { "Mensagem", "Há Reposições agendadas para as próximas 24 horas." },
                             { "Botao", "Visualizar" },
-                            { "Url", "/dashboard/agenda" }
+                            { "Url", "/principal/agenda" }
                         });
                 }
             }

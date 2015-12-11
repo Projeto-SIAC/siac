@@ -91,7 +91,7 @@ namespace SIAC.Controllers
         // GET: Historico/Avaliacao/Academica
         public ActionResult Index()
         {
-            if (Request.Url.ToString().ToLower().Contains("dashboard"))
+            if (Request.Url.ToString().ToLower().Contains("principal"))
             {
                 return Redirect("~/historico/avaliacao/academica");
             }
@@ -100,7 +100,7 @@ namespace SIAC.Controllers
             return View(model);
         }
 
-        //GET: Dashboard/Avaliacao/Academica/Gerar
+        //GET: Principal/Avaliacao/Academica/Gerar
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Gerar()
         {
@@ -112,7 +112,7 @@ namespace SIAC.Controllers
             return View(model);
         }
 
-        //POST: Dashboard/Avaliacao/Academica/Confirmar
+        //POST: Principal/Avaliacao/Academica/Confirmar
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Confirmar(FormCollection formCollection)
@@ -123,7 +123,7 @@ namespace SIAC.Controllers
                 {
                     return Redirect(Session["UrlReferrer"].ToString());
                 }
-                else return RedirectToAction("Index", "Dashboard");
+                else return RedirectToAction("Index", "Principal");
             }
             AvalAcademica acad = new AvalAcademica();
             if (formCollection.HasKeys())
@@ -201,7 +201,7 @@ namespace SIAC.Controllers
             return View(acad);
         }
 
-        //GET: Dashboard/Avaliacao/Academica/Agendar/ACAD2015100002
+        //GET: Principal/Avaliacao/Academica/Agendar/ACAD2015100002
         [HttpGet]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Agendar(string codigo)
@@ -227,7 +227,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        //POST: Dashboard/Avaliacao/Academica/Agendar/ACAD2015100002
+        //POST: Principal/Avaliacao/Academica/Agendar/ACAD2015100002
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Agendar(string codigo, FormCollection form)
@@ -238,7 +238,7 @@ namespace SIAC.Controllers
                 {
                     return Redirect(Session["UrlReferrer"].ToString());
                 }
-                else return RedirectToAction("Index", "Dashboard");
+                else return RedirectToAction("Index", "Principal");
             }
             string strCodTurma = form["ddlTurma"];
             string strCodSala = form["ddlSala"];

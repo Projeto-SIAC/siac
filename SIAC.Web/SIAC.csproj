@@ -262,7 +262,7 @@
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\VisitanteController.cs" />
     <Compile Include="Filters\AutenticacaoFilterAttribute.cs" />
-    <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\PrincipalController.cs" />
     <Compile Include="Controllers\AcessoController.cs" />
     <Compile Include="Controllers\ErroController.cs" />
     <Compile Include="Controllers\HistoricoController.cs" />
@@ -599,7 +599,7 @@
     <Content Include="Styles\themes\default\assets\fonts\icons.woff" />
     <Content Include="Styles\themes\default\assets\fonts\icons.woff2" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
-    <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Principal\Index.cshtml" />
     <Content Include="Views\Acesso\Index.cshtml" />
     <Content Include="Resources\videos\background.webm" />
     <None Include="bundleconfig.json" />
@@ -644,7 +644,7 @@
     <Content Include="Views\Academica\Acompanhar.cshtml" />
     <Content Include="Views\Academica\Realizar.cshtml" />
     <Content Include="Views\Academica\Resultado.cshtml" />
-    <Content Include="Views\Dashboard\Pendente.cshtml" />
+    <Content Include="Views\Principal\Pendente.cshtml" />
     <Content Include="Scripts\siac.js" />
     <Content Include="Views\Academica\Corrigir.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\SiteMapTitleHelperModel.cshtml" />

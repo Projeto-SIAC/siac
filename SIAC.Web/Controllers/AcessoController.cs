@@ -16,7 +16,7 @@ namespace SIAC.Controllers
             Parametro.ObterAsync();
             if (Models.Sistema.Autenticado(Helpers.Sessao.UsuarioMatricula))
             {
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "Principal");
             }
             return View(new ViewModels.AcessoIndexViewModel());
         }
@@ -28,7 +28,7 @@ namespace SIAC.Controllers
         {
             if (Helpers.Sessao.Autenticado)
             {
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "Principal");
             }
             ViewBag.Acao = "$('.modal').modal('show')";
             return View("Index");
@@ -41,7 +41,7 @@ namespace SIAC.Controllers
         {
             if (Models.Sistema.Autenticado(Helpers.Sessao.UsuarioMatricula))
             {
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "Principal");
             }
 
             bool valido = false;
@@ -76,7 +76,7 @@ namespace SIAC.Controllers
                 {
                     return Redirect(Request.QueryString["continuar"].ToString());
                 }
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "Principal");
             }
             else
             {
