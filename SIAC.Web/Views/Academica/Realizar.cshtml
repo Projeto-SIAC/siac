@@ -2,7 +2,7 @@
 @model AvalAcademica
 
 @{
-    ViewBag.Title = "Realizar " + Model.Avaliacao.CodAvaliacao;
+    ViewBag.Title = "Realizar Avaliação Acadêmica" /*+ Model.Avaliacao.CodAvaliacao*/;
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
 }

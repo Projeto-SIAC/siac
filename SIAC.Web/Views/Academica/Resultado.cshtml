@@ -1,7 +1,7 @@
 ﻿@model AvaliacaoResultadoViewModel
 
 @{
-    ViewBag.Title = "Resultado " + Model.Avaliacao.CodAvaliacao;
+    ViewBag.Title = "Resultado de Avaliação Acadêmica"/* + Model.Avaliacao.CodAvaliacao*/;
     Layout = "~/Views/Shared/_Layout.cshtml";
     int codPessoaFisica = Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula);
     List<Questao> lstQuestao = Model.Avaliacao.Questao;
