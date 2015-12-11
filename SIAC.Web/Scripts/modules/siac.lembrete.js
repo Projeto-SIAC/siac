@@ -27,10 +27,10 @@ siac.Lembrete.Lembretes = siac.Lembrete.Lembretes || (function () {
                         if (data[i]['Botao']) {
                             var str = '<p>'+data[i]['Mensagem']+'</p>'+
                                        '<a href="' + data[i]['Url'] + '" class="ui black basic button">' + data[i]['Botao'] + '</a>';
-                            alertify.notify(str, 'label', 0, function (clicado) { lembreteVisualizado(clicado) });
+                            alertify.notify(str, 'label', 0, function (clicado) { console.log('clicado'); lembreteVisualizado(clicado, data[i]['Id']) });
                         }
                         else {
-                            alertify.notify(data[i]['Mensagem'], 'label', 0, function (clicado) { lembreteVisualizado(clicado) });
+                            alertify.notify(data[i]['Mensagem'], 'label', 0, function (clicado) { console.log('clicado'); lembreteVisualizado(clicado, data[i]['Id']) });
                         }
                     }
                 }                
@@ -38,11 +38,13 @@ siac.Lembrete.Lembretes = siac.Lembrete.Lembretes || (function () {
         });
     }
 
-    function lembreteVisualizado(clicado) {
+    function lembreteVisualizado(clicado, id) {
+        console.log('evento');
         if (clicado) {
             $.ajax({
-                url: '/lembrete/lembretesvisualizados',
-                type: 'post'
+                url: '/lembrete/lembretevisualizado',
+                type: 'post',
+                data: { id: id}
             });
         }
     }
