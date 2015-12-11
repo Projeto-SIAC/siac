@@ -131,5 +131,13 @@ namespace SIAC.Controllers
         {
             Sessao.Inserir(id, DateTime.Now);
         }
+
+        [HttpPost]
+        public ActionResult Notificacoes()
+        {
+            var notificacoes = Sessao.Retornar("Notificacoes");
+            Sessao.Inserir("Notificacoes", null);
+            return Json(notificacoes);
+        }
     }
 }

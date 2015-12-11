@@ -2,7 +2,8 @@
 
 siac.Lembrete.iniciar = function () {
     //alertify.set('notifier', 'position', 'top-right');
-    
+
+    siac.Lembrete.Notificacoes.iniciar();
     siac.Lembrete.Lembretes.iniciar();
     siac.Lembrete.Menu.iniciar();
 
@@ -14,6 +15,40 @@ siac.Lembrete.iniciar = function () {
         siac.Lembrete.Institucional.iniciar();
     }
 };
+
+siac.Lembrete.Notificacoes = siac.Lembrete.Notificacoes || (function () {
+    function iniciar() {
+        $.ajax({
+            url: '/lembrete/notificacoes',
+            type: 'post',
+            cache: true,
+            success: function (data) {
+                if (data) {
+                    for (var i in data) {
+                        alertify.notify(data[i]['Mensagem'], data[i]['Estilo'], data[i]['Tempo']);
+                    }
+                }
+            }
+        });
+    }
+
+    function exibir(mensagem, estilo, tempo) {
+        var mapaEstilo = {
+            'normal': 'label',
+            'positivo': 'green',
+            'negativo': 'red',
+            'info': 'info'
+        }
+        if (mensagem) {
+            if (!(/(normal|positivo|negativo|info)/.test(estilo))) {
+                estilo = 'normal';
+            }
+            alertify.notify(mensagem, mapaEstilo[estilo], tempo);
+        }
+    }
+
+    return { iniciar: iniciar, exibir: exibir }
+})();
 
 siac.Lembrete.Lembretes = siac.Lembrete.Lembretes || (function () {
     function iniciar() {

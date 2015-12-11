@@ -71,6 +71,7 @@ namespace SIAC.Controllers
 
             if (valido)
             {
+                Lembrete.AdicionarNotificacao("Seu usuário foi autenticado com sucesso.", Lembrete.Positivo);
                 if (Request.QueryString["continuar"] != null)
                 {
                     return Redirect(Request.QueryString["continuar"].ToString());
