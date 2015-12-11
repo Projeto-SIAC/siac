@@ -170,7 +170,7 @@ else if (Model.Avaliacao.FlagRealizada)
             <div class="ui dividing header">
                 Classificação
             </div>
-            @Html.Partial("_AvaliacaoResultadoClassificacao", Model.Avaliacao.AvalPessoaResultado.ToList())
+            @Html.Partial("_AvaliacaoResultadoClassificacao", Model.Avaliacao.AvalPessoaResultado.OrderBy(a=>a.PessoaFisica.PrimeiroNome).ToList())
         </div>
         <div class="ui basic segment">
             <div class="ui dividing header">
