@@ -931,9 +931,11 @@ siac.Questao.Detalhe = (function () {
                 success: function (flag) {
                     if (flag) {
                         $_this.addClass('active').text('Arquivada');
+                        siac.Lembrete.Notificacoes.exibir('Questão arquivada com sucesso.', 'positivo');
                     }
                     else {
                         $_this.removeClass('active').text('Arquivar');
+                        siac.Lembrete.Notificacoes.exibir('Questão desarquivada com sucesso.', 'positivo');
                     }
                 },
                 error: function () {

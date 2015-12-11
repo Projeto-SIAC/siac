@@ -230,7 +230,7 @@ namespace SIAC.Controllers
             //TempData["Questao"] = questao;
 
             Questao.Inserir(questao);
-
+            Lembrete.AdicionarNotificacao($"Questão {questao.CodQuestao} cadastrada com sucesso.", Lembrete.Positivo);
             return RedirectToAction("Detalhe", new { codigo = questao.CodQuestao });
         }
 
@@ -249,6 +249,7 @@ namespace SIAC.Controllers
             {
                 return RedirectToAction("index");
             }
+            Lembrete.AdicionarNotificacao("Observe que há alguns dados que não podem ser editados.");
             return View(questao);
         }
 
@@ -292,7 +293,7 @@ namespace SIAC.Controllers
             }
 
             Questao.Atualizar(questao);
-
+            Lembrete.AdicionarNotificacao($"Questão {questao.CodQuestao} editada com sucesso.", Lembrete.Positivo);
             return RedirectToAction("Detalhe", new { codigo = questao.CodQuestao });
         }
 
@@ -323,7 +324,8 @@ namespace SIAC.Controllers
                 int.TryParse(codigo, out codQuestao);
                 if (codQuestao>0)
                 {
-                    return Json(Questao.AlternarFlagArquivo(codQuestao));
+                    var flagArquivo = Questao.AlternarFlagArquivo(codQuestao);
+                    return Json(flagArquivo);
                 }
             }
             return Json(false);
