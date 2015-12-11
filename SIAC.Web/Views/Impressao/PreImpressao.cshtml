@@ -1,7 +1,7 @@
 ﻿@model ImpressaoAvaliacaoViewModel
 
 @{
-    ViewBag.Title = "Imprimir " + Model.Avaliacao.CodAvaliacao;
+    ViewBag.Title = $"Imprimir {Model.Avaliacao.TipoAvaliacao.Descricao}"/* + Model.Avaliacao.CodAvaliacao*/;
 }
 
 @section Scripts {
@@ -34,11 +34,11 @@
     </div>
     <div class="field required">
         <label>Instituição</label>
-        <input type="text" name="txtInstituicao" placeholder="Título" value="@($"{Model.Avaliacao.Professor.Instituicao?.PessoaJuridica.NomeFantasia}")" required />
+        <input type="text" name="txtInstituicao" placeholder="Instituição" value="@($"{Model.Avaliacao.Professor.Instituicao?.PessoaJuridica.NomeFantasia}")" required />
     </div>
     <div class="field required">
         <label>Professor</label>
-        <input type="text" name="txtProfessor" placeholder="Título" value="@($"{Model.Avaliacao.Professor.Usuario.PessoaFisica.Nome}")" required />
+        <input type="text" name="txtProfessor" placeholder="Professor" value="@($"{Model.Avaliacao.Professor.Usuario.PessoaFisica.Nome}")" required />
     </div>
     <div class="field">
         <label>Campos</label>
