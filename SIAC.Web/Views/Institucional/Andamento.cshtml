@@ -15,11 +15,22 @@
                 int quantidadeRespostas = AviQuestaoPessoaResposta.ObterRespostasPessoa(avi, PessoaFisica.ListarPorMatricula(SIAC.Helpers.Sessao.UsuarioMatricula)).Count;
                 <div class="card">
                     <div class="content">
-                        <a href="@Url.Action("Realizar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="header">@avi.Avaliacao.CodAvaliacao</a>
+                        <a href="@Url.Action("Realizar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="header">Código: @avi.Avaliacao.CodAvaliacao</a>
                         <div class="meta">
                             <span>@avi.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
                         </div>
-
+                        @if (quantidadeRespostas == quantidadeQuestoes)
+                    {
+                            <span class="ui ribbon label"><i class="checkmark icon"></i>Concluída</span>
+                        }
+                        else if (quantidadeRespostas > 0)
+                        {
+                            <span class="ui ribbon label"><i class="write icon"></i>Realizando</span>
+                        }
+                        else
+                        {
+                            <span class="ui ribbon label"><i class="warning icon"></i>Nova</span>
+                        }
                         <div class="description">
                             <p>
                                 <b>Quantidade de Questões</b>: @avi.QteQuestoes
@@ -31,29 +42,14 @@
                                 </p>
                             }
                         </div>
-
                     </div>
                     <div class="extra content">
-                        <div class="extra content">
-                            <div class="ui label">Início:<div class="detail">@avi.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy")</div></div>
-                            <div class="ui label">Término:<div class="detail">@avi.DtTermino.Value.ToString("dd/MM/yyyy")</div></div>
-                        </div>
+                        <div class="ui label">Início:<div class="detail">@avi.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy")</div></div>
+                        <div class="ui label">Término:<div class="detail">@avi.DtTermino.Value.ToString("dd/MM/yyyy")</div></div>
                     </div>
                     <a href="@Url.Action("Realizar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">
                         Realizar
                     </a>
-                    @if (quantidadeRespostas == quantidadeQuestoes)
-                    {
-                        <span class="ui attached top right label"><i class="checkmark icon"></i>Concluída</span>
-                    }
-                    else if (quantidadeRespostas > 0)
-                    {
-                        <span class="ui attached top right label"><i class="write icon"></i>Realizando</span>
-                    }
-                    else
-                    {
-                        <span class="ui attached top right label"><i class="warning icon"></i>Nova</span>
-                    }
                 </div>
             }
         </div>

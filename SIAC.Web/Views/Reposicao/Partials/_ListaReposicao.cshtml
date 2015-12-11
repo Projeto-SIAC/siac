@@ -10,6 +10,35 @@
             <div class="meta">
                 <span title="@aval.Avaliacao.DtCadastro.ToBrazilianString()">@aval.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
             </div>
+            @if (aval.Avaliacao.FlagRealizada)
+            {
+                if (Sessao.UsuarioCategoriaCodigo == 1)
+                {
+                    if (aval.AlunosRealizaram.Where(a => a.MatrAluno == Sessao.UsuarioMatricula).Count() > 0)
+                    {
+                        <span class="ui ribbon label"><i class="checkmark icon"></i>Realizada</span>
+                    }
+                    else
+                    {
+                        <span class="ui ribbon label"><i class="remove icon"></i>Ausente</span>
+                    }
+                }
+                else
+                {
+                    <span class="ui ribbon label"><i class="checkmark icon"></i>Realizada</span>
+                }
+            }
+            else
+            {
+                if (aval.Avaliacao.FlagArquivo)
+                {
+                    <span class="ui ribbon label"><i class="archive icon"></i>Arquivo</span>
+                }
+                else if (aval.Avaliacao.FlagAgendada)
+                {
+                    <span class="ui ribbon label"><i class="clock icon"></i>Agendada</span>
+                }
+            }
             <div class="description">
                 @if (aval.Avaliacao.FlagAgendada)
                 {
@@ -30,18 +59,15 @@
             {
                 if (aval.AlunosRealizaram.Where(a => a.MatrAluno == Sessao.UsuarioMatricula).Count() > 0)
                 {
-                    <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
                     <a href="@Url.Action("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
                 }
                 else
                 {
-                    <span class="ui attached top right label"><i class="remove icon"></i>Ausente</span>
                     <a href="@Url.Action("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
                 }
             }
             else
             {
-                <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
                 <a href="@Url.Action("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
             }
         }
@@ -49,7 +75,6 @@
         {
             if (aval.Avaliacao.FlagArquivo)
             {
-                <span class="ui attached top right label"><i class="archive icon"></i>Arquivo</span>
                 if (Sessao.UsuarioCategoriaCodigo == 2)
                 {
                     <a href="@Url.Action("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
@@ -57,7 +82,6 @@
             }
             else if (aval.Avaliacao.FlagAgendada)
             {
-                <span class="ui attached top right label"><i class="clock icon"></i>Agendada</span>
                 if (Sessao.UsuarioCategoriaCodigo == 2)
                 {
                     <a href="@Url.Action("Agendada", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Aplicar</a>

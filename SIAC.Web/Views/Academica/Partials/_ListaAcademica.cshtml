@@ -5,11 +5,40 @@
     <div class="card">
         <div class="content">
             <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="header">
-                @acad.Avaliacao.CodAvaliacao
+                Código: @acad.Avaliacao.CodAvaliacao
             </a>
             <div class="meta">
                 <span title="@acad.Avaliacao.DtCadastro.ToBrazilianString()">@acad.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
             </div>
+            @if (acad.Avaliacao.FlagRealizada)
+            {
+                if (Sessao.UsuarioCategoriaCodigo == 1)
+                {
+                    if (acad.AlunosRealizaram.Where(a => a.MatrAluno == Sessao.UsuarioMatricula).Count() > 0)
+                    {
+                        <span class="ui ribbon label"><i class="checkmark icon"></i>Realizada</span>
+                    }
+                    else
+                    {
+                        <span class="ui ribbon label"><i class="remove icon"></i>Ausente</span>
+                    }
+                }
+                else
+                {
+                    <span class="ui ribbon label"><i class="checkmark icon"></i>Realizada</span>
+                }
+            }
+            else
+            {
+                if (acad.Avaliacao.FlagArquivo)
+                {
+                    <span class="ui ribbon label"><i class="archive icon"></i>Arquivo</span>
+                }
+                else if (acad.Avaliacao.FlagAgendada)
+                {
+                    <span class="ui ribbon label"><i class="clock icon"></i>Agendada</span>
+                }
+            }
             <div class="description">
                 @if (acad.NumTurma.HasValue)
                 {
@@ -18,7 +47,7 @@
                 <p><b>Quantidade de Questões</b>: @acad.Avaliacao.QteQuestoes()</p>
             </div>
         </div>
-        <div class="extra content">
+        <div class="content">
             <div class="ui tag label">
                 @acad.Disciplina.Descricao
             </div>
@@ -29,18 +58,15 @@
             {
                 if (acad.AlunosRealizaram.Where(a => a.MatrAluno == Sessao.UsuarioMatricula).Count() > 0)
                 {
-                    <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
                     <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
                 }
                 else
                 {
-                    <span class="ui attached top right label"><i class="remove icon"></i>Ausente</span>
                     <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
                 }
             }
             else
             {
-                <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
                 <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
             }
         }
@@ -48,7 +74,6 @@
         {
             if (acad.Avaliacao.FlagArquivo)
             {
-                <span class="ui attached top right label"><i class="archive icon"></i>Arquivo</span>
                 if (Sessao.UsuarioCategoriaCodigo == 2)
                 {
                     <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
@@ -56,7 +81,6 @@
             }
             else if (acad.Avaliacao.FlagAgendada)
             {
-                <span class="ui attached top right label"><i class="clock icon"></i>Agendada</span>
                 if (Sessao.UsuarioCategoriaCodigo == 2)
                 {
                     <a href="@Url.Action("Agendada", new { codigo = acad.Avaliacao.CodAvaliacao })" class="ui button">Aplicar</a>

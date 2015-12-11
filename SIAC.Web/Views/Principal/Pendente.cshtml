@@ -14,7 +14,7 @@
                 case 2:
                     <a href="@Url.Action("Corrigir", "Academica", new { codigo = aval.CodAvaliacao })" class="card blue">
                         <div class="content">
-                            <div class="header">@aval.CodAvaliacao</div>
+                            <div class="header">Código: @aval.CodAvaliacao</div>
                             <div class="meta">
                                 <span title="@aval.DtAplicacao.Value.ToBrazilianString()">@aval.DtAplicacao.Value.ToElapsedTimeString()</span>
                             </div>
@@ -30,7 +30,7 @@
                 case 3:
                     <a href="@Url.Action("Corrigir", "Certificacao", new { codigo = aval.CodAvaliacao })" class="card teal">
                         <div class="content">
-                            <div class="header">@aval.CodAvaliacao</div>
+                            <div class="header">Código: @aval.CodAvaliacao</div>
                             <div class="meta">
                                 <span title="@aval.DtAplicacao.Value.ToBrazilianString()">@aval.DtAplicacao.Value.ToElapsedTimeString()</span>
                             </div>
@@ -45,7 +45,7 @@
                 case 5:
                     <a href="@Url.Action("Corrigir", "Reposicao", new { codigo = aval.CodAvaliacao })" class="card orange">
                         <div class="content">
-                            <div class="header">@aval.CodAvaliacao</div>
+                            <div class="header">Código: @aval.CodAvaliacao</div>
                             <div class="meta">
                                 <span title="@aval.DtAplicacao.Value.ToBrazilianString()">@aval.DtAplicacao.Value.ToElapsedTimeString()</span>
                             </div>

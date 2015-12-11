@@ -3,10 +3,19 @@
 {
     <div class="card" data-avaliacao="@autoavaliacao.Avaliacao.CodAvaliacao">
         <div class="content">
-            <a href="@Url.Action("Detalhe", new { codigo = autoavaliacao.Avaliacao.CodAvaliacao })" class="header">@autoavaliacao.Avaliacao.CodAvaliacao</a>
+            <a href="@Url.Action("Detalhe", new { codigo = autoavaliacao.Avaliacao.CodAvaliacao })" class="header">Código: @autoavaliacao.Avaliacao.CodAvaliacao</a>
             <div class="meta">
                 <span title="@autoavaliacao.Avaliacao.DtCadastro.ToBrazilianString()">@autoavaliacao.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
             </div>
+            @if (autoavaliacao.Avaliacao.FlagPendente)
+            {
+                <span class="ui ribbon label"><i class="clock icon"></i>Pendente</span>
+            }
+            else if (autoavaliacao.Avaliacao.FlagArquivo)
+            {
+                <span class="ui ribbon label"><i class="archive icon"></i>Arquivo</span>
+            }
+            
             <div class="description">
                 <p><b>Dificuldade</b>: @autoavaliacao.Dificuldade.Descricao</p>
                 <p><b>Quantidade de Questões</b>: @autoavaliacao.Avaliacao.QteQuestoes()</p>
@@ -22,7 +31,6 @@
         </div>
         @if (autoavaliacao.Avaliacao.FlagPendente)
         {
-            <span class="ui attached top right label"><i class="clock icon"></i>Pendente</span>
             <div class="ui two buttons">
                 <a class="ui arquivar button">Arquivar</a>
                 <a href="@Url.Action("Realizar", new { codigo = autoavaliacao.Avaliacao.CodAvaliacao })" class="ui button">Realizar</a>
@@ -32,7 +40,6 @@
         {
             if (autoavaliacao.Avaliacao.FlagArquivo)
             {
-                <span class="ui attached top right label"><i class="archive icon"></i>Arquivo</span>
                 <a href="@Url.Action("Detalhe", new { codigo = autoavaliacao.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
             }
             else

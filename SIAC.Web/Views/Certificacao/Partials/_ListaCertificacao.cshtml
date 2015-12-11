@@ -9,11 +9,44 @@
     <div class="card">
         <div class="content">
             <a href="@Url.Action("Detalhe", new { codigo = cert.Avaliacao.CodAvaliacao })" class="header">
-                @cert.Avaliacao.CodAvaliacao
+               Código: @cert.Avaliacao.CodAvaliacao
             </a>
             <div class="meta">
                 <span title="@cert.Avaliacao.DtCadastro.ToBrazilianString()">@cert.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
             </div>
+            @if (cert.Avaliacao.FlagRealizada)
+            {
+                if (!FlagProfessor)
+                {
+                    if (cert.PessoasRealizaram.Where(a => a.CodPessoa == Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula)).Count() > 0)
+                    {
+                        <span class="ui ribbon label"><i class="checkmark icon"></i>Realizada</span>
+                    }
+                    else
+                    {
+                        <span class="ui ribbon label"><i class="remove icon"></i>Ausente</span>
+                    }
+                }
+                else
+                {
+                    <span class="ui ribbon label"><i class="checkmark icon"></i>Realizada</span>
+                }
+            }
+            else
+            {
+                if (cert.Avaliacao.FlagArquivo)
+                {
+                    <span class="ui ribbon label"><i class="archive icon"></i>Arquivo</span>
+                }
+                else if (cert.PessoaFisica.Count > 0 && cert.Avaliacao.FlagAgendada)
+                {
+                    <span class="ui ribbon label"><i class="clock icon"></i>Agendada</span>
+                }
+                else if (cert.Avaliacao.FlagAgendada && cert.PessoaFisica.Count == 0)
+                {
+                    <span class="ui ribbon label"><i class="clock icon"></i>Agendada</span>
+                }                
+            }
             <div class="description">
                 @if (cert.Avaliacao.DtAplicacao.HasValue)
                 {
@@ -37,18 +70,15 @@
             {
                 if (cert.PessoasRealizaram.Where(a => a.CodPessoa == Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula)).Count() > 0)
                 {
-                    <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
                     <a href="@Url.Action("Detalhe", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
                 }
                 else
                 {
-                    <span class="ui attached top right label"><i class="remove icon"></i>Ausente</span>
                     <a href="@Url.Action("Detalhe", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
                 }
             }
             else
             {
-                <span class="ui attached top right label"><i class="checkmark icon"></i>Realizada</span>
                 <a href="@Url.Action("Detalhe", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
             }
         }
@@ -56,7 +86,6 @@
         {
             if (cert.Avaliacao.FlagArquivo)
             {
-                <span class="ui attached top right label"><i class="archive icon"></i>Arquivo</span>
                 if (FlagProfessor)
                 {
                     <a href="@Url.Action("Detalhe", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
@@ -64,7 +93,6 @@
             }
             else if (cert.PessoaFisica.Count > 0 && cert.Avaliacao.FlagAgendada)
             {
-                <span class="ui attached top right label"><i class="clock icon"></i>Agendada</span>
                 if (FlagProfessor)
                 {
                     <a href="@Url.Action("Agendada", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Aplicar</a>
@@ -72,7 +100,6 @@
             }
             else if (cert.Avaliacao.FlagAgendada && cert.PessoaFisica.Count == 0)
             {
-                <span class="ui attached top right label"><i class="clock icon"></i>Agendada</span>
                 if (FlagProfessor)
                 {
                     <a href="@Url.Action("Avaliados", new { codigo = cert.Avaliacao.CodAvaliacao })" class="ui button">Selecionar avaliados</a>
