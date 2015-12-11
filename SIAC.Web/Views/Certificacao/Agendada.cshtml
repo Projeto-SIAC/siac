@@ -95,7 +95,7 @@
                             @Model.Avaliacao.DtAplicacao.Value.ToString("ddd, dd/MM/yyyy")
                         </td>
                         <td>
-                            Das @Model.Avaliacao.DtAplicacao.Value.ToShortTimeString() até @Model.Avaliacao.DtAplicacao.Value.AddMinutes(Model.Avaliacao.Duracao.Value).ToShortTimeString()
+                            Das @Model.Avaliacao.DtAplicacao.Value.ToShortTimeString() até @Model.Avaliacao.DtTermino.Value.ToShortTimeString()
                         </td>
                         <td>
                             @Model.Sala.Descricao

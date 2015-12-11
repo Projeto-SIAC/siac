@@ -50,7 +50,7 @@ namespace SIAC.Controllers
                 var Atalho = new Dictionary<string, int>();
                 Atalho.Add("andamento", AvalAvi.ListarPorUsuario(Sessao.UsuarioMatricula).Count);
                 Sessao.Inserir("ContadoresInstitucional", Atalho);
-            }   
+            }
             return Json(Sessao.Retornar("ContadoresInstitucional"));
         }
 
@@ -72,56 +72,72 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult Lembretes()
         {
-            if (Sessao.Retornar("Lembretes") == null)
+            var usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
+            string matricula = Sessao.UsuarioMatricula;
+            var Lembretes = new List<Dictionary<string, string>>();
+            if (Sessao.Retornar("LembreteInstitucional") == null)
             {
-                if (Sessao.Retornar("LembretesMensagem") == null)
+                if (AvalAvi.ListarPorUsuario(usuario.Matricula).Count > 0)
                 {
-                    var usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
-                    string matricula = Sessao.UsuarioMatricula;
-                    var Lembretes = new List<Dictionary<string, string>>();
-                    if (AvalAvi.ListarPorUsuario(usuario.Matricula).Count > 0)
-                    {
-                        Lembretes.Add(new Dictionary<string, string>() {
+                    Lembretes.Add(new Dictionary<string, string>() {
+                            { "Id", "LembreteInstitucional" },
                             { "Mensagem", "Há Av. Institucionais em andamento no momento." },
                             { "Botao", "Visualizar" },
                             { "Url", "/institucional/andamento" }
                         });
-                    }
-                    if (AvalAcademica.ListarAgendadaParaHojePorUsuario(usuario).Count > 0)
-                    {
-                        Lembretes.Add(new Dictionary<string, string>() {
-                            { "Mensagem", "Há Avaliações Acadêmicas agendadas para hoje." },
-                            { "Botao", "Visualizar" },
-                            { "Url", "/dashboard/agenda" }
-                        });
-                    }
-                    if (AvalCertificacao.ListarAgendadaParaHojePorUsuario(usuario).Count > 0)
-                    {
-                        Lembretes.Add(new Dictionary<string, string>() {
-                            { "Mensagem", "Há Avaliações de Certificações agendadas para hoje." },
-                            { "Botao", "Visualizar" },
-                            { "Url", "/dashboard/agenda" }
-                        });
-                    }
-                    if (AvalAcadReposicao.ListarAgendadaPorUsuario(usuario).Count > 0)
-                    {
-                        Lembretes.Add(new Dictionary<string, string>() {
-                            { "Mensagem", "Há Reposições agendadas para hoje." },
-                            { "Botao", "Visualizar" },
-                            { "Url", "/dashboard/agenda" }
-                        });
-                    }
-                    Sessao.Inserir("LembretesMensagem", Lembretes);
                 }
-                return Json(Sessao.Retornar("LembretesMensagem"));                
             }
-            return null;
+            if (Sessao.Retornar("LembreteAcademica") == null)
+            {
+                if (AvalAcademica.ListarAgendadaPorUsuario(usuario, DateTime.Now, DateTime.Now.AddHours(24)).Count > 0)
+                {
+                    Lembretes.Add(new Dictionary<string, string>() {
+                            { "Id", "LembreteAcademica" },
+                            { "Mensagem", "Há Avaliações Acadêmicas agendadas para as próximas 24 horas." },
+                            { "Botao", "Visualizar" },
+                            { "Url", "/dashboard/agenda" }
+                        });
+                }
+            }
+            if (Sessao.Retornar("LembreteCertificacao") == null)
+            {
+                if (AvalCertificacao.ListarAgendadaPorUsuario(usuario, DateTime.Now, DateTime.Now.AddHours(24)).Count > 0)
+                {
+                    Lembretes.Add(new Dictionary<string, string>() {
+                            { "Id", "LembreteCertificacao" },
+                            { "Mensagem", "Há Avaliações de Certificações agendadas para as próximas 24 horas." },
+                            { "Botao", "Visualizar" },
+                            { "Url", "/dashboard/agenda" }
+                        });
+                }
+            }
+            if (Sessao.Retornar("LembreteReposicao") == null)
+            {
+                if (AvalAcadReposicao.ListarAgendadaPorUsuario(usuario, DateTime.Now, DateTime.Now.AddHours(24)).Count > 0)
+                {
+                    Lembretes.Add(new Dictionary<string, string>() {
+                            { "Id", "LembreteReposicao" },
+                            { "Mensagem", "Há Reposições agendadas para as próximas 24 horas." },
+                            { "Botao", "Visualizar" },
+                            { "Url", "/dashboard/agenda" }
+                        });
+                }
+            }
+            return Json(Lembretes);
         }
 
         [HttpPost]
-        public void LembretesVisualizados()
+        public void LembreteVisualizado(string id)
         {
-            Sessao.Inserir("Lembretes", DateTime.Now);
+            Sessao.Inserir(id, DateTime.Now);
+        }
+
+        [HttpPost]
+        public ActionResult Notificacoes()
+        {
+            var notificacoes = Sessao.Retornar("Notificacoes");
+            Sessao.Inserir("Notificacoes", null);
+            return Json(notificacoes);
         }
     }
 }

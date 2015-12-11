@@ -545,7 +545,7 @@ namespace SIAC.Controllers
             AvalAcademica avalAcad = AvalAcademica.ListarPorCodigoAvaliacao(codAvaliacao);
             string strTempo = avalAcad.Avaliacao.DtAplicacao.Value.ToLeftTimeString();
             int qteMilissegundo = 0;
-            bool flagLiberada = avalAcad.Avaliacao.FlagLiberada && avalAcad.Avaliacao.DtAplicacao.Value.AddMinutes(avalAcad.Avaliacao.Duracao.Value) > DateTime.Now;
+            bool flagLiberada = avalAcad.Avaliacao.FlagLiberada && avalAcad.Avaliacao.DtTermino > DateTime.Now;
             if (strTempo != "Agora")
             {
                 char tipo = strTempo[(strTempo.IndexOf(' ')) + 1];

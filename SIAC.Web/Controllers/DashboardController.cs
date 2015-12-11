@@ -13,6 +13,7 @@ namespace SIAC.Controllers
         // GET: Dashboard
         public ActionResult Index()
         {
+            Lembrete.AdicionarNotificacao("Este é sua tela principal.", Lembrete.Info);
             Usuario usuario = Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
             return View(usuario);            
         }

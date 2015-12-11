@@ -106,13 +106,32 @@
 }
 
 .ajs-message.ajs-red {
-    background-color: #DB2828;
-    border-color: #DB2828;
-    color: #FFF;
+    text-align: left;
+    background-color: #DB2828!important;
+    border-color: #DB2828!important;
+    color: #FFF!important;
+    border-radius: .28571429rem;
+    font-size: 1.15em;
+    font-weight: bold;
 }
 
 .ajs-message.ajs-blue {
+    text-align: left;
     background-color: #2185D0!important;
     border-color: #2185D0!important;
     color: #FFF!important;
+    border-radius: .28571429rem;
+    font-size: 1.15em;
+    font-weight: bold;
 }
+
+.ajs-message.ajs-green {
+    text-align: left;
+    background-color: #21BA45 !important;
+      border-color: #21BA45 !important;
+      color: #FFFFFF !important;
+    border-radius: .28571429rem;
+    font-size: 1.15em;
+    font-weight: bold;
+}
+

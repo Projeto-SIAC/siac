@@ -497,7 +497,7 @@ namespace SIAC.Controllers
             AvalAcadReposicao aval = AvalAcadReposicao.ListarPorCodigoAvaliacao(codAvaliacao);
             string strTempo = aval.Avaliacao.DtAplicacao.Value.ToLeftTimeString();
             int qteMilissegundo = 0;
-            bool flagLiberada = aval.Avaliacao.FlagLiberada && aval.Avaliacao.DtAplicacao.Value.AddMinutes(aval.Avaliacao.Duracao.Value) > DateTime.Now;
+            bool flagLiberada = aval.Avaliacao.FlagLiberada && aval.Avaliacao.DtTermino > DateTime.Now;
             if (strTempo != "Agora")
             {
                 char tipo = strTempo[(strTempo.IndexOf(' ')) + 1];
