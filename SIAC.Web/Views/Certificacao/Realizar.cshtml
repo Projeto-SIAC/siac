@@ -1,7 +1,7 @@
 ﻿@model AvalCertificacao
 
 @{
-    ViewBag.Title = "Realizar " + Model.Avaliacao.CodAvaliacao;
+    ViewBag.Title = "Realizar Certificação"/* + Model.Avaliacao.CodAvaliacao*/;
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
     var codPessoa = Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula);

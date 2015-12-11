@@ -1,6 +1,6 @@
 ﻿@model AvalCertificacao
 @{
-    ViewBag.Title = "Corrigir " + Model.Avaliacao.CodAvaliacao;
+    ViewBag.Title = "Corrigir Certificação"/* + Model.Avaliacao.CodAvaliacao*/;
     Layout = "~/Views/Shared/_Layout.cshtml";
     var lstQuestoes = Model.Avaliacao.Questao.OrderBy(q => q.CodQuestao).ToList();
 }
