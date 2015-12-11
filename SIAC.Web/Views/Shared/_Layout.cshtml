@@ -28,7 +28,7 @@
                 <div class="item text">
                     @DateTime.Today.ToString("D", new System.Globalization.CultureInfo("pt-BR"))
                 </div>
-                <div class="item">@Html.ActionLink("Sair", "Sair", "Acesso", null, new { @class = "ui button" })</div>
+                <div class="item">@Html.ActionLink("Sair", "Sair", "Acesso", null, new { @class = "ui button", title = "Clique para Sair do Sistema" })</div>
             </div>
         </div>
 
