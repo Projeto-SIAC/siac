@@ -165,7 +165,7 @@ siac.Academica.Detalhe = (function () {
             });
         });
 
-        $('div,a').popup();
+        $('[data-content], [data-html]').popup();
 
         $('.aluno.dropdown').change(function () {
             var $this = $(this);
@@ -192,7 +192,7 @@ siac.Academica.Detalhe = (function () {
                 },
                 complete: function () {
                     $('.partial .ui.accordion').accordion();
-                    $('div,a').popup();
+                    $('[data-content], [data-html]').popup();
                     $('.loader.global').parent().removeClass('active');
                     siac.Anexo.iniciar();
                 }
@@ -223,7 +223,7 @@ siac.Academica.Detalhe = (function () {
 siac.Academica.Resultado = (function () {
     function iniciar() {
         $('.ui.accordion').accordion({ animateChildren: false });
-        $('.label, div').popup();
+        $('[data-content], [data-html]').popup();
         siac.Anexo.iniciar();
     }
 
@@ -391,7 +391,7 @@ siac.Academica.Configurar = (function () {
 
         $('.ui.informacoes.modal').modal();
 
-        $('div').popup();
+        $('[data-content], [data-html]').popup();
 
         $('.cancelar.button').popup({
             on: 'click'

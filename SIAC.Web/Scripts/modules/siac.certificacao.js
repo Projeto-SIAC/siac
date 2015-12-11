@@ -1749,7 +1749,7 @@ siac.Certificacao.Acompanhar = (function () {
 siac.Certificacao.Resultado = (function () {
     function iniciar() {
         $('.ui.accordion').accordion({ animateChildren: false });
-        $('.label, div').popup();
+        $('[data-content], [data-html]').popup();
         siac.Anexo.iniciar();
     }
 
@@ -2093,7 +2093,7 @@ siac.Certificacao.Detalhe = (function () {
             });
         });
 
-        $('div,a').popup();
+        $('[data-content], [data-html]').popup();
 
         $('.aluno.dropdown').change(function () {
             var $this = $(this);
@@ -2120,7 +2120,7 @@ siac.Certificacao.Detalhe = (function () {
                 },
                 complete: function () {
                     $('.partial .ui.accordion').accordion();
-                    $('div,a').popup();
+                    $('[data-content], [data-html]').popup();
                     $('.loader.global').parent().removeClass('active');
                     siac.Anexo.iniciar();
                 }

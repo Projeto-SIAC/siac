@@ -171,7 +171,7 @@ siac.Reposicao.Configurar = (function () {
 
         $('.ui.informacoes.modal').modal();
 
-        $('div').popup();
+        $('[data-content], [data-html]').popup();
 
         $('.cancelar.button').popup({
             on: 'click'
@@ -1407,7 +1407,7 @@ siac.Reposicao.Acompanhar = (function () {
 siac.Reposicao.Resultado = (function () {
     function iniciar() {
         $('.ui.accordion').accordion({ animateChildren: false });
-        $('.label, div').popup();
+        $('[data-content], [data-html]').popup();
         siac.Anexo.iniciar();
     }
 
@@ -1751,7 +1751,7 @@ siac.Reposicao.Detalhe = (function () {
             });
         });
 
-        $('div,a').popup();
+        $('[data-content], [data-html]').popup();
 
         $('.aluno.dropdown').change(function () {
             var $this = $(this);
@@ -1778,7 +1778,7 @@ siac.Reposicao.Detalhe = (function () {
                 },
                 complete: function () {
                     $('.partial .ui.accordion').accordion();
-                    $('div,a').popup();
+                    $('[data-content], [data-html]').popup();
                     $('.loader.global').parent().removeClass('active');
                     siac.Anexo.iniciar();
                 }

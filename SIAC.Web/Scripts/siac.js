@@ -15,15 +15,15 @@
                 }
             });
 
-            $('.ui.global.loader').parent().click(function () {
-                try {
-                    window.stop();
-                }
-                catch (e) {
-                    document.execCommand('Stop');
-                }
-                $('.ui.global.loader').parent().dimmer('hide');
-            });
+            //$('.ui.global.loader').parent().click(function () {
+            //    try {
+            //        window.stop();
+            //    }
+            //    catch (e) {
+            //        document.execCommand('Stop');
+            //    }
+            //    $('.ui.global.loader').parent().dimmer('hide');
+            //});
 
             carregar();
             siac.Lembrete.iniciar();
