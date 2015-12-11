@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Questão " + Model.CodQuestao;
+    ViewBag.Title = "Detalhes de Questão"/* + Model.CodQuestao*/;
     Layout = "~/Views/Shared/_Layout.cshtml";
     var lstResposta = Model.Resposta().Where(r => !String.IsNullOrWhiteSpace(r.RespComentario)).ToList();
 }

@@ -45,7 +45,7 @@
           </mvcSiteMapNode>
         </mvcSiteMapNode>
         <mvcSiteMapNode title="Reposição" url="~/historico/avaliacao/reposicao">
-          <mvcSiteMapNode title="Justificar" controller="Reposicao" action="Justificar" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Justificar Ausências" controller="Reposicao" action="Justificar" preservedRouteParameters="codigo"/>
           <mvcSiteMapNode title="Agendar" controller="Reposicao" action="Agendar" preservedRouteParameters="codigo"/>
           <mvcSiteMapNode title="Configurar" controller="Reposicao" action="Configurar" preservedRouteParameters="codigo"/>
           <mvcSiteMapNode title="Acompanhar" controller="Reposicao" action="Acompanhar" preservedRouteParameters="codigo"/>
