@@ -201,13 +201,13 @@
                                         else
                                         {
                                             <div class="ui stackable grid">
-                                                <div class="twelve wide column">
+                                                <div class="eleven wide column">
                                                     <div class="ui relaxed list">
                                                         @foreach (AviQuestaoAlternativa alternativa in questao.AviQuestaoAlternativa)
                                                         {
                                                             if (!alternativa.FlagAlternativaDiscursiva)
                                                             {
-                                                                <div class="item"><b>@((alternativa.CodAlternativa - 1).GetIndiceAlternativa())</b>) @alternativa.Enunciado <span class="ui label">@questao.Respostas.Where(pr => pr.RespAlternativa == alternativa.CodAlternativa).Count() Marcado(s)</span></div>
+                                                                <div class="item"><b>@((alternativa.CodAlternativa - 1).GetIndiceAlternativa())</b>) @alternativa.Enunciado @*<span class="ui label">@questao.Respostas.Where(pr => pr.RespAlternativa == alternativa.CodAlternativa).Count() Marcado(s)</span>*@</div>
                                                             }
                                                             else
                                                             {
@@ -226,8 +226,33 @@
                                                         }
                                                     </div>
                                                 </div>
-                                                <div class="four wide column" style="text-align:center">
-                                                    <canvas style="display:inline" width="200" height="200"></canvas>
+                                                <div class="five wide column" style="text-align:center">
+                                                    <canvas hidden style="display:inline" width="200" height="200"></canvas>
+                                                    @*<div class="ui teal progress" data-percent="74" id="example1">
+                                                        <div class="bar"></div>
+                                                        <div class="label">74% Funded</div>
+                                                    </div>
+                                                    <table class="ui table">
+                                                        <tr>
+                                                            <td>a</td>
+                                                            <td>
+                                                                <div class="ui teal progress" data-percent="74" id="example1">
+                                                                    <div class="bar"></div>
+                                                                    <div class="label">74% Funded</div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>b</td>
+                                                            <td>
+                                                                <div class="ui progress">
+                                                                    <div class="progress">
+                                                                        32
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>*@
                                                 </div>
                                             </div>
                                             <code class="dados" hidden>@Html.Raw(questao.ToJsonChart())</code>
@@ -259,19 +284,63 @@
     @Scripts.Render("~/bundles/js")
     @Scripts.Render("~/bundles/chart")
     <script>
-
         function mostrarGraficos() {
+            var contador = 1;
+            var graficos = $('body').find('canvas').length;
             $('body').find('canvas').map(function () {
-                console.log(1);
-                $canvas = $(this);
-                $content = $canvas.parents('[data-questao]');
+                $canvas = $(this).get(0);
+                $content = $(this).parents('[data-questao]');
                 //console.log($canvas)
                 if ($content && $canvas) {
-                    var ctx = $canvas.getContext("2d");
+                    //var ctx = $canvas.getContext("2d");
                     var data = JSON.parse($content.find('code.dados').html());
-                    var chart = new Chart(ctx).Doughnut(data);
+                    adicionarValoresAlternativas($content, data);
+                    $canvas.remove();
+                    @*var chart = new Chart(ctx).Doughnut(data, {
+                        onAnimationComplete: function () {
+                            if (contador == graficos) {
+                                var focused = false;
+                                //window.print();
+                                focused = true;
+                                //var interval = setInterval(function () { if (focused === true) { clearInterval(interval); window.location.href = "@Url.Action("Resultado", "Institucional", new { codigo = Model.Avaliacao.CodAvaliacao })" } }, 300);
+                            }
+                            else {
+                                contador++;
+                            }
+                        }
+                    });*@
                 }
-            });
+            })
+        };
+
+        function adicionarValoresAlternativas($content,data)
+        {
+            var total = 0;
+            for (var i = 0; i < data.length; i++) {
+                total += parseInt(data[i].value);
+            }
+            $div = $content.find('canvas').parent();
+            for (var i = 0; i < data.length; i++) {
+                var alternativa = data[i].label;
+                var valor = data[i].value;
+                if (valor > 0) {
+                    $div.append('<div class="ui blue progress" data-value="'+valor+'" data-total="'+total+'">'+
+                                                        '<div class="bar">'+
+                                                            '<div class="progress">'+valor+'</div>'+
+                                                        '</div>'+
+                                                        '<div class="label">'+alternativa+'</div>'+
+                                                    '</div>');
+                        
+                    //$div.append('<div class="ui label">' + alternativa + ' = ' + valor + '</div>');
+                    //<div class="ui teal progress" data-percent="74" id="example1">
+                    //                                    <div class="bar"></div>
+                    //                                    <div class="label">74% Funded</div>
+                    //                                </div>
+                }
+            }
+            $('.progress').progress();
+        }
+            //});
             //var $content = $('.content[data-questao].active');
             //var $canvas = $content.find('canvas').get(0);
             //if ($content && $canvas) {
@@ -279,17 +348,16 @@
             //    var data = JSON.parse($content.find('code.dados').html());
             //    var chart = new Chart(ctx).Doughnut(data);
             //}
-        }
         mostrarGraficos();
 
         $('.ui.checkbox')
-                .checkbox()
+        .checkbox()
         ;
-        var focused = false;
+        @*var focused = false;
         window.print();
         focused = true;
-        var interval = setInterval(function () { if (focused === true) { clearInterval(interval); window.location.href = "@Url.Action("Resultado", "Institucional", new { codigo = Model.Avaliacao.CodAvaliacao })" } }, 300);
-
+        var interval = setInterval(function () { if (focused === true) { clearInterval(interval); window.location.href = "@Url.Action("Resultado", "Institucional", new { codigo = Model.Avaliacao.CodAvaliacao })" } }, 300);*@
+        
     </script>
 </body>
 </html>
