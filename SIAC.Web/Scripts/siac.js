@@ -27,6 +27,7 @@
 
             carregar();
             siac.Lembrete.iniciar();
+            habilitarAjuda();
         });
     }
 
@@ -299,6 +300,33 @@
 				.sidebar('show')
             ;
         }
+    }
+
+    function habilitarAjuda() {
+        $('.ui.ajuda.button').click(function () {
+            var $btnAjuda = $(this);
+
+            if ($btnAjuda.hasClass('active')) {
+                $('body').find('[data-ajuda]').map(function () {
+                    var $elemento = $(this);
+                    $elemento.popup('destroy');
+                });
+                $btnAjuda.removeClass('active');
+                siac.Lembrete.Notificacoes.exibir('Sistema de Ajuda desativado!','info');
+            } else {
+                $('body').find('[data-ajuda]').map(function () {
+                    var $elemento = $(this);
+                    var textoAjuda = $elemento.data('ajuda');
+
+                    $elemento.popup({
+                        on: 'hover',
+                        content: textoAjuda
+                    });
+                });
+                $btnAjuda.addClass('active');
+                siac.Lembrete.Notificacoes.exibir('Sistema de Ajuda ativado!','info');
+            }
+        });
     }
 
     return {

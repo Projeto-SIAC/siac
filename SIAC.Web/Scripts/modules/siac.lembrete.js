@@ -37,7 +37,7 @@ siac.Lembrete.Notificacoes = siac.Lembrete.Notificacoes || (function () {
             'normal': 'label',
             'positivo': 'green',
             'negativo': 'red',
-            'info': 'info'
+            'info': 'blue'
         }
         if (mensagem) {
             if (!(/(normal|positivo|negativo|info)/.test(estilo))) {
