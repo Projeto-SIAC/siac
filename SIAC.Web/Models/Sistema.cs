@@ -15,6 +15,8 @@ namespace SIAC.Models
         public static List<string> AlertarMudanca = new List<string>();
         public static Dictionary<string, string> TempDataUrlImage = new Dictionary<string, string>();
         public static int? ProxCodVisitante = null;
+
+        public static Dictionary<string, List<string>> AvaliacaoUsuario = new Dictionary<string, List<string>>();
         
         public static bool Autenticado(string matricula) => !String.IsNullOrEmpty(matricula) && UsuarioAtivo.Keys.Contains(matricula) && UsuarioAtivo[matricula].IpAcesso == HttpContext.Current.RecuperarIp();
     }

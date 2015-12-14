@@ -7,13 +7,18 @@ namespace SIAC.Helpers
     {
         private static HttpContext context => HttpContext.Current;
 
+        //public static bool RealizandoAvaliacao => context?.Session["RealizandoAvaliacao"] != null ? (bool)context.Session["RealizandoAvaliacao"] : false;
+
         public static bool RealizandoAvaliacao
         {
             get
             {
-                if (context != null)
+                foreach (var avaliacao in Models.Sistema.AvaliacaoUsuario.Keys)
                 {
-                    return context.Session["RealizandoAvaliacao"] != null ? (bool)HttpContext.Current.Session["RealizandoAvaliacao"] : false;
+                    if (Models.Sistema.AvaliacaoUsuario[avaliacao].Contains(UsuarioMatricula))
+                    {
+                        return true;
+                    }
                 }
                 return false;
             }
@@ -26,18 +31,6 @@ namespace SIAC.Helpers
         public static string UsuarioCategoria => (string)context?.Session["UsuarioCategoria"] ?? String.Empty;
 
         public static int UsuarioCategoriaCodigo => (int)context?.Session["UsuarioCategoriaCodigo"];
-
-        public static string UsuarioAvaliacao
-        {
-            get
-            {
-                if (context != null)
-                {
-                    return (string)context.Session["UsuarioAvaliacao"];
-                }
-                return String.Empty;
-            }
-        }
 
         public static void Inserir(string chave, object valor) => context.Session[chave] = valor;
 

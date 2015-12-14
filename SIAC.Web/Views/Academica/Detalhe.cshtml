@@ -399,20 +399,23 @@ var correta = LstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a
 <a href="@Url.Action("Index")" class="ui button">Histórico</a>
 @if (Sessao.UsuarioCategoriaCodigo == 2)
 {
-    if (Model.Avaliacao.FlagArquivo || !Model.Avaliacao.FlagRealizada)
+    if (!Sistema.AvaliacaoUsuario.ContainsKey(Model.Avaliacao.CodAvaliacao.ToLower()))
     {
-        <div class="ui arquivar toggle @(Model.Avaliacao.FlagArquivo ? "active" : "") button">Arquiva@(Model.Avaliacao.FlagArquivo ? "da" : "r")</div>
+        if (Model.Avaliacao.FlagArquivo || !Model.Avaliacao.FlagRealizada)
+        {
+            <div class="ui arquivar toggle @(Model.Avaliacao.FlagArquivo ? "active" : "") button">Arquiva@(Model.Avaliacao.FlagArquivo ? "da" : "r")</div>
+            if (!Model.Avaliacao.FlagArquivo)
+            {
+                <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
+            }
+        }
         if (!Model.Avaliacao.FlagArquivo)
         {
-            <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
+            <a href="@Url.Action("Avaliacao", "Impressao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Imprimir</a>
         }
     }
-    if (!Model.Avaliacao.FlagArquivo)
-    {
-        <a href="@Url.Action("Avaliacao", "Impressao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Imprimir</a>
-    }
 }
-@if (Sessao.UsuarioCategoriaCodigo == 2 && Model.Avaliacao.FlagPendente)
+@if (Sessao.UsuarioCategoriaCodigo == 2 && Model.Avaliacao.FlagPendente && !Sistema.AvaliacaoUsuario.ContainsKey(Model.Avaliacao.CodAvaliacao.ToLower()))
 {
     <a href="@Url.Action("Agendar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">@(Model.Avaliacao.FlagAgendada ? "Reagendar" : "Agendar")</a>
 }

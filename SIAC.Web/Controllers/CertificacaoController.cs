@@ -200,7 +200,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { 2/*, 3*/ })]
         public ActionResult Configurar(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrEmpty(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 if (cert != null && !cert.Avaliacao.FlagRealizada)
@@ -286,7 +286,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new [] { 2 })]
         public ActionResult Agendar(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrEmpty(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 
@@ -355,7 +355,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Avaliados(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrEmpty(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 if (cert.Professor.MatrProfessor == Sessao.UsuarioMatricula)
@@ -539,7 +539,6 @@ namespace SIAC.Controllers
                     && cert.PessoaFisica.FirstOrDefault(p=>p.CodPessoa == Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula)) != null)
                 {
                     Helpers.Sessao.Inserir("RealizandoAvaliacao", true);
-                    Helpers.Sessao.Inserir("UsuarioAvaliacao", codigo);
                     return View(cert);
                 }
             }
@@ -614,7 +613,6 @@ namespace SIAC.Controllers
 
                     Repositorio.GetInstance().SaveChanges();
                     Sessao.Inserir("RealizandoAvaliacao", false);
-                    Sessao.Inserir("UsuarioAvaliacao", String.Empty);
                 }
             }
         }
@@ -684,8 +682,7 @@ namespace SIAC.Controllers
                     model.Avaliacao = aval.Avaliacao;
                     model.Porcentagem = (avalPessoaResultado.QteAcertoObj.Value / qteObjetiva) * 100;
 
-                    Helpers.Sessao.Inserir("RealizandoAvaliacao", false);
-                    Helpers.Sessao.Inserir("UsuarioAvaliacao", String.Empty);
+                    Sessao.Inserir("RealizandoAvaliacao", false);
 
                     return View(model);
                 }
@@ -836,7 +833,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Imprimir(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrEmpty(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 if (cert != null)
@@ -857,7 +854,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Arquivar(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrEmpty(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 return Json(Avaliacao.AlternarFlagArquivo(codigo));
             }

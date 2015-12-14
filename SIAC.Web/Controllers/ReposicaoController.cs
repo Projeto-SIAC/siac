@@ -228,7 +228,7 @@ namespace SIAC.Controllers
             TempData["listaQuestoesIndices"] = new List<int>();
             TempData["listaQuestoesRecentes"] = new List<int>();
 
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrEmpty(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 AvalAcadReposicao repo = AvalAcadReposicao.ListarPorCodigoAvaliacao(codigo);
                 if (repo != null && repo.Professor.MatrProfessor == Sessao.UsuarioMatricula && repo.Avaliacao.AvalPessoaResultado.Count == 0)
@@ -404,7 +404,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Agendar(string codigo)
         {
-            if (String.IsNullOrEmpty(codigo))
+            if (String.IsNullOrEmpty(codigo) || Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 return RedirectToAction("Index");
             }
@@ -484,7 +484,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Arquivar(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrEmpty(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 return Json(Avaliacao.AlternarFlagArquivo(codigo));
             }
@@ -536,7 +536,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Imprimir(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrEmpty(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 var aval = AvalAcadReposicao.ListarPorCodigoAvaliacao(codigo);
                 if (aval != null)
@@ -562,7 +562,6 @@ namespace SIAC.Controllers
                     && aval.Alunos.FirstOrDefault(a => a.MatrAluno == Sessao.UsuarioMatricula) != null)
                 {
                     Sessao.Inserir("RealizandoAvaliacao", true);
-                    Sessao.Inserir("UsuarioAvaliacao", codigo);
                     return View(aval);
                 }
             }
@@ -601,7 +600,6 @@ namespace SIAC.Controllers
 
                     Repositorio.GetInstance().SaveChanges();
                     Sessao.Inserir("RealizandoAvaliacao", false);
-                    Sessao.Inserir("UsuarioAvaliacao", String.Empty);
                 }
             }
         }
@@ -702,7 +700,6 @@ namespace SIAC.Controllers
                     model.Porcentagem = (avalPessoaResultado.QteAcertoObj.Value / qteObjetiva) * 100;
 
                     Sessao.Inserir("RealizandoAvaliacao", false);
-                    Sessao.Inserir("UsuarioAvaliacao", String.Empty);
 
                     return View(model);
                 }
@@ -725,7 +722,6 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
-
 
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]

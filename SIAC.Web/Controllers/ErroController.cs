@@ -13,6 +13,11 @@ namespace SIAC.Controllers
         {
             switch (code)
             {
+                case 1:
+                    ViewBag.Codigo = code;
+                    ViewBag.Title = "Você está realizando uma avaliação.";
+                    ViewBag.Mensagem = "Infelizmente, por você está realizando uma avaliação, você não pode acessar o resto do Sistema.";
+                    break;
                 case 403:
                     ViewBag.Codigo = code;
                     ViewBag.Title = "Acesso proibido";

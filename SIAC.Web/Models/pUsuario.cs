@@ -28,7 +28,7 @@ namespace SIAC.Models
 
         public Disciplina PiorDisciplina => DisciplinaMedia.FirstOrDefault(d => d.Value == DisciplinaMedia.Values.Min()).Key;
 
-        public bool FlagCoordenadorAvi => this.PessoaFisica.Ocupacao.Select(a => a.CodOcupacao).ToArray().ContainsOne(Parametro.Obter().OcupacaoCoordenadorAvi);
+        public bool FlagCoordenadorAvi => this.Ocupacao.Count > 0 ? this.Ocupacao.Select(a => a.CodOcupacao).ToArray().ContainsOne(Parametro.Obter().OcupacaoCoordenadorAvi) : false;
 
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 

@@ -34,17 +34,30 @@ namespace SIAC.Hubs
             }
             if (!String.IsNullOrEmpty(aval))
             {
+
                 var mapping = avaliacoes.SelecionarAcademica(aval);
                 mapping.DesconectarPorConnectionId(connId);
+
+                var matr = mapping.SelecionarMatriculaPorAvaliado(connId);
+
+                if (!String.IsNullOrEmpty(matr))
+                {
+                    if (Models.Sistema.AvaliacaoUsuario.ContainsKey(aval.ToLower()))
+                    {
+                        Models.Sistema.AvaliacaoUsuario[aval.ToLower()].Remove(matr.ToLower());
+                    }
+                }
 
                 if (mapping.SeTodosDesconectados())
                 {
                     avaliacoes.RemoverAcademica(aval);
+                    if (Models.Sistema.AvaliacaoUsuario.ContainsKey(aval.ToLower()))
+                    {
+                        Models.Sistema.AvaliacaoUsuario.Remove(aval.ToLower());
+                    }
                 }
                 else
                 {
-                    var matr = mapping.SelecionarMatriculaPorAvaliado(connId);
-
                     if (!String.IsNullOrEmpty(matr))
                     {
                         if (!mapping.SeAvaliadoFinalizou(matr))
@@ -109,6 +122,11 @@ namespace SIAC.Hubs
         public void AvaliadoConectou(string codAvaliacao, string usrMatricula)
         {
             avaliacoes.InserirAcademica(codAvaliacao);
+            if (!Models.Sistema.AvaliacaoUsuario.ContainsKey(codAvaliacao.ToLower()))
+            {
+                Models.Sistema.AvaliacaoUsuario.Add(codAvaliacao.ToLower(), new List<string>());
+            }
+            Models.Sistema.AvaliacaoUsuario[codAvaliacao.ToLower()].Add(usrMatricula.ToLower());
 
             var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
 

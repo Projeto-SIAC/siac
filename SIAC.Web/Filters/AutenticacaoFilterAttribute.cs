@@ -41,23 +41,33 @@ namespace SIAC.Filters
             {
                 filterContext.Result = Redirecionar(filterContext);
             }
-            //else if (Helpers.Sessao.RealizandoAvaliacao)
-            //{
-            //    string[] paths = filterContext.HttpContext.Request.Path.ToLower().Split('/');
-            //    if (paths.Length > 0)
-            //    {
-            //        string codigo = paths[paths.Length - 1];
-            //        if ((!paths.Contains("printar") && !paths.Contains("desistir") && !paths.Contains("resultado") && !paths.Contains("realizar")) && codigo != Helpers.Sessao.UsuarioAvaliacao)
-            //        {
-            //            // como sei se é acadêmica ou certificacao ou reposicao? '-'
-            //            filterContext.Result = new RedirectResult("~/dashboard/avaliacao/academica/realizar/" + Helpers.Sessao.UsuarioAvaliacao);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        filterContext.Result = new RedirectResult("~/dashboard/avaliacao/academica/realizar/" + Helpers.Sessao.UsuarioAvaliacao);
-            //    }
-            //}
+            else if (Helpers.Sessao.RealizandoAvaliacao)
+            {
+                string[] paths = filterContext.HttpContext.Request.Path.ToLower().Split('/');
+                if (paths.Length > 0)
+                {
+                    string codigo = paths[paths.Length - 1];
+                    if (paths.Contains("realizar"))
+                    {
+                        if (Models.Sistema.AvaliacaoUsuario.ContainsKey(codigo))
+                        {
+                            if (Models.Sistema.AvaliacaoUsuario[codigo].Contains(Helpers.Sessao.UsuarioMatricula))
+                            {
+                                filterContext.Result = new RedirectResult("~/erro/1");
+                            }
+                        }
+                    }
+                    else if (filterContext.HttpContext.Request.HttpMethod == "GET"/*(!paths.Contains("printar") && !paths.Contains("desistir") && !paths.Contains("resultado") && !paths.Contains("realizar"))*/)
+                    {
+                        // como sei se é acadêmica ou certificacao ou reposicao? '-'
+                        filterContext.Result = new RedirectResult("~/erro/1");
+                    }
+                }
+                else
+                {
+                    filterContext.Result = new RedirectResult("~/erro/1");
+                }
+            }
             base.OnActionExecuting(filterContext);
         }
     }
