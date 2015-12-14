@@ -44,15 +44,15 @@
         <div class="ui header dividing">
             Cabeçalho
         </div>
-        <table class="ui very basic table">
+        <table class="ui very basic celled table">
             <tbody>
                 <tr>
-                    <td>
+                    <td class="two wide">
                         <b>Instituição</b>
                     </td>
-                    <td>
+                    <td class="fourteen wide">
                         @*@Model.Instituicao*@
-                        @Model.Colaborador.Usuario.PessoaFisica.PessoaLocalTrabalho.Instituicao.Sigla
+                        @Model.Colaborador.Usuario.PessoaFisica.PessoaLocalTrabalho.Instituicao.PessoaJuridica.NomeFantasia
                     </td>
                 </tr>
                 <tr>

@@ -41,13 +41,13 @@
         <div class="ui header dividing">
             Cabeçalho
         </div>
-        <table class="ui very basic table">
+        <table class="ui very basic celled table">
             <tbody>
                 <tr>
-                    <td>
+                    <td class="two wide">
                         <b>Instituição</b>
                     </td>
-                    <td>
+                    <td class="fourteen wide">
                         @Model.Instituicao
                     </td>
                 </tr>
@@ -123,9 +123,9 @@
 
     @Html.Partial("_Questoes", lstQuestao)
 
-    <div class="ui vertical inverted segment">
+    <footer class="ui vertical inverted segment">
         <h5 class="ui centered header">&copy; SIAC - Sistema Interativo de Avaliação de Conhecimento</h5>
-    </div>
+    </footer>
 
     @Scripts.Render("~/bundles/js")
     <script>
