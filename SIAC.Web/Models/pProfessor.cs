@@ -19,9 +19,9 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
-        public static List<Disciplina> ObterDisciplinas(int codProfessor) => contexto.Professor.Single(p=>p.CodProfessor == codProfessor).Disciplina.OrderBy(d => d.Descricao).ToList();
+        public static List<Disciplina> ObterDisciplinas(int codProfessor) => contexto.Professor.FirstOrDefault(p=>p.CodProfessor == codProfessor)?.Disciplina.OrderBy(d => d.Descricao).ToList();
 
-        public static List<Disciplina> ObterDisciplinas(string matrProfessor) => contexto.Professor.Single(p => p.MatrProfessor == matrProfessor).Disciplina.OrderBy(d=>d.Descricao).ToList();
+        public static List<Disciplina> ObterDisciplinas(string matrProfessor) => contexto.Professor.FirstOrDefault(p => p.MatrProfessor == matrProfessor)?.Disciplina.OrderBy(d=>d.Descricao).ToList();
 
         public static List<Professor> ListarOrdenadamente() => contexto.Professor.OrderBy(p => p.Usuario.PessoaFisica.Nome).ToList();
     }

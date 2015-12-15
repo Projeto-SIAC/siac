@@ -9,6 +9,6 @@ namespace SIAC.Models
 
         public static List<TipoQuestao> ListarOrdenadamente() => contexto.TipoQuestao.OrderBy(tq => tq.Descricao).ToList();
 
-        public static TipoQuestao ListarPorCodigo(int CodTipoQuestao) => contexto.TipoQuestao.SingleOrDefault(tq => tq.CodTipoQuestao == CodTipoQuestao);
+        public static TipoQuestao ListarPorCodigo(int codTipoQuestao) => contexto.TipoQuestao.Find(codTipoQuestao);
     }
 }

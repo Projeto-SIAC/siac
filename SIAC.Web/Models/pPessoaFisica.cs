@@ -36,9 +36,9 @@ namespace SIAC.Models
 
         public static PessoaFisica ListarPorCpf(string cpf) => contexto.PessoaFisica.FirstOrDefault(p => p.Cpf == cpf);
 
-        public static PessoaFisica ListarPorCodigo(int codPessoaFisica) => contexto.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica);
+        public static PessoaFisica ListarPorCodigo(int codPessoaFisica) => contexto.PessoaFisica.Find(codPessoaFisica);
 
-        public static PessoaFisica ListarPorMatricula(string matricula) => contexto.Usuario.FirstOrDefault(u => u.Matricula == matricula)?.PessoaFisica;
+        public static PessoaFisica ListarPorMatricula(string matricula) => contexto.Usuario.Find(matricula)?.PessoaFisica;
 
         public static List<PessoaFisica> ListarPorTurma(string codTurma)
         {
@@ -101,44 +101,5 @@ namespace SIAC.Models
 
             return lstPessoaFisica;
         }
-
-        //public static List<PessoaFisica> ListarPorProReitoria(string codComposto)
-        //{
-
-        //    var dtHoje = DateTime.Now;
-        //    var ano = dtHoje.Year;
-        //    var semestre = dtHoje.Month > 6 ? 2 : 1;
-
-        //    var lstPessoaFisica = new List<PessoaFisica>();
-
-
-        //    return lstPessoaFisica;
-        //}
-
-        //public static List<PessoaFisica> ListarPorReitoria(string codComposto)
-        //{
-
-        //    var dtHoje = DateTime.Now;
-        //    var ano = dtHoje.Year;
-        //    var semestre = dtHoje.Month > 6 ? 2 : 1;
-
-        //    var lstPessoaFisica = new List<PessoaFisica>();
-
-
-        //    return lstPessoaFisica;
-        //}
-
-        //public static List<PessoaFisica> ListarPorInstituicao(int codInstituicao)
-        //{
-        //    var dtHoje = DateTime.Now;
-        //    var ano = dtHoje.Year;
-        //    var semestre = dtHoje.Month > 6 ? 2 : 1;
-
-        //    var lstPessoaFisica = new List<PessoaFisica>();
-
-
-
-        //    return lstPessoaFisica;
-        //}
     }
 }

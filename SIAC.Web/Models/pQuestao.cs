@@ -65,7 +65,7 @@ namespace SIAC.Models
 
         public static List<Questao> ListarPorProfessor(string matricula) => contexto.Questao.Where(q => q.Professor.MatrProfessor.ToLower() == matricula.ToLower()).ToList();
 
-        public static Questao ListarPorCodigo(int codigo) => contexto.Questao.SingleOrDefault(q => q.CodQuestao == codigo);
+        public static Questao ListarPorCodigo(int codigo) => contexto.Questao.Find(codigo);
 
         public static List<Questao> ListarPorTema(int codTema) =>
             (from qt in contexto.QuestaoTema

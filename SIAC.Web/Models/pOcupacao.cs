@@ -9,6 +9,6 @@ namespace SIAC.Models
 
         public static List<Ocupacao> Listar() => contexto.Ocupacao.ToList();
 
-        public static Ocupacao ListarPorCodigo(int codOcupacao) => contexto.Ocupacao.FirstOrDefault(a => a.CodOcupacao == codOcupacao);
+        public static Ocupacao ListarPorCodigo(int codOcupacao) => contexto.Ocupacao.Find(codOcupacao);
     }
 }

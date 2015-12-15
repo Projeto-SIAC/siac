@@ -36,7 +36,7 @@ namespace SIAC.Models
         {
             if (!Sistema.UsuarioAtivo.Keys.Contains(matricula))
             {
-                Usuario usuario = contexto.Usuario.SingleOrDefault(u => u.Matricula == matricula);
+                Usuario usuario = ListarPorMatricula(matricula);
 
                 if (usuario != null)
                 {
@@ -55,7 +55,7 @@ namespace SIAC.Models
         {
             if (!String.IsNullOrWhiteSpace(matricula))
             {
-                Usuario usuario = contexto.Usuario.SingleOrDefault(u => u.Matricula == matricula);
+                Usuario usuario = ListarPorMatricula(matricula);
 
                 if (usuario != null)
                 {
@@ -75,7 +75,7 @@ namespace SIAC.Models
 
         public static bool Verificar(string senha)
         {
-            Usuario usuario = contexto.Usuario.SingleOrDefault(u => u.Matricula == Sessao.UsuarioMatricula);
+            Usuario usuario = ListarPorMatricula(Sessao.UsuarioMatricula);
 
             if (usuario != null)
             {
@@ -98,9 +98,9 @@ namespace SIAC.Models
             return usuario.CodPessoaFisica;
         }
 
-        public static Usuario ListarPorMatricula(string matricula) => contexto.Usuario.FirstOrDefault(u => u.Matricula == matricula);
+        public static Usuario ListarPorMatricula(string matricula) => contexto.Usuario.Find(matricula);
 
-        public static int ObterPessoaFisica(string matricula) => contexto.Usuario.FirstOrDefault(u => u.Matricula == matricula).CodPessoaFisica;
+        public static int ObterPessoaFisica(string matricula) => contexto.Usuario.Find(matricula).CodPessoaFisica;
 
         public static List<Usuario> Listar() => contexto.Usuario.ToList();
     }

@@ -28,6 +28,6 @@ namespace SIAC.Models
 
         public static List<Instituicao> ListarOrdenadamente() => contexto.Instituicao.OrderBy(ins => ins.Sigla).ToList();
 
-        public static Instituicao ListarPorCodigo(int codInstituicao) => contexto.Instituicao.FirstOrDefault(ins => ins.CodInstituicao == codInstituicao);
+        public static Instituicao ListarPorCodigo(int codInstituicao) => contexto.Instituicao.Find(codInstituicao);
     }
 }

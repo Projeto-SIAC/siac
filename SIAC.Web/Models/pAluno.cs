@@ -26,7 +26,7 @@ namespace SIAC.Models
 
         public static List<Aluno> ListarOrdenadamente() => contexto.Aluno.OrderBy(a => a.Usuario.PessoaFisica.Nome).ToList();
 
-        public static Aluno ListarPorCodigo(int codAluno) => contexto.Aluno.FirstOrDefault(a => a.CodAluno == codAluno);
+        public static Aluno ListarPorCodigo(int codAluno) => contexto.Aluno.Find(codAluno);
 
         public static Aluno ListarPorMatricula(string strMatricula) => contexto.Aluno.FirstOrDefault(a => a.MatrAluno == strMatricula);
     }

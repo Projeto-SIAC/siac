@@ -9,7 +9,7 @@ namespace SIAC.Models
 
         public static List<Curso> ListarOrdenadamente() => contexto.Curso.OrderBy(c => c.Descricao).ToList();
 
-        public static Curso ListarPorCodigo(int codCurso) => contexto.Curso.SingleOrDefault(c => c.CodCurso == codCurso);
+        public static Curso ListarPorCodigo(int codCurso) => contexto.Curso.Find(codCurso);
 
         public static void Inserir(Curso curso)
         {

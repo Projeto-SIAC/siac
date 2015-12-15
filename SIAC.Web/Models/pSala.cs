@@ -9,7 +9,7 @@ namespace SIAC.Models
 
         public static List<Sala> ListarOrdenadamente() => contexto.Sala.OrderBy(s => s.Descricao).ToList();
 
-        public static Sala ListarPorCodigo(int codSala) => contexto.Sala.FirstOrDefault(s => s.CodSala == codSala);
+        public static Sala ListarPorCodigo(int codSala) => contexto.Sala.Find(codSala);
 
         public static void Inserir(Sala sala)
         {

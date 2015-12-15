@@ -9,7 +9,7 @@ namespace SIAC.Models
 
         public static List<Disciplina> ListarOrdenadamente() => contexto.Disciplina.OrderBy(d => d.Descricao).ToList();
 
-        public static Disciplina ListarPorCodigo(int codDisciplina) => contexto.Disciplina.FirstOrDefault(d => d.CodDisciplina == codDisciplina);
+        public static Disciplina ListarPorCodigo(int codDisciplina) => contexto.Disciplina.Find(codDisciplina);
 
         public static int Inserir(Disciplina disciplina)
         {

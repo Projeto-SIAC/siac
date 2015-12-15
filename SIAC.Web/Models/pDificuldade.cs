@@ -9,6 +9,6 @@ namespace SIAC.Models
 
         public static List<Dificuldade> ListarOrdenadamente() => contexto.Dificuldade.OrderBy(d => d.CodDificuldade).ToList();
 
-        public static Dificuldade ListarPorCodigo(int CodDificuldade) => contexto.Dificuldade.SingleOrDefault(d => d.CodDificuldade == CodDificuldade);
+        public static Dificuldade ListarPorCodigo(int codDificuldade) => contexto.Dificuldade.Find(codDificuldade);
     }
 }
