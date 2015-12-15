@@ -12,6 +12,7 @@ namespace SIAC.Controllers
     public class HistoricoController : Controller
     {
         // GET: Historico
+        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             Lembrete.AdicionarNotificacao("Este é seu histórico de atividades.", Lembrete.Info);

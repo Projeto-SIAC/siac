@@ -32,6 +32,7 @@ namespace SIAC.Controllers
         }
 
         // GET: Certificacao
+        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             if (Request.Url.ToString().ToLower().Contains("principal"))

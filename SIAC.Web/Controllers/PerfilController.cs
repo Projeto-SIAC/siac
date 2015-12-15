@@ -13,11 +13,13 @@ namespace SIAC.Controllers
     public class PerfilController : Controller
     {
         // GET: Perfil
+        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             return View(Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario);
         }
 
+        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Estatisticas()
         {
             return PartialView("_Estatisticas", Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario);

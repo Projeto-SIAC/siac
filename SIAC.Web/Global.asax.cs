@@ -23,8 +23,9 @@ namespace SIAC
         protected void Session_End(object sender, EventArgs e)
         {
             Models.Sistema.UsuarioAtivo.Remove((string)Session["UsuarioMatricula"]);
-        }    
-        
+            Models.Sistema.RemoverCookie((string)Session["UsuarioMatricula"]);
+        }
+
         protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
         {
             if (Context.Handler is System.Web.SessionState.IRequiresSessionState || Context.Handler is System.Web.SessionState.IReadOnlySessionState)
@@ -40,11 +41,24 @@ namespace SIAC
                         Pagina = HttpContext.Current.Request.Url.PathAndQuery.ToString(),
                         DtAbertura = DateTime.Now,
                         PaginaReferencia = HttpContext.Current.Request.UrlReferrer?.PathAndQuery.ToString(),
-                        Dados = HttpContext.Current.Request.Form.HasKeys() ? HttpContext.Current.Request.Form.ToString() : null 
+                        Dados = HttpContext.Current.Request.Form.HasKeys() ? HttpContext.Current.Request.Form.ToString() : null
                     });
                     Models.Repositorio.GetInstance().SaveChanges(false);
                 }
             }
+        }
+
+        public override string GetVaryByCustomString(HttpContext context, string custom)
+        {
+            if (custom.ToLower() == "usuario")
+            {
+                var cookie = context.Request.Cookies["SIAC_Session"];
+                if (cookie != null)
+                {
+                    return "usuario=" + Models.Sistema.CookieUsuario[cookie.Value];
+                }
+            }
+            return base.GetVaryByCustomString(context, custom);
         }
     }
 

@@ -13,6 +13,7 @@ namespace SIAC.Controllers
     public class AgendaController : Controller
     {
         // GET: Agenda
+        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             return View();
@@ -86,6 +87,7 @@ namespace SIAC.Controllers
 
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2 })]
+        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Horarios(string start, string end)
         {
             var ano = DateTime.Now.Year;

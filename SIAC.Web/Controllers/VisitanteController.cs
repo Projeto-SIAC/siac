@@ -62,11 +62,13 @@ namespace SIAC.Controllers
             return PartialView("_ListaVisitante", visitantes.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
         }
 
+        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             return View();
         }
 
+        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Cadastrar()
         {
             return View();
@@ -139,6 +141,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult CarregarPessoa(string cpf)
         {
             if (!String.IsNullOrEmpty(cpf.Trim()))
@@ -158,6 +161,7 @@ namespace SIAC.Controllers
             return null;
         }
 
+        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Detalhe(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))

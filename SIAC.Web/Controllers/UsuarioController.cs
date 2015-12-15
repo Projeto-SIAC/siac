@@ -51,6 +51,7 @@ namespace SIAC.Controllers
         }
 
         // GET: Usuario
+        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             var model = new UsuarioIndexViewModel();
@@ -58,6 +59,7 @@ namespace SIAC.Controllers
             return View(model);
         }
 
+        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Detalhe(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))

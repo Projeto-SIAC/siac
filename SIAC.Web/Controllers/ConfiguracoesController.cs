@@ -21,6 +21,7 @@ namespace SIAC.Controllers
         }
 
         // GET: /Configuracoes
+        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             return View();

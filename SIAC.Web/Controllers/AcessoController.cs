@@ -65,6 +65,7 @@ namespace SIAC.Controllers
                         Helpers.Sessao.Inserir("UsuarioCategoriaCodigo", usuario.CodCategoria);
                         Helpers.Sessao.Inserir("UsuarioCategoria", usuario.Categoria.Descricao);
                         Usuario.RegistrarAcesso(usuario.Matricula);
+                        Sistema.RegistrarCookie(usuario.Matricula);
                     }
                 }
             }
@@ -102,6 +103,7 @@ namespace SIAC.Controllers
         public ActionResult Sair()
         {
             Sistema.UsuarioAtivo.Remove(Helpers.Sessao.UsuarioMatricula);
+            Sistema.RemoverCookie(Helpers.Sessao.UsuarioMatricula);
             Helpers.Sessao.Limpar();
             return Redirect("~/");
         }

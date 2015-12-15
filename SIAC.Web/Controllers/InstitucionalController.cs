@@ -23,6 +23,7 @@ namespace SIAC.Controllers
         }
 
         // GET: institucional/
+        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             Usuario usuario = Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);

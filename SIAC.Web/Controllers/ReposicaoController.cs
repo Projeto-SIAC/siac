@@ -88,6 +88,7 @@ namespace SIAC.Controllers
             return PartialView("_ListaReposicao", reposicoes.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
         }
 
+        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             if (Request.Url.ToString().ToLower().Contains("principal"))
