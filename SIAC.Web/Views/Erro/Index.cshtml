@@ -3,6 +3,38 @@
     Layout = null;
 }
 
-<h2>Erro @ViewBag.Codigo - @ViewBag.Title</h2>
-<p>@ViewBag.Mensagem</p>
+<!DOCTYPE html>
 
+<html class="no-js" lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - SIAC</title>
+    @Styles.Render("~/bundles/css/acesso")
+    <style type="text/css">
+        body {
+            background-color: #DADADA;
+        }
+
+            body > .grid {
+                height: 100%;
+            }
+
+        .column {
+            max-width: 450px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <h2 class="ui header">Erro @ViewBag.Codigo - @ViewBag.Title</h2>
+            <div class="ui message">
+                <p>@ViewBag.Mensagem</p>
+            </div>
+            <a href="/">Voltar para Início</a>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/js/acesso")
+</body>
+</html>
