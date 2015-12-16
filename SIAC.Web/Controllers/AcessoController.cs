@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using SIAC.Helpers;
 using SIAC.Models;
-using System.Threading.Tasks;
+using SIAC.ViewModels;
+using System;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
@@ -14,11 +13,11 @@ namespace SIAC.Controllers
         public ActionResult Index()
         {
             Parametro.ObterAsync();
-            if (Models.Sistema.Autenticado(Helpers.Sessao.UsuarioMatricula))
+            if (Sistema.Autenticado(Sessao.UsuarioMatricula))
             {
                 return RedirectToAction("Index", "Principal");
             }
-            return View(new ViewModels.AcessoIndexViewModel());
+            return View(new AcessoIndexViewModel());
         }
 
         /*
@@ -39,7 +38,7 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult Index(FormCollection formCollection)
         {
-            if (Models.Sistema.Autenticado(Helpers.Sessao.UsuarioMatricula))
+            if (Sistema.Autenticado(Sessao.UsuarioMatricula))
             {
                 return RedirectToAction("Index", "Principal");
             }
@@ -48,22 +47,20 @@ namespace SIAC.Controllers
 
             if (formCollection.HasKeys())
             {
-                if (!Helpers.StringExt.IsNullOrWhiteSpace(formCollection["txtMatricula"], formCollection["txtSenha"]))
+                if (!StringExt.IsNullOrWhiteSpace(formCollection["txtMatricula"], formCollection["txtSenha"]))
                 {
                     string matricula = formCollection["txtMatricula"].ToString();
                     string senha = formCollection["txtSenha"].ToString();
-
-                    ViewBag.TextBoxMatricula = matricula;
 
                     Usuario usuario = Usuario.Autenticar(matricula, senha);
 
                     if (usuario != null)
                     {
                         valido = true;
-                        Helpers.Sessao.Inserir("UsuarioMatricula", usuario.Matricula);
-                        Helpers.Sessao.Inserir("UsuarioNome", usuario.PessoaFisica.Nome);
-                        Helpers.Sessao.Inserir("UsuarioCategoriaCodigo", usuario.CodCategoria);
-                        Helpers.Sessao.Inserir("UsuarioCategoria", usuario.Categoria.Descricao);
+                        Sessao.Inserir("UsuarioMatricula", usuario.Matricula);
+                        Sessao.Inserir("UsuarioNome", usuario.PessoaFisica.Nome);
+                        Sessao.Inserir("UsuarioCategoriaCodigo", usuario.CodCategoria);
+                        Sessao.Inserir("UsuarioCategoria", usuario.Categoria.Descricao);
                         Usuario.RegistrarAcesso(usuario.Matricula);
                         Sistema.RegistrarCookie(usuario.Matricula);
                     }
@@ -81,7 +78,7 @@ namespace SIAC.Controllers
             }
             else
             {
-                var model = new ViewModels.AcessoIndexViewModel();
+                AcessoIndexViewModel model = new AcessoIndexViewModel();
                 model.Matricula = formCollection.HasKeys() ? formCollection["txtMatricula"] : "";
                 //ViewBag.Acao = "$('.modal').modal('show');";
                 model.Erro = true;
@@ -102,9 +99,9 @@ namespace SIAC.Controllers
         // GET: Acesso/Sair
         public ActionResult Sair()
         {
-            Sistema.UsuarioAtivo.Remove(Helpers.Sessao.UsuarioMatricula);
-            Sistema.RemoverCookie(Helpers.Sessao.UsuarioMatricula);
-            Helpers.Sessao.Limpar();
+            Sistema.UsuarioAtivo.Remove(Sessao.UsuarioMatricula);
+            Sistema.RemoverCookie(Sessao.UsuarioMatricula);
+            Sessao.Limpar();
             return Redirect("~/");
         }
     }
