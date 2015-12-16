@@ -102,6 +102,18 @@ namespace SIAC
             return html;
         }
 
+        public static string ReplaceChars(this string str, string oldChars, string newChars)
+        {
+            string newStr = str;
+            
+            for (int i = 0, length = oldChars.Length; i < length; i++)
+            {
+                newStr = newStr.Replace(oldChars[i], newChars[i]);
+            }
+
+            return newStr;
+        }
+
         #endregion
 
         // Int

@@ -135,7 +135,7 @@
         var focused = false;
         window.print();
         focused = true;
-        var interval = setInterval(function () { if (focused === true) { clearInterval(interval); window.location.href = "@Url.Action("Detalhe", "Academica", new { codigo = Model.Avaliacao.CodAvaliacao })" } }, 300);
+        var interval = setInterval(function () { if (focused === true) { clearInterval(interval); window.location.href = "@Url.Action("Detalhe", Model.Avaliacao.TipoAvaliacao.DescricaoCurta.ReplaceChars("çãê", "cae"), new { codigo = Model.Avaliacao.CodAvaliacao })" } }, 300);
     </script>
 </body>
 </html>
