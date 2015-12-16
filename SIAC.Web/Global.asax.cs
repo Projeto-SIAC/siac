@@ -32,18 +32,21 @@ namespace SIAC
             {
                 if (Helpers.Sessao.UsuarioMatricula != null && Models.Sistema.UsuarioAtivo.Keys.Contains(Helpers.Sessao.UsuarioMatricula))
                 {
-                    var acesso = Models.Sistema.UsuarioAtivo[Helpers.Sessao.UsuarioMatricula];
-                    var acessos = acesso.UsuarioAcessoPagina;
-                    int numIdentificador = acessos.Count > 0 ? acesso.UsuarioAcessoPagina.Max(a => a.NumIdentificador) : 0;
-                    acesso.UsuarioAcessoPagina.Add(new Models.UsuarioAcessoPagina()
+                    if (!HttpContext.Current.Request.Path.ToLower().Contains("lembrete"))
                     {
-                        NumIdentificador = numIdentificador + 1,
-                        Pagina = HttpContext.Current.Request.Url.PathAndQuery.ToString(),
-                        DtAbertura = DateTime.Now,
-                        PaginaReferencia = HttpContext.Current.Request.UrlReferrer?.PathAndQuery.ToString(),
-                        Dados = HttpContext.Current.Request.Form.HasKeys() ? HttpContext.Current.Request.Form.ToString() : null
-                    });
-                    Models.Repositorio.GetInstance().SaveChanges(false);
+                        var acesso = Models.Sistema.UsuarioAtivo[Helpers.Sessao.UsuarioMatricula];
+                        var acessos = acesso.UsuarioAcessoPagina;
+                        int numIdentificador = acessos.Count > 0 ? acesso.UsuarioAcessoPagina.Max(a => a.NumIdentificador) : 0;
+                        acesso.UsuarioAcessoPagina.Add(new Models.UsuarioAcessoPagina()
+                        {
+                            NumIdentificador = numIdentificador + 1,
+                            Pagina = HttpContext.Current.Request.Url.PathAndQuery.ToString(),
+                            DtAbertura = DateTime.Now,
+                            PaginaReferencia = HttpContext.Current.Request.UrlReferrer?.PathAndQuery.ToString(),
+                            Dados = HttpContext.Current.Request.Form.HasKeys() ? HttpContext.Current.Request.Form.ToString() : null
+                        });
+                        Models.Repositorio.GetInstance().SaveChanges(false);
+                    }
                 }
             }
         }
