@@ -1,8 +1,7 @@
-﻿using SIAC.Models;
-using System;
+﻿using SIAC.Helpers;
+using SIAC.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SIAC.Controllers
@@ -15,8 +14,8 @@ namespace SIAC.Controllers
         public ActionResult Index()
         {
             Lembrete.AdicionarNotificacao("Este é sua tela principal.", Lembrete.Info);
-            Usuario usuario = Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-            return View(usuario);            
+            Usuario usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
+            return View(usuario);
         }
 
         // GET: Principal/Avaliacao
@@ -29,13 +28,17 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Pendente()
         {
-            string strMatr = Helpers.Sessao.UsuarioMatricula;
-            int codProfessor = Professor.ListarPorMatricula(strMatr).CodProfessor;
-            var lst = AvalAcademica.ListarCorrecaoPendentePorProfessor(codProfessor).Select(a=>a.Avaliacao);
-            lst = lst.Union(AvalCertificacao.ListarCorrecaoPendentePorProfessor(codProfessor).Select(a => a.Avaliacao));
-            lst = lst.Union(AvalAcadReposicao.ListarCorrecaoPendentePorProfessor(codProfessor).Select(a => a.Avaliacao));
+            string matricula = Sessao.UsuarioMatricula;
+            int codProfessor = Professor.ListarPorMatricula(matricula).CodProfessor;
 
-            return View(lst.OrderBy(a=>a.DtAplicacao).ToList());
+            IEnumerable<Avaliacao> avaliacoes = AvalAcademica.ListarCorrecaoPendentePorProfessor(codProfessor)
+                .Select(a => a.Avaliacao);
+            avaliacoes = avaliacoes.Union(AvalCertificacao.ListarCorrecaoPendentePorProfessor(codProfessor)
+                .Select(a => a.Avaliacao));
+            avaliacoes = avaliacoes.Union(AvalAcadReposicao.ListarCorrecaoPendentePorProfessor(codProfessor)
+                .Select(a => a.Avaliacao));
+
+            return View(avaliacoes.OrderBy(a => a.DtAplicacao).ToList());
         }
     }
 }

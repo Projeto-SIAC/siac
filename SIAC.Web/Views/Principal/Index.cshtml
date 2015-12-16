@@ -1,8 +1,8 @@
-﻿@{
+﻿@model Usuario
+
+@{
     ViewBag.Title = "Principal";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model SIAC.Models.Usuario
 
 <h2>@ViewBag.Title</h2>
 
@@ -22,24 +22,25 @@
                 { "Icone", "file" },
                 { "Descricao", "Gerar Acadêmica" },
                 { "Mensagem", "Ir para Gerar Avaliação Acadêmica" }   
-            })
-        }
-        @if (Model.CodCategoria == 2 || Model.CodCategoria == 3)
-        {
+            })        
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Gerar", "Certificacao") },
                 { "Icone", "file text" },
                 { "Descricao", "Gerar Certificação" },
                 { "Mensagem", "Ir para Gerar Avaliação de Certificação" }
             })
-        }
-        @if (Model.CodCategoria == 2)
-        {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Cadastrar", "Questao") },
                 { "Icone", "add circle" },
                 { "Descricao", "Cadastrar Questão" },
                 { "Mensagem", "Ir para Cadastrar Questão" }
+            })
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
+                { "Url", Url.Action("Pendente") },
+                { "Icone", "edit" },
+                { "Descricao", "Correções Pendentes" },
+                { "Mensagem", "Ir para Correções Pendentes" },
+                { "Lembrete", "correcao" }
             })
         }
         @if (Model.CodCategoria <= 3)
@@ -49,16 +50,6 @@
                 { "Icone", "calendar" },
                 { "Descricao", "Visualizar Agendamentos" },
                 { "Mensagem", "Ir para Agenda" }
-            })
-        }
-        @if (Model.CodCategoria == 2)
-        {
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Pendente") },
-                { "Icone", "edit" },
-                { "Descricao", "Correções Pendentes" },
-                { "Mensagem", "Ir para Correções Pendentes" },
-                { "Lembrete", "correcao" }
             })
         }
         @Html.Partial("_Atalho", new ViewDataDictionary() {
