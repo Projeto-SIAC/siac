@@ -33,7 +33,7 @@
 
     function carregar() {
         var pathname = window.location.pathname.toLowerCase();
-        if (pathname.startsWith('/principal/')) {
+        if (pathname.indexOf('/principal/') == 0) {
             if (pathname.indexOf('/questao') >= 0) {
                 if (/\/principal\/questao\/cadastrar/.test(pathname)) {
                     siac.Questao.Cadastrar.iniciar();
@@ -114,7 +114,7 @@
                 }
             }
         }
-        else if (pathname.startsWith('/historico/')) {
+        else if (pathname.indexOf('/historico/') == 0) {
             if (pathname.indexOf('/questao') >= 0) {
                 if (pathname == '/historico/questao') {
                     siac.Questao.Index.iniciar();
@@ -183,7 +183,7 @@
                 }
             }
         }
-        else if (pathname.startsWith('/configuracoes/')) {
+        else if (pathname.indexOf('/configuracoes/') == 0) {
             if (/\/configuracoes\/parametros/.test(pathname)) {
                 siac.Configuracoes.Parametros.iniciar();
             }
@@ -213,7 +213,7 @@
                 siac.Configuracoes.Institucional.iniciar();
             }
         }
-        else if (pathname.startsWith('/institucional/')) {
+        else if (pathname.indexOf('/institucional/') == 0) {
             if (pathname == '/institucional/gerar') {
                 siac.Institucional.Gerar.iniciar();
             }
@@ -242,7 +242,7 @@
                 siac.Institucional.Resultado.iniciar();
             }
         }
-        else if (pathname.startsWith('/perfil')) {
+        else if (pathname.indexOf('/perfil') == 0) {
             siac.Perfil.iniciar();
         }
     }
