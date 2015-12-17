@@ -13,10 +13,7 @@ namespace SIAC.Controllers
     [Filters.AutenticacaoFilter]
     public class ImpressaoController : Controller
     {
-        public ActionResult Index()
-        {
-            return RedirectToAction("Index", "Principal");
-        }
+        public ActionResult Index() => RedirectToAction("Index", "Principal");
 
         [HttpGet]
         public ActionResult Avaliacao(string codigo)

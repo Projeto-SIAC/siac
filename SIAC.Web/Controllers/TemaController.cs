@@ -11,10 +11,7 @@ namespace SIAC.Controllers
     public class TemaController : Controller
     {
         // GET: Tema
-        public ActionResult Index()
-        {
-            return RedirectToAction("Index", "Acesso");
-        }
+        public ActionResult Index() => RedirectToAction("Index", "Acesso");
 
         [HttpPost]
         public ActionResult RecuperarTemasPorCodDisciplina(string codDisciplina)
@@ -22,7 +19,7 @@ namespace SIAC.Controllers
             if (!String.IsNullOrEmpty(codDisciplina))
             {
                 int cod = 0;
-                if (int.TryParse(codDisciplina, out cod))
+                if (int.TryParse(codDisciplina, out cod) && cod > 0)
                 {                    
                     var temas = Tema.ListarPorDisciplina(cod);
                     var result = from t in temas select new { CodTema = t.CodTema, Descricao = t.Descricao };
@@ -38,7 +35,7 @@ namespace SIAC.Controllers
             if (!String.IsNullOrEmpty(codDisciplina))
             {
                 int cod = 0;
-                if (int.TryParse(codDisciplina, out cod))
+                if (int.TryParse(codDisciplina, out cod) && cod > 0)
                 {
                     var temas = Tema.ListarPorDisciplinaTemQuestao(cod);
                     var result = from t in temas select new { CodTema = t.CodTema, Descricao = t.Descricao };

@@ -9,7 +9,7 @@ namespace SIAC.Tests
     public class AcessoControllerTest
     {
         [TestMethod]
-        public void TestIndexWithEmptyValues()
+        public void TestIndexComValoresVazios()
         {
             var controller = new AcessoController();
 
@@ -23,7 +23,7 @@ namespace SIAC.Tests
         }
 
         [TestMethod]
-        public void TestIndexWithNullValues()
+        public void TestIndexComValoresNulos()
         {
             var controller = new AcessoController();
 
@@ -38,7 +38,7 @@ namespace SIAC.Tests
 
 
         [TestMethod]
-        public void TestIndexWithWhiteSpaceValues()
+        public void TestIndexComValoresEspaco()
         {
             var controller = new AcessoController();
 
@@ -52,7 +52,7 @@ namespace SIAC.Tests
         }
 
         [TestMethod]
-        public void TestIndexWithFormHasNotKeys()
+        public void TestIndexComFormularioSemChaves()
         {
             var controller = new AcessoController();
 
@@ -64,7 +64,7 @@ namespace SIAC.Tests
         }
 
         [TestMethod]
-        public void TestSairForRedirect()
+        public void TestSairRedirecionamento()
         {
             var controller = new AcessoController();
             var result = controller.Sair() as RedirectResult;

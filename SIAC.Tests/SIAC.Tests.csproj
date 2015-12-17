@@ -90,7 +90,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AcessoControllerTest.cs" />
+    <Compile Include="ErroControllerTest.cs" />
+    <Compile Include="AgendaControllerTest.cs" />
+    <Compile Include="ImpressaoControllerTest.cs" />
+    <Compile Include="LembreteControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TemaControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SIAC.Web\SIAC.csproj">

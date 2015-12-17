@@ -16,7 +16,7 @@ namespace SIAC.Controllers
         [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
-            return View();
+            return View("Index");
         }
 
         // POST: Agenda/Academicas?start=2013-12-01&end=2014-01-12&_=1386054751381
