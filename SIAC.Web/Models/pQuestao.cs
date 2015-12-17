@@ -63,6 +63,14 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
+        public static void AtualizarDtUltimoUso(List<Questao> questoes)
+        {
+            foreach (Questao questao in questoes)
+            {
+                questao.DtUltimoUso = DateTime.Now;
+            }
+        }
+
         public static List<Questao> ListarPorProfessor(string matricula) => contexto.Questao.Where(q => q.Professor.MatrProfessor.ToLower() == matricula.ToLower()).ToList();
 
         public static Questao ListarPorCodigo(int codigo) => contexto.Questao.Find(codigo);

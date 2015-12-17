@@ -92,6 +92,9 @@ namespace SIAC.Models
         public static void Inserir(AvalAcademica avalAcademica)
         {
             contexto.AvalAcademica.Add(avalAcademica);
+            
+            Questao.AtualizarDtUltimoUso(avalAcademica.Avaliacao.Questao);
+
             contexto.SaveChanges();
         }
 

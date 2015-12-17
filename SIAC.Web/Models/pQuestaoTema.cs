@@ -53,15 +53,6 @@ namespace SIAC.Models
                 return true;
             }
         }
-
-        public static void AtualizarDtUltimoUso(List<QuestaoTema> questoes)
-        {
-            foreach (QuestaoTema item in questoes)
-            {
-                Questao q = item.Questao;
-                q.DtUltimoUso = DateTime.Now;
-            }
-            contexto.SaveChanges();
-        }
+        
     }
 }
