@@ -1,0 +1,42 @@
+﻿@model Usuario
+@{
+    ViewBag.Title = "Primeiro acesso";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="ui warning icon message">
+    <i class="spy icon"></i>
+    <div class="content">
+        <div class="header">
+            @Model.PessoaFisica.PrimeiroNome, Seja Bem Vindo ao SIAC!
+        </div>
+        <p>Percebemos que você ainda não atualizou sua senha padrão do sistema. Precisamos que você faça isso para continuar utilizando os nossos serviços.</p>
+    </div>
+</div>
+
+
+<form class="ui form" method="post" action="@Url.Action("Visitante")">
+    <div class="ui error message">
+        <div class="header">Verifique</div>
+        <ul class="list"></ul>
+    </div>
+    <div class="fields">
+        <div class="eight wide field required">
+            <label>Nova senha</label>
+            <input type="password" id="txtNovaSenha" name="txtNovaSenha" placeholder="Nova senha" required/>
+        </div>
+        <div class="eight wide field required">
+            <label>Confirma nova senha</label>
+            <input type="password" id="txtConfirmaNovaSenha" name="txtConfirmaNovaSenha" placeholder="Confirma nova senha" required />
+        </div>
+    </div>
+    <div class="field">
+        <div class="ui atualizar button" tabindex="0">Atualizar Senha</div>
+    </div>
+</form>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/acesso")
+}

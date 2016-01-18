@@ -245,6 +245,11 @@
         else if (pathname.indexOf('/perfil') == 0) {
             siac.Perfil.iniciar();
         }
+        else if (pathname.indexOf('/acesso') == 0) {
+            if (pathname == '/acesso/visitante') {
+                siac.Acesso.Visitante.iniciar();
+            }
+        }
     }
 
     var HTML_MENSAGEM_TEMPLATE = '<div class="ui small mensagem modal">' +

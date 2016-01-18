@@ -103,5 +103,16 @@ namespace SIAC.Models
         public static int ObterPessoaFisica(string matricula) => contexto.Usuario.Find(matricula).CodPessoaFisica;
 
         public static List<Usuario> Listar() => contexto.Usuario.ToList();
+
+        public void AtualizarSenha(string novaSenha)
+        {
+            Usuario usuario = contexto.Usuario.FirstOrDefault(u => u.Matricula == this.Matricula);
+
+            if (usuario != null)
+            {
+                usuario.Senha = Helpers.Criptografia.RetornarHash(novaSenha);
+                contexto.SaveChanges();
+            }
+        }
     }
 }

@@ -32,6 +32,8 @@ namespace SIAC.Helpers
 
         public static int UsuarioCategoriaCodigo => (int)context?.Session["UsuarioCategoriaCodigo"];
 
+        public static bool UsuarioSenhaPadrao => context?.Session["UsuarioSenhaPadrao"] != null ? (bool)context?.Session["UsuarioSenhaPadrao"] : false;
+
         public static void Inserir(string chave, object valor) { if (context != null) context.Session[chave] = valor; } 
 
         public static object Retornar(string chave) => context?.Session[chave];
