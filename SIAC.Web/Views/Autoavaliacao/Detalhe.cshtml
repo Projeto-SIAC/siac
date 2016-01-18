@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Detalhes de Autoavaliação"/* + Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
     List<Questao> lstQuestao = Model.Avaliacao.Questao;
     List<AvalQuesPessoaResposta> lstPessoaResposta = Model.Avaliacao.PessoaResposta;
     AvalPessoaResultado avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.FirstOrDefault();

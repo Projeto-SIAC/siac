@@ -10,6 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - SIAC</title>
+    <link href="~/resources/images/layout/logo-black.png" rel="shortcut icon" />
     @Styles.Render("~/bundles/css/acesso")
     <style type="text/css">
         body {
@@ -28,11 +29,16 @@
 <body>
     <div class="ui middle aligned center aligned grid">
         <div class="column">
-            <h2 class="ui header">Erro @ViewBag.Codigo - @ViewBag.Title</h2>
+            <h2 class="ui header left aligned">
+                SIAC
+                <div class="sub header">
+                    Erro @ViewBag.Codigo - @ViewBag.Title
+                </div>
+            </h2>
             <div class="ui message">
                 <p>@ViewBag.Mensagem</p>
             </div>
-            <a href="/">Voltar para Início</a>
+            <a href="/">Voltar para Início</a>            
         </div>
     </div>
     @Scripts.Render("~/bundles/js/acesso")

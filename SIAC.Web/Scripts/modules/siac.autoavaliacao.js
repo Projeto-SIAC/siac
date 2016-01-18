@@ -36,6 +36,7 @@ siac.Autoavaliacao.Index = (function () {
 
         $('.button.topo').click(function () {
             topo();
+            return;
         });
 
         $('.categoria.item').click(function () {
@@ -92,7 +93,7 @@ siac.Autoavaliacao.Index = (function () {
         $cards = $('.ui.cards');
         $cards.parent().addClass('loading');
         _controleAjax = $.ajax({
-            url: '/Historico/Autoavaliacao/Listar',
+            url: '/historico/autoavaliacao/listar',
             data: {
                 pagina: pagina,
                 ordenar: ordenar,
@@ -128,14 +129,14 @@ siac.Autoavaliacao.Index = (function () {
     }
 
     function adicionarEventoArquivar() {
-        $('.arquivar.button').click(function () {
+        $('.arquivar.button').off("click").click(function () {
             var $this = $(this);
             var codAvaliacao = $this.parents('[data-avaliacao]').attr('data-avaliacao');
             $this.addClass('loading');
             $.ajax({
                 type: 'POST',
                 data: { codigo: codAvaliacao },
-                url: '/Principal/Autoavaliacao/Arquivar',
+                url: '/principal/autoavaliacao/arquivar',
                 success: function () {
                     window.location.href = '/historico/autoavaliacao/detalhe/' + codAvaliacao;
                 },
@@ -170,7 +171,7 @@ siac.Autoavaliacao.Detalhe = (function () {
             $.ajax({
                 type: 'POST',
                 data: { codigo: _codAvaliacao },
-                url: '/Principal/Autoavaliacao/Arquivar',
+                url: '/principal/autoavaliacao/arquivar',
                 success: function () {
                     window.location.href = '/historico/autoavaliacao/detalhe/' + _codAvaliacao;
                 },
@@ -227,12 +228,23 @@ siac.Autoavaliacao.Realizar = (function () {
             }, 1000 * 60 * 15);
         })();
 
-        //definirAlturaDiv();
-
         $('a[href]').on('click', function () {
             $('.ui.confirmar.modal').modal('show');
             $('.ui.confirmar.modal #txtRef').val($(this).attr('href'));
             return false;
+        });
+
+        $('#chkCronometrar').change(function () {
+            if ($(this).is(':checked')) {
+                $('#txtDuracao').removeAttr('disabled').parent().removeClass('disabled')
+            }
+            else {
+                $('#txtDuracao').attr('disabled', 'disabled').parent().addClass('disabled')
+            }
+        });
+
+        $('.informacoes.button').click(function () {
+            $('.ui.informacoes.modal').modal('show')
         });
 
         $('.ui.checkbox')
@@ -350,19 +362,10 @@ siac.Autoavaliacao.Realizar = (function () {
         ;
     }
 
-    //function definirAlturaDiv() {
-        //var tamTela = $(window).height();
-        //var tamDesejado = tamTela * 0.6;
-        //$('.ui.basic.segment').css({
-        //    'max-height': tamDesejado + 'px',
-        //    'overflow-y': 'auto'
-        //});
-    //}
-
     function relogio() {
         setInterval(function () {
             var date = new Date();
-            $('#lblHoraAgora').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
+            $('#lblHoraAgora').text(("0" + (date.getHours())).slice(-2) + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
         }, 1000);
     }
 
@@ -376,7 +379,7 @@ siac.Autoavaliacao.Realizar = (function () {
                 date.setTime(timeRestante);
                 var offsetDate = date.getTimezoneOffset() * 60 * 1000;
                 date.setTime(date.getTime() + offsetDate);
-                var txtRestante = date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min';
+                var txtRestante = ("0" + (date.getHours())).slice(-2) + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min';
                 $('#lblHoraRestante').text(txtRestante);
                 if (txtRestante != _controleRestante) {
                     $('#lblHoraRestante').parent().transition('flash');
@@ -588,7 +591,7 @@ siac.Autoavaliacao.Gerar = (function () {
         $.ajax({
             cache: false,
             type: 'POST',
-            url: '/Tema/RecuperarTemasPorCodDisciplinaTemQuestao',
+            url: '/tema/recuperartemasporcoddisciplinatemquestao',
             data: { "codDisciplina": selecionado },
             success: function (data) {
                 ddlTema.html('');
