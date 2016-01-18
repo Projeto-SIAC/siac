@@ -1,51 +1,50 @@
-﻿@{
-    ViewBag.Title = "Histórico";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿@model Usuario
 
-@model Usuario
+@{
+    ViewBag.Title = "Histórico";
+}
 
 <h2>@ViewBag.Title</h2>
 
 <div class="ui stackable grid dashmenu">
     <div class="stackable doubling four columns centered row">
-
         @if (Model.CodCategoria <= 2)
         {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Index", "Academica") },
                 { "Icone", "file" },
-                { "Descricao", "Histórico de Acadêmicas" }
+                { "Descricao", "Histórico de Acadêmicas" },
+                { "Mensagem", "Ir para Histórico de Avaliações Acadêmicas" }
             })
-        }
-        @if (Model.CodCategoria <= 2)
-            {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Index", "Reposicao") },
                 { "Icone", "file archive outline" },
-                { "Descricao", "Histórico de Reposições" }
+                { "Descricao", "Histórico de Reposições" },
+                { "Mensagem", "Ir para Histórico de Avaliações de Reposição" }
             })
         }
         @if (Model.CodCategoria <= 3)
-            {
+        {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Index", "Certificacao") },
                 { "Icone", "file text" },
-                { "Descricao", "Histórico de Certificações" }
+                { "Descricao", "Histórico de Certificações" },
+                { "Mensagem", "Ir para Histórico de Avaliações de Certificação" }
             })
-
         }
         @Html.Partial("_Atalho", new ViewDataDictionary() {
             { "Url", Url.Action("Index", "Autoavaliacao") },
             { "Icone", "folder" },
-            { "Descricao", "Autoavaliações Salvas" }
+            { "Descricao", "Autoavaliações Salvas" },
+            { "Mensagem", "Ir para Autoavaliações Salvas" }
         })
         @if (Model.CodCategoria == 2)
         {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Index", "Questao") },
                 { "Icone", "book" },
-                { "Descricao", "Minhas Questões" }
+                { "Descricao", "Minhas Questões" },
+                { "Mensagem", "Ir para Minhas Questões" }
             })
         }
     </div>

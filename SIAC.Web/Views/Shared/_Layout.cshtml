@@ -29,14 +29,13 @@
                     @DateTime.Today.ToString("D", new System.Globalization.CultureInfo("pt-BR"))
                 </div>
                 <div class="item">
-                    <div class="ui ajuda button">
+                    <div class="ui ajuda button" title="Clique para ativar o Sistema de Ajuda">
                         Ajuda
                     </div>
                 </div>
                 <div class="item">@Html.ActionLink("Sair", "Sair", "Acesso", null, new { @class = "ui button", title = "Clique para Sair do Sistema" })</div>
             </div>
         </div>
-
 
         <div class="ui stackable grid" style="margin: auto 1em">
             <div class="sixteen wide column" style="padding-top: 0; padding-bottom: 0">
@@ -56,7 +55,7 @@
                     @Html.Partial("_Menu")
                 </div>
             </div>
-            <div class="thirteen wide column" style="height:100%">
+            <div class="thirteen wide column">
                 <div class="ui segment">
                     @RenderBody()
                 </div>
