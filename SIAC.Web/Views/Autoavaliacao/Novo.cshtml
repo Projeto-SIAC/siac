@@ -2,9 +2,7 @@
 
 @{
     ViewBag.Title = "Realizar Autoavaliação";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 
 @if (Model.Geradas.Count > 0)
 {
@@ -19,7 +17,6 @@
                     <div class="meta">
                         <span>@auto.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
                     </div>
-
                     <div class="description">
                         <p>
                             <b>Dificuldade</b>: @auto.Dificuldade.Descricao
@@ -28,7 +25,6 @@
                             <b>Quantidade de Questões</b>: @auto.Avaliacao.QteQuestoes()
                         </p>
                     </div>
-                    
                 </div>
                 <div class="extra content">
                     <div class="ui labels">

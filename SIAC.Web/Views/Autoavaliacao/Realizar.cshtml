@@ -1,12 +1,11 @@
-﻿@using SIAC.Models
-@model AvalAuto
+﻿@model AvalAuto
+
 @{
     ViewBag.Title = "Realizar Autoavaliação"/* + Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
     List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
 }
 
-<h2>@ViewBag.Title <div class="ui right floated button" onclick="$('.ui.informacoes.modal').modal('show')">Informações</div></h2>
+<h2>@ViewBag.Title <div class="ui right floated informacoes button">Informações</div></h2>
 
 <div class="ui small confirmar modal">
     <div class="header">Você tem certeza?</div>
@@ -34,7 +33,7 @@
             </thead>
             <tbody>
                 @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
-            {
+                {
                     <tr>
                         <td>
                             @* disciplina *@
@@ -87,7 +86,7 @@
         <div class="ui form">
             <div class="field">
                 <div class="ui toggle checkbox">
-                    <input id="chkCronometrar" onchange="if ($(this).is(':checked')) { $('#txtDuracao').removeAttr('disabled').parent().removeClass('disabled') } else { $('#txtDuracao').attr('disabled', 'disabled').parent().addClass('disabled') }" type="checkbox" tabindex="0">
+                    <input id="chkCronometrar" type="checkbox" tabindex="0">
                     <label>Desejo cronometrar minha autoavaliação</label>
                 </div>
             </div>

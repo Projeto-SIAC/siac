@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Resultado da Autoavaliação"/*+Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
     List<Questao> lstQuestao = Model.Avaliacao.Questao;
     List<AvalQuesPessoaResposta> lstPessoaResposta = Model.Avaliacao.PessoaResposta;
     AvalPessoaResultado avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.First();
@@ -49,72 +48,72 @@
                     <div class="ui label"><i class="write icon"></i>Discursiva</div>
                 }
             </div>
-                <div class="content">
-                    <div class="ui segment">
-                        <div class="ui dividing header" style="text-align:justify">
-                            @{
-                                var enunciado = (@i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).Split('\n', '\r');
-                                foreach (var strEnunciado in enunciado)
+            <div class="content">
+                <div class="ui segment">
+                    <div class="ui dividing header" style="text-align:justify">
+                        @{
+                            var enunciado = (@i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).Split('\n', '\r');
+                            foreach (var strEnunciado in enunciado)
+                            {
+                                if (!String.IsNullOrWhiteSpace(strEnunciado))
                                 {
-                                    if (!String.IsNullOrWhiteSpace(strEnunciado))
+                                    <p>@strEnunciado</p>
+                                }
+                            }
+                        }
+                    </div>
+                    @if (lstQuestao[i].CodTipoQuestao == 1)
+                    {
+                        <div class="ui list">
+                            @foreach (var alternativa in lstQuestao[i].Alternativa)
+                            {
+                                <div class="item">
+                                    <div class="middle aligned content">
+                                        <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
+                                        @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
+                                        {
+                                            <a data-html="@(("<b>Comentário</b>: "+alternativa.Comentario).Replace("\n","<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
+                                        }
+                                        @if (alternativa.CodOrdem == resposta.RespAlternativa)
+                                        {
+                                            <a data-html="@(("<b>Comentário</b>: "+alternativa.Comentario).Replace("\n","<br>"))" data-variation="very wide" class="ui tag label">Marcada</a>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <a class="ui ribbon label" data-html="@(("<b>Chave de Resposta</b>: "+lstQuestao[i].ChaveDeResposta).Replace("\n", "<br>"))" data-variation="very wide">Resposta</a>
+                            @{
+                                var respDiscursiva = resposta.RespDiscursiva.Split('\n', '\r');
+                                foreach (var strRespDiscursiva in respDiscursiva)
+                                {
+                                    if (!String.IsNullOrWhiteSpace(strRespDiscursiva))
                                     {
-                                        <p>@strEnunciado</p>
+                                        <p><i>@strRespDiscursiva</i></p>
                                     }
                                 }
                             }
                         </div>
-                        @if (lstQuestao[i].CodTipoQuestao == 1)
-                        {
-                            <div class="ui list">
-                                @foreach (var alternativa in lstQuestao[i].Alternativa)
+                    }
+                    @if (lstQuestao[i].QuestaoAnexo.Count > 0)
+                    {
+                        <div class="accordion">
+                            <div class="title"><i class="icon dropdown"></i>Anexos</div>
+                            <div class="content">
+                                @foreach (var anexo in lstQuestao[i].QuestaoAnexo)
                                 {
-                                    <div class="item">
-                                        <div class="middle aligned content">
-                                            <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
-                                            @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
-                                            {
-                                                <a data-html="@(("<b>Comentário</b>: "+alternativa.Comentario).Replace("\n","<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
-                                            }
-                                            @if (alternativa.CodOrdem == resposta.RespAlternativa)
-                                            {
-                                                <a data-html="@(("<b>Comentário</b>: "+alternativa.Comentario).Replace("\n","<br>"))" data-variation="very wide" class="ui tag label">Marcada</a>
-                                            }
-                                        </div>
-                                    </div>
+                                    @Html.Partial("_Anexo", anexo)
                                 }
                             </div>
-                        }
-                        else
-                        {
-                            <div>
-                                <a class="ui ribbon label" data-html="@(("<b>Chave de Resposta</b>: "+lstQuestao[i].ChaveDeResposta).Replace("\n", "<br>"))" data-variation="very wide">Resposta</a>
-                                @{
-                                    var respDiscursiva = resposta.RespDiscursiva.Split('\n', '\r');
-                                    foreach (var strRespDiscursiva in respDiscursiva)
-                                    {
-                                        if (!String.IsNullOrWhiteSpace(strRespDiscursiva))
-                                        {
-                                            <p><i>@strRespDiscursiva</i></p>
-                                        }
-                                    }
-                                }
-                            </div>
-                                    }
-                        @if (lstQuestao[i].QuestaoAnexo.Count > 0)
-                        {
-                            <div class="accordion">
-                                <div class="title"><i class="icon dropdown"></i>Anexos</div>
-                                <div class="content">
-                                    @foreach (var anexo in lstQuestao[i].QuestaoAnexo)
-                                    {
-                                        @Html.Partial("_Anexo", anexo)
-                                    }
-                                </div>
-                            </div>
-                        }
-                    </div>
+                        </div>
+                    }
                 </div>
-                                    }
+            </div>
+        }
     </div>
 </div>
 
