@@ -160,8 +160,7 @@ namespace SIAC.Controllers
             }
             return null;
         }
-
-        [OutputCache(CacheProfile = "PorUsuario")]
+        
         public ActionResult Detalhe(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))
