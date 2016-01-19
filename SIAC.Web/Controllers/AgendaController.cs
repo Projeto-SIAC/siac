@@ -138,5 +138,14 @@ namespace SIAC.Controllers
 
             return Json(retorno);
         }
+
+        [HttpPost]
+        public ActionResult Conflitos(string start, string end)
+        {
+            var retorno = ((JsonResult)Academicas(start, end)).Data as IEnumerable<Evento>;
+            retorno = retorno.Union(((JsonResult)Reposicoes(start, end)).Data as IEnumerable<Evento>);
+            retorno = retorno.Union(((JsonResult)Certificacoes(start, end)).Data as IEnumerable<Evento>);
+            return Json(retorno);
+        }
     }
 }

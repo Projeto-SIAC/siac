@@ -125,7 +125,7 @@ namespace SIAC.Models
                 case 1:
                     return contexto.AvalCertificacao
                         .Where(a => a.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica) != null
-                            && a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino
+                            && a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
                             && a.Avaliacao.AvalPessoaResultado.Count == 0
                             && !a.Avaliacao.FlagArquivo)
                         .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
@@ -134,7 +134,7 @@ namespace SIAC.Models
                     var codProfessor = usuario.Professor.First().CodProfessor;
                     return contexto.AvalCertificacao
                         .Where(a => a.CodProfessor == codProfessor
-                            && a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino
+                            && a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
                             && a.Avaliacao.AvalPessoaResultado.Count == 0
                             && !a.Avaliacao.FlagArquivo)
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
@@ -143,7 +143,7 @@ namespace SIAC.Models
                     var codColaborador = usuario.Colaborador.First().CodColaborador;
                     return contexto.AvalCertificacao
                         .Where(a =>
-                            a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino
+                            a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
                             && a.Avaliacao.AvalPessoaResultado.Count == 0
                             && !a.Avaliacao.FlagArquivo &&
                             (

@@ -132,7 +132,7 @@ namespace SIAC.Models
             {
                 case 1:
                     return contexto.AvalAcadReposicao
-                        .Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino
+                        .Where(a => a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
                             && a.Justificacao.FirstOrDefault(j => j.CodPessoaFisica == usuario.CodPessoaFisica) != null
                             && a.Avaliacao.AvalPessoaResultado.Count == 0
                             && !a.Avaliacao.FlagArquivo)
@@ -141,7 +141,7 @@ namespace SIAC.Models
                 case 2:
                     var codProfessor = usuario.Professor.First().CodProfessor;
                     return contexto.AvalAcadReposicao
-                        .Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino
+                        .Where(a => a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
                             && a.Justificacao.Count > 0 && a.Justificacao.FirstOrDefault().CodProfessor == codProfessor
                             && a.Avaliacao.AvalPessoaResultado.Count == 0
                             && !a.Avaliacao.FlagArquivo)
@@ -150,7 +150,7 @@ namespace SIAC.Models
                 case 3:
                     var codColaborador = usuario.Colaborador.First().CodColaborador;
                     return contexto.AvalAcadReposicao
-                        .Where(a => a.Avaliacao.DtAplicacao > inicio && a.Avaliacao.DtAplicacao < termino
+                        .Where(a => a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
                             && a.Justificacao.Count > 0
                             && a.Avaliacao.AvalPessoaResultado.Count == 0
                             && !a.Avaliacao.FlagArquivo &&

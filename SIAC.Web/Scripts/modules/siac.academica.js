@@ -6,6 +6,31 @@ siac.Academica.Agendar = (function () {
             .modal()
         ;
 
+        $('#txtData, #txtHoraInicio, #txtHoraTermino').change(function () {
+            var $data = $('#txtData');
+            var $horaInicio = $('#txtHoraInicio');
+            var $horaTermino = $('#txtHoraTermino');
+            if ($data.val() && $horaInicio.val() && $horaTermino.val()) {
+                var start = $data.val() + "T" + $horaInicio.val();
+                var end = $data.val() + "T" + $horaTermino.val();
+                $.ajax({
+                    data: {
+                        start: start,
+                        end: end
+                    },
+                    type: 'POST',
+                    url: '/principal/agenda/conflitos',
+                    success: function (response) {
+                        console.log(response);
+                        if (response && response.length > 0) {
+                            siac.Lembrete.Notificacoes.exibir('<p>Há inconsistência nos agendamentos. Por favor, verifique antes de continuar.</p>' +
+                                '<a class="ui inverted button" href="/principal/agenda" target="_blank">Abrir</a>', 'negativo', 0)
+                        }
+                    }
+                });
+            }
+        });
+
         $('.ui.accordion').accordion({
             animateChildren: false
         });
@@ -35,6 +60,7 @@ siac.Academica.Agendar = (function () {
             return false;
         });
     }
+
     function validar() {
         retorno = true;
 
