@@ -6,6 +6,7 @@
   <mvcSiteMapNode title="Acesso" controller="Acesso" action="Index">
     <mvcSiteMapNode title="Entrar" controller="Acesso" action="Entrar"/>
     <mvcSiteMapNode title="Sair" controller="Acesso" action="Sair"/>
+    <mvcSiteMapNode title="Visitante" controller="Acesso" action="Visitante"/>
     <mvcSiteMapNode title="Principal" controller="Principal" action="Index">
       <mvcSiteMapNode title="Questão" url="~/Historico/Questao">
         <mvcSiteMapNode title="Cadastrar" controller="Questao" action="Cadastrar" preservedRouteParameters="codigo">

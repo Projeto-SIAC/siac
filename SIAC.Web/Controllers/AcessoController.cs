@@ -61,6 +61,18 @@ namespace SIAC.Controllers
                         Sessao.Inserir("UsuarioNome", usuario.PessoaFisica.Nome);
                         Sessao.Inserir("UsuarioCategoriaCodigo", usuario.CodCategoria);
                         Sessao.Inserir("UsuarioCategoria", usuario.Categoria.Descricao);
+
+                        //Verificando se a senha do usuário é diferente do padrão de VISITANTE
+                        if (usuario.CodCategoria == 4)
+                        {
+                            string senhaVisitante = usuario.PessoaFisica.PrimeiroNome + "@" + usuario.PessoaFisica.Cpf.Substring(0, 3);
+
+                            if (senha == senhaVisitante)
+                            {
+                                Sessao.Inserir("UsuarioSenhaPadrao", true);
+                            }
+                        }
+
                         Usuario.RegistrarAcesso(usuario.Matricula);
                         Sistema.RegistrarCookie(usuario.Matricula);
                     }
@@ -103,6 +115,54 @@ namespace SIAC.Controllers
             Sistema.RemoverCookie(Sessao.UsuarioMatricula);
             Sessao.Limpar();
             return Redirect("~/");
+        }
+
+        // GET: Acesso/Visitante
+        public ActionResult Visitante()
+        {
+            if (!String.IsNullOrEmpty(Sessao.UsuarioMatricula))
+            {
+                if (Sessao.UsuarioCategoriaCodigo == 4)
+                {
+                    if (Sessao.UsuarioSenhaPadrao)
+                    {
+                        Usuario usuario = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula);
+                        if (usuario != null)
+                        {
+                            return View(usuario);
+                        }
+                    }
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        // POST: Acesso/Visitante
+        [HttpPost]
+        public ActionResult Visitante(FormCollection formCollection)
+        {
+            if (!String.IsNullOrEmpty(Sessao.UsuarioMatricula))
+            {
+                if (Sessao.UsuarioCategoriaCodigo == 4)
+                {
+                    Usuario usuario = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula);
+                    if (usuario != null)
+                    {
+                        string novaSenha = formCollection["txtNovaSenha"];
+                        string confirmaNovaSenha = formCollection["txtConfirmaNovaSenha"];
+
+                        if(novaSenha != usuario.PessoaFisica.PrimeiroNome + "@" + usuario.PessoaFisica.Cpf.Substring(0, 3))
+                        {
+                            if (novaSenha == confirmaNovaSenha)
+                            {
+                                usuario.AtualizarSenha(novaSenha);
+                                Sessao.Inserir("UsuarioSenhaPadrao", false);
+                            }
+                        }
+                    }
+                }
+            }
+            return RedirectToAction("Index");
         }
     }
 }

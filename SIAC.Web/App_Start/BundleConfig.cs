@@ -29,6 +29,10 @@ namespace SIAC
                 "~/scripts/modules/siac.utilitario.js"
             ));
 
+            bundles.Add(new ScriptBundle("~/bundles/js/acesso").Include(
+                "~/scripts/modules/siac.acesso.js"
+            ));
+
             bundles.Add(new ScriptBundle("~/bundles/js/questao").Include(
                 "~/scripts/modules/siac.questao.js"
             ));

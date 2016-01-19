@@ -9,11 +9,18 @@ namespace SIAC.Filters
         public int[] Ocupacoes { get; set; }
         public bool CoordenadoresAvi { get; set; } = false;
 
-        private ActionResult Redirecionar(ActionExecutingContext filterContext)
+        private ActionResult Redirecionar(ActionExecutingContext filterContext, string url = null)
         {
             if (filterContext.HttpContext.Request.HttpMethod == "GET")
             {
-                return new RedirectResult("~/?continuar=" + filterContext.HttpContext.Request.Path);
+                if (string.IsNullOrEmpty(url))
+                {
+                    return new RedirectResult("~/?continuar=" + filterContext.HttpContext.Request.Path);
+                }
+                else
+                {
+                    return new RedirectResult(url);
+                }
             }
             else
             {
@@ -28,6 +35,10 @@ namespace SIAC.Filters
             if (!autenticado)
             {
                 filterContext.Result = Redirecionar(filterContext);
+            }
+            else if (Helpers.Sessao.UsuarioCategoriaCodigo == 4 && Helpers.Sessao.UsuarioSenhaPadrao)
+            {
+                filterContext.Result = Redirecionar(filterContext, "~/acesso/visitante");
             }
             else if (Categorias != null && !Categorias.Contains(Helpers.Sessao.UsuarioCategoriaCodigo))
             {
