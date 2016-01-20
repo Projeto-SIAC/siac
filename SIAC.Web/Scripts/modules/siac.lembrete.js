@@ -43,7 +43,7 @@ siac.Lembrete.Notificacoes = siac.Lembrete.Notificacoes || (function () {
             if (!(/(normal|positivo|negativo|info)/.test(estilo))) {
                 estilo = 'normal';
             }
-            alertify.notify(mensagem, mapaEstilo[estilo], tempo);
+            return alertify.notify(mensagem, mapaEstilo[estilo], tempo);
         }
     }
 

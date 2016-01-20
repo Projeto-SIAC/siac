@@ -1,12 +1,17 @@
 ﻿siac.Academica = siac.Academica || {};
 
 siac.Academica.Agendar = (function () {
+    var _notificacao;
+
     function iniciar() {
         $('.ui.informacoes.modal')
             .modal()
         ;
 
         $('#txtData, #txtHoraInicio, #txtHoraTermino').change(function () {
+            if (_notificacao) {
+                _notificacao.dismiss();
+            }
             var $data = $('#txtData');
             var $horaInicio = $('#txtHoraInicio');
             var $horaTermino = $('#txtHoraTermino');
@@ -21,9 +26,13 @@ siac.Academica.Agendar = (function () {
                     type: 'POST',
                     url: '/principal/agenda/conflitos',
                     success: function (response) {
-                        console.log(response);
                         if (response && response.length > 0) {
-                            siac.Lembrete.Notificacoes.exibir('<p>Há inconsistência nos agendamentos. Por favor, verifique antes de continuar.</p>' +
+                            var li = "";
+                            for (x = 0, length = response.length; x < length; x++) {
+                                li += "<li>" + response[x].title + "</li>";
+                            }
+                            _notificacao = siac.Lembrete.Notificacoes.exibir('<p>Há inconsistência nos agendamentos. Por favor, verifique antes de continuar.</p>' +
+                                '<ul>' + li +'</ul>' +
                                 '<a class="ui inverted button" href="/principal/agenda" target="_blank">Abrir</a>', 'negativo', 0)
                         }
                     }

@@ -102,7 +102,7 @@
     border: 0 solid transparent;
     border-radius: .28571429rem;
     font-size: 1.15em;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
 .ajs-message.ajs-red {
@@ -112,7 +112,7 @@
     color: #FFF!important;
     border-radius: .28571429rem;
     font-size: 1.15em;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
 .ajs-message.ajs-blue {
@@ -122,7 +122,7 @@
     color: #FFF!important;
     border-radius: .28571429rem;
     font-size: 1.15em;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
 .ajs-message.ajs-green {
@@ -132,6 +132,6 @@
       color: #FFFFFF !important;
     border-radius: .28571429rem;
     font-size: 1.15em;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
