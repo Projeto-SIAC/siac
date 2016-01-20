@@ -104,7 +104,7 @@ namespace SIAC.Controllers
                     usuario.Matricula = matricula;
                     usuario.PessoaFisica = pf;
                     usuario.CodCategoria = 4;
-                    string senha = $"{pf.PrimeiroNome}@{cpf.Substring(0, 3)}"; // primeironome@3primeirosdigitosdocpf
+                    string senha = Sistema.GerarSenhaPadrao(usuario);
                     usuario.Senha = Criptografia.RetornarHash(senha);
 
                     Usuario.Inserir(usuario);

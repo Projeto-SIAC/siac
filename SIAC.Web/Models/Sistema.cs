@@ -25,26 +25,24 @@ namespace SIAC.Models
         {
             var cookie = HttpContext.Current.Request.Cookies["SIAC_Session"];
             if (cookie != null)
-            {
                 CookieUsuario[cookie.Value] = matricula;
-            }
         }
 
         public static void RemoverCookie(string matricula)
         {
-            var cookie = string.Empty;
-            foreach (var key in CookieUsuario.Keys)
+            string cookie = string.Empty;
+            foreach (string chave in CookieUsuario.Keys)
             {
-                if (CookieUsuario[key] == matricula)
+                if (CookieUsuario[chave] == matricula)
                 {
-                    cookie = key;
+                    cookie = chave;
                     break;
                 }
             }
             if (!String.IsNullOrEmpty(cookie))
-            {
                 CookieUsuario.Remove(cookie);
-            }
         }
+
+        public static string GerarSenhaPadrao(Usuario usuario) => $"{usuario.PessoaFisica.PrimeiroNome}@{usuario.PessoaFisica.Cpf?.Substring(0, 3)}";
     }
 }

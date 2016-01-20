@@ -37,16 +37,8 @@ namespace SIAC.Models
             if (!Sistema.UsuarioAtivo.Keys.Contains(matricula))
             {
                 Usuario usuario = ListarPorMatricula(matricula);
-
-                if (usuario != null)
-                {
-                    string strSenha = Criptografia.RetornarHash(senha);
-
-                    if (usuario.Senha == strSenha)
-                    {
-                        return usuario;
-                    }
-                }
+                if (usuario != null && usuario.Senha == Criptografia.RetornarHash(senha))
+                    return usuario;
             }
             return null;
         }
@@ -106,11 +98,10 @@ namespace SIAC.Models
 
         public void AtualizarSenha(string novaSenha)
         {
-            Usuario usuario = contexto.Usuario.FirstOrDefault(u => u.Matricula == this.Matricula);
-
+            Usuario usuario = contexto.Usuario.Find(this.Matricula);
             if (usuario != null)
             {
-                usuario.Senha = Helpers.Criptografia.RetornarHash(novaSenha);
+                usuario.Senha = Criptografia.RetornarHash(novaSenha);
                 contexto.SaveChanges();
             }
         }

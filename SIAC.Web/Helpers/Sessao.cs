@@ -7,8 +7,6 @@ namespace SIAC.Helpers
     {
         private static HttpContext context => HttpContext.Current;
 
-        //public static bool RealizandoAvaliacao => context?.Session["RealizandoAvaliacao"] != null ? (bool)context.Session["RealizandoAvaliacao"] : false;
-
         public static bool RealizandoAvaliacao
         {
             get
@@ -16,9 +14,7 @@ namespace SIAC.Helpers
                 foreach (var avaliacao in Models.Sistema.AvaliacaoUsuario.Keys)
                 {
                     if (Models.Sistema.AvaliacaoUsuario[avaliacao].Contains(UsuarioMatricula))
-                    {
                         return true;
-                    }
                 }
                 return false;
             }

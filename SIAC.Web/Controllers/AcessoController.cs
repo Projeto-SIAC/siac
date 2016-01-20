@@ -9,14 +9,12 @@ namespace SIAC.Controllers
 {
     public class AcessoController : Controller
     {
-        // GET: Acesso
+        // GET: /
         public ActionResult Index()
         {
             Parametro.ObterAsync();
             if (Sistema.Autenticado(Sessao.UsuarioMatricula))
-            {
                 return RedirectToAction("Index", "Principal");
-            }
             return View(new AcessoIndexViewModel());
         }
 
@@ -34,16 +32,14 @@ namespace SIAC.Controllers
         }
         */
 
-        // POST: Acesso/Entrar
+        // POST: /
         [HttpPost]
         public ActionResult Index(FormCollection formCollection)
         {
             if (Sistema.Autenticado(Sessao.UsuarioMatricula))
-            {
                 return RedirectToAction("Index", "Principal");
-            }
 
-            bool valido = false;
+            bool validado = false;
 
             if (formCollection.HasKeys())
             {
@@ -56,22 +52,15 @@ namespace SIAC.Controllers
 
                     if (usuario != null)
                     {
-                        valido = true;
+                        validado = true;
                         Sessao.Inserir("UsuarioMatricula", usuario.Matricula);
                         Sessao.Inserir("UsuarioNome", usuario.PessoaFisica.Nome);
                         Sessao.Inserir("UsuarioCategoriaCodigo", usuario.CodCategoria);
                         Sessao.Inserir("UsuarioCategoria", usuario.Categoria.Descricao);
 
-                        //Verificando se a senha do usuário é diferente do padrão de VISITANTE
-                        if (usuario.CodCategoria == 4)
-                        {
-                            string senhaVisitante = usuario.PessoaFisica.PrimeiroNome + "@" + usuario.PessoaFisica.Cpf.Substring(0, 3);
-
-                            if (senha == senhaVisitante)
-                            {
-                                Sessao.Inserir("UsuarioSenhaPadrao", true);
-                            }
-                        }
+                        //Verificando se a senha do usuário é padrão de visitante
+                        if (usuario.CodCategoria == 4 && senha == Sistema.GerarSenhaPadrao(usuario))
+                            Sessao.Inserir("UsuarioSenhaPadrao", true);
 
                         Usuario.RegistrarAcesso(usuario.Matricula);
                         Sistema.RegistrarCookie(usuario.Matricula);
@@ -79,13 +68,11 @@ namespace SIAC.Controllers
                 }
             }
 
-            if (valido)
+            if (validado)
             {
                 Lembrete.AdicionarNotificacao("Seu usuário foi autenticado com sucesso.", Lembrete.Positivo);
                 if (Request.QueryString["continuar"] != null)
-                {
                     return Redirect(Request.QueryString["continuar"].ToString());
-                }
                 return RedirectToAction("Index", "Principal");
             }
             else
@@ -94,7 +81,7 @@ namespace SIAC.Controllers
                 model.Matricula = formCollection.HasKeys() ? formCollection["txtMatricula"] : "";
                 //ViewBag.Acao = "$('.modal').modal('show');";
                 model.Erro = true;
-                if (!String.IsNullOrEmpty(model.Matricula) && Sistema.UsuarioAtivo.Keys.Contains(model.Matricula))
+                if (!String.IsNullOrWhiteSpace(model.Matricula) && Sistema.UsuarioAtivo.Keys.Contains(model.Matricula))
                 {
                     model.Mensagens = new string[] { "Seu usuário já está conectado." };
                 }
@@ -102,13 +89,10 @@ namespace SIAC.Controllers
             }
         }
 
-        // GET: Acesso/Conectado
-        public ActionResult Conectado()
-        {
-            return null;
-        }
+        // GET: acesso/conectado
+        public ActionResult Conectado() => null;
 
-        // GET: Acesso/Sair
+        // GET: acesso/sair
         public ActionResult Sair()
         {
             Sistema.UsuarioAtivo.Remove(Sessao.UsuarioMatricula);
@@ -117,47 +101,36 @@ namespace SIAC.Controllers
             return Redirect("~/");
         }
 
-        // GET: Acesso/Visitante
+        // GET: acesso/visitante
         public ActionResult Visitante()
         {
-            if (!String.IsNullOrEmpty(Sessao.UsuarioMatricula))
+            if (!String.IsNullOrWhiteSpace(Sessao.UsuarioMatricula) && Sessao.UsuarioCategoriaCodigo == 4 && Sessao.UsuarioSenhaPadrao)
             {
-                if (Sessao.UsuarioCategoriaCodigo == 4)
-                {
-                    if (Sessao.UsuarioSenhaPadrao)
-                    {
-                        Usuario usuario = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula);
-                        if (usuario != null)
-                        {
-                            return View(usuario);
-                        }
-                    }
-                }
+                Usuario usuario = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula);
+                if (usuario != null)
+                    return View(usuario);
             }
             return RedirectToAction("Index");
         }
 
-        // POST: Acesso/Visitante
+        // POST: acesso/visitante
         [HttpPost]
         public ActionResult Visitante(FormCollection formCollection)
         {
-            if (!String.IsNullOrEmpty(Sessao.UsuarioMatricula))
+            if (formCollection.HasKeys() && !StringExt.IsNullOrWhiteSpace(formCollection["txtNovaSenha"], formCollection["txtConfirmarNovaSenha"]))
             {
-                if (Sessao.UsuarioCategoriaCodigo == 4)
+                if (!String.IsNullOrWhiteSpace(Sessao.UsuarioMatricula) && Sessao.UsuarioCategoriaCodigo == 4)
                 {
                     Usuario usuario = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula);
                     if (usuario != null)
                     {
                         string novaSenha = formCollection["txtNovaSenha"];
-                        string confirmaNovaSenha = formCollection["txtConfirmaNovaSenha"];
+                        string confirmarNovaSenha = formCollection["txtConfirmarNovaSenha"];
 
-                        if(novaSenha != usuario.PessoaFisica.PrimeiroNome + "@" + usuario.PessoaFisica.Cpf.Substring(0, 3))
+                        if (novaSenha != Sistema.GerarSenhaPadrao(usuario) && novaSenha == confirmarNovaSenha)
                         {
-                            if (novaSenha == confirmaNovaSenha)
-                            {
-                                usuario.AtualizarSenha(novaSenha);
-                                Sessao.Inserir("UsuarioSenhaPadrao", false);
-                            }
+                            usuario.AtualizarSenha(novaSenha);
+                            Sessao.Inserir("UsuarioSenhaPadrao", false);
                         }
                     }
                 }

@@ -1,7 +1,7 @@
 ﻿@model Usuario
+
 @{
-    ViewBag.Title = "Primeiro acesso";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Primeiro Acesso";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -10,12 +10,11 @@
     <i class="spy icon"></i>
     <div class="content">
         <div class="header">
-            @Model.PessoaFisica.PrimeiroNome, Seja Bem Vindo ao SIAC!
+            @Model.PessoaFisica.PrimeiroNome, seja bem vindo ao SIAC!
         </div>
         <p>Percebemos que você ainda não atualizou sua senha padrão do sistema. Precisamos que você faça isso para continuar utilizando os nossos serviços.</p>
     </div>
 </div>
-
 
 <form class="ui form" method="post" action="@Url.Action("Visitante")">
     <div class="ui error message">
@@ -28,12 +27,12 @@
             <input type="password" id="txtNovaSenha" name="txtNovaSenha" placeholder="Nova senha" required/>
         </div>
         <div class="eight wide field required">
-            <label>Confirma nova senha</label>
-            <input type="password" id="txtConfirmaNovaSenha" name="txtConfirmaNovaSenha" placeholder="Confirma nova senha" required />
+            <label>Confirmar nova senha</label>
+            <input type="password" id="txtConfirmaNovaSenha" name="txtConfirmarNovaSenha" placeholder="Confirmar nova senha" required />
         </div>
     </div>
     <div class="field">
-        <div class="ui atualizar button" tabindex="0">Atualizar Senha</div>
+        <div class="ui atualizar button" tabindex="0">Atualizar senha</div>
     </div>
 </form>
 

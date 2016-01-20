@@ -151,7 +151,7 @@
                         <div style="text-align:left" class="ui small message error">
                             <div class="header">Credenciais inválidas</div>
                             <p>Note que ambos os campos diferenciam maiúsculas e minúsculas.</p>
-                            @foreach (var mensagem in Model.Mensagens)
+                            @foreach (string mensagem in Model.Mensagens)
                             {
                                 <p>@mensagem</p>
                             }
@@ -235,7 +235,7 @@
     <div class="ui page dimmer">
         <div class="ui large text global loader">Carregando</div>
     </div>
-    @Scripts.Render("~/bundles/js/acesso")
+    @Scripts.Render("~/bundles/js/essentials")
     <script>
         $(document)
           .ready(function () {

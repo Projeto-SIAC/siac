@@ -11,7 +11,7 @@ namespace SIAC
                 "~/scripts/libs/modernizr.js"
             ));
 
-            bundles.Add(new ScriptBundle("~/bundles/js/acesso").Include(
+            bundles.Add(new ScriptBundle("~/bundles/js/essentials").Include(
                 "~/scripts/libs/jquery.min.js",
                 "~/scripts/libs/semantic.min.js"
             ));

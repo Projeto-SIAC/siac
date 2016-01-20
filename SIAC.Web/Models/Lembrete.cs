@@ -12,12 +12,10 @@ namespace SIAC.Models
 
         public static void AdicionarNotificacao(string mensagem, string estilo = Normal, int tempo = 5)
         {
-            var notificacoes = (List<Dictionary<string, string>>)Sessao.Retornar("Notificacoes");
+            List<Dictionary<string, string>> notificacoes = (List<Dictionary<string, string>>)Sessao.Retornar("Notificacoes");
 
             if (notificacoes == null)
-            {
                 notificacoes = new List<Dictionary<string, string>>();
-            }
 
             notificacoes.Add(new Dictionary<string, string> {
                 { "Mensagem", mensagem },
