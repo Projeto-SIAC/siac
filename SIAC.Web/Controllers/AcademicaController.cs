@@ -1,15 +1,19 @@
-﻿using System;
+﻿using SIAC.Models;
+using SIAC.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using SIAC.Models;
 
 namespace SIAC.Controllers
 {
     [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2 })]
     public class AcademicaController : Controller
     {
+        private const int CodTipoAvalAcademica = 2;
+        private const int CodQuestaoObjetiva = 1;
+        private const int CodQuestaoDiscursiva = 2;
+
         public List<AvalAcademica> Academicas
         {
             get
@@ -27,12 +31,13 @@ namespace SIAC.Controllers
             }
         }
 
-        // POST: Academica/Listar
+        // POST: academica/listar
         [HttpPost]
         public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina)
         {
-            var qte = 12;
-            var academicas = Academicas;
+            int quantidade = 12;
+            List<AvalAcademica> academicas = Academicas;
+
             pagina = pagina ?? 1;
             if (!String.IsNullOrWhiteSpace(pesquisa))
             {
@@ -85,10 +90,10 @@ namespace SIAC.Controllers
                     break;
             }
 
-            return PartialView("_ListaAcademica", academicas.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
+            return PartialView("_ListaAcademica", academicas.Skip((quantidade * pagina.Value) - quantidade).Take(quantidade).ToList());
         }
 
-        // GET: Historico/Avaliacao/Academica
+        // GET: historico/avaliacao/academica
         [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
@@ -96,16 +101,17 @@ namespace SIAC.Controllers
             {
                 return Redirect("~/historico/avaliacao/academica");
             }
-            var model = new ViewModels.AvaliacaoIndexViewModel();
+
+            AvaliacaoIndexViewModel model = new AvaliacaoIndexViewModel();
             model.Disciplinas = Academicas.Select(a => a.Disciplina).Distinct().ToList();
             return View(model);
         }
 
-        //GET: Principal/Avaliacao/Academica/Gerar
+        // GET: principal/avaliacao/academica/gerar
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Gerar()
         {
-            var model = new ViewModels.AvaliacaoGerarViewModel();
+            AvaliacaoGerarViewModel model = new AvaliacaoGerarViewModel();
             model.Disciplinas = Disciplina.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula);
             model.Dificuldades = Dificuldade.ListarOrdenadamente();
             model.Termo = Parametro.Obter().NotaUsoAcademica;
@@ -113,7 +119,7 @@ namespace SIAC.Controllers
             return View(model);
         }
 
-        //POST: Principal/Avaliacao/Academica/Confirmar
+        // POST: principal/avaliacao/academica/confirmar
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Confirmar(FormCollection formCollection)
@@ -133,15 +139,15 @@ namespace SIAC.Controllers
 
                 /* Chave */
                 acad.Avaliacao = new Avaliacao();
-                acad.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(2);
+                acad.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(CodTipoAvalAcademica);
                 acad.Avaliacao.Ano = hoje.Year;
                 acad.Avaliacao.Semestre = hoje.Month > 6 ? 2 : 1;
-                acad.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(2);
+                acad.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(CodTipoAvalAcademica);
                 acad.Avaliacao.DtCadastro = hoje;
 
                 /* Professor */
-                string strMatr = Helpers.Sessao.UsuarioMatricula;
-                acad.Professor = Professor.ListarPorMatricula(strMatr);
+                string matricula = Helpers.Sessao.UsuarioMatricula;
+                acad.Professor = Professor.ListarPorMatricula(matricula);
 
                 /* Dados */
                 int codDisciplina = int.Parse(formCollection["ddlDisciplina"]);
@@ -152,45 +158,46 @@ namespace SIAC.Controllers
                 int codDificuldade = int.Parse(formCollection["ddlDificuldade"]);
 
                 /* Quantidade */
-                int qteObjetiva = 0;
-                int qteDiscursiva = 0;
+                int quantidadeObjetiva = 0;
+                int quantidadeDiscursiva = 0;
+
                 if (formCollection["ddlTipo"] == "3")
                 {
-                    int.TryParse(formCollection["txtQteObjetiva"], out qteObjetiva);
-                    int.TryParse(formCollection["txtQteDiscursiva"], out qteDiscursiva);
+                    int.TryParse(formCollection["txtQteObjetiva"], out quantidadeObjetiva);
+                    int.TryParse(formCollection["txtQteDiscursiva"], out quantidadeDiscursiva);
                 }
                 else if (formCollection["ddlTipo"] == "2")
                 {
-                    int.TryParse(formCollection["txtQteDiscursiva"], out qteDiscursiva);
+                    int.TryParse(formCollection["txtQteDiscursiva"], out quantidadeDiscursiva);
                 }
                 else if (formCollection["ddlTipo"] == "1")
                 {
-                    int.TryParse(formCollection["txtQteObjetiva"], out qteObjetiva);
+                    int.TryParse(formCollection["txtQteObjetiva"], out quantidadeObjetiva);
                 }
 
                 /* Temas */
-                string[] arrTemaCods = formCollection["ddlTemas"].Split(',');
+                string[] temaCodigos = formCollection["ddlTemas"].Split(',');
 
                 /* Questões */
                 List<QuestaoTema> lstQuestoes = new List<QuestaoTema>();
 
-                if (qteObjetiva > 0)
+                if (quantidadeObjetiva > 0)
                 {
-                    lstQuestoes.AddRange(Questao.ListarPorDisciplina(codDisciplina, arrTemaCods, codDificuldade, 1, qteObjetiva));
+                    lstQuestoes.AddRange(Questao.ListarPorDisciplina(codDisciplina, temaCodigos, codDificuldade, CodQuestaoObjetiva, quantidadeObjetiva));
                 }
-                if (qteDiscursiva > 0)
+                if (quantidadeDiscursiva > 0)
                 {
-                    lstQuestoes.AddRange(Questao.ListarPorDisciplina(codDisciplina, arrTemaCods, codDificuldade, 2, qteDiscursiva));
+                    lstQuestoes.AddRange(Questao.ListarPorDisciplina(codDisciplina, temaCodigos, codDificuldade, CodQuestaoDiscursiva, quantidadeDiscursiva));
                 }
 
-                foreach (var strTemaCod in arrTemaCods)
+                foreach (var temaCodigo in temaCodigos)
                 {
                     AvaliacaoTema avalTema = new AvaliacaoTema();
-                    avalTema.Tema = Tema.ListarPorCodigo(codDisciplina, int.Parse(strTemaCod));
-                    foreach (var queTma in lstQuestoes.Where(q => q.CodTema == int.Parse(strTemaCod)))
+                    avalTema.Tema = Tema.ListarPorCodigo(codDisciplina, int.Parse(temaCodigo));
+                    foreach (QuestaoTema questaoTema in lstQuestoes.Where(q => q.CodTema == int.Parse(temaCodigo)))
                     {
                         AvalTemaQuestao avalTemaQuestao = new AvalTemaQuestao();
-                        avalTemaQuestao.QuestaoTema = queTma;
+                        avalTemaQuestao.QuestaoTema = questaoTema;
                         avalTema.AvalTemaQuestao.Add(avalTemaQuestao);
                     }
                     acad.Avaliacao.AvaliacaoTema.Add(avalTema);
@@ -202,25 +209,25 @@ namespace SIAC.Controllers
             return View(acad);
         }
 
-        //GET: Principal/Avaliacao/Academica/Agendar/ACAD2015100002
+        // GET: principal/avaliacao/academica/agendar/ACAD2015100002
         [HttpGet]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Agendar(string codigo)
         {
-            if (String.IsNullOrEmpty(codigo) || Sistema.AvaliacaoUsuario.ContainsKey(codigo))
+            if (String.IsNullOrWhiteSpace(codigo) || Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 return RedirectToAction("Index");
             }
             AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
 
-            string strMatr = Helpers.Sessao.UsuarioMatricula;
-            Professor prof = Professor.ListarPorMatricula(strMatr);
-            if (acad.CodProfessor == prof.CodProfessor)
+            string matricula = Helpers.Sessao.UsuarioMatricula;
+            Professor professor = Professor.ListarPorMatricula(matricula);
+            if (acad.CodProfessor == professor.CodProfessor)
             {
-                var model = new ViewModels.AvaliacaoAgendarViewModel();
+                var model = new AvaliacaoAgendarViewModel();
 
                 model.Avaliacao = acad.Avaliacao;
-                model.Turmas = prof.TurmaDiscProfHorario.Select(d => d.Turma).Distinct().OrderBy(t => t.Curso.Descricao).ToList();
+                model.Turmas = professor.TurmaDiscProfHorario.Select(d => d.Turma).Distinct().OrderBy(t => t.Curso.Descricao).ToList();
                 model.Salas = Sala.ListarOrdenadamente();
 
                 return View(model);
@@ -228,7 +235,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        //POST: Principal/Avaliacao/Academica/Agendar/ACAD2015100002
+        // POST: principal/avaliacao/academica/agendar/ACAD2015100002
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Agendar(string codigo, FormCollection form)
@@ -241,22 +248,22 @@ namespace SIAC.Controllers
                 }
                 else return RedirectToAction("Index", "Principal");
             }
-            string strCodTurma = form["ddlTurma"];
+            string codTurma = form["ddlTurma"];
             string strCodSala = form["ddlSala"];
-            string strData = form["txtData"];
-            string strHoraInicio = form["txtHoraInicio"];
-            string strHoraTermino = form["txtHoraTermino"];
-            if (!Helpers.StringExt.IsNullOrWhiteSpace(strCodTurma, strCodSala, strData, strHoraInicio, strHoraTermino))
+            string data = form["txtData"];
+            string horaInicio = form["txtHoraInicio"];
+            string horaTermino = form["txtHoraTermino"];
+            if (!Helpers.StringExt.IsNullOrWhiteSpace(codTurma, strCodSala, data,horaInicio,horaTermino))
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
 
-                string strMatr = Helpers.Sessao.UsuarioMatricula;
-                Professor prof = Professor.ListarPorMatricula(strMatr);
+                string matricula = Helpers.Sessao.UsuarioMatricula;
+                Professor professor = Professor.ListarPorMatricula(matricula);
 
-                if (acad.CodProfessor == prof.CodProfessor)
+                if (acad.CodProfessor == professor.CodProfessor)
                 {
                     // Turma
-                    Turma turma = Turma.ListarPorCodigo(strCodTurma);
+                    Turma turma = Turma.ListarPorCodigo(codTurma);
                     if (turma != null)
                     {
                         acad.Turma = turma;
@@ -272,8 +279,8 @@ namespace SIAC.Controllers
                     }
 
                     // Data de Aplicacao
-                    DateTime dtAplicacao = DateTime.Parse(strData + " " + strHoraInicio);
-                    DateTime dtAplicacaoTermino = DateTime.Parse(strData + " " + strHoraTermino);
+                    DateTime dtAplicacao = DateTime.Parse(data + " " + horaInicio);
+                    DateTime dtAplicacaoTermino = DateTime.Parse(data + " " + horaInicio);
 
                     if (dtAplicacao.IsFuture() && dtAplicacaoTermino.IsFuture() && dtAplicacaoTermino > dtAplicacao)
                     {
@@ -284,19 +291,16 @@ namespace SIAC.Controllers
                     acad.Avaliacao.FlagLiberada = false;
 
                     Repositorio.GetInstance().SaveChanges();
-                    // OU
-                    // AvalAcademica.Agendar(acad);
-
                 }
             }
 
             return RedirectToAction("Agendada", new { codigo = codigo });
         }
 
-        // GET: Avaliacao/Academica/Detalhe/ACAD201520001
+        // GET: avaliacao/academica/detalhe/ACAD201520001
         public ActionResult Detalhe(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                 if (acad != null)
@@ -308,7 +312,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Avaliacao/Academica/Configurar/ACAD201520001
+        // GET: avaliacao/academica/configurar/ACAD201520001
         [HttpGet]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Configurar(string codigo)
@@ -320,16 +324,16 @@ namespace SIAC.Controllers
             TempData["listaQuestoesIndices"] = new List<int>();
             TempData["listaQuestoesRecentes"] = new List<int>();
 
-            if (!String.IsNullOrEmpty(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                 if (acad != null && acad.Avaliacao.AvalPessoaResultado.Count == 0)
                 {
-                    string strMatr = Helpers.Sessao.UsuarioMatricula;
-                    Professor prof = Professor.ListarPorMatricula(strMatr);
-                    if (prof != null)
+                    string matricula = Helpers.Sessao.UsuarioMatricula;
+                    Professor professor = Professor.ListarPorMatricula(matricula);
+                    if (professor != null)
                     {
-                        if (prof.CodProfessor == acad.CodProfessor)
+                        if (professor.CodProfessor == acad.CodProfessor)
                         {
                             return View(acad);
                         }
@@ -339,18 +343,18 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Avaliacao/Academica/Imprimir/ACAD201520001
+        // GET: avaliacao/academica/imprimir/ACAD201520001
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Imprimir(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                 if (acad != null)
                 {
-                    string strMatr = Helpers.Sessao.UsuarioMatricula;
-                    Professor prof = Professor.ListarPorMatricula(strMatr);
-                    if (prof.CodProfessor == acad.CodProfessor)
+                    string matricula = Helpers.Sessao.UsuarioMatricula;
+                    Professor professor = Professor.ListarPorMatricula(matricula);
+                    if (professor.CodProfessor == acad.CodProfessor)
                     {
                         return View(acad);
                     }
@@ -359,13 +363,13 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Avaliacao/Academica/Agendada/ACAD201520001
+        // GET: avaliacao/academica/agendada/ACAD201520001
         public ActionResult Agendada(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
-                var usuario = Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-                var acad = AvalAcademica.ListarAgendadaPorUsuario(usuario).FirstOrDefault(a=>a.Avaliacao.CodAvaliacao.ToLower() == codigo.ToLower());
+                Usuario usuario = Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
+                AvalAcademica acad = AvalAcademica.ListarAgendadaPorUsuario(usuario).FirstOrDefault(a=>a.Avaliacao.CodAvaliacao.ToLower() == codigo.ToLower());
                 if (acad != null)
                 {
                     return View(acad);
@@ -374,51 +378,51 @@ namespace SIAC.Controllers
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
-        //POST: Avaliacao/Academica/Trocar/ACAD201520001
+        // POST: avaliacao/academica/trocar/ACAD201520001
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult TrocarQuestao(string codigoAvaliacao, int tipo, int indice, int codQuestao)
         {
             List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData["listaQuestoesAntigas"];
             List<AvalTemaQuestao> novas = (List<AvalTemaQuestao>)TempData["listaQuestoesNovas"];
-            List<QuestaoTema> questoesTrocaObj = (List<QuestaoTema>)TempData["listaQuestoesPossiveisObj"];
-            List<QuestaoTema> questoesTrocaDisc = (List<QuestaoTema>)TempData["listaQuestoesPossiveisDisc"];
+            List<QuestaoTema> questoesTrocaObjetiva = (List<QuestaoTema>)TempData["listaQuestoesPossiveisObj"];
+            List<QuestaoTema> questoesTrocaDiscursiva = (List<QuestaoTema>)TempData["listaQuestoesPossiveisDisc"];
             List<int> indices = (List<int>)TempData["listaQuestoesIndices"];
             List<int> recentes = (List<int>)TempData["listaQuestoesRecentes"];
 
             TempData.Keep();
             Random r = new Random();
 
-            if (!String.IsNullOrEmpty(codigoAvaliacao))
+            if (!String.IsNullOrWhiteSpace(codigoAvaliacao))
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigoAvaliacao);
                 if (acad != null)
                 {
-                    List<QuestaoTema> AvalQuestTema = acad.Avaliacao.QuestaoTema;
+                    List<QuestaoTema> avalQuestTema = acad.Avaliacao.QuestaoTema;
 
                     QuestaoTema questao = null;
 
-                    if (tipo == 1)
+                    if (tipo == CodQuestaoObjetiva)
                     {
-                        if (questoesTrocaObj.Count <= 0)
+                        if (questoesTrocaObjetiva.Count <= 0)
                         {
-                            TempData["listaQuestoesPossiveisObj"] = Questao.ObterNovasQuestoes(AvalQuestTema, tipo);
-                            questoesTrocaObj = (List<QuestaoTema>)TempData["listaQuestoesPossiveisObj"];
+                            TempData["listaQuestoesPossiveisObj"] = Questao.ObterNovasQuestoes(avalQuestTema, tipo);
+                            questoesTrocaObjetiva = (List<QuestaoTema>)TempData["listaQuestoesPossiveisObj"];
                         }
 
-                        int random = r.Next(0, questoesTrocaObj.Count);
-                        questao = questoesTrocaObj.ElementAtOrDefault(random);
+                        int random = r.Next(0, questoesTrocaObjetiva.Count);
+                        questao = questoesTrocaObjetiva.ElementAtOrDefault(random);
                     }
-                    else if (tipo == 2)
+                    else if (tipo == CodQuestaoDiscursiva)
                     {
-                        if (questoesTrocaDisc.Count <= 0)
+                        if (questoesTrocaDiscursiva.Count <= 0)
                         {
-                            TempData["listaQuestoesPossiveisDisc"] = Questao.ObterNovasQuestoes(AvalQuestTema, tipo);
-                            questoesTrocaDisc = (List<QuestaoTema>)TempData["listaQuestoesPossiveisDisc"];
+                            TempData["listaQuestoesPossiveisDisc"] = Questao.ObterNovasQuestoes(avalQuestTema, tipo);
+                            questoesTrocaDiscursiva = (List<QuestaoTema>)TempData["listaQuestoesPossiveisDisc"];
                         }
 
-                        int random = r.Next(0, questoesTrocaDisc.Count);
-                        questao = questoesTrocaDisc.ElementAtOrDefault(random);
+                        int random = r.Next(0, questoesTrocaDiscursiva.Count);
+                        questao = questoesTrocaDiscursiva.ElementAtOrDefault(random);
                     }
 
                     if (questao != null)
@@ -466,7 +470,7 @@ namespace SIAC.Controllers
             return Json(String.Empty);
         }
 
-        //POST: Avaliacao/Academica/Salvar/ACAD201520001
+        //POST: avaliacao/academica/salvar/ACAD201520001
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
         public ActionResult Salvar(string codigo)
@@ -476,8 +480,7 @@ namespace SIAC.Controllers
 
             if (antigas.Count != 0 && novas.Count != 0)
             {
-                //AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigoAval);
-                var contexto = Repositorio.GetInstance();
+                dbSIACEntities contexto = Repositorio.GetInstance();
                 for (int i = 0; i < antigas.Count && i < novas.Count; i++)
                 {
                     contexto.AvalTemaQuestao.Remove(antigas.ElementAtOrDefault(i));
@@ -487,9 +490,15 @@ namespace SIAC.Controllers
             }
             TempData.Clear();
 
-
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
+
+        //              ^
+        //              |
+        /*  PAROU AQUI NA REFATORAÇÃO */
+        /*  VOLTA AQUI NA REFATORAÇÃO */
+        //              |
+        //              V
 
         //POST: Avaliacao/Academica/Desfazer/ACAD201520001
         [HttpPost]
