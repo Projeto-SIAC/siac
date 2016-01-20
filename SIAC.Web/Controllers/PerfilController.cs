@@ -12,25 +12,27 @@ namespace SIAC.Controllers
     [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2, 3 })]
     public class PerfilController : Controller
     {
-        // GET: Perfil
+        // GET: perfil
         [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             return View(Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario);
         }
-
+        
+        // GET: perfil/estatisticas
         [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Estatisticas()
         {
             return PartialView("_Estatisticas", Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario);
         }
 
+        // POST: perfil/enviaropiniao
         [HttpPost]
         public void EnviarOpiniao(string opiniao)
         {
             if (!String.IsNullOrWhiteSpace(opiniao))
             {
-                var usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
+                Usuario usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
                 usuario.UsuarioOpiniao.Add(new UsuarioOpiniao
                 {
                     CodOrdem = usuario.UsuarioOpiniao.Count > 0 ? usuario.UsuarioOpiniao.Max(o => o.CodOrdem) + 1 : 1,

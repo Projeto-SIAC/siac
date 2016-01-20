@@ -3,7 +3,8 @@
         $('#estatisticas').load('/perfil/estatisticas');
         $('.ui.opiniao.modal').modal({
             onApprove: function () {
-                if (verificar()) enviarOpiniao();
+                if (verificar())
+                    enviarOpiniao();
                 else {
                     $('.opiniao.modal .form').addClass('error');
                     return false;
