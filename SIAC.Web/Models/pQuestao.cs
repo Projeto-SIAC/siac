@@ -80,156 +80,156 @@ namespace SIAC.Models
              where qt.CodTema == codTema
              select qt.Questao).ToList();
 
-        public static List<QuestaoTema> ListarPorDisciplina(int codDisciplina, string[] Temas, int dificulDisc, int tipo, int qteQuestoes)
+        public static List<QuestaoTema> ListarPorDisciplina(int codDisciplina, string[] temas, int disciplinaDificuldade, int tipoQuestao, int quantidadeQuestoes)
         {
-            List<QuestaoTema> QuestoesTemas = new List<QuestaoTema>(); //LISTA DE QUESTÕES PARA AVALIAÇÃO
-            List<QuestaoTema> QuestoesTotal = new List<QuestaoTema>(); //LISTA DE TODAS AS QUESTÕES DO BANCO
-            List<QuestaoTema> QuestoesAtual = new List<QuestaoTema>(); //LISTA DE QUESTÕES FILTRADAS DE TODAS [QUESTÕES] PARA O RETORNO - MEIO TERMO
+            List<QuestaoTema> questoesTemas = new List<QuestaoTema>(); //LISTA DE QUESTÕES PARA AVALIAÇÃO
+            List<QuestaoTema> questoesTotal = new List<QuestaoTema>(); //LISTA DE TODAS AS QUESTÕES DO BANCO
+            List<QuestaoTema> questoesAtual = new List<QuestaoTema>(); //LISTA DE QUESTÕES FILTRADAS DE TODAS [QUESTÕES] PARA O RETORNO - MEIO TERMO
 
             Random r = new Random();
             int temaContador = 0;
-            int temaAtual = int.Parse(Temas[temaContador]);
+            int temaAtual = int.Parse(temas[temaContador]);
 
-            if (qteQuestoes > 0)
+            if (quantidadeQuestoes > 0)
             {
-                foreach (string tema in Temas)
+                foreach (string tema in temas)
                 {
                     int codTema = int.Parse(tema);
                     List<QuestaoTema> temp = (from qt in contexto.QuestaoTema
-                                              where qt.Questao.CodTipoQuestao == tipo
-                                              && qt.Questao.CodDificuldade <= dificulDisc
+                                              where qt.Questao.CodTipoQuestao == tipoQuestao
+                                              && qt.Questao.CodDificuldade <= disciplinaDificuldade
                                               && qt.CodDisciplina == codDisciplina
                                               && qt.CodTema == codTema
                                               && !qt.Questao.FlagArquivo
                                               select qt).ToList();
 
-                    temp = Models.QuestaoTema.LimparRepeticao(temp, QuestoesTemas, QuestoesTotal);
+                    temp = Models.QuestaoTema.LimparRepeticao(temp, questoesTemas, questoesTotal);
 
-                    if (temp.Count != 0 && QuestoesTemas.Count < qteQuestoes)
+                    if (temp.Count != 0 && questoesTemas.Count < quantidadeQuestoes)
                     {
-                        for (int i = dificulDisc; i >= 1; i--)
+                        for (int i = disciplinaDificuldade; i >= 1; i--)
                         {
-                            List<QuestaoTema> lstideal = (from qt in temp where qt.Questao.CodDificuldade == i select qt).ToList();
+                            List<QuestaoTema> lstIdeal = (from qt in temp where qt.Questao.CodDificuldade == i select qt).ToList();
 
-                            if (lstideal.Count != 0)
+                            if (lstIdeal.Count != 0)
                             {
-                                int random = r.Next(0, lstideal.Count);
+                                int random = r.Next(0, lstIdeal.Count);
 
-                                QuestoesTemas.Add(lstideal.ElementAtOrDefault(random));
-                                temp.Remove(lstideal.ElementAtOrDefault(random));
-                                lstideal.Clear();
+                                questoesTemas.Add(lstIdeal.ElementAtOrDefault(random));
+                                temp.Remove(lstIdeal.ElementAtOrDefault(random));
+                                lstIdeal.Clear();
                                 break;
                             }
                         }
-                        QuestoesTotal.AddRange(temp);
+                        questoesTotal.AddRange(temp);
                     }
                 }
 
-                for (int i = dificulDisc; i >= 1 && QuestoesTemas.Count < qteQuestoes; i--)
+                for (int i = disciplinaDificuldade; i >= 1 && questoesTemas.Count < quantidadeQuestoes; i--)
                 {
-                    QuestoesAtual = (from qt in QuestoesTotal
+                    questoesAtual = (from qt in questoesTotal
                                      where qt.Questao.CodDificuldade == i
                                      select qt).ToList();
-                    if (QuestoesAtual.Count != 0)
+                    if (questoesAtual.Count != 0)
                     {
                         int random = 0;
-                        if (QuestoesAtual.Count > 1)
+                        if (questoesAtual.Count > 1)
                         {
-                            random = r.Next(0, QuestoesAtual.Count);
-                            QuestoesTemas.Add(QuestoesAtual.ElementAtOrDefault(random));
+                            random = r.Next(0, questoesAtual.Count);
+                            questoesTemas.Add(questoesAtual.ElementAtOrDefault(random));
 
-                            temaContador = (Temas.Length >= temaContador) ? 0 : temaContador++;
-                            temaAtual = int.Parse(Temas[temaContador]);
+                            temaContador = (temas.Length >= temaContador) ? 0 : temaContador++;
+                            temaAtual = int.Parse(temas[temaContador]);
                         }
                         else
                         {
-                            QuestoesTemas.Add(QuestoesAtual.FirstOrDefault());
+                            questoesTemas.Add(questoesAtual.FirstOrDefault());
                         }
-                        QuestoesTotal.Remove(QuestoesAtual.ElementAtOrDefault(random));
+                        questoesTotal.Remove(questoesAtual.ElementAtOrDefault(random));
                     }
                 }
 
 
-                if (qteQuestoes > QuestoesTemas.Count)
+                if (quantidadeQuestoes > questoesTemas.Count)
                 {
-                    QuestoesAtual = (from qt in QuestoesTotal
-                                     where qt.Questao.CodDificuldade == dificulDisc
+                    questoesAtual = (from qt in questoesTotal
+                                     where qt.Questao.CodDificuldade == disciplinaDificuldade
                                      select qt).ToList();
 
-                    if (QuestoesAtual.Count + QuestoesTemas.Count >= qteQuestoes)
+                    if (questoesAtual.Count + questoesTemas.Count >= quantidadeQuestoes)
                     {
-                        for (int i = QuestoesTemas.Count; i < qteQuestoes; i++)
+                        for (int i = questoesTemas.Count; i < quantidadeQuestoes; i++)
                         {
                             int random = 0;
-                            if (QuestoesAtual.Count > 1)
+                            if (questoesAtual.Count > 1)
                             {
-                                random = r.Next(0, QuestoesAtual.Count);
-                                QuestoesTemas.Add(QuestoesAtual.ElementAtOrDefault(random));
+                                random = r.Next(0, questoesAtual.Count);
+                                questoesTemas.Add(questoesAtual.ElementAtOrDefault(random));
                             }
                             else
                             {
-                                QuestoesTemas.Add(QuestoesAtual.FirstOrDefault());
+                                questoesTemas.Add(questoesAtual.FirstOrDefault());
                             }
 
-                            QuestoesAtual.RemoveAt(random);
-                            QuestoesTotal.Remove(QuestoesAtual.ElementAtOrDefault(random));
-                            temaContador = (Temas.Length >= temaContador) ? 0 : temaContador++;
-                            temaAtual = int.Parse(Temas[temaContador]);
+                            questoesAtual.RemoveAt(random);
+                            questoesTotal.Remove(questoesAtual.ElementAtOrDefault(random));
+                            temaContador = (temas.Length >= temaContador) ? 0 : temaContador++;
+                            temaAtual = int.Parse(temas[temaContador]);
                         }
                     }
                     else
                     {
-                        QuestoesTemas.AddRange(QuestoesAtual);
-                        foreach (QuestaoTema qt in QuestoesAtual)
+                        questoesTemas.AddRange(questoesAtual);
+                        foreach (QuestaoTema qt in questoesAtual)
                         {
-                            QuestoesTotal.Remove(qt);
+                            questoesTotal.Remove(qt);
                         }
 
-                        for (int i = dificulDisc - 1; i >= 1; i--)
+                        for (int i = disciplinaDificuldade - 1; i >= 1; i--)
                         {
-                            QuestoesAtual = (from qt in QuestoesTotal
+                            questoesAtual = (from qt in questoesTotal
                                              where qt.Questao.CodDificuldade == i
                                              select qt).ToList();
 
-                            if (QuestoesAtual.Count != 0)
+                            if (questoesAtual.Count != 0)
                             {
-                                if (QuestoesAtual.Count + QuestoesTemas.Count >= qteQuestoes)
+                                if (questoesAtual.Count + questoesTemas.Count >= quantidadeQuestoes)
                                 {
                                     do
                                     {
-                                        if (QuestoesAtual.Count != 0)
+                                        if (questoesAtual.Count != 0)
                                         {
                                             int random = 0;
-                                            if (QuestoesAtual.Count > 1)
+                                            if (questoesAtual.Count > 1)
                                             {
-                                                random = r.Next(0, QuestoesAtual.Count);
-                                                QuestoesTemas.Add(QuestoesAtual.ElementAtOrDefault(random));
+                                                random = r.Next(0, questoesAtual.Count);
+                                                questoesTemas.Add(questoesAtual.ElementAtOrDefault(random));
 
-                                                temaContador = (Temas.Length >= temaContador) ? 0 : temaContador++;
-                                                temaAtual = int.Parse(Temas[temaContador]);
+                                                temaContador = (temas.Length >= temaContador) ? 0 : temaContador++;
+                                                temaAtual = int.Parse(temas[temaContador]);
                                             }
                                             else
                                             {
-                                                QuestoesTemas.Add(QuestoesAtual.FirstOrDefault());
+                                                questoesTemas.Add(questoesAtual.FirstOrDefault());
                                             }
-                                            QuestoesAtual.RemoveAt(random);
-                                            QuestoesTotal.Remove(QuestoesAtual.ElementAtOrDefault(random));
+                                            questoesAtual.RemoveAt(random);
+                                            questoesTotal.Remove(questoesAtual.ElementAtOrDefault(random));
 
                                         }
 
-                                    } while (QuestoesTemas.Count != qteQuestoes);
+                                    } while (questoesTemas.Count != quantidadeQuestoes);
                                 }
                                 else
                                 {
-                                    QuestoesTemas.AddRange(QuestoesAtual);
-                                    foreach (QuestaoTema qt in QuestoesAtual)
+                                    questoesTemas.AddRange(questoesAtual);
+                                    foreach (QuestaoTema qt in questoesAtual)
                                     {
-                                        QuestoesTotal.Remove(qt);
+                                        questoesTotal.Remove(qt);
                                     }
                                 }
                             }
 
-                            if (QuestoesTemas.Count == qteQuestoes || i == 1)
+                            if (questoesTemas.Count == quantidadeQuestoes || i == 1)
                             {
                                 break;
                             }
@@ -237,162 +237,7 @@ namespace SIAC.Models
                     }
                 }
             }
-            /*
-            temaContador = 0;
-            QuestoesTotal = new List<QuestaoTema>();
-
-            if (qteDiscu > 0)
-            {
-                int qteDiscuResultado = 0;
-
-                foreach (string tema in Temas)
-                {
-                    int codTema = int.Parse(tema);
-                    List<QuestaoTema> temp = (from qt in contexto.QuestaoTema
-                                              where qt.Questao.CodTipoQuestao == 2
-                                              && qt.Questao.CodDificuldade <= dificulDisc
-                                              && qt.CodDisciplina == codDisciplina
-                                              && qt.CodTema == codTema
-                                              && !qt.Questao.FlagArquivo
-                                              select qt).ToList();
-
-                    temp = Models.QuestaoTema.LimparRepeticao(temp, QuestoesTemas, QuestoesTotal);
-
-                    if (temp.Count != 0 && qteDiscuResultado < qteDiscu)
-                    {
-                        for (int i = dificulDisc; i >= 1; i--)
-                        {
-                            List<QuestaoTema> lstideal = (from qt in temp where qt.Questao.CodDificuldade == i select qt).ToList();
-
-                            if (lstideal.Count != 0)
-                            {
-                                int random = r.Next(0, lstideal.Count);
-
-                                QuestoesTemas.Add(lstideal.ElementAtOrDefault(random));
-                                qteDiscuResultado++;
-                                temp.Remove(lstideal.ElementAtOrDefault(random));
-                                break;
-                            }
-                        }
-                        QuestoesTotal.AddRange(temp);
-                    }
-                }
-
-                for (int i = dificulDisc; i >= 1 && qteDiscuResultado < qteDiscu; i--)
-                {
-                    QuestoesAtual = (from qt in QuestoesTotal
-                                     where qt.Questao.CodDificuldade == i
-                                     select qt).ToList();
-                    if (QuestoesAtual.Count != 0)
-                    {
-                        int random = 0;
-                        if (QuestoesAtual.Count > 1)
-                        {
-                            random = r.Next(0, QuestoesAtual.Count);
-                            QuestoesTemas.Add(QuestoesAtual.ElementAtOrDefault(random));
-                            temaContador = (Temas.Length >= temaContador) ? 0 : temaContador++;
-                            temaAtual = int.Parse(Temas[temaContador]);
-                        }
-                        else
-                        {
-                            QuestoesTemas.Add(QuestoesAtual.FirstOrDefault());
-                        }
-                        qteDiscuResultado++;
-                        QuestoesTotal.Remove(QuestoesAtual.ElementAtOrDefault(random));
-                    }
-                }
-
-
-                if (qteDiscu > qteDiscuResultado)
-                {
-                    QuestoesAtual = (from qt in QuestoesTotal
-                                     where qt.Questao.CodDificuldade == dificulDisc
-                                     select qt).ToList();
-
-                    if (QuestoesAtual.Count + qteDiscuResultado >= qteDiscu)
-                    {
-                        for (int i = qteDiscuResultado; i < qteDiscu; i++)
-                        {
-                            int random = 0;
-                            if (QuestoesAtual.Count > 1)
-                            {
-                                random = r.Next(0, QuestoesAtual.Count);
-                                QuestoesTemas.Add(QuestoesAtual.ElementAtOrDefault(random));
-                            }
-                            else
-                            {
-                                QuestoesTemas.Add(QuestoesAtual.FirstOrDefault());
-                            }
-                            qteDiscuResultado++;
-                            QuestoesAtual.RemoveAt(random);
-                            QuestoesTotal.Remove(QuestoesAtual.ElementAtOrDefault(random));
-                            temaContador = (Temas.Length >= temaContador) ? 0 : temaContador++;
-                            temaAtual = int.Parse(Temas[temaContador]);
-                        }
-                    }
-                    else
-                    {
-                        QuestoesTemas.AddRange(QuestoesAtual);
-                        qteDiscuResultado += QuestoesAtual.Count;
-                        foreach (QuestaoTema qt in QuestoesAtual)
-                        {
-                            QuestoesTotal.Remove(qt);
-                        }
-                        for (int i = dificulDisc - 1; i >= 1; i--)
-                        {
-                            QuestoesAtual = (from qt in QuestoesTotal
-                                             where qt.Questao.CodDificuldade == i
-                                             select qt).ToList();
-
-                            if (QuestoesAtual.Count != 0)
-                            {
-                                if (QuestoesAtual.Count + qteDiscuResultado >= qteDiscu)
-                                {
-                                    do
-                                    {
-                                        if (QuestoesAtual.Count != 0)
-                                        {
-                                            int random = 0;
-                                            if (QuestoesAtual.Count > 1)
-                                            {
-                                                random = r.Next(0, QuestoesAtual.Count);
-                                                QuestoesTemas.Add(QuestoesAtual.ElementAtOrDefault(random));
-
-                                                temaContador = (Temas.Length >= temaContador) ? 0 : temaContador++;
-                                                temaAtual = int.Parse(Temas[temaContador]);
-                                            }
-                                            else
-                                            {
-                                                QuestoesTemas.Add(QuestoesAtual.FirstOrDefault());
-                                            }
-                                            qteDiscuResultado++;
-                                            QuestoesAtual.RemoveAt(random);
-                                            QuestoesTotal.Remove(QuestoesAtual.ElementAtOrDefault(random));
-
-                                        }
-
-                                    } while (qteDiscuResultado != qteDiscu);
-                                }
-                                else
-                                {
-                                    QuestoesTemas.AddRange(QuestoesAtual);
-                                    qteDiscuResultado += QuestoesAtual.Count;
-                                    foreach (QuestaoTema qt in QuestoesAtual)
-                                    {
-                                        QuestoesTotal.Remove(qt);
-                                    }
-                                }
-                            }
-
-                            if (qteDiscuResultado == qteDiscu || i == 1)
-                            {
-                                break;
-                            }
-                        }
-                    }
-                }
-            }*/
-            return QuestoesTemas;
+            return questoesTemas;
         }
 
         public static List<Questao> Listar() => contexto.Questao.ToList();
