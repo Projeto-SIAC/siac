@@ -5,12 +5,12 @@ namespace SIAC.Models
 {
     public class Lembrete
     {
-        public const string Normal = "label";
-        public const string Positivo = "green";
-        public const string Negativo = "red";
-        public const string Info = "blue";
+        public const string NORMAL = "label";
+        public const string POSITIVO = "green";
+        public const string NEGATIVO = "red";
+        public const string INFO = "blue";
 
-        public static void AdicionarNotificacao(string mensagem, string estilo = Normal, int tempo = 5)
+        public static void AdicionarNotificacao(string mensagem, string estilo = NORMAL, int tempo = 5)
         {
             List<Dictionary<string, string>> notificacoes = (List<Dictionary<string, string>>)Sessao.Retornar("Notificacoes");
 

@@ -59,7 +59,7 @@ namespace SIAC.Controllers
                         Sessao.Inserir("UsuarioCategoria", usuario.Categoria.Descricao);
 
                         //Verificando se a senha do usuário é padrão de visitante
-                        if (usuario.CodCategoria == 4 && senha == Sistema.GerarSenhaPadrao(usuario))
+                        if (usuario.CodCategoria == Categoria.VISITANTE && senha == Sistema.GerarSenhaPadrao(usuario))
                             Sessao.Inserir("UsuarioSenhaPadrao", true);
 
                         Usuario.RegistrarAcesso(usuario.Matricula);
@@ -70,7 +70,7 @@ namespace SIAC.Controllers
 
             if (validado)
             {
-                Lembrete.AdicionarNotificacao("Seu usuário foi autenticado com sucesso.", Lembrete.Positivo);
+                Lembrete.AdicionarNotificacao("Seu usuário foi autenticado com sucesso.", Lembrete.POSITIVO);
                 if (Request.QueryString["continuar"] != null)
                     return Redirect(Request.QueryString["continuar"].ToString());
                 return RedirectToAction("Index", "Principal");
@@ -104,7 +104,7 @@ namespace SIAC.Controllers
         // GET: acesso/visitante
         public ActionResult Visitante()
         {
-            if (!String.IsNullOrWhiteSpace(Sessao.UsuarioMatricula) && Sessao.UsuarioCategoriaCodigo == 4 && Sessao.UsuarioSenhaPadrao)
+            if (!String.IsNullOrWhiteSpace(Sessao.UsuarioMatricula) && Sessao.UsuarioCategoriaCodigo == Categoria.VISITANTE && Sessao.UsuarioSenhaPadrao)
             {
                 Usuario usuario = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula);
                 if (usuario != null)
@@ -119,7 +119,7 @@ namespace SIAC.Controllers
         {
             if (formCollection.HasKeys() && !StringExt.IsNullOrWhiteSpace(formCollection["txtNovaSenha"], formCollection["txtConfirmarNovaSenha"]))
             {
-                if (!String.IsNullOrWhiteSpace(Sessao.UsuarioMatricula) && Sessao.UsuarioCategoriaCodigo == 4)
+                if (!String.IsNullOrWhiteSpace(Sessao.UsuarioMatricula) && Sessao.UsuarioCategoriaCodigo == Categoria.VISITANTE)
                 {
                     Usuario usuario = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula);
                     if (usuario != null)

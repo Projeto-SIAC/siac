@@ -5,6 +5,9 @@ namespace SIAC.Models
 {
     public partial class TipoQuestao
     {
+        public const int OBJETIVA = 1;
+        public const int DISCURSIVA = 2;
+
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         public static List<TipoQuestao> ListarOrdenadamente() => contexto.TipoQuestao.OrderBy(tq => tq.Descricao).ToList();

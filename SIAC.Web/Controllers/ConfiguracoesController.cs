@@ -95,8 +95,8 @@ namespace SIAC.Controllers
                 return RedirectToAction("Institucional", new { tab = "Coordenadores" });
             }
             var model = new ConfiguracoesInstitucionalViewModel();
-            model.Ocupacoes = Repositorio.GetInstance().Ocupacao.Where(o=>o.CodOcupacao != Sistema.CodOcupacaoCoordenadorAvi && o.CodOcupacao != Sistema.CodOcupacaoAdministradorSIAC).ToList();
-            model.Coordenadores = Repositorio.GetInstance().Ocupacao.FirstOrDefault(o => o.CodOcupacao == Sistema.CodOcupacaoCoordenadorAvi)?.PessoaFisica.ToList();
+            model.Ocupacoes = Repositorio.GetInstance().Ocupacao.Where(o=>o.CodOcupacao != Ocupacao.COORDENADOR_AVI && o.CodOcupacao != Ocupacao.ADMINISTRADOR_SIAC).ToList();
+            model.Coordenadores = Repositorio.GetInstance().Ocupacao.FirstOrDefault(o => o.CodOcupacao == Ocupacao.COORDENADOR_AVI)?.PessoaFisica.ToList();
             return View(model);
         }
 
@@ -111,7 +111,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(CoordenadoresAvi = true)]
         public void AdicionarOcupacaoCoordenador(int codPessoaFisica)
         {
-            PessoaFisica.AdicionarOcupacao(codPessoaFisica, Sistema.CodOcupacaoCoordenadorAvi);            
+            PessoaFisica.AdicionarOcupacao(codPessoaFisica, Ocupacao.COORDENADOR_AVI);            
         }
 
         [HttpPost]
@@ -120,7 +120,7 @@ namespace SIAC.Controllers
         {
             foreach (var codPessoa in codPessoaFisica)
             {
-                PessoaFisica.RemoverOcupacao(codPessoa, Sistema.CodOcupacaoCoordenadorAvi);
+                PessoaFisica.RemoverOcupacao(codPessoa, Ocupacao.COORDENADOR_AVI);
             }
         }
 

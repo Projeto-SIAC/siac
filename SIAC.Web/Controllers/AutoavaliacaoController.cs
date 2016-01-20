@@ -187,7 +187,7 @@ namespace SIAC.Controllers
             auto.CodDificuldade = dificuldades.Max();
 
             AvalAuto.Inserir(auto);
-            Lembrete.AdicionarNotificacao($"Autoavaliação {auto.Avaliacao.CodAvaliacao} gerada com sucesso.", Lembrete.Positivo);
+            Lembrete.AdicionarNotificacao($"Autoavaliação {auto.Avaliacao.CodAvaliacao} gerada com sucesso.", Lembrete.POSITIVO);
             return View(auto);
         }
 

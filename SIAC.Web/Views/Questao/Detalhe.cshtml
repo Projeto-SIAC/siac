@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Detalhes de Questão";
-    Layout = "~/Views/Shared/_Layout.cshtml";
     List<AvalQuesPessoaResposta> lstResposta = Model.Resposta().Where(r => !String.IsNullOrWhiteSpace(r.RespComentario)).ToList();
 }
 

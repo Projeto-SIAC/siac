@@ -17,7 +17,6 @@ namespace SIAC
         }
         public static string GetImageSource(this byte[] bytes)
         {
-            //<img src="data:image/png;base64,@Convert.ToBase64String(Model.Anexo, 0, Model.Anexo.Length)"/>
             string src = "data:image/png;base64,";
             src += Convert.ToBase64String(bytes, 0, bytes.Length);
             return src;

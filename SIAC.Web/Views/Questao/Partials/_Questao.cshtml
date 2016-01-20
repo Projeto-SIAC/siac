@@ -7,26 +7,26 @@
             @Model.QuestaoTema.ElementAt(0).Tema.Disciplina.Descricao
         </div>
     </div>
-    <div class="ui label" data-html="@( !String.IsNullOrEmpty(Model.Dificuldade.Comentario) ? "<b>Comentário</b>: "+Model.Dificuldade.Comentario : "" )">
+    <div class="ui label" data-html="@( !String.IsNullOrWhiteSpace(Model.Dificuldade.Comentario) ? "<b>Comentário</b>: "+Model.Dificuldade.Comentario : "" )">
         Dificuldade
         <div class="detail">
             @Model.Dificuldade.Descricao
         </div>
     </div>
-    @foreach (var questaoTema in Model.QuestaoTema)
+    @foreach (QuestaoTema questaoTema in Model.QuestaoTema)
     {
-        <div class="ui tag label" data-html="@( !String.IsNullOrEmpty(questaoTema.Tema.Comentario) ? "<b>Comentário</b>: "+questaoTema.Tema.Comentario : "" )">@questaoTema.Tema.Descricao</div>
+        <div class="ui tag label" data-html="@( !String.IsNullOrWhiteSpace(questaoTema.Tema.Comentario) ? "<b>Comentário</b>: "+questaoTema.Tema.Comentario : "" )">@questaoTema.Tema.Descricao</div>
     }
 </div>
-<div class="ui dividing header" data-html="@( !String.IsNullOrEmpty(Model.Objetivo) ? "<b>Objetivo</b>: " + Model.Objetivo : "")">
+<div class="ui dividing header" data-html="@( !String.IsNullOrWhiteSpace(Model.Objetivo) ? "<b>Objetivo</b>: " + Model.Objetivo : "")">
     @Html.Raw(Model.Enunciado.ToHtml("p"))
 </div>
-@if (Model.CodTipoQuestao == 1)
+@if (Model.CodTipoQuestao == TipoQuestao.OBJETIVA)
 {
     <div class="ui very relaxed list">
-        @foreach (var alternativa in Model.Alternativa)
+        @foreach (Alternativa alternativa in Model.Alternativa)
         {
-            <div class="item" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
+            <div class="item" data-html="@(!String.IsNullOrWhiteSpace(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
                 <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
                 @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
                 {
@@ -38,7 +38,7 @@
 }
 else
 {
-    <div data-html="@(!String.IsNullOrEmpty(Model.Comentario) ? "<b>Comentário</b>: " + Model.Comentario : "")">
+    <div data-html="@(!String.IsNullOrWhiteSpace(Model.Comentario) ? "<b>Comentário</b>: " + Model.Comentario : "")">
         <a class="ui green ribbon label">Chave de Resposta</a>
         @Html.Raw(Model.ChaveDeResposta.ToHtml("p", "i"))
     </div>
@@ -50,7 +50,7 @@ else
         <div class="title"><i class="icon dropdown"></i>Anexos</div>
         <div class="content">
             <div class="ui cards">
-                @foreach (var anexo in Model.QuestaoAnexo)
+                @foreach (QuestaoAnexo anexo in Model.QuestaoAnexo)
                 {
                     @Html.Partial("_Anexo", anexo)
                 }

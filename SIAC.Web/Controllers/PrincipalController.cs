@@ -13,7 +13,7 @@ namespace SIAC.Controllers
         [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
-            Lembrete.AdicionarNotificacao("Este é sua tela principal.", Lembrete.Info);
+            Lembrete.AdicionarNotificacao("Este é sua tela principal.", Lembrete.INFO);
             Usuario usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
             return View(usuario);
         }

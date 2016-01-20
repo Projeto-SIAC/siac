@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
     public class QuestaoController : Controller
     {
         public List<Questao> Questoes => Questao.ListarPorProfessor(Sessao.UsuarioMatricula);
@@ -57,11 +57,11 @@ namespace SIAC.Controllers
             {
                 if (tipos.Contains("objetiva") && !tipos.Contains("discursiva"))
                 {
-                    questoes = questoes.Where(q => q.CodTipoQuestao == 1).ToList();
+                    questoes = questoes.Where(q => q.CodTipoQuestao == TipoQuestao.OBJETIVA).ToList();
                 }
                 else if (!tipos.Contains("objetiva") && tipos.Contains("discursiva"))
                 {
-                    questoes = questoes.Where(q => q.CodTipoQuestao == 2).ToList();
+                    questoes = questoes.Where(q => q.CodTipoQuestao == TipoQuestao.DISCURSIVA).ToList();
                 }
             }
 
@@ -163,14 +163,14 @@ namespace SIAC.Controllers
             questao.Objetivo = !String.IsNullOrWhiteSpace(formCollection["txtObjetivo"]) ? formCollection["txtObjetivo"].RemoveSpaces() : null;
 
             // Discursiva
-            if (questao.CodTipoQuestao == 2)
+            if (questao.CodTipoQuestao == TipoQuestao.DISCURSIVA)
             {
                 questao.ChaveDeResposta = formCollection["txtChaveDeResposta"].Trim();
                 questao.Comentario = !String.IsNullOrWhiteSpace(formCollection["txtComentario"]) ? formCollection["txtComentario"].RemoveSpaces() : null;
             }
 
             // Objetiva
-            if (questao.CodTipoQuestao == 1)
+            if (questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
             {
                 int qteAlternativas = int.Parse(formCollection["txtQtdAlternativas"]);
                 for (int i = 0; i < qteAlternativas; i++)
@@ -194,7 +194,7 @@ namespace SIAC.Controllers
                     int tipoAnexo = int.Parse(formCollection["txtAnexoTipo" + (i + 1)]);
                     switch (tipoAnexo)
                     {
-                        case 1:
+                        case TipoAnexo.IMAGEM:
                             questao.QuestaoAnexo.Add(new QuestaoAnexo
                             {
                                 CodOrdem = i,
@@ -204,7 +204,7 @@ namespace SIAC.Controllers
                                 Anexo = new System.IO.BinaryReader(Request.Files[i].InputStream).ReadBytes(Request.Files[i].ContentLength)
                             });
                             break;
-                        case 2:
+                        case TipoAnexo.CODIGO:
                             questao.QuestaoAnexo.Add(new QuestaoAnexo
                             {
                                 CodOrdem = i,
@@ -221,7 +221,7 @@ namespace SIAC.Controllers
             }            
 
             Questao.Inserir(questao);
-            Lembrete.AdicionarNotificacao($"Questão {questao.CodQuestao} cadastrada com sucesso.", Lembrete.Positivo);
+            Lembrete.AdicionarNotificacao($"Questão {questao.CodQuestao} cadastrada com sucesso.", Lembrete.POSITIVO);
             return RedirectToAction("Detalhe", new { codigo = questao.CodQuestao });
         }
 
@@ -236,7 +236,7 @@ namespace SIAC.Controllers
                 questao = Questao.ListarPorCodigo(codQuestao);
             if (questao == null)
                 return RedirectToAction("index");
-            Lembrete.AdicionarNotificacao("Observe que há alguns dados que não podem ser editados.", Lembrete.Info);
+            Lembrete.AdicionarNotificacao("Observe que há alguns dados que não podem ser editados.", Lembrete.INFO);
             return View(questao);
         }
 
@@ -276,12 +276,12 @@ namespace SIAC.Controllers
                 for (int i = 0; i < questao.QuestaoAnexo.Count; i++)
                 {
                     questao.QuestaoAnexo.ElementAt(i).Legenda = !String.IsNullOrWhiteSpace(formCollection["txtAnexoLegenda" + (i + 1)]) ? formCollection["txtAnexoLegenda" + (i + 1)].RemoveSpaces() : questao.QuestaoAnexo.ElementAt(i).Legenda;
-                    questao.QuestaoAnexo.ElementAt(i).Fonte = !String.IsNullOrWhiteSpace(formCollection["txtAnexoFonte" + (i + 1)]) ? formCollection["txtAnexoFonte" + (i + 1)].RemoveSpaces() : questao.QuestaoAnexo.ElementAt(i).Fonte;
+                    questao.QuestaoAnexo.ElementAt(i).Fonte = !String.IsNullOrWhiteSpace(formCollection["txtAnexoFonte" + (i + 1)]) ? formCollection["txtAnexoFonte" + (i + 1)].RemoveSpaces() : String.Empty;
                 }
             }
 
             Questao.Atualizar(questao);
-            Lembrete.AdicionarNotificacao($"Questão {questao.CodQuestao} editada com sucesso.", Lembrete.Positivo);
+            Lembrete.AdicionarNotificacao($"Questão {questao.CodQuestao} editada com sucesso.", Lembrete.POSITIVO);
             return RedirectToAction("Detalhe", new { codigo = questao.CodQuestao });
         }
 

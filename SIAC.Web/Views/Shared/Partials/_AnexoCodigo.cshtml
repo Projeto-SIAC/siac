@@ -17,11 +17,9 @@
     @if (!String.IsNullOrWhiteSpace(Model.Fonte))
     {
         <div class="extra content">
-
             <div class="description" @Html.Raw((Model.Fonte.Length > 30 ? "data-fonte=\"" + Model.Fonte + "\"" : ""))>
                 @Model.Fonte.ToShortString(30)
             </div>
-
         </div>
     }
 </a>

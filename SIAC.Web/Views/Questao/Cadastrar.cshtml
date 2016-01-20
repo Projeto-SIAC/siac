@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Cadastrar Questão";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="ui pesquisa modal">
@@ -120,7 +119,7 @@
             <label>Disciplina</label>
             <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" required>
                 <option value="">Disciplina</option>
-                @foreach (var obj in Model.Disciplinas)
+                @foreach (Disciplina obj in Model.Disciplinas)
                 {
                     <option value="@obj.CodDisciplina">@obj.Descricao</option>
                 }
@@ -136,7 +135,7 @@
             <label>Dificuldade</label>
             <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown" required>
                 <option value="">Dificuldade</option>
-                @foreach (var obj in Model.Dificuldades)
+                @foreach (Dificuldade obj in Model.Dificuldades)
                 {
                     <option value="@obj.CodDificuldade" title="@obj.Comentario">@obj.Descricao</option>
                 }
@@ -146,7 +145,7 @@
             <label>Tipo</label>
             <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" required>
                 <option value="">Tipo</option>
-                @foreach (var obj in Model.Tipos)
+                @foreach (TipoQuestao obj in Model.Tipos)
                 {
                     <option value="@obj.CodTipoQuestao">@obj.Descricao</option>
                 }
@@ -196,7 +195,7 @@
                 <label>Tipo do Anexo</label>
                 <select id="ddlTiposAnexo" name="ddlTiposAnexo" class="ui dropdown">
                     <option value="">Tipo do Anexo</option>
-                    @foreach (var obj in Model.TiposAnexo)
+                    @foreach (TipoAnexo obj in Model.TiposAnexo)
                     {
                         <option value="@obj.CodTipoAnexo">@obj.Descricao</option>
                     }

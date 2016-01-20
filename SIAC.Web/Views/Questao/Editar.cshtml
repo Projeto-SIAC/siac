@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Editar Questão";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="ui confirmar modal">
@@ -74,7 +73,7 @@
         <div class="field required">
             <label>Tema</label>
             <select multiple class="ui multiple dropdown disabled" readonly disabled>
-                @foreach (var queTma in Model.QuestaoTema)
+                @foreach (QuestaoTema queTma in Model.QuestaoTema)
                 {
                     <option selected value="@queTma.CodTema">@queTma.Tema.Descricao</option>
                 }
@@ -111,7 +110,7 @@
             <label for="txtObjetivo">Objetivo</label>
             <textarea id="txtObjetivo" name="txtObjetivo" rows="2" placeholder="Objetivo...">@Model.Objetivo</textarea>
         </div>
-        @if (Model.CodTipoQuestao == 2)
+        @if (Model.CodTipoQuestao == TipoQuestao.DISCURSIVA)
         {
             <div class="field required questao discursiva">
                 <label for="txtChaveDeResposta">Chave de Resposta</label>
@@ -126,7 +125,7 @@
     @* Alternativas da Questão *@
     <div class="ui bottom attached tab segment questao objetiva" data-tab="alternativas">
         <div class="ui alternativas fluid accordion">
-            @foreach (var alt in Model.Alternativa)
+            @foreach (Alternativa alt in Model.Alternativa)
             {
                 <div class="title">
                     <i class="dropdown icon"></i>Alternativa @(alt.CodOrdem + 1)
@@ -154,11 +153,11 @@
     <div class="ui bottom attached tab segment anexos" data-tab="anexos">
         @* Anexos *@
         <div class="ui anexos fluid accordion">
-            @foreach (var ane in Model.QuestaoAnexo)
+            @foreach (QuestaoAnexo ane in Model.QuestaoAnexo)
             {
                 switch (ane.CodTipoAnexo)
                 {
-                    case 1:
+                    case TipoAnexo.IMAGEM:
                         <div class="title">
                             <input name="txtAnexoTipo@(ane.CodOrdem + 1)" id="txtAnexoTipo@(ane.CodOrdem + 1)" value="@ane.CodTipoAnexo" hidden />
                             <i class="dropdown icon"></i>Anexo @(ane.CodOrdem + 1)
@@ -180,7 +179,7 @@
                             </div>
                         </div>
                         break;
-                    case 2:
+                    case TipoAnexo.CODIGO:
                         <div class="title">
                             <input name="txtAnexoTipo@(ane.CodOrdem + 1)" id="txtAnexoTipo@(ane.CodOrdem + 1)" value="@ane.CodTipoAnexo" hidden />
                             <i class="dropdown icon"></i>Anexo @(ane.CodOrdem + 1)

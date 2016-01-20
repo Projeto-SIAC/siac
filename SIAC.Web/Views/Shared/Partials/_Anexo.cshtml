@@ -1,10 +1,10 @@
 ﻿@model QuestaoAnexo
 @switch (Model.CodTipoAnexo)
 {
-    case 1:
+    case TipoAnexo.IMAGEM:
         @Html.Partial("_AnexoImagem", Model)
         break;
-    case 2:
+    case TipoAnexo.CODIGO:
         @Html.Partial("_AnexoCodigo", Model)
         break;
     default:

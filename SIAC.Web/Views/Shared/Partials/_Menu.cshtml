@@ -11,7 +11,7 @@
         <i class="time icon"></i><span class="content">Histórico</span>
     </a>
 
-    @if (Sessao.UsuarioCategoriaCodigo <= 3)
+    @if (Sessao.UsuarioCategoriaCodigo <= Categoria.COLABORADOR)
     {
         <a href="@Url.Action("Index", "Institucional")" class="@(path.StartsWith("/institucional") ? "active blue" : "") item" data-lembrete="avi" title="Navegar para Av. Institucional">
             <i class="file text outline icon"></i><span class="content">Av. Instituicional</span>
@@ -21,7 +21,7 @@
         </a>
     }
 
-    @if (Sessao.UsuarioCategoriaCodigo == 3 || Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.FlagCoordenadorAvi)
+    @if (Sessao.UsuarioCategoriaCodigo == Categoria.COLABORADOR || Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.FlagCoordenadorAvi)
     {
         <a href="@Url.Action("Index", "Configuracoes")" class="@(path.StartsWith("/configuracoes")? "active blue" : "") item" title="Navegar para Configurações">
             <i class="setting icon"></i><span class="content">Configurações</span>
