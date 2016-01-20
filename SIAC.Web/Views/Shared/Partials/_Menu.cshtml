@@ -6,15 +6,20 @@
     <a href="@Url.Action("Index", "Principal")" class="@(path.StartsWith("/principal")? "active blue" : "") item" title="Navegar para Principal">
         <i class="block layout icon"></i><span class="content">Principal</span>
     </a>
+
     <a href="@Url.Action("Index", "Historico")" class="@(path.StartsWith("/historico")? "active blue" : "") item" title="Navegar para Histórico das Atividades">
         <i class="time icon"></i><span class="content">Histórico</span>
     </a>
-    <a href="@Url.Action("Index", "Institucional")" class="@(path.StartsWith("/institucional")? "active blue" : "") item" data-lembrete="avi" title="Navegar para Av. Institucional">
-        <i class="file text outline icon"></i><span class="content">Av. Instituicional</span>
-    </a>
-    <a href="@Url.Action("Index", "Perfil")" class="@(path.StartsWith("/perfil")? "active blue" : "") item" title="Navegar para Perfil">
-        <i class="user icon"></i><span class="content">Perfil</span>
-    </a>
+
+    @if (Sessao.UsuarioCategoriaCodigo <= 3)
+    {
+        <a href="@Url.Action("Index", "Institucional")" class="@(path.StartsWith("/institucional") ? "active blue" : "") item" data-lembrete="avi" title="Navegar para Av. Institucional">
+            <i class="file text outline icon"></i><span class="content">Av. Instituicional</span>
+        </a>
+        <a href="@Url.Action("Index", "Perfil")" class="@(path.StartsWith("/perfil") ? "active blue" : "") item" title="Navegar para Perfil">
+            <i class="user icon"></i><span class="content">Perfil</span>
+        </a>
+    }
 
     @if (Sessao.UsuarioCategoriaCodigo == 3 || Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.FlagCoordenadorAvi)
     {

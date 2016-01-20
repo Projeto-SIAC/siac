@@ -51,13 +51,13 @@
                 { "Descricao", "Visualizar Agendamentos" },
                 { "Mensagem", "Ir para Agenda" }
             })
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
+                { "Url", Url.Action("Index", "Perfil") },
+                { "Icone", "user" },
+                { "Descricao", "Visualizar Perfil" },
+                { "Mensagem", "Ir para Perfil" }
+            })
         }
-        @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Index", "Perfil") },
-            { "Icone", "user" },
-            { "Descricao", "Visualizar Perfil" },
-            { "Mensagem", "Ir para Perfil" }
-        })
         @Html.Partial("_Atalho", new ViewDataDictionary() {
             { "Url", Url.Action("Index", "Historico") },
             { "Icone", "wait" },

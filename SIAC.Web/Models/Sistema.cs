@@ -43,6 +43,6 @@ namespace SIAC.Models
                 CookieUsuario.Remove(cookie);
         }
 
-        public static string GerarSenhaPadrao(Usuario usuario) => $"{usuario.PessoaFisica.PrimeiroNome}@{usuario.PessoaFisica.Cpf?.Substring(0, 3)}";
+        public static string GerarSenhaPadrao(Usuario usuario) => $"{usuario.PessoaFisica.PrimeiroNome.ToLower()}@{usuario.PessoaFisica.Cpf?.Substring(0, 3)}";
     }
 }
