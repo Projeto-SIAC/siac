@@ -1,4 +1,5 @@
-﻿@model SIAC.Models.Questao
+﻿@model Questao
+
 <div class="ui labels">
     <div class="ui label">
         Disciplina
@@ -18,16 +19,7 @@
     }
 </div>
 <div class="ui dividing header" data-html="@( !String.IsNullOrEmpty(Model.Objetivo) ? "<b>Objetivo</b>: " + Model.Objetivo : "")">
-    @{
-        var enunciado = Model.Enunciado.Split('\n', '\r');
-        foreach (var strEnunciado in enunciado)
-        {
-            if (!String.IsNullOrWhiteSpace(strEnunciado))
-            {
-                <p>@strEnunciado</p>
-            }
-        }
-    }
+    @Html.Raw(Model.Enunciado.ToHtml("p"))
 </div>
 @if (Model.CodTipoQuestao == 1)
 {
@@ -48,16 +40,7 @@ else
 {
     <div data-html="@(!String.IsNullOrEmpty(Model.Comentario) ? "<b>Comentário</b>: " + Model.Comentario : "")">
         <a class="ui green ribbon label">Chave de Resposta</a>
-        @{
-            var chaveDeResposta = Model.ChaveDeResposta.Split('\n', '\r');
-            foreach (var strChaveDeResposta in chaveDeResposta)
-            {
-                if (!String.IsNullOrWhiteSpace(strChaveDeResposta))
-                {
-                    <p><i>@strChaveDeResposta</i></p>
-                }
-            }
-        }
+        @Html.Raw(Model.ChaveDeResposta.ToHtml("p", "i"))
     </div>
 }
 @if (Model.QuestaoAnexo.Count > 0)

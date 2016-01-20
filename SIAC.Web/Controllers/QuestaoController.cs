@@ -1,41 +1,36 @@
-﻿using System;
+﻿using SIAC.Helpers;
+using SIAC.Models;
+using SIAC.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using SIAC.Models;
 
 namespace SIAC.Controllers
 {
     [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
     public class QuestaoController : Controller
     {
-        public List<Questao> Questoes {
-            get
-            {
-                return Questao.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula);
-            }
-        }         
+        public List<Questao> Questoes => Questao.ListarPorProfessor(Sessao.UsuarioMatricula);
 
-        // GET: Questao
+        // GET: historico/questao
         public ActionResult Index()
         {
             if (Request.Url.ToString().ToLower().Contains("principal"))
-            {
-                return Redirect("~/Historico/Questao");
-            }
-            var model = new ViewModels.QuestaoIndexViewModel();
-            model.Disciplinas = Questoes.Select(q => q.Disciplina).Distinct().ToList();
-            model.Dificuldades = Questoes.Select(q => q.Dificuldade).Distinct().ToList();
+                return Redirect("~/historico/questao");
+            QuestaoIndexViewModel model = new QuestaoIndexViewModel();
+            List<Questao> questoes = Questoes;
+            model.Disciplinas = questoes.Select(q => q.Disciplina).Distinct().ToList();
+            model.Dificuldades = questoes.Select(q => q.Dificuldade).Distinct().ToList();
             return View(model);
         }
 
-        // POST: Questao/Listar
+        // POST: historico/questao/listar
         [HttpPost]
         public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] tipos, string disciplina, string tema, string dificuldade)
         {
-            var qte = 10;
-            var questoes = Questoes;
+            int quantidade = 10;
+            List<Questao> questoes = Questoes;
             pagina = pagina ?? 1;
 
             if (!String.IsNullOrWhiteSpace(pesquisa))
@@ -50,7 +45,7 @@ namespace SIAC.Controllers
 
             if (!String.IsNullOrWhiteSpace(tema))
             {
-                questoes = questoes.Where(q => q.QuestaoTema.Where(t=>t.CodTema == int.Parse(tema)).Count() > 0).ToList();
+                questoes = questoes.Where(q => q.QuestaoTema.Where(t => t.CodTema == int.Parse(tema)).Count() > 0).ToList();
             }
 
             if (!String.IsNullOrWhiteSpace(dificuldade))
@@ -68,7 +63,7 @@ namespace SIAC.Controllers
                 {
                     questoes = questoes.Where(q => q.CodTipoQuestao == 2).ToList();
                 }
-            }            
+            }
 
             switch (ordenar)
             {
@@ -82,16 +77,17 @@ namespace SIAC.Controllers
                     questoes = questoes.OrderByDescending(q => q.DtCadastro).ToList();
                     break;
             }
-            return PartialView("_ListaQuestao", questoes.Skip((qte*pagina.Value)-qte).Take(qte).ToList());
+            return PartialView("_ListaQuestao", questoes.Skip((quantidade * pagina.Value) - quantidade).Take(quantidade).ToList());
         }
 
-        //POST: Questao/PalavrasChave
+        //POST: principal/questao/palavraschave
         [HttpPost]
         public ActionResult PalavrasChave(string[] palavras)
         {
-            var resultado = Questao.ListarPorPalavraChave(palavras);
-            var result = (from q in resultado select new
-            {
+            if (palavras.Length == 0)
+                return Json(new List<Questao>());
+            List<Questao> resultado = Questao.ListarPorPalavraChave(palavras);
+            var retorno = resultado.Select(q => new {
                 CodQuestao = q.CodQuestao,
                 Dificuldade = q.Dificuldade.Descricao,
                 Disciplina = q.QuestaoTema.First().Tema.Disciplina.Descricao,
@@ -99,51 +95,48 @@ namespace SIAC.Controllers
                 TipoQuestao = q.TipoQuestao.Descricao,
                 Professor = q.Professor.Usuario.PessoaFisica.Nome,
                 DtCadastro = q.DtCadastro.ToBrazilianString(),
-                FlagProprietario = q.Professor.MatrProfessor == Helpers.Sessao.UsuarioMatricula
+                FlagProprietario = q.Professor.MatrProfessor == Sessao.UsuarioMatricula
             });
-            return Json(result);
+            return Json(retorno);
         }
 
-        // GET: Questao/Cadastrar
+        // GET: principal/questao/cadastrar
         public ActionResult Cadastrar()
         {
-            var model = new ViewModels.QuestaoCadastrarViewModel();
-            model.Captcha = Helpers.Captcha.Novo();
+            QuestaoCadastrarViewModel model = new QuestaoCadastrarViewModel();
+            model.Captcha = Captcha.Novo();
             model.Termo = Parametro.Obter().TermoResponsabilidade;
-            model.Disciplinas = Professor.ObterDisciplinas(Helpers.Sessao.UsuarioMatricula);
+            model.Disciplinas = Professor.ObterDisciplinas(Sessao.UsuarioMatricula);
             model.Tipos = TipoQuestao.ListarOrdenadamente();
             model.Dificuldades = Dificuldade.ListarOrdenadamente();
             model.TiposAnexo = TipoAnexo.ListarOrdenadamente();
             return View(model);
         }
 
-        // GET: Questao/Captcha
+        // POST: principal/questao/chequecaptcha
         [HttpPost]
-        public string ChequeCaptcha(string captcha)
+        public bool ChequeCaptcha(string captcha)
         {
-            if (captcha == Helpers.Sessao.Retornar("Captcha") as string)
-            {
-                return "true";
-            }
-            return "false";
+            return (captcha == Sessao.Retornar("Captcha") as string);
         }
 
-        // GET: Questao/Captcha
+        // POST: principal/questao/novocaptcha
         [HttpPost]
         public string NovoCaptcha()
         {
-            return Helpers.Captcha.Novo();
+            return Captcha.Novo();
         }
 
-        // POST: Questao/Confirmar
+        // POST: principal/questao/confirmar
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult Confirmar(FormCollection formCollection)
         {
+            if (!formCollection.HasKeys())
+                return RedirectToAction("Index");
+
             Questao questao = new Questao();
-
-            questao.Professor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-
+            questao.Professor = Professor.ListarPorMatricula(Sessao.UsuarioMatricula);
             questao.CodProfessor = questao.Professor.CodProfessor;
 
             // Gerais
@@ -152,11 +145,11 @@ namespace SIAC.Controllers
             questao.CodTipoQuestao = int.Parse(formCollection["ddlTipo"]);
             questao.TipoQuestao = TipoQuestao.ListarPorCodigo(questao.CodTipoQuestao);
 
-            var codDisciplina = int.Parse(formCollection["ddlDisciplina"]);
-            var codTemas = formCollection["ddlTema"].Split(',');
-            foreach (var strCod in codTemas)
+            int codDisciplina = int.Parse(formCollection["ddlDisciplina"]);
+            string[] codTemas = formCollection["ddlTema"].Split(',');
+            foreach (string strCodTema in codTemas)
             {
-                var codTema = int.Parse(strCod);
+                int codTema = int.Parse(strCodTema);
                 questao.QuestaoTema.Add(new QuestaoTema
                 {
                     CodDisciplina = codDisciplina,
@@ -167,38 +160,38 @@ namespace SIAC.Controllers
 
             // Detalhes
             questao.Enunciado = formCollection["txtEnunciado"].Trim();
-            questao.Objetivo = !String.IsNullOrEmpty(formCollection["txtObjetivo"]) ? formCollection["txtObjetivo"].RemoveSpaces() : null;
+            questao.Objetivo = !String.IsNullOrWhiteSpace(formCollection["txtObjetivo"]) ? formCollection["txtObjetivo"].RemoveSpaces() : null;
 
             // Discursiva
             if (questao.CodTipoQuestao == 2)
             {
                 questao.ChaveDeResposta = formCollection["txtChaveDeResposta"].Trim();
-                questao.Comentario = !String.IsNullOrEmpty(formCollection["txtComentario"]) ? formCollection["txtComentario"].RemoveSpaces() : null;
+                questao.Comentario = !String.IsNullOrWhiteSpace(formCollection["txtComentario"]) ? formCollection["txtComentario"].RemoveSpaces() : null;
             }
 
             // Objetiva
             if (questao.CodTipoQuestao == 1)
             {
-                var qteAlternativas = int.Parse(formCollection["txtQtdAlternativas"]);
+                int qteAlternativas = int.Parse(formCollection["txtQtdAlternativas"]);
                 for (int i = 0; i < qteAlternativas; i++)
                 {
                     questao.Alternativa.Add(new Alternativa
                     {
                         CodOrdem = i,
                         Enunciado = formCollection["txtAlternativaEnunciado" + (i + 1)].RemoveSpaces(),
-                        Comentario = !String.IsNullOrEmpty(formCollection["txtAlternativaComentario" + (i + 1)]) ? formCollection["txtAlternativaComentario" + (i + 1)].RemoveSpaces() : null,
-                        FlagGabarito = !String.IsNullOrEmpty(formCollection["chkAlternativaCorreta" + (i + 1)]) ? true : false
+                        Comentario = !String.IsNullOrWhiteSpace(formCollection["txtAlternativaComentario" + (i + 1)]) ? formCollection["txtAlternativaComentario" + (i + 1)].RemoveSpaces() : null,
+                        FlagGabarito = !String.IsNullOrWhiteSpace(formCollection["chkAlternativaCorreta" + (i + 1)]) ? true : false
                     });
                 }
             }
 
             // Anexos
-            if (!String.IsNullOrEmpty(formCollection["chkAnexos"]) && !String.IsNullOrEmpty(formCollection["txtQtdAnexos"]))
+            if (!String.IsNullOrWhiteSpace(formCollection["chkAnexos"]) && !String.IsNullOrWhiteSpace(formCollection["txtQtdAnexos"]))
             {
-                var qteAnexos = int.Parse(formCollection["txtQtdAnexos"]);
+                int qteAnexos = int.Parse(formCollection["txtQtdAnexos"]);
                 for (int i = 0; i < qteAnexos; i++)
                 {
-                    var tipoAnexo = int.Parse(formCollection["txtAnexoTipo" + (i + 1)]);
+                    int tipoAnexo = int.Parse(formCollection["txtAnexoTipo" + (i + 1)]);
                     switch (tipoAnexo)
                     {
                         case 1:
@@ -207,7 +200,7 @@ namespace SIAC.Controllers
                                 CodOrdem = i,
                                 CodTipoAnexo = tipoAnexo,
                                 Legenda = formCollection["txtAnexoLegenda" + (i + 1)].RemoveSpaces(),
-                                Fonte = !String.IsNullOrEmpty(formCollection["txtAnexoFonte" + (i + 1)]) ? formCollection["txtAnexoFonte" + (i + 1)].RemoveSpaces() : null,
+                                Fonte = !String.IsNullOrWhiteSpace(formCollection["txtAnexoFonte" + (i + 1)]) ? formCollection["txtAnexoFonte" + (i + 1)].RemoveSpaces() : null,
                                 Anexo = new System.IO.BinaryReader(Request.Files[i].InputStream).ReadBytes(Request.Files[i].ContentLength)
                             });
                             break;
@@ -217,7 +210,7 @@ namespace SIAC.Controllers
                                 CodOrdem = i,
                                 CodTipoAnexo = tipoAnexo,
                                 Legenda = !String.IsNullOrWhiteSpace(formCollection["txtAnexoLegenda" + (i + 1)]) ? formCollection["txtAnexoLegenda" + (i + 1)].RemoveSpaces() : null,
-                                Fonte = !String.IsNullOrEmpty(formCollection["txtAnexoFonte" + (i + 1)]) ? formCollection["txtAnexoFonte" + (i + 1)].RemoveSpaces() : null,
+                                Fonte = !String.IsNullOrWhiteSpace(formCollection["txtAnexoFonte" + (i + 1)]) ? formCollection["txtAnexoFonte" + (i + 1)].RemoveSpaces() : null,
                                 Anexo = formCollection["txtAnexo" + (i + 1)].ToString().GetBytes()
                             });
                             break;
@@ -225,16 +218,14 @@ namespace SIAC.Controllers
                             break;
                     }
                 }
-            }
-
-            //TempData["Questao"] = questao;
+            }            
 
             Questao.Inserir(questao);
             Lembrete.AdicionarNotificacao($"Questão {questao.CodQuestao} cadastrada com sucesso.", Lembrete.Positivo);
             return RedirectToAction("Detalhe", new { codigo = questao.CodQuestao });
         }
 
-        //GET: Principal/Questão/Editar/5
+        //GET: historico/questao/editar/5
         [HttpGet]
         public ActionResult Editar(string codigo)
         {
@@ -242,44 +233,41 @@ namespace SIAC.Controllers
             int.TryParse(codigo, out codQuestao);
             Questao questao = null;
             if (codQuestao > 0)
-            {
                 questao = Questao.ListarPorCodigo(codQuestao);
-            }
             if (questao == null)
-            {
                 return RedirectToAction("index");
-            }
-            Lembrete.AdicionarNotificacao("Observe que há alguns dados que não podem ser editados.");
+            Lembrete.AdicionarNotificacao("Observe que há alguns dados que não podem ser editados.", Lembrete.Info);
             return View(questao);
         }
 
-        //POST: Principal/Questão/Editar/5
+        //POST: historico/questao/editar/5
         [HttpPost]
         public ActionResult Editar(string codigo, FormCollection formCollection)
         {
+            if (!formCollection.HasKeys() || String.IsNullOrWhiteSpace(codigo))
+                return RedirectToAction("Index");
+
             int codQuestao = 0;
             int.TryParse(codigo, out codQuestao);
             Questao questao = null;
             if (codQuestao > 0)
-            {
                 questao = Questao.ListarPorCodigo(codQuestao);
-            }
 
-            questao.Enunciado = !String.IsNullOrEmpty(formCollection["txtEnunciado"]) ? formCollection["txtEnunciado"].Trim() : questao.Enunciado;
-            questao.Objetivo = !String.IsNullOrEmpty(formCollection["txtObjetivo"]) ? formCollection["txtObjetivo"].RemoveSpaces() : questao.Objetivo;
+            questao.Enunciado = !String.IsNullOrWhiteSpace(formCollection["txtEnunciado"]) ? formCollection["txtEnunciado"].Trim() : questao.Enunciado;
+            questao.Objetivo = !String.IsNullOrWhiteSpace(formCollection["txtObjetivo"]) ? formCollection["txtObjetivo"].RemoveSpaces() : questao.Objetivo;
 
             if (questao.CodTipoQuestao == 2)
             {
-                questao.ChaveDeResposta = !String.IsNullOrEmpty(formCollection["txtChaveDeResposta"])? formCollection["txtChaveDeResposta"].Trim() : questao.ChaveDeResposta;
-                questao.Comentario = !String.IsNullOrEmpty(formCollection["txtComentario"]) ? formCollection["txtComentario"].RemoveSpaces() : questao.Comentario;
+                questao.ChaveDeResposta = !String.IsNullOrWhiteSpace(formCollection["txtChaveDeResposta"]) ? formCollection["txtChaveDeResposta"].Trim() : questao.ChaveDeResposta;
+                questao.Comentario = !String.IsNullOrWhiteSpace(formCollection["txtComentario"]) ? formCollection["txtComentario"].RemoveSpaces() : questao.Comentario;
             }
 
             if (questao.CodTipoQuestao == 1)
             {
                 for (int i = 0; i < questao.Alternativa.Count; i++)
                 {
-                    questao.Alternativa.ElementAt(i).Enunciado = !String.IsNullOrEmpty(formCollection["txtAlternativaEnunciado" + (i + 1)]) ? formCollection["txtAlternativaEnunciado" + (i + 1)].RemoveSpaces() : questao.Alternativa.ElementAt(i).Enunciado;
-                    questao.Alternativa.ElementAt(i).Comentario = !String.IsNullOrEmpty(formCollection["txtAlternativaComentario" + (i + 1)]) ? formCollection["txtAlternativaComentario" + (i + 1)].RemoveSpaces() : questao.Alternativa.ElementAt(i).Comentario;
+                    questao.Alternativa.ElementAt(i).Enunciado = !String.IsNullOrWhiteSpace(formCollection["txtAlternativaEnunciado" + (i + 1)]) ? formCollection["txtAlternativaEnunciado" + (i + 1)].RemoveSpaces() : questao.Alternativa.ElementAt(i).Enunciado;
+                    questao.Alternativa.ElementAt(i).Comentario = !String.IsNullOrWhiteSpace(formCollection["txtAlternativaComentario" + (i + 1)]) ? formCollection["txtAlternativaComentario" + (i + 1)].RemoveSpaces() : questao.Alternativa.ElementAt(i).Comentario;
                 }
             }
 
@@ -287,8 +275,8 @@ namespace SIAC.Controllers
             {
                 for (int i = 0; i < questao.QuestaoAnexo.Count; i++)
                 {
-                    questao.QuestaoAnexo.ElementAt(i).Legenda = !String.IsNullOrEmpty(formCollection["txtAnexoLegenda" + (i + 1)]) ? formCollection["txtAnexoLegenda" + (i + 1)].RemoveSpaces() : questao.QuestaoAnexo.ElementAt(i).Legenda;
-                    questao.QuestaoAnexo.ElementAt(i).Fonte = !String.IsNullOrEmpty(formCollection["txtAnexoFonte" + (i + 1)]) ? formCollection["txtAnexoFonte" + (i + 1)].RemoveSpaces() : questao.QuestaoAnexo.ElementAt(i).Fonte;
+                    questao.QuestaoAnexo.ElementAt(i).Legenda = !String.IsNullOrWhiteSpace(formCollection["txtAnexoLegenda" + (i + 1)]) ? formCollection["txtAnexoLegenda" + (i + 1)].RemoveSpaces() : questao.QuestaoAnexo.ElementAt(i).Legenda;
+                    questao.QuestaoAnexo.ElementAt(i).Fonte = !String.IsNullOrWhiteSpace(formCollection["txtAnexoFonte" + (i + 1)]) ? formCollection["txtAnexoFonte" + (i + 1)].RemoveSpaces() : questao.QuestaoAnexo.ElementAt(i).Fonte;
                 }
             }
 
@@ -297,61 +285,70 @@ namespace SIAC.Controllers
             return RedirectToAction("Detalhe", new { codigo = questao.CodQuestao });
         }
 
-        //GET: Principal/Questao/Detalhe/4
+        //GET: historico/questao/detalhe/5
         public ActionResult Detalhe(string codigo)
         {
             int codQuestao = 0;
             int.TryParse(codigo, out codQuestao);
             Questao model = null;
             if (codQuestao > 0)
-            {
                 model = Questao.ListarPorCodigo(codQuestao);
-            }
-            if (model != null)
-            {
-                return View(model);
-            }
-            return RedirectToAction("Index");
+            if (model == null)
+                return RedirectToAction("Index");
+            return View(model);
         }
 
-        //POST: Historico/Questao/Arquivar/50
+        //POST: principal/questao/arquivar/5
         [HttpPost]
         public ActionResult Arquivar(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 int codQuestao = 0;
                 int.TryParse(codigo, out codQuestao);
-                if (codQuestao>0)
+                if (codQuestao > 0)
                 {
-                    var flagArquivo = Questao.AlternarFlagArquivo(codQuestao);
-                    return Json(flagArquivo);
+                    return Json(Questao.AlternarFlagArquivo(codQuestao));
                 }
             }
             return Json(false);
         }
 
-        //GET: Principal/Questao/Gerar/50
+        // POST: principal/questao/apresentar/5
+        [HttpPost]
+        public ActionResult Apresentar(string codigo)
+        {
+            int codQuestao = 0;
+            int.TryParse(codigo, out codQuestao);
+            Questao model = null;
+            if (codQuestao > 0)
+                model = Questao.ListarPorCodigo(codQuestao);
+            if (model != null)
+                return PartialView("_Questao", model);
+            return null;
+        }
+
+        #region Desenvolvedor
         [HttpGet]
         public ActionResult Gerar(string strQte)
         {
-            if (!String.IsNullOrEmpty(strQte))
+            if (!String.IsNullOrWhiteSpace(strQte))
             {
                 int qte = int.Parse(strQte);
                 List<Questao> lstQuestao = Helpers.DevGerarQuestao.GerarQuestao(qte);
                 TempData["lstQuestao"] = lstQuestao;
                 return Json(lstQuestao
-                    .Select(q=> new
+                    .Select(q => new
                     {
                         CodQuestao = q.CodQuestao,
                         Professor = q.Professor.Usuario.PessoaFisica.Nome,
                         Disciplina = q.QuestaoTema.First().Tema.Disciplina.Descricao,
                         Dificuldade = new { q.Dificuldade.Descricao, q.Dificuldade.Comentario },
-                        Tema = q.QuestaoTema.Select(qt=> new { qt.Tema.Descricao, qt.Tema.Comentario }),
+                        Tema = q.QuestaoTema.Select(qt => new { qt.Tema.Descricao, qt.Tema.Comentario }),
                         Enunciado = q.Enunciado,
                         Objetivo = q.Objetivo,
                         TipoQuestao = q.TipoQuestao.CodTipoQuestao,
-                        Alternativa = q.Alternativa.Select(a=>new { a.Enunciado, a.Comentario, a.FlagGabarito }),
+                        Alternativa = q.Alternativa.Select(a => new { a.Enunciado, a.Comentario, a.FlagGabarito }),
                         ChaveDeResposta = q.ChaveDeResposta,
                         Comentario = q.Comentario
                     }), JsonRequestBehavior.AllowGet);
@@ -362,7 +359,6 @@ namespace SIAC.Controllers
             }
         }
 
-        //POST: Principal/Questao/Gerar
         [HttpPost]
         public ActionResult Gerar()
         {
@@ -374,23 +370,6 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
-
-        // POST: Questao/Apresentar
-        [HttpPost]
-        public ActionResult Apresentar(string codigo)
-        {
-            int codQuestao = 0;
-            int.TryParse(codigo, out codQuestao);
-            Questao model = null;
-            if (codQuestao > 0)
-            {
-                model = Questao.ListarPorCodigo(codQuestao);
-            }
-            if (model != null)
-            {
-                return PartialView("_Questao", model);
-            }
-            return null;
-        }
+        #endregion
     }
 }

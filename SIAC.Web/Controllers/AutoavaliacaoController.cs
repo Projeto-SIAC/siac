@@ -40,8 +40,8 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina, string dificuldade)
         {
-            var qte = 10;
-            var autoavaliacoes = Autoavaliacoes;
+            int quantidade = 10;
+            List<AvalAuto> autoavaliacoes = Autoavaliacoes;
             pagina = pagina ?? 1;
             if (!String.IsNullOrWhiteSpace(pesquisa))
             {
@@ -98,7 +98,7 @@ namespace SIAC.Controllers
                     autoavaliacoes = autoavaliacoes.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
                     break;
             }
-            return PartialView("_ListaAutoavaliacao", autoavaliacoes.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
+            return PartialView("_ListaAutoavaliacao", autoavaliacoes.Skip((quantidade * pagina.Value) - quantidade).Take(quantidade).ToList());
         }
 
         // GET: Autoavaliacao/Gerar

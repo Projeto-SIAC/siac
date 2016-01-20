@@ -5,14 +5,14 @@ siac.Questao.Index = (function () {
 
     var pagina = 1;
     var ordenar = "data_desc";
-    var dificuldade = ""; 
+    var dificuldade = "";
     var disciplina = "";
     var tema = "";
-    var tipos = []; 
-    var pesquisa = ""; 
+    var tipos = [];
+    var pesquisa = "";
 
     function iniciar() {
-        $('.ui.dropdown').dropdown();       
+        $('.ui.dropdown').dropdown();
 
         $('.pesquisa input').keyup(function () {
             var _this = this;
@@ -96,7 +96,7 @@ siac.Questao.Index = (function () {
 
         listar();
     };
-    
+
     function listar() {
         if (_controleAjax && _controleAjax.readyState != 4) {
             _controleAjax.abort();
@@ -104,8 +104,8 @@ siac.Questao.Index = (function () {
         $cards = $('.ui.cards');
         $cards.parent().addClass('loading');
         _controleAjax = $.ajax({
-            url: '/Historico/Questao/Listar',
-            data: { 
+            url: '/historico/questao/listar',
+            data: {
                 pagina: pagina,
                 ordenar: ordenar,
                 dificuldade: dificuldade,
@@ -148,7 +148,7 @@ siac.Questao.Cadastrar = (function () {
     function iniciar() {
         $('.ui.checkbox').checkbox();
 
-        $('.ui.accordion').accordion({animateChildren: false});
+        $('.ui.accordion').accordion({ animateChildren: false });
 
         $('.ui.dropdown').dropdown();
 
@@ -262,7 +262,7 @@ siac.Questao.Cadastrar = (function () {
         $.ajax({
             cache: false,
             type: 'POST',
-            url: '/Tema/RecuperarTemasPorCodDisciplina',
+            url: '/tema/recuperartemasporcoddisciplina',
             data: { "codDisciplina": selecionado },
             success: function (data) {
                 ddlTema.html('');
@@ -303,7 +303,7 @@ siac.Questao.Cadastrar = (function () {
     }
 
     function marcarCorreta(chk) {
-        $chk = $(chk);
+        var $chk = $(chk);
         $lstCheckboxes = $('.ui.alternativas.accordion .content input[type="checkbox"]');
         $('.ui.alternativas.accordion .title .label').attr('style', 'display:none');
         for (var i = 0; i < $lstCheckboxes.length; i++) {
@@ -767,26 +767,19 @@ siac.Questao.Cadastrar = (function () {
     }
 
     function palavraChave(palavras) {
-        //palavras = palavras.toLowerCase();
-
-        //if (palavras.indexOf(",") > -1) {
-        //    palavras = palavras.split(',');
-        //} else {
-        //    palavras[0] = palavras;
-        //}
         if (palavras) {
             $('.ui.pesquisa.modal .pesquisar').addClass('loading');
             $.ajax({
                 type: 'POST',
                 data: { "palavras": palavras },
-                url: '/Principal/Questao/PalavrasChave',
+                url: '/principal/questao/palavraschave',
                 success: function (data) {
                     $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
                     $('#divQuestoes').html('');
                     if (data.length != 0) {
                         var $div = $('#divQuestoes');
                         $div.parent().find('.ui.resultado.label').remove();
-                        $div.parent().append('<div class="ui resultado label"> Resultado(s)<div class="detail">' + data.length + '</div></div>');
+                        $div.parent().append('<div class="ui resultado label">Resultado(s)<div class="detail">' + data.length + '</div></div>');
                         for (var i = 0, length = data.length; i < length; i++) {
                             $div.append('\
                             <div class="item">\
@@ -834,7 +827,7 @@ siac.Questao.Cadastrar = (function () {
     function apresentarQuestao(codQuestao) {
         if (codQuestao) {
             $.ajax({
-                url: '/Principal/Questao/Apresentar',
+                url: '/principal/questao/apresentar',
                 type: 'POST',
                 data: { codigo: codQuestao },
                 success: function (partial) {
@@ -862,9 +855,9 @@ siac.Questao.Cadastrar = (function () {
         $.ajax({
             type: 'POST',
             data: { captcha: $('#txtCaptcha').val() },
-            url: "/Principal/Questao/ChequeCaptcha",
-            success: function (resp) {
-                if (resp == "true") {
+            url: "/principal/questao/chequecaptcha",
+            success: function (response) {
+                if (response) {
                     $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
                     $('.ui.confirmar.modal').modal('hide');
                     $('#txtCaptcha').next().prop('class', 'checkmark green icon');
@@ -887,7 +880,7 @@ siac.Questao.Cadastrar = (function () {
     function novoCaptcha() {
         $.ajax({
             type: 'POST',
-            url: "/Principal/Questao/NovoCaptcha",
+            url: "/principal/questao/novocaptcha",
             success: function (strBase64) {
                 if (strBase64) {
                     $('#imgCaptcha').attr('src', 'data:image/png;base64,' + strBase64);
@@ -926,7 +919,7 @@ siac.Questao.Detalhe = (function () {
             var $_this = $(this);
             $_this.addClass('loading');
             $.ajax({
-                url: '/Principal/Questao/Arquivar/' + $_this.attr('data-questao'),
+                url: '/principal/questao/arquivar/' + $_this.attr('data-questao'),
                 type: 'POST',
                 success: function (flag) {
                     if (flag) {

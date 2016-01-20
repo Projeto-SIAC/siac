@@ -7,7 +7,7 @@
 
 <h2>
     @ViewBag.Title
-    <a class="ui right floated button" href="/Principal/Questao/Cadastrar">
+    <a class="ui right floated button" href="@Url.Action("Cadastrar")">
         Cadastrar
     </a>
 </h2>
@@ -45,7 +45,7 @@
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a class="dificuldade item active selected" data-dificuldade="">Todos</a>
-                    @foreach (SIAC.Models.Dificuldade dificuldade in Model.Dificuldades)
+                    @foreach (Dificuldade dificuldade in Model.Dificuldades)
                     {
                         <a class="dificuldade item" data-dificuldade="@dificuldade.CodDificuldade">@dificuldade.Descricao</a>
                     }
@@ -56,13 +56,13 @@
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a class="disciplina item active selected" data-disciplina="">Todos</a>
-                    @foreach (SIAC.Models.Disciplina disciplina in Model.Disciplinas)
+                    @foreach (Disciplina disciplina in Model.Disciplinas)
                     {
                         <div class="ui dropdown disciplina item" data-disciplina="@disciplina.CodDisciplina">
                             @disciplina.Descricao
                             <div class="menu">
                                 <a class="tema item active selected" data-tema="">Todos</a>
-                                @foreach (SIAC.Models.Tema tema in disciplina.Tema)
+                                @foreach (Tema tema in disciplina.Tema)
                                 {
                                     <a class="item tema" data-tema="@tema.CodTema">@tema.Descricao</a>
                                 }

@@ -12,9 +12,6 @@
         <div class="ui form">
             <div class="field">
                 <label>Palavras-chave</label>
-                <!--<div class="ui action input">
-                    <input id="txtPalavraChave" type="text" class="ui input text" placeholder="Palavras-chave..." />
-                </div>-->
                 <select tabindex="0" class="ui search dropdown" multiple>
                     <option value="">Palavra-chave</option>
                 </select>
@@ -48,16 +45,7 @@
 <div class="ui termo modal">
     <div class="header">Você está ciente de...</div>
     <div class="content">
-        @{
-            var termo = Model.Termo.Split('\n', '\r');
-            foreach (var str in termo)
-            {
-                if (!String.IsNullOrWhiteSpace(str))
-                {
-                    <p>@str</p>
-                }
-            }
-        }
+        @Html.Raw(Model.Termo.ToHtml("p"))
     </div>
     <div class="actions">
         <a href="@Url.Action("Index", "Principal")" class="ui cancel button">Cancelar</a>

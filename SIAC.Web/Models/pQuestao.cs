@@ -25,12 +25,7 @@ namespace SIAC.Models
             return questao.FlagArquivo;
         }
 
-        public static bool PodeAtualizar(Questao questao)
-        {
-            AvalTemaQuestao temp = contexto.AvalTemaQuestao.FirstOrDefault(atq => atq.CodQuestao == questao.CodQuestao);
-
-            return (temp == null) ? true : false;
-        }
+        public static bool PodeAtualizar(Questao questao) => contexto.AvalTemaQuestao.FirstOrDefault(atq => atq.CodQuestao == questao.CodQuestao) == null;
 
         public static void Atualizar(Questao questao)
         {
@@ -66,19 +61,14 @@ namespace SIAC.Models
         public static void AtualizarDtUltimoUso(List<Questao> questoes)
         {
             foreach (Questao questao in questoes)
-            {
                 questao.DtUltimoUso = DateTime.Now;
-            }
         }
 
         public static List<Questao> ListarPorProfessor(string matricula) => contexto.Questao.Where(q => q.Professor.MatrProfessor.ToLower() == matricula.ToLower()).ToList();
 
         public static Questao ListarPorCodigo(int codigo) => contexto.Questao.Find(codigo);
 
-        public static List<Questao> ListarPorTema(int codTema) =>
-            (from qt in contexto.QuestaoTema
-             where qt.CodTema == codTema
-             select qt.Questao).ToList();
+        public static List<Questao> ListarPorTema(int codTema) => contexto.QuestaoTema.Where(qt => qt.CodTema == codTema).Select(qt => qt.Questao).ToList();
 
         public static List<QuestaoTema> ListarPorDisciplina(int codDisciplina, string[] Temas, int dificulDisc, int tipo, int qteQuestoes)
         {
@@ -397,10 +387,9 @@ namespace SIAC.Models
 
         public static List<Questao> Listar() => contexto.Questao.ToList();
 
-        //MÉTODO PARA USAR EM AJAX 
         public static List<Questao> ListarPorPalavraChave(string[] palavraChave)
         {
-            List<Questao> todas = Questao.Listar();
+            List<Questao> questoes = Questao.Listar();
             List<Questao> retorno = new List<Questao>();
             List<string> tags = new List<string>();
             string tagsReservadas = "ão das de dos das do da porque que como isso quais porquê quê por abaixo porém mas a e o as os para cujo quais";
@@ -415,16 +404,18 @@ namespace SIAC.Models
             if (tags.Count != 0)
             {
                 int contador = 0;
-                foreach (Questao questao in todas)
+                foreach (Questao questao in questoes)
                 {
+                    string enunciado = questao.Enunciado.ToLower();
                     foreach (string palavra in tags)
                     {
-                        if (questao.Enunciado.ToLower().Contains(palavra)) contador++;
+                        if (enunciado.Contains(palavra))
+                            contador++;
                     }
                     if (contador == tags.Count)
                         retorno.Insert(0, questao);
-                    else if (contador == 0) { }
-                    else retorno.Add(questao);
+                    else if (contador != 0)
+                        retorno.Add(questao);
                     contador = 0;
                 }
             }
@@ -505,9 +496,7 @@ namespace SIAC.Models
             List<Questao> questoes = new List<Questao>();
 
             foreach (int codQuestao in codQuestoes)
-            {
                 questoes.Add(Questao.ListarPorCodigo(codQuestao));
-            }
 
             return questoes;
         }
