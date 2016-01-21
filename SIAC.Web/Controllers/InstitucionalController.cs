@@ -1,48 +1,32 @@
-﻿using SIAC.Models;
+﻿using SIAC.Helpers;
+using SIAC.Models;
+using SIAC.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2, 3 })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE, Categoria.PROFESSOR, Categoria.COLABORADOR })]
     public class InstitucionalController : Controller
     {
-        public List<AvalAvi> Institucionais
-        {
-            get
-            {
-                if (Helpers.Sessao.UsuarioCategoriaCodigo == 3)
-                {
-                    return AvalAvi.ListarPorColaborador(Helpers.Sessao.UsuarioMatricula);
-                }
-                return new List<AvalAvi>();
-            }
-        }
+        public List<AvalAvi> Institucionais =>
+            Sessao.UsuarioCategoriaCodigo == Categoria.COLABORADOR ? AvalAvi.ListarPorColaborador(Sessao.UsuarioMatricula) : new List<AvalAvi>();
 
         // GET: institucional/
         [OutputCache(CacheProfile = "PorUsuario")]
-        public ActionResult Index()
-        {
-            Usuario usuario = Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-            return View(usuario);
-        }
-        // GET: institucional/Historico
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 }, CoordenadoresAvi = true)]
-        public ActionResult Historico()
-        {
-            return View();
-        }
-        // GET: institucional/Andamento
-        public ActionResult Andamento()
-        {
-            List<AvalAvi> model = AvalAvi.ListarPorUsuario(Helpers.Sessao.UsuarioMatricula);
-            return View(model);
-        }
-        // GET: institucional/Configuracao
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 }, CoordenadoresAvi = true)]
+        public ActionResult Index() => View(Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario);
+
+        // GET: institucional/historico
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        public ActionResult Historico() => View();
+
+        // GET: institucional/andamento
+        public ActionResult Andamento() => View(AvalAvi.ListarPorUsuario(Sessao.UsuarioMatricula));
+
+        // GET: institucional/configuracao
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
         public ActionResult Configuracao()
         {
             ViewModels.InstitucionalGerarQuestaoViewModel model = new ViewModels.InstitucionalGerarQuestaoViewModel();
@@ -52,17 +36,17 @@ namespace SIAC.Controllers
 
             return View(model);
         }
-        // POST: institucional/Listar
+
+        // POST: institucional/listar
         [HttpPost]
         public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias)
         {
-            var qte = 12;
-            var institucionais = Institucionais;
+            int quantidade = 12;
+            List<AvalAvi> institucionais = Institucionais;
             pagina = pagina ?? 1;
             if (!String.IsNullOrWhiteSpace(pesquisa))
-            {
                 institucionais = Institucionais.Where(a => a.Avaliacao.CodAvaliacao.ToLower().Contains(pesquisa.ToLower())).ToList();
-            }
+
             if (categorias != null)
             {
                 if (categorias.Contains("gerada") && !categorias.Contains("andamento") && !categorias.Contains("concluida"))
@@ -103,87 +87,90 @@ namespace SIAC.Controllers
                     break;
             }
 
-            return PartialView("_ListaInstitucional", institucionais.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
+            return PartialView("_ListaInstitucional", institucionais.Skip((quantidade * pagina.Value) - quantidade).Take(quantidade).ToList());
         }
-        // POST: institucional/Informacao/{codigo}
+
+        // POST: institucional/informacao/AVI201520002
         [HttpPost]
         public ActionResult Informacao(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
                 if (avi != null)
-                {
-                    return PartialView("_InstitucionalInformacoes",avi);
-                }
+                    return PartialView("_InstitucionalInformacoes", avi);
             }
             return null;
         }
-        // POST: institucional/CadastrarModulo
+
+        // POST: institucional/cadastrarmodulo
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
         public ActionResult CadastrarModulo(FormCollection form)
         {
-            AviModulo modulo = new AviModulo();
-
-            modulo.Descricao = form["txtTitulo"];
-            modulo.Objetivo = form["txtObjetivo"];
-            modulo.Observacao = form["txtObservacao"];
-
-            AviModulo.Inserir(modulo);
-
+            if (!StringExt.IsNullOrWhiteSpace(form["txtTitulo"], form["txtObjetivo"]))
+            {
+                AviModulo modulo = new AviModulo();
+                modulo.Descricao = form["txtTitulo"];
+                modulo.Objetivo = form["txtObjetivo"];
+                modulo.Observacao = String.IsNullOrWhiteSpace(form["txtObservacao"]) ? null : form["txtObservacao"];
+                AviModulo.Inserir(modulo);
+                Lembrete.AdicionarNotificacao($"Módulo <b>{modulo.Descricao}</b> cadastrado com sucesso.", Lembrete.POSITIVO);
+            }
             return RedirectToAction("Configuracao");
         }
-        // POST: institucional/CadastrarCategoria
+
+        // POST: institucional/cadastrarcategoria
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
         public ActionResult CadastrarCategoria(FormCollection form)
         {
-            AviCategoria categoria = new AviCategoria();
-
-            categoria.Descricao = form["txtTitulo"];
-            categoria.Observacao = form["txtObservacao"];
-
-            AviCategoria.Inserir(categoria);
-
+            if (!String.IsNullOrWhiteSpace(form["txtTitulo"]))
+            {
+                AviCategoria categoria = new AviCategoria();
+                categoria.Descricao = form["txtTitulo"];
+                categoria.Observacao = String.IsNullOrWhiteSpace(form["txtObservacao"]) ? null : form["txtObservacao"];
+                AviCategoria.Inserir(categoria);
+                Lembrete.AdicionarNotificacao($"Categoria <b>{categoria.Descricao}</b> cadastrada com sucesso.", Lembrete.POSITIVO);
+            }
             return RedirectToAction("Configuracao");
         }
-        // POST: institucional/CadastrarIndicador
+
+        // POST: institucional/cadastrarindicador
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
         public ActionResult CadastrarIndicador(FormCollection form)
         {
-            AviIndicador indicador = new AviIndicador();
-
-            indicador.Descricao = form["txtTitulo"];
-            indicador.Observacao = form["txtObservacao"];
-
-            AviIndicador.Inserir(indicador);
-
+            if (!String.IsNullOrWhiteSpace(form["txtTitulo"]))
+            {
+                AviIndicador indicador = new AviIndicador();
+                indicador.Descricao = form["txtTitulo"];
+                indicador.Observacao = form["txtObservacao"];
+                AviIndicador.Inserir(indicador);
+                Lembrete.AdicionarNotificacao($"Indicador <b>{indicador.Descricao}</b> cadastrado com sucesso.", Lembrete.POSITIVO);
+            }
             return RedirectToAction("Configuracao");
         }
-        // GET: institucional/Gerar
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
-        [AcceptVerbs(HttpVerbs.Get)]
-        public ActionResult Gerar()
-        {
-            return View();
-        }
-        // POST: institucional/Gerar
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
-        [AcceptVerbs(HttpVerbs.Post)]
+
+        // GET: institucional/gerar
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        public ActionResult Gerar() => View();
+
+        // POST: institucional/gerar
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [HttpPost]
         public ActionResult Gerar(FormCollection form)
         {
-            if (!Helpers.StringExt.IsNullOrWhiteSpace(form["txtTitulo"], form["txtObjetivo"]))
+            if (!StringExt.IsNullOrWhiteSpace(form["txtTitulo"], form["txtObjetivo"]))
             {
                 AvalAvi avi = new AvalAvi();
                 /* Chave */
                 avi.Avaliacao = new Avaliacao();
                 DateTime hoje = DateTime.Now;
-                avi.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(4);
+                avi.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(TipoAvaliacao.AVI);
                 avi.Avaliacao.Ano = hoje.Year;
-                avi.Avaliacao.Semestre = hoje.Month > 6 ? 2 : 1;
-                avi.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(4);
+                avi.Avaliacao.Semestre = hoje.SemestreAtual();
+                avi.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(TipoAvaliacao.AVI);
                 avi.Avaliacao.DtCadastro = hoje;
                 avi.Avaliacao.FlagLiberada = false;
 
@@ -192,24 +179,25 @@ namespace SIAC.Controllers
                 avi.Objetivo = form["txtObjetivo"];
 
                 /* Colaborador */
-                Colaborador colaborador = Colaborador.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
+                Colaborador colaborador = Colaborador.ListarPorMatricula(Sessao.UsuarioMatricula);
                 avi.CodColabCoordenador = colaborador.CodColaborador;
                 avi.Colaborador = colaborador;
 
                 AvalAvi.Inserir(avi);
-
+                Lembrete.AdicionarNotificacao($"Avaliação Institucional cadastrada com sucesso.", Lembrete.POSITIVO);
                 return RedirectToAction("Questionario", new { codigo = avi.Avaliacao.CodAvaliacao });
             }
             return RedirectToAction("Gerar");
         }
-        // GET: institucional/Questionario
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+
+        // GET: institucional/questionario
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
         public ActionResult Questionario(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
-                if (avi != null /*&& !avi.FlagAndamento*/)
+                if (avi != null && !avi.FlagAndamento)
                 {
                     ViewModels.InstitucionalGerarQuestaoViewModel model = new ViewModels.InstitucionalGerarQuestaoViewModel();
                     model.Modulos = AviModulo.ListarOrdenadamente();
@@ -223,13 +211,14 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
-        // POST: institucional/CadastrarQuestao/{codigo}
+
+        // POST: institucional/cadastrarquestao/AVI201520002
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
-        public ActionResult CadastrarQuestao(string codigo,FormCollection form)
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        public ActionResult CadastrarQuestao(string codigo, FormCollection form)
         {
             AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
-            if (avi != null)
+            if (avi != null && form.HasKeys())
             {
                 AviQuestao questao = new AviQuestao();
 
@@ -241,9 +230,9 @@ namespace SIAC.Controllers
                 questao.CodOrdem = AviQuestao.ObterNovaOrdem(avi, questao.CodAviModulo, questao.CodAviCategoria, questao.CodAviIndicador);
 
                 questao.Enunciado = form["txtEnunciado"].Trim();
-                questao.Observacao = !String.IsNullOrEmpty(form["txtObservacao"]) ? form["txtObservacao"].RemoveSpaces() : null;
+                questao.Observacao = !String.IsNullOrWhiteSpace(form["txtObservacao"]) ? form["txtObservacao"].RemoveSpaces() : null;
 
-                if (int.Parse(form["ddlTipo"]) == 1)
+                if (int.Parse(form["ddlTipo"]) == TipoQuestao.OBJETIVA)
                 {
                     int qteAlternativas = int.Parse(form["txtQtdAlternativas"]);
 
@@ -258,7 +247,7 @@ namespace SIAC.Controllers
                             FlagAlternativaDiscursiva = false
                         });
                     }
-                    
+
                     if (form["chkAlternativaDiscursiva"] == "on")
                     {
                         int codAlternativa = qteAlternativas + 1;
@@ -273,7 +262,7 @@ namespace SIAC.Controllers
                     }
 
                 }
-                else if (int.Parse(form["ddlTipo"]) == 2)
+                else if (int.Parse(form["ddlTipo"]) == TipoQuestao.DISCURSIVA)
                 {
                     questao.FlagDiscursiva = true;
                 }
@@ -282,10 +271,11 @@ namespace SIAC.Controllers
             }
             return Json(false);
         }
-        // POST: institucional/RemoverQuestao/{codigo}
+
+        // POST: institucional/removerquestao/AVI201520002
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
-        public ActionResult RemoverQuestao(string codigo,int modulo,int categoria, int indicador, int ordem)
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        public ActionResult RemoverQuestao(string codigo, int modulo, int categoria, int indicador, int ordem)
         {
             AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
             if (avi != null)
@@ -307,13 +297,14 @@ namespace SIAC.Controllers
             }
             return Json(false);
         }
-        // POST: institucional/EditarQuestao/{codigo}
+
+        // POST: institucional/editarquestao/AVI201520002
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
-        public ActionResult EditarQuestao(string codigo,FormCollection form)
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        public ActionResult EditarQuestao(string codigo, FormCollection form)
         {
             AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
-            if (avi != null)
+            if (avi != null && form.HasKeys())
             {
                 int modulo = int.Parse(Request.QueryString["modulo"]);
                 int categoria = int.Parse(Request.QueryString["categoria"]);
@@ -322,20 +313,20 @@ namespace SIAC.Controllers
 
                 AviQuestao questao = avi.ObterQuestao(modulo, categoria, indicador, ordem);
 
-                if(questao != null)
+                if (questao != null)
                 {
                     questao.Enunciado = form["txtEditarEnunciado"];
-                    questao.Observacao = !String.IsNullOrEmpty(form["txtEditarObservacao"]) ? form["txtEditarObservacao"] : null;
+                    questao.Observacao = !String.IsNullOrWhiteSpace(form["txtEditarObservacao"]) ? form["txtEditarObservacao"] : null;
 
                     int indice = 1;
-                    while(!String.IsNullOrEmpty(form["txtEditarAlternativa"+indice]))
+                    while (!String.IsNullOrWhiteSpace(form["txtEditarAlternativa" + indice]))
                     {
                         AviQuestaoAlternativa alternativa = questao.AviQuestaoAlternativa.FirstOrDefault(a => a.CodAlternativa == indice);
                         alternativa.Enunciado = form["txtEditarAlternativa" + indice];
                         indice++;
                     }
 
-                    if (!String.IsNullOrEmpty(form["txtEditarAlternativaDiscursiva"]))
+                    if (!String.IsNullOrWhiteSpace(form["txtEditarAlternativaDiscursiva"]))
                     {
                         AviQuestaoAlternativa alternativa = questao.AviQuestaoAlternativa.FirstOrDefault(a => a.FlagAlternativaDiscursiva);
                         alternativa.Enunciado = form["txtEditarAlternativaDiscursiva"];
@@ -348,15 +339,16 @@ namespace SIAC.Controllers
             }
             return Json(false);
         }
-        // GET: institucional/configurar/{codigo}
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+
+        // GET: institucional/configurar/AVI201520002
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
         public ActionResult Configurar(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
 
-                if (avi != null/* && !avi.FlagAndamento*/)
+                if (avi != null && !avi.FlagAndamento)
                 {
                     if (avi.FlagQuestionario)
                         return View(avi);
@@ -366,33 +358,34 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
-        // POST: institucional/configurar/{codigo}
+
+        // POST: institucional/configurar/AVI201520002
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
-        public ActionResult Configurar(string codigo,string[] questoes)
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        public ActionResult Configurar(string codigo, string[] questoes)
         {
-            if (!String.IsNullOrEmpty(codigo) && questoes.Length > 0)
+            if (!String.IsNullOrWhiteSpace(codigo) && questoes.Length > 0)
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
 
-                if (avi != null /*&& !avi.FlagAndamento*/)
+                if (avi != null && !avi.FlagAndamento)
                 {
                     avi.OrdenarQuestoes(questoes);
-
                     return View(avi);
                 }
             }
             return RedirectToAction("Index");
         }
-        // GET: institucional/publico
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+
+        // GET: institucional/publico/AVI201520002
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
         public ActionResult Publico(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
 
-                if (avi != null /*&& !avi.FlagAndamento*/)
+                if (avi != null && !avi.FlagAndamento)
                 {
                     if (avi.FlagQuestionario)
                     {
@@ -407,31 +400,31 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
-        // GET: institucional/agendar/{codigo}
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+
+        // GET: institucional/agendar/AVI201520002
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
         public ActionResult Agendar(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
 
                 if (avi != null && !avi.FlagRealizada)
                 {
-                    if(avi.FlagPublico)
-                    {
+                    if (avi.FlagPublico)
                         return View(avi);
-                    }
                     return RedirectToAction("Publico", new { codigo = codigo });
                 }
             }
             return RedirectToAction("Index");
         }
-        // POST: institucional/agendar/{codigo}
+
+        // POST: institucional/agendar/AVI201520002
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
-        public ActionResult Agendar(string codigo,FormCollection form)
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        public ActionResult Agendar(string codigo, FormCollection form)
         {
-            if (!String.IsNullOrEmpty(codigo) && !Helpers.StringExt.IsNullOrEmpty(form["txtDataInicio"], form["txtDataTermino"]))
+            if (!StringExt.IsNullOrWhiteSpace(codigo, form["txtDataInicio"], form["txtDataTermino"]))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
 
@@ -439,11 +432,11 @@ namespace SIAC.Controllers
                 {
                     if (avi.Questoes.Count > 0)
                     {
-                        avi.Avaliacao.DtAplicacao = DateTime.Parse(form["txtDataInicio"]);
-                        avi.DtTermino = DateTime.Parse(form["txtDataTermino"]);
+                        avi.Avaliacao.DtAplicacao = DateTime.Parse(form["txtDataInicio"] + " 00:00");
+                        avi.DtTermino = DateTime.Parse(form["txtDataTermino"] + " 23:59");
 
                         Repositorio.GetInstance().SaveChanges();
-
+                        Lembrete.AdicionarNotificacao($"Avaliação Institucional agendada com sucesso.", Lembrete.POSITIVO);
                         return RedirectToAction("Historico");
                     }
                     return RedirectToAction("Questionario", new { codigo = codigo });
@@ -451,9 +444,10 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
-        // POST: Institucional/FiltrarPublico/AVI201520001
+
+        // POST: Institucional/filtrarpublico/AVI201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
         public ActionResult FiltrarPublico(int codigo)
         {
             object lstResultado = null;
@@ -539,117 +533,102 @@ namespace SIAC.Controllers
 
             return Json(lstResultado);
         }
-        // POST: Institucional/SalvarPublico/AVI201520001
+
+        // POST: Institucional/salvarpublico/AVI201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
         public ActionResult SalvarPublico(string codigo, List<Selecao> selecao)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
                 if (avi != null && !avi.FlagAndamento)
-                {
-                    if (avi.Colaborador.MatrColaborador == Helpers.Sessao.UsuarioMatricula)
-                    {
+                    if (avi.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
                         avi.InserirPublico(selecao);
-                    }
-                }
             }
             return Json("/institucional/agendar/" + codigo);
-            
+
         }
-        //GET: institucional/realizar/{codigo}
+
+        // GET: institucional/realizar/AVI201520002
         public ActionResult Realizar(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
-                if (avi != null /*&& avi.FlagAndamento*/)
+                if (avi != null && avi.FlagAndamento)
                 {
-                    PessoaFisica pessoa = PessoaFisica.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-
+                    PessoaFisica pessoa = PessoaFisica.ListarPorMatricula(Sessao.UsuarioMatricula);
                     if (avi.Pessoas.Contains(pessoa))
                     {
-
-                        ViewModels.InstitucionalRealizarViewModel viewModel = new ViewModels.InstitucionalRealizarViewModel();
+                        InstitucionalRealizarViewModel viewModel = new InstitucionalRealizarViewModel();
                         viewModel.Avi = avi;
-                        viewModel.Respostas = AviQuestaoPessoaResposta.ObterRespostasPessoa(avi, PessoaFisica.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula));
-
+                        viewModel.Respostas = AviQuestaoPessoaResposta.ObterRespostasPessoa(avi, pessoa);
                         return View(viewModel);
                     }
                 }
             }
             return RedirectToAction("Andamento");
         }
-        // POST: institucional/EnviarRespostaObjetiva/{codigo}
+
+        // POST: institucional/enviarrespostaobjetiva/AVI201520002
         [HttpPost]
-        public ActionResult EnviarRespostaObjetiva(string codigo,int ordem,int alternativa)
+        public void EnviarRespostaObjetiva(string codigo, int ordem, int alternativa)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
-                if (avi != null /*&& !avi.FlagAndamento*/)
+                if (avi != null && !avi.FlagAndamento)
                 {
                     AviQuestao questao = avi.ObterQuestao(ordem);
-
-                    PessoaFisica pessoa = Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula)?.PessoaFisica;
-
+                    PessoaFisica pessoa = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula)?.PessoaFisica;
                     AviQuestaoPessoaResposta.InserirResposta(questao, pessoa, alternativa);
                 }
             }
-            return Json("/institucional/agendar/" + codigo);
-
         }
-        // POST: institucional/EnviarRespostaDiscursiva/{codigo}
+
+        // POST: institucional/enviarrespostadiscursiva/AVI201520002
         [HttpPost]
-        public ActionResult EnviarRespostaDiscursiva(string codigo, int ordem, string resposta)
+        public void EnviarRespostaDiscursiva(string codigo, int ordem, string resposta)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
-                if (avi != null /*&& !avi.FlagAndamento*/)
+                if (avi != null && !avi.FlagAndamento)
                 {
                     AviQuestao questao = avi.ObterQuestao(ordem);
-                    
-                    AviQuestaoPessoaResposta.InserirResposta(questao, PessoaFisica.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula), resposta);
+                    AviQuestaoPessoaResposta.InserirResposta(questao, PessoaFisica.ListarPorMatricula(Sessao.UsuarioMatricula), resposta);
                 }
             }
-            return Json("/institucional/agendar/" + codigo);
-
         }
-        // POST: institucional/EnviarAlternativaDiscursiva/{codigo}
+
+        // POST: institucional/enviaralternativadiscursiva/AVI201520002
         [HttpPost]
-        public ActionResult EnviarAlternativaDiscursiva(string codigo, int ordem, int alternativa,string resposta)
+        public void EnviarAlternativaDiscursiva(string codigo, int ordem, int alternativa, string resposta)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
-                if (avi != null /*&& !avi.FlagAndamento*/)
+                if (avi != null && !avi.FlagAndamento)
                 {
                     AviQuestao questao = avi.ObterQuestao(ordem);
-
-                    AviQuestaoPessoaResposta.InserirResposta(questao, PessoaFisica.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula), alternativa, resposta);
+                    AviQuestaoPessoaResposta.InserirResposta(questao, PessoaFisica.ListarPorMatricula(Sessao.UsuarioMatricula), alternativa, resposta);
                 }
             }
-            return Json("/institucional/agendar/" + codigo);
-
         }
 
-        // GET: institucional/Resultado/{codigo}
-        [Filters.AutenticacaoFilter(Categorias = new [] { 3 },CoordenadoresAvi = true)]
+        // GET: institucional/resultado/AVI201520002
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
         public ActionResult Resultado(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
                 if (avi != null)
                 {
-                    Colaborador colaborador = Colaborador.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-
+                    Colaborador colaborador = Colaborador.ListarPorMatricula(Sessao.UsuarioMatricula);
                     if (avi.CodColabCoordenador == colaborador.CodColaborador)
-                    {
                         return View(avi);
-                    }
                 }
             }
             return RedirectToAction("Andamento");
