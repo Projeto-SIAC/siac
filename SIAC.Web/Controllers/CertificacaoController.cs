@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using SIAC.Models;
 using SIAC.Helpers;
+using SIAC.ViewModels;
 
 namespace SIAC.Controllers
 {
@@ -15,23 +16,23 @@ namespace SIAC.Controllers
         {
             get
             {
-                var matr = Sessao.UsuarioMatricula;
-                if (Helpers.Sessao.UsuarioCategoriaCodigo == 2)
+                string matricula = Sessao.UsuarioMatricula;
+                if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
                 {                    
-                    int codProfessor = Professor.ListarPorMatricula(matr).CodProfessor;
-                    var lstProfessor = AvalCertificacao.ListarPorProfessor(codProfessor);
-                    int codPessoaFisica = Usuario.ObterPessoaFisica(matr);
+                    int codProfessor = Professor.ListarPorMatricula(matricula).CodProfessor;
+                    List<AvalCertificacao> lstProfessor = AvalCertificacao.ListarPorProfessor(codProfessor);
+                    int codPessoaFisica = Usuario.ObterPessoaFisica(matricula);
                     return AvalCertificacao.ListarPorPessoa(codPessoaFisica).Union(lstProfessor).Distinct().ToList();
                 }
                 else
                 {
-                    int codPessoaFisica = Usuario.ObterPessoaFisica(matr);
+                    int codPessoaFisica = Usuario.ObterPessoaFisica(matricula);
                     return AvalCertificacao.ListarPorPessoa(codPessoaFisica);
                 }
             }
         }
 
-        // GET: Certificacao
+        // GET: historico/avaliacao/certificacao
         [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
@@ -39,16 +40,17 @@ namespace SIAC.Controllers
             {
                 return Redirect("~/historico/avaliacao/certificacao");
             }
-            var model = new ViewModels.AvaliacaoIndexViewModel();
+            AvaliacaoIndexViewModel model = new ViewModels.AvaliacaoIndexViewModel();
             model.Disciplinas = Certificacoes.Select(a => a.Disciplina).Distinct().ToList();
             return View(model);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
+        // POST: historico/avaliacao/certificacao/listar
+        [HttpPost]
         public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina)
         {
-            var qte = 12;
-            var certificacoes = Certificacoes;
+            int quantidade = 12;
+            List<AvalCertificacao> certificacoes = Certificacoes;
             pagina = pagina ?? 1;
             if (!String.IsNullOrWhiteSpace(pesquisa))
             {
@@ -101,23 +103,23 @@ namespace SIAC.Controllers
                     break;
             }
 
-            return PartialView("_ListaCertificacao", certificacoes.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
+            return PartialView("_ListaCertificacao", certificacoes.Skip((quantidade * pagina.Value) - quantidade).Take(quantidade).ToList());
         }
 
-        // GET: Certificacao/Gerar
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2/*, 3*/ })]
+        // GET: principal/avaliacao/certificacao/gerar
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR/*, 3*/ })]
         public ActionResult Gerar()
         {
-            var model = new ViewModels.AvaliacaoGerarViewModel();
-            model.Disciplinas = /*Helpers.Sessao.UsuarioCategoriaCodigo == 2 ? */Disciplina.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula)/*: Disciplina.ListarOrdenadamente()*/;
+            AvaliacaoGerarViewModel model = new AvaliacaoGerarViewModel();
+            model.Disciplinas = /*Helpers.Sessao.UsuarioCategoriaCodigo == 2 ? */Disciplina.ListarPorProfessor(Sessao.UsuarioMatricula)/*: Disciplina.ListarOrdenadamente()*/;
             model.Dificuldades = Dificuldade.ListarOrdenadamente();
             model.Termo = Parametro.Obter().NotaUsoCertificacao;
             return View(model);
         }
 
-        // POST: Certificacao/Confirmar
+        // POST: principal/avaliacao/certificacao/confirmar
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2/*, 3*/ })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR/*, 3*/ })]
         public ActionResult Confirmar(FormCollection formCollection)
         {
             AvalCertificacao cert = new AvalCertificacao();
@@ -127,15 +129,15 @@ namespace SIAC.Controllers
 
                 /* Chave */
                 cert.Avaliacao = new Avaliacao();
-                cert.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(3);
+                cert.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(TipoAvaliacao.CERTIFICACAO);
                 cert.Avaliacao.Ano = hoje.Year;
-                cert.Avaliacao.Semestre = hoje.Month > 6 ? 2 : 1;
-                cert.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(3);
+                cert.Avaliacao.Semestre = hoje.SemestreAtual();
+                cert.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(TipoAvaliacao.CERTIFICACAO);
                 cert.Avaliacao.DtCadastro = hoje;
 
                 /* Professor */
-                string strMatr = Helpers.Sessao.UsuarioMatricula;
-                cert.Professor = Professor.ListarPorMatricula(strMatr);
+                string matricula = Sessao.UsuarioMatricula;
+                cert.Professor = Professor.ListarPorMatricula(matricula);
 
                 /* Dados */
                 int codDisciplina = int.Parse(formCollection["ddlDisciplina"]);
@@ -146,45 +148,45 @@ namespace SIAC.Controllers
                 int codDificuldade = int.Parse(formCollection["ddlDificuldade"]);
 
                 /* Quantidade */
-                int qteObjetiva = 0;
-                int qteDiscursiva = 0;
+                int quantidadeObjetiva = 0;
+                int quantidadeDiscursiva = 0;
                 if (formCollection["ddlTipo"] == "3")
                 {
-                    int.TryParse(formCollection["txtQteObjetiva"], out qteObjetiva);
-                    int.TryParse(formCollection["txtQteDiscursiva"], out qteDiscursiva);
+                    int.TryParse(formCollection["txtQteObjetiva"], out quantidadeObjetiva);
+                    int.TryParse(formCollection["txtQteDiscursiva"], out quantidadeDiscursiva);
                 }
                 else if (formCollection["ddlTipo"] == "2")
                 {
-                    int.TryParse(formCollection["txtQteDiscursiva"], out qteDiscursiva);
+                    int.TryParse(formCollection["txtQteDiscursiva"], out quantidadeDiscursiva);
                 }
                 else if (formCollection["ddlTipo"] == "1")
                 {
-                    int.TryParse(formCollection["txtQteObjetiva"], out qteObjetiva);
+                    int.TryParse(formCollection["txtQteObjetiva"], out quantidadeObjetiva);
                 }
 
                 /* Temas */
-                string[] arrTemaCods = formCollection["ddlTemas"].Split(',');
+                string[] temasCodigo = formCollection["ddlTemas"].Split(',');
 
                 /* Questões */
                 List<QuestaoTema> lstQuestoes = new List<QuestaoTema>();
 
-                if (qteObjetiva > 0)
+                if (quantidadeObjetiva > 0)
                 {
-                    lstQuestoes.AddRange(Questao.ListarPorDisciplina(codDisciplina, arrTemaCods, codDificuldade, 1, qteObjetiva));
+                    lstQuestoes.AddRange(Questao.ListarPorDisciplina(codDisciplina, temasCodigo, codDificuldade, TipoQuestao.OBJETIVA, quantidadeObjetiva));
                 }
-                if (qteDiscursiva > 0)
+                if (quantidadeDiscursiva > 0)
                 {
-                    lstQuestoes.AddRange(Questao.ListarPorDisciplina(codDisciplina, arrTemaCods, codDificuldade, 2, qteDiscursiva));
+                    lstQuestoes.AddRange(Questao.ListarPorDisciplina(codDisciplina, temasCodigo, codDificuldade, TipoQuestao.DISCURSIVA, quantidadeDiscursiva));
                 }
 
-                foreach (var strTemaCod in arrTemaCods)
+                foreach (string temaCodigo in temasCodigo)
                 {
                     AvaliacaoTema avalTema = new AvaliacaoTema();
-                    avalTema.Tema = Tema.ListarPorCodigo(codDisciplina, int.Parse(strTemaCod));
-                    foreach (var queTma in lstQuestoes.Where(q => q.CodTema == int.Parse(strTemaCod)))
+                    avalTema.Tema = Tema.ListarPorCodigo(codDisciplina, int.Parse(temaCodigo));
+                    foreach (QuestaoTema questaoTema in lstQuestoes.Where(q => q.CodTema == int.Parse(temaCodigo)))
                     {
                         AvalTemaQuestao avalTemaQuestao = new AvalTemaQuestao();
-                        avalTemaQuestao.QuestaoTema = queTma;
+                        avalTemaQuestao.QuestaoTema = questaoTema;
                         avalTema.AvalTemaQuestao.Add(avalTemaQuestao);
                     }
                     cert.Avaliacao.AvaliacaoTema.Add(avalTema);
@@ -192,24 +194,23 @@ namespace SIAC.Controllers
 
                 AvalCertificacao.Inserir(cert);
             }
-
-            //return View(cert);
+            
             return RedirectToAction("Configurar", new { codigo = cert.Avaliacao.CodAvaliacao });
         }
 
-        // GET: Certificacao/Configurar/CERT201520001
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2/*, 3*/ })]
+        // GET: principal/avaliacao/certificacao/configurar/CERT201520001
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR/*, 3*/ })]
         public ActionResult Configurar(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 if (cert != null && !cert.Avaliacao.FlagRealizada)
                 {
-                    Professor prof = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
+                    Professor prof = Professor.ListarPorMatricula(Sessao.UsuarioMatricula);
                     if (prof != null && prof.CodProfessor == cert.Professor.CodProfessor)
                     {
-                        var model = new ViewModels.CertificacaoConfigurarViewModel();
+                        CertificacaoConfigurarViewModel model = new CertificacaoConfigurarViewModel();
                         model.Avaliacao = cert.Avaliacao;
                         model.Dificuldades = Dificuldade.ListarOrdenadamente();
                         model.TiposQuestao = TipoQuestao.ListarOrdenadamente();
@@ -220,12 +221,12 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        //POST: Certificacao/Configurar/CERT201520001
+        // POST: principal/avaliacao/certificacao/configurar/CERT201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] {2})]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR/*, 3*/})]
         public ActionResult Configurar(string codigo,int[] questoes)
         {
-            if(!String.IsNullOrEmpty(codigo) && questoes.Length > 0)
+            if(!String.IsNullOrWhiteSpace(codigo) && questoes.Length > 0)
             {
                 Avaliacao.AtualizarQuestoes(codigo, questoes);
                 return Json(true);
@@ -233,12 +234,12 @@ namespace SIAC.Controllers
             return Json(false);
         }
 
-        // POST: Certificacao/CarregarQuestoes/CERT201520001/{temas}/{dificuldade}/{tipo}
+        // POST: principal/avaliacao/certificacao/carregarquestoes/CERT201520001/
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2/*, 3*/ })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR/*, 3*/ })]
         public ActionResult CarregarQuestoes(string codigo, int[] temas, int dificuldade, int tipo)
         {
-            if (!String.IsNullOrEmpty(codigo) && temas.Length > 0 && dificuldade > 0 && tipo > 0 )
+            if (!String.IsNullOrWhiteSpace(codigo) && temas.Length > 0 && dificuldade > 0 && tipo > 0 )
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 if (cert != null)
@@ -253,21 +254,27 @@ namespace SIAC.Controllers
             return null;
         }
 
+        // POST: principal/avaliacao/certificacao/carregarquestao
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult CarregarQuestao(int codQuestao)
         {
             if (codQuestao > 0)
             {
                 Questao questao = Questao.ListarPorCodigo(codQuestao);
 
-                return PartialView("~/Views/Questao/Partials/_Questao.cshtml", questao); 
+                if (questao != null)
+                {
+
+                    return PartialView("~/Views/Questao/Partials/_Questao.cshtml", questao);
+                }
             }
             return null;
         }
 
+        // POST: principal/avaliacao/certificacao/carregarlistaquestaodetalhe
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult CarregarListaQuestaoDetalhe(int[] codQuestoes)
         {
             if (codQuestoes.Length > 0)
@@ -282,18 +289,18 @@ namespace SIAC.Controllers
             return null;
         }
 
-        // GET: Certificacao/Agendar/CERT201520001
+        // GET: principal/avaliacao/certificacao/agendar/CERT201520001
         [HttpGet]
-        [Filters.AutenticacaoFilter(Categorias = new [] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new [] { Categoria.PROFESSOR })]
         public ActionResult Agendar(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 
-                if (cert.Professor.MatrProfessor == Helpers.Sessao.UsuarioMatricula)
+                if (cert.Professor.MatrProfessor == Sessao.UsuarioMatricula)
                 {
-                    var model = new ViewModels.AvaliacaoAgendarViewModel();
+                    AvaliacaoAgendarViewModel model = new AvaliacaoAgendarViewModel();
 
                     model.Avaliacao = cert.Avaliacao;
                     model.Salas = Sala.ListarOrdenadamente();
@@ -305,23 +312,23 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
         
-        // POST: Certificacao/Agendar/CERT201520001
+        // POST: principal/avaliacao/certificacao/agendar/CERT201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Agendar(string codigo, FormCollection form)
         {
             string strCodSala = form["ddlSala"];
-            string strData = form["txtData"];
-            string strHoraInicio = form["txtHoraInicio"];
-            string strHoraTermino = form["txtHoraTermino"];
-            if (!StringExt.IsNullOrWhiteSpace(strCodSala, strData, strHoraInicio, strHoraTermino))
+            string data = form["txtData"];
+            string horaInicio = form["txtHoraInicio"];
+            string horaTermino = form["txtHoraTermino"];
+            if (!StringExt.IsNullOrWhiteSpace(strCodSala, data, horaInicio, horaTermino))
             {
                 AvalCertificacao aval = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
 
-                string strMatr = Helpers.Sessao.UsuarioMatricula;
-                Professor prof = Professor.ListarPorMatricula(strMatr);
+                string matricula = Sessao.UsuarioMatricula;
+                Professor professor = Professor.ListarPorMatricula(matricula);
 
-                if (aval.CodProfessor == prof.CodProfessor)
+                if (aval.CodProfessor == professor.CodProfessor)
                 {
                     // Sala
                     int codSala;
@@ -333,8 +340,8 @@ namespace SIAC.Controllers
                     }
 
                     // Data de Aplicacao
-                    DateTime dtAplicacao = DateTime.Parse(strData + " " + strHoraInicio);
-                    DateTime dtAplicacaoTermino = DateTime.Parse(strData + " " + strHoraTermino);
+                    DateTime dtAplicacao = DateTime.Parse(data + " " + horaInicio);
+                    DateTime dtAplicacaoTermino = DateTime.Parse(data + " " + horaTermino);
 
                     if (dtAplicacao.IsFuture() && dtAplicacaoTermino.IsFuture() && dtAplicacaoTermino > dtAplicacao)
                     {
@@ -351,12 +358,12 @@ namespace SIAC.Controllers
             return RedirectToAction("Avaliados", new { codigo = codigo }); // Redirecionar para Pessoas
         }
 
-        // GET: Certificacao/Avaliados/CERT201520001
+        // GET: principal/avaliacao/certificacao/avaliados/CERT201520001
         [HttpGet]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Avaliados(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 if (cert.Professor.MatrProfessor == Sessao.UsuarioMatricula)
@@ -367,12 +374,12 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST: Certificacao/Avaliados/CERT201520001
+        // POST: principal/avaliacao/certificacao/avaliados/CERT201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Avaliados(string codigo, List<Selecao> selecao)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 if (cert.Professor.MatrProfessor == Sessao.UsuarioMatricula)
@@ -380,7 +387,7 @@ namespace SIAC.Controllers
                     cert.PessoaFisica.Clear();
                     List<PessoaFisica> lstPessoaFisica = new List<PessoaFisica>();
 
-                    foreach (var item in selecao)
+                    foreach (Selecao item in selecao)
                     {
                         switch (item.category)
                         {
@@ -410,6 +417,13 @@ namespace SIAC.Controllers
             }
             return Json("/historico/avaliacao/certificacao/detalhe/"+codigo);
         }
+
+        //              ^
+        //              |
+        /*  PAROU AQUI NA REFATORAÇÃO */
+        /*  VOLTA AQUI NA REFATORAÇÃO */
+        //              |
+        //              V
 
         // POST: Certificacao/Avaliados/CERT201520001
         [HttpPost]
