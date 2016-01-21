@@ -2,16 +2,11 @@
 
 @{
     ViewBag.Title = "Histórico de Acadêmicas";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@section Scripts{
-    @Scripts.Render("~/bundles/js/academica")
 }
 
 <h2>
     @ViewBag.Title 
-    @if (Sessao.UsuarioCategoriaCodigo == 2)
+    @if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
     {
         <a class="ui right floated button" href="@Url.Action("Gerar")">Gerar</a>
     }
@@ -70,3 +65,8 @@
         <div class="ui right floated icon button topo"><i class="icon angle up"></i></div>
     </div>
 </div>
+
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/academica")
+}

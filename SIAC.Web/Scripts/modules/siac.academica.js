@@ -77,7 +77,7 @@ siac.Academica.Agendar = (function () {
     }
 
     function validar() {
-        retorno = true;
+        var retorno = true;
 
         lstErro = $('form .error.message .list');
         lstErro.html('');
@@ -99,7 +99,7 @@ siac.Academica.Agendar = (function () {
         }
 
         if ($('#txtData').val() && $('#txtHoraInicio').val()) {
-            strDate = $('#txtData').val() + ' ' + $('#txtHoraInicio').val();
+            var strDate = $('#txtData').val() + ' ' + $('#txtHoraInicio').val();
             if (!siac.Utilitario.dataEFuturo(strDate)) {
                 lstErro.append('<li>Especifique uma data de aplicação futura</li>');
                 retorno = false;
@@ -112,8 +112,8 @@ siac.Academica.Agendar = (function () {
         }
 
         if ($('#txtData').val() && $('#txtHoraInicio').val() && $('#txtHoraTermino').val()) {
-            strDateA = $('#txtData').val() + ' ' + $('#txtHoraInicio').val();
-            strDateB = $('#txtData').val() + ' ' + $('#txtHoraTermino').val();
+            var strDateA = $('#txtData').val() + ' ' + $('#txtHoraInicio').val();
+            var strDateB = $('#txtData').val() + ' ' + $('#txtHoraTermino').val();
             if (siac.Utilitario.compararData(strDateA, strDateB) >= 0) {
                 lstErro.append('<li>Especifique uma hora de término maior que a hora de início</li>');
                 retorno = false;
@@ -129,11 +129,11 @@ siac.Academica.Agendar = (function () {
     }
 
     function confirmar() {
-        $form = $('form');
+        var $form = $('form');
         if (validar()) {
-            $div = $('<div class="ui form"></div>');
+            var $div = $('<div class="ui form"></div>');
             $div.append($form.html());
-            lstInput = $div.find(':input');
+            var lstInput = $div.find(':input');
             $div.find('.button').remove();
             $div.find('#txtData').attr('value', $form.find('#txtData').val());
             $div.find('#txtHoraInicio').attr('value', $form.find('#txtHoraInicio').val());
@@ -186,7 +186,7 @@ siac.Academica.Detalhe = (function () {
             var $_this = $(this);
             $_this.addClass('loading');
             $.ajax({
-                url: '/Principal/Avaliacao/Academica/Arquivar/' + _codAvaliacao,
+                url: '/principal/avaliacao/academica/arquivar/' + _codAvaliacao,
                 type: 'POST',
                 success: function (data) {
                     window.location.reload();
@@ -220,7 +220,7 @@ siac.Academica.Detalhe = (function () {
             $('.loader.global').parent().addClass('active');
 
             _controleAjax = $.ajax({
-                url: '/Principal/Avaliacao/Academica/DetalheIndividual/' + _codAvaliacao,
+                url: '/principal/avaliacao/academica/detalheindividual/' + _codAvaliacao,
                 data: {
                     matricula: matricula
                 },
@@ -277,8 +277,6 @@ siac.Academica.Detalhe = (function () {
             valores.sort();
             $(contexto).data('ordenarTipo', 'desc');
         }
-        console.log(valores);
-
         $corpo.html('');
 
         for (var i = 0, length = valores.length; i < length; i++) {
@@ -316,17 +314,14 @@ siac.Academica.Gerar = (function () {
              }
          });
 
-        //<select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" onchange="listarTemas($(this).val())" required>
         $('#ddlDisciplina').change(function () {
             listarTemas(this.value);
         });
 
-        //<select id="ddlTipo" name="ddlTipo" class="ui search dropdown" onchange="OpcoesPorTipo($(this).val())" required>
         $('#ddlTipo').change(function () {
             mostrarOpcoesPorTipo(this.value);
         });
 
-        //<div onclick="prosseguir()" class="ui prosseguir button">Prosseguir</div>
         $('.prosseguir.button').click(function () {
             prosseguir();
         });
@@ -382,27 +377,27 @@ siac.Academica.Gerar = (function () {
     }
 
     function confirmar() {
-        $modal = $('.ui.confirmar.modal');
-        $ddlDisciplina = $('#ddlDisciplina :selected');
-        $ddlTipo = $('#ddlTipo');
-        $table = $modal.find('tbody').html('');
+        var $modal = $('.ui.confirmar.modal');
+        var $ddlDisciplina = $('#ddlDisciplina :selected');
+        var $ddlTipo = $('#ddlTipo');
+        var $table = $modal.find('tbody').html('');
 
-        $tr = $('<tr></tr>');
-        $tdDisciplina = $('<td></td>').html('<b>' + $ddlDisciplina.text() + '</b>');
-        $tdTemas = $('<td class="ui labels"></td>');
+        var $tr = $('<tr></tr>');
+        var $tdDisciplina = $('<td></td>').html('<b>' + $ddlDisciplina.text() + '</b>');
+        var $tdTemas = $('<td class="ui labels"></td>');
 
-        $ddlTemas = $('#ddlTemas :selected');
+        var $ddlTemas = $('#ddlTemas :selected');
         for (var i = 0; i < $ddlTemas.length; i++) {
             $tdTemas.append($('<div class="ui tag label"></div>').text($ddlTemas.eq(i).text()));
         }
-        $tdQteQuestoes = $('<td class="ui labels"></td>');
+        var $tdQteQuestoes = $('<td class="ui labels"></td>');
         if ($ddlTipo.val() == 1 || $ddlTipo.val() == 3) {
             $tdQteQuestoes.append($('<div class="ui label"></div>').html('Objetiva<div class="detail">' + $('#txtQteObjetiva').val() + '</div>'));
         }
         if ($ddlTipo.val() == 2 || $ddlTipo.val() == 3) {
             $tdQteQuestoes.append($('<div class="ui label"></div>').html('Discursiva<div class="detail">' + $('#txtQteDiscursiva').val() + '</div>'));
         }
-        $tdDificuldade = $('<td></td>').text($('#ddlDificuldade :selected').text());
+        var $tdDificuldade = $('<td></td>').text($('#ddlDificuldade :selected').text());
 
         $table.append($tr.append($tdDisciplina).append($tdTemas).append($tdQteQuestoes).append($tdDificuldade));
 
@@ -414,7 +409,7 @@ siac.Academica.Gerar = (function () {
         $ddlTemas.parent().addClass('loading');
         $.ajax({
             type: 'POST',
-            url: '/Tema/RecuperarTemasPorCodDisciplinaTemQuestao',
+            url: '/tema/recuperartemasporcoddisciplinatemquestao',
             data: { 'codDisciplina': codDisciplina },
             success: function (data) {
                 $ddlTemas.html('');
@@ -491,11 +486,9 @@ siac.Academica.Configurar = (function () {
     function adicionarEventos() {
         $('.trocar.button').off().click(function () {
             var $_this = $(this);
-            var codQuestao, indice, codTipoQuestao;
-
-            codQuestao = $_this.parents('[data-questao]').attr('data-questao');
-            indice = $_this.parents('[data-indice]').attr('data-indice');
-            codTipoQuestao = $_this.parents('[data-tipo]').attr('data-tipo');
+            var codQuestao = $_this.parents('[data-questao]').attr('data-questao');
+            var indice = $_this.parents('[data-indice]').attr('data-indice');
+            var codTipoQuestao = $_this.parents('[data-tipo]').attr('data-tipo');
 
             obterNovaQuestao(codQuestao, indice, codTipoQuestao);
         });
@@ -504,11 +497,9 @@ siac.Academica.Configurar = (function () {
 
         $('.desfazer.button').off().click(function () {
             var $_this = $(this);
-            var codQuestao, indice, codTipoQuestao;
-
-            codQuestao = $_this.parents('[data-questao]').attr('data-questao');
-            indice = $_this.parents('[data-indice]').attr('data-indice');
-            codTipoQuestao = $_this.parents('[data-tipo]').attr('data-tipo');
+            var codQuestao = $_this.parents('[data-questao]').attr('data-questao');
+            var indice = $_this.parents('[data-indice]').attr('data-indice');
+            var codTipoQuestao = $_this.parents('[data-tipo]').attr('data-tipo');
 
             desfazer(codQuestao, indice, codTipoQuestao);
         });
@@ -520,7 +511,7 @@ siac.Academica.Configurar = (function () {
         $('#CardQuestao' + indice + ' div').popup('hide');
         $.ajax({
             type: "POST",
-            url: '/Principal/Avaliacao/Academica/TrocarQuestao',
+            url: '/principal/avaliacao/academica/trocarquestao',
             data: {
                 codigoAvaliacao: _codAvaliacao,
                 tipo: codTipoQuestao,
@@ -558,7 +549,7 @@ siac.Academica.Configurar = (function () {
         $('#CardQuestao' + indice + ' div').popup('hide');
         $.ajax({
             type: 'POST',
-            url: '/Principal/Avaliacao/Academica/Desfazer',
+            url: '/principal/avaliacao/academica/desfazer',
             data: {
                 codigoAvaliacao: _codAvaliacao,
                 tipo: codTipoQuestao,
@@ -594,7 +585,7 @@ siac.Academica.Agendada = (function () {
 
     function iniciar() {
         if (!_categoriaUsuario) {
-            $elemento = $('[data-categoria]');
+            var $elemento = $('[data-categoria]');
             _categoriaUsuario = $elemento.attr('data-categoria');
             $elemento.removeAttr('data-categoria');
         }
@@ -611,7 +602,7 @@ siac.Academica.Agendada = (function () {
             var $_this = $(this);
             $_this.addClass('loading');
             $.ajax({
-                url: '/Principal/Avaliacao/Academica/Arquivar/' + _codAvaliacao,
+                url: '/principal/avaliacao/academica/arquivar/' + _codAvaliacao,
                 type: 'POST',
                 success: function (data) {
                     if (data) {
@@ -636,8 +627,10 @@ siac.Academica.Agendada = (function () {
         setTimeout(function () {
             $.ajax({
                 type: 'POST',
-                url: '/Principal/Avaliacao/Academica/ContagemRegressiva',
-                data: { codAvaliacao: _codAvaliacao },
+                url: '/principal/avaliacao/academica/contagemregressiva',
+                data: {
+                    codAvaliacao: _codAvaliacao
+                },
                 success: function (data) {
                     $('#contagem').text(data.Tempo).parent().transition('flash');
                     if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
@@ -666,7 +659,7 @@ siac.Academica.Agendada = (function () {
             acadHub.client.liberar = function (strCodigo) {
                 $.ajax({
                     type: 'POST',
-                    url: '/Principal/Avaliacao/Academica/ContagemRegressiva',
+                    url: '/principal/avaliacao/academica/contagemregressiva',
                     data: { codAvaliacao: _codAvaliacao },
                     success: function (data) {
                         alert('O professor liberou a avaliação.');
@@ -697,7 +690,7 @@ siac.Academica.Agendada = (function () {
                 
                 $.ajax({
                     type: 'POST',
-                    url: '/Principal/Avaliacao/Academica/ContagemRegressiva',
+                    url: '/principal/avaliacao/academica/contagemregressiva',
                     data: { codAvaliacao: _codAvaliacao },
                     success: function (data) {
                         if (data.FlagLiberada == false) {
@@ -723,17 +716,21 @@ siac.Academica.Agendada = (function () {
                 $('.liberar.button').click(function () {
                     $('.liberar.button').addClass('loading');
                     $.ajax({
-                        url: '/Principal/Avaliacao/Academica/AlternarLiberar',
+                        url: '/principal/avaliacao/academica/alternarliberar',
                         type: 'POST',
-                        data: { codAvaliacao: _codAvaliacao },
+                        data: {
+                            codAvaliacao: _codAvaliacao
+                        },
                         success: function (data) {
                             if (data == true) {
                                 acadHub.server.liberar(_codAvaliacao, true);
                                 $('.liberar.button').addClass('active').removeClass('loading').text('Liberada');
                                 $.ajax({
                                     type: 'POST',
-                                    url: '/Principal/Avaliacao/Academica/ContagemRegressiva',
-                                    data: { codAvaliacao: _codAvaliacao },
+                                    url: '/principal/avaliacao/academica/contagemregressiva',
+                                    data: {
+                                        codAvaliacao: _codAvaliacao
+                                    },
                                     success: function (data) {
                                         if (data.Tempo == 'Agora' && data.Intervalo == 0 && data.FlagLiberada == true) {
                                             $('.reagendar.button').hide();
@@ -795,7 +792,7 @@ siac.Academica.Realizar = (function () {
         setInterval(function () {
             $.ajax({
                 type: 'GET',
-                url: '/Acesso/Conectado'
+                url: '/acesso/conectado'
             });
         }, 1000 * 60 * 15);
 
@@ -846,7 +843,7 @@ siac.Academica.Realizar = (function () {
                 onApprove: function () {
                     $.ajax({
                         type: 'GET',
-                        url: "/Acesso/Conectado",
+                        url: "/acesso/conectado",
                         success: function () {
                             finalizar();
                         },
@@ -917,7 +914,7 @@ siac.Academica.Realizar = (function () {
     }
 
     function verificar() {
-        $Objects = $('textarea[name^="txtResposta"], input[name^="rdoResposta"]');
+        var $Objects = $('textarea[name^="txtResposta"], input[name^="rdoResposta"]');
         var retorno = true;
         for (var i = 0, length = $Objects.length; i < length; i++) {
             var _this = $Objects.eq(i);
@@ -937,15 +934,15 @@ siac.Academica.Realizar = (function () {
     }
 
     function confirmar() {
-        $modal = $('.ui.gabarito.modal');
+        var $modal = $('.ui.gabarito.modal');
 
-        $accordion = $('form .ui.accordion').clone();
+        var $accordion = $('form .ui.accordion').clone();
 
         $accordion.removeAttr('style');
 
         $modal.find('.content').html($('<div class="ui form"></div>').append($accordion));
 
-        $modalAccordion = $modal.find('.ui.accordion');
+        var $modalAccordion = $modal.find('.ui.accordion');
 
         $modalAccordion.accordion({
             onChange: function () {
@@ -954,7 +951,7 @@ siac.Academica.Realizar = (function () {
             animateChildren: false
         });
 
-        $lstInput = $modalAccordion.find(':input,a');
+        var $lstInput = $modalAccordion.find(':input,a');
 
         for (var i = 0, length = $lstInput.length; i < length; i++) {
             $lstInput.eq(i)
@@ -972,14 +969,14 @@ siac.Academica.Realizar = (function () {
     function desistir(url) {
         $('.ui.global.loader').parent().dimmer('show');
         $.ajax({
-            url: '/Principal/Avaliacao/Academica/Desistir/' + _codAvaliacao,
+            url: '/principal/avaliacao/academica/desistir/' + _codAvaliacao,
             type: 'POST',
             success: function () {
                 window.onbeforeunload = function () {
                     $('.ui.global.loader').parent().dimmer('show');
                 };
                 if (!url) {
-                    url = '/Principal';
+                    url = '/principal';
                 }
                 window.location.href = url;
             },
@@ -1029,7 +1026,7 @@ siac.Academica.Realizar = (function () {
             });
 
             enviarMsg = function enviarMsg(_this) {
-                $msg = $('#txtChatMensagem');
+                var $msg = $('#txtChatMensagem');
                 $msg.val($msg.val().trim())
                 if ($msg.val()) {
                     var mensagem = $msg.val().quebrarLinhaEm(30);
@@ -1059,7 +1056,7 @@ siac.Academica.Realizar = (function () {
             });
 
             $('textarea[name^="txtResposta"], input[name^="rdoResposta"]').change(function () {
-                $label = $(this).parents('.content').prev().find('.ui.label');
+                var $label = $(this).parents('.content').prev().find('.ui.label');
                 if ($(this).val()) {
                     $label.removeClass('red');
                     $label.removeAttr('style');
@@ -1116,24 +1113,21 @@ siac.Academica.Realizar = (function () {
         }
 
         acadHub.client.enviarAval = function (codAvaliacao) {
-            console.log('Envio');
             html2canvas(document.body, {
                 onrendered: function (canvas) {
                     var c = $(canvas);
                     c.attr('id', 'mycanvas').hide();
                     $('body').append(c);
                     var canvas = document.getElementById("mycanvas");
-                    strData = canvas.toDataURL("image/png");
-                    console.log(strData);
+                    var strData = canvas.toDataURL("image/png");
                     $.ajax({
                         type: 'POST',
-                        url: '/Principal/Avaliacao/Academica/Printar',
+                        url: '/principal/avaliacao/academica/printar',
                         data: {
                             codAvaliacao: avalAcad,
                             imageData: strData
                         },
                         success: function (resp) {
-                            console.log(resp);
                             if (resp) {
                                 acadHub.server.avalEnviada(avalAcad, usrMatr);
                             }
@@ -1167,8 +1161,8 @@ siac.Academica.Realizar = (function () {
                 }, 0);
 
                 if (!$('.chat.popup').hasClass('visible')) {
-                    $btnChat = $('.icon.chat.button');
-                    $lblQteMsg = $('#lblQteMsg');
+                    var $btnChat = $('.icon.chat.button');
+                    var $lblQteMsg = $('#lblQteMsg');
                     $lblQteMsg.remove();
                     chatQteMensagem++;
                     $btnChat.addClass('blue').html('<i class="icon comments outline"></i> ' + chatQteMensagem);
@@ -1198,7 +1192,7 @@ siac.Academica.Acompanhar = (function () {
     var _codAvaliacao, _matriculaUsuario;
 
     function iniciar() {
-        $elemento = $('[data-usuario]');
+        var $elemento = $('[data-usuario]');
         _matriculaUsuario = $elemento.attr('data-usuario');
         $elemento.removeAttr('data-usuario');
 
@@ -1234,9 +1228,9 @@ siac.Academica.Acompanhar = (function () {
         $.connection.hub.start().done(function () {
 
             enviarMsg = function enviarMsg(_this) {
-                $content = $(_this).parents('.content[id]');
-                matr = $content.attr('id');
-                $msg = $('#' + matr + 'msg');
+                var $content = $(_this).parents('.content[id]');
+                var matr = $content.attr('id');
+                var $msg = $('#' + matr + 'msg');
                 $msg.val($msg.val().trim());
                 if ($msg.val()) {
                     var mensagem = $msg.val().quebrarLinhaEm(30);
@@ -1260,14 +1254,14 @@ siac.Academica.Acompanhar = (function () {
 
             acadHub.server.professorConectou(avalAcad, usrMatr);
             $('.prova.button').on('click', function () {
-                matr = $(this).parent().attr('id');
+                var matr = $(this).parent().attr('id');
                 acadHub.server.requererAval(avalAcad, matr);
                 $('#' + matr + '.content .prova.button').addClass('loading').removeClass('transition visible');
             });
 
             $('.alertar.button').on('click', function () {
-                mensagem = $(this).prev().find('textarea').val();
-                matr = $(this).parent().parent().parent().attr('id');
+                var mensagem = $(this).prev().find('textarea').val();
+                var matr = $(this).parent().parent().parent().attr('id');
                 acadHub.server.alertar(avalAcad, mensagem, matr);
                 $(this).prev().find('textarea').val('');
                 $(this).popup('hide all');
@@ -1292,7 +1286,7 @@ siac.Academica.Acompanhar = (function () {
         });
 
         acadHub.client.chatProfessorRecebe = function (usrMatricula, mensagem) {
-            $content = $('#' + usrMatricula + '.content[id]');
+            var $content = $('#' + usrMatricula + '.content[id]');
             if (mensagem) {
                 mensagem = mensagem.quebrarLinhaEm(30);
                 $('#' + usrMatricula + '.content .chat.popup .comments').append('\
@@ -1312,8 +1306,8 @@ siac.Academica.Acompanhar = (function () {
                 chatQteMensagem = 0;
                 if ($('#' + usrMatricula + 'lblQteMsg').length) { chatQteMensagem = $('#' + usrMatricula + 'lblQteMsg').data('qte') }
                 if (!$('#' + usrMatricula + '.content .chat.popup').hasClass('visible')) {
-                    $accordionChat = $('#' + usrMatricula + '.title');
-                    $lblQteMsg = $('#' + usrMatricula + 'lblQteMsg');
+                    var $accordionChat = $('#' + usrMatricula + '.title');
+                    var $lblQteMsg = $('#' + usrMatricula + 'lblQteMsg');
                     $lblQteMsg.remove();
                     $accordionChat.append($('<div></div>').attr('id', usrMatricula + 'lblQteMsg').addClass('ui small blue label').append('<i class="ui comments icon"></i>'));
                     chatQteMensagem++;
@@ -1323,12 +1317,12 @@ siac.Academica.Acompanhar = (function () {
         };
 
         $('.icon.chat.button').on('click', function () {
-            matr = ($(this).parents('.content[id]').attr('id'));
+            var matr = ($(this).parents('.content[id]').attr('id'));
             $('#' + matr + 'lblQteMsg').remove();
         });
 
         acadHub.client.atualizarFeed = function (alnMatricula, lstEvento) {
-            $feed = $('#' + alnMatricula + '.content .feed');
+            var $feed = $('#' + alnMatricula + '.content .feed');
             $feed.html('');
             $feed.append('<h4 class="ui header">Atividade</h4>');
             if (lstEvento) {
@@ -1350,7 +1344,7 @@ siac.Academica.Acompanhar = (function () {
 
                 $('#' + alnMatricula + 'lblInfo').remove();
                 if (lstEvento[lstEvento.length - 1].Icone == "red warning sign" && !$('#' + alnMatricula + 'lblWarning').length && !$('#' + alnMatricula).hasClass('active')) {
-                    $accordionChat = $('#' + alnMatricula + '.title');
+                    var $accordionChat = $('#' + alnMatricula + '.title');
                     $accordionChat.append($('<i></i>').attr('id', alnMatricula + 'lblWarning').addClass('red warning sign icon'));
                 }
 
@@ -1362,7 +1356,7 @@ siac.Academica.Acompanhar = (function () {
         }
 
         $('.accordion .title').on('click', function () {
-            matr = ($(this).attr('id'));
+            var matr = ($(this).attr('id'));
             $('#' + matr + 'lblWarning').remove();
         });
 
@@ -1387,7 +1381,7 @@ siac.Academica.Acompanhar = (function () {
         acadHub.client.receberAval = function (alnMatricula) {
             $.ajax({
                 type: 'POST',
-                url: '/Principal/Avaliacao/Academica/Printar',
+                url: '/principal/avaliacao/academica/printar',
                 data: {
                     codAvaliacao: avalAcad
                 },
@@ -1423,7 +1417,7 @@ siac.Academica.Acompanhar = (function () {
         }
 
         acadHub.client.respondeuQuestao = function (alnMatricula, questao, flag) {
-            $questao = $('#' + alnMatricula + '.content [data-questao="' + questao + '"]');
+            var $questao = $('#' + alnMatricula + '.content [data-questao="' + questao + '"]');
             $questao.removeClass('positive').find('i').remove();
             if (flag) {
                 $questao.addClass('green');
@@ -1541,10 +1535,11 @@ siac.Academica.Index = (function () {
         if (_controleAjax && _controleAjax.readyState != 4) {
             _controleAjax.abort();
         }
-        $cards = $('.ui.cards');
+        var $cards = $('.ui.cards');
         $cards.parent().addClass('loading');
         _controleAjax = $.ajax({
-            url: '/Principal/Avaliacao/Academica/Listar',
+            method: 'POST',
+            url: '/principal/avaliacao/academica/listar',
             data: {
                 pagina: pagina,
                 ordenar: ordenar,
@@ -1552,7 +1547,6 @@ siac.Academica.Index = (function () {
                 categorias: categorias,
                 pesquisa: pesquisa
             },
-            method: 'POST',
             success: function (partial) {
                 if (partial != _controlePartial) {
                     if (pagina == 1) {
@@ -1565,7 +1559,6 @@ siac.Academica.Index = (function () {
                 }
             },
             complete: function () {
-                console.log(pesquisa);
                 $cards.parent().removeClass('loading');
             }
         });
@@ -1610,7 +1603,7 @@ siac.Academica.Corrigir = (function () {
 
         $('#ddlCorrecaoModo').change(function () {
             var modo = $(this).val();
-            $ddlCorrecaoValor = $('#ddlCorrecaoValor');
+            var $ddlCorrecaoValor = $('#ddlCorrecaoValor');
             $ddlCorrecaoValor.parent().addClass('loading');
             $('.correcao.conteudo').html('');
             $ddlCorrecaoValor.dropdown('set placeholder text', 'Selecione...');
@@ -1619,7 +1612,7 @@ siac.Academica.Corrigir = (function () {
                 $.ajax({
                     cache: false,
                     type: 'POST',
-                    url: '/Principal/Avaliacao/Academica/CarregarAlunos/' + _codAvaliacao,
+                    url: '/principal/avaliacao/academica/carregaralunos/' + _codAvaliacao,
                     success: function (data) {
                         $ddlCorrecaoValor.html('<option value="">Selecione o aluno</option>');
                         $ddlCorrecaoValor.parents('.field').find('label').text('Selecione o aluno');
@@ -1644,7 +1637,7 @@ siac.Academica.Corrigir = (function () {
                 $.ajax({
                     cache: false,
                     type: 'POST',
-                    url: '/Principal/Avaliacao/Academica/CarregarQuestoesDiscursivas/' + _codAvaliacao,
+                    url: '/principal/avaliacao/academica/carregarquestoesdiscursivas/' + _codAvaliacao,
                     success: function (data) {
                         $ddlCorrecaoValor.parents('.field').find('label').text('Selecione a questão');
                         $ddlCorrecaoValor.html('');
@@ -1669,25 +1662,25 @@ siac.Academica.Corrigir = (function () {
 
         $('#ddlCorrecaoValor').change(function () {
             var _this = this;
-            $modal = $(_this).parents('.modal')
+            var $modal = $(_this).parents('.modal')
             var modo = $('#ddlCorrecaoModo').val();
             var valor = $(_this).val();
             if (valor) {
-                $conteudo = $('.correcao.conteudo');
+                var $conteudo = $('.correcao.conteudo');
                 $('.modal.corrigir form').addClass('loading');
                 $(_this).parent().addClass('loading');
                 if (modo == 'aluno') {
-                    $conteudoQuestao = $('#templateCorrecaoAluno');
+                    var $conteudoQuestao = $('#templateCorrecaoAluno');
                     $.ajax({
                         type: 'POST',
-                        url: '/Principal/Avaliacao/Academica/CarregarRespostasDiscursivas/' + _codAvaliacao,
+                        url: '/principal/avaliacao/academica/carregarrespostasdiscursivas/' + _codAvaliacao,
                         data: {
                             matrAluno: valor
                         },
                         success: function (data) {
                             $('.correcao.conteudo').html('');
                             for (i = 0, length = data.length; i < length; i++) {
-                                $conteudoQuestaoClone = $conteudoQuestao.clone();
+                                var $conteudoQuestaoClone = $conteudoQuestao.clone();
                                 $conteudoQuestaoClone.removeAttr('id').removeAttr('hidden');
                                 $conteudoQuestaoClone.html($conteudoQuestao.html());
 
@@ -1732,7 +1725,7 @@ siac.Academica.Corrigir = (function () {
                     $conteudoQuestao = $('#templateCorrecaoQuestao');
                     $.ajax({
                         type: 'POST',
-                        url: '/Principal/Avaliacao/Academica/CarregarRespostasPorQuestao/' + _codAvaliacao,
+                        url: '/principal/avaliacao/academica/carregarrespostasporquestao/' + _codAvaliacao,
                         data: {
                             codQuestao: valor
                         },
@@ -1799,11 +1792,6 @@ siac.Academica.Corrigir = (function () {
             $('#ddlCorrecaoModo').dropdown('set selected', 'aluno').change();
             window.setTimeout(function () {
                 $('#ddlCorrecaoValor').dropdown('set selected', matr);
-                //$conteudo = $('.correcao.conteudo');
-                //$conteudo.animate({
-                //    scrollTop: $conteudo.find('#'+codQuestao).offset().top <===== FALTA REALIZAR O SCROLL DO MODAL!!!!!!
-                //}, 0);
-                //$('.modal.corrigir form').removeClass('loading');
             }, 1000);
 
 
@@ -1821,11 +1809,11 @@ siac.Academica.Corrigir = (function () {
     }
 
     function corrigirQuestao(_this) {
-        modo = $('#ddlCorrecaoModo').val();
+        var modo = $('#ddlCorrecaoModo').val();
 
-        matrAluno = $('#ddlCorrecaoValor').val();
-        codQuestao = $(_this).parents('[id]').attr('id');
-        id = codQuestao;
+        var matrAluno = $('#ddlCorrecaoValor').val();
+        var codQuestao = $(_this).parents('[id]').attr('id');
+        var id = codQuestao;
 
         if (modo == "questao") {
             matrAluno = $(_this).parents('[id]').attr('id');;
@@ -1833,13 +1821,13 @@ siac.Academica.Corrigir = (function () {
             id = matrAluno;
             matrAluno = matrAluno.split('aln')[1];
         }
-        notaObtida = $('#' + id + ' .notaObtida').val();
-        correcaoComentario = $('#' + id + ' .correcaoComentario').val();
+        var notaObtida = $('#' + id + ' .notaObtida').val();
+        var correcaoComentario = $('#' + id + ' .correcaoComentario').val();
         $('#' + id + ' .button.corrigir.aluno').addClass('loading');
 
         $.ajax({
             type: 'POST',
-            url: '/Principal/Avaliacao/Academica/CorrigirQuestaoAluno/' + _codAvaliacao,
+            url: '/principal/avaliacao/academica/corrigirquestaoaluno/' + _codAvaliacao,
             data: {
                 matrAluno: matrAluno,
                 codQuestao: codQuestao,
