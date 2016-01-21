@@ -269,8 +269,8 @@ siac.Autoavaliacao.Realizar = (function () {
                 closable: false,
                 onApprove: function () {
                     date = new Date();
-                    $('#lblHoraInicio').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
-                    $('#lblHoraAgora').text(date.getHours() + 'h' + ('0' + (date.getMinutes())).slice(-2) + 'min');
+                    $('#lblHoraInicio').text(("0" + (date.getHours())).slice(-2) + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
+                    $('#lblHoraAgora').text(("0" + (date.getHours())).slice(-2) + 'h' + ('0' + (date.getMinutes())).slice(-2) + 'min');
                     setTimeout(relogio(), ((60 - date.getSeconds()) * 1000));
                     if ($('#chkCronometrar').is(':checked')) {
                         duracao = $('#txtDuracao').val();
@@ -345,7 +345,7 @@ siac.Autoavaliacao.Realizar = (function () {
                 onApprove: function () {
                     $.ajax({
                         type: 'GET',
-                        url: "/Acesso/Conectado",
+                        url: "/acesso/conectado",
                         success: function () {
                             window.onbeforeunload = function () {
                                 $('.ui.global.loader').parent().dimmer('show');
@@ -418,7 +418,6 @@ siac.Autoavaliacao.Realizar = (function () {
             confirmar();
         }
         else {
-            //definirAlturaDiv();
             $('html, body').animate({
                 scrollTop: $(".label.red.ribbon").closest('.segment').offset().top
             }, 500);

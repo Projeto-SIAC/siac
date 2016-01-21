@@ -38,9 +38,9 @@
         <label for="ddlDisciplinas">Disciplina (s)</label>
         <select id="ddlDisciplinas" name="ddlDisciplinas" class="ui search dropdown" multiple required>
             <option value="">Disciplina</option>
-            @foreach (var disc in Model.Disciplinas)
+            @foreach (Disciplina disciplina in Model.Disciplinas)
             {
-                <option value="@disc.CodDisciplina">@disc.Descricao</option>
+                <option value="@disciplina.CodDisciplina">@disciplina.Descricao</option>
             }
         </select>
     </div>

@@ -28,9 +28,9 @@
                 </div>
                 <div class="extra content">
                     <div class="ui labels">
-                        @foreach (var disc in auto.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
-                    {
-                            <div class="ui tag label">@disc.Descricao</div>
+                        @foreach (Disciplina disciplina in auto.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+                        {
+                            <div class="ui tag label">@disciplina.Descricao</div>
                         }
                     </div>
                 </div>

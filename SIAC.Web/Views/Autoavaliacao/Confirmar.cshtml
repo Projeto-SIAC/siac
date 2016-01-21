@@ -1,7 +1,7 @@
 ﻿@model AvalAuto
 
 @{
-    ViewBag.Title = "Autoavaliação" /*+ @Model.Avaliacao.CodAvaliacao*/;
+    ViewBag.Title = "Autoavaliação";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -26,24 +26,24 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+            @foreach (Disciplina disciplina in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
             {
                 <tr>
                     <td> @* disciplina *@
-                        <b>@disc.Descricao</b>
+                        <b>@disciplina.Descricao</b>
                     </td>
                     <td class="ui labels"> @* temas *@
-                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                        @foreach (AvaliacaoTema avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disciplina.CodDisciplina))
                         {
                             <div class="ui tag label">@avalTema.Tema.Descricao</div>
                         }
                     </td>
                     <td class="ui labels"> @* qte de questões *@
-                        <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
-                        <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
+                        <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disciplina.CodDisciplina, TipoQuestao.OBJETIVA)</div></div>
+                        <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disciplina.CodDisciplina, TipoQuestao.DISCURSIVA)</div></div>
                     </td>
                     <td> @* dificuldade *@
-                        @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
+                        @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disciplina.CodDisciplina)
                     </td>
                 </tr>
             }

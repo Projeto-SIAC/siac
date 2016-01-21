@@ -1,7 +1,7 @@
 ﻿@model AvalAuto
 
 @{
-    ViewBag.Title = "Realizar Autoavaliação"/* + Model.Avaliacao.CodAvaliacao*/;
+    ViewBag.Title = "Realizar Autoavaliação";
     List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
 }
 
@@ -32,28 +32,28 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+                @foreach (Disciplina disciplina in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
                 {
                     <tr>
                         <td>
                             @* disciplina *@
-                            <b>@disc.Descricao</b>
+                            <b>@disciplina.Descricao</b>
                         </td>
                         <td class="ui labels">
                             @* temas *@
-                            @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                            @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disciplina.CodDisciplina))
                             {
                                 <div class="ui tag label">@avalTema.Tema.Descricao</div>
                             }
                         </td>
                         <td class="ui labels">
                             @* qte de questões *@
-                            <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
-                            <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
+                            <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disciplina.CodDisciplina, 1)</div></div>
+                            <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disciplina.CodDisciplina, 2)</div></div>
                         </td>
                         <td>
                             @* dificuldade *@
-                            @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disc.CodDisciplina)
+                            @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disciplina.CodDisciplina)
                         </td>
                     </tr>
                 }
@@ -131,9 +131,9 @@
                     @Html.Raw((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToHtml("p"))
                 </div>
                 <div class="ui ribbon label" style="display:none">Respondida</div>
-                @if (lstQuestao[i].CodTipoQuestao == 1)
+                @if (lstQuestao[i].CodTipoQuestao == TipoQuestao.OBJETIVA)
                 {
-                    var lstAlternativa = lstQuestao[i].EmbaralharAlternativa();
+                    List<Alternativa> lstAlternativa = lstQuestao[i].EmbaralharAlternativa();
                     <div class="grouped fields">
                         <label>Selecione a alternativa</label>
                         @for (int j = 0; j < lstAlternativa.Count; j++)
@@ -159,8 +159,8 @@
                     {
                         <div class="title"><i class="icon dropdown"></i>Anexos</div>
                         <div class="content">
-                            @foreach (var anexo in lstQuestao[i].QuestaoAnexo)
-                    {
+                            @foreach (QuestaoAnexo anexo in lstQuestao[i].QuestaoAnexo)
+                            {
                                 @Html.Partial("_Anexo", anexo)
                             }
                         </div>

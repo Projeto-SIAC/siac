@@ -19,8 +19,7 @@ namespace SIAC.Models
         }
 
         public static List<Disciplina> ListarTemQuestoes() =>
-            (from qt in contexto.QuestaoTema
-             select qt.Tema.Disciplina)
+            contexto.QuestaoTema.Select(qt => qt.Tema.Disciplina)
             .Distinct()
             .OrderBy(d => d.Descricao)
             .ToList();

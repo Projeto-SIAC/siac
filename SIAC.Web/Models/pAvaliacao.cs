@@ -144,7 +144,7 @@ namespace SIAC.Models
                 for (int i = 1; i <= contexto.TipoAvaliacao.Max(t => t.CodTipoAvaliacao); i++)
                 {
                     int ano = DateTime.Now.Year;
-                    int semestre = (DateTime.Now.Month > 6) ? 2 : 1;
+                    int semestre = DateTime.Now.SemestreAtual();
                     Avaliacao avalTemp = contexto.Avaliacao
                         .Where(a => a.Ano == ano
                             && a.Semestre == semestre
@@ -152,13 +152,9 @@ namespace SIAC.Models
                         .OrderByDescending(a => a.NumIdentificador)
                         .FirstOrDefault();
                     if (avalTemp != null)
-                    {
                         Sistema.NumIdentificador.Add(i, avalTemp.NumIdentificador + 1);
-                    }
                     else
-                    {
                         Sistema.NumIdentificador.Add(i, 1);
-                    }
                 }
             }
             return Sistema.NumIdentificador[codTipoAvaliacao]++;

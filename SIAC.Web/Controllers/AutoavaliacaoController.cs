@@ -1,42 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using SIAC.Helpers;
 using SIAC.Models;
 using SIAC.ViewModels;
-using SIAC.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
     [Filters.AutenticacaoFilter]
     public class AutoavaliacaoController : Controller
     {
-        private const int CodTipoAvaliacao = 1;
-
         public List<AvalAuto> Autoavaliacoes => 
-            AvalAuto.ListarPorPessoa(Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula));
+            AvalAuto.ListarPorPessoa(Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula));
 
-        // GET: Autoavaliacao
+        // GET: historico/autoavaliacao
         [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             if (Request.Url.ToString().ToLower().Contains("principal"))
-            {
                 return Redirect("~/historico/autoavaliacao");
-            }
             AvaliacaoIndexViewModel model = new AvaliacaoIndexViewModel();
             model.Dificuldades = Dificuldade.ListarOrdenadamente();
-            List<Disciplina> tempLstDisciplina = new List<Disciplina>();
-            foreach (var auto in Autoavaliacoes)
-            {
-                tempLstDisciplina.AddRange(auto.Disciplina);
-            }
-            model.Disciplinas = tempLstDisciplina.Distinct().ToList();
+            List<Disciplina> disciplinas = new List<Disciplina>();
+            foreach (AvalAuto auto in Autoavaliacoes)
+                disciplinas.AddRange(auto.Disciplina);
+            model.Disciplinas = disciplinas.Distinct().ToList();
             return View(model);
         }
 
-        // POST: Autoavaliacao/Listar
+        // POST: historico/autoavaliacao/listar
         [HttpPost]
         public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina, string dificuldade)
         {
@@ -101,7 +94,7 @@ namespace SIAC.Controllers
             return PartialView("_ListaAutoavaliacao", autoavaliacoes.Skip((quantidade * pagina.Value) - quantidade).Take(quantidade).ToList());
         }
 
-        // GET: Autoavaliacao/Gerar
+        // GET: principal/autoavaliacao/gerar
         public ActionResult Gerar()
         {
             AvaliacaoGerarViewModel model = new AvaliacaoGerarViewModel();
@@ -110,20 +103,23 @@ namespace SIAC.Controllers
             return View(model);
         }
 
-        // POST: Autoavaliacao/Confirmar
+        // POST: principal/autoavaliacao/confirmar
         [HttpPost]
         public ActionResult Confirmar(FormCollection formCollection)
         {
+            if (!formCollection.HasKeys())
+                return RedirectToAction("Index");
+
             AvalAuto auto = new AvalAuto();
 
             DateTime hoje = DateTime.Now;
 
             /* Chave */
             auto.Avaliacao = new Avaliacao();
-            auto.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(CodTipoAvaliacao);
+            auto.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(TipoAvaliacao.AUTOAVALIACAO);
             auto.Avaliacao.Ano = hoje.Year;
-            auto.Avaliacao.Semestre = hoje.Month > 6 ? 2 : 1;
-            auto.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(CodTipoAvaliacao);
+            auto.Avaliacao.Semestre = hoje.SemestreAtual();
+            auto.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(TipoAvaliacao.AUTOAVALIACAO);
 
             /* Pessoa */
             auto.CodPessoaFisica = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.CodPessoaFisica;
@@ -158,25 +154,22 @@ namespace SIAC.Controllers
                 string[] temas = formCollection["ddlTemas" + disciplina].Split(',');
 
                 /* Questões */
-                List<QuestaoTema> lstQuestoes = new List<QuestaoTema>();
+                List<QuestaoTema> questoes = new List<QuestaoTema>();
 
                 if (qteObjetiva > 0)
-                {
-                    lstQuestoes.AddRange(Questao.ListarPorDisciplina(int.Parse(disciplina), temas, codDificuldade, 1, qteObjetiva));
-                }
+                    questoes.AddRange(Questao.ListarPorDisciplina(int.Parse(disciplina), temas, codDificuldade, TipoQuestao.OBJETIVA, qteObjetiva));
+
                 if (qteDiscursiva > 0)
-                {
-                    lstQuestoes.AddRange(Questao.ListarPorDisciplina(int.Parse(disciplina), temas, codDificuldade, 2, qteDiscursiva));
-                }
+                    questoes.AddRange(Questao.ListarPorDisciplina(int.Parse(disciplina), temas, codDificuldade, TipoQuestao.DISCURSIVA, qteDiscursiva));
 
                 foreach (string tema in temas)
                 {
                     AvaliacaoTema avalTema = new AvaliacaoTema();
                     avalTema.Tema = Tema.ListarPorCodigo(int.Parse(disciplina), int.Parse(tema));
-                    foreach (var queTma in lstQuestoes.Where(q => q.CodTema == int.Parse(tema)))
+                    foreach (QuestaoTema questaoTema in questoes.Where(q => q.CodTema == int.Parse(tema)))
                     {
                         AvalTemaQuestao avalTemaQuestao = new AvalTemaQuestao();
-                        avalTemaQuestao.QuestaoTema = queTma;
+                        avalTemaQuestao.QuestaoTema = questaoTema;
                         avalTema.AvalTemaQuestao.Add(avalTemaQuestao);
                     }
                     auto.Avaliacao.AvaliacaoTema.Add(avalTema);
@@ -191,10 +184,10 @@ namespace SIAC.Controllers
             return View(auto);
         }
 
-        // GET: Autoavaliacao/Detalhe/AUTO201520001
+        // GET: principal/autoavaliacao/detalhe/AUTO201520001
         public ActionResult Detalhe(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
                 int codPessoaFisica = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.CodPessoaFisica;
@@ -211,7 +204,7 @@ namespace SIAC.Controllers
                             Dictionary<string, double> qteObjetivaDisciplina = new Dictionary<string, double>();
                             Dictionary<string, double> qteObjetivaAcertoDisciplina = new Dictionary<string, double>();
 
-                            foreach (var avaliacaoTema in auto.Avaliacao.AvaliacaoTema)
+                            foreach (AvaliacaoTema avaliacaoTema in auto.Avaliacao.AvaliacaoTema)
                             {
                                 if (!qteObjetivaDisciplina.ContainsKey(avaliacaoTema.Tema.Disciplina.Descricao))
                                 {
@@ -224,26 +217,20 @@ namespace SIAC.Controllers
                                 foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
                                 {
                                     AvalQuesPessoaResposta avalQuesPessoaResposta = avalTemaQuestao.AvalQuesPessoaResposta.First();
-                                    if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1)
+                                    if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
                                     {
                                         qteObjetivaDisciplina[avaliacaoTema.Tema.Disciplina.Descricao]++;
                                         qteObjetiva++;
                                         if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q => q.FlagGabarito.HasValue && q.FlagGabarito.Value).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
-                                        {
                                             qteObjetivaAcertoDisciplina[avaliacaoTema.Tema.Disciplina.Descricao]++;
-                                        }
                                     }
                                 }
                             }
 
                             model.Porcentagem = (auto.Avaliacao.AvalPessoaResultado.First().QteAcertoObj.Value / qteObjetiva) * 100;
                             foreach (string chave in qteObjetivaDisciplina.Keys)
-                            {
                                 if (qteObjetivaDisciplina[chave] > 0)
-                                {
                                     model.Desempenho.Add(chave, (qteObjetivaAcertoDisciplina[chave] / qteObjetivaDisciplina[chave]) * 100);
-                                }
-                            }
                         }
 
                         return View(model);
@@ -253,43 +240,39 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Autoavaliacao/Realizar/AUTO201520001
+        // GET: principal/autoavaliacao/realizar/AUTO201520001
         public ActionResult Realizar(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            int codPessoaFisica = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.CodPessoaFisica;
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
-                if (auto.CodPessoaFisica == Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.CodPessoaFisica)
-                {
+                if (auto.CodPessoaFisica == codPessoaFisica)
                     return View(auto);
-                }
             }
             AutoavaliacaoNovoViewModel model = new AutoavaliacaoNovoViewModel();
-            int codPessoaFisica = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.CodPessoaFisica;
             model.Geradas = AvalAuto.ListarNaoRealizadaPorPessoa(codPessoaFisica);
             return View("Novo", model);
         }
 
-        // GET: Autoavaliacao/Imprimir/AUTO201520001
+        // GET: principal/autoavaliacao/imprimir/AUTO201520001
         public ActionResult Imprimir(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
                 if (auto.CodPessoaFisica == Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.CodPessoaFisica)
-                {
                     return View(auto);
-                }
             }
             return RedirectToAction("index");
         }
 
-        // POST: Autoavaliacao/Resultado/AUTO201520001
+        // POST: principal/autoavaliacao/resultado/AUTO201520001
         [HttpPost]
         public ActionResult Resultado(string codigo, FormCollection form)
         {
             int codPessoaFisica = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.CodPessoaFisica;
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo) && form.HasKeys())
             {
                 AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
                 if (auto.Avaliacao.AvalPessoaResultado.Count == 0 && auto.CodPessoaFisica == codPessoaFisica)
@@ -303,7 +286,7 @@ namespace SIAC.Controllers
                     Dictionary<string, double> qteObjetivaDisciplina = new Dictionary<string, double>();
                     Dictionary<string, double> qteObjetivaAcertoDisciplina = new Dictionary<string, double>();
 
-                    foreach (var avaliacaoTema in auto.Avaliacao.AvaliacaoTema)
+                    foreach (AvaliacaoTema avaliacaoTema in auto.Avaliacao.AvaliacaoTema)
                     {
                         if (!qteObjetivaDisciplina.ContainsKey(avaliacaoTema.Tema.Disciplina.Descricao))
                         {
@@ -313,11 +296,11 @@ namespace SIAC.Controllers
                         {
                             qteObjetivaAcertoDisciplina.Add(avaliacaoTema.Tema.Disciplina.Descricao, 0);
                         }
-                        foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                        foreach (AvalTemaQuestao avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
                         {
                             AvalQuesPessoaResposta avalQuesPessoaResposta = new AvalQuesPessoaResposta();
                             avalQuesPessoaResposta.CodPessoaFisica = codPessoaFisica;
-                            if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1)
+                            if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
                             {
                                 qteObjetivaDisciplina[avaliacaoTema.Tema.Disciplina.Descricao]++;
                                 qteObjetiva++;
@@ -332,7 +315,7 @@ namespace SIAC.Controllers
                             {
                                 avalQuesPessoaResposta.RespDiscursiva = form["txtResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim();
                             }
-                            avalQuesPessoaResposta.RespComentario = !String.IsNullOrEmpty(form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]) ? form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim() : null;
+                            avalQuesPessoaResposta.RespComentario = !String.IsNullOrWhiteSpace(form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]) ? form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim() : null;
                             avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
                         }
                     }
@@ -344,13 +327,9 @@ namespace SIAC.Controllers
                     AvaliacaoResultadoViewModel model = new AvaliacaoResultadoViewModel();
                     model.Avaliacao = auto.Avaliacao;
                     model.Porcentagem = (avalPessoaResultado.QteAcertoObj.Value / qteObjetiva) * 100;
-                    foreach (var chave in qteObjetivaDisciplina.Keys)
-                    {
+                    foreach (string chave in qteObjetivaDisciplina.Keys)
                         if (qteObjetivaDisciplina[chave] > 0)
-                        {
                             model.Desempenho.Add(chave, (qteObjetivaAcertoDisciplina[chave] / qteObjetivaDisciplina[chave]) * 100);
-                        }
-                    }
                     Lembrete.AdicionarNotificacao($"Autoavaliação {auto.Avaliacao.CodAvaliacao} realizada. Confira seu resultado!");
                     return View(model);
                 }
@@ -359,15 +338,9 @@ namespace SIAC.Controllers
             return RedirectToAction("Realizar");
         }
 
-        // POST: Autoavaliacao/Arquivar/AUTO201520001
+        // POST: principal/autoavaliacao/arquivar/AUTO201520001
         [HttpPost]
-        public ActionResult Arquivar(string codigo)
-        {
-            if (!String.IsNullOrEmpty(codigo))
-            {
-                return Json(Avaliacao.AlternarFlagArquivo(codigo));
-            }
-            return Json(false);
-        }
+        public ActionResult Arquivar(string codigo) => 
+            !String.IsNullOrWhiteSpace(codigo) ? Json(Avaliacao.AlternarFlagArquivo(codigo)) : Json(false);        
     }
 }

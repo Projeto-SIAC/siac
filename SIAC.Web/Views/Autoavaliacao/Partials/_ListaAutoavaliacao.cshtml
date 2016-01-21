@@ -1,6 +1,6 @@
 ﻿@model List<AvalAuto>
 
-@foreach (var autoavaliacao in Model)
+@foreach (AvalAuto autoavaliacao in Model)
 {
     <div class="card" data-avaliacao="@autoavaliacao.Avaliacao.CodAvaliacao">
         <div class="content">
@@ -24,7 +24,7 @@
         </div>
         <div class="extra content">
             <div class="ui tag labels">
-                @foreach (var disciplina in autoavaliacao.Disciplina)
+                @foreach (Disciplina disciplina in autoavaliacao.Disciplina)
                 {
                     <div class="ui label">@disciplina.Descricao</div>
                 }
