@@ -1,18 +1,16 @@
-﻿@using SIAC.Models
-@model AvalAcademica
+﻿@model AvalAcademica
 
 @{
-    ViewBag.Title = "Realizar Avaliação Acadêmica" /*+ Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Realizar Avaliação Acadêmica";
     List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
 }
 
-<h2 data-usuario="@SIAC.Helpers.Sessao.UsuarioMatricula">
+<h2 data-usuario="@Sessao.UsuarioMatricula">
     @ViewBag.Title
     <div class="ui trigger icon right floated chat button"><i class="icon comments outline"></i></div>
     <div class="ui chat popup wide" data-position="top right">
         <div class="header">
-            @Model.Professor.Usuario.PessoaFisica.Nome.Split(' ')[0]
+            @Model.Professor.Usuario.PessoaFisica.PrimeiroNome
         </div>
         <div class="content">
             <div class="ui comments" style="height: 200px;width:300px; overflow-y:scroll;">

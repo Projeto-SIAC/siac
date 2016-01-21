@@ -1,8 +1,6 @@
-﻿@using SIAC.Models
-@model AvalAcademica
+﻿@model AvalAcademica
 @{
-    ViewBag.Title = "Configurar Avaliação Acadêmica" /*+ Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Configurar Avaliação Acadêmica";
 }
 
 <h2>
@@ -14,7 +12,7 @@
 
 <div class="ui basic segment">
     <h3 class="ui dividing header">Questões</h3>
-    <div class="ui one cards" @*style="max-height: 25em; overflow-y: auto"*@>
+    <div class="ui one cards">
         @{ 
             for (int i = 0; i < Model.Avaliacao.Questao.Count; i++)
             {                

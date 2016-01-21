@@ -1,25 +1,15 @@
 ﻿@model AvaliacaoGerarViewModel
 @{
     ViewBag.Title = "Gerar Avaliação Acadêmica";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="ui termo modal">
     <div class="header">Você está ciente de...</div>
     <div class="content">
-        @{
-            var termo = Model.Termo.Split('\n', '\r');
-            foreach (var str in termo)
-            {
-                if (!String.IsNullOrWhiteSpace(str))
-                {
-                    <p>@str</p>
-                }
-            }
-        }
+        @Html.Raw(Model.Termo.ToHtml("p"))
     </div>
     <div class="actions">
-        <a href="/Principal" class="ui cancel button">Cancelar</a>
+        <a href="@Url.Action("Index","Principal")" class="ui cancel button">Cancelar</a>
         <div class="ui approve button">Sim, continuar</div>
     </div>
 </div>
@@ -57,9 +47,9 @@
         <label>Disciplina</label>
         <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" required>
             <option value="">Disciplina</option>
-            @foreach (var disc in Model.Disciplinas)
+            @foreach (Disciplina disciplina in Model.Disciplinas)
             {
-                <option value="@disc.CodDisciplina">@disc.Descricao</option>
+                <option value="@disciplina.CodDisciplina">@disciplina.Descricao</option>
             }
         </select>
     </div>
@@ -85,9 +75,9 @@
         <label>Dificuldade das Questões</label>
         <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown" required>
             <option value="">Dificuldade...</option>
-            @foreach (Dificuldade d in Model.Dificuldades)
+            @foreach (Dificuldade dificuldade in Model.Dificuldades)
             {
-                <option value="@d.CodDificuldade">@d.Descricao</option>
+                <option value="@dificuldade.CodDificuldade">@dificuldade.Descricao</option>
             }
         </select>
     </div>

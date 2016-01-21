@@ -1,8 +1,6 @@
-﻿@using SIAC.Models
-@model AvalAcademica
+﻿@model AvalAcademica
 @{
-    ViewBag.Title = "Acompanhar Avaliação Acadêmica"/* + Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Acompanhar Avaliação Acadêmica";
     
     // String html do gabarito para todos os alunos
     string gabarito = "<table style='border:0!important' class=\"ui unstackable table\"><tbody><tr class='ui circular labels'>";
@@ -34,13 +32,7 @@
     </style>    
 }
 
-@section Scripts{
-    @Scripts.Render("~/bundles/js/academica")
-    @Scripts.Render("~/bundles/signalR")
-    <script src="~/signalr/hubs"></script>
-}
-
-<h2 data-usuario="@SIAC.Helpers.Sessao.UsuarioMatricula">
+<h2 data-usuario="@Sessao.UsuarioMatricula">
     @ViewBag.Title 
     <div class="ui trigger right floated button">
         Alertar Todos
@@ -88,7 +80,6 @@
                 <div class="ui progress active" data-total="@Model.Avaliacao.Questao.Count">
                     <div class="bar"><div class="progress"></div></div>
                 </div>
-               @* @Html.Raw(gabarito) *@
                 <div class="ui small feed">
                     <h4 class="ui header">Atividade</h4>                       
                 </div>
@@ -107,7 +98,7 @@
                 <div class="ui disabled trigger icon right floated chat button"><i class="icon comments outline"></i></div>
                 <div class="ui chat popup wide">
                     <div class="header">
-                        @aluno.Usuario.PessoaFisica.Nome.Split(' ')[0]
+                        @aluno.Usuario.PessoaFisica.PrimeiroNome
                     </div>
                     <div class="content">
                         <div class="ui comments" style="height: 200px;width:300px; overflow-y:scroll;">
@@ -132,3 +123,10 @@
         }
     </div>
 </div>
+
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/academica")
+    @Scripts.Render("~/bundles/signalR")
+    <script src="~/signalr/hubs"></script>
+}

@@ -1,21 +1,15 @@
-﻿@using SIAC.Models;
-@model AvalAcademica
+﻿@model AvalAcademica
 @{
-    ViewBag.Title = "Corrigir Avaliação Acadêmica"/* + Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    var lstQuestoes = Model.Avaliacao.Questao.OrderBy(q => q.CodQuestao).ToList();
-}
-
-@section Scripts{
-    @Scripts.Render("~/bundles/js/academica")
+    ViewBag.Title = "Corrigir Avaliação Acadêmica";
+    List<Questao> questoes = Model.Avaliacao.Questao.OrderBy(q => q.CodQuestao).ToList();
 }
 
 <code class="questoes" hidden>
     {
-    @for (int i = 0, length = lstQuestoes.Count; i < length; i++)
+    @for (int i = 0, length = questoes.Count; i < length; i++)
     {
     <text>
-        "@lstQuestoes[i].CodQuestao":"@i.GetIndiceQuestao()"
+        "@questoes[i].CodQuestao":"@i.GetIndiceQuestao()"
         @if (i < (length-1))
         {
             @:,
@@ -90,6 +84,7 @@
         </div>
     </div>
 </div>
+
 @* Placeholder da opção de Correção por Questão *@
 <div id="templateCorrecaoQuestao" class="ui basic segment questoes aluno" hidden>
     <div id="{codQuestao}" class="ui fluid card">
@@ -176,7 +171,7 @@
     <div class="ui accordion">
         @foreach (Aluno aluno in Model.Alunos.OrderBy(a => a.Usuario.PessoaFisica.Nome))
         {
-            var lstResposta = Model.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == aluno.Usuario.CodPessoaFisica);
+            IEnumerable<AvalQuesPessoaResposta> lstResposta = Model.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == aluno.Usuario.CodPessoaFisica);
 
             bool realizou = lstResposta.Count() != 0;
 
@@ -197,20 +192,20 @@
                 <table class="ui very basic table">
                     @{
                         int questaoIndice = 0;
-                        int qteColunas = 10;
+                        int quantidadeColunas = 10;
                         int colunaIndice = 1;
                     }
                     
                     <tr>
                         @foreach (AvalQuesPessoaResposta resp in lstResposta.OrderBy(aqpr => aqpr.CodQuestao))
                         {
-                            if (colunaIndice == qteColunas)
+                            if (colunaIndice == quantidadeColunas)
                             {
                                 @:</tr><tr>
                                 colunaIndice = 1;
                             }
                             <td style="border:none!important;">
-                                <a @((resp.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 2)? "data-questao="+resp.CodQuestao:"") class="ui label">
+                                <a @((resp.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.DISCURSIVA)? "data-questao="+resp.CodQuestao:"") class="ui label">
                                     @if (resp.RespAlternativa.HasValue) {
                                     <i class="@(resp.RespNota == 10 ? "checkmark green" : "remove red") icon"></i>
                                     }
@@ -234,7 +229,7 @@
                                             </div>
                                         }
                                     }
-                                    else if (String.IsNullOrEmpty(resp.RespDiscursiva))
+                                    else if (String.IsNullOrWhiteSpace(resp.RespDiscursiva))
                                     {
                                         <div class="detail">
                                             <i class="icon thumbs down"></i>
@@ -254,3 +249,8 @@
 </div>
 
 <a href="@Url.Action("Detalhe", new { codigo = Model.Avaliacao.CodAvaliacao})" class="ui button">Sair</a>
+
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/academica")
+}
