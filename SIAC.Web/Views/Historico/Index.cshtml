@@ -8,7 +8,7 @@
 
 <div class="ui stackable grid dashmenu">
     <div class="stackable doubling four columns centered row">
-        @if (Model.CodCategoria <= 2)
+        @if (Model.CodCategoria <= Categoria.PROFESSOR)
         {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Index", "Academica") },
@@ -23,7 +23,7 @@
                 { "Mensagem", "Ir para Histórico de Avaliações de Reposição" }
             })
         }
-        @if (Model.CodCategoria <= 3)
+        @if (Model.CodCategoria <= Categoria.COLABORADOR)
         {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Index", "Certificacao") },
@@ -38,7 +38,7 @@
             { "Descricao", "Autoavaliações Salvas" },
             { "Mensagem", "Ir para Autoavaliações Salvas" }
         })
-        @if (Model.CodCategoria == 2)
+        @if (Model.CodCategoria == Categoria.PROFESSOR)
         {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Index", "Questao") },

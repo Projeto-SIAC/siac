@@ -1,4 +1,5 @@
 ﻿using SIAC.Models;
+using SIAC.Helpers;
 using System.Web.Mvc;
 
 namespace SIAC.Controllers
@@ -6,19 +7,16 @@ namespace SIAC.Controllers
     [Filters.AutenticacaoFilter]
     public class HistoricoController : Controller
     {
-        // GET: Historico
+        // GET: historico
         [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             Lembrete.AdicionarNotificacao("Este é seu histórico de atividades.", Lembrete.INFO);
-            Usuario usuario = Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
+            Usuario usuario = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula);
             return View(usuario);
         }
 
-        // GET: Historico/Avaliacao
-        public ActionResult Avaliacao()
-        {
-            return RedirectToAction("Index");
-        }
+        // GET: historico/avaliacao
+        public ActionResult Avaliacao() => RedirectToAction("Index");
     }
 }
