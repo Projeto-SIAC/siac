@@ -40,7 +40,7 @@
         if (txtOpiniao) {
             $.ajax({
                 url: '/perfil/enviaropiniao',
-                type: 'post',
+                type: 'POST',
                 data: { opiniao: txtOpiniao },
                 success: function () {
                     siac.aviso('Opinião registrada com sucesso!', 'green');

@@ -5,7 +5,7 @@
 </div>
 
 <div class="ui relaxed list">
-    @if (Model.CodCategoria == 2)
+    @if (Model.CodCategoria == Categoria.PROFESSOR)
             {
         <div class="item">
             <div class="header">Questões Cadastradas</div>
@@ -18,11 +18,11 @@
     }
     <div class="item">
         <div class="header">Avaliações Realizadas</div>
-        @Model.PessoaFisica.AvalPessoaResultado.Where(a => a.CodTipoAvaliacao > 1).Count()
+        @Model.PessoaFisica.AvalPessoaResultado.Where(a => a.CodTipoAvaliacao > TipoAvaliacao.AUTOAVALIACAO).Count()
     </div>
     <div class="item">
         <div class="header">Autoavaliações Realizadas</div>
-        @Model.PessoaFisica.AvalPessoaResultado.Where(a => a.CodTipoAvaliacao == 1).Count()
+        @Model.PessoaFisica.AvalPessoaResultado.Where(a => a.CodTipoAvaliacao == TipoAvaliacao.AUTOAVALIACAO).Count()
     </div>
     <div class="item">
         <div class="header">Nota Média Geral</div>

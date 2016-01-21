@@ -4,6 +4,12 @@ namespace SIAC.Models
 {
     public partial class TipoAvaliacao
     {
+        public const int AUTOAVALIACAO = 1;
+        public const int ACADEMICA = 2;
+        public const int CERTIFICACAO = 3;
+        public const int AVI = 4;
+        public const int REPOSICAO = 5;
+
         public string DescricaoCurta => CodTipoAvaliacao == 4 ? Descricao : Descricao.Split(' ').Last();
 
         private static dbSIACEntities contexto => Repositorio.GetInstance();
