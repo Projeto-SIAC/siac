@@ -7,61 +7,60 @@
 <h2>@ViewBag.Title</h2>
 <div class="ui basic segment">
     <div class="ui two stackable cards">
-        @foreach (Avaliacao aval in Model)
+        @foreach (Avaliacao avaliacao in Model)
         {
-            switch (aval.CodTipoAvaliacao)
+            switch (avaliacao.CodTipoAvaliacao)
             {
-                case 2:
-                    <a href="@Url.Action("Corrigir", "Academica", new { codigo = aval.CodAvaliacao })" class="card blue">
+                case TipoAvaliacao.ACADEMICA:
+                    <a href="@Url.Action("Corrigir", "Academica", new { codigo = avaliacao.CodAvaliacao })" class="card blue">
                         <div class="content">
-                            <div class="header">Código: @aval.CodAvaliacao</div>
+                            <div class="header">Código: @avaliacao.CodAvaliacao</div>
                             <div class="meta">
-                                <span title="@aval.DtAplicacao.Value.ToBrazilianString()">@aval.DtAplicacao.Value.ToElapsedTimeString()</span>
+                                <span title="@avaliacao.DtAplicacao.Value.ToBrazilianString()">@avaliacao.DtAplicacao.Value.ToElapsedTimeString()</span>
                             </div>
                             <div class="description">
-                                <p><b>Disciplina</b>: @aval.AvalAcademica.Disciplina.Descricao</p>                                
-                                <p><b>Turma</b>: @aval.AvalAcademica.Turma.Curso.Descricao (@aval.AvalAcademica.Turma.CodTurma)</p>
-                                <p><b>Quantidade de Questões</b>: @aval.QteQuestoes()</p>
+                                <p><b>Disciplina</b>: @avaliacao.AvalAcademica.Disciplina.Descricao</p>                                
+                                <p><b>Turma</b>: @avaliacao.AvalAcademica.Turma.Curso.Descricao (@avaliacao.AvalAcademica.Turma.CodTurma)</p>
+                                <p><b>Quantidade de Questões</b>: @avaliacao.QteQuestoes()</p>
                             </div>
                         </div>
-                        <span class="ui attached top right label"><i class="file icon"></i>@aval.TipoAvaliacao.DescricaoCurta</span>
+                        <span class="ui attached top right label"><i class="file icon"></i>@avaliacao.TipoAvaliacao.DescricaoCurta</span>
                     </a>
                     break;
-                case 3:
-                    <a href="@Url.Action("Corrigir", "Certificacao", new { codigo = aval.CodAvaliacao })" class="card teal">
+                case TipoAvaliacao.CERTIFICACAO:
+                    <a href="@Url.Action("Corrigir", "Certificacao", new { codigo = avaliacao.CodAvaliacao })" class="card teal">
                         <div class="content">
-                            <div class="header">Código: @aval.CodAvaliacao</div>
+                            <div class="header">Código: @avaliacao.CodAvaliacao</div>
                             <div class="meta">
-                                <span title="@aval.DtAplicacao.Value.ToBrazilianString()">@aval.DtAplicacao.Value.ToElapsedTimeString()</span>
+                                <span title="@avaliacao.DtAplicacao.Value.ToBrazilianString()">@avaliacao.DtAplicacao.Value.ToElapsedTimeString()</span>
                             </div>
                             <div class="description">
-                                <p><b>Disciplina</b>: @aval.AvalCertificacao.Disciplina.Descricao</p>
-                                <p><b>Quantidade de Questões</b>: @aval.QteQuestoes()</p>
+                                <p><b>Disciplina</b>: @avaliacao.AvalCertificacao.Disciplina.Descricao</p>
+                                <p><b>Quantidade de Questões</b>: @avaliacao.QteQuestoes()</p>
                             </div>
                         </div>
-                        <span class="ui attached top right label"><i class="file text icon"></i>@aval.TipoAvaliacao.DescricaoCurta</span>
+                        <span class="ui attached top right label"><i class="file text icon"></i>@avaliacao.TipoAvaliacao.DescricaoCurta</span>
                     </a>
                     break;
-                case 5:
-                    <a href="@Url.Action("Corrigir", "Reposicao", new { codigo = aval.CodAvaliacao })" class="card orange">
+                case TipoAvaliacao.REPOSICAO:
+                    <a href="@Url.Action("Corrigir", "Reposicao", new { codigo = avaliacao.CodAvaliacao })" class="card orange">
                         <div class="content">
-                            <div class="header">Código: @aval.CodAvaliacao</div>
+                            <div class="header">Código: @avaliacao.CodAvaliacao</div>
                             <div class="meta">
-                                <span title="@aval.DtAplicacao.Value.ToBrazilianString()">@aval.DtAplicacao.Value.ToElapsedTimeString()</span>
+                                <span title="@avaliacao.DtAplicacao.Value.ToBrazilianString()">@avaliacao.DtAplicacao.Value.ToElapsedTimeString()</span>
                             </div>
                             <div class="description">
-                                <p><b>Disciplina</b>: @aval.AvalAcadReposicao.Disciplina.Descricao</p>
-                                <p><b>Quantidade de Alunos</b>: @aval.AvalAcadReposicao.Alunos.Count</p>
-                                <p><b>Quantidade de Questões</b>: @aval.QteQuestoes()</p>
+                                <p><b>Disciplina</b>: @avaliacao.AvalAcadReposicao.Disciplina.Descricao</p>
+                                <p><b>Quantidade de Alunos</b>: @avaliacao.AvalAcadReposicao.Alunos.Count</p>
+                                <p><b>Quantidade de Questões</b>: @avaliacao.QteQuestoes()</p>
                             </div>
                         </div>
-                        <span class="ui attached top right label"><i class="file archive outline icon"></i>@aval.TipoAvaliacao.DescricaoCurta</span>
+                        <span class="ui attached top right label"><i class="file archive outline icon"></i>@avaliacao.TipoAvaliacao.DescricaoCurta</span>
                     </a>
                     break;
                 default:
                     break;
             }
-
         }
     </div>
 </div>

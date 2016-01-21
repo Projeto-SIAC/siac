@@ -25,7 +25,7 @@ namespace SIAC
                 name: "HistoricoAvaliacao",
                 url: "Historico/Avaliacao/{controller}/{action}/{codigo}",
                 defaults: new { controller = "Historico", action = "Index", codigo = UrlParameter.Optional },
-                constraints: new { controller = @"^(Academica|Reposicao|Certificacao)$", action = @"^(Index|Minhas|Detalhe|Agendada|Pendente|Corrigir)$" }
+                constraints: new { controller = @"^(Academica|Reposicao|Certificacao)$", action = @"^(Index|Minhas|Detalhe|Agendada|Corrigir)$" }
             );
 
             routes.MapRoute(

@@ -15,16 +15,6 @@
                 }
             });
 
-            //$('.ui.global.loader').parent().click(function () {
-            //    try {
-            //        window.stop();
-            //    }
-            //    catch (e) {
-            //        document.execCommand('Stop');
-            //    }
-            //    $('.ui.global.loader').parent().dimmer('hide');
-            //});
-
             carregar();
             siac.Lembrete.iniciar();
             habilitarAjuda();
@@ -288,7 +278,7 @@
 
     function aviso(mensagem, cor, icone) {
         if (mensagem) {
-            $html = $(HTML_AVISO_TEMPLATE);
+            var $html = $(HTML_AVISO_TEMPLATE);
             $html.html($html.html().substituirTodos('{mensagem}', mensagem));
             $html.html($html.html().substituirTodos('{cor}', cor));
             if (icone) $html.find('.header').addClass('small icon').prepend('<i class="' + icone + ' icon"></i>');

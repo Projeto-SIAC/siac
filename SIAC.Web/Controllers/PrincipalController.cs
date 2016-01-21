@@ -9,7 +9,7 @@ namespace SIAC.Controllers
     [Filters.AutenticacaoFilter]
     public class PrincipalController : Controller
     {
-        // GET: Principal
+        // GET: principal
         [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
@@ -18,18 +18,14 @@ namespace SIAC.Controllers
             return View(usuario);
         }
 
-        // GET: Principal/Avaliacao
-        public ActionResult Avaliacao()
-        {
-            return RedirectToAction("Index");
-        }
+        // GET: principal/avaliacao
+        public ActionResult Avaliacao() => RedirectToAction("Index");
 
-        // GET: Principal/Pendente
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        // GET: principal/pendente
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Pendente()
         {
-            string matricula = Sessao.UsuarioMatricula;
-            int codProfessor = Professor.ListarPorMatricula(matricula).CodProfessor;
+            int codProfessor = Professor.ListarPorMatricula(Sessao.UsuarioMatricula).CodProfessor;
 
             IEnumerable<Avaliacao> avaliacoes = AvalAcademica.ListarCorrecaoPendentePorProfessor(codProfessor)
                 .Select(a => a.Avaliacao);

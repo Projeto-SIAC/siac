@@ -15,7 +15,7 @@
             { "Mensagem", "Ir para Realizar Autoavaliação" },
             { "Lembrete", "autoavaliacao" }
         })
-        @if (Model.CodCategoria == 2)
+        @if (Model.CodCategoria == Categoria.PROFESSOR)
         {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Gerar", "Academica") },
@@ -43,7 +43,7 @@
                 { "Lembrete", "correcao" }
             })
         }
-        @if (Model.CodCategoria <= 3)
+        @if (Model.CodCategoria <= Categoria.COLABORADOR)
         {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Index", "Agenda") },
