@@ -1,6 +1,6 @@
-﻿@model List<SIAC.Models.Questao>
+﻿@model List<Questao>
 
-@foreach (var questao in Model)
+@foreach (Questao questao in Model)
 {
     <a class="card" href="@Url.Action("Detalhe", new { codigo = questao.CodQuestao })">
         <div class="content">

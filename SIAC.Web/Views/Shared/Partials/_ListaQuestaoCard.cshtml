@@ -1,10 +1,9 @@
-﻿@model List<SIAC.Models.Questao>
+﻿@model List<Questao>
 
-@foreach (var questao in Model)
+@foreach (Questao questao in Model)
 {
     <div id="@questao.CodQuestao" class="card">
         <div class="content">
-            @*<a class="ui green right corner label"><i class="save icon"></i></a>*@
             <div class="header" data-enunciado="@questao.Enunciado">@questao.Enunciado.ToShortString(140)</div>
             <div class="meta"><span title="@questao.DtCadastro.ToBrazilianString()">@questao.DtCadastro.ToElapsedTimeString()</span></div>
             <div class="description ui labels">
