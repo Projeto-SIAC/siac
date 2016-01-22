@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using SIAC.Models;
 
 namespace SIAC.ViewModels
 {
     public class AutoavaliacaoNovoViewModel
     {
-        public List<Models.AvalAuto> Geradas { get; set; }
+        public List<AvalAuto> Geradas { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SIAC.Models;
 
 namespace SIAC.ViewModels
 {
@@ -6,9 +7,9 @@ namespace SIAC.ViewModels
     {
         public string Captcha { get; set; }
         public string Termo { get; set; }
-        public List<Models.Disciplina> Disciplinas { get; set; }
-        public List<Models.TipoQuestao> Tipos { get; set; }
-        public List<Models.TipoAnexo> TiposAnexo { get; set; }
-        public List<Models.Dificuldade> Dificuldades { get; set; }
+        public List<Disciplina> Disciplinas { get; set; }
+        public List<TipoQuestao> Tipos { get; set; }
+        public List<TipoAnexo> TiposAnexo { get; set; }
+        public List<Dificuldade> Dificuldades { get; set; }
     }
 }

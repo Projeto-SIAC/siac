@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using SIAC.Models;
 
 namespace SIAC.ViewModels
 {
     public class CertificacaoConfigurarViewModel
     {
-        public Models.Avaliacao Avaliacao { get; set; }
-        public List<Models.Dificuldade> Dificuldades { get; set; }
-        public List<Models.TipoQuestao> TiposQuestao { get; set; }
+        public Avaliacao Avaliacao { get; set; }
+        public List<Dificuldade> Dificuldades { get; set; }
+        public List<TipoQuestao> TiposQuestao { get; set; }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using SIAC.Models;
 
 namespace SIAC.ViewModels
 {
     public class InstitucionalRealizarViewModel
     {
-        public Models.AvalAvi Avi { get; set; }
-        public List<Models.AviQuestaoPessoaResposta> Respostas { get; set; }
+        public AvalAvi Avi { get; set; }
+        public List<AviQuestaoPessoaResposta> Respostas { get; set; }
     }
 }
