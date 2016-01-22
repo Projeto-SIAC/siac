@@ -586,6 +586,7 @@
     <Compile Include="ViewModels\CertificacaoConfigurarViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracoesInstitucionalViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracoesParametrosViewModel.cs" />
+    <Compile Include="ViewModels\ErroIndexViewModel.cs" />
     <Compile Include="ViewModels\ImpressaoAvaliacaoViewModel.cs" />
     <Compile Include="ViewModels\InstitucionalGerarQuestaoViewModel.cs" />
     <Compile Include="ViewModels\InstitucionalPublicoViewModel.cs" />

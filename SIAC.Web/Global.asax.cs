@@ -57,9 +57,7 @@ namespace SIAC
             {
                 var cookie = context.Request.Cookies["SIAC_Session"];
                 if (cookie != null)
-                {
                     return "usuario=" + Models.Sistema.CookieUsuario[cookie.Value];
-                }
             }
             return base.GetVaryByCustomString(context, custom);
         }
