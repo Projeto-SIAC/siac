@@ -1,35 +1,30 @@
-﻿using System;
+﻿using SIAC.Helpers;
+using SIAC.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-
-using SIAC.Models;
-using SIAC.Helpers;
 
 namespace SIAC.Controllers
 {
     [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2, 3 })]
     public class AgendaController : Controller
     {
-        // GET: Agenda
+        // GET: principal/agenda
         [OutputCache(CacheProfile = "PorUsuario")]
-        public ActionResult Index()
-        {
-            return View("Index");
-        }
+        public ActionResult Index() => View("Index");
 
-        // POST: Agenda/Academicas?start=2013-12-01&end=2014-01-12&_=1386054751381
+        // POST: principal/agenda/academicas?start=2013-12-01&end=2014-01-12
         [HttpPost]
         public ActionResult Academicas(string start, string end)
         {
-            var inicio = DateTime.Parse(start);
-            var termino = DateTime.Parse(end);
+            DateTime inicio = DateTime.Parse(start);
+            DateTime termino = DateTime.Parse(end);
 
-            var usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;//Models.Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-            var lstAgendadas = AvalAcademica.ListarAgendadaPorUsuario(usuario, inicio, termino);    
+            Usuario usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
+            List<AvalAcademica> lstAgendadas = AvalAcademica.ListarAgendadaPorUsuario(usuario, inicio, termino);
 
-            var retorno = lstAgendadas.Select(a => new Evento
+            IEnumerable<Evento> retorno = lstAgendadas.Select(a => new Evento
             {
                 id = a.Avaliacao.CodAvaliacao,
                 title = a.Avaliacao.CodAvaliacao,
@@ -41,17 +36,17 @@ namespace SIAC.Controllers
             return Json(retorno);
         }
 
-        // POST: Agenda/Reposicoes?start=2013-12-01&end=2014-01-12&_=1386054751381
+        // POST: principal/agenda/reposicoes?start=2013-12-01&end=2014-01-12
         [HttpPost]
         public ActionResult Reposicoes(string start, string end)
         {
-            var inicio = DateTime.Parse(start);
-            var termino = DateTime.Parse(end);
+            DateTime inicio = DateTime.Parse(start);
+            DateTime termino = DateTime.Parse(end);
 
-            var usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;//Models.Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-            var lstAgendadas = AvalAcadReposicao.ListarAgendadaPorUsuario(usuario, inicio, termino);
+            Usuario usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
+            List<AvalAcadReposicao> lstAgendadas = AvalAcadReposicao.ListarAgendadaPorUsuario(usuario, inicio, termino);
 
-            var retorno = lstAgendadas.Select(a => new Evento
+            IEnumerable<Evento> retorno = lstAgendadas.Select(a => new Evento
             {
                 id = a.Avaliacao.CodAvaliacao,
                 title = a.Avaliacao.CodAvaliacao,
@@ -63,17 +58,17 @@ namespace SIAC.Controllers
             return Json(retorno);
         }
 
-        // POST: Agenda/Certificacoes?start=2013-12-01&end=2014-01-12&_=1386054751381
+        // POST: principal/agenda/certificacoes?start=2013-12-01&end=2014-01-12
         [HttpPost]
         public ActionResult Certificacoes(string start, string end)
         {
-            var inicio = DateTime.Parse(start);
-            var termino = DateTime.Parse(end);
+            DateTime inicio = DateTime.Parse(start);
+            DateTime termino = DateTime.Parse(end);
 
-            var usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;//Models.Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-            var lstAgendadas = AvalCertificacao.ListarAgendadaPorUsuario(usuario, inicio, termino);
+            Usuario usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
+            List<AvalCertificacao> lstAgendadas = AvalCertificacao.ListarAgendadaPorUsuario(usuario, inicio, termino);
 
-            var retorno = lstAgendadas.Select(a => new Evento
+            IEnumerable<Evento> retorno = lstAgendadas.Select(a => new Evento
             {
                 id = a.Avaliacao.CodAvaliacao,
                 title = a.Avaliacao.CodAvaliacao,
@@ -85,46 +80,22 @@ namespace SIAC.Controllers
             return Json(retorno);
         }
 
+        // POST: principal/agenda/horarios?start=2013-12-01&end=2014-01-12
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE, Categoria.PROFESSOR })]
         [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Horarios(string start, string end)
         {
-            var ano = DateTime.Now.Year;
-            var semestre = DateTime.Now.Month > 6 ? 2 : 1;
-            var inicio = DateTime.Parse(start);
-            var termino = DateTime.Parse(end);
+            DateTime inicio = DateTime.Parse(start);
+            DateTime termino = DateTime.Parse(end);
 
-            var usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;//Models.Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-            var lstHorarios = new List<TurmaDiscProfHorario>();
-
-            switch (usuario.CodCategoria)
-            {
-                case 1:
-                    var codAluno = usuario.Aluno.First().CodAluno;
-                    lstHorarios = (from h in Repositorio.GetInstance().TurmaDiscProfHorario
-                                   where h.Turma.TurmaDiscAluno.FirstOrDefault(t=>t.CodAluno == codAluno) != null
-                                   && h.AnoLetivo == ano
-                                   && h.SemestreLetivo == semestre
-                                   select h).ToList();
-                    break;
-                case 2:
-                    var codProfessor = usuario.Professor.First().CodProfessor;
-                    lstHorarios = (from h in Repositorio.GetInstance().TurmaDiscProfHorario
-                                  where h.CodProfessor == codProfessor
-                                  && h.AnoLetivo == ano
-                                  && h.SemestreLetivo == semestre
-                                  select h).ToList();
-                    break;
-                default:
-                    break;
-            }            
-
-            var retorno = new List<Evento>();
+            Usuario usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
+            List<TurmaDiscProfHorario> lstHorarios = TurmaDiscProfHorario.ListarPorUsuario(usuario);
+            List<Evento> retorno = new List<Evento>();
 
             while (inicio < termino)
             {
-                foreach (var hor in lstHorarios.Where(h => h.CodDia - 1 == (int)inicio.DayOfWeek))
+                foreach (TurmaDiscProfHorario hor in lstHorarios.Where(h => h.CodDia - 1 == (int)inicio.DayOfWeek))
                 {
                     retorno.Add(new Evento
                     {
@@ -139,10 +110,11 @@ namespace SIAC.Controllers
             return Json(retorno);
         }
 
+        // POST: principal/agenda/horarios?start=2013-12-01&end=2014-01-12
         [HttpPost]
         public ActionResult Conflitos(string start, string end)
         {
-            var retorno = ((JsonResult)Academicas(start, end)).Data as IEnumerable<Evento>;
+            IEnumerable<Evento> retorno = ((JsonResult)Academicas(start, end)).Data as IEnumerable<Evento>;
             retorno = retorno.Union(((JsonResult)Reposicoes(start, end)).Data as IEnumerable<Evento>);
             retorno = retorno.Union(((JsonResult)Certificacoes(start, end)).Data as IEnumerable<Evento>);
             return Json(retorno);

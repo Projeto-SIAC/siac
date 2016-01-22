@@ -210,6 +210,7 @@
       <DependentUpon>siac.certificacao.js</DependentUpon>
     </Content>
     <Content Include="Scripts\modules\siac.lembrete.js" />
+    <Content Include="Scripts\modules\siac.agenda.js" />
     <Content Include="Scripts\modules\siac.perfil.js" />
     <Content Include="Scripts\modules\siac.reposicao.js" />
     <Content Include="Scripts\modules\siac.usuario.js" />
@@ -473,6 +474,7 @@
     <Compile Include="Models\ProReitoria.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\pTurmaDiscProfHorario.cs" />
     <Compile Include="Models\pVisitante.cs" />
     <Compile Include="Models\Questao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>

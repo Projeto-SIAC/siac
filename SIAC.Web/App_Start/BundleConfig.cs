@@ -37,6 +37,10 @@ namespace SIAC
                 "~/scripts/modules/siac.questao.js"
             ));
 
+            bundles.Add(new ScriptBundle("~/bundles/js/agenda").Include(
+                "~/scripts/modules/siac.agenda.js"
+            ));
+
             bundles.Add(new ScriptBundle("~/bundles/js/perfil").Include(
                 "~/scripts/modules/siac.perfil.js"
             ));

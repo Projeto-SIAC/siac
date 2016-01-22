@@ -130,7 +130,7 @@ namespace SIAC.Models
         {
             switch (usuario.CodCategoria)
             {
-                case 1:
+                case Categoria.ESTUDANTE:
                     return contexto.AvalAcadReposicao
                         .Where(a => a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
                             && a.Justificacao.FirstOrDefault(j => j.CodPessoaFisica == usuario.CodPessoaFisica) != null
@@ -138,8 +138,8 @@ namespace SIAC.Models
                             && !a.Avaliacao.FlagArquivo)
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
-                case 2:
-                    var codProfessor = usuario.Professor.First().CodProfessor;
+                case Categoria.PROFESSOR:
+                    int codProfessor = usuario.Professor.First().CodProfessor;
                     return contexto.AvalAcadReposicao
                         .Where(a => a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
                             && a.Justificacao.Count > 0 && a.Justificacao.FirstOrDefault().CodProfessor == codProfessor
@@ -147,8 +147,8 @@ namespace SIAC.Models
                             && !a.Avaliacao.FlagArquivo)
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
-                case 3:
-                    var codColaborador = usuario.Colaborador.First().CodColaborador;
+                case Categoria.COLABORADOR:
+                    int codColaborador = usuario.Colaborador.First().CodColaborador;
                     return contexto.AvalAcadReposicao
                         .Where(a => a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
                             && a.Justificacao.Count > 0
