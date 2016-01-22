@@ -106,10 +106,9 @@
     </div>
 </div>
 
-<a class="ui imprimir button" href="@Url.Action("Institucional", "Impressao",new { codigo = Model.Avaliacao.CodAvaliacao })">Imprimir</a>
+<a class="ui imprimir button" href="@Url.Action("Institucional", "Impressao", new { codigo = Model.Avaliacao.CodAvaliacao })">Imprimir</a>
 @Html.Partial("_InstitucionalInformacoes", Model)
 
 @section Scripts{
-    @Scripts.Render("~/bundles/js/institucional")
-    @Scripts.Render("~/bundles/chart")
+    @Scripts.Render("~/bundles/js/institucional", "~/bundles/chart")
 }

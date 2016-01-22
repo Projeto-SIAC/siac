@@ -1,37 +1,37 @@
 ﻿@model AvalCertificacao
 
-        <div class="ui vertical segment">
-            <div class="ui header dividing">
-                Informações
-            </div>
-            <table class="ui striped table">
-                <thead>
-                    <tr>
-                        <th>Disciplina</th>
-                        <th>Tema(s)</th>
-                        <th>Quantidade</th>
-                        <th>Dificuldade</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <b>@Model.Avaliacao.AvalCertificacao.Disciplina.Descricao</b>
-                        </td>
-                        <td class="ui labels">
-                            @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == Model.Avaliacao.AvalCertificacao.CodDisciplina))
-                            {
-                            <div class="ui tag label">@avalTema.Tema.Descricao</div>
-                            }
-                        </td>
-                        <td class="ui labels">
-                            <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.Avaliacao.AvalCertificacao.CodDisciplina, 1)</div></div>
-                            <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.Avaliacao.AvalCertificacao.CodDisciplina, 2)</div></div>
-                        </td>
-                        <td>
-                            @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(Model.Avaliacao.AvalCertificacao.CodDisciplina)
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+<div class="ui vertical segment">
+    <div class="ui header dividing">
+        Informações
+    </div>
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th>Disciplina</th>
+                <th>Tema(s)</th>
+                <th>Quantidade</th>
+                <th>Dificuldade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <b>@Model.Avaliacao.AvalCertificacao.Disciplina.Descricao</b>
+                </td>
+                <td class="ui labels">
+                    @foreach (AvaliacaoTema avalTema in Model.Avaliacao.AvaliacaoTema)
+                    {
+                    <div class="ui tag label">@avalTema.Tema.Descricao</div>
+                    }
+                </td>
+                <td class="ui labels">
+                    <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.Avaliacao.AvalCertificacao.CodDisciplina, TipoQuestao.OBJETIVA)</div></div>
+                    <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.Avaliacao.AvalCertificacao.CodDisciplina, TipoQuestao.DISCURSIVA)</div></div>
+                </td>
+                <td>
+                    @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(Model.Avaliacao.AvalCertificacao.CodDisciplina)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

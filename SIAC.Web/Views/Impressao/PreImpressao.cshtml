@@ -1,23 +1,7 @@
 ﻿@model ImpressaoAvaliacaoViewModel
 
 @{
-    ViewBag.Title = $"Imprimir {Model.Avaliacao.TipoAvaliacao.Descricao}"/* + Model.Avaliacao.CodAvaliacao*/;
-}
-
-@section Scripts {
-    <script>
-        $(function () {
-            $('.ui.checkbox').checkbox();
-            $('.ui.accordion').accordion();
-            $('.ui.modal').modal();
-            $('.ui.search.dropdown').dropdown({
-                allowAdditions: true
-            });
-            $('.informacoes.button').click(function () {
-                $('.informacoes.modal').modal('show');
-            });
-        });
-    </script>
+    ViewBag.Title = $"Imprimir {Model.Avaliacao.TipoAvaliacao.Descricao}";
 }
 
 <h2>
@@ -66,3 +50,18 @@
     </div>
 </form>
 
+@section Scripts {
+    <script>
+        $(function () {
+            $('.ui.checkbox').checkbox();
+            $('.ui.accordion').accordion();
+            $('.ui.modal').modal();
+            $('.ui.search.dropdown').dropdown({
+                allowAdditions: true
+            });
+            $('.informacoes.button').click(function () {
+                $('.informacoes.modal').modal('show');
+            });
+        });
+    </script>
+}

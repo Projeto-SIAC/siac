@@ -1,114 +1,83 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-using SIAC.ViewModels;
+﻿using SIAC.Helpers;
 using SIAC.Models;
-using SIAC.Helpers;
+using SIAC.ViewModels;
+using System;
+using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
     [Filters.AutenticacaoFilter]
     public class ImpressaoController : Controller
     {
+        // GET: impressao
         public ActionResult Index() => RedirectToAction("Index", "Principal");
 
+        // GET: impressao/avaliacao/aval201520001
         [HttpGet]
         public ActionResult Avaliacao(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
-                var model = new ImpressaoAvaliacaoViewModel();
+                ImpressaoAvaliacaoViewModel model = new ImpressaoAvaliacaoViewModel();
                 model.Avaliacao = Models.Avaliacao.ListarPorCodigoAvaliacao(codigo);
-                if (model.Avaliacao.CodTipoAvaliacao == 1)
+                if (model.Avaliacao.CodTipoAvaliacao == TipoAvaliacao.AUTOAVALIACAO)
                 {
                     Models.Avaliacao.AlternarFlagArquivo(codigo);
-                    Repositorio.GetInstance().SaveChanges();
                     return View("Autoavaliacao", model);
                 }
                 else if (model.Avaliacao != null && model.Avaliacao.FlagPendente)
                 {
-                    if (model.Avaliacao.CodTipoAvaliacao > 1 && Sessao.UsuarioCategoriaCodigo < 2)
-                    {
+                    if (model.Avaliacao.CodTipoAvaliacao > TipoAvaliacao.AUTOAVALIACAO && Sessao.UsuarioCategoriaCodigo < Categoria.PROFESSOR)
                         return RedirectToAction("Index", "Principal");
-                    }
                     else if (model.Avaliacao.Professor.MatrProfessor != Sessao.UsuarioMatricula)
-                    {
                         return RedirectToAction("Index", "Principal");
-                    }
                     return View("PreImpressao", model);
                 }
             }
             return RedirectToAction("Index", "Principal");
         }
 
+        // POST: impressao/avaliacao/aval201520001
         [HttpPost]
         public ActionResult Avaliacao(string codigo, FormCollection form)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
-                var model = new ImpressaoAvaliacaoViewModel();
+                ImpressaoAvaliacaoViewModel model = new ImpressaoAvaliacaoViewModel();
                 model.Avaliacao = Models.Avaliacao.ListarPorCodigoAvaliacao(codigo);
                 if (model.Avaliacao != null && !StringExt.IsNullOrWhiteSpace(form["txtTitulo"], form["txtInstituicao"], form["txtProfessor"]) && model.Avaliacao.FlagPendente)
                 {
-                    if (model.Avaliacao.CodTipoAvaliacao > 1 && Sessao.UsuarioCategoriaCodigo < 2)
-                    {
+                    if (model.Avaliacao.CodTipoAvaliacao > TipoAvaliacao.AUTOAVALIACAO && Sessao.UsuarioCategoriaCodigo < Categoria.PROFESSOR)
                         return RedirectToAction("Index", "Principal");
-                    }
                     else if (model.Avaliacao.Professor.MatrProfessor != Sessao.UsuarioMatricula)
-                    {
                         return RedirectToAction("Index", "Principal");
-                    }
-
                     model.Titulo = form["txtTitulo"];
                     model.Instituicao = form["txtInstituicao"];
                     model.Professor = form["txtProfessor"];
-                    model.Arquivar = !String.IsNullOrEmpty(form["chkArquivar"]);
-                    if (!String.IsNullOrEmpty(form["txtInstrucoes"]))
-                    {
+                    model.Arquivar = !String.IsNullOrWhiteSpace(form["chkArquivar"]);
+                    if (!String.IsNullOrWhiteSpace(form["txtInstrucoes"]))
                         model.Instrucoes = form["txtInstrucoes"].Split('\n');
-                    }
-                    if (!String.IsNullOrEmpty(form["ddlCampos"]))
-                    {
+                    if (!String.IsNullOrWhiteSpace(form["ddlCampos"]))
                         model.Campos = form["ddlCampos"].Split(',');
-                    }
-
                     if (model.Arquivar)
                     {
                         Models.Avaliacao.AlternarFlagArquivo(codigo);
-                        Repositorio.GetInstance().SaveChanges();
                     }
-
                     return View(model);
-                    //switch (model.Avaliacao.CodTipoAvaliacao)
-                    //{ 
-                    //    case 2:
-                    //        return View("Academica", model);
-                    //    case 3:
-                    //        return View("Certificacao", model);
-                    //    case 5:
-                    //        return View("Reposicao", model);
-                    //    default:
-                    //        break;
-                    //}
                 }
             }
 
             return RedirectToAction("Index", "Principal");
         }
 
-        [HttpGet]
+        // GET: impressao/institucional/avi201520001
         public ActionResult Institucional(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAvi model = AvalAvi.ListarPorCodigoAvaliacao(codigo);
-                if (model != null && model.CodColabCoordenador == Colaborador.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodColaborador)
-                {
+                if (model != null && model.CodColabCoordenador == Colaborador.ListarPorMatricula(Sessao.UsuarioMatricula).CodColaborador)
                     return View(model);
-                }
             }
             return RedirectToAction("Index", "Principal");
         }

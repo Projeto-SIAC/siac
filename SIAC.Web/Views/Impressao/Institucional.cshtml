@@ -51,7 +51,6 @@
                         <b>Instituição</b>
                     </td>
                     <td class="fourteen wide">
-                        @*@Model.Instituicao*@
                         @Model.Colaborador.Usuario.PessoaFisica.PessoaLocalTrabalho.Instituicao.PessoaJuridica.NomeFantasia
                     </td>
                 </tr>
@@ -222,8 +221,7 @@
         <h5 class="ui centered header">&copy; SIAC - Sistema Interativo de Avaliação de Conhecimento</h5>
     </div>
 
-    @Scripts.Render("~/bundles/js")
-    @Scripts.Render("~/bundles/chart")
+    @Scripts.Render("~/bundles/js", "~/bundles/chart")
     <script>
         function mostrarGraficos() {
             var contador = 1;
@@ -236,7 +234,6 @@
                 }
             })
         };
-
         function adicionarValoresAlternativas($content,data)
         {
             var total = 0;
@@ -271,7 +268,6 @@
             }
         }
         mostrarGraficos();
-
         var focused = false;
         window.print();
         focused = true;
@@ -281,7 +277,6 @@
                 window.location.href = "@Url.Action("Resultado", "Institucional", new { codigo = Model.Avaliacao.CodAvaliacao })"
             }
         }, 300);
-        
     </script>
 </body>
 </html>
