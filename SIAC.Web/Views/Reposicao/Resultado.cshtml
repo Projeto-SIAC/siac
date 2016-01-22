@@ -1,8 +1,7 @@
 ﻿@model AvaliacaoResultadoViewModel
 
 @{
-    ViewBag.Title = "Resultado de Reposição"/* + Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Resultado de Reposição";
     int codPessoaFisica = Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula);
     List<Questao> lstQuestao = Model.Avaliacao.Questao;
     List<AvalQuesPessoaResposta> lstPessoaResposta = Model.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == codPessoaFisica).ToList();
@@ -50,13 +49,13 @@
         <div class="ui accordion">
             @for (int i = 0; i < lstQuestao.Count; i++)
             {
-                var resposta = lstPessoaResposta.First(r => r.CodQuestao == lstQuestao[i].CodQuestao);
+                AvalQuesPessoaResposta resposta = lstPessoaResposta.First(r => r.CodQuestao == lstQuestao[i].CodQuestao);
 
                 <div class="title">
                     <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToShortString(80))
-                    @if (lstQuestao[i].CodTipoQuestao == 1)
+                    @if (lstQuestao[i].CodTipoQuestao == TipoQuestao.OBJETIVA)
                     {
-                        var correta = lstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
+                        Alternativa correta = lstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
                         <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? Html.Raw("<i class=\"checkmark icon\"></i>Correta") : Html.Raw("<i class=\"remove icon\"></i>Incorreta") )</div>
                     }
                     else
@@ -69,10 +68,10 @@
                         <div class="ui dividing header" style="text-align:justify">
                             @Html.Raw((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToHtml("p"))
                         </div>
-                        @if (lstQuestao[i].CodTipoQuestao == 1)
+                        @if (lstQuestao[i].CodTipoQuestao == TipoQuestao.OBJETIVA)
                         {
                             <div class="ui list">
-                                @foreach (var alternativa in lstQuestao[i].Alternativa)
+                                @foreach (Alternativa alternativa in lstQuestao[i].Alternativa)
                                 {
                                     <div class="item">
                                         <div class="middle aligned content">
@@ -102,7 +101,7 @@
                             <div class="accordion">
                                 <div class="title"><i class="icon dropdown"></i>Anexos</div>
                                 <div class="content">
-                                    @foreach (var anexo in lstQuestao[i].QuestaoAnexo)
+                                    @foreach (QuestaoAnexo anexo in lstQuestao[i].QuestaoAnexo)
                                     {
                                         @Html.Partial("_Anexo", anexo)
                                     }

@@ -1,9 +1,8 @@
 ﻿@model AvalAcadReposicao
 
 @{
-    ViewBag.Title = "Acompanhar Reposição"/* + Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    
+    ViewBag.Title = "Acompanhar Reposição";
+
     // String html do gabarito para todos os alunos
     string gabarito = "<table style='border:0!important' class=\"ui unstackable table\"><tbody><tr class='ui circular labels'>";
     for (int i = 0, count = Model.Avaliacao.Questao.Count, linebreak = 5, countPerRow = 5; i < count; i++)
@@ -25,24 +24,17 @@
             overflow-y: auto;
         }
 
-        .printscreen.modal .content
-        {
+        .printscreen.modal .content {
             height: 55vh;
             background-repeat: no-repeat;
             background-position: center center;
             background-size: contain;
         }
-    </style>    
-}
-
-@section Scripts{
-    @Scripts.Render("~/bundles/js/reposicao")
-    @Scripts.Render("~/bundles/signalR")
-    <script src="~/signalr/hubs"></script>
+    </style>
 }
 
 <h2 data-usuario="@Sessao.UsuarioMatricula">
-    @ViewBag.Title 
+    @ViewBag.Title
     <div class="ui trigger right floated button">
         Alertar Todos
     </div>
@@ -82,14 +74,14 @@
             <div id="@aluno.MatrAluno" class="title">
                 <i class="dropdown icon" style="float:right"></i>
                 <div class="ui status mini empty circular label"></div>
-                <b class="nome">@aluno.Usuario.PessoaFisica.Nome</b> @aluno.MatrAluno                
+                <b class="nome">@aluno.Usuario.PessoaFisica.Nome</b> @aluno.MatrAluno
             </div>
             <div id="@aluno.MatrAluno" class="content">
                 <div class="ui progress active" data-total="@Model.Avaliacao.Questao.Count">
                     <div class="bar"><div class="progress"></div></div>
                 </div>
                 <div class="ui small feed">
-                    <h4 class="ui header">Atividade</h4>                       
+                    <h4 class="ui header">Atividade</h4>
                 </div>
                 <div class="ui disabled prova button">Ver Prova</div>
                 <div class="ui disabled trigger button">Alertar</div>
@@ -106,7 +98,7 @@
                 <div class="ui disabled trigger icon right floated chat button"><i class="icon comments outline"></i></div>
                 <div class="ui chat popup wide">
                     <div class="header">
-                        @aluno.Usuario.PessoaFisica.Nome.Split(' ')[0]
+                        @aluno.Usuario.PessoaFisica.PrimeiroNome
                     </div>
                     <div class="content">
                         <div class="ui comments" style="height: 200px;width:300px; overflow-y:scroll;">
@@ -131,3 +123,9 @@
         }
     </div>
 </div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/reposicao")
+    @Scripts.Render("~/bundles/signalR")
+    <script src="~/signalr/hubs"></script>
+}

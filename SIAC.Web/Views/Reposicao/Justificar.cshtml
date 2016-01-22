@@ -2,11 +2,6 @@
 
 @{
     ViewBag.Title = "Justificar Ausências";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@section Scripts {
-    @Scripts.Render("~/bundles/js/reposicao")
 }
 
 <h2>
@@ -71,7 +66,7 @@
             <label for="ddlAluno">Aluno</label>
             <select id="ddlAluno" name="ddlAluno" class="ui search dropdown" tabindex="0">
                 <option value="">Selecione</option>
-                @foreach (var aluno in Model.AlunoSemJustificacao.OrderBy(a => a.Usuario.PessoaFisica.Nome))
+                @foreach (Aluno aluno in Model.AlunoSemJustificacao.OrderBy(a => a.Usuario.PessoaFisica.Nome))
                 {
                     <option value="@aluno.MatrAluno">@aluno.Usuario.PessoaFisica.Nome</option>
                 }
@@ -99,7 +94,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var justificacao in Model.Justificacoes.OrderBy(j => j.AvalPessoaResultado.PessoaFisica.Nome))
+            @foreach (Justificacao justificacao in Model.Justificacoes.OrderBy(j => j.AvalPessoaResultado.PessoaFisica.Nome))
             {
                 <tr id="@justificacao.CodJustificacao">
                     <td>
@@ -133,3 +128,7 @@
 <div class="ui prosseguir button" tabindex="0">
     Prosseguir
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/reposicao")
+}

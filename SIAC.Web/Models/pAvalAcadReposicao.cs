@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SIAC.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,9 +15,9 @@ namespace SIAC.Models
         {
             get
             {
-                var alunos = this.Justificacao.FirstOrDefault()?.AvalPessoaResultado.Avaliacao.AvalAcademica.Alunos;
-                var retorno = new List<Aluno>();
-                foreach (var a in alunos)
+                IEnumerable<Aluno> alunos = this.Justificacao.FirstOrDefault()?.AvalPessoaResultado.Avaliacao.AvalAcademica.Alunos;
+                List<Aluno> retorno = new List<Aluno>();
+                foreach (Aluno a in alunos)
                 {
                     if (this.Justificacao.FirstOrDefault(j => j.CodPessoaFisica == a.Usuario.CodPessoaFisica) != null)
                     {
@@ -31,43 +32,20 @@ namespace SIAC.Models
         {
             get
             {
-                List<Aluno> result = new List<Aluno>();
+                List<Aluno> retorno = new List<Aluno>();
                 foreach (Aluno a in this.Alunos)
                 {
-                    var lstRespostas = this.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == a.Usuario.CodPessoaFisica);
+                    IEnumerable<AvalQuesPessoaResposta> lstRespostas = this.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == a.Usuario.CodPessoaFisica);
                     if (lstRespostas.Count() > 0)
-                        result.Add(a);
+                        retorno.Add(a);
                 }
-                return result;
+                return retorno;
             }
         }
 
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public static AvalAcadReposicao ListarPorCodigoAvaliacao(string codigo)
-        {
-            int numIdentificador = 0;
-            int semestre = 0;
-            int ano = 0;
-
-            if (codigo.Length == 13)
-            {
-
-                int.TryParse(codigo.Substring(codigo.Length - 4), out numIdentificador);
-                codigo = codigo.Remove(codigo.Length - 4);
-                int.TryParse(codigo.Substring(codigo.Length - 1), out semestre);
-                codigo = codigo.Remove(codigo.Length - 1);
-                int.TryParse(codigo.Substring(codigo.Length - 4), out ano);
-                codigo = codigo.Remove(codigo.Length - 4);
-
-                int codTipoAvaliacao = TipoAvaliacao.ListarPorSigla(codigo).CodTipoAvaliacao;
-
-                AvalAcadReposicao avaliacao = contexto.AvalAcadReposicao.FirstOrDefault(aval => aval.Ano == ano && aval.Semestre == semestre && aval.NumIdentificador == numIdentificador && aval.CodTipoAvaliacao == codTipoAvaliacao);
-
-                return avaliacao;
-            }
-            return null;
-        }
+        public static AvalAcadReposicao ListarPorCodigoAvaliacao(string codigo) => Avaliacao.ListarPorCodigoAvaliacao(codigo)?.AvalAcadReposicao;
 
         public static List<AvalAcadReposicao> ListarPorProfessor(int codProfessor) =>
             contexto.AvalAcadReposicao.Where(ac => ac.Justificacao.FirstOrDefault().Professor.CodProfessor == codProfessor)
@@ -76,7 +54,7 @@ namespace SIAC.Models
 
         public static List<AvalAcadReposicao> ListarPorAluno(int codAluno)
         {
-            var codPessoaFisica = Aluno.ListarPorCodigo(codAluno).Usuario.CodPessoaFisica;
+            int codPessoaFisica = Aluno.ListarPorCodigo(codAluno).Usuario.CodPessoaFisica;
 
             return contexto.AvalAcadReposicao
                 .Where(a => a.Justificacao.FirstOrDefault(j => j.CodPessoaFisica == codPessoaFisica) != null)
@@ -88,7 +66,7 @@ namespace SIAC.Models
         {
             switch (usuario.CodCategoria)
             {
-                case 1:
+                case Categoria.ESTUDANTE:
                     return contexto.AvalAcadReposicao
                         .Where(a => a.Justificacao.FirstOrDefault(j => j.CodPessoaFisica == usuario.CodPessoaFisica) != null
                             && a.Avaliacao.DtAplicacao.HasValue
@@ -96,8 +74,8 @@ namespace SIAC.Models
                             && !a.Avaliacao.FlagArquivo)
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
-                case 2:
-                    var codProfessor = usuario.Professor.First().CodProfessor;
+                case Categoria.PROFESSOR:
+                    int codProfessor = usuario.Professor.First().CodProfessor;
                     return contexto.AvalAcadReposicao
                         .Where(a => a.Justificacao.Count > 0 && a.Justificacao.FirstOrDefault().CodProfessor == codProfessor
                             && a.Avaliacao.DtAplicacao.HasValue
@@ -105,8 +83,8 @@ namespace SIAC.Models
                             && !a.Avaliacao.FlagArquivo)
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
-                case 3:
-                    var codColaborador = usuario.Colaborador.First().CodColaborador;
+                case Categoria.COLABORADOR:
+                    int codColaborador = usuario.Colaborador.First().CodColaborador;
                     return contexto.AvalAcadReposicao
                         .Where(a =>
                             a.Justificacao.Count > 0
@@ -130,7 +108,7 @@ namespace SIAC.Models
         {
             switch (usuario.CodCategoria)
             {
-                case 1:
+                case Categoria.ESTUDANTE:
                     return contexto.AvalAcadReposicao
                         .Where(a => a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
                             && a.Justificacao.FirstOrDefault(j => j.CodPessoaFisica == usuario.CodPessoaFisica) != null
@@ -138,8 +116,8 @@ namespace SIAC.Models
                             && !a.Avaliacao.FlagArquivo)
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
-                case 2:
-                    var codProfessor = usuario.Professor.First().CodProfessor;
+                case Categoria.PROFESSOR:
+                    int codProfessor = usuario.Professor.First().CodProfessor;
                     return contexto.AvalAcadReposicao
                         .Where(a => a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
                             && a.Justificacao.Count > 0 && a.Justificacao.FirstOrDefault().CodProfessor == codProfessor
@@ -147,8 +125,8 @@ namespace SIAC.Models
                             && !a.Avaliacao.FlagArquivo)
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
-                case 3:
-                    var codColaborador = usuario.Colaborador.First().CodColaborador;
+                case Categoria.COLABORADOR:
+                    int codColaborador = usuario.Colaborador.First().CodColaborador;
                     return contexto.AvalAcadReposicao
                         .Where(a => a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
                             && a.Justificacao.Count > 0
@@ -169,17 +147,17 @@ namespace SIAC.Models
 
         public static bool CorrigirQuestaoAluno(string codAvaliacao, string matrAluno, int codQuestao, double notaObtida, string profObservacao)
         {
-            if (!String.IsNullOrEmpty(codAvaliacao) && !String.IsNullOrEmpty(matrAluno) && codQuestao != 0)
+            if (!StringExt.IsNullOrWhiteSpace(codAvaliacao,matrAluno) && codQuestao != 0)
             {
-                var aval = ListarPorCodigoAvaliacao(codAvaliacao);
-                var aluno = Aluno.ListarPorMatricula(matrAluno);
-                var codPessoaFisica = aluno.Usuario.PessoaFisica.CodPessoa;
+                AvalAcadReposicao aval = ListarPorCodigoAvaliacao(codAvaliacao);
+                Aluno aluno = Aluno.ListarPorMatricula(matrAluno);
+                int codPessoaFisica = aluno.Usuario.PessoaFisica.CodPessoa;
 
                 AvalQuesPessoaResposta resposta = aval.Avaliacao.PessoaResposta.FirstOrDefault(pr => pr.CodQuestao == codQuestao && pr.CodPessoaFisica == codPessoaFisica);
 
                 resposta.RespNota = notaObtida;
                 resposta.ProfObservacao = profObservacao;
-
+                
                 aval.Avaliacao.AvalPessoaResultado
                     .Single(r => r.CodPessoaFisica == codPessoaFisica)
                     .Nota = aval.Avaliacao.PessoaResposta

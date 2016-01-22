@@ -1,26 +1,19 @@
 ﻿@model AvalAcadReposicao
 @{
-    ViewBag.Title = "Corrigir Reposição"/* + Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    var lstQuestoes = Model.Avaliacao.Questao.OrderBy(q => q.CodQuestao).ToList();
-}
-
-@section Scripts{
-    @Scripts.Render("~/bundles/js/reposicao")
+    ViewBag.Title = "Corrigir Reposição";
+    List<Questao> lstQuestoes = Model.Avaliacao.Questao.OrderBy(q => q.CodQuestao).ToList();
 }
 
 <code class="questoes" hidden>
     {
-    @for (int i = 0, length = lstQuestoes.Count; i < length; i++)
-    {
-    <text>
-        "@lstQuestoes[i].CodQuestao":"@i.GetIndiceQuestao()"
-        @if (i < (length-1))
-        {
-            @:,
-        }
-    </text>
-    }
+        @for (int i = 0, length = lstQuestoes.Count; i < length; i++)
+        {<text>
+            "@lstQuestoes[i].CodQuestao":"@i.GetIndiceQuestao()"
+            @if (i < (length-1))
+            {
+                @:,
+            }
+        </text>}
     }
 </code>
 
@@ -172,7 +165,7 @@
     <div class="ui accordion">
         @foreach (Aluno aluno in Model.Alunos.OrderBy(a => a.Usuario.PessoaFisica.Nome))
         {
-            var lstResposta = Model.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == aluno.Usuario.CodPessoaFisica);
+            IEnumerable<AvalQuesPessoaResposta> lstResposta = Model.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == aluno.Usuario.CodPessoaFisica);
 
             bool realizou = lstResposta.Count() != 0;
 
@@ -230,7 +223,7 @@
                                             </div>
                                         }
                                     }
-                                    else if (String.IsNullOrEmpty(resp.RespDiscursiva))
+                                    else if (String.IsNullOrWhiteSpace(resp.RespDiscursiva))
                                     {
                                         <div class="detail">
                                             <i class="icon thumbs down"></i>
@@ -250,3 +243,7 @@
 </div>
 
 <a href="@Url.Action("Detalhe", new { codigo = Model.Avaliacao.CodAvaliacao})" class="ui button">Sair</a>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/reposicao")
+}

@@ -1,10 +1,9 @@
 ﻿@model AvalAcadReposicao
 @{
-    ViewBag.Title = "Detalhes de Reposição"/* + Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    var LstQuestao = Model.Avaliacao.Questao;
-    var LstResposta = Model.Avaliacao.PessoaResposta;
-    var LstResultado = Model.Avaliacao.AvalPessoaResultado;
+    ViewBag.Title = "Detalhes de Reposição";
+    List<Questao> lstQuestao = Model.Avaliacao.Questao;
+    List<AvalQuesPessoaResposta> lstResposta = Model.Avaliacao.PessoaResposta;
+    IEnumerable<AvalPessoaResultado> lstResultado = Model.Avaliacao.AvalPessoaResultado;
 }
 
 <h2>
@@ -12,7 +11,7 @@
     <a href="@Url.Action("Detalhe", "Academica", new { codigo = Model.Academica.Avaliacao.CodAvaliacao})" class="ui label">Acadêmica<span class="detail">@Model.Academica.Avaliacao.CodAvaliacao</span></a>
     @if (Model.Avaliacao.FlagRealizada)
     {
-        if (Sessao.UsuarioCategoriaCodigo == 1)
+        if (Sessao.UsuarioCategoriaCodigo == Categoria.ESTUDANTE)
         {
             if (Model.AlunosRealizaram.Where(a => a.MatrAluno == Sessao.UsuarioMatricula).Count() > 0)
             {
@@ -28,7 +27,7 @@
             <span class="ui label"><i class="checkmark icon"></i>Realizada</span>
         }
     }
-    @if (Sessao.UsuarioCategoriaCodigo == 2 && Model.Avaliacao.FlagCorrecaoPendente)
+    @if (Sessao.UsuarioCategoriaCodigo == Categoria.ESTUDANTE && Model.Avaliacao.FlagCorrecaoPendente)
     {
         <a href="@Url.Action("Corrigir", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui right floated corrigir button">
             Corrigir
@@ -50,7 +49,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+            @foreach (Disciplina disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
             {
                 <tr>
                     <td>
@@ -59,15 +58,15 @@
                     </td>
                     <td class="ui labels">
                         @* temas *@
-                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                        @foreach (AvaliacaoTema avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
                         {
                             <div class="ui tag label">@avalTema.Tema.Descricao</div>
                         }
                     </td>
                     <td class="ui labels">
                         @* qte de questões *@
-                        <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
-                        <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
+                        <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, TipoQuestao.OBJETIVA)</div></div>
+                        <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, TipoQuestao.DISCURSIVA)</div></div>
                     </td>
                     <td>
                         @* dificuldade *@
@@ -115,7 +114,7 @@
 }
 else if (Model.Avaliacao.FlagRealizada)
 {
-    if (Sessao.UsuarioCategoriaCodigo == 2)
+    if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
     {
         <div class="ui basic segment">
             <div class="ui dividing header">
@@ -123,23 +122,23 @@ else if (Model.Avaliacao.FlagRealizada)
             </div>
             <div class="ui statistics">
                 <div class="statistic">
-                    <div class="value">@LstResultado.Where(r => r.Nota == 0).Count()</div>
+                    <div class="value">@lstResultado.Where(r => r.Nota == 0).Count()</div>
                     <div class="label">Nota mínima</div>
                 </div>
                 <div class="statistic">
-                    <div class="value">@LstResultado.Where(r => r.Nota == 10).Count()</div>
+                    <div class="value">@lstResultado.Where(r => r.Nota == 10).Count()</div>
                     <div class="label">Nota máxima</div>
                 </div>
                 <div class="statistic">
-                    <div class="value">@LstResultado.Where(r => r.Nota >= Parametro.Obter().ValorNotaMedia).Count()</div>
+                    <div class="value">@lstResultado.Where(r => r.Nota >= Parametro.Obter().ValorNotaMedia).Count()</div>
                     <div class="label">Acima da média</div>
                 </div>
                 <div class="statistic">
-                    <div class="value">@LstResultado.Where(r => r.Nota < Parametro.Obter().ValorNotaMedia).Count()</div>
+                    <div class="value">@lstResultado.Where(r => r.Nota < Parametro.Obter().ValorNotaMedia).Count()</div>
                     <div class="label">Abaixo da média</div>
                 </div>
                 <div class="statistic">
-                    <div class="value">@LstResultado.Average(r => r.Nota).Value.ToString("0.0")</div>
+                    <div class="value">@lstResultado.Average(r => r.Nota).Value.ToString("0.0")</div>
                     <div class="label">Nota média</div>
                 </div>
             </div>
@@ -155,26 +154,26 @@ else if (Model.Avaliacao.FlagRealizada)
                 Resultados
             </div>
             <div class="ui accordion">
-                @for (int i = 0, length = LstQuestao.Count; i < length; i++)
+                @for (int i = 0, length = lstQuestao.Count; i < length; i++)
                 {
-                    var lstResposta = LstResposta
-                        .Where(r => r.CodQuestao == LstQuestao[i].CodQuestao);
+                    IEnumerable<AvalQuesPessoaResposta> lstTempResposta = lstResposta
+                        .Where(r => r.CodQuestao == lstQuestao[i].CodQuestao);
 
                     <div class="title">
                         <i class="dropdown icon"></i>
-                        @((i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).ToShortString(80))
+                        @((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToShortString(80))
                     </div>
-                    <div id="@LstQuestao[i].CodQuestao" class="questao content">
+                    <div id="@lstQuestao[i].CodQuestao" class="questao content">
                         <div class="ui segment">
                             <div class="ui dividing header" style="text-align:justify">
-                                @Html.Raw((i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).ToHtml("p"))
+                                @Html.Raw((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToHtml("p"))
                             </div>
-                            @if (LstQuestao[i].CodTipoQuestao == 1)
+                            @if (lstQuestao[i].CodTipoQuestao == TipoQuestao.OBJETIVA)
                             {
                                 <div class="ui stackable grid">
                                     <div class="twelve wide column">
                                         <div class="ui relaxed list">
-                                            @foreach (var alternativa in LstQuestao[i].Alternativa)
+                                            @foreach (Alternativa alternativa in lstQuestao[i].Alternativa)
                                             {
                                                 <div class="item">
                                                     <div class="middle aligned content">
@@ -187,12 +186,12 @@ else if (Model.Avaliacao.FlagRealizada)
                                                 </div>
                                             }
                                         </div>
-                                        @if (LstQuestao[i].QuestaoAnexo.Count > 0)
+                                        @if (lstQuestao[i].QuestaoAnexo.Count > 0)
                                         {
                                             <div class="accordion">
                                                 <div class="title"><i class="icon dropdown"></i>Anexos</div>
                                                 <div class="content">
-                                                    @foreach (var anexo in LstQuestao[i].QuestaoAnexo)
+                                                    @foreach (QuestaoAnexo anexo in lstQuestao[i].QuestaoAnexo)
                                                     {
                                                         @Html.Partial("_Anexo", anexo)
                                                     }
@@ -204,20 +203,20 @@ else if (Model.Avaliacao.FlagRealizada)
                                         <canvas style="display:inline" width="200" height="200"></canvas>
                                     </div>
                                 </div>
-                                <code class="dados" hidden>@Html.Raw(LstQuestao[i].ToJsonChart(lstResposta.ToList()))</code>
+                                <code class="dados" hidden>@Html.Raw(lstQuestao[i].ToJsonChart(lstTempResposta.ToList()))</code>
                             }
-                            else if (LstQuestao[i].CodTipoQuestao == 2)
+                            else if (lstQuestao[i].CodTipoQuestao == TipoQuestao.DISCURSIVA)
                             {
                                 <div class="ui stackable grid">
                                     <div class="twelve wide column">
                                         <div>
-                                            <a data-html="@(("<b>Comentário</b>: " + LstQuestao[i].Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui ribbon label">Chave de Resposta</a>
-                                            @Html.Raw(LstQuestao[i].ChaveDeResposta.ToHtml("p", "i"))
+                                            <a data-html="@(("<b>Comentário</b>: " + lstQuestao[i].Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui ribbon label">Chave de Resposta</a>
+                                            @Html.Raw(lstQuestao[i].ChaveDeResposta.ToHtml("p", "i"))
                                         </div>
                                     </div>
                                     <div class="four wide column" style="text-align:center">
                                         @{
-                                            var media = lstResposta.Average(r => r.RespNota);
+                                            double? media = lstTempResposta.Average(r => r.RespNota);
                                         }
                                         <div class="ui statistic" style="display:inline">
                                             <div class="value">
@@ -244,7 +243,7 @@ else if (Model.Avaliacao.FlagRealizada)
                     <label>Aluno</label>
                     <select class="ui search aluno dropdown">
                         <option value="">Selecione</option>
-                        @foreach (var aluno in Model.AlunosRealizaram)
+                        @foreach (Aluno aluno in Model.AlunosRealizaram)
                         {
                             <option value="@aluno.MatrAluno">@aluno.Usuario.PessoaFisica.Nome</option>
                         }
@@ -263,10 +262,10 @@ else if (Model.Avaliacao.FlagRealizada)
     else
     {
         int codPessoaFisica = Usuario.ObterPessoaFisica(SIAC.Helpers.Sessao.UsuarioMatricula);
-        var lstPessoaResposta = LstResposta.Where(p => p.CodPessoaFisica == codPessoaFisica).ToList();
-        var avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.FirstOrDefault(r => r.CodPessoaFisica == codPessoaFisica);
-        int qteAcerto = lstPessoaResposta.Where(p => p.RespNota.HasValue && p.RespNota.Value == 10).Count();
-        var percent = qteAcerto / LstQuestao.Count;
+        List<AvalQuesPessoaResposta> lstPessoaResposta = lstResposta.Where(p => p.CodPessoaFisica == codPessoaFisica).ToList();
+        AvalPessoaResultado avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.FirstOrDefault(r => r.CodPessoaFisica == codPessoaFisica);
+        int quantidadeAcerto = lstPessoaResposta.Where(p => p.RespNota.HasValue && p.RespNota.Value == 10).Count();
+        double porcentagem =quantidadeAcerto / lstQuestao.Count;
         if (avalPessoaResultado != null)
         {
             <div class="ui basic segment">
@@ -276,7 +275,7 @@ else if (Model.Avaliacao.FlagRealizada)
                 <div class="ui statistics">
                     <div class="statistic">
                         <div class="value">
-                            @((((double)qteAcerto / (double)LstQuestao.Count) * 100).ToString("0.##'%'"))
+                            @((((double)quantidadeAcerto/ (double)lstQuestao.Count) * 100).ToString("0.##'%'"))
                         </div>
                         <div class="label">
                             Porcentagem de Acerto
@@ -284,7 +283,7 @@ else if (Model.Avaliacao.FlagRealizada)
                     </div>
                     <div class="statistic">
                         <div class="value">
-                            @qteAcerto/@LstQuestao.Count
+                            @quantidadeAcerto /@lstQuestao.Count
                         </div>
                         <div class="label">
                             Quantidade de Acerto
@@ -305,14 +304,14 @@ else if (Model.Avaliacao.FlagRealizada)
                     Resultado
                 </div>
                 <div class="ui accordion">
-                    @for (int i = 0; i < LstQuestao.Count; i++)
+                    @for (int i = 0; i < lstQuestao.Count; i++)
                     {
-                        var resposta = lstPessoaResposta.First(r => r.CodQuestao == LstQuestao[i].CodQuestao);
+                        AvalQuesPessoaResposta resposta = lstPessoaResposta.First(r => r.CodQuestao == lstQuestao[i].CodQuestao);
                         <div class="title">
-                            <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).ToShortString(80))
-                            @if (LstQuestao[i].CodTipoQuestao == 1)
+                            <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToShortString(80))
+                            @if (lstQuestao[i].CodTipoQuestao == TipoQuestao.OBJETIVA)
                             {
-                                var correta = LstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
+                                Alternativa correta = lstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
                                 <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? Html.Raw("<i class=\"checkmark icon\"></i>Correta") : Html.Raw("<i class=\"remove icon\"></i>Incorreta") )</div>
                             }
                             else if (resposta.RespNota.HasValue)
@@ -323,12 +322,12 @@ else if (Model.Avaliacao.FlagRealizada)
                         <div class="content">
                             <div class="ui segment">
                                 <div class="ui dividing header" style="text-align:justify">
-                                    @Html.Raw((i.GetIndiceQuestao() + ". " + LstQuestao[i].Enunciado).ToHtml("p"))
+                                    @Html.Raw((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToHtml("p"))
                                 </div>
-                                @if (LstQuestao[i].CodTipoQuestao == 1)
+                                @if (lstQuestao[i].CodTipoQuestao == TipoQuestao.OBJETIVA)
                                 {
                                     <div class="ui list">
-                                        @foreach (var alternativa in LstQuestao[i].Alternativa)
+                                        @foreach (Alternativa alternativa in lstQuestao[i].Alternativa)
                                         {
                                             <div class="item">
                                                 <div class="middle aligned content">
@@ -349,16 +348,16 @@ else if (Model.Avaliacao.FlagRealizada)
                                 else
                                 {
                                     <div>
-                                        <a class="ui ribbon label" data-html="@(("<b>Chave de Resposta</b>: "+LstQuestao[i].ChaveDeResposta).Replace("\n", "<br>"))" data-variation="very wide">Resposta</a>
+                                        <a class="ui ribbon label" data-html="@(("<b>Chave de Resposta</b>: "+lstQuestao[i].ChaveDeResposta).Replace("\n", "<br>"))" data-variation="very wide">Resposta</a>
                                         @Html.Raw(resposta.RespDiscursiva.ToHtml("p", "i")))
                                     </div>
                                 }
-                                @if (LstQuestao[i].QuestaoAnexo.Count > 0)
+                                @if (lstQuestao[i].QuestaoAnexo.Count > 0)
                                 {
                                     <div class="accordion">
                                         <div class="title"><i class="icon dropdown"></i>Anexos</div>
                                         <div class="content">
-                                            @foreach (var anexo in LstQuestao[i].QuestaoAnexo)
+                                            @foreach (QuestaoAnexo anexo in lstQuestao[i].QuestaoAnexo)
                                             {
                                                 @Html.Partial("_Anexo", anexo)
                                             }
@@ -375,7 +374,7 @@ else if (Model.Avaliacao.FlagRealizada)
 }
 
 <a href="@Url.Action("Index")" class="ui button">Histórico</a>
-@if (Sessao.UsuarioCategoriaCodigo == 2)
+@if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
 {
     if (!Sistema.AvaliacaoUsuario.ContainsKey(Model.Avaliacao.CodAvaliacao.ToLower()))
     {
@@ -393,7 +392,7 @@ else if (Model.Avaliacao.FlagRealizada)
         }
     }
 }
-@if (Sessao.UsuarioCategoriaCodigo == 2 && Model.Avaliacao.FlagPendente && !Sistema.AvaliacaoUsuario.ContainsKey(Model.Avaliacao.CodAvaliacao.ToLower()))
+@if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR && Model.Avaliacao.FlagPendente && !Sistema.AvaliacaoUsuario.ContainsKey(Model.Avaliacao.CodAvaliacao.ToLower()))
 {
     <a href="@Url.Action("Agendar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">@(Model.Avaliacao.FlagAgendada ? "Reagendar" : "Agendar")</a>
 }
