@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Coordenadores de Av. Institucional";
-    var FlagProfessorCoordAvi = Sessao.UsuarioCategoriaCodigo != 3 && Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.FlagCoordenadorAvi;
+    bool flagProfessorCoordAvi = Sessao.UsuarioCategoriaCodigo != Categoria.COLABORADOR && Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.FlagCoordenadorAvi;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -14,18 +14,18 @@
         </div>
         <div class="ui form">
             <div class="grouped fields">
-                @foreach (var ocupacao in Model.Ocupacoes)
+                @foreach (Ocupacao ocupacao in Model.Ocupacoes)
                 {
-                    <div class="@(FlagProfessorCoordAvi ? "disabled" : "") field">
+                    <div class="@(flagProfessorCoordAvi ? "disabled" : "") field">
                         <div class="ui toggle checkbox">
-                            <input type="checkbox" name="chkOcupacao@(ocupacao.CodOcupacao)" @( Parametro.Obter().OcupacaoCoordenadorAvi.Contains(ocupacao.CodOcupacao) ? "checked" : ""  ) @(FlagProfessorCoordAvi ? "disabled" : "") >
+                            <input type="checkbox" name="chkOcupacao@(ocupacao.CodOcupacao)" @( Parametro.Obter().OcupacaoCoordenadorAvi.Contains(ocupacao.CodOcupacao) ? "checked" : ""  ) @(flagProfessorCoordAvi ? "disabled" : "") >
                             <label>@ocupacao.Descricao</label>
                         </div>
                     </div>
                 }
             </div>
-            <div class="@(FlagProfessorCoordAvi ? "disabled" : "") field">
-                <div class="ui @(FlagProfessorCoordAvi ? "disabled" : "")  toggle salvar button">Salvar</div>
+            <div class="@(flagProfessorCoordAvi ? "disabled" : "") field">
+                <div class="ui @(flagProfessorCoordAvi ? "disabled" : "")  toggle salvar button">Salvar</div>
             </div>
         </div>
     </div>
@@ -35,11 +35,11 @@
         </div> 
         <div class="ui form">
             <div class="grouped fields">
-                @foreach (var coordenador in Model.Coordenadores)
+                @foreach (PessoaFisica coordenador in Model.Coordenadores)
                 {
                     <div class="field">
                         <div class="ui checkbox">
-                            <input @(FlagProfessorCoordAvi && coordenador.Usuario.FirstOrDefault(u=>u.Matricula == Sessao.UsuarioMatricula) == null ? "disabled" : "")  type="checkbox" name="chkCoordenador@(coordenador.CodPessoa)">
+                            <input @(flagProfessorCoordAvi && coordenador.Usuario.FirstOrDefault(u=>u.Matricula == Sessao.UsuarioMatricula) == null ? "disabled" : "")  type="checkbox" name="chkCoordenador@(coordenador.CodPessoa)">
                             <label>@coordenador.PrimeiroNome @coordenador.UltimoNome</label>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                         <div class="ui remover small button">Sim, remover</div>
                     </div>
                 </div>
-                <div class="ui @(FlagProfessorCoordAvi ? "disabled" : "")  coordenador button">Novo</div>
+                <div class="ui @(flagProfessorCoordAvi ? "disabled" : "")  coordenador button">Novo</div>
             </div>
         </div>         
     </div>

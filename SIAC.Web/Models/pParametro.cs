@@ -5,6 +5,13 @@ namespace SIAC.Models
 {
     public partial class Parametro
     {
+        public enum NumeracaoPadrao {
+            INDO_ARABICO = 1,
+            ROMANOS = 2,
+            CAIXA_ALTA = 3,
+            CAIXA_BAIXA = 4
+        }
+
         public int[] OcupacaoCoordenadorAvi => Newtonsoft.Json.JsonConvert.DeserializeObject<int[]>(parametro.CoordenadorAVI).Union(new int[] { Ocupacao.COORDENADOR_AVI }).ToArray();
 
         private static dbSIACEntities contexto => Repositorio.GetInstance();
