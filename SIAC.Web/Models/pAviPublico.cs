@@ -10,21 +10,21 @@ namespace SIAC.Models
             {
                 switch (this.CodAviTipoPublico)
                 {
-                    case 1: /*Instituição*/
+                    case AviTipoPublico.INSTITUICAO:
                         return this.Instituicao.CodInstituicao.ToString();
-                    case 2: /*Reitoria*/
+                    case AviTipoPublico.REITORIA:
                         return this.Reitoria.CodComposto;
-                    case 3: /*Pró-Reitoria*/
+                    case AviTipoPublico.PRO_REITORIA:
                         return this.ProReitoria.CodComposto;
-                    case 4: /*Campus*/
+                    case AviTipoPublico.CAMPUS:
                         return this.Campus.CodComposto;
-                    case 5: /*Diretoria*/
+                    case AviTipoPublico.DIRETORIA:
                         return this.Diretoria.CodComposto;
-                    case 6: /*Curso*/
+                    case AviTipoPublico.CURSO:
                         return this.Curso.CodCurso.ToString();
-                    case 7: /*Turma*/
+                    case AviTipoPublico.TURMA:
                         return this.Turma.CodTurma;
-                    case 8: /*Pessoa*/
+                    case AviTipoPublico.PESSOA:
                         return this.PessoaFisica.CodPessoa.ToString();
                     default:
                         return String.Empty;
@@ -38,21 +38,21 @@ namespace SIAC.Models
             {
                 switch (this.CodAviTipoPublico)
                 {
-                    case 1: /*Instituição*/
+                    case AviTipoPublico.INSTITUICAO:
                         return this.Instituicao.PessoaJuridica.NomeFantasia;
-                    case 2: /*Reitoria*/
+                    case AviTipoPublico.REITORIA:
                         return this.Reitoria.PessoaJuridica.NomeFantasia;
-                    case 3: /*Pró-Reitoria*/
+                    case AviTipoPublico.PRO_REITORIA:
                         return this.ProReitoria.PessoaJuridica.NomeFantasia;
-                    case 4: /*Campus*/
+                    case AviTipoPublico.CAMPUS:
                         return this.Campus.PessoaJuridica.NomeFantasia;
-                    case 5: /*Diretoria*/
+                    case AviTipoPublico.DIRETORIA:
                         return this.Diretoria.PessoaJuridica.NomeFantasia;
-                    case 6: /*Curso*/
+                    case AviTipoPublico.CURSO:
                         return this.Curso.Descricao;
-                    case 7: /*Turma*/
+                    case AviTipoPublico.TURMA:
                         return $"{this.Turma.Curso.Descricao} ({this.Turma.CodTurma})";
-                    case 8: /*Pessoa*/
+                    case AviTipoPublico.PESSOA:
                         return this.PessoaFisica.Nome;
                     default:
                         return String.Empty;

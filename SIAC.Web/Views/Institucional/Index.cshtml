@@ -1,7 +1,7 @@
 ﻿@model Usuario
+
 @{
     ViewBag.Title = "Avaliação Institucional";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -9,7 +9,7 @@
 <div class="ui stackable grid dashmenu">
     <div class="stackable doubling four columns centered row">
         
-        @if (Model.CodCategoria == 3 && Model.FlagCoordenadorAvi)
+        @if (Model.CodCategoria == Categoria.COLABORADOR && Model.FlagCoordenadorAvi)
         {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Gerar") },
@@ -31,10 +31,10 @@
         }
 
         @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Andamento") },
-                { "Icone", "wait" },
-                { "Descricao", "Av. Institucional em Andamento" },
-                { "Lembrete", "andamento" }
+            { "Url", Url.Action("Andamento") },
+            { "Icone", "wait" },
+            { "Descricao", "Av. Institucional em Andamento" },
+            { "Lembrete", "andamento" }
         })
 
     </div>

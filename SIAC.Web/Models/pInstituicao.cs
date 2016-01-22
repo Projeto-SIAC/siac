@@ -15,9 +15,7 @@ namespace SIAC.Models
 
                 /*Alunos*/
                 foreach (Campus campus in this.Campus)
-                {
                     pessoas.AddRange(PessoaFisica.ListarPorCampus(campus.CodComposto));
-                }
 
                 /*Professores e Colaboradores*/
                 pessoas.AddRange(Models.PessoaLocalTrabalho.ListarPorInstituicao(this.CodInstituicao));

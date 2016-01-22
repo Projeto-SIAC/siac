@@ -35,8 +35,9 @@ namespace SIAC.Models
         {
             //Realizando um "IDENTITY Manual"
             Campus campus = diretoria.Campus;
-            List<Diretoria> diretorias = contexto.Diretoria.Where(d => d.CodInstituicao == campus.CodInstituicao 
-                                                                    && d.CodCampus == campus.CodCampus).ToList();
+            List<Diretoria> diretorias = contexto.Diretoria
+                .Where(d => d.CodInstituicao == campus.CodInstituicao 
+                    && d.CodCampus == campus.CodCampus).ToList();
             int id = diretorias.Count > 0 ? diretorias.Max(d => d.CodDiretoria) + 1 : 1;
 
             diretoria.CodDiretoria = id;
@@ -53,9 +54,10 @@ namespace SIAC.Models
             int codCampus = int.Parse(codigos[1]);
             int codDiretoria = int.Parse(codigos[2]);
 
-            return contexto.Diretoria.FirstOrDefault(d => d.CodInstituicao == codInstituicao
-                                                       && d.CodCampus == codCampus
-                                                       && d.CodDiretoria == codDiretoria);
+            return contexto.Diretoria
+                .FirstOrDefault(d => d.CodInstituicao == codInstituicao
+                    && d.CodCampus == codCampus
+                    && d.CodDiretoria == codDiretoria);
         }
         
     }

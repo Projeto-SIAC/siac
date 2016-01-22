@@ -389,7 +389,7 @@ namespace SIAC.Controllers
                 {
                     if (avi.FlagQuestionario)
                     {
-                        ViewModels.InstitucionalPublicoViewModel viewModel = new ViewModels.InstitucionalPublicoViewModel();
+                        InstitucionalPublicoViewModel viewModel = new InstitucionalPublicoViewModel();
                         viewModel.Avi = avi;
                         viewModel.TiposPublico = AviTipoPublico.ListarOrdenadamente();
                         return View(viewModel);
@@ -445,7 +445,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST: Institucional/filtrarpublico/AVI201520001
+        // POST: institucional/filtrarpublico/AVI201520001
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
         public ActionResult FiltrarPublico(int codigo)
@@ -454,7 +454,7 @@ namespace SIAC.Controllers
 
             switch (codigo)
             {
-                case 8:
+                case AviTipoPublico.PESSOA:
                     lstResultado = Usuario.Listar().Select(a => new Selecao
                     {
                         id = a.CodPessoaFisica.ToString(),
@@ -463,7 +463,7 @@ namespace SIAC.Controllers
                         category = "Pessoa"
                     });
                     break;
-                case 7:
+                case AviTipoPublico.TURMA:
                     lstResultado = Turma.ListarOrdenadamente().Select(a => new Selecao
                     {
                         id = a.CodTurma,
@@ -472,7 +472,7 @@ namespace SIAC.Controllers
                         category = "Turma"
                     });
                     break;
-                case 6:
+                case AviTipoPublico.CURSO:
                     lstResultado = Curso.ListarOrdenadamente().Select(a => new Selecao
                     {
                         id = a.CodCurso.ToString(),
@@ -481,7 +481,7 @@ namespace SIAC.Controllers
                         category = "Curso"
                     });
                     break;
-                case 5:
+                case AviTipoPublico.DIRETORIA:
                     lstResultado = Diretoria.ListarOrdenadamente().Select(a => new Selecao
                     {
                         id = a.CodComposto,
@@ -490,7 +490,7 @@ namespace SIAC.Controllers
                         category = "Diretoria"
                     });
                     break;
-                case 4:
+                case AviTipoPublico.CAMPUS:
                     lstResultado = Campus.ListarOrdenadamente().Select(a => new Selecao
                     {
                         id = a.CodComposto,
@@ -499,7 +499,7 @@ namespace SIAC.Controllers
                         category = "Campus"
                     });
                     break;
-                case 3:
+                case AviTipoPublico.PRO_REITORIA:
                     lstResultado = ProReitoria.ListarOrdenadamente().Select(a => new Selecao
                     {
                         id = a.CodComposto,
@@ -508,7 +508,7 @@ namespace SIAC.Controllers
                         category = "Pró-Reitoria"
                     });
                     break;
-                case 2:
+                case AviTipoPublico.REITORIA:
                     lstResultado = Reitoria.ListarOrdenadamente().Select(a => new Selecao
                     {
                         id = a.CodComposto,
@@ -517,7 +517,7 @@ namespace SIAC.Controllers
                         category = "Reitoria"
                     });
                     break;
-                case 1:
+                case AviTipoPublico.INSTITUICAO:
                     lstResultado = Instituicao.ListarOrdenadamente().Select(a => new Selecao
                     {
                         id = a.CodInstituicao.ToString(),
@@ -526,7 +526,6 @@ namespace SIAC.Controllers
                         category = "Instituição"
                     });
                     break;
-
                 default:
                     break;
             }
@@ -534,7 +533,7 @@ namespace SIAC.Controllers
             return Json(lstResultado);
         }
 
-        // POST: Institucional/salvarpublico/AVI201520001
+        // POST: institucional/salvarpublico/AVI201520001
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
         public ActionResult SalvarPublico(string codigo, List<Selecao> selecao)
@@ -547,7 +546,6 @@ namespace SIAC.Controllers
                         avi.InserirPublico(selecao);
             }
             return Json("/institucional/agendar/" + codigo);
-
         }
 
         // GET: institucional/realizar/AVI201520002
@@ -578,7 +576,7 @@ namespace SIAC.Controllers
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
-                if (avi != null && !avi.FlagAndamento)
+                if (avi != null && avi.FlagAndamento)
                 {
                     AviQuestao questao = avi.ObterQuestao(ordem);
                     PessoaFisica pessoa = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula)?.PessoaFisica;
@@ -594,7 +592,7 @@ namespace SIAC.Controllers
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
-                if (avi != null && !avi.FlagAndamento)
+                if (avi != null && avi.FlagAndamento)
                 {
                     AviQuestao questao = avi.ObterQuestao(ordem);
                     AviQuestaoPessoaResposta.InserirResposta(questao, PessoaFisica.ListarPorMatricula(Sessao.UsuarioMatricula), resposta);
@@ -609,7 +607,7 @@ namespace SIAC.Controllers
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
-                if (avi != null && !avi.FlagAndamento)
+                if (avi != null && avi.FlagAndamento)
                 {
                     AviQuestao questao = avi.ObterQuestao(ordem);
                     AviQuestaoPessoaResposta.InserirResposta(questao, PessoaFisica.ListarPorMatricula(Sessao.UsuarioMatricula), alternativa, resposta);

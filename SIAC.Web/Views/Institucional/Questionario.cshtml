@@ -1,7 +1,7 @@
-﻿@model SIAC.ViewModels.InstitucionalGerarQuestaoViewModel
+﻿@model InstitucionalGerarQuestaoViewModel
+
 @{
-    ViewBag.Title = "Questionário de Av. Institucional"/* + Model.Avi.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Questionário de Av. Institucional";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -39,9 +39,7 @@
                 <label for="txtEditarObservacao">Observação</label>
                 <textarea id="txtEditarObservacao" name="txtEditarObservacao" rows="2" placeholder="Observação..."></textarea>
             </div>
-            <div class="alternativas">
-
-            </div>
+            <div class="alternativas"></div>
         </form>
     </div>
     <div class="actions">
@@ -65,22 +63,22 @@
     @* Questões da AVI *@
     <div class="ui bottom attached tab segment questoes" data-tab="questoes">
         <div class="ui fluid styled accordion">
-            @foreach (var modulo in Model.Avi.MapQuestoes)
+            @foreach (MapAviModulo modulo in Model.Avi.MapQuestoes)
             {
                 <div class="title"><i class="dropdown icon"></i>@modulo.Modulo.Descricao</div>
                 <div class="content" data-modulo="@modulo.Modulo.CodAviModulo">
                     <div class="accordion">
-                        @foreach (var categoria in modulo.Categorias)
+                        @foreach (MapAviCategoria categoria in modulo.Categorias)
                         {
                             <div class="title"><i class="dropdown icon"></i>@categoria.Categoria.Descricao</div>
                             <div class="content" data-categoria="@categoria.Categoria.CodAviCategoria">
                                 <div class="accordion">
-                                    @foreach (var indicador in categoria.Indicadores)
+                                    @foreach (MapAviIndicador indicador in categoria.Indicadores)
                                     {
                                         <div class="title"><i class="dropdown icon"></i>@indicador.Indicador.Descricao</div>
                                         <div class="content" data-indicador="@indicador.Indicador.CodAviIndicador">
                                             <div class="accordion">
-                                                @foreach (var questao in indicador.Questoes)
+                                                @foreach (AviQuestao questao in indicador.Questoes)
                                                 {
                                                     <div class="title">
                                                         <i class="dropdown icon"></i>

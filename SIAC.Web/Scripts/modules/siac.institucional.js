@@ -112,10 +112,6 @@ siac.Institucional.Questionario = (function () {
         $('#ddlTipo').dropdown('set selected', 2);
         $('#txtEnunciado').val('Ainda assim, existem dúvidas a respeito de como a mobilidade dos capitais internacionais cumpre um papel essencial na formulação dos modos de operação convencionais.');
 
-
-        //Definindo o Tipo Default como 1 ( Objetiva )
-        //$('#ddlTipo').dropdown('set selected', 1);
-
         //Adicionando Alternativas por default
         for (var i = 0; i < 5; i++) {
             adicionarAlternativa();
@@ -125,11 +121,9 @@ siac.Institucional.Questionario = (function () {
         $('#ddlTipo').change(function () {
             mostrarCamposPorTipo();
         });
-
         $('.questao.objetiva .adicionar.button').click(function () {
             adicionarAlternativa();
         });
-
         $('.adicionar.questao.button').click(function () {
             verificar();
         })
@@ -316,9 +310,6 @@ siac.Institucional.Questionario = (function () {
                                                                     '<div class="ui right floated editar button">Editar</div>' +
                                                                     '<h3 class="ui dividing header" data-content="' + observacao + '">' + enunciado + '</h3>' +
                                                                     '<div class="ui very relaxed list">' +
-                                                                    //    <div class="item">\
-                                                                    //        <b>1)</b> ALternativa\
-                                                                    //    </div>\
                                                                     '</div>' +
                                                                 '</div>' +
                                                             '</div>' +
@@ -372,7 +363,8 @@ siac.Institucional.Questionario = (function () {
                 if ($localNovo.length > 0) {
                     $local = $localNovo;
                     $questao = $template.find('[data-indicador=' + indicadorCod + ']').find('.accordion').html();
-                } else {
+                }
+                else {
                     $questao = $template.find('[data-categoria=' + categoriaCod + ']').find('.accordion').html();
                 }
             }
@@ -402,7 +394,6 @@ siac.Institucional.Questionario = (function () {
         var modulo = content.parents('[data-modulo]');
         var categoria = content.parents('[data-categoria]');
         var indicador = content.parents('[data-indicador]');
-        //var accordionQuestoes = content.parent();
         title.remove();
         content.remove();
 
@@ -426,7 +417,7 @@ siac.Institucional.Questionario = (function () {
         var form = $('form.cadastro').serialize();
         $.ajax({
             type: 'POST',
-            url: '/institucional/CadastrarQuestao/' + _codAvaliacao,
+            url: '/institucional/cadastrarquestao/' + _codAvaliacao,
             data: form,
             dataType: 'json',
             success: function (questaoId) {
@@ -452,7 +443,7 @@ siac.Institucional.Questionario = (function () {
         $(button).addClass('loading');
         $.ajax({
             type: 'POST',
-            url: '/institucional/RemoverQuestao/' + _codAvaliacao,
+            url: '/institucional/removerquestao/' + _codAvaliacao,
             data: {
                 modulo: modulo,
                 categoria: categoria,
@@ -485,7 +476,6 @@ siac.Institucional.Questionario = (function () {
         var qteAlternativas = $content.find('.item').length;
         if (qteAlternativas > -1) {
             var indice = 1;
-            
             $content.find('.item').map(function () {
                 //Obter somente o texto do elemento 'DIV' Pai
                 var alternativa = $(this).clone().children().remove().end().text().trim();
@@ -534,10 +524,9 @@ siac.Institucional.Questionario = (function () {
         var $button = $('.editar.modal .approve.button');
         $button.addClass('loading');
         var form = $('form.edicao').serialize();
-        //$.extend(form, { modulo: modulo });
         $.ajax({
             type: 'POST',
-            url: '/institucional/EditarQuestao/' + _codAvaliacao+'?modulo='+modulo+'&categoria='+categoria+'&indicador='+indicador+'&ordem='+ordem,
+            url: '/institucional/editarquestao/' + _codAvaliacao+'?modulo='+modulo+'&categoria='+categoria+'&indicador='+indicador+'&ordem='+ordem,
             data: form,
             dataType: 'json',
             success: function (form) {
@@ -622,7 +611,7 @@ siac.Institucional.Configurar = (function () {
                 $('.ui.global.loader').parent().dimmer('show');
                 $.ajax({
                     type: 'POST',
-                    url: '/institucional/Configurar/' + _codAvaliacao,
+                    url: '/institucional/configurar/' + _codAvaliacao,
                     data: {
                         questoes: obterQuestoesOrdem()
                     },
@@ -714,20 +703,11 @@ siac.Institucional.Publico = (function () {
                 prosseguir();
             }
         });
-        //$('.salvar.button').click(function () {
-        //    if (!_results || _results.length <= 0) {
-        //        siac.aviso('Você ainda não selecionou os avaliados ou grupos.', 'red', 'warning sign');
-        //    }
-        //    else {
-        //        confirmar();
-        //    }
-        //});
     }
 
     function prosseguir() {
         $('.basic.confirmar.modal').modal({
             onApprove: function () {
-                //window.location.href = '/institucional/agendar/' + _codAvaliacao;
                 salvar();
             }
         }).modal('show');
@@ -744,7 +724,7 @@ siac.Institucional.Publico = (function () {
 
         _controleAjax = $.ajax({
             type: 'POST',
-            url: '/institucional/FiltrarPublico/' + filtro,
+            url: '/institucional/filtrarpublico/' + filtro,
             success: function (data) {
                 _content = data;
                 $buscar.search({
@@ -843,7 +823,7 @@ siac.Institucional.Publico = (function () {
 
         $.ajax({
             type: 'post',
-            url: '/institucional/SalvarPublico/'+_codAvaliacao,
+            url: '/institucional/salvarpublico/'+_codAvaliacao,
             data: {
                 selecao: _results
             },
@@ -969,19 +949,16 @@ siac.Institucional.Realizar = (function () {
         var alternativa = $(input).val();
         $.ajax({
             type: 'POST',
-            url: '/institucional/EnviarRespostaObjetiva/' + _codAvaliacao,
+            url: '/institucional/enviarrespostaobjetiva/' + _codAvaliacao,
             data: {
                 ordem: questaoOrdem,
                 alternativa: alternativa
             },
-            error: function (data) {
-                console.log(data);
+            beforeSend: function () {
+                siac.Lembrete.Notificacoes.exibir('Salvando respostas...')
             },
-            success: function(){
-                //$(input).parents('[data-questao]').addClass('green');
-            },
-            complete: function () {
-                console.log(questaoOrdem, alternativa);
+            success: function () {
+                siac.Lembrete.Notificacoes.exibir('Resposta salvas.', 'positivo')
             }
         })
     }
@@ -991,19 +968,16 @@ siac.Institucional.Realizar = (function () {
         var resposta = $(textarea).val();
         $.ajax({
             type: 'POST',
-            url: '/institucional/EnviarRespostaDiscursiva/' + _codAvaliacao,
+            url: '/institucional/enviarrespostadiscursiva/' + _codAvaliacao,
             data: {
                 ordem: questaoOrdem,
                 resposta: resposta
             },
-            error: function (data) {
-                console.log(data);
+            beforeSend: function() {
+                siac.Lembrete.Notificacoes.exibir('Salvando respostas...')
             },
             success: function () {
-                //$(input).parents('[data-questao]').addClass('green');
-            },
-            complete: function () {
-                console.log(questaoOrdem, resposta);
+                siac.Lembrete.Notificacoes.exibir('Resposta salvas.', 'positivo')
             }
         })
     }
@@ -1015,20 +989,17 @@ siac.Institucional.Realizar = (function () {
         var alternativa = _questao.find(':checked').val();
         $.ajax({
             type: 'POST',
-            url: '/institucional/EnviarAlternativaDiscursiva/' + _codAvaliacao,
+            url: '/institucional/enviaralternativadiscursiva/' + _codAvaliacao,
             data: {
                 ordem: questaoOrdem,
                 alternativa: alternativa,
                 resposta: resposta
             },
-            error: function (data) {
-                console.log(data);
+            beforeSend: function () {
+                siac.Lembrete.Notificacoes.exibir('Salvando respostas...')
             },
             success: function () {
-                //$(input).parents('[data-questao]').addClass('green');
-            },
-            complete: function () {
-                console.log(questaoOrdem, alternativa);
+                siac.Lembrete.Notificacoes.exibir('Resposta salvas.', 'positivo')
             }
         })
     }
@@ -1044,11 +1015,9 @@ siac.Institucional.Historico = (function () {
     var pagina = 1;
     var ordenar = "data_desc";
     var categorias = [];
-    var disciplina = "";
     var pesquisa = "";
 
     function iniciar() {
-
         $(window).scroll(function () {
             if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
                 if ($('.cards .card').length == (_controleQte * pagina)) {
@@ -1057,7 +1026,6 @@ siac.Institucional.Historico = (function () {
                 }
             }
         });
-        //$('.ui.dropdown').dropdown();
 
         $('.pesquisa input').keyup(function () {
             var _this = this;
@@ -1096,13 +1064,6 @@ siac.Institucional.Historico = (function () {
             listar();
         });
 
-        //$('.disciplina.item').click(function () {
-        //    var $_this = $(this);
-        //    pagina = 1;
-        //    disciplina = $_this.attr('data-disciplina');
-        //    listar();
-        //});
-
         $('.ordenar.item').click(function () {
             var $_this = $(this);
             pagina = 1;
@@ -1123,13 +1084,12 @@ siac.Institucional.Historico = (function () {
         $cards.parent().addClass('loading');
         _controleAjax = $.ajax({
             method: 'POST',
-            url: '/institucional/Listar',
+            url: '/institucional/listar',
             data: {
                 pagina: pagina,
                 pesquisa: pesquisa,
                 ordenar: ordenar,
-                categorias: categorias,
-                
+                categorias: categorias
             },
             success: function (partial) {
                 if (partial != _controlePartial) {
@@ -1162,7 +1122,7 @@ siac.Institucional.Historico = (function () {
         $_card.dimmer('show');
         $.ajax({
             type: 'POST',
-            url: '/institucional/Informacao/' + codigo,
+            url: '/institucional/informacao/' + codigo,
             success: function (view) {
                 $('.informacoes.modal').remove();
                 $('body').append(view);

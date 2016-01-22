@@ -1,7 +1,7 @@
-﻿@model SIAC.ViewModels.InstitucionalRealizarViewModel
+﻿@model InstitucionalRealizarViewModel
+
 @{
-    ViewBag.Title = "Realizar Av. Institucional"/* + Model.Avi.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Realizar Av. Institucional";
 
     int indMod = 1;
     int indCat = 1;
@@ -15,48 +15,48 @@
 </h2>
 <div class="ui basic segment">
     <form class="ui form">
-        @foreach (MapAviModulo modulo in Model.Avi.MapQuestoes)
+    @foreach (MapAviModulo modulo in Model.Avi.MapQuestoes)
     {
-            <h3 class="ui header">@(indMod + ". " + modulo.Modulo.Descricao)</h3>
+        <h3 class="ui header">@(indMod + ". " + modulo.Modulo.Descricao)</h3>
         foreach (MapAviCategoria categoria in modulo.Categorias)
         {
-                <h4 class="ui header">@(indMod + "." + indCat + ". " + categoria.Categoria.Descricao)</h4>
+            <h4 class="ui header">@(indMod + "." + indCat + ". " + categoria.Categoria.Descricao)</h4>
             foreach (MapAviIndicador indicador in categoria.Indicadores)
             {
-                    <h5 class="ui header">@(indMod + "." + indCat + "." + indInd + ". " + indicador.Indicador.Descricao)</h5>
+                <h5 class="ui header">@(indMod + "." + indCat + "." + indInd + ". " + indicador.Indicador.Descricao)</h5>
                 foreach (AviQuestao questao in indicador.Questoes)
                 {
                     AviQuestaoPessoaResposta resposta = Model.Respostas.FirstOrDefault(pr => pr.CodOrdem == questao.CodOrdem);
-                        <div class="ui segment" data-questao="@questao.CodOrdem">
-                            <h4 class="ui dividing header" data-content="@questao.Observacao">
-                                @(indMod + "." + indCat + "." + indInd + "." + indQue + ". " + questao.Enunciado.Replace(Environment.NewLine, "</br>"))
-                            </h4>
-                            @if (questao.FlagDiscursiva.HasValue && questao.FlagDiscursiva.Value)
-                        {
-                                <textarea rows="3" name="txtResposta@(questao.CodOrdem)" class="input" placeholder="Resposta">@(resposta?.RespDiscursiva.RemoveSpaces())</textarea>
-                        }
-                        else
-                        {
-                            int marcada = resposta != null ? resposta.RespAlternativa.Value : -1;
-                                <div class="ui very relaxed list">
-                                    @foreach (AviQuestaoAlternativa alternativa in questao.AviQuestaoAlternativa)
-                                {
-                                        <div class="field">
-                                            <div class="ui radio checkbox">
-                                                <input type="radio" data-alternativa="txtAlternativa@(alternativa.CodAlternativa)" name="rdoResposta@(questao.CodOrdem)" value="@alternativa.CodAlternativa" @(marcada == alternativa.CodAlternativa ? "checked" : "") />
-                                                <label><b>@((alternativa.CodAlternativa - 1).GetIndiceAlternativa())</b>) @alternativa.Enunciado</label>
-                                            </div>
-                                        </div>
-                                    if (alternativa.FlagAlternativaDiscursiva)
-                                    {
-                                            <div class="field">
-                                                <input type="text" @(marcada == alternativa.CodAlternativa ?"" : "readonly") id="txtAlternativa@(alternativa.CodAlternativa)" placeholder="@alternativa.Enunciado" value="@(marcada == alternativa.CodAlternativa ? resposta.RespDiscursiva : "")" />
-                                            </div>
-                                    }
-                                }
+                    <div class="ui segment" data-questao="@questao.CodOrdem">
+                    <h4 class="ui dividing header" data-content="@questao.Observacao">
+                        @(indMod + "." + indCat + "." + indInd + "." + indQue + ". " + questao.Enunciado.Replace(Environment.NewLine, "</br>"))
+                    </h4>
+                    @if (questao.FlagDiscursiva.HasValue && questao.FlagDiscursiva.Value)
+                    {
+                        <textarea rows="3" name="txtResposta@(questao.CodOrdem)" class="input" placeholder="Resposta">@(resposta?.RespDiscursiva.RemoveSpaces())</textarea>
+                    }
+                    else
+                    {
+                        int marcada = resposta != null ? resposta.RespAlternativa.Value : -1;
+                        <div class="ui very relaxed list">
+                            @foreach (AviQuestaoAlternativa alternativa in questao.AviQuestaoAlternativa)
+                            {
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" data-alternativa="txtAlternativa@(alternativa.CodAlternativa)" name="rdoResposta@(questao.CodOrdem)" value="@alternativa.CodAlternativa" @(marcada == alternativa.CodAlternativa ? "checked" : "") />
+                                        <label><b>@((alternativa.CodAlternativa - 1).GetIndiceAlternativa())</b>) @alternativa.Enunciado</label>
+                                    </div>
                                 </div>
-                        }
+                                if (alternativa.FlagAlternativaDiscursiva)
+                                {
+                                    <div class="field">
+                                        <input type="text" @(marcada == alternativa.CodAlternativa ?"" : "readonly") id="txtAlternativa@(alternativa.CodAlternativa)" placeholder="@alternativa.Enunciado" value="@(marcada == alternativa.CodAlternativa ? resposta.RespDiscursiva : "")" />
+                                    </div>
+                                }
+                            }
                         </div>
+                    }
+                    </div>
                     indQue++;
                 }
                 indQue = 1;
@@ -70,9 +70,8 @@
     }
     </form>
 </div>
-    <a href="@Url.Action("Andamento")" class="ui sair button">Sair</a>
-    <a href="@Url.Action("Andamento")" class="ui right floated salvar button">Salvar</a>
-
+<a href="@Url.Action("Andamento")" class="ui sair button">Sair</a>
+<a href="@Url.Action("Andamento")" class="ui right floated salvar button">Salvar</a>
 
 @Html.Partial("_InstitucionalInformacoes", Model.Avi)
 

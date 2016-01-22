@@ -1,7 +1,7 @@
 ﻿@model AvalAvi
+
 @{
-    ViewBag.Title = "Resultado de Av. Institucional"/* + Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Resultado de Av. Institucional";
 
     int indMod = 1;
     int indCat = 1;
@@ -13,153 +13,99 @@
     @ViewBag.Title
     <div class="ui right floated informacoes button">Informações</div>
 </h2>
+
 <div class="ui basic segment">
-<div class="ui fluid styled accordion form">
-    @foreach (MapAviModulo modulo in Model.MapQuestoes)
-    {
-        <div class="title"><i class="dropdown icon"></i>@modulo.Modulo.Descricao</div>
-        <div class="content" data-modulo="@modulo.Modulo.CodAviModulo">
-            <div class="accordion">
-                @foreach (MapAviCategoria categoria in modulo.Categorias)
-                {
-                    <div class="title"><i class="dropdown icon"></i>@categoria.Categoria.Descricao</div>
-                    <div class="content" data-categoria="@categoria.Categoria.CodAviCategoria">
-                        <div class="accordion">
-                            @foreach (MapAviIndicador indicador in categoria.Indicadores)
-                            {
-                                <div class="title"><i class="dropdown icon"></i>@indicador.Indicador.Descricao</div>
-                                <div class="content" data-indicador="@indicador.Indicador.CodAviIndicador">
-                                    <div class="accordion">
-                                        @foreach (AviQuestao questao in indicador.Questoes)
-                                        {
-                                            <div class="title">
-                                                <i class="dropdown icon"></i>
-                                                @questao.Enunciado.ToShortString(50)
-                                            </div>
-                                            <div class="content" data-questao="@questao.CodOrdem">
-                                                <div class="ui segment">
-                                                    @* Discursiva *@
-                                                    @if (questao.FlagDiscursiva.HasValue && questao.FlagDiscursiva.Value)
-                                                    {
-                                                        <h3 class="ui dividing header" data-content="@questao.Observacao">@questao.Enunciado.Replace(Environment.NewLine, "</br>")</h3>
-                                                        <div style="max-height: 15em; overflow-y:auto">
-                                                            <h4>Respostas</h4>
-                                                            @foreach (AviQuestaoPessoaResposta resposta in questao.Respostas)
-                                                            {
-                                                                <p><i>"@resposta.RespDiscursiva"</i></p>
-                                                            }
-                                                        </div>
-                                                    }
-                                                    @* Objetiva *@
-                                                    else
-                                                    {
-                                                        <div class="ui stackable grid">
-                                                            <div class="twelve wide column">
-                                                                <h3 class="ui dividing header" data-content="@questao.Observacao">@questao.Enunciado.Replace(Environment.NewLine, "</br>")</h3>
-                                                                <div class="ui very relaxed list">
-                                                                    @foreach (AviQuestaoAlternativa alternativa in questao.AviQuestaoAlternativa)
-                                                                    {
-                                                                        <div class="item">
-                                                                            <b>@((alternativa.CodAlternativa -1).GetIndiceAlternativa()))</b> @alternativa.Enunciado
-                                                                            @if (alternativa.FlagAlternativaDiscursiva)
-                                                                            {
-                                                                                <div class="ui left pointing label">Alternativa discursiva</div>
-                                                                                <div class="respostas accordion">
-                                                                                    <div class="title"><i class="dropdown icon"></i>Respostas</div>
-                                                                                    <div class="content">
-                                                                                        <div style="max-height: 15em; overflow-y:auto">
-
-                                                                                            @foreach (AviQuestaoPessoaResposta resposta in questao.Respostas)
-                                                                                            {
-                                                                                                if (!String.IsNullOrEmpty(resposta.RespDiscursiva))
-                                                                                                {
-                                                                                                    <p><i>"@resposta.RespDiscursiva"</i></p>
-                                                                                                }
-                                                                                            }
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            }
-                                                                        </div>
-                                                                    }
-                                                                </div>
-                                                            </div>
-                                                            <div class="four wide column" style="text-align:center">
-                                                                <canvas style="display:inline" width="200" height="200"></canvas>
-                                                            </div>
-                                                        </div>
-                                                        <code class="dados" hidden>@Html.Raw(questao.ToJsonChart())</code>
-                                                    }
-                                                </div>
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-    }
-</div>
-
-@*<form class="ui form">
+    <div class="ui fluid styled accordion form">
         @foreach (MapAviModulo modulo in Model.MapQuestoes)
         {
-            <h2 class="ui header">@(indMod + ". " + modulo.Modulo.Descricao)</h2>
-            foreach (MapAviCategoria categoria in modulo.Categorias)
-            {
-                <h3 class="ui header">@(indMod + "." + indCat + ". " + categoria.Categoria.Descricao)</h3>
-                foreach (MapAviIndicador indicador in categoria.Indicadores)
-                {
-                    <h4 class="ui header">@(indMod + "." + indCat + "." + indInd + ". " + indicador.Indicador.Descricao)</h4>
-                    foreach (AviQuestao questao in indicador.Questoes)
+            <div class="title"><i class="dropdown icon"></i>@modulo.Modulo.Descricao</div>
+            <div class="content" data-modulo="@modulo.Modulo.CodAviModulo">
+                <div class="accordion">
+                    @foreach (MapAviCategoria categoria in modulo.Categorias)
                     {
-                        //AviQuestaoPessoaResposta resposta = Model.Respostas.FirstOrDefault(pr => pr.CodOrdem == questao.CodOrdem);
-                        <div class="ui segment" data-questao="@questao.CodOrdem">
-                            <h4 class="ui dividing header" data-content="@questao.Observacao">
-                                @(indMod + "." + indCat + "." + indInd + "." + indQue + ". " + questao.Enunciado.Replace(Environment.NewLine, "</br>"))
-                            </h4>
-                            @if (questao.FlagDiscursiva.HasValue && questao.FlagDiscursiva.Value)
-                            {
-                                <textarea rows="3" name="txtResposta@(questao.CodOrdem)" class="input" placeholder="Resposta"></textarea>
-                            }
-                            else
-                            {
-                                //int marcada = resposta != null ? resposta.RespAlternativa.Value : -1;
-                                <div class="ui very relaxed list">
-                                    @foreach (AviQuestaoAlternativa alternativa in questao.AviQuestaoAlternativa)
-                                    {
-                                        <div class="field">
-                                            <div class="ui radio checkbox">
-                                                <input type="radio" data-alternativa="txtAlternativa@(alternativa.CodAlternativa)" name="rdoResposta@(questao.CodOrdem)" value="@alternativa.CodAlternativa" />
-                                                <label><b>@((alternativa.CodAlternativa - 1).GetIndiceAlternativa())</b>) @alternativa.Enunciado</label>
-                                            </div>
+                        <div class="title"><i class="dropdown icon"></i>@categoria.Categoria.Descricao</div>
+                        <div class="content" data-categoria="@categoria.Categoria.CodAviCategoria">
+                            <div class="accordion">
+                                @foreach (MapAviIndicador indicador in categoria.Indicadores)
+                                {
+                                    <div class="title"><i class="dropdown icon"></i>@indicador.Indicador.Descricao</div>
+                                    <div class="content" data-indicador="@indicador.Indicador.CodAviIndicador">
+                                        <div class="accordion">
+                                            @foreach (AviQuestao questao in indicador.Questoes)
+                                            {
+                                                <div class="title">
+                                                    <i class="dropdown icon"></i>
+                                                    @questao.Enunciado.ToShortString(50)
+                                                </div>
+                                                <div class="content" data-questao="@questao.CodOrdem">
+                                                    <div class="ui segment">
+                                                        @* Discursiva *@
+                                                        @if (questao.FlagDiscursiva.HasValue && questao.FlagDiscursiva.Value)
+                                                        {
+                                                            <h3 class="ui dividing header" data-content="@questao.Observacao">@questao.Enunciado.Replace(Environment.NewLine, "</br>")</h3>
+                                                            <div style="max-height: 15em; overflow-y:auto">
+                                                                <h4>Respostas</h4>
+                                                                @foreach (AviQuestaoPessoaResposta resposta in questao.Respostas)
+                                                                {
+                                                                    <p><i>"@resposta.RespDiscursiva"</i></p>
+                                                                }
+                                                            </div>
+                                                        }
+                                                        @* Objetiva *@
+                                                        else
+                                                        {
+                                                            <div class="ui stackable grid">
+                                                                <div class="twelve wide column">
+                                                                    <h3 class="ui dividing header" data-content="@questao.Observacao">@questao.Enunciado.Replace(Environment.NewLine, "</br>")</h3>
+                                                                    <div class="ui very relaxed list">
+                                                                        @foreach (AviQuestaoAlternativa alternativa in questao.AviQuestaoAlternativa)
+                                                                        {
+                                                                            <div class="item">
+                                                                                <b>@((alternativa.CodAlternativa -1).GetIndiceAlternativa()))</b> @alternativa.Enunciado
+                                                                                @if (alternativa.FlagAlternativaDiscursiva)
+                                                                                {
+                                                                                    <div class="ui left pointing label">Alternativa discursiva</div>
+                                                                                    <div class="respostas accordion">
+                                                                                        <div class="title"><i class="dropdown icon"></i>Respostas</div>
+                                                                                        <div class="content">
+                                                                                            <div style="max-height: 15em; overflow-y:auto">
+
+                                                                                                @foreach (AviQuestaoPessoaResposta resposta in questao.Respostas)
+                                                                                                {
+                                                                                                    if (!String.IsNullOrEmpty(resposta.RespDiscursiva))
+                                                                                                    {
+                                                                                                        <p><i>"@resposta.RespDiscursiva"</i></p>
+                                                                                                    }
+                                                                                                }
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                }
+                                                                            </div>
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                                <div class="four wide column" style="text-align:center">
+                                                                    <canvas style="display:inline" width="200" height="200"></canvas>
+                                                                </div>
+                                                            </div>
+                                                            <code class="dados" hidden>@Html.Raw(questao.ToJsonChart())</code>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
                                         </div>
-                                        if (alternativa.FlagAlternativaDiscursiva)
-                                        {
-                                            <div class="field">
-                                                <input type="text" id="txtAlternativa@(alternativa.CodAlternativa)" placeholder="@alternativa.Enunciado" />
-                                            </div>
-                                        }
-                                    }
-                                </div>
-                            }
+                                    </div>
+                                }
+                            </div>
                         </div>
-                        indQue++;
                     }
-                    indQue = 1;
-                    indInd++;
-                }
-                indInd = 1;
-                indCat++;
-            }
-            indCat = 1;
-            indMod++;
+                </div>
+            </div>
         }
-    </form>*@
+    </div>
 </div>
+
 <a class="ui imprimir button" href="@Url.Action("Institucional", "Impressao",new { codigo = Model.Avaliacao.CodAvaliacao })">Imprimir</a>
 @Html.Partial("_InstitucionalInformacoes", Model)
 
