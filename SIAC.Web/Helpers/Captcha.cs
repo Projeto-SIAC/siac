@@ -16,7 +16,6 @@ namespace SIAC.Helpers
             int[] valuesArray = new int[8];
             int x;
             Random autoRand = new Random();
-
             for (x = 0; x < 8; x++)
             {
                 valuesArray[x] = Convert.ToInt32(autoRand.Next(0, 9));

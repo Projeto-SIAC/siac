@@ -8,6 +8,8 @@ namespace SIAC.Models
     {
         public Disciplina Disciplina => this.QuestaoTema.FirstOrDefault()?.Tema.Disciplina;
 
+        public List<AvalQuesPessoaResposta> Respostas => contexto.AvalQuesPessoaResposta.Where(r => r.CodQuestao == this.CodQuestao).ToList();
+
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         public static void Inserir(Questao questao)
