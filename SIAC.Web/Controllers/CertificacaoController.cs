@@ -1,15 +1,14 @@
-﻿using System;
+﻿using SIAC.Helpers;
+using SIAC.Models;
+using SIAC.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using SIAC.Models;
-using SIAC.Helpers;
-using SIAC.ViewModels;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2, 3 })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE,Categoria.PROFESSOR,Categoria.COLABORADOR })]
     public class CertificacaoController : Controller
     {
         public List<AvalCertificacao> Certificacoes
@@ -234,7 +233,7 @@ namespace SIAC.Controllers
             return Json(false);
         }
 
-        // POST: principal/avaliacao/certificacao/carregarquestoes/CERT201520001/
+        // POST: principal/avaliacao/certificacao/carregarquestoes/CERT201520001
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR/*, 3*/ })]
         public ActionResult CarregarQuestoes(string codigo, int[] temas, int dificuldade, int tipo)
@@ -417,17 +416,10 @@ namespace SIAC.Controllers
             }
             return Json("/historico/avaliacao/certificacao/detalhe/"+codigo);
         }
-
-        //              ^
-        //              |
-        /*  PAROU AQUI NA REFATORAÇÃO */
-        /*  VOLTA AQUI NA REFATORAÇÃO */
-        //              |
-        //              V
-
-        // POST: Certificacao/Avaliados/CERT201520001
+        
+        // POST: principal/avaliacao/certificacao/filtrar/CERT201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Filtrar(int codigo)
         {
             object lstResultado = null;
@@ -481,14 +473,14 @@ namespace SIAC.Controllers
             return Json(lstResultado);
         }
 
-        // GET: Certificacao/Agendada/CERT201520001
-        [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2 })]
+        // GET: historico/avaliacao/certificacao/agendada/CERT201520001
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE, Categoria.PROFESSOR })]
         public ActionResult Agendada(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
-                var usuario = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula);
-                var cert = AvalCertificacao.ListarAgendadaPorUsuario(usuario).FirstOrDefault(a => a.Avaliacao.CodAvaliacao.ToLower() == codigo.ToLower());
+                Usuario usuario = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula);
+                AvalCertificacao cert = AvalCertificacao.ListarAgendadaPorUsuario(usuario).FirstOrDefault(a => a.Avaliacao.CodAvaliacao.ToLower() == codigo.ToLower());
                 if (cert != null && cert.PessoaFisica.Count > 0)
                 {
                     return View(cert);
@@ -497,55 +489,55 @@ namespace SIAC.Controllers
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
-        // POST: Certificacao/AlternarLiberar
+        // POST: principal/avaliacao/certificacao/alternarliberar
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult AlternarLiberar(string codAvaliacao)
         {
-            if (!String.IsNullOrEmpty(codAvaliacao))
+            if (!String.IsNullOrWhiteSpace(codAvaliacao))
             {
                 return Json(Avaliacao.AlternarFlagLiberada(codAvaliacao));
             }
             return Json(false);
         }
 
-        // POST: Certificacao/ContagemRegressiva
+        // POST: principal/avaliacao/certificacao/contagemregressiva
         [HttpPost]
         public ActionResult ContagemRegressiva(string codAvaliacao)
         {
             AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codAvaliacao);
-            string strTempo = cert.Avaliacao.DtAplicacao.Value.ToLeftTimeString();
-            int qteMilissegundo = 0;
+            string tempo = cert.Avaliacao.DtAplicacao.Value.ToLeftTimeString();
+            int quantidadeMilissegundo = 0;
             bool flagLiberada = cert.Avaliacao.FlagLiberada && cert.Avaliacao.DtTermino > DateTime.Now;
-            if (strTempo != "Agora")
+            if (tempo != "Agora")
             {
-                char tipo = strTempo[(strTempo.IndexOf(' ')) + 1];
+                char tipo = tempo[(tempo.IndexOf(' ')) + 1];
                 switch (tipo)
                 {
                     case 'd':
-                        qteMilissegundo = 0;
+                        quantidadeMilissegundo = 0;
                         break;
                     case 'h':
-                        qteMilissegundo = 1 * 60 * 60 * 1000;
+                        quantidadeMilissegundo = 1 * 60 * 60 * 1000;
                         break;
                     case 'm':
-                        qteMilissegundo = 1 * 60 * 1000;
+                        quantidadeMilissegundo = 1 * 60 * 1000;
                         break;
                     case 's':
-                        qteMilissegundo = 1 * 1000;
+                        quantidadeMilissegundo = 1 * 1000;
                         break;
                     default:
                         break;
                 }
             }
-            return Json(new { Tempo = strTempo, Intervalo = qteMilissegundo, FlagLiberada = flagLiberada });
+            return Json(new { Tempo = tempo, Intervalo = quantidadeMilissegundo, FlagLiberada = flagLiberada });
         }
 
-        // GET: Certificacao/Realizar/
-        [Filters.AutenticacaoFilter(Categorias = new[] { 1 })]
+        // GET: principal/avaliacao/certificacao/realizar/CERT201520001
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE })]
         public ActionResult Realizar(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 if (cert.Avaliacao.FlagPendente 
@@ -553,18 +545,18 @@ namespace SIAC.Controllers
                     && cert.Avaliacao.FlagAgora  
                     && cert.PessoaFisica.FirstOrDefault(p=>p.CodPessoa == Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula)) != null)
                 {
-                    Helpers.Sessao.Inserir("RealizandoAvaliacao", true);
+                    Sessao.Inserir("RealizandoAvaliacao", true);
                     return View(cert);
                 }
             }
             return RedirectToAction("Agendada", new { codigo = codigo });
         }
 
-        //GET: Certificacao/Acompanhar/CERT201520007
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        // GET: principal/avaliacao/certificacao/acompanhar/CERT201520001
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Acompanhar(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 if (cert != null && cert.Professor.MatrProfessor == Sessao.UsuarioMatricula && cert.Avaliacao.FlagAgendada && cert.Avaliacao.FlagAgora)
@@ -575,12 +567,12 @@ namespace SIAC.Controllers
             return RedirectToAction("Agendada", new {codigo = codigo });
         }
 
-        //POST: Certificacao/Printar
+        // POST: principal/avaliacao/certificacao/printar
         [HttpPost]
         public ActionResult Printar(string codAvaliacao, string imageData)
         {
-            var cert = AvalCertificacao.ListarPorCodigoAvaliacao(codAvaliacao);
-            var flagProfessor = cert.Professor.MatrProfessor == Sessao.UsuarioMatricula;
+            AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codAvaliacao);
+            bool flagProfessor = cert.Professor.MatrProfessor == Sessao.UsuarioMatricula;
             if (!flagProfessor)
             {
                 Sistema.TempDataUrlImage[codAvaliacao] = imageData;
@@ -595,12 +587,12 @@ namespace SIAC.Controllers
             return Json(false);
         }
 
-        // POST: Certificacao/Desistir/CERT201520016
+        // POST: principal/avaliacao/certificacao/desistir/CERT201520001
         [HttpPost]
         public void Desistir(string codigo)
         {
             int codPessoaFisica = Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula);
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalCertificacao aval = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 if (aval.PessoaFisica.FirstOrDefault(a => a.CodPessoa == codPessoaFisica) != null 
@@ -612,9 +604,9 @@ namespace SIAC.Controllers
                     avalPessoaResultado.QteAcertoObj = 0;
                     avalPessoaResultado.Nota = 0;
 
-                    foreach (var avaliacaoTema in aval.Avaliacao.AvaliacaoTema)
+                    foreach (AvaliacaoTema avaliacaoTema in aval.Avaliacao.AvaliacaoTema)
                     {
-                        foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                        foreach (AvalTemaQuestao avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
                         {
                             AvalQuesPessoaResposta avalQuesPessoaResposta = new AvalQuesPessoaResposta();
                             avalQuesPessoaResposta.CodPessoaFisica = codPessoaFisica;
@@ -632,12 +624,12 @@ namespace SIAC.Controllers
             }
         }
 
-        // POST: Certificacao/Resultado/CERT201520001
+        // POST: principal/avaliacao/certificacao/resultado/CERT201520001
         [HttpPost]
         public ActionResult Resultado(string codigo, FormCollection form)
         {
             int codPessoaFisica = Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula);
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalCertificacao aval = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 if (aval.PessoaFisica.FirstOrDefault(a => a.CodPessoa == codPessoaFisica) != null
@@ -648,20 +640,20 @@ namespace SIAC.Controllers
                     avalPessoaResultado.HoraTermino = DateTime.Now;
                     avalPessoaResultado.QteAcertoObj = 0;
 
-                    double qteObjetiva = 0;
+                    double quantidadeObjetiva = 0;
 
-                    foreach (var avaliacaoTema in aval.Avaliacao.AvaliacaoTema)
+                    foreach (AvaliacaoTema avaliacaoTema in aval.Avaliacao.AvaliacaoTema)
                     {
-                        foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                        foreach (AvalTemaQuestao avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
                         {
                             AvalQuesPessoaResposta avalQuesPessoaResposta = new AvalQuesPessoaResposta();
                             avalQuesPessoaResposta.CodPessoaFisica = codPessoaFisica;
-                            if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 1)
+                            if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
                             {
-                                qteObjetiva++;
+                                quantidadeObjetiva++;
                                 int respAlternativa = -1;
                                 string strRespAlternativa = form["rdoResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao];
-                                if (!String.IsNullOrEmpty(strRespAlternativa))
+                                if (!String.IsNullOrWhiteSpace(strRespAlternativa))
                                 {
                                     int.TryParse(strRespAlternativa, out respAlternativa);
                                 }
@@ -680,22 +672,22 @@ namespace SIAC.Controllers
                             {
                                 avalQuesPessoaResposta.RespDiscursiva = form["txtResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim();
                             }
-                            avalQuesPessoaResposta.RespComentario = !String.IsNullOrEmpty(form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]) ? form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim() : null;
+                            avalQuesPessoaResposta.RespComentario = !String.IsNullOrWhiteSpace(form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]) ? form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim() : null;
                             avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
                         }
 
                     }
 
-                    var lstAvalQuesPessoaResposta = aval.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == codPessoaFisica);
+                    IEnumerable<AvalQuesPessoaResposta> lstAvalQuesPessoaResposta = aval.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == codPessoaFisica);
 
                     avalPessoaResultado.Nota = lstAvalQuesPessoaResposta.Average(r => r.RespNota);
                     aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
                     Repositorio.GetInstance().SaveChanges();
 
-                    var model = new ViewModels.AvaliacaoResultadoViewModel();
+                    AvaliacaoResultadoViewModel model = new AvaliacaoResultadoViewModel();
                     model.Avaliacao = aval.Avaliacao;
-                    model.Porcentagem = (avalPessoaResultado.QteAcertoObj.Value / qteObjetiva) * 100;
+                    model.Porcentagem = (avalPessoaResultado.QteAcertoObj.Value / quantidadeObjetiva) * 100;
 
                     Sessao.Inserir("RealizandoAvaliacao", false);
 
@@ -706,12 +698,12 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Certificacao/Corrigir/CERT201520016
+        // GET: historico/avaliacao/certificacao/corrigir/CERT201520001
         [HttpGet]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Corrigir(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
 
@@ -723,36 +715,36 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        //POST: Academica/Avaliacao/CarregarAlunos/{codigo}
+        // POST: principal/avaliacao/certificacao/Avaliacao/CarregarAlunos/CERT201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult CarregarAlunos(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
-                var result = from a in cert.PessoasRealizaram
+                var retorno = from a in cert.PessoasRealizaram
                              select new
                              {
                                  Matricula = a.CodPessoa,
                                  Nome = a.Nome,
                                  FlagCorrecaoPendente = cert.Avaliacao.AvalPessoaResultado.Single(r => r.CodPessoaFisica == a.CodPessoa).FlagParcial
                              };
-                return Json(result);
+                return Json(retorno);
             }
             return Json(null);
         }
 
-        //POST: Academica/Avaliacao/CarregarQuestoesDiscursivas/{codigo}
+        // POST: principal/avaliacao/certificacao/carregarquestoesdiscursivas/CERT201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult CarregarQuestoesDiscursivas(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
-                var result = from questao in cert.Avaliacao.Questao
-                             where questao.CodTipoQuestao == 2
+                var retorno = from questao in cert.Avaliacao.Questao
+                             where questao.CodTipoQuestao == TipoQuestao.DISCURSIVA
                              orderby questao.CodQuestao
                              select new
                              {
@@ -761,26 +753,26 @@ namespace SIAC.Controllers
                                  questaoChaveResposta = questao.ChaveDeResposta,
                                  flagCorrecaoPendente = cert.Avaliacao.PessoaResposta.Where(r => r.CodQuestao == questao.CodQuestao && !r.RespNota.HasValue).Count() > 0
                              };
-                return Json(result);
+                return Json(retorno);
             }
             return Json(null);
         }
 
-        //POST: Academica/Avaliacao/CarregarRespostasDiscursivas/{codigo}/{matrAluno}
+        // POST: principal/avaliacao/certificacao/carregarrespostasdiscursivas/CERT201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR})]
         public ActionResult CarregarRespostasDiscursivas(string codigo, string matrAluno)
         {
-            if (!String.IsNullOrEmpty(codigo) && !String.IsNullOrEmpty(matrAluno))
+            if (!StringExt.IsNullOrWhiteSpace(codigo,matrAluno))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 PessoaFisica pessoa = PessoaFisica.ListarPorCodigo(int.Parse(matrAluno));
                 int codPessoaFisica = pessoa.CodPessoa;
 
-                var result = from alunoResposta in cert.Avaliacao.PessoaResposta
+                var retorno = from alunoResposta in cert.Avaliacao.PessoaResposta
                              orderby alunoResposta.CodQuestao
                              where alunoResposta.CodPessoaFisica == codPessoaFisica
-                                && alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 2
+                                && alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.DISCURSIVA
                              select new
                              {
                                  codQuestao = alunoResposta.CodQuestao,
@@ -791,25 +783,25 @@ namespace SIAC.Controllers
                                  correcaoComentario = alunoResposta.ProfObservacao != null ? alunoResposta.ProfObservacao : "",
                                  flagCorrigida = alunoResposta.RespNota != null ? true : false
                              };
-                return Json(result);
+                return Json(retorno);
             }
             return Json(null);
         }
 
-        //POST: Academica/Avaliacao/CarregarRespostasPorQuestao/{codigo}/{codQuestao}
+        // POST: principal/avaliacao/certificacao/carregarrespostasporquestao/CERT201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult CarregarRespostasPorQuestao(string codigo, string codQuestao)
         {
-            if (!String.IsNullOrEmpty(codigo) && !String.IsNullOrEmpty(codQuestao))
+            if (!StringExt.IsNullOrWhiteSpace(codigo,codQuestao))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 int codQuestaoTemp = int.Parse(codQuestao);
 
-                var result = from questao in cert.Avaliacao.PessoaResposta
+                var retorno = from questao in cert.Avaliacao.PessoaResposta
                              orderby questao.PessoaFisica.Nome
                              where questao.CodQuestao == codQuestaoTemp
-                                && questao.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 2
+                                && questao.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.DISCURSIVA
                              select new
                              {
                                  alunoMatricula = cert.PessoasRealizaram.FirstOrDefault(a => a.CodPessoa == questao.CodPessoaFisica).CodPessoa,
@@ -822,40 +814,40 @@ namespace SIAC.Controllers
                                  correcaoComentario = questao.ProfObservacao != null ? questao.ProfObservacao : "",
                                  flagCorrigida = questao.RespNota != null ? true : false
                              };
-                return Json(result);
+                return Json(retorno);
             }
             return Json(null);
         }
 
-        //POST: Academica/Avaliacao/CorrigirQuestaoAluno/{codigo}/{matrAluno}/{codQuestao}
+        // POST: principal/avaliacao/certificacao/corrigirquestaoaluno/CERT201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult CorrigirQuestaoAluno(string codigo, string matrAluno, string codQuestao, string notaObtida, string profObservacao)
         {
-            if (!StringExt.IsNullOrEmpty(codigo,matrAluno,codQuestao))
+            if (!StringExt.IsNullOrWhiteSpace(codigo,matrAluno,codQuestao))
             {
                 int codQuesTemp = int.Parse(codQuestao);
                 double nota = Double.Parse(notaObtida.Replace('.', ','));
 
-                bool result = AvalCertificacao.CorrigirQuestaoAluno(codigo, matrAluno, codQuesTemp, nota, profObservacao);
+                bool retorno = AvalCertificacao.CorrigirQuestaoAluno(codigo, matrAluno, codQuesTemp, nota, profObservacao);
 
-                return Json(result);
+                return Json(retorno);
             }
             return Json(false);
         }
 
-        // GET: Avaliacao/Academica/Imprimir/ACAD201520001
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        // GET: principal/avaliacao/certificacao/imprimir/CERT201520001
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Imprimir(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 if (cert != null)
                 {
-                    string strMatr = Sessao.UsuarioMatricula;
-                    Professor prof = Professor.ListarPorMatricula(strMatr);
-                    if (prof.CodProfessor == cert.CodProfessor)
+                    string matricula = Sessao.UsuarioMatricula;
+                    Professor professor = Professor.ListarPorMatricula(matricula);
+                    if (professor.CodProfessor == cert.CodProfessor)
                     {
                         return View(cert);
                     }
@@ -864,22 +856,22 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST: Academica/Arquivar
+        // POST: principal/avaliacao/certificacao/arquivar/CERT201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Arquivar(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
                 return Json(Avaliacao.AlternarFlagArquivo(codigo));
             }
             return Json(false);
         }
 
-        // GET: Avaliacao/Academica/Detalhe/ACAD201520001
+        // GET: historico/avaliacao/certificacao/Detalhe/CERT201520001
         public ActionResult Detalhe(string codigo)
         {
-            if (!String.IsNullOrEmpty(codigo))
+            if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 if (cert != null)
@@ -891,12 +883,12 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-
+        // POST: principal/avaliacao/certificacao/detalheindividual/CERT201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { 2 })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR})]
         public ActionResult DetalheIndividual(string codigo, int pessoa)
         {
-            if (!Helpers.StringExt.IsNullOrEmpty(codigo))
+            if (!StringExt.IsNullOrWhiteSpace(codigo))
             {
                 AvalCertificacao cert = AvalCertificacao.ListarPorCodigoAvaliacao(codigo);
                 if (cert != null)

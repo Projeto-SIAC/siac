@@ -1,26 +1,19 @@
 ﻿@model AvalCertificacao
 @{
-    ViewBag.Title = "Corrigir Certificação"/* + Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    var lstQuestoes = Model.Avaliacao.Questao.OrderBy(q => q.CodQuestao).ToList();
-}
-
-@section Scripts{
-    @Scripts.Render("~/bundles/js/certificacao")
+    ViewBag.Title = "Corrigir Certificação";
+    List<Questao> lstQuestoes = Model.Avaliacao.Questao.OrderBy(q => q.CodQuestao).ToList();
 }
 
 <code class="questoes" hidden>
     {
-    @for (int i = 0, length = lstQuestoes.Count; i < length; i++)
-    {
-    <text>
-        "@lstQuestoes[i].CodQuestao":"@i.GetIndiceQuestao()"
-        @if (i < (length-1))
-        {
-            @:,
-        }
-    </text>
-    }
+        @for (int i = 0, length = lstQuestoes.Count; i < length; i++)
+        {<text>
+            "@lstQuestoes[i].CodQuestao":"@i.GetIndiceQuestao()"
+            @if (i < (length-1))
+            {
+                @:,
+            }
+        </text>}
     }
 </code>
 
@@ -174,7 +167,7 @@
     <div class="ui accordion">
         @foreach (PessoaFisica pessoa in Model.PessoaFisica.OrderBy(a => a.Nome))
         {
-            var lstResposta = Model.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == pessoa.CodPessoa);
+            IEnumerable<AvalQuesPessoaResposta> lstResposta = Model.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == pessoa.CodPessoa);
 
             bool realizou = lstResposta.Count() != 0;
 
@@ -208,7 +201,7 @@
                                 colunaIndice = 1;
                             }
                             <td style="border:none!important;">
-                                <a @((resp.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == 2)? "data-questao="+resp.CodQuestao:"") class="ui label">
+                                <a @((resp.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.DISCURSIVA)? "data-questao="+resp.CodQuestao:"") class="ui label">
                                     @if (resp.RespAlternativa.HasValue) {
                                     <i class="@(resp.RespNota == 10 ? "checkmark green" : "remove red") icon"></i>
                                     }
@@ -232,7 +225,7 @@
                                             </div>
                                         }
                                     }
-                                    else if (String.IsNullOrEmpty(resp.RespDiscursiva))
+                                    else if (String.IsNullOrWhiteSpace(resp.RespDiscursiva))
                                     {
                                         <div class="detail">
                                             <i class="icon thumbs down"></i>
@@ -252,3 +245,7 @@
 </div>
 
 <a href="@Url.Action("Detalhe", new { codigo = Model.Avaliacao.CodAvaliacao})" class="ui button">Sair</a>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/certificacao")
+}

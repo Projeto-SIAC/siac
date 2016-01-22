@@ -1,4 +1,6 @@
-﻿@{ int passo = (int)ViewData["Passo"]; }
+﻿@{ 
+    int passo = (int)ViewData["Passo"]; 
+}
 
 <div class="ui four fluid ordered steps">
     <div class="@(passo > 1 ? "completed" : passo == 1 ? "active" : "") step">

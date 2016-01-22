@@ -225,7 +225,7 @@ else if (Model.Avaliacao.FlagRealizada)
                                         <canvas style="display:inline" width="200" height="200"></canvas>
                                     </div>
                                 </div>
-                                <code class="dados" hidden>@Html.Raw(lstQuestao[i].ToJsonChart(lstResposta.ToList()))</code>
+                                <code class="dados" hidden>@Html.Raw(lstQuestao[i].ToJsonChart(lstTempResposta.ToList()))</code>
                             }
                             else if (lstQuestao[i].CodTipoQuestao == TipoQuestao.DISCURSIVA)
                             {
@@ -238,7 +238,7 @@ else if (Model.Avaliacao.FlagRealizada)
                                     </div>
                                     <div class="four wide column" style="text-align:center">
                                         @{
-                                            double? media = lstResposta.Average(r => r.RespNota);
+                                            double? media = lstTempResposta.Average(r => r.RespNota);
                                         }
                                         <div class="ui statistic" style="display:inline">
                                             <div class="value">
@@ -283,7 +283,7 @@ else if (Model.Avaliacao.FlagRealizada)
     }
     else
     {
-        int codPessoaFisica = Usuario.ObterPessoaFisica(SIAC.Helpers.Sessao.UsuarioMatricula);
+        int codPessoaFisica = Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula);
         List<AvalQuesPessoaResposta> lstPessoaResposta = lstResposta.Where(p => p.CodPessoaFisica == codPessoaFisica).ToList();
         AvalPessoaResultado avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.FirstOrDefault(r => r.CodPessoaFisica == codPessoaFisica);
         int quantidadeAcerto = lstPessoaResposta.Where(p => p.RespNota.HasValue && p.RespNota.Value == 10).Count();

@@ -1,8 +1,7 @@
 ﻿@model AvalCertificacao
 
 @{
-    ViewBag.Title = "Certificação"/* "+ Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Certificação";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -53,7 +52,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+            @foreach (Disciplina disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
             {
                 <tr>
                     <td>
@@ -62,15 +61,15 @@
                     </td>
                     <td class="ui labels">
                         @* temas *@
-                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                        @foreach (AvaliacaoTema avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
                         {
                             <div class="ui tag label">@avalTema.Tema.Descricao</div>
                         }
                     </td>
                     <td class="ui labels">
                         @* qte de questões *@
-                        <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 1)</div></div>
-                        <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, 2)</div></div>
+                        <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, TipoQuestao.OBJETIVA)</div></div>
+                        <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disc.CodDisciplina, TipoQuestao.DISCURSIVA)</div></div>
                     </td>
                     <td>
                         @* dificuldade *@

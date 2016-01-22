@@ -1,8 +1,7 @@
 ﻿@model CertificacaoConfigurarViewModel
 
 @{
-    ViewBag.Title = "Configurar Certificação"/* + Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Configurar Certificação";
 }
 
 <h2>
@@ -69,8 +68,8 @@
 
 <h3>
     Seleção de Questão
-    @if (Model.Avaliacao.TipoQuestoes == 1 || Model.Avaliacao.TipoQuestoes == 3) { <div class="ui right floated quantidade obj label">Objetiva(s) <div class="ui detail">0</div></div> }
-    @if (Model.Avaliacao.TipoQuestoes == 2 || Model.Avaliacao.TipoQuestoes == 3) { <div class="ui right floated quantidade disc label">Discursiva(s) <div class="ui detail">0</div></div> }
+    @if (Model.Avaliacao.TipoQuestoes == TipoQuestao.OBJETIVA || Model.Avaliacao.TipoQuestoes == 3) { <div class="ui right floated quantidade obj label">Objetiva(s) <div class="ui detail">0</div></div> }
+    @if (Model.Avaliacao.TipoQuestoes == TipoQuestao.DISCURSIVA || Model.Avaliacao.TipoQuestoes == 3) { <div class="ui right floated quantidade disc label">Discursiva(s) <div class="ui detail">0</div></div> }
 </h3>
 
 <form class="ui form">

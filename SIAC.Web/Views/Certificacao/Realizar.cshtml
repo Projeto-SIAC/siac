@@ -1,8 +1,7 @@
 ﻿@model AvalCertificacao
 
 @{
-    ViewBag.Title = "Realizar Certificação"/* + Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Realizar Certificação";
     List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
     var codPessoa = Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula);
 }
@@ -12,7 +11,7 @@
     <div class="ui trigger icon right floated chat button"><i class="icon comments outline"></i></div>
     <div class="ui chat popup wide" data-position="top right">
         <div class="header">
-            @Model.Professor.Usuario.PessoaFisica.Nome.Split(' ')[0]
+            @Model.Professor.Usuario.PessoaFisica.PrimeiroNome
         </div>
         <div class="content">
             <div class="ui comments" style="height: 200px;width:300px; overflow-y:scroll;">
