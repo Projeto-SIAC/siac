@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Parâmetros";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -34,19 +33,19 @@
         <div class="field required">
             <label>Tipo de Numeração das Questões</label>
             <select name="ddlNumeracaoQuestao" class="ui dropdown" required>
-                <option value="1" @(@Model.Parametro.NumeracaoQuestao == 1 ? "selected" : "")>Algarismos indo-arábicos</option>
-                <option value="2" @(@Model.Parametro.NumeracaoQuestao == 2 ? "selected" : "")>Algarismos romanos</option>
-                <option value="3" @(@Model.Parametro.NumeracaoQuestao == 3 ? "selected" : "")>Letras em caixa baixa</option>
-                <option value="4" @(@Model.Parametro.NumeracaoQuestao == 4 ? "selected" : "")>Letras em caixa alta</option>
+                <option value="1" @(@Model.Parametro.NumeracaoQuestao == (int)Parametro.NumeracaoPadrao.INDO_ARABICO ? "selected" : "")>Algarismos indo-arábicos</option>
+                <option value="2" @(@Model.Parametro.NumeracaoQuestao == (int)Parametro.NumeracaoPadrao.ROMANOS ? "selected" : "")>Algarismos romanos</option>
+                <option value="3" @(@Model.Parametro.NumeracaoQuestao == (int)Parametro.NumeracaoPadrao.CAIXA_BAIXA ? "selected" : "")>Letras em caixa baixa</option>
+                <option value="4" @(@Model.Parametro.NumeracaoQuestao == (int)Parametro.NumeracaoPadrao.CAIXA_ALTA ? "selected" : "")>Letras em caixa alta</option>
             </select>
         </div>
         <div class="field required">
             <label>Tipo de Numeração das Alternativas</label>
             <select name="ddlNumeracaoAlternativa" class="ui dropdown" required>
-                <option value="1" @(@Model.Parametro.NumeracaoAlternativa == 1 ? "selected" : "")>Algarismos indo-arábicos</option>
-                <option value="2" @(@Model.Parametro.NumeracaoAlternativa == 2 ? "selected" : "")>Algarismos romanos</option>
-                <option value="3" @(@Model.Parametro.NumeracaoAlternativa == 3 ? "selected" : "")>Letras em caixa baixa</option>
-                <option value="4" @(@Model.Parametro.NumeracaoAlternativa == 4 ? "selected" : "")>Letras em caixa alta</option>
+                <option value="1" @(@Model.Parametro.NumeracaoAlternativa == (int)Parametro.NumeracaoPadrao.INDO_ARABICO ? "selected" : "")>Algarismos indo-arábicos</option>
+                <option value="2" @(@Model.Parametro.NumeracaoAlternativa == (int)Parametro.NumeracaoPadrao.ROMANOS ? "selected" : "")>Algarismos romanos</option>
+                <option value="3" @(@Model.Parametro.NumeracaoAlternativa == (int)Parametro.NumeracaoPadrao.CAIXA_BAIXA ? "selected" : "")>Letras em caixa baixa</option>
+                <option value="4" @(@Model.Parametro.NumeracaoAlternativa == (int)Parametro.NumeracaoPadrao.CAIXA_ALTA ? "selected" : "")>Letras em caixa alta</option>
             </select>
         </div>
         <div class="field required">
@@ -172,7 +171,7 @@
                                         <td>@prof.Usuario.PessoaFisica.Nome</td>
                                         <td>@prof.MatrProfessor</td>
                                         <td class="ui labels">
-                                            @foreach (var disc in prof.Disciplina)
+                                            @foreach (Disciplina disc in prof.Disciplina)
                                             {
                                                 <span class="ui tag label">@disc.Descricao</span>
                                             }
@@ -184,7 +183,7 @@
                     </div>
                 </div>
                 <br />
-                <form id="professorForm" method="post" action="/Configuracoes/CadastrarProfessor">
+                <form id="professorForm" method="post" action="@Url.Action("CadastrarProfessor")">
                     <div class="ui text loader">Inserindo</div>
                     <div class="field required">
                         <label>Nome</label>
@@ -198,7 +197,7 @@
                         <label>Disciplinas</label>
                         <select name="ddlProfessorDisciplinas" class="ui fluid search dropdown" multiple="" required">
                             <option value="">Disciplinas...</option>
-                            @foreach (var d in Model.Disciplinas)
+                            @foreach (Disciplina d in Model.Disciplinas)
                             {
                                 <option value="@d.CodDisciplina">@d.Descricao</option>
                             }
@@ -234,7 +233,7 @@
                     </div>
                 </div>
                 <br />
-                <form id="colaboradorForm" method="post" action="/Configuracoes/CadastrarColaborador">
+                <form id="colaboradorForm" method="post" action="@Url.Action("CadastrarColaborador")">
                     <div class="field required">
                         <label>Nome</label>
                         <input type="text" name="txtColaboradorNome" placeholder="Nome..." required />
@@ -283,7 +282,7 @@
                     </div>
                 </div>
                 <br />
-                <form id="turmaForm" method="post" action="/Configuracoes/CadastrarTurma">
+                <form id="turmaForm" method="post" action="@Url.Action("CadastrarTurma")">
                     <div class="field required">
                         <label>Periodo</label>
                         <input type="number" name="txtTurmaPeriodo" required />
@@ -343,7 +342,7 @@
                 </div>
 
                 <br />
-                <form id="disciplinaForm" class="ui form" method="post" action="/Configuracoes/CadastrarDisciplina">
+                <form id="disciplinaForm" class="ui form" method="post" action="@Url.Action("CadastrarDisciplina")">
                     <div class="field required">
                         <label>Disciplina</label>
                         <input type="text" name="txtDisciplina" placeholder="Disciplina..." required />
@@ -403,12 +402,12 @@
                     </div>
                 </div>
                 <br />
-                <form id="temaForm" class="ui form" method="post" action="/Configuracoes/CadastrarTema">
+                <form id="temaForm" class="ui form" method="post" action="@Url.Action("CadastrarTema")">
                     <div class="field required">
                         <label>Disciplina</label>
                         <select name="ddlTemaDisciplina" class="ui fluid search dropdown" required>
                             <option value="">Disciplina</option>
-                            @foreach (var d in Model.Disciplinas)
+                            @foreach (Disciplina d in Model.Disciplinas)
                             {
                                 <option value="@d.CodDisciplina">@d.Descricao</option>
                             }
@@ -447,7 +446,7 @@
                     </div>
                 </div>
                 <br />
-                <form id="salaForm" class="ui form" method="post" action="/Configuracoes/CadastrarSala">
+                <form id="salaForm" class="ui form" method="post" action="@Url.Action("CadastrarSala")">
                     <div class="field required">
                         <label>Campus</label>
                         <select name="ddlSalaCampus" class="ui fluid search dropdown" required>
@@ -505,7 +504,7 @@
                 </div>
 
                 <br />
-                <form id="matrizForm" class="ui form" method="post" action="/Configuracoes/CadastrarMatriz">
+                <form id="matrizForm" class="ui form" method="post" action="@Url.Action("CadastrarMatriz")">
                     <div class="field required">
                         <label>Curso</label>
                         <select name="ddlMatrizCurso" class="ui search dropdown" required>
@@ -588,7 +587,7 @@
                 </div>
 
                 <br />
-                <form id="horarioForm" class="ui form" method="post" action="/Configuracoes/CadastrarHorario">
+                <form id="horarioForm" class="ui form" method="post" action="@Url.Action("CadastrarHorario")">
                     <div class="field required">
                         <label>Turno</label>
                         <select name="ddlHorarioTurno" class="ui search dropdown" required>
@@ -671,7 +670,7 @@
                     </div>
                 </div>
                 <br />
-                <form id="campusForm" method="post" action="/Configuracoes/CadastrarCampus">
+                <form id="campusForm" method="post" action="@Url.Action("CadastrarCampus")">
                     <div class="field required">
                         <label>Instituição</label>
                         <select name="ddlCampusInstituicao" class="ui fluid search dropdown" required>
@@ -740,7 +739,7 @@
                     </div>
                 </div>
                 <br />
-                <form id="diretoriaForm" method="post" action="/Configuracoes/CadastrarDiretoria">
+                <form id="diretoriaForm" method="post" action="@Url.Action("CadastrarDiretoria")">
                     <div class="field required">
                         <label>Campus</label>
                         <select name="ddlDiretoriaCampus" class="ui fluid search dropdown" required>
@@ -807,7 +806,7 @@
                     </div>
                 </div>
                 <br />
-                <form id="cursoForm" method="post" action="/Configuracoes/CadastrarCurso">
+                <form id="cursoForm" method="post" action="@Url.Action("CadastrarCurso")">
                     <div class="field required">
                         <label>Diretoria</label>
                         <select name="ddlCursoDiretoria" class="ui fluid search dropdown" required>

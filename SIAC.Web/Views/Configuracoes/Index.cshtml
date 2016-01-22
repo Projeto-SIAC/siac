@@ -7,7 +7,7 @@
 
 <div class="ui stackable grid dashmenu">
     <div class="stackable doubling four columns centered row">
-        @if (Sessao.UsuarioCategoriaCodigo == 3)
+        @if (Sessao.UsuarioCategoriaCodigo == Categoria.COLABORADOR)
         {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Index", "Usuario") },

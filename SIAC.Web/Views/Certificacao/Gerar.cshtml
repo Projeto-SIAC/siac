@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Gerar Certificação";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2> 
@@ -10,16 +9,7 @@
 <div class="ui termo modal">
     <div class="header">Você está ciente de...</div>
     <div class="content">
-        @{
-            var termo = Model.Termo.Split('\n', '\r');
-            foreach (var str in termo)
-            {
-                if (!String.IsNullOrWhiteSpace(str))
-                {
-                    <p>@str</p>
-                }
-            }
-        }
+        @Html.Raw(Model.Termo.ToHtml("p"))
     </div>
     <div class="actions">
         <a href="@Url.Action("Index", "Principal")" class="ui cancel button">Cancelar</a>
@@ -60,7 +50,7 @@
         <label>Disciplina</label>
         <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" required>
             <option value="">Disciplina</option>
-            @foreach (var disc in Model.Disciplinas)
+            @foreach (Disciplina disc in Model.Disciplinas)
             {
                 <option value="@disc.CodDisciplina">@disc.Descricao</option>
             }

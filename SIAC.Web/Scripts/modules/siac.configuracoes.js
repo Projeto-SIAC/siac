@@ -65,13 +65,13 @@ siac.Configuracoes.Parametros = (function () {
 
     function adicionarDisciplinaMatriz() {
         var copia = $('[name="ddlDisciplina1"').clone();
-        $tr = $('<tr></tr>');
-        $td1 = $('<td></td>').append('\
+        var $tr = $('<tr></tr>');
+        var $td1 = $('<td></td>').append('\
                         <div class="field required">\
                             <input type="number" name="txtPeriodo' + MatrizCount + '" placeholder="Periodo..." required/>\
                         </div>');
-        $td2 = $('<td></td>').append(copia.attr('name', 'ddlDisciplina' + MatrizCount).addClass('ui dropdown search fluid'));
-        $td3 = $('<td></td>').append('\
+        var $td2 = $('<td></td>').append(copia.attr('name', 'ddlDisciplina' + MatrizCount).addClass('ui dropdown search fluid'));
+        var $td3 = $('<td></td>').append('\
                         <div class="field required">\
                             <input type="number" name="txtCH' + MatrizCount + '" placeholder="Carga Horária..." required />\
                         </div>');
@@ -87,10 +87,10 @@ siac.Configuracoes.Parametros = (function () {
         var inicio = $('[name="txtInicio1"').clone();
         var termino = $('[name="txtTermino1"').clone();
 
-        $tr = $('<tr></tr>');
-        $td1 = $('<td></td>').append(horario.attr('name', 'txtHorario' + HorarioCount).val(HorarioCount));
-        $td2 = $('<td></td>').append(inicio.attr('name', 'txtInicio' + HorarioCount));
-        $td3 = $('<td></td>').append(termino.attr('name', 'txtTermino' + HorarioCount));
+        var $tr = $('<tr></tr>');
+        var $td1 = $('<td></td>').append(horario.attr('name', 'txtHorario' + HorarioCount).val(HorarioCount));
+        var $td2 = $('<td></td>').append(inicio.attr('name', 'txtInicio' + HorarioCount));
+        var $td3 = $('<td></td>').append(termino.attr('name', 'txtTermino' + HorarioCount));
 
         $tr.append($td1).append($td2).append($td3);
         $('.table.body.horario').append($tr);
@@ -156,7 +156,7 @@ siac.Configuracoes.Opinioes = (function () {
         if (_controleAjax && _controleAjax.readyState != 4) {
             _controleAjax.abort();
         }
-        $table = $('.ui.table');
+        var $table = $('.ui.table');
         $table.parent().addClass('loading');
         _controleAjax = $.ajax({
             url: '/configuracoes/listaropinioes',

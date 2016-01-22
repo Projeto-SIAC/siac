@@ -15,35 +15,26 @@
                             @questao.QuestaoTema.ElementAt(0).Tema.Disciplina.Descricao
                         </div>
                     </div>
-                    <div class="ui label" data-html="@( !String.IsNullOrEmpty(questao.Dificuldade.Comentario) ? "<b>Comentário</b>: "+questao.Dificuldade.Comentario : "" )">
+                    <div class="ui label" data-html="@( !String.IsNullOrWhiteSpace(questao.Dificuldade.Comentario) ? "<b>Comentário</b>: "+questao.Dificuldade.Comentario : "" )">
                         Dificuldade
                         <div class="detail">
                             @questao.Dificuldade.Descricao
                         </div>
                     </div>
-                    @foreach (var questaoTema in questao.QuestaoTema)
+                    @foreach (QuestaoTema questaoTema in questao.QuestaoTema)
                     {
-                        <div class="ui tag label" data-html="@( !String.IsNullOrEmpty(questaoTema.Tema.Comentario) ? "<b>Comentário</b>: "+questaoTema.Tema.Comentario : "" )">@questaoTema.Tema.Descricao</div>
+                        <div class="ui tag label" data-html="@( !String.IsNullOrWhiteSpace(questaoTema.Tema.Comentario) ? "<b>Comentário</b>: "+questaoTema.Tema.Comentario : "" )">@questaoTema.Tema.Descricao</div>
                     }
                 </div>
-                <div class="ui dividing header" data-html="@( !String.IsNullOrEmpty(questao.Objetivo) ? "<b>Objetivo</b>: " + questao.Objetivo : "")">
-                    @{
-                        var enunciado = questao.Enunciado.Split('\n', '\r');
-                        foreach (var strEnunciado in enunciado)
-                        {
-                            if (!String.IsNullOrWhiteSpace(strEnunciado))
-                            {
-                                <p>@strEnunciado</p>
-                            }
-                        }
-                    }
+                <div class="ui dividing header" data-html="@( !String.IsNullOrWhiteSpace(questao.Objetivo) ? "<b>Objetivo</b>: " + questao.Objetivo : "")">
+                    @Html.Raw(questao.Enunciado.ToHtml("p"))
                 </div>
-                @if (questao.CodTipoQuestao == 1)
+                @if (questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
                 {
                     <div class="ui very relaxed list">
-                        @foreach (var alternativa in questao.Alternativa)
+                        @foreach (Alternativa alternativa in questao.Alternativa)
                         {
-                            <div class="item" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
+                            <div class="item" data-html="@(!String.IsNullOrWhiteSpace(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
                                 <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
                                 @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
                                 {
@@ -55,27 +46,18 @@
                 }
                 else
                 {
-                    <div data-html="@(!String.IsNullOrEmpty(questao.Comentario) ? "<b>Comentário</b>: " + questao.Comentario : "")">
+                    <div data-html="@(!String.IsNullOrWhiteSpace(questao.Comentario) ? "<b>Comentário</b>: " + questao.Comentario : "")">
                         <a class="ui green ribbon label">Chave de Resposta</a>
-                        @{
-                            var chaveDeResposta = questao.ChaveDeResposta.Split('\n', '\r');
-                            foreach (var strChaveDeResposta in chaveDeResposta)
-                            {
-                                if (!String.IsNullOrWhiteSpace(strChaveDeResposta))
-                                {
-                                    <p><i>@strChaveDeResposta</i></p>
-                                }
-                            }
-                        }
+                        @Html.Raw(questao.ChaveDeResposta.ToHtml("p","i"))
                     </div>
-                            }
+                }
                 @if (questao.QuestaoAnexo.Count > 0)
                 {
                     <br />
                     <div class="ui styled fluid accordion">
                         <div class="title"><i class="icon dropdown"></i>Anexos</div>
                         <div class="content">
-                            @foreach (var anexo in questao.QuestaoAnexo)
+                            @foreach (QuestaoAnexo anexo in questao.QuestaoAnexo)
                             {
                                 @Html.Partial("_Anexo", anexo)
                             }

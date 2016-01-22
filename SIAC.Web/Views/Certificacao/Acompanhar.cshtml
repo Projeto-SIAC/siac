@@ -1,7 +1,6 @@
 ﻿@model AvalCertificacao
 @{
-    ViewBag.Title = "Acompanhar Certificação"/* + Model.Avaliacao.CodAvaliacao*/;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Acompanhar Certificação";
     
     // String html do gabarito para todos os alunos
     string gabarito = "<table style='border:0!important' class=\"ui unstackable table\"><tbody><tr class='ui circular labels'>";
@@ -31,12 +30,6 @@
             background-size: contain;
         }
     </style>    
-}
-
-@section Scripts{
-    @Scripts.Render("~/bundles/js/certificacao")
-    @Scripts.Render("~/bundles/signalR")
-    <script src="~/signalr/hubs"></script>
 }
 
 <h2 data-usuario="@Sessao.UsuarioMatricula">
@@ -103,7 +96,7 @@
                 <div class="ui disabled trigger icon right floated chat button"><i class="icon comments outline"></i></div>
                 <div class="ui chat popup wide">
                     <div class="header">
-                        @pessoa.Nome.Split(' ')[0]
+                        @pessoa.PrimeiroNome
                     </div>
                     <div class="content">
                         <div class="ui comments" style="height: 200px;width:300px; overflow-y:scroll;">
@@ -128,3 +121,9 @@
         }
     </div>
 </div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/js/certificacao")
+    @Scripts.Render("~/bundles/signalR")
+    <script src="~/signalr/hubs"></script>
+}

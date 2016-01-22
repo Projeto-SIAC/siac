@@ -2,6 +2,9 @@
 {
     public partial class Pessoa
     {
+        public const string FISICA = "F";
+        public const string JURIDICA = "J";
+
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         public static int Inserir(Pessoa pessoa)

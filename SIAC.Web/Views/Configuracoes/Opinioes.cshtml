@@ -1,11 +1,7 @@
-﻿
-@model string
-
+﻿@model string
 @{
     ViewBag.Title = "Opiniões";
 }
-
-@section Scripts { @Scripts.Render("~/bundles/js/configuracoes") }
 
 <h2>@ViewBag.Title</h2>
 
@@ -59,3 +55,6 @@
     </div>
 </div>
 
+@section Scripts { 
+    @Scripts.Render("~/bundles/js/configuracoes") 
+}
