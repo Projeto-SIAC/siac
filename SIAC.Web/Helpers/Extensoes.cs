@@ -38,17 +38,14 @@ namespace SIAC
             aText = aText.Replace("\n", " ");
             aText = aText.Replace("\r", " ");
             string result = aText.Trim();
-            while (result.IndexOf("  ") > 0)
-            {
+            while (result.IndexOf("  ") > -1)
                 result = result.Replace("  ", " ");
-            }
             return result;
         }
 
         public static string ToShortString(this string str, int length)
         {
             string text = string.Empty;
-
             if (str.Length > length)
             {
                 text = str.Substring(0, length);
@@ -57,16 +54,13 @@ namespace SIAC
                 if (afterText.IndexOf(' ') > -1)
                 {
                     afterText = afterText.Remove(afterText.IndexOf(' '));
-
                     afterText += "...";
                 }
                 else
                 {
                     afterText = "...";
                 }
-
                 text += afterText;
-
             }
             else
             {
@@ -79,37 +73,26 @@ namespace SIAC
         public static string ToHtml(this string str, params string[] tags)
         {
             string html = String.Empty;
-
-            var strs = str.Split('\n', '\r');
-            foreach (var p in strs)
+            string[] lines = str.Split('\n', '\r');
+            foreach (string line in lines)
             {
-                if (!String.IsNullOrWhiteSpace(p))
+                if (!String.IsNullOrWhiteSpace(line))
                 {
                     tags = tags.Reverse().ToArray();
-
-                    var text = p;
-
-                    foreach (var tag in tags)
-                    {
+                    string text = line;
+                    foreach (string tag in tags)
                         text = $"<{tag}>{text}</{tag}>";
-                    }
-
                     html += text;
                 }
             }
-
             return html;
         }
 
         public static string ReplaceChars(this string str, string oldChars, string newChars)
         {
             string newStr = str;
-            
             for (int i = 0, length = oldChars.Length; i < length; i++)
-            {
                 newStr = newStr.Replace(oldChars[i], newChars[i]);
-            }
-
             return newStr;
         }
 
@@ -121,7 +104,6 @@ namespace SIAC
         {
             i++;
             int tipo = Parametro.Obter().NumeracaoAlternativa;
-
             switch (tipo)
             {
                 case 1:
@@ -197,13 +179,9 @@ namespace SIAC
 
         public static bool ContainsOne(this int[] i, int[] j)
         {
-            foreach (var k in j)
-            {
+            foreach (int k in j)
                 if (i.Contains(k))
-                {
                     return true;
-                }
-            }
             return false;
         }
         #endregion
@@ -217,7 +195,7 @@ namespace SIAC
 
         public static bool IsFuture(this DateTime dateTime)
         {
-            return dateTime > DateTime.Now ? true : false;
+            return dateTime > DateTime.Now;
         }
 
         public static string ToElapsedTimeString(this DateTime dt)
@@ -295,10 +273,10 @@ namespace SIAC
         {
             int qteQuestoes = 0;
 
-            foreach (var avaliacaoTema in lstAvaliacaoTema.Where(a => a.Tema.CodDisciplina == codDisciplina))
+            foreach (AvaliacaoTema avaliacaoTema in lstAvaliacaoTema.Where(a => a.Tema.CodDisciplina == codDisciplina))
             {
-                var lstAvalTemaQuestao = avaliacaoTema.AvalTemaQuestao.ToList();
-                var lstAvalTemaQuestaoFiltrada = lstAvalTemaQuestao.Where(a => a.QuestaoTema.Questao.CodTipoQuestao == codTipoQuestao).ToList();
+                List<AvalTemaQuestao> lstAvalTemaQuestao = avaliacaoTema.AvalTemaQuestao.ToList();
+                List<AvalTemaQuestao> lstAvalTemaQuestaoFiltrada = lstAvalTemaQuestao.Where(a => a.QuestaoTema.Questao.CodTipoQuestao == codTipoQuestao).ToList();
                 qteQuestoes += lstAvalTemaQuestaoFiltrada.Count;
             }
 
@@ -309,10 +287,10 @@ namespace SIAC
         {
             int qteQuestoes = 0;
 
-            foreach (var avaliacaoTema in lstAvaliacaoTema)
+            foreach (AvaliacaoTema avaliacaoTema in lstAvaliacaoTema)
             {
-                var lstAvalTemaQuestao = avaliacaoTema.AvalTemaQuestao.ToList();
-                var lstAvalTemaQuestaoFiltrada = lstAvalTemaQuestao.Where(a => a.QuestaoTema.Questao.CodTipoQuestao == codTipoQuestao).ToList();
+                List<AvalTemaQuestao> lstAvalTemaQuestao = avaliacaoTema.AvalTemaQuestao.ToList();
+                List<AvalTemaQuestao> lstAvalTemaQuestaoFiltrada = lstAvalTemaQuestao.Where(a => a.QuestaoTema.Questao.CodTipoQuestao == codTipoQuestao).ToList();
                 qteQuestoes += lstAvalTemaQuestaoFiltrada.Count;
             }
 
@@ -323,13 +301,11 @@ namespace SIAC
         {
             Dificuldade dificuldade = new Dificuldade();
 
-            foreach (var avaliacaoTema in lstAvaliacaoTema.Where(a => a.Tema.CodDisciplina == codDisciplina))
+            foreach (AvaliacaoTema avaliacaoTema in lstAvaliacaoTema.Where(a => a.Tema.CodDisciplina == codDisciplina))
             {
-                var lstDificuldade = avaliacaoTema.AvalTemaQuestao.Select(a => a.QuestaoTema.Questao.Dificuldade).ToList();
+                List<Dificuldade> lstDificuldade = avaliacaoTema.AvalTemaQuestao.Select(a => a.QuestaoTema.Questao.Dificuldade).ToList();
                 if (lstDificuldade.Count > 0 && lstDificuldade.Max(a => a.CodDificuldade) > dificuldade.CodDificuldade)
-                {
                     dificuldade = lstDificuldade.First(a => a.CodDificuldade == lstDificuldade.Max(d => d.CodDificuldade));
-                }
             }
 
             return dificuldade.Descricao;
@@ -341,25 +317,18 @@ namespace SIAC
         public static int QteQuestoes(this Avaliacao avaliacao)
         {
             int qte = 0;
-
-            foreach (var avalTema in avaliacao.AvaliacaoTema)
-            {
+            foreach (AvaliacaoTema avalTema in avaliacao.AvaliacaoTema)
                 qte += avalTema.AvalTemaQuestao.Count;
-            }
-
             return qte;
         }
 
         public static List<Questao> EmbaralharQuestao(this Avaliacao avaliacao)
         {
-            List<Questao> lstQuestao = new List<Models.Questao>();
+            List<Questao> lstQuestao = new List<Questao>();
             List<Questao> lstQuestaoEmbalharada = new List<Questao>();
             Random r = new Random();
-
             foreach (var avalTema in avaliacao.AvaliacaoTema)
-            {
                 lstQuestao.AddRange(avalTema.AvalTemaQuestao.Select(a => a.QuestaoTema.Questao).ToList());
-            }
 
             while (lstQuestao.Count > 0)
             {
@@ -412,22 +381,9 @@ namespace SIAC
             return lstAlternativaEmbaralhada;
         }
 
-        public static List<AvalQuesPessoaResposta> Resposta(this Questao questao)
-        {
-            List<AvalQuesPessoaResposta> lstResposta = new List<AvalQuesPessoaResposta>();
-
-            lstResposta.AddRange(
-                    from r in Repositorio.GetInstance().AvalQuesPessoaResposta
-                    where r.CodQuestao == questao.CodQuestao
-                    select r
-                );
-
-            return lstResposta;
-        }
-
         public static string ToJsonChart(this Questao questao, List<AvalQuesPessoaResposta> lstResposta)
         {
-            var random = new Random();
+            Random random = new Random();
             string json = string.Empty;
             json += "[";
 
@@ -467,7 +423,7 @@ namespace SIAC
         public static string ToJsonChart(this AviQuestao questao, List<AviQuestaoPessoaResposta> respostas = null)
         {
             respostas = questao.Respostas;
-            var random = new Random();
+            Random random = new Random();
             string json = string.Empty;
             json += "[";
 
@@ -515,16 +471,12 @@ namespace SIAC
         public static string RecuperarIp(this HttpContext contexto)
         {
             string ip = contexto.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
-
             if (!string.IsNullOrEmpty(ip))
             {
                 string[] enderecos = ip.Split(',');
-                if (enderecos.Length != 0)
-                {
+                if (enderecos.Length > 0)
                     return enderecos[0];
-                }
             }
-
             return contexto.Request.ServerVariables["REMOTE_ADDR"];
         }
     }

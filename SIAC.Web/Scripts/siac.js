@@ -103,6 +103,9 @@
                     siac.Certificacao.Resultado.iniciar();
                 }
             }
+            else if (pathname.indexOf('/agenda') >= 0) {
+                siac.Agenda.iniciar();
+            }
         }
         else if (pathname.indexOf('/historico/') == 0) {
             if (pathname.indexOf('/questao') >= 0) {

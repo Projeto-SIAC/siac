@@ -1,5 +1,5 @@
 ﻿@{
-    var path = Request.Url.PathAndQuery.ToString();
+    string path = Request.Url.PathAndQuery.ToLower();
 }
 
 <div class="ui vertical fluid secondary menu" style="margin: auto 0">

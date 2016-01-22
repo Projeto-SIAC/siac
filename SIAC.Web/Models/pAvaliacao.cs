@@ -16,11 +16,11 @@ namespace SIAC.Models
             {
                 switch (this.CodTipoAvaliacao)
                 {
-                    case 2:
+                    case TipoAvaliacao.ACADEMICA:
                         return this.AvalAcademica.Professor;
-                    case 3:
+                    case TipoAvaliacao.CERTIFICACAO:
                         return this.AvalCertificacao.Professor;
-                    case 5:
+                    case TipoAvaliacao.REPOSICAO:
                         return this.AvalAcadReposicao.Professor;
                     default:
                         return null;
@@ -28,20 +28,16 @@ namespace SIAC.Models
             }
         }
 
-        public List<Tema> Temas => (from t in AvaliacaoTema select t.Tema).Distinct().ToList();
+        public List<Tema> Temas => this.AvaliacaoTema.Select(at => at.Tema).Distinct().ToList();
 
         public List<Questao> Questao
         {
             get
             {
                 List<Questao> lstQuestao = new List<Questao>();
-                foreach (var avaliacaoTema in AvaliacaoTema)
-                {
-                    foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
-                    {
+                foreach (AvaliacaoTema avaliacaoTema in AvaliacaoTema)
+                    foreach (AvalTemaQuestao avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
                         lstQuestao.Add(avalTemaQuestao.QuestaoTema.Questao);
-                    }
-                };
                 return lstQuestao;
             }
         }
@@ -52,12 +48,8 @@ namespace SIAC.Models
             {
                 List<QuestaoTema> QuestoesTema = new List<QuestaoTema>();
                 foreach (AvaliacaoTema item in this.AvaliacaoTema)
-                {
                     foreach (AvalTemaQuestao qt in item.AvalTemaQuestao)
-                    {
                         QuestoesTema.Add(qt.QuestaoTema);
-                    }
-                }
                 return QuestoesTema;
             }
         }
@@ -67,13 +59,9 @@ namespace SIAC.Models
             get
             {
                 List<AvalQuesPessoaResposta> lstPessoaResposta = new List<AvalQuesPessoaResposta>();
-                foreach (var avaliacaoTema in AvaliacaoTema)
-                {
-                    foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
-                    {
+                foreach (AvaliacaoTema avaliacaoTema in AvaliacaoTema)
+                    foreach (AvalTemaQuestao avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
                         lstPessoaResposta.AddRange(avalTemaQuestao.AvalQuesPessoaResposta);
-                    }
-                };
                 return lstPessoaResposta;
             }
         }
@@ -86,33 +74,21 @@ namespace SIAC.Models
             {
                 int tipo = 0;
 
-                foreach (var questao in this.Questao)
-                {
-                    if (questao.CodTipoQuestao == 1)
+                foreach (Questao questao in this.Questao)
+                    if (questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
                     {
                         tipo += 1;
                         break;
                     }
-                }
 
-                foreach (var questao in this.Questao)
-                {
-                    if (questao.CodTipoQuestao == 2)
+                foreach (Questao questao in this.Questao)
+                    if (questao.CodTipoQuestao == TipoQuestao.DISCURSIVA)
                     {
                         tipo += 2;
                         break;
                     }
-                }
 
                 return tipo > 0 ? tipo : -1;
-
-                //int qteObj = Questao.Count(q => q.CodTipoQuestao == 1);
-                //int qteDis = Questao.Count(q => q.CodTipoQuestao == 2);
-
-                //if (qteObj > 0 && qteDis > 0) return 3;
-                //else if (qteObj > 0) return 1;
-                //else if (qteDis > 0) return 2;
-                //else return -1;
             }
         }
 
@@ -160,30 +136,6 @@ namespace SIAC.Models
             return Sistema.NumIdentificador[codTipoAvaliacao]++;
         }
 
-        public void TrocarQuestao(int codQuestaoAntiga, QuestaoTema novoQuestaoTema)
-        {
-            AvalTemaQuestao aqtAntiga = (from atq in contexto.AvalTemaQuestao
-                                         where atq.Ano == Ano
-                                         && atq.Semestre == Semestre
-                                         && atq.CodTipoAvaliacao == CodTipoAvaliacao
-                                         && atq.NumIdentificador == NumIdentificador
-                                         && atq.CodQuestao == codQuestaoAntiga
-                                         select atq).FirstOrDefault();
-
-            contexto.AvalTemaQuestao.Remove(aqtAntiga);
-
-            AvalTemaQuestao aqtNovo = new AvalTemaQuestao();
-            aqtNovo.QuestaoTema = novoQuestaoTema;
-            aqtNovo.Ano = Ano;
-            aqtNovo.Semestre = Semestre;
-            aqtNovo.CodTipoAvaliacao = CodTipoAvaliacao;
-            aqtNovo.NumIdentificador = NumIdentificador;
-
-            contexto.AvalTemaQuestao.Add(aqtNovo);
-
-            //contexto.SaveChanges();
-        }
-
         public static Avaliacao ListarPorCodigoAvaliacao(string codigo)
         {
             int numIdentificador = int.Parse(codigo.Substring(codigo.Length - 4));
@@ -195,7 +147,11 @@ namespace SIAC.Models
 
             int codTipoAvaliacao = TipoAvaliacao.ListarPorSigla(codigo).CodTipoAvaliacao;
 
-            Avaliacao aval = contexto.Avaliacao.FirstOrDefault(a => a.Ano == ano && a.Semestre == semestre && a.NumIdentificador == numIdentificador && a.CodTipoAvaliacao == codTipoAvaliacao);
+            Avaliacao aval = contexto.Avaliacao
+                .FirstOrDefault(a => a.Ano == ano
+                    && a.Semestre == semestre
+                    && a.NumIdentificador == numIdentificador
+                    && a.CodTipoAvaliacao == codTipoAvaliacao);
 
             return aval;
         }
@@ -227,10 +183,7 @@ namespace SIAC.Models
 
             foreach (int questao in questoes)
             {
-                List<QuestaoTema> qtTemp = (from qt in contexto.QuestaoTema
-                                            where qt.CodQuestao == questao
-                                            select qt).ToList();
-
+                List<QuestaoTema> qtTemp = contexto.QuestaoTema.Where(qt => qt.CodQuestao == questao).ToList();
                 questoesTema.AddRange(qtTemp);
             }
 
@@ -238,11 +191,11 @@ namespace SIAC.Models
             {
                 //Deletar questões antigas
                 List<AvalTemaQuestao> questoesAntigas = contexto.AvalTemaQuestao
-                                                        .Where(atq => atq.Ano == aval.Ano
-                                                                   && atq.Semestre == aval.Semestre
-                                                                   && atq.CodTipoAvaliacao == aval.CodTipoAvaliacao
-                                                                   && atq.NumIdentificador == aval.NumIdentificador
-                                                        ).ToList();
+                    .Where(atq => atq.Ano == aval.Ano
+                        && atq.Semestre == aval.Semestre
+                        && atq.CodTipoAvaliacao == aval.CodTipoAvaliacao
+                        && atq.NumIdentificador == aval.NumIdentificador)
+                    .ToList();
                 contexto.AvalTemaQuestao.RemoveRange(questoesAntigas);
 
                 List<AvalTemaQuestao> questoesAdicionadas = new List<AvalTemaQuestao>();
@@ -256,7 +209,6 @@ namespace SIAC.Models
                     {
                         foreach (QuestaoTema qt in questaoTema)
                         {
-
                             AvalTemaQuestao proximaQuestao = new AvalTemaQuestao
                             {
                                 AvaliacaoTema = avalTema,
@@ -264,12 +216,12 @@ namespace SIAC.Models
                             };
 
                             //Verificar se a questão já não foi adicionada
-                            if (questoesAdicionadas.Where(atq => atq.Ano == aval.Ano
-                                                                   && atq.Semestre == aval.Semestre
-                                                                   && atq.CodTipoAvaliacao == aval.CodTipoAvaliacao
-                                                                   && atq.NumIdentificador == aval.NumIdentificador
-                                                                   && atq.CodQuestao == qt.CodQuestao).ToList().Count == 0)
-
+                            if (questoesAdicionadas
+                                .Where(atq => atq.Ano == aval.Ano
+                                    && atq.Semestre == aval.Semestre
+                                    && atq.CodTipoAvaliacao == aval.CodTipoAvaliacao
+                                    && atq.NumIdentificador == aval.NumIdentificador
+                                    && atq.CodQuestao == qt.CodQuestao).ToList().Count == 0)
                             {
                                 contexto.AvalTemaQuestao.Add(proximaQuestao);
                                 questoesAdicionadas.Add(proximaQuestao);

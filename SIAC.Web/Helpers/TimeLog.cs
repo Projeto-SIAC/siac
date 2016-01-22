@@ -17,7 +17,7 @@ namespace SIAC.Helpers
 
         public static void Parar()
         {
-            var total = (DateTime.Now - tempo).TotalSeconds;
+            double total = (DateTime.Now - tempo).TotalSeconds;
             Debug.WriteLine($"TimeLog: {total.ToString()} segundos para realizar {teste} [{tempo.ToString()}]");
         }
     }

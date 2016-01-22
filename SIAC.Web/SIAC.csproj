@@ -210,6 +210,7 @@
       <DependentUpon>siac.certificacao.js</DependentUpon>
     </Content>
     <Content Include="Scripts\modules\siac.lembrete.js" />
+    <Content Include="Scripts\modules\siac.agenda.js" />
     <Content Include="Scripts\modules\siac.perfil.js" />
     <Content Include="Scripts\modules\siac.reposicao.js" />
     <Content Include="Scripts\modules\siac.usuario.js" />
@@ -473,6 +474,7 @@
     <Compile Include="Models\ProReitoria.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\pTurmaDiscProfHorario.cs" />
     <Compile Include="Models\pVisitante.cs" />
     <Compile Include="Models\Questao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
@@ -584,6 +586,7 @@
     <Compile Include="ViewModels\CertificacaoConfigurarViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracoesInstitucionalViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracoesParametrosViewModel.cs" />
+    <Compile Include="ViewModels\ErroIndexViewModel.cs" />
     <Compile Include="ViewModels\ImpressaoAvaliacaoViewModel.cs" />
     <Compile Include="ViewModels\InstitucionalGerarQuestaoViewModel.cs" />
     <Compile Include="ViewModels\InstitucionalPublicoViewModel.cs" />
@@ -602,7 +605,6 @@
     <Content Include="Styles\themes\default\assets\fonts\icons.ttf" />
     <Content Include="Styles\themes\default\assets\fonts\icons.woff" />
     <Content Include="Styles\themes\default\assets\fonts\icons.woff2" />
-    <Content Include="Views\Shared\_Layout2.cshtml" />
     <Content Include="Views\Principal\Index.cshtml" />
     <Content Include="Views\Acesso\Index.cshtml" />
     <Content Include="Resources\videos\background.webm" />
@@ -670,7 +672,7 @@
     <Content Include="Scripts\modules\siac.certificacao.js" />
     <Content Include="Views\Certificacao\Configurar.cshtml" />
     <Content Include="Views\Academica\Partials\_Individual.cshtml" />
-    <Content Include="Views\Shared\_ListaQuestaoCard.cshtml" />
+    <Content Include="Views\Shared\Partials\_ListaQuestaoCard.cshtml" />
     <Content Include="Views\Shared\Partials\_ListaQuestao.cshtml" />
     <Content Include="Views\Shared\Partials\_AnexoImagem.cshtml" />
     <Content Include="Views\Shared\Partials\_AvaliacaoInformacoes.cshtml" />

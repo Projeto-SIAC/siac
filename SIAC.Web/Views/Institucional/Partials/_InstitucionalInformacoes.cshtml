@@ -1,4 +1,5 @@
-﻿@model SIAC.Models.AvalAvi
+﻿@model AvalAvi
+
 <div class="ui informacoes modal">
     <i class="icon close"></i>
     <div class="header">Informações sobre a Av. Institucional</div>
@@ -71,7 +72,7 @@
                             <tbody>
                                 @foreach (AviPublico publico in Model.AviPublico)
                                 {
-                                <tr @*data-selecionado="@publico.CodPublico"*@>
+                                <tr>
                                     <td>@publico.Descricao</td>
                                     <td><a class="ui label">@publico.AviTipoPublico.Descricao</a></td>
                                 </tr>

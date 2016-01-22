@@ -1,4 +1,5 @@
-﻿
+﻿@model ErroIndexViewModel
+
 @{
     Layout = null;
 }
@@ -9,7 +10,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - SIAC</title>
+    <title>Erro @Model.Codigo - SIAC</title>
     <link href="~/resources/images/layout/logo-black.png" rel="shortcut icon" />
     @Styles.Render("~/bundles/css/acesso")
     <style type="text/css">
@@ -32,15 +33,15 @@
             <h2 class="ui header left aligned">
                 SIAC
                 <div class="sub header">
-                    Erro @ViewBag.Codigo - @ViewBag.Title
+                    Erro @Model.Codigo - @Model.Titulo
                 </div>
             </h2>
             <div class="ui message">
-                <p>@ViewBag.Mensagem</p>
+                <p>@Model.Mensagem</p>
             </div>
             <a href="/">Voltar para Início</a>            
         </div>
     </div>
-    @Scripts.Render("~/bundles/js/acesso")
+    @Scripts.Render("~/bundles/js/essentials")
 </body>
 </html>

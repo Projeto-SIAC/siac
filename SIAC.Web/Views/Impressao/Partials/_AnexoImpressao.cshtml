@@ -1,7 +1,7 @@
 ﻿@model QuestaoAnexo
 @switch (Model.CodTipoAnexo)
 {
-    case 1:
+    case TipoAnexo.IMAGEM:
         <div class="ui segment">
             <img class="ui image" src="@Model.Anexo.GetImageSource()" />
             @if (!String.IsNullOrWhiteSpace(Model.Legenda) || !String.IsNullOrWhiteSpace(Model.Fonte))
@@ -23,7 +23,7 @@
             }
         </div>
         break;
-    case 2:
+    case TipoAnexo.CODIGO:
         <div class="ui segment">
             @if (!String.IsNullOrWhiteSpace(Model.Legenda) || !String.IsNullOrWhiteSpace(Model.Fonte))
             {

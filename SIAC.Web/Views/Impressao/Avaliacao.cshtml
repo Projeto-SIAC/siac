@@ -63,7 +63,7 @@
                         @Model.Professor
                     </td>
                 </tr>
-                @if (Model.Avaliacao.CodTipoAvaliacao == 5)
+                @if (Model.Avaliacao.CodTipoAvaliacao == TipoAvaliacao.REPOSICAO)
                 {
                     <tr>
                         <td>
@@ -74,7 +74,7 @@
                         </td>
                     </tr>
                 }
-                @foreach (var campo in Model.Campos)
+                @foreach (string campo in Model.Campos)
                 {
                     if (!String.IsNullOrWhiteSpace(campo))
                     {
@@ -96,13 +96,13 @@
 
     @switch (Model.Avaliacao.CodTipoAvaliacao)
     {
-        case 2:
+        case TipoAvaliacao.ACADEMICA:
             @Html.Partial("_Academica", Model.Avaliacao.AvalAcademica);
             break;
-        case 3:
+        case TipoAvaliacao.CERTIFICACAO:
             @Html.Partial("_Certificacao", Model.Avaliacao.AvalCertificacao);
             break;
-        case 5:
+        case TipoAvaliacao.REPOSICAO:
             @Html.Partial("_Reposicao", Model.Avaliacao.AvalAcadReposicao);
             break;
         default:
@@ -115,7 +115,7 @@
             <div class="ui header dividing">
                 Instruções
             </div>
-            @foreach (var instrucao in Model.Instrucoes)
+            @foreach (string instrucao in Model.Instrucoes)
             {
                 if (!String.IsNullOrWhiteSpace(instrucao))
                 {
@@ -134,12 +134,17 @@
     @Scripts.Render("~/bundles/js")
     <script>
         $('.ui.checkbox')
-                .checkbox()
+            .checkbox()
         ;
         var focused = false;
         window.print();
         focused = true;
-        var interval = setInterval(function () { if (focused === true) { clearInterval(interval); window.location.href = "@Url.Action("Detalhe", Model.Avaliacao.TipoAvaliacao.DescricaoCurta.ReplaceChars("çãê", "cae"), new { codigo = Model.Avaliacao.CodAvaliacao })" } }, 300);
+        var interval = setInterval(function () {
+            if (focused === true) {
+                clearInterval(interval);
+                window.location.href = "@Url.Action("Detalhe", Model.Avaliacao.TipoAvaliacao.DescricaoCurta.ReplaceChars("çãê", "cae"), new { codigo = Model.Avaliacao.CodAvaliacao })"
+            }
+        }, 300);
     </script>
 </body>
 </html>

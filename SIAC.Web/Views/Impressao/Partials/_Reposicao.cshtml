@@ -18,14 +18,14 @@
                         <b>@Model.Avaliacao.AvalAcadReposicao.Disciplina.Descricao</b>
                     </td>
                     <td class="ui labels">
-                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == Model.Avaliacao.AvalAcadReposicao.Disciplina.CodDisciplina))
+                        @foreach (AvaliacaoTema avalTema in Model.Avaliacao.AvaliacaoTema)
                         {
                             <div class="ui tag label">@avalTema.Tema.Descricao</div>
                         }
                     </td>
                     <td class="ui labels">
-                        <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.Avaliacao.AvalAcadReposicao.Disciplina.CodDisciplina, 1)</div></div>
-                        <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.Avaliacao.AvalAcadReposicao.Disciplina.CodDisciplina, 2)</div></div>
+                        <div class="ui label">Objetiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.Avaliacao.AvalAcadReposicao.Disciplina.CodDisciplina, TipoQuestao.OBJETIVA)</div></div>
+                        <div class="ui label">Discursiva<div class="detail">@Model.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(Model.Avaliacao.AvalAcadReposicao.Disciplina.CodDisciplina, TipoQuestao.DISCURSIVA)</div></div>
                     </td>
                     <td>
                         @Model.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(Model.Avaliacao.AvalAcadReposicao.Disciplina.CodDisciplina)

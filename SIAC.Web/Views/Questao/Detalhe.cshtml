@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Detalhes de Questão";
-    List<AvalQuesPessoaResposta> lstResposta = Model.Resposta().Where(r => !String.IsNullOrWhiteSpace(r.RespComentario)).ToList();
+    List<AvalQuesPessoaResposta> lstResposta = Model.Respostas.Where(r => !String.IsNullOrWhiteSpace(r.RespComentario)).ToList();
 }
 
 <h2>@ViewBag.Title</h2>

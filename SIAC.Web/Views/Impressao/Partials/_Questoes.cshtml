@@ -1,22 +1,22 @@
-﻿
-@model List<Questao>
+﻿@model List<Questao>
+
 <div class="ui parentQuestao vertical segment">
     <div class="ui header dividing">
         Questões
     </div>
     <div class="ui form">
         @for (int i = 0; i < Model.Count; i++)
-            {
+        {
             <div class="questao">
                 <div class="ui header" style="text-align:justify">
                     @Html.Raw((i.GetIndiceQuestao() + ". " + Model[i].Enunciado).ToHtml("p"))
                 </div>
 
-                @if (Model[i].CodTipoQuestao == 1)
+                @if (Model[i].CodTipoQuestao == TipoQuestao.OBJETIVA)
                 {
+                    List<Alternativa> lstAlternativa = Model[i].EmbaralharAlternativa();
                     <div class="grouped fields">
                         <label>Marque a alternativa</label>
-                        @{ var lstAlternativa = Model[i].EmbaralharAlternativa(); }
                         @for (int j = 0; j < lstAlternativa.Count; j++)
                         {
                             <div class="field">
@@ -27,14 +27,14 @@
                             </div>
                         }
                     </div>
-                            }
-                            else
-                            {
-                                <div class="field">
-                                    <label>Resposta</label>
-                                    <textarea></textarea>
-                                </div>
-                            }
+                }
+                else
+                {
+                    <div class="field">
+                        <label>Resposta</label>
+                        <textarea></textarea>
+                    </div>
+                }
 
                 @if (Model[i].QuestaoAnexo.Count > 0)
                 {
@@ -47,6 +47,6 @@
                     </div>
                 }
             </div>
-                            }
+        }
     </div>
 </div>

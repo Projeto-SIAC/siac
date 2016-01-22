@@ -10,7 +10,7 @@ namespace SIAC.Helpers
             int r = random.Next(256);
             int g = random.Next(256);
             int b = random.Next(256);
-            rgba = String.Format("rgba({0},{1},{2},{3})", r, g, b, opacidade);
+            rgba = $"rgba({r},{g},{b},{opacidade})";
             return rgba;
         }
     }

@@ -49,8 +49,7 @@ namespace SIAC.Models
             int codInstituicao = int.Parse(codigos[0]);
             int codCampus = int.Parse(codigos[1]);
 
-            return contexto.Campus.FirstOrDefault(c => c.CodInstituicao == codInstituicao
-                                                    && c.CodCampus == codCampus);
+            return contexto.Campus.FirstOrDefault(c => c.CodInstituicao == codInstituicao && c.CodCampus == codCampus);
         }
     }
 }

@@ -11,13 +11,13 @@ namespace SIAC.Models
         public static void InserirResposta(AviQuestao questao, PessoaFisica pessoa, int alternativa)
         {
             AviQuestaoPessoaResposta resposta = contexto.AviQuestaoPessoaResposta
-                                                        .Where(pr => pr.Ano == questao.Ano
-                                                                && pr.Semestre == questao.Semestre
-                                                                && pr.CodTipoAvaliacao == questao.CodTipoAvaliacao
-                                                                && pr.NumIdentificador == questao.NumIdentificador
-                                                                && pr.CodOrdem == questao.CodOrdem)
-                                                        .OrderByDescending(pr => pr.CodRespostaOrdem)
-                                                        .FirstOrDefault();
+                .Where(pr => pr.Ano == questao.Ano
+                    && pr.Semestre == questao.Semestre
+                    && pr.CodTipoAvaliacao == questao.CodTipoAvaliacao
+                    && pr.NumIdentificador == questao.NumIdentificador
+                    && pr.CodOrdem == questao.CodOrdem)
+                .OrderByDescending(pr => pr.CodRespostaOrdem)
+                .FirstOrDefault();
 
             int novaOrdemResposta = resposta != null ? resposta.CodRespostaOrdem + 1 : 1;
 
@@ -38,13 +38,13 @@ namespace SIAC.Models
         public static void InserirResposta(AviQuestao questao, PessoaFisica pessoa, string texto)
         {
             AviQuestaoPessoaResposta resposta = contexto.AviQuestaoPessoaResposta
-                                                        .Where(pr => pr.Ano == questao.Ano
-                                                                && pr.Semestre == questao.Semestre
-                                                                && pr.CodTipoAvaliacao == questao.CodTipoAvaliacao
-                                                                && pr.NumIdentificador == questao.NumIdentificador
-                                                                && pr.CodOrdem == questao.CodOrdem)
-                                                        .OrderByDescending(pr => pr.CodRespostaOrdem)
-                                                        .FirstOrDefault();
+                .Where(pr => pr.Ano == questao.Ano
+                    && pr.Semestre == questao.Semestre
+                    && pr.CodTipoAvaliacao == questao.CodTipoAvaliacao
+                    && pr.NumIdentificador == questao.NumIdentificador
+                    && pr.CodOrdem == questao.CodOrdem)
+                .OrderByDescending(pr => pr.CodRespostaOrdem)
+                .FirstOrDefault();
 
             int novaOrdemResposta = resposta != null ? resposta.CodRespostaOrdem + 1 : 1;
 
@@ -65,13 +65,13 @@ namespace SIAC.Models
         public static void InserirResposta(AviQuestao questao, PessoaFisica pessoa, int alternativa, string texto)
         {
             AviQuestaoPessoaResposta resposta = contexto.AviQuestaoPessoaResposta
-                                                        .Where(pr => pr.Ano == questao.Ano
-                                                                && pr.Semestre == questao.Semestre
-                                                                && pr.CodTipoAvaliacao == questao.CodTipoAvaliacao
-                                                                && pr.NumIdentificador == questao.NumIdentificador
-                                                                && pr.CodOrdem == questao.CodOrdem)
-                                                        .OrderByDescending(pr => pr.CodRespostaOrdem)
-                                                        .FirstOrDefault();
+                .Where(pr => pr.Ano == questao.Ano
+                    && pr.Semestre == questao.Semestre
+                    && pr.CodTipoAvaliacao == questao.CodTipoAvaliacao
+                    && pr.NumIdentificador == questao.NumIdentificador
+                    && pr.CodOrdem == questao.CodOrdem)
+                .OrderByDescending(pr => pr.CodRespostaOrdem)
+                .FirstOrDefault();
 
             int novaOrdemResposta = resposta != null ? resposta.CodRespostaOrdem + 1 : 1;
 
@@ -93,12 +93,12 @@ namespace SIAC.Models
         public static List<AviQuestaoPessoaResposta> ObterRespostasPessoa(AvalAvi avi, PessoaFisica pessoa)
         {
             List<AviQuestaoPessoaResposta> respostas = contexto.AviQuestaoPessoaResposta
-                                                        .Where(pr => pr.Ano == avi.Ano
-                                                                && pr.Semestre == avi.Semestre
-                                                                && pr.CodTipoAvaliacao == avi.CodTipoAvaliacao
-                                                                && pr.NumIdentificador == avi.NumIdentificador
-                                                                && pr.CodPessoaFisica == pessoa.CodPessoa)
-                                                        .ToList();
+                .Where(pr => pr.Ano == avi.Ano
+                    && pr.Semestre == avi.Semestre
+                    && pr.CodTipoAvaliacao == avi.CodTipoAvaliacao
+                    && pr.NumIdentificador == avi.NumIdentificador
+                    && pr.CodPessoaFisica == pessoa.CodPessoa)
+                .ToList();
 
             List<AviQuestaoPessoaResposta> retorno = new List<AviQuestaoPessoaResposta>();
             if (respostas.Count > 0)
@@ -108,9 +108,7 @@ namespace SIAC.Models
                 {
                     AviQuestaoPessoaResposta questao = respostas.Where(pr => pr.CodOrdem == i).OrderByDescending(pr => pr.CodRespostaOrdem).FirstOrDefault();
                     if (questao != null)
-                    {
                         retorno.Add(questao);
-                    }
                 }
             }
             return retorno;

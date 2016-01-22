@@ -1,12 +1,11 @@
 ﻿
 @{
     ViewBag.Title = "Histórico de Av. Institucional";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>
     @ViewBag.Title
-    @if (Sessao.UsuarioCategoriaCodigo == 3)
+    @if (Sessao.UsuarioCategoriaCodigo == Categoria.COLABORADOR)
     {
         <a class="ui right floated button" href="@Url.Action("Gerar")">Gerar</a>
     }
@@ -40,23 +39,6 @@
             </a>
         </div>
     </div>
-    @*<div class="six wide column">
-        <div class="ui text menu">
-            <div class="ui dropdown item">
-                Disciplina
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                    <a class="disciplina item active selected" data-disciplina="">Todos</a>
-                    @foreach (Disciplina disciplina in Model.Disciplinas)
-                    {
-                        <a class="disciplina item" data-disciplina="@disciplina.CodDisciplina">
-                            @disciplina.Descricao
-                        </a>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>*@
     <div class="sixteen wide column">
         <div class="ui basic segment">
             <div class="ui three stackable cards">

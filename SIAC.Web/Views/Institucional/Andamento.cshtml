@@ -1,7 +1,7 @@
 ﻿@model List<AvalAvi>
+
 @{
     ViewBag.Title = "Av. Institucionais em Andamento";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @if (Model.Count > 0)
@@ -12,7 +12,7 @@
             @foreach (AvalAvi avi in Model)
             {
                 int quantidadeQuestoes = avi.QteQuestoes;
-                int quantidadeRespostas = AviQuestaoPessoaResposta.ObterRespostasPessoa(avi, PessoaFisica.ListarPorMatricula(SIAC.Helpers.Sessao.UsuarioMatricula)).Count;
+                int quantidadeRespostas = AviQuestaoPessoaResposta.ObterRespostasPessoa(avi, PessoaFisica.ListarPorMatricula(Sessao.UsuarioMatricula)).Count;
                 <div class="card">
                     <div class="content">
                         <a href="@Url.Action("Realizar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="header">Código: @avi.Avaliacao.CodAvaliacao</a>
@@ -20,7 +20,7 @@
                             <span>@avi.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
                         </div>
                         @if (quantidadeRespostas == quantidadeQuestoes)
-                    {
+                        {
                             <span class="ui ribbon label"><i class="checkmark icon"></i>Concluída</span>
                         }
                         else if (quantidadeRespostas > 0)
@@ -60,8 +60,7 @@ else
     <div class="ui grid row centered">
         <h2 class="ui icon header">
             <i class="icon frown"></i>
-            Não existe nenhuma Avaliação Institucional em andamento para o seu usuário
-            @*<div class="sub header">Desejar gerar uma agora? <a href="@Url.Action("Gerar")">Gerar</a></div>*@
+            Não existe nenhuma Avaliação Institucional em andamento para o seu usuário.
         </h2>
     </div>
 }

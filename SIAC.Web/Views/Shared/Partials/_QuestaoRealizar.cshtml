@@ -1,5 +1,9 @@
-﻿@model SIAC.Models.Questao
-@{ var i = (int)ViewData["Index"]; }
+﻿@model Questao
+
+@{
+    var i = (int)ViewData["Index"];
+}
+
 <div id="@Model.CodQuestao" class="title">
     <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + Model.Enunciado).ToShortString(80))
     <div class="ui small label" style="display:none">Respondida</div>
@@ -7,22 +11,13 @@
 <div id="@Model.CodQuestao" class="content">
     <div class="ui segment">
         <div class="ui dividing header" style="text-align:justify">
-            @{
-                var enunciado = (@i.GetIndiceQuestao() + ". " + Model.Enunciado).Split('\n', '\r');
-                foreach (var strEnunciado in enunciado)
-                {
-                    if (!String.IsNullOrWhiteSpace(strEnunciado))
-                    {
-                        <p>@strEnunciado</p>
-                    }
-                }
-            }
+            @Html.Raw((i.GetIndiceQuestao() + ". " + Model.Enunciado).ToHtml("p"))
         </div>
-        @if (Model.CodTipoQuestao == 1)
+        @if (Model.CodTipoQuestao == TipoQuestao.OBJETIVA)
         {
+            var lstAlternativa = Model.EmbaralharAlternativa();
             <div class="grouped fields">
                 <label>Selecione a alternativa</label>
-                @{ var lstAlternativa = Model.EmbaralharAlternativa(); }
                 @for (int j = 0; j < lstAlternativa.Count; j++)
                 {
                     <div class="field">
@@ -33,25 +28,25 @@
                     </div>
                 }
             </div>
-                    }
-                    else
-                    {
-                        <div class="field">
-                            <label>Resposta</label>
-                            <textarea name="txtResposta@(Model.CodQuestao)" id="txtResposta@(Model.CodQuestao)" placeholder="Resposta..." rows="3"></textarea>
-                        </div>
-                    }
+        }
+        else
+        {
+            <div class="field">
+                <label>Resposta</label>
+                <textarea name="txtResposta@(Model.CodQuestao)" id="txtResposta@(Model.CodQuestao)" placeholder="Resposta..." rows="3"></textarea>
+            </div>
+        }
 
         <div class="accordion">
             @if (Model.QuestaoAnexo.Count > 0)
             {
                 <div class="title"><i class="icon dropdown"></i>Anexos</div>
-                                <div class="content">
-                                    @foreach (var anexo in Model.QuestaoAnexo)
-                                    {
-                                        @Html.Partial("_Anexo", anexo)
-                                    }
-                                </div>
+                <div class="content">
+                    @foreach (QuestaoAnexo anexo in Model.QuestaoAnexo)
+                    {
+                        @Html.Partial("_Anexo", anexo)
+                    }
+                </div>
             }
             <div class="title"><i class="icon dropdown"></i>Comentário</div>
             <div class="content">

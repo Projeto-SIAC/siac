@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web;
+using SIAC.Models;
 
 namespace SIAC.Helpers
 {
@@ -11,11 +12,9 @@ namespace SIAC.Helpers
         {
             get
             {
-                foreach (var avaliacao in Models.Sistema.AvaliacaoUsuario.Keys)
-                {
-                    if (Models.Sistema.AvaliacaoUsuario[avaliacao].Contains(UsuarioMatricula))
+                foreach (string avaliacao in Sistema.AvaliacaoUsuario.Keys)
+                    if (Sistema.AvaliacaoUsuario[avaliacao].Contains(UsuarioMatricula))
                         return true;
-                }
                 return false;
             }
         }

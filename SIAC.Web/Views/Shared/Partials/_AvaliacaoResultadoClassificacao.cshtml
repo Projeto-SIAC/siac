@@ -1,7 +1,7 @@
 ﻿@model List<AvalPessoaResultado>
 
 @{
-    var podio = Model.OrderByDescending(r => r.Nota).Select(r => r.Nota).Distinct().Take(3).ToArray();
+    double?[] podio = Model.OrderByDescending(r => r.Nota).Select(r => r.Nota).Distinct().Take(3).ToArray();
 }
 
 <table class="ui sortable celled table">
@@ -13,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var resultado in Model)
+        @foreach (AvalPessoaResultado resultado in Model)
         {
             <tr>
                 <td data-ordenar="nome" data-ordenar-valor="@resultado.PessoaFisica.Nome">
@@ -27,25 +27,25 @@
                 <td>
                     @if (podio.Contains(resultado.Nota))
                     {
-                        var colocacao = Array.IndexOf(podio, resultado.Nota);
+                        int colocacao = Array.IndexOf(podio, resultado.Nota);
 
                         switch (colocacao)
                         {
-                            case 0:
+                            case 0: // primeiro lugar
                                 <div class="ui star rating">
                                     <i class="icon active"></i>
                                     <i class="icon active"></i>
                                     <i class="icon active"></i>
                                 </div>
                                 break;
-                            case 1:
+                            case 1: // segundo lugar
                                 <div class="ui star rating">
                                     <i class="icon active"></i>
                                     <i class="icon active"></i>
                                     <i class="icon "></i>
                                 </div>
                                 break;
-                            case 2:
+                            case 2: // terceiro lugar
                                 <div class="ui star rating">
                                     <i class="icon active"></i>
                                     <i class="icon "></i>

@@ -18,9 +18,7 @@ namespace SIAC.Models
 
                 /*Professores e Colaboradores*/
                 foreach (PessoaLocalTrabalho plt in this.PessoaLocalTrabalho)
-                {
                     pessoas.Add(plt.PessoaFisica);
-                }
 
                 return pessoas;
             }
@@ -36,8 +34,9 @@ namespace SIAC.Models
             int codInstituicao = int.Parse(codigos[0]);
             int codReitoria = int.Parse(codigos[1]);
 
-            return contexto.Reitoria.FirstOrDefault(r => r.CodInstituicao == codInstituicao
-                                                    && r.CodReitoria == codReitoria);
+            return contexto.Reitoria
+                .FirstOrDefault(r => r.CodInstituicao == codInstituicao
+                    && r.CodReitoria == codReitoria);
         }
     }
 }

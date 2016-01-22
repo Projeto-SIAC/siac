@@ -34,31 +34,31 @@ namespace SIAC.Models
                 {
                     switch (publico.CodAviTipoPublico)
                     {
-                        case 1: /*Institução*/
+                        case AviTipoPublico.INSTITUICAO:
                             pessoas.AddRange(publico.Instituicao.Pessoas);
                             break;
-                        case 2: /*Reitoria*/
+                        case AviTipoPublico.REITORIA:
                             pessoas.AddRange(publico.Reitoria.Pessoas);
                             break;
-                        case 3: /*Pró-Reitoria*/
+                        case AviTipoPublico.PRO_REITORIA:
                             pessoas.AddRange(publico.ProReitoria.Pessoas);
                             break;
-                        case 4: /*Campus*/
+                        case AviTipoPublico.CAMPUS:
                             pessoas.AddRange(publico.Campus.Pessoas);
                             break;
-                        case 5: /*Diretoria*/
+                        case AviTipoPublico.DIRETORIA:
                             pessoas.AddRange(publico.Diretoria.Pessoas);
                             break;
-                        case 6: /*Curso*/
+                        case AviTipoPublico.CURSO:
                             pessoas.AddRange(PessoaFisica.ListarPorCurso(publico.Curso.CodCurso));
                             break;
-                        case 7: /*Turma*/
+                        case AviTipoPublico.TURMA:
                             pessoas.AddRange(PessoaFisica.ListarPorTurma(publico.Turma.CodTurma));
                             break;
-                        case 8: /*Pessoa*/
+                        case AviTipoPublico.PESSOA:
                             pessoas.Add(publico.PessoaFisica);
                             break;
-                        default: /*Default*/
+                        default:
                             break;
                     }
                 }
@@ -107,7 +107,7 @@ namespace SIAC.Models
         }
 
         public List<AviPublico> Publico => this.FlagPublico ? this.AviPublico.ToList() : null;
-        
+
         public bool FlagQuestionario => this.Questoes.Count > 0;
 
         public bool FlagPublico => this.AviPublico.Count > 0;
@@ -142,12 +142,10 @@ namespace SIAC.Models
 
         public static List<AvalAvi> ListarPorColaborador(string matricula)
         {
-            Models.Colaborador colaborador = Models.Colaborador.ListarPorMatricula(matricula);
+            Colaborador colaborador = Colaborador.ListarPorMatricula(matricula);
 
             if (colaborador != null)
-            {
                 return contexto.AvalAvi.Where(avi => avi.CodColabCoordenador == colaborador.CodColaborador).ToList();
-            }
             return new List<AvalAvi>();
         }
 
@@ -157,23 +155,19 @@ namespace SIAC.Models
 
             if (pessoa != null)
             {
-                List<AvalAvi> institucionais = contexto.AvalAvi.Where(avi =>avi.Avaliacao.DtAplicacao <= DateTime.Now && avi.DtTermino >= DateTime.Now).ToList();
+                List<AvalAvi> institucionais = contexto.AvalAvi.Where(avi => avi.Avaliacao.DtAplicacao <= DateTime.Now && avi.DtTermino >= DateTime.Now).ToList();
 
                 List<AvalAvi> retorno = new List<AvalAvi>();
 
                 foreach (AvalAvi avi in institucionais)
-                {
                     if (avi.Pessoas.Contains(pessoa))
-                    {
                         retorno.Add(avi);
-                    }
-                }
                 return retorno;
             }
             return new List<AvalAvi>();
         }
 
-        public static AvalAvi ListarPorCodigoAvaliacao(string codigo) => 
+        public static AvalAvi ListarPorCodigoAvaliacao(string codigo) =>
             Avaliacao.ListarPorCodigoAvaliacao(codigo)?.AvalAvi;
 
         public void OrdenarQuestoes(string[] questoes)
@@ -191,17 +185,17 @@ namespace SIAC.Models
                     int indicador = int.Parse(valores[2]);
                     int ordem = int.Parse(valores[3]);
 
-                    AviQuestao questaoAntiga = aviQuestoes.FirstOrDefault(q => q.CodAviModulo == modulo
-                                                                           && q.CodAviCategoria == categoria
-                                                                           && q.CodAviIndicador == indicador
-                                                                           && q.CodOrdem == ordem);
+                    AviQuestao questaoAntiga = aviQuestoes
+                        .FirstOrDefault(q => q.CodAviModulo == modulo
+                            && q.CodAviCategoria == categoria
+                            && q.CodAviIndicador == indicador
+                            && q.CodOrdem == ordem);
 
                     if (questaoAntiga != null)
                     {
                         AviQuestao questaoNova = questaoAntiga;
                         List<AviQuestaoAlternativa> alternativas = questaoNova.AviQuestaoAlternativa.ToList();
                         Models.AviQuestao.Remover(questaoAntiga);
-                        //contexto.AviQuestao.Remove(questaoAntiga); Não funcionou assim '-'
                         questaoNova.CodOrdem = i + 1;
                         if (alternativas.Count > 0)
                         {
@@ -217,15 +211,7 @@ namespace SIAC.Models
 
                 if (aviQuestoesNova.Count > 0)
                 {
-                    //this.Questoes.Clear();
-                    //contexto.AviQuestao.RemoveRange(contexto.AviQuestao.Where(aq => aq.Ano == this.Ano
-                    //                           && aq.Semestre == this.Semestre
-                    //                           && aq.CodTipoAvaliacao == this.CodTipoAvaliacao
-                    //                           && aq.NumIdentificador == this.NumIdentificador).ToList());
-
-                    //contexto.AviQuestao.RemoveRange(aviQuestoes);
                     contexto.AviQuestao.AddRange(aviQuestoesNova);
-
                     contexto.SaveChanges();
                 }
             }
