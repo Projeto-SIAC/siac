@@ -247,7 +247,7 @@ else if (Model.Avaliacao.FlagRealizada)
                     <label>Aluno</label>
                     <select class="ui search aluno dropdown">
                         <option value="">Selecione</option>
-                        @foreach (Pessoa pessoa in Model.PessoasRealizaram)
+                        @foreach (PessoaFisica pessoa in Model.PessoasRealizaram)
                         {
                             <option value="@pessoa.CodPessoa">@pessoa.Nome</option>
                         }
