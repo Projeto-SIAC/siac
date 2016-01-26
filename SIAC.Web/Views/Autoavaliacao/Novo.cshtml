@@ -6,7 +6,7 @@
 
 @if (Model.Geradas.Count > 0)
 {
-    <h2>@ViewBag.Title<a href="@Url.Action("Gerar")" class="ui right floated button">Gerar</a></h2>
+    <h2>@ViewBag.Title<a href="@Url.Action("Gerar")" class="ui right floated button">Gerar Nova</a></h2>
     <div class="ui basic segment">
         <div class="ui stackable three cards">
         @foreach (AvalAuto auto in Model.Geradas)

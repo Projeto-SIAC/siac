@@ -122,6 +122,10 @@ else
                         Alternativa correta = lstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
                         <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? Html.Raw("<i class=\"checkmark icon\"></i>Correta") : Html.Raw("<i class=\"remove icon\"></i>Incorreta") )</div>
                     }
+                    else
+                    {
+                        <div class="ui blue label"><i class="write icon"></i>Discursiva</div>
+                    }
                 </div>
                 <div class="content">
                     <div class="ui segment">

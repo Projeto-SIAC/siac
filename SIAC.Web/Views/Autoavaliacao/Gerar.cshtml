@@ -5,15 +5,15 @@
 }
 
 <div class="ui confirmar modal">
-    <div class="header">Verificação e confirmação</div>
+    <div class="header">Verificar e Confirmar os dados fornecidos</div>
     <div class="content">
         <table class="ui very basic table">
             <thead>
                 <tr>
-                    <th>Disciplina</th>
+                    <th>Disciplina(s)</th>
                     <th>Tema(s)</th>
-                    <th>Quantidade</th>
-                    <th>Dificuldade</th>
+                    <th>Quantidade(s)</th>
+                    <th>Dificuldade(s)</th>
                 </tr>
             </thead>
             <tbody>                
@@ -35,7 +35,7 @@
     </div>
     @* Disciplinas *@
     <div class="field required">
-        <label for="ddlDisciplinas">Disciplina (s)</label>
+        <label for="ddlDisciplinas">Disciplina(s)</label>
         <select id="ddlDisciplinas" name="ddlDisciplinas" class="ui search dropdown" multiple required>
             <option value="">Disciplina</option>
             @foreach (Disciplina disciplina in Model.Disciplinas)
