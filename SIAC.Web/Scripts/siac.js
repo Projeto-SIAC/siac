@@ -301,6 +301,9 @@
     }
 
     function habilitarAjuda() {
+        $('.ui.ajuda.button').popup({
+            content: 'O sistema de Ajuda permitirá que você, ao pousar o mouse em cima dos elementos, saberá mais detalhes sobre sua funcionalidade'
+        })
         $('.ui.ajuda.button').click(function () {
             var $btnAjuda = $(this);
 
@@ -323,7 +326,7 @@
                     });
                 });
                 $btnAjuda.addClass('active');
-                siac.Lembrete.Notificacoes.exibir('Sistema de Ajuda ativado! Agora você só precisará pousar o mouse em cima dos elementos para saber mais detalhes sobre sua funcionalidade', 'info', 60);
+                siac.Lembrete.Notificacoes.exibir('Sistema de Ajuda ativado!', 'info', 60);
                 $('body').find('[data-ajuda-mensagem]').show('slow');
             }
         });
