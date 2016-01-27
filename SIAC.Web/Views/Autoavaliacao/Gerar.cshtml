@@ -35,7 +35,7 @@
     </div>
     @* Disciplinas *@
     <div class="field required">
-        <label for="ddlDisciplinas">Disciplina(s)</label>
+        <label for="ddlDisciplinas" data-ajuda="Clique na caixa abaixo para escolher a(s) Disciplina(s)">Disciplina(s)</label>
         <select id="ddlDisciplinas" name="ddlDisciplinas" class="ui search dropdown" multiple required>
             <option value="">Disciplina</option>
             @foreach (Disciplina disciplina in Model.Disciplinas)
@@ -46,14 +46,14 @@
     </div>
     @* Temas *@
     <div class="field required">
-        <label>Tema (s)</label>
+        <label data-ajuda="Selecione a Disciplina abaixo e depois clique na caixa que surgirá para escolher o(s) Tema(s) dessa Disciplina">Tema(s)</label>
         <div class="ui styled fluid tema accordion">
 
         </div>
     </div>
     @* Tipo das Questões *@
     <div class="field required">
-        <label>Tipo das Questões</label>
+        <label data-ajuda="Clique na caixa abaixo para escolher o Tipo das Questões">Tipo das Questões</label>
         <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" required>
             <option value="">Tipo</option>
             <option value="2">Somente discursivas</option>
@@ -63,13 +63,13 @@
     </div>
     @* Dificuldade das Questões *@
     <div class="field required">
-        <label>Dificuldade das Questões</label>
+        <label data-ajuda="Selecione a Disciplina abaixo e depois clique na caixa que surgirá para escolher a Dificuldade das Questões dessa Disciplina">Dificuldade das Questões</label>
         <div class="ui styled fluid dificuldade accordion">
         </div>
     </div>
     @* Qte das Questões *@
     <div class="field required">
-        <label>Quantidade das Questões</label>
+        <label data-ajuda="Selecione a Disciplina abaixo e depois clique na caixa que surgirá para escolher a Quantidade das Questões dessa Disciplina">Quantidade das Questões</label>
         <div class="ui styled fluid quantidade accordion">
         </div>
     </div>

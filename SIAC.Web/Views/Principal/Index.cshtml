@@ -6,6 +6,16 @@
 
 <h2>@ViewBag.Title</h2>
 
+<div class="ui info message hidden" data-ajuda-mensagem>
+    <div class="header">
+        Seja bem ao SIAC!
+    </div>
+    <ul class="list">
+        <li>Os ícones abaixo compõe o menu principal do sistema.</li>
+        <li>Caso exista algum, os ícones em vermelho servem como contadores para cada operação pendente.</li>
+    </ul>
+</div>
+
 <div class="ui stackable grid dashmenu">
     <div class="stackable doubling four columns centered row">
         @Html.Partial("_Atalho", new ViewDataDictionary() {

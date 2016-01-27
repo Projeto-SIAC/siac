@@ -248,11 +248,35 @@ namespace SIAC.Controllers
             {
                 AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
                 if (auto.CodPessoaFisica == codPessoaFisica)
-                    return View(auto);
+                {
+                    AutoavaliacaoRealizarViewModel model = new AutoavaliacaoRealizarViewModel();
+                    model.Autoavaliacao = auto;
+
+                    List<int> codDisciplinas = auto.Disciplina.Distinct().OrderBy(d=>d.Descricao).Select(d=>d.CodDisciplina).ToList();
+
+                    foreach (int codDisciplina in codDisciplinas)
+                    {
+                        List<Questao> questoes = auto.Avaliacao.QuestaoTema.
+                                                                    Where(qt => qt.CodDisciplina == codDisciplina).
+                                                                    OrderBy(qt => qt.Questao.CodTipoQuestao).
+                                                                    ThenBy(qt => qt.CodQuestao).
+                                                                Select(qt => qt.Questao).ToList();
+
+                        string disciplina = questoes.FirstOrDefault().Disciplina.Descricao;
+
+                        model.Questoes.Add(disciplina, questoes);
+                    }
+                    return View(model);
+                }
+                return RedirectToAction("Index");
             }
-            AutoavaliacaoNovoViewModel model = new AutoavaliacaoNovoViewModel();
-            model.Geradas = AvalAuto.ListarNaoRealizadaPorPessoa(codPessoaFisica);
-            return View("Novo", model);
+            else
+            {
+                AutoavaliacaoNovoViewModel model = new AutoavaliacaoNovoViewModel();
+                model.Geradas = AvalAuto.ListarNaoRealizadaPorPessoa(codPessoaFisica);
+                return View("Novo", model);
+            }
+
         }
 
         // GET: principal/autoavaliacao/imprimir/AUTO201520001

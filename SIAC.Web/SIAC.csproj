@@ -579,6 +579,7 @@
     <Compile Include="ViewModels\AcessoIndexViewModel.cs" />
     <Compile Include="ViewModels\AutoavaliacaoDetalheViewModel.cs" />
     <Compile Include="ViewModels\AutoavaliacaoNovoViewModel.cs" />
+    <Compile Include="ViewModels\AutoavaliacaoRealizarViewModel.cs" />
     <Compile Include="ViewModels\AvaliacaoAgendarViewModel.cs" />
     <Compile Include="ViewModels\AvaliacaoGerarViewModel.cs" />
     <Compile Include="ViewModels\AvaliacaoIndexViewModel.cs" />

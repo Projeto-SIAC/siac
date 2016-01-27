@@ -310,7 +310,8 @@
                     $elemento.popup('destroy');
                 });
                 $btnAjuda.removeClass('active');
-                siac.Lembrete.Notificacoes.exibir('Sistema de Ajuda desativado!','info');
+                siac.Lembrete.Notificacoes.exibir('Sistema de Ajuda desativado!', 'info');
+                $('body').find('[data-ajuda-mensagem]').hide('slow');
             } else {
                 $('body').find('[data-ajuda]').map(function () {
                     var $elemento = $(this);
@@ -322,7 +323,8 @@
                     });
                 });
                 $btnAjuda.addClass('active');
-                siac.Lembrete.Notificacoes.exibir('Sistema de Ajuda ativado!','info');
+                siac.Lembrete.Notificacoes.exibir('Sistema de Ajuda ativado! Agora você só precisará pousar o mouse em cima dos elementos para saber mais detalhes sobre sua funcionalidade', 'info', 60);
+                $('body').find('[data-ajuda-mensagem]').show('slow');
             }
         });
     }
