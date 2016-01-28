@@ -441,6 +441,7 @@
     <Compile Include="Models\pAvalAcadReposicao.cs" />
     <Compile Include="Models\pAvalAvi.cs" />
     <Compile Include="Models\pAvalCertificacao.cs" />
+    <Compile Include="Models\pAvalQuesPessoaResposta.cs" />
     <Compile Include="Models\pAviCategoria.cs" />
     <Compile Include="Models\pAviIndicador.cs" />
     <Compile Include="Models\pAviModulo.cs" />

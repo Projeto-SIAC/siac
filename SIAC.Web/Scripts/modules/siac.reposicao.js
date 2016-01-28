@@ -910,6 +910,12 @@ siac.Reposicao.Realizar = (function () {
             animateChildren: false
         });
 
+        var $lstOriginalTextarea = $('form .ui.basic.segment').find('textarea');
+        var $lstCloneTextarea = $modalBasicSegment.find('textarea');
+        for (var i = 0; i < $lstOriginalTextarea.length; i++) {
+            $lstCloneTextarea.eq(i).val($lstOriginalTextarea.eq(i).val());
+        }
+
         var $lstInput = $modalAccordion.find(':input,a');
 
         for (var i = 0, length = $lstInput.length; i < length; i++) {

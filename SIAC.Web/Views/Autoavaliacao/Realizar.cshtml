@@ -1,8 +1,15 @@
 ﻿@model AutoavaliacaoRealizarViewModel
 
 @{
-    ViewBag.Title = "Realizar Autoavaliação";
-    List<Questao> lstQuestao = Model.Autoavaliacao.Avaliacao.EmbaralharQuestao();
+    ViewBag.Title = "Realizar Autoavaliação";    
+}
+
+@section Styles {
+    <style>
+        .ui.fixed.sticky + form {
+          margin-top: 68px;
+        }
+    </style>
 }
 
 <h2>@ViewBag.Title <div class="ui right floated informacoes button">Informações</div></h2>
@@ -41,7 +48,7 @@
                         </td>
                         <td class="ui labels">
                             @* temas *@
-                            @foreach (var avalTema in Model.Autoavaliacao.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disciplina.CodDisciplina))
+                            @foreach (AvaliacaoTema avalTema in Model.Autoavaliacao.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disciplina.CodDisciplina))
                             {
                                 <div class="ui tag label">@avalTema.Tema.Descricao</div>
                             }
@@ -70,7 +77,7 @@
 </div>
 
 <div class="ui gabarito modal">
-    <div class="header">Verifique e confirme</div>
+    <div class="header">Verificar e confirmar as respostas fornecidas</div>
     <div class="content">
 
     </div>
@@ -103,46 +110,66 @@
 
 @Html.Partial("_AvaliacaoInformacoes", Model.Autoavaliacao.Avaliacao)
 
-<div class="ui labels">
-    <div class="ui label">
-        Ínicio
-        <div id="lblHoraInicio" class="detail">13h00min</div>
-    </div>
-    <div class="ui label">
-        Agora
-        <div id="lblHoraAgora" class="detail">13h30min</div>
-    </div>
-    <div class="ui label">
-        Duração
-        <div id="lblHoraDuracao" class="detail">01h30min</div>
-    </div>
-    <div class="ui label">
-        Restante
-        <div id="lblHoraRestante" class="detail">00h47min</div>
+<div class="ui sticky">
+    <div class="ui right aligned segment">
+        <div class="ui left floated floating dropdown labeled search icon button">
+            <i class="sidebar icon"></i>
+            <span class="text">Disciplina</span>
+            <div class="menu">
+                @foreach (string disciplina in Model.Questoes.Keys)
+                {
+                    <div class="item" data-alvo="@disciplina.ReplaceChars(" ", "-")">@disciplina</div>
+                }
+            </div>
+        </div>
+        <span class="ui labels">
+            <span class="ui label">
+                Hora de Início
+                <span id="lblHoraInicio" class="detail">13h00min</span>
+            </span>
+            <span class="ui label">
+                Hora Atual
+                <span id="lblHoraAgora" class="detail">13h30min</span>
+            </span>
+            <span class="ui label">
+                Duração
+                <span id="lblHoraDuracao" class="detail">01h30min</span>
+            </span>
+            <span class="ui label">
+                Restante
+                <span id="lblHoraRestante" class="detail">00h47min</span>
+            </span>
+        </span>
     </div>
 </div>
-
-@foreach (string disciplina in Model.Questoes.Keys)
-{
-    <table class="ui table">
-        <thead><a href="#@disciplina">@disciplina</a></thead>
-    </table>
-}
-
 
 <form class="ui form" action="@Url.Action("Resultado", new { codigo = Model.Autoavaliacao.Avaliacao.CodAvaliacao })" method="post">
     <div class="ui basic segment">
         @foreach (string disciplina in Model.Questoes.Keys)
         {
-            <h2 id="@disciplina">@disciplina</h2>
-            lstQuestao = Model.Questoes[disciplina];
+            <h3 id="@disciplina.ReplaceChars(" ", "-")">@disciplina</h3>
+            List<Questao> lstQuestao = Model.Questoes[disciplina];
             for (int i = 0; i < lstQuestao.Count; i++)
             {
-                <div id="@lstQuestao[i].CodQuestao" class="ui segment">
+                AvalQuesPessoaResposta resposta = Model.Autoavaliacao.Avaliacao.PessoaResposta.FirstOrDefault(r => r.CodPessoaFisica == Model.Autoavaliacao.CodPessoaFisica);
+                <div id="@lstQuestao[i].CodQuestao" class="ui questao segment">
                     <div class="ui dividing header" style="text-align:justify">
                         @Html.Raw((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToHtml("p"))
                     </div>
-                    <div class="ui ribbon label" style="display:none">Respondida</div>
+                    @if (resposta == null)
+                    {
+                        <div class="ui ribbon label" style="display:none">Respondida</div>
+                    }
+                    else
+                    {
+                        <div class="ui ribbon green label">
+                            Respondida
+                            @if (true)
+	                        {
+		                         /**/
+	                        }
+                        </div>
+                    }
                     @if (lstQuestao[i].CodTipoQuestao == TipoQuestao.OBJETIVA)
                     {
                         List<Alternativa> lstAlternativa = lstQuestao[i].EmbaralharAlternativa();
@@ -177,10 +204,10 @@
                                 }
                             </div>
                         }
-                        <div class="title" data-ajuda="Clique aqui para deixar um comentário sobre essa questão para o professor fornecedor."><i class="icon dropdown"></i>Comentário</div>
+                        <div class="title" data-ajuda="Clique aqui para deixar um comentário sobre essa questão para o professor."><i class="icon dropdown"></i>Algo de errado com a questão?</div>
                         <div class="content">
                             <div class="field">
-                                <label>Comentário</label>
+                                <label>Comente abaixo</label>
                                 <textarea name="txtComentario@(lstQuestao[i].CodQuestao)" id="txtComentario@(lstQuestao[i].CodQuestao)" placeholder="Comentário..." rows="3"></textarea>
                             </div>
                         </div>

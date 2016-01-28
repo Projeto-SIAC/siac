@@ -22,8 +22,12 @@ namespace SIAC
 
         protected void Session_End(object sender, EventArgs e)
         {
-            Models.Sistema.UsuarioAtivo.Remove((string)Session["UsuarioMatricula"]);
-            Models.Sistema.RemoverCookie((string)Session["UsuarioMatricula"]);
+            string matricula = (string)Session["UsuarioMatricula"] ?? "";
+            if (!String.IsNullOrWhiteSpace(matricula))
+            {
+                Models.Sistema.UsuarioAtivo.Remove(matricula);
+                Models.Sistema.RemoverCookie(matricula);
+            }
         }
 
         protected void Application_PreRequestHandlerExecute(object sender, EventArgs e)
@@ -56,7 +60,7 @@ namespace SIAC
             if (custom.ToLower() == "usuario")
             {
                 var cookie = context.Request.Cookies["SIAC_Session"];
-                if (cookie != null)
+                if (cookie != null && Models.Sistema.CookieUsuario.ContainsKey(cookie.Value))
                     return "usuario=" + Models.Sistema.CookieUsuario[cookie.Value];
             }
             return base.GetVaryByCustomString(context, custom);

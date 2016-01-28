@@ -228,6 +228,10 @@ siac.Autoavaliacao.Realizar = (function () {
             }, 1000 * 60 * 15);
         })();
 
+        $('.ui.dropdown').dropdown();
+
+        $('.ui.sticky').sticky();
+
         $('a[href]').on('click', function () {
             $('.ui.confirmar.modal').modal('show');
             $('.ui.confirmar.modal #txtRef').val($(this).attr('href'));
@@ -247,9 +251,15 @@ siac.Autoavaliacao.Realizar = (function () {
             $('.ui.informacoes.modal').modal('show')
         });
 
-        $('.ui.checkbox')
-            .checkbox()
-        ;
+        $('.ui.checkbox').checkbox();
+
+        $('[data-alvo]').click(function () {
+            $('html, body').animate({
+                scrollTop: $('#' + $(this).data('alvo')).offset().top - 68
+            }, 500, null, function () {
+                $('.ui.dropdown').dropdown('restore defaults').dropdown('set text', 'Disciplina');
+            });
+        });
 
         $('.ui.verificar.modal')
             .modal({
@@ -340,6 +350,18 @@ siac.Autoavaliacao.Realizar = (function () {
             }
         });
 
+        $('textarea[name^="txtResposta"], input[name^="rdoResposta"], textarea[name^="txtComentario"]').change(function () {
+            var $questao = $(this).parents('.questao.segment');
+            var $resposta = $questao.find('textarea[name^="txtResposta"], input[name^="rdoResposta"]').eq(0);
+            var $comentario = $questao.find('textarea[name^="txtComentario"]');
+            if ($resposta.val().trim()) {
+                questao = $questao.attr('id');
+                resposta = $resposta.val().trim();
+                comentario = $comentario.val().trim();
+                salvarResposta(questao, resposta, comentario);
+            }
+        });
+
         $('.ui.gabarito.modal')
             .modal({
                 onApprove: function () {
@@ -360,6 +382,24 @@ siac.Autoavaliacao.Realizar = (function () {
                 }
             })
         ;
+    }
+
+    function salvarResposta(questao, resposta, comentario) {
+        $.ajax({
+            type: 'POST',
+            url: '/principal/autoavaliacao/salvarresposta/' + _codAvaliacao,
+            data: {
+                questao: questao,
+                resposta: resposta,
+                comentario: comentario
+            },
+            beforeSend: function () {
+                siac.Lembrete.Notificacoes.exibir('Salvando respostas...')
+            },
+            success: function () {
+                siac.Lembrete.Notificacoes.exibir('Resposta salvas.', 'positivo')
+            }
+        })
     }
 
     function relogio() {
@@ -425,8 +465,8 @@ siac.Autoavaliacao.Realizar = (function () {
     }
 
     function confirmar() {
-        $modal = $('.ui.gabarito.modal');
-        $basicSegment = $('form .ui.basic.segment').clone();
+        var $modal = $('.ui.gabarito.modal');
+        var $basicSegment = $('form .ui.basic.segment').clone();
         $basicSegment.removeAttr('style');
         $modal.find('.content').html($('<div class="ui form"></div>').append($basicSegment));
         $modalBasicSegment = $modal.find('.ui.basic.segment');
@@ -436,7 +476,12 @@ siac.Autoavaliacao.Realizar = (function () {
             },
             animateChildren: false
         });
-        $lstInput = $modalBasicSegment.find(':input,a');
+        var $lstOriginalTextarea = $('form .ui.basic.segment').find('textarea');
+        var $lstCloneTextarea = $modalBasicSegment.find('textarea');
+        for (var i = 0; i < $lstOriginalTextarea.length; i++) {
+            $lstCloneTextarea.eq(i).val($lstOriginalTextarea.eq(i).val());
+        }
+        var $lstInput = $modalBasicSegment.find(':input,a');
         for (var i = 0; i < $lstInput.length; i++) {
             $lstInput.eq(i)
                 .attr({

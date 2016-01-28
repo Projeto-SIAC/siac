@@ -252,15 +252,16 @@ namespace SIAC.Controllers
                     AutoavaliacaoRealizarViewModel model = new AutoavaliacaoRealizarViewModel();
                     model.Autoavaliacao = auto;
 
-                    List<int> codDisciplinas = auto.Disciplina.Distinct().OrderBy(d=>d.Descricao).Select(d=>d.CodDisciplina).ToList();
+                    int[] codDisciplinas = auto.Disciplina.OrderBy(d => d.Descricao).Select(d => d.CodDisciplina).ToArray();
 
                     foreach (int codDisciplina in codDisciplinas)
                     {
-                        List<Questao> questoes = auto.Avaliacao.QuestaoTema.
-                                                                    Where(qt => qt.CodDisciplina == codDisciplina).
-                                                                    OrderBy(qt => qt.Questao.CodTipoQuestao).
-                                                                    ThenBy(qt => qt.CodQuestao).
-                                                                Select(qt => qt.Questao).ToList();
+                        List<Questao> questoes = auto.Avaliacao.QuestaoTema
+                            .Where(qt => qt.CodDisciplina == codDisciplina)
+                            .OrderBy(qt => qt.Questao.CodTipoQuestao)
+                            .ThenBy(qt => qt.CodQuestao)
+                            .Select(qt => qt.Questao)
+                            .ToList();
 
                         string disciplina = questoes.FirstOrDefault().Disciplina.Descricao;
 
@@ -276,7 +277,6 @@ namespace SIAC.Controllers
                 model.Geradas = AvalAuto.ListarNaoRealizadaPorPessoa(codPessoaFisica);
                 return View("Novo", model);
             }
-
         }
 
         // GET: principal/autoavaliacao/imprimir/AUTO201520001
@@ -322,7 +322,11 @@ namespace SIAC.Controllers
                         }
                         foreach (AvalTemaQuestao avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
                         {
-                            AvalQuesPessoaResposta avalQuesPessoaResposta = new AvalQuesPessoaResposta();
+                            AvalQuesPessoaResposta avalQuesPessoaResposta = avalTemaQuestao.AvalQuesPessoaResposta.FirstOrDefault(r => r.PessoaFisica.CodPessoa == codPessoaFisica);
+                            if (avalQuesPessoaResposta == null)
+                            {
+                                avalQuesPessoaResposta = new AvalQuesPessoaResposta();
+                            }
                             avalQuesPessoaResposta.CodPessoaFisica = codPessoaFisica;
                             if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
                             {
@@ -365,6 +369,16 @@ namespace SIAC.Controllers
         // POST: principal/autoavaliacao/arquivar/AUTO201520001
         [HttpPost]
         public ActionResult Arquivar(string codigo) => 
-            !String.IsNullOrWhiteSpace(codigo) ? Json(Avaliacao.AlternarFlagArquivo(codigo)) : Json(false);        
+            !String.IsNullOrWhiteSpace(codigo) ? Json(Avaliacao.AlternarFlagArquivo(codigo)) : Json(false);
+
+        // POST: principal/autoavaliacao/salvarresposta/AUTO201520001
+        [HttpPost]
+        public void SalvarResposta(string codigo, int questao, string resposta, string comentario) =>
+            AvalQuesPessoaResposta.SalvarResposta(
+                Avaliacao.ListarPorCodigoAvaliacao(codigo), 
+                Questao.ListarPorCodigo(questao), 
+                Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.PessoaFisica, 
+                resposta, 
+                comentario);
     }
 }
