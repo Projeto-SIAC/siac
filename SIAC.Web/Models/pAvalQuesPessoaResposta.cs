@@ -27,7 +27,10 @@ namespace SIAC.Models
                     sobreposicao = false;
                     corrente = new AvalQuesPessoaResposta()
                     {
-                        AvalTemaQuestao = avaliacao.AvaliacaoTema.Select(at => at.AvalTemaQuestao.FirstOrDefault(atq => atq.CodQuestao == questao.CodQuestao)).FirstOrDefault(),
+                        AvalTemaQuestao = avaliacao.AvaliacaoTema
+                            .Where(at => at.AvalTemaQuestao.FirstOrDefault(atq => atq.CodQuestao == questao.CodQuestao) != null)
+                            .Select(at => at.AvalTemaQuestao.FirstOrDefault(atq => atq.CodQuestao == questao.CodQuestao))
+                            .FirstOrDefault(),
                         PessoaFisica = pessoa
                     };
                 }

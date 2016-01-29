@@ -151,25 +151,12 @@
             List<Questao> lstQuestao = Model.Questoes[disciplina];
             for (int i = 0; i < lstQuestao.Count; i++)
             {
-                AvalQuesPessoaResposta resposta = Model.Autoavaliacao.Avaliacao.PessoaResposta.FirstOrDefault(r => r.CodPessoaFisica == Model.Autoavaliacao.CodPessoaFisica);
+                AvalQuesPessoaResposta resposta = Model.Autoavaliacao.Avaliacao.PessoaResposta.FirstOrDefault(r => r.CodQuestao == lstQuestao[i].CodQuestao);
                 <div id="@lstQuestao[i].CodQuestao" class="ui questao segment">
                     <div class="ui dividing header" style="text-align:justify">
                         @Html.Raw((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToHtml("p"))
                     </div>
-                    @if (resposta == null)
-                    {
-                        <div class="ui ribbon label" style="display:none">Respondida</div>
-                    }
-                    else
-                    {
-                        <div class="ui ribbon green label">
-                            Respondida
-                            @if (true)
-	                        {
-		                         /**/
-	                        }
-                        </div>
-                    }
+                    <div class="ui ribbon label" style="display:none">Respondida</div>                    
                     @if (lstQuestao[i].CodTipoQuestao == TipoQuestao.OBJETIVA)
                     {
                         List<Alternativa> lstAlternativa = lstQuestao[i].EmbaralharAlternativa();
@@ -179,7 +166,7 @@
                             {
                                 <div class="field">
                                     <div class="ui radio checkbox">
-                                        <input type="radio" name="rdoResposta@(lstQuestao[i].CodQuestao)" value="@lstAlternativa[j].CodOrdem" />
+                                        <input type="radio" name="rdoResposta@(lstQuestao[i].CodQuestao)" value="@lstAlternativa[j].CodOrdem" @(lstAlternativa[j].CodOrdem == resposta?.RespAlternativa ? "checked" : "") />
                                         <label><b>@j.GetIndiceAlternativa()</b>) @lstAlternativa[j].Enunciado</label>
                                     </div>
                                 </div>
@@ -190,7 +177,7 @@
                     {
                         <div class="field">
                             <label>Resposta</label>
-                            <textarea name="txtResposta@(lstQuestao[i].CodQuestao)" id="txtResposta@(lstQuestao[i].CodQuestao)" placeholder="Resposta..." rows="3"></textarea>
+                            <textarea name="txtResposta@(lstQuestao[i].CodQuestao)" id="txtResposta@(lstQuestao[i].CodQuestao)" placeholder="Resposta..." rows="3">@(resposta?.RespDiscursiva)</textarea>
                         </div>
                     }
                     <div class="ui accordion">
@@ -208,7 +195,7 @@
                         <div class="content">
                             <div class="field">
                                 <label>Comente abaixo</label>
-                                <textarea name="txtComentario@(lstQuestao[i].CodQuestao)" id="txtComentario@(lstQuestao[i].CodQuestao)" placeholder="Comentário..." rows="3"></textarea>
+                                <textarea name="txtComentario@(lstQuestao[i].CodQuestao)" id="txtComentario@(lstQuestao[i].CodQuestao)" placeholder="Comentário..." rows="3">@(resposta?.RespComentario)</textarea>
                             </div>
                         </div>
                     </div>

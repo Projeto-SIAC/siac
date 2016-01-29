@@ -332,23 +332,25 @@ siac.Autoavaliacao.Realizar = (function () {
         siac.Anexo.iniciar();
 
         $('textarea[name^="txtResposta"], input[name^="rdoResposta"]').change(function () {
-            var $_this = $(this);
+            var $_this = $(this),
+                $checked = $('input[name=' + $_this.attr('name') + ']:checked');
+
             $label = $_this.closest('.segment').find('.ui.ribbon.label');
-            if ($_this.val()) {
+
+            if (($_this.attr('name').indexOf('rdo') > -1 && $checked.length) || ($_this.attr('name').indexOf('txt') > -1 && $_this.val())) {
                 $label.removeClass('red');
                 $label.removeAttr('style');
                 $label.addClass('green');
                 $label.html('Respondida');
                 if ($_this.attr('name').indexOf('rdo') > -1) {
-                    console.log($('input[name=' + $_this.attr('name') + ']:checked').next().find('b').text());
                     $label.find('.detail').remove();
-                    $label.append($('<div class="detail"></div>').text($('input[name=' + $_this.attr('name') + ']:checked').next().find('b').text()));
+                    $label.append($('<div class="detail"></div>').text($checked.next().find('b').text()));
                 }
             }
             else {
                 $label.attr('style', 'display:none');
             }
-        });
+        }).change();
 
         $('textarea[name^="txtResposta"], input[name^="rdoResposta"], textarea[name^="txtComentario"]').change(function () {
             var $questao = $(this).parents('.questao.segment');
@@ -397,7 +399,7 @@ siac.Autoavaliacao.Realizar = (function () {
                 siac.Lembrete.Notificacoes.exibir('Salvando respostas...')
             },
             success: function () {
-                siac.Lembrete.Notificacoes.exibir('Resposta salvas.', 'positivo')
+                siac.Lembrete.Notificacoes.exibir('Respostas salvas.', 'positivo')
             }
         })
     }
