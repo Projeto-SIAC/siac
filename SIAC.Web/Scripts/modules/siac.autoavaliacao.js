@@ -540,6 +540,8 @@ siac.Autoavaliacao.Gerar = (function () {
         _jsonDificuldades = JSON.parse($json.html());
         $json.remove();
 
+        $('.ui.checkbox').checkbox();
+
         $('.ui.dropdown').dropdown();
 
         $('.ui.accordion').accordion({
