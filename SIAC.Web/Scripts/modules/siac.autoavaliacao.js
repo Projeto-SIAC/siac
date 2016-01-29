@@ -601,22 +601,24 @@ siac.Autoavaliacao.Gerar = (function () {
                 }
                 else {
                     ok = true;
+                    var qteObjetiva = $('#txtQteObjetiva' + discs[i]).val();
+                    var qteDiscursiva = $('#txtQteDiscursiva' + discs[i]).val();
                     if ($('#ddlTipo').val() == '1') {
-                        if (!$('#txtQteObjetiva' + discs[i]).val()) {
+                        if (!qteObjetiva || qteObjetiva <= 0 ) {
                             ok = false;
                             validado = false;
                             $list.append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
                         }
                     }
                     else if ($('#ddlTipo').val() == '2') {
-                        if (!$('#txtQteDiscursiva' + discs[i]).val()) {
+                        if (!qteDiscursiva || qteDiscursiva <= 0) {
                             ok = false;
                             validado = false;
                             $list.append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
                         }
                     }
                     else if ($('#ddlTipo').val() == '3') {
-                        if (!$('#txtQteDiscursiva' + discs[i]).val() || !$('#txtQteObjetiva' + discs[i]).val()) {
+                        if (!qteObjetiva || !qteDiscursiva || qteObjetiva < 0 || qteDiscursiva < 0 || (qteObjetiva <= 0 && qteDiscursiva <= 0)) {
                             ok = false;
                             validado = false;
                             $list.append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
@@ -626,6 +628,7 @@ siac.Autoavaliacao.Gerar = (function () {
 
                 if (ok == true) {
                     validado = true;
+                    $('form.error').removeClass('error');
                 }
                 else {
                     validado = false;
