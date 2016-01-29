@@ -26,7 +26,7 @@
     </div>
 </div>
 
-<div class="ui verificar modal">
+@*<div class="ui verificar modal">
     <div class="header">Informações sobre autoavaliação</div>
     <div class="content">
         <table class="ui striped table">
@@ -43,23 +43,19 @@
                 {
                     <tr>
                         <td>
-                            @* disciplina *@
                             <b>@disciplina.Descricao</b>
                         </td>
                         <td class="ui labels">
-                            @* temas *@
                             @foreach (AvaliacaoTema avalTema in Model.Autoavaliacao.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disciplina.CodDisciplina))
                             {
                                 <div class="ui tag label">@avalTema.Tema.Descricao</div>
                             }
                         </td>
                         <td class="ui labels">
-                            @* qte de questões *@
                             <div class="ui label">Objetiva<div class="detail">@Model.Autoavaliacao.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disciplina.CodDisciplina, 1)</div></div>
                             <div class="ui label">Discursiva<div class="detail">@Model.Autoavaliacao.Avaliacao.AvaliacaoTema.ToList().QteQuestoesPorTipo(disciplina.CodDisciplina, 2)</div></div>
                         </td>
                         <td>
-                            @* dificuldade *@
                             @Model.Autoavaliacao.Avaliacao.AvaliacaoTema.ToList().MaxDificuldade(disciplina.CodDisciplina)
                         </td>
                     </tr>
@@ -74,7 +70,7 @@
         <a onclick="window.location.href = '@Url.Action("Avaliacao","Impressao", new { codigo = Model.Autoavaliacao.Avaliacao.CodAvaliacao })';" class="ui imprimir button">Imprimir</a>
         <div class="ui iniciar button">Realizar</div>
     </div>
-</div>
+</div>*@
 
 <div class="ui gabarito modal">
     <div class="header">Verificar e confirmar as respostas fornecidas</div>
@@ -88,9 +84,20 @@
 </div>
 
 <div class="ui small cronometrar modal">
-    <div class="header">Temporizador</div>
+    <div class="header">Antes de começar</div>
     <div class="content">
-        <div class="ui form">
+        <div class="ui attached message">
+            <div class="header">
+                Algumas observações
+            </div>
+            <ul class="list">
+                <li>O sistema salvará automaticamente suas respostas.</li>
+                <li>Você pode sair a qualquer momento sem finalizar, mas o sistema irá lhe perguntar antes de continuar.</li>
+                <li>A autoavaliação está disponível até que você finalize.</li>
+                <li>Boa sorte e que a força esteja com você.</li>
+            </ul>
+        </div>
+        <div class="ui form attached segment">
             <div class="field">
                 <div class="ui toggle checkbox">
                     <input id="chkCronometrar" type="checkbox" tabindex="0">
@@ -147,7 +154,7 @@
     <div class="ui basic segment">
         @foreach (string disciplina in Model.Questoes.Keys)
         {
-            <h3 id="@disciplina.ReplaceChars(" ", "-")">@disciplina</h3>
+            <h3 class="visibility" id="@disciplina.ReplaceChars(" ", "-")">@disciplina</h3>
             List<Questao> lstQuestao = Model.Questoes[disciplina];
             for (int i = 0; i < lstQuestao.Count; i++)
             {

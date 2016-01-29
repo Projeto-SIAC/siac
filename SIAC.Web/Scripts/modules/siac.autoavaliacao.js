@@ -230,6 +230,16 @@ siac.Autoavaliacao.Realizar = (function () {
 
         $('.ui.dropdown').dropdown();
 
+        $('.visibility').visibility({
+            continuous: true,
+            onTopPassed: function () {
+                $('.ui.dropdown').dropdown('set selected', this.innerHTML);
+            },
+            onBottomPassed: function () {
+                $('.ui.dropdown').dropdown('set selected', this.innerHTML);
+            }
+        });
+
         $('.ui.sticky').sticky();
 
         $('a[href]').on('click', function () {
@@ -256,23 +266,21 @@ siac.Autoavaliacao.Realizar = (function () {
         $('[data-alvo]').click(function () {
             $('html, body').animate({
                 scrollTop: $('#' + $(this).data('alvo')).offset().top - 68
-            }, 500, null, function () {
-                $('.ui.dropdown').dropdown('restore defaults').dropdown('set text', 'Disciplina');
-            });
+            }, 500);
         });
 
-        $('.ui.verificar.modal')
-            .modal({
-                closable: false,
-                transition: 'vertical flip',
-                onHide: function () {
-                    window.onbeforeunload = function () {
-                        return 'Você está realizando uma autoavaliação.';
-                    };
-                }
-            })
-            .modal('show')
-        ;
+        //$('.ui.verificar.modal')
+        //    .modal({
+        //        closable: false,
+        //        transition: 'vertical flip',
+        //        onHide: function () {
+        //            window.onbeforeunload = function () {
+        //                return 'Você está realizando uma autoavaliação.';
+        //            };
+        //        }
+        //    })
+        //    .modal('show')
+        //;
 
         $('.ui.cronometrar.modal')
             .modal({
@@ -292,9 +300,14 @@ siac.Autoavaliacao.Realizar = (function () {
                         $('#lblHoraRestante').parent().remove();
                         $('#lblHoraDuracao').parent().remove();
                     }
+                },
+                onHide: function () {
+                    window.onbeforeunload = function () {
+                        return 'Você está realizando uma autoavaliação.';
+                    };
                 }
             })
-            .modal('attach events', '.ui.verificar.modal .iniciar.button')
+            .modal('show')
         ;
 
         $('.ui.informacoes.modal')
