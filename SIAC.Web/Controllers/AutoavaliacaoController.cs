@@ -110,78 +110,157 @@ namespace SIAC.Controllers
             if (!formCollection.HasKeys())
                 return RedirectToAction("Index");
 
-            AvalAuto auto = new AvalAuto();
-
-            DateTime hoje = DateTime.Now;
-
-            /* Chave */
-            auto.Avaliacao = new Avaliacao();
-            auto.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(TipoAvaliacao.AUTOAVALIACAO);
-            auto.Avaliacao.Ano = hoje.Year;
-            auto.Avaliacao.Semestre = hoje.SemestreAtual();
-            auto.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(TipoAvaliacao.AUTOAVALIACAO);
-
-            /* Pessoa */
-            auto.CodPessoaFisica = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.CodPessoaFisica;
-
-            string[] disciplinas = formCollection["ddlDisciplinas"].Split(',');
-            /* Dados */
-            List<int> dificuldades = new List<int>();
-            foreach (string disciplina in disciplinas)
+            if (!String.IsNullOrWhiteSpace(formCollection["chkAvalicoesSeparadas"]))
             {
-                /* Dificuldade */
-                int codDificuldade = int.Parse(formCollection["ddlDificuldade" + disciplina]);
-                dificuldades.Add(codDificuldade);
-
-                /* Quantidade */
-                int qteObjetiva = 0;
-                int qteDiscursiva = 0;
-                if (formCollection["ddlTipo"] == "3")
+                string[] disciplinas = formCollection["ddlDisciplinas"].Split(',');
+                foreach (string disciplina in disciplinas)
                 {
-                    int.TryParse(formCollection["txtQteObjetiva" + disciplina], out qteObjetiva);
-                    int.TryParse(formCollection["txtQteDiscursiva" + disciplina], out qteDiscursiva);
-                }
-                else if (formCollection["ddlTipo"] == "2")
-                {
-                    int.TryParse(formCollection["txtQteDiscursiva" + disciplina], out qteDiscursiva);
-                }
-                else if (formCollection["ddlTipo"] == "1")
-                {
-                    int.TryParse(formCollection["txtQteObjetiva" + disciplina], out qteObjetiva);
-                }
+                    AvalAuto auto = new AvalAuto();
 
-                /* Temas */
-                string[] temas = formCollection["ddlTemas" + disciplina].Split(',');
+                    DateTime hoje = DateTime.Now;
 
-                /* Questões */
-                List<QuestaoTema> questoes = new List<QuestaoTema>();
+                    /* Chave */
+                    auto.Avaliacao = new Avaliacao();
+                    auto.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(TipoAvaliacao.AUTOAVALIACAO);
+                    auto.Avaliacao.Ano = hoje.Year;
+                    auto.Avaliacao.Semestre = hoje.SemestreAtual();
+                    auto.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(TipoAvaliacao.AUTOAVALIACAO);
 
-                if (qteObjetiva > 0)
-                    questoes.AddRange(Questao.ListarPorDisciplina(int.Parse(disciplina), temas, codDificuldade, TipoQuestao.OBJETIVA, qteObjetiva));
+                    /* Pessoa */
+                    auto.CodPessoaFisica = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.CodPessoaFisica;
 
-                if (qteDiscursiva > 0)
-                    questoes.AddRange(Questao.ListarPorDisciplina(int.Parse(disciplina), temas, codDificuldade, TipoQuestao.DISCURSIVA, qteDiscursiva));
+                    /* Dados */
+                    List<int> dificuldades = new List<int>();
+                    
+                    /* Dificuldade */
+                    int codDificuldade = int.Parse(formCollection["ddlDificuldade" + disciplina]);
+                    dificuldades.Add(codDificuldade);
 
-                foreach (string tema in temas)
-                {
-                    AvaliacaoTema avalTema = new AvaliacaoTema();
-                    avalTema.Tema = Tema.ListarPorCodigo(int.Parse(disciplina), int.Parse(tema));
-                    foreach (QuestaoTema questaoTema in questoes.Where(q => q.CodTema == int.Parse(tema)))
+                    /* Quantidade */
+                    int qteObjetiva = 0;
+                    int qteDiscursiva = 0;
+                    if (formCollection["ddlTipo"] == "3")
                     {
-                        AvalTemaQuestao avalTemaQuestao = new AvalTemaQuestao();
-                        avalTemaQuestao.QuestaoTema = questaoTema;
-                        avalTema.AvalTemaQuestao.Add(avalTemaQuestao);
+                        int.TryParse(formCollection["txtQteObjetiva" + disciplina], out qteObjetiva);
+                        int.TryParse(formCollection["txtQteDiscursiva" + disciplina], out qteDiscursiva);
                     }
-                    auto.Avaliacao.AvaliacaoTema.Add(avalTema);
+                    else if (formCollection["ddlTipo"] == "2")
+                    {
+                        int.TryParse(formCollection["txtQteDiscursiva" + disciplina], out qteDiscursiva);
+                    }
+                    else if (formCollection["ddlTipo"] == "1")
+                    {
+                        int.TryParse(formCollection["txtQteObjetiva" + disciplina], out qteObjetiva);
+                    }
+
+                    /* Temas */
+                    string[] temas = formCollection["ddlTemas" + disciplina].Split(',');
+
+                    /* Questões */
+                    List<QuestaoTema> questoes = new List<QuestaoTema>();
+
+                    if (qteObjetiva > 0)
+                        questoes.AddRange(Questao.ListarPorDisciplina(int.Parse(disciplina), temas, codDificuldade, TipoQuestao.OBJETIVA, qteObjetiva));
+
+                    if (qteDiscursiva > 0)
+                        questoes.AddRange(Questao.ListarPorDisciplina(int.Parse(disciplina), temas, codDificuldade, TipoQuestao.DISCURSIVA, qteDiscursiva));
+
+                    foreach (string tema in temas)
+                    {
+                        AvaliacaoTema avalTema = new AvaliacaoTema();
+                        avalTema.Tema = Tema.ListarPorCodigo(int.Parse(disciplina), int.Parse(tema));
+                        foreach (QuestaoTema questaoTema in questoes.Where(q => q.CodTema == int.Parse(tema)))
+                        {
+                            AvalTemaQuestao avalTemaQuestao = new AvalTemaQuestao();
+                            avalTemaQuestao.QuestaoTema = questaoTema;
+                            avalTema.AvalTemaQuestao.Add(avalTemaQuestao);
+                        }
+                        auto.Avaliacao.AvaliacaoTema.Add(avalTema);
+                    }
+
+                    auto.Avaliacao.DtCadastro = hoje;
+                    auto.CodDificuldade = dificuldades.Max();
+
+                    AvalAuto.Inserir(auto);
+                    Lembrete.AdicionarNotificacao($"Autoavaliação {auto.Avaliacao.CodAvaliacao} gerada com sucesso.", Lembrete.POSITIVO);
                 }
+                return RedirectToAction("Index");
             }
+            else
+            {
+                AvalAuto auto = new AvalAuto();
 
-            auto.Avaliacao.DtCadastro = hoje;
-            auto.CodDificuldade = dificuldades.Max();
+                DateTime hoje = DateTime.Now;
 
-            AvalAuto.Inserir(auto);
-            Lembrete.AdicionarNotificacao($"Autoavaliação {auto.Avaliacao.CodAvaliacao} gerada com sucesso.", Lembrete.POSITIVO);
-            return View(auto);
+                /* Chave */
+                auto.Avaliacao = new Avaliacao();
+                auto.Avaliacao.TipoAvaliacao = TipoAvaliacao.ListarPorCodigo(TipoAvaliacao.AUTOAVALIACAO);
+                auto.Avaliacao.Ano = hoje.Year;
+                auto.Avaliacao.Semestre = hoje.SemestreAtual();
+                auto.Avaliacao.NumIdentificador = Avaliacao.ObterNumIdentificador(TipoAvaliacao.AUTOAVALIACAO);
+
+                /* Pessoa */
+                auto.CodPessoaFisica = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.CodPessoaFisica;
+
+                string[] disciplinas = formCollection["ddlDisciplinas"].Split(',');
+                /* Dados */
+                List<int> dificuldades = new List<int>();
+                foreach (string disciplina in disciplinas)
+                {
+                    /* Dificuldade */
+                    int codDificuldade = int.Parse(formCollection["ddlDificuldade" + disciplina]);
+                    dificuldades.Add(codDificuldade);
+
+                    /* Quantidade */
+                    int qteObjetiva = 0;
+                    int qteDiscursiva = 0;
+                    if (formCollection["ddlTipo"] == "3")
+                    {
+                        int.TryParse(formCollection["txtQteObjetiva" + disciplina], out qteObjetiva);
+                        int.TryParse(formCollection["txtQteDiscursiva" + disciplina], out qteDiscursiva);
+                    }
+                    else if (formCollection["ddlTipo"] == "2")
+                    {
+                        int.TryParse(formCollection["txtQteDiscursiva" + disciplina], out qteDiscursiva);
+                    }
+                    else if (formCollection["ddlTipo"] == "1")
+                    {
+                        int.TryParse(formCollection["txtQteObjetiva" + disciplina], out qteObjetiva);
+                    }
+
+                    /* Temas */
+                    string[] temas = formCollection["ddlTemas" + disciplina].Split(',');
+
+                    /* Questões */
+                    List<QuestaoTema> questoes = new List<QuestaoTema>();
+
+                    if (qteObjetiva > 0)
+                        questoes.AddRange(Questao.ListarPorDisciplina(int.Parse(disciplina), temas, codDificuldade, TipoQuestao.OBJETIVA, qteObjetiva));
+
+                    if (qteDiscursiva > 0)
+                        questoes.AddRange(Questao.ListarPorDisciplina(int.Parse(disciplina), temas, codDificuldade, TipoQuestao.DISCURSIVA, qteDiscursiva));
+
+                    foreach (string tema in temas)
+                    {
+                        AvaliacaoTema avalTema = new AvaliacaoTema();
+                        avalTema.Tema = Tema.ListarPorCodigo(int.Parse(disciplina), int.Parse(tema));
+                        foreach (QuestaoTema questaoTema in questoes.Where(q => q.CodTema == int.Parse(tema)))
+                        {
+                            AvalTemaQuestao avalTemaQuestao = new AvalTemaQuestao();
+                            avalTemaQuestao.QuestaoTema = questaoTema;
+                            avalTema.AvalTemaQuestao.Add(avalTemaQuestao);
+                        }
+                        auto.Avaliacao.AvaliacaoTema.Add(avalTema);
+                    }
+                }
+
+                auto.Avaliacao.DtCadastro = hoje;
+                auto.CodDificuldade = dificuldades.Max();
+
+                AvalAuto.Inserir(auto);
+                Lembrete.AdicionarNotificacao($"Autoavaliação {auto.Avaliacao.CodAvaliacao} gerada com sucesso.", Lembrete.POSITIVO);
+                return View(auto);
+            }
         }
 
         // GET: principal/autoavaliacao/detalhe/AUTO201520001
