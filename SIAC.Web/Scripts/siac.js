@@ -326,7 +326,7 @@
                     });
                 });
                 $btnAjuda.addClass('active');
-                siac.Lembrete.Notificacoes.exibir('Sistema de Ajuda ativado!', 'info', 60);
+                siac.Lembrete.Notificacoes.exibir('Sistema de Ajuda ativado!', 'info');
                 $('body').find('[data-ajuda-mensagem]').show('slow');
             }
         });

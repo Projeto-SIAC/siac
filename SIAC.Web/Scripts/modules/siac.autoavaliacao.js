@@ -388,6 +388,7 @@ siac.Autoavaliacao.Realizar = (function () {
                                 $('.ui.global.loader').parent().dimmer('show');
                             };
                             $('form').submit();
+                            $('.ui.gabarito.modal').modal('hide');
                         },
                         error: function () {
                             siac.mensagem('Conecte-se à internet antes de confirmar.')
@@ -482,6 +483,7 @@ siac.Autoavaliacao.Realizar = (function () {
     function confirmar() {
         var $modal = $('.ui.gabarito.modal');
         var $basicSegment = $('form .ui.basic.segment').clone();
+
         $basicSegment.removeAttr('style');
         $modal.find('.content').html($('<div class="ui form"></div>').append($basicSegment));
         $modalBasicSegment = $modal.find('.ui.basic.segment');
@@ -491,6 +493,7 @@ siac.Autoavaliacao.Realizar = (function () {
             },
             animateChildren: false
         });
+
         var $lstOriginalTextarea = $('form .ui.basic.segment').find('textarea');
         var $lstCloneTextarea = $modalBasicSegment.find('textarea');
         for (var i = 0; i < $lstOriginalTextarea.length; i++) {

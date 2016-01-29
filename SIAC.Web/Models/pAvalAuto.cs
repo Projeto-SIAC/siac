@@ -24,5 +24,31 @@ namespace SIAC.Models
             List<AvalAuto> autoavaliacoes = contexto.AvalAuto.Where(auto => auto.CodPessoaFisica == codPessoaFisica).ToList();
             return autoavaliacoes.Where(a => a.Avaliacao.FlagPendente).ToList();
         }
+
+        public Dictionary<string,List<Questao>> DicionarioDisciplinaQuestao
+        {
+            get
+            {
+                Dictionary<string, List<Questao>> retorno = new Dictionary<string, List<Questao>>();
+
+                int[] codDisciplinas = this.Disciplina.OrderBy(d => d.Descricao).Select(d => d.CodDisciplina).ToArray();
+
+                foreach (int codDisciplina in codDisciplinas)
+                {
+                    List<Questao> questoes = this.Avaliacao.QuestaoTema
+                        .Where(qt => qt.CodDisciplina == codDisciplina)
+                        .OrderBy(qt => qt.Questao.CodTipoQuestao)
+                        .ThenBy(qt => qt.CodQuestao)
+                        .Select(qt => qt.Questao)
+                        .ToList();
+
+                    string disciplina = questoes.FirstOrDefault().Disciplina.Descricao;
+
+                    retorno.Add(disciplina, questoes);
+                }
+
+                return retorno;
+            }
+        }
     }
 }

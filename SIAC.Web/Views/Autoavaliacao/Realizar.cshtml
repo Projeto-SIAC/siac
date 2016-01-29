@@ -1,4 +1,4 @@
-﻿@model AutoavaliacaoRealizarViewModel
+﻿@model AvalAuto
 
 @{
     ViewBag.Title = "Realizar Autoavaliação";    
@@ -13,6 +13,19 @@
 }
 
 <h2>@ViewBag.Title <div class="ui right floated informacoes button">Informações</div></h2>
+
+<div class="ui info hidden message" data-ajuda-mensagem>
+    <div class="header">
+        Algumas observações
+    </div>
+    <ul class="list">
+        <li>O sistema salvará automaticamente suas respostas.</li>
+        <li>Você pode sair a qualquer momento sem finalizar, mas o sistema irá lhe perguntar antes de continuar.</li>
+        <li>A autoavaliação está disponível até que você finalize.</li>
+        <li>Boa sorte e que a força esteja com você.</li>
+    </ul>
+</div>
+
 
 <div class="ui small confirmar modal">
     <div class="header">Você tem certeza?</div>
@@ -115,7 +128,7 @@
     </div>
 </div>
 
-@Html.Partial("_AvaliacaoInformacoes", Model.Autoavaliacao.Avaliacao)
+@Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
 
 <div class="ui sticky">
     <div class="ui right aligned segment">
@@ -123,7 +136,7 @@
             <i class="sidebar icon"></i>
             <span class="text">Disciplina</span>
             <div class="menu">
-                @foreach (string disciplina in Model.Questoes.Keys)
+                @foreach (string disciplina in Model.DicionarioDisciplinaQuestao.Keys)
                 {
                     <div class="item" data-alvo="@disciplina.ReplaceChars(" ", "-")">@disciplina</div>
                 }
@@ -150,15 +163,15 @@
     </div>
 </div>
 
-<form class="ui form" action="@Url.Action("Resultado", new { codigo = Model.Autoavaliacao.Avaliacao.CodAvaliacao })" method="post">
+<form class="ui form" action="@Url.Action("Resultado", new { codigo = Model.Avaliacao.CodAvaliacao })" method="post">
     <div class="ui basic segment">
-        @foreach (string disciplina in Model.Questoes.Keys)
+        @foreach (string disciplina in Model.DicionarioDisciplinaQuestao.Keys)
         {
             <h3 class="visibility" id="@disciplina.ReplaceChars(" ", "-")">@disciplina</h3>
-            List<Questao> lstQuestao = Model.Questoes[disciplina];
+            List<Questao> lstQuestao = Model.DicionarioDisciplinaQuestao[disciplina];
             for (int i = 0; i < lstQuestao.Count; i++)
             {
-                AvalQuesPessoaResposta resposta = Model.Autoavaliacao.Avaliacao.PessoaResposta.FirstOrDefault(r => r.CodQuestao == lstQuestao[i].CodQuestao);
+                AvalQuesPessoaResposta resposta = Model.Avaliacao.PessoaResposta.FirstOrDefault(r => r.CodQuestao == lstQuestao[i].CodQuestao);
                 <div id="@lstQuestao[i].CodQuestao" class="ui questao segment">
                     <div class="ui dividing header" style="text-align:justify">
                         @Html.Raw((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToHtml("p"))

@@ -249,25 +249,7 @@ namespace SIAC.Controllers
                 AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
                 if (auto.CodPessoaFisica == codPessoaFisica)
                 {
-                    AutoavaliacaoRealizarViewModel model = new AutoavaliacaoRealizarViewModel();
-                    model.Autoavaliacao = auto;
-
-                    int[] codDisciplinas = auto.Disciplina.OrderBy(d => d.Descricao).Select(d => d.CodDisciplina).ToArray();
-
-                    foreach (int codDisciplina in codDisciplinas)
-                    {
-                        List<Questao> questoes = auto.Avaliacao.QuestaoTema
-                            .Where(qt => qt.CodDisciplina == codDisciplina)
-                            .OrderBy(qt => qt.Questao.CodTipoQuestao)
-                            .ThenBy(qt => qt.CodQuestao)
-                            .Select(qt => qt.Questao)
-                            .ToList();
-
-                        string disciplina = questoes.FirstOrDefault().Disciplina.Descricao;
-
-                        model.Questoes.Add(disciplina, questoes);
-                    }
-                    return View(model);
+                    return View(auto);
                 }
                 return RedirectToAction("Index");
             }
