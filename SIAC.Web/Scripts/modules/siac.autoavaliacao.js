@@ -577,6 +577,7 @@ siac.Autoavaliacao.Gerar = (function () {
 
     function prosseguir() {
         var validado = false;
+        var usarPadrao = false;
         $list = $('form .error.message .list');
         $list.html('');
 
@@ -595,9 +596,10 @@ siac.Autoavaliacao.Gerar = (function () {
                 }
 
                 if (!$('#ddlTipo').val()) {
-                    $list.html('<li>Selecione o tipo das questões</li>');
+                    $list.html('<li>Selecione o tipo das questões. Caso contrário, será utilizado o valor padrão <b>Somente objetivas</b></li>');
                     ok = false;
                     validado = false;
+                    usarPadrao = true;
                 }
                 else {
                     ok = true;
@@ -607,28 +609,33 @@ siac.Autoavaliacao.Gerar = (function () {
                         if (!qteObjetiva || qteObjetiva <= 0 ) {
                             ok = false;
                             validado = false;
-                            $list.append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
+                            usarPadrao = true;
+                            $list.append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() +
+                                             '. Caso contrário, será utilizado o valor padrão <b>10</b> </li>');
                         }
                     }
                     else if ($('#ddlTipo').val() == '2') {
                         if (!qteDiscursiva || qteDiscursiva <= 0) {
                             ok = false;
                             validado = false;
-                            $list.append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
+                            usarPadrao = true;
+                            $list.append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() +
+                                            '. Caso contrário, será utilizado o valor padrão <b>10</b> </li>');
                         }
                     }
                     else if ($('#ddlTipo').val() == '3') {
                         if (!qteObjetiva || !qteDiscursiva || qteObjetiva < 0 || qteDiscursiva < 0 || (qteObjetiva <= 0 && qteDiscursiva <= 0)) {
                             ok = false;
                             validado = false;
-                            $list.append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() + '</li>');
+                            usarPadrao = true;
+                            $list.append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text() +
+                                             '. Caso contrário, será utilizado o valor padrão <b>10</b> </li>');
                         }
                     }
                 }
 
                 if (ok == true) {
                     validado = true;
-                    $('form.error').removeClass('error');
                 }
                 else {
                     validado = false;
@@ -640,7 +647,13 @@ siac.Autoavaliacao.Gerar = (function () {
             validado = false;
         }
 
+        if (usarPadrao) {
+            $list.append('<a id="btnUsarPadrao" href="">Prosseguir operação com valores padrão.</p>')
+        }
+
         if (validado) {
+            $('form.error').removeClass('error');
+            $('#btnUsarPadrao').remove();
             confirmar()
         }
         else {
