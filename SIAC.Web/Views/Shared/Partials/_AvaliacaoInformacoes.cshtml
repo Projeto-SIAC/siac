@@ -23,7 +23,7 @@
                         {
                             case TipoAvaliacao.AUTOAVALIACAO:
                                 <tbody>
-                                    @foreach (Disciplina disc in Model.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+                                    @foreach (Disciplina disc in Model.AvalAuto.Disciplina)
                                     {
                                         <tr>
                                             <td>
@@ -226,7 +226,7 @@
                 {
                     case TipoAvaliacao.AUTOAVALIACAO:
                         <tbody>
-                            @foreach (Disciplina disc in Model.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+                            @foreach (Disciplina disc in Model.AvalAuto.Disciplina)
                             {
                                 <tr>
                                     <td>

@@ -10,7 +10,8 @@
     <i class="icon checkmark"></i>
     <div class="content">        
         <div class="header">Avaliação gerada com sucesso.</div>
-        <p>Sua autoavalicao encontra-se no seu <b><a href="@Url.Action("Index")">Histórico</a></b> e você poderá realizá-la quando bem entender.</div>
+        <p>Sua autoavalicao encontra-se no seu <b><a href="@Url.Action("Index")">Histórico</a></b> e você poderá realizá-la quando bem entender.
+    </div>
 </div>
 <div class="ui segment">
     <div class="ui dividing header">
@@ -26,7 +27,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (Disciplina disciplina in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+            @foreach (Disciplina disciplina in Model.Disciplina)
             {
                 <tr>
                     <td> @* disciplina *@

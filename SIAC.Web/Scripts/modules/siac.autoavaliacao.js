@@ -212,9 +212,10 @@ siac.Autoavaliacao.Resultado = (function () {
 })();
 
 siac.Autoavaliacao.Realizar = (function () {
-    var _codAvaliacao;
-    var _controleInterval;
-    var _controleRestante;
+    var _codAvaliacao,
+        _controleInterval,
+        _controleRestante,
+        _controleNoficacao;
 
     function iniciar() {
         _codAvaliacao = window.location.pathname.toLowerCase().match(/auto[0-9]+$/)[0];
@@ -410,10 +411,16 @@ siac.Autoavaliacao.Realizar = (function () {
                 comentario: comentario
             },
             beforeSend: function () {
-                siac.Lembrete.Notificacoes.exibir('Salvando respostas...')
+                var not = siac.Lembrete.Notificacoes.exibir('Salvando respostas...');
+                if (_controleNoficacao)
+                    _controleNoficacao.dismiss();
+                _controleNoficacao = not;
             },
             success: function () {
-                siac.Lembrete.Notificacoes.exibir('Respostas salvas.', 'positivo')
+                var not = siac.Lembrete.Notificacoes.exibir('Respostas salvas.', 'positivo');
+                if (_controleNoficacao)
+                    _controleNoficacao.dismiss();
+                _controleNoficacao = not;
             }
         })
     }

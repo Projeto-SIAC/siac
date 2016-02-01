@@ -35,7 +35,9 @@
     </div>
     @* Disciplinas *@
     <div class="field required">
-        <label for="ddlDisciplinas" data-ajuda="Clique na caixa abaixo para escolher a(s) Disciplina(s)">Disciplina(s)</label>
+        <label for="ddlDisciplinas" data-ajuda="Clique na caixa abaixo para escolher a(s) Disciplina(s)">
+            Escolha a(s) disciplina(s)
+        </label>
         <select id="ddlDisciplinas" name="ddlDisciplinas" class="ui search dropdown" multiple required>
             <option value="">Disciplina</option>
             @foreach (Disciplina disciplina in Model.Disciplinas)
@@ -46,20 +48,26 @@
     </div>
     @* Temas *@
     <div class="field required">
-        <label data-ajuda="Selecione a Disciplina abaixo e depois clique na caixa que surgirá para escolher o(s) Tema(s) dessa Disciplina">Tema(s)</label>
+        <label data-ajuda="Selecione a Disciplina abaixo e depois clique na caixa que surgirá para escolher o(s) Tema(s) dessa Disciplina">
+            Selecione o(s) tema(s)
+        </label>
         <div class="ui styled fluid tema accordion">
 
         </div>
     </div>
     @* Dificuldade das Questões *@
     <div class="field required">
-        <label data-ajuda="Selecione a Disciplina abaixo e depois clique na caixa que surgirá para escolher a Dificuldade das Questões dessa Disciplina">Dificuldade das Questões</label>
+        <label data-ajuda="Selecione a Disciplina abaixo e depois clique na caixa que surgirá para escolher a Dificuldade das Questões dessa Disciplina">
+            Defina a dificuldade das questões
+        </label>
         <div class="ui styled fluid dificuldade accordion">
         </div>
     </div>
     @* Tipo das Questões *@
     <div class="field required">
-        <label data-ajuda="Clique na caixa abaixo para escolher o Tipo das Questões">Tipo das Questões</label>
+        <label data-ajuda="Clique na caixa abaixo para escolher o Tipo das Questões">
+            Determine o tipo das questões
+        </label>
         <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" data-padrao="1" required>
             <option value="">Tipo</option>
             <option value="2">Somente discursivas</option>
@@ -69,7 +77,9 @@
     </div>
     @* Qte das Questões *@
     <div class="field required">
-        <label data-ajuda="Selecione a Disciplina abaixo e depois clique na caixa que surgirá para fornecer a Quantidade das Questões dessa Disciplina">Quantidade das Questões</label>
+        <label data-ajuda="Selecione a Disciplina abaixo e depois clique na caixa que surgirá para escolher a Quantidade das Questões dessa Disciplina">
+            Delimite a quantidade das questões para cada tipo
+        </label>
         <div class="ui styled fluid quantidade accordion">
         </div>
     </div>
