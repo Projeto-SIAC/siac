@@ -44,7 +44,7 @@
     </div>
     @* Disciplinas *@
     <div class="field required">
-        <label>Disciplina</label>
+        <label data-ajuda="Clique na caixa abaixo para escolher a Disciplina">Disciplina</label>
         <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" required>
             <option value="">Disciplina</option>
             @foreach (Disciplina disciplina in Model.Disciplinas)
@@ -55,24 +55,14 @@
     </div>
     @* Temas *@
     <div class="field required">
-        <label>Tema (s)</label>
+        <label data-ajuda="Clique na caixa abaixo para escolher o(s) Tema(s)">Tema(s)</label>
         <select id="ddlTemas" name="ddlTemas" class="ui search dropdown fluid tema" multiple required>
             <option value="">Temas...</option>
         </select>
     </div>
-    @* Tipo das Questões *@
-    <div class="field required">
-        <label>Tipo das Questões</label>
-        <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" required>
-            <option value="">Tipo</option>
-            <option value="2">Somente discursivas</option>
-            <option value="1">Somente objetivas</option>
-            <option value="3">Misto</option>
-        </select>
-    </div>
     @* Dificuldade das Questões *@
     <div class="field required">
-        <label>Dificuldade das Questões</label>
+        <label data-ajuda="Clique na caixa abaixo para escolher a Dificuldade das Questões">Dificuldade das Questões</label>
         <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown" required>
             <option value="">Dificuldade...</option>
             @foreach (Dificuldade dificuldade in Model.Dificuldades)
@@ -81,8 +71,20 @@
             }
         </select>
     </div>
+    @* Tipo das Questões *@
+    <div class="field required">
+        <label data-ajuda="Clique na caixa abaixo para escolher o Tipo das Questões">Tipo das Questões</label>
+        <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" required>
+            <option value="">Tipo</option>
+            <option value="2">Somente discursivas</option>
+            <option value="1">Somente objetivas</option>
+            <option value="3">Misto</option>
+        </select>
+    </div>
     @* Qte das Questões *@
-    <div class="field"><label>Quantidade das Questões</label></div>
+    <div class="field">
+        <label data-ajuda="Clique na(s) caixa(s) abaixo para fornecer a Quantidade das Questões">Quantidade das Questões</label>
+    </div>
     <div class="two fields"> 
         <div class="field required">
             <label>Objetiva</label>
