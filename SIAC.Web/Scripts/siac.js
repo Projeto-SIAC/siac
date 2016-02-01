@@ -303,31 +303,58 @@
     function habilitarAjuda() {
         $('.ui.ajuda.button').popup({
             content: 'O sistema de Ajuda permitirá que você, ao pousar o mouse em cima dos elementos, saberá mais detalhes sobre sua funcionalidade'
-        })
+        });
+
+        if ($('.ui.ajuda.button').hasClass('active')) 
+            ativarAjuda();
+
         $('.ui.ajuda.button').click(function () {
             var $btnAjuda = $(this);
-
             if ($btnAjuda.hasClass('active')) {
-                $('body').find('[data-ajuda]').map(function () {
-                    var $elemento = $(this);
-                    $elemento.popup('destroy');
-                });
-                $btnAjuda.removeClass('active');
+                enviarAjudaEstado(false);
                 siac.Lembrete.Notificacoes.exibir('Sistema de Ajuda desativado!', 'info');
-                $('body').find('[data-ajuda-mensagem]').hide('slow');
             } else {
-                $('body').find('[data-ajuda]').map(function () {
-                    var $elemento = $(this);
-                    var textoAjuda = $elemento.data('ajuda');
-
-                    $elemento.popup({
-                        on: 'hover',
-                        content: textoAjuda
-                    });
-                });
-                $btnAjuda.addClass('active');
+                enviarAjudaEstado(true);
                 siac.Lembrete.Notificacoes.exibir('Sistema de Ajuda ativado!', 'info');
-                $('body').find('[data-ajuda-mensagem]').show('slow');
+            }
+        });
+    }
+
+    function desativarAjuda() {
+        $('body').find('[data-ajuda]').map(function () {
+            var $elemento = $(this);
+            $elemento.popup('destroy');
+        });
+        $('.ui.ajuda.button').removeClass('active');
+        $('body').find('[data-ajuda-mensagem]').hide('slow');
+    }
+
+    function ativarAjuda() {
+        $('body').find('[data-ajuda]').map(function () {
+            var $elemento = $(this);
+            var textoAjuda = $elemento.data('ajuda');
+
+            $elemento.popup({
+                on: 'hover',
+                content: textoAjuda
+            });
+        });
+        $('.ui.ajuda.button').addClass('active');
+        $('body').find('[data-ajuda-mensagem]').show('slow');
+    }
+
+    function enviarAjudaEstado(estado) {
+        $.ajax({
+            type: 'POST',
+            url: '/acesso/ajuda',
+            data: { estado: estado },
+            complete: function () {
+                if (estado) {
+                    ativarAjuda()
+                }
+                else {
+                    desativarAjuda()
+                }
             }
         });
     }

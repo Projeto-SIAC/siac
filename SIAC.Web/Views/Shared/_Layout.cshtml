@@ -29,7 +29,7 @@
                     @DateTime.Today.ToString("D", new System.Globalization.CultureInfo("pt-BR"))
                 </div>
                 <div class="item">
-                    <div class="ui ajuda button">
+                    <div class="ui ajuda @(Sessao.AjudaEstado ? "active" : "") button">
                         Ajuda
                     </div>
                 </div>

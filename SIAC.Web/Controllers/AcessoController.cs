@@ -92,6 +92,10 @@ namespace SIAC.Controllers
         // GET: acesso/conectado
         public ActionResult Conectado() => null;
 
+        // POST: acesso/ajuda
+        [HttpPost]
+        public void Ajuda(bool estado) => Sessao.Inserir("AjudaEstado", estado);
+
         // GET: acesso/sair
         public ActionResult Sair()
         {

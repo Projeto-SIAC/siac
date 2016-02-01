@@ -19,6 +19,8 @@ namespace SIAC.Helpers
             }
         }
 
+        public static bool AjudaEstado => context?.Session["AjudaEstado"] != null ? (bool)context?.Session["AjudaEstado"] : false;
+
         public static string UsuarioMatricula => (string)context?.Session["UsuarioMatricula"] ?? String.Empty;
 
         public static string UsuarioNome => (string)context?.Session["UsuarioNome"] ?? String.Empty;
