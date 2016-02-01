@@ -1,7 +1,7 @@
 ﻿siac.Lembrete = siac.Lembrete || {};
 
 siac.Lembrete.iniciar = function () {
-    //alertify.set('notifier', 'position', 'top-right');
+    alertify.set('notifier', 'position', 'bottom-left');
 
     siac.Lembrete.Notificacoes.iniciar();
     siac.Lembrete.Lembretes.iniciar();
