@@ -1,24 +1,58 @@
 ﻿siac.Utilitario = siac.Utilitario || (function () {
+    function formatarData(dataBrasil) {
+        if (dataBrasil.indexOf('/') > 0) {
+            var hora = '',
+                data = '';
+            if (dataBrasil.indexOf(' ') > 0) {
+                var i = dataBrasil.indexOf(' ');
+                hora = dataBrasil.substring(i).trim();
+                data = dataBrasil.substring(0, i).trim();
+            }
+            else if (dataBrasil.indexOf('T') > 0) {
+                var i = dataBrasil.indexOf('T');
+                hora = dataBrasil.substring(i).trim();
+                data = dataBrasil.substring(0, i).trim();
+            }
+            else {
+                data = dataBrasil.trim();
+            }
+            var temp = data.split('/');
+            if (temp) {
+                if (temp[0].length == 4) {
+                    return (temp[0] + '-' + temp[1] + '-' + temp[2] + 'T' + hora).trim();
+                }
+                else {
+                    return (temp[2] + '-' + temp[1] + '-' + temp[0] + 'T' + hora).trim();
+                }
+            }
+        }
+        return dataBrasil;
+    }
+
 	// return 1 = a is bigger than b, 0 = a and b are same, -1 = a is smaller than b
-	function compararData(strDateA, strDateB) {
-		var timeDateA = Date.parse(strDateA);
-		var timeDateB = Date.parse(strDateB);
-		if (timeDateA > timeDateB) {
-			return 1;
+    function compararData(strDateA, strDateB) {
+		var timeDateA = Date.parse(formatarData(strDateA));
+		var timeDateB = Date.parse(formatarData(strDateB));
+		if (timeDateA && timeDateB) {
+		    if (timeDateA > timeDateB) {
+		        return 1;
+		    }
+		    else if (timeDateA == timeDateB) {
+		        return 0;
+		    }
 		}
-		else if (timeDateA == timeDateB) {
-			return 0;
-		}
-		else {
-			return -1;
-		}
+		return -1;
 	}
 
 	// return true or false
 	function dataEFuturo(strData) {
 		timeDataAgora = new Date().getTime();
-		timeData = Date.parse(strData);
-		return (timeData > timeDataAgora);
+		timeData = Date.parse(formatarData(strData));
+		console.log(formatarData(strData), timeData, timeDataAgora)
+		if (timeData && timeDataAgora) {
+		    return (timeData > timeDataAgora);
+		}
+		return false;
 	}
 
 	function validarCPF(strCPF) {
@@ -117,6 +151,7 @@
 	return {
 		compararData: compararData,
 		dataEFuturo: dataEFuturo,
-		validarCPF: validarCPF
+		validarCPF: validarCPF,
+        formatarData: formatarData
 	}
 })();

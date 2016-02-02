@@ -237,7 +237,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Agendar(string codigo, FormCollection form)
         {
-            if (Helpers.Sessao.UsuarioCategoriaCodigo != Categoria.PROFESSOR)
+            if (Sessao.UsuarioCategoriaCodigo != Categoria.PROFESSOR)
             {
                 if (Session["UrlReferrer"] != null)
                 {
@@ -250,11 +250,11 @@ namespace SIAC.Controllers
             string data = form["txtData"];
             string horaInicio = form["txtHoraInicio"];
             string horaTermino = form["txtHoraTermino"];
-            if (!Helpers.StringExt.IsNullOrWhiteSpace(codTurma, strCodSala, data,horaInicio,horaTermino))
+            if (!StringExt.IsNullOrWhiteSpace(codTurma, strCodSala, data,horaInicio,horaTermino))
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
 
-                string matricula = Helpers.Sessao.UsuarioMatricula;
+                string matricula = Sessao.UsuarioMatricula;
                 Professor professor = Professor.ListarPorMatricula(matricula);
 
                 if (acad.CodProfessor == professor.CodProfessor)
@@ -277,7 +277,7 @@ namespace SIAC.Controllers
 
                     // Data de Aplicacao
                     DateTime dtAplicacao = DateTime.Parse(data + " " + horaInicio);
-                    DateTime dtAplicacaoTermino = DateTime.Parse(data + " " + horaInicio);
+                    DateTime dtAplicacaoTermino = DateTime.Parse(data + " " + horaTermino);
 
                     if (dtAplicacao.IsFuture() && dtAplicacaoTermino.IsFuture() && dtAplicacaoTermino > dtAplicacao)
                     {

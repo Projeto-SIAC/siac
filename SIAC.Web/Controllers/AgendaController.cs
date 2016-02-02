@@ -113,7 +113,7 @@ namespace SIAC.Controllers
         // POST: principal/agenda/horarios?start=2013-12-01&end=2014-01-12
         [HttpPost]
         public ActionResult Conflitos(string start, string end)
-        {
+            {
             IEnumerable<Evento> retorno = ((JsonResult)Academicas(start, end)).Data as IEnumerable<Evento>;
             retorno = retorno.Union(((JsonResult)Reposicoes(start, end)).Data as IEnumerable<Evento>);
             retorno = retorno.Union(((JsonResult)Certificacoes(start, end)).Data as IEnumerable<Evento>);

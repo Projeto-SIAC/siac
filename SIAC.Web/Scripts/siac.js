@@ -318,6 +318,12 @@ siac.Ajuda = siac.Ajuda || (function () {
         if ($('.ui.ajuda.button').hasClass('active'))
             ativarAjuda();
 
+        $(document).keydown(function (e) {
+            if (e.keyCode == 112) {
+                $('.ui.ajuda.button').click();
+            }
+        });
+
         $('.ui.ajuda.button').click(function () {
             var $btnAjuda = $(this);
             if ($btnAjuda.hasClass('active')) {

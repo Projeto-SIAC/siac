@@ -435,7 +435,7 @@ else if (Model.Avaliacao.FlagRealizada)
 }
 @if (Model.Avaliacao.FlagAgendada)
 {
-    <a href="@Url.Action("Agendada", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">@(Sessao.UsuarioCategoriaCodigo == 2 ? "Aplicar" : "Realizar" )</a>
+    <a href="@Url.Action("Agendada", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">@(Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR ? "Aplicar" : "Realizar" )</a>
 }
 
 @section Scripts {
