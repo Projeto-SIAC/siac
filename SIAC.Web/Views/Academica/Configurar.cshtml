@@ -10,6 +10,18 @@
 
 @Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
 
+<div class="ui info message hidden" data-ajuda-mensagem>
+    <div class="header">
+        Ajuda
+    </div>
+    <ul class="list">
+        <li>Aqui em configuração você poderá trocar as atuais questões de sua avaliação por alguma outra equivalente aleatória do sistema.</li>
+        <li>O botão <i class="refresh icon"></i> serve para obter uma nova questão do sistema.</li>
+        <li>O botão <i class="undo icon"></i> serve para desfazer a sua última alteração, caso tenha feito alguma.</li>
+        <li>Não esqueça de confirmar as alterações clicando no botão <b>Salvar</b> ao fim desta página.</li>
+    </ul>
+</div>
+
 <div class="ui basic segment">
     <h3 class="ui dividing header">Questões</h3>
     <div class="ui one cards">

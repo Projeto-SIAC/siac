@@ -331,15 +331,16 @@ siac.Ajuda = siac.Ajuda || (function () {
     }
 
     function desativarAjuda() {
+        $('body').find('[data-ajuda-mensagem]').hide('slow');
         $('body').find('[data-ajuda]').map(function () {
             var $elemento = $(this);
             $elemento.popup('destroy');
         });
         $('.ui.ajuda.button').removeClass('active');
-        $('body').find('[data-ajuda-mensagem]').hide('slow');
     }
 
     function ativarAjuda() {
+        $('body').find('[data-ajuda-mensagem]').show('slow');
         $('body').find('[data-ajuda]').map(function () {
             var $elemento   = $(this),
                 textoTitulo = $elemento.data('ajuda-titulo'),
@@ -352,7 +353,6 @@ siac.Ajuda = siac.Ajuda || (function () {
             });
         });
         $('.ui.ajuda.button').addClass('active');
-        $('body').find('[data-ajuda-mensagem]').show('slow');
     }
 
     function enviarAjudaEstado(estado) {
