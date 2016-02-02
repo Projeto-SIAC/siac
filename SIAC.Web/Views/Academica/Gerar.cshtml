@@ -4,8 +4,9 @@
 }
 
 <div class="ui termo modal">
-    <div class="header">Você está ciente de...</div>
+    <div class="header">@ViewBag.Title</div>
     <div class="content">
+        <h3>Você está ciente do objetivo dessa funcionalidade?</h3>
         @Html.Raw(Model.Termo.ToHtml("p"))
     </div>
     <div class="actions">
@@ -15,7 +16,7 @@
 </div>
 
 <div class="ui confirmar modal">
-    <div class="header">Verificação e confirmação</div>
+    <div class="header">Verificar e confirmar os dados fornecidos</div>
     <div class="content">
         <table class="ui very basic table">
             <thead>
@@ -44,7 +45,7 @@
     </div>
     @* Disciplinas *@
     <div class="field required">
-        <label data-ajuda="Clique na caixa abaixo para escolher a Disciplina">Disciplina</label>
+        <label data-ajuda="Clique na caixa abaixo para escolher a disciplina">Escolha a disciplina</label>
         <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" required>
             <option value="">Disciplina</option>
             @foreach (Disciplina disciplina in Model.Disciplinas)
@@ -55,14 +56,14 @@
     </div>
     @* Temas *@
     <div class="field required">
-        <label data-ajuda="Clique na caixa abaixo para escolher o(s) Tema(s)">Tema(s)</label>
+        <label data-ajuda="Clique na caixa abaixo para escolher o(s) tema(s)">Selecione o(s) tema(s)</label>
         <select id="ddlTemas" name="ddlTemas" class="ui search dropdown fluid tema" multiple required>
             <option value="">Temas...</option>
         </select>
     </div>
     @* Dificuldade das Questões *@
     <div class="field required">
-        <label data-ajuda="Clique na caixa abaixo para escolher a Dificuldade das Questões">Dificuldade das Questões</label>
+        <label data-ajuda="Clique na caixa abaixo para escolher a dificuldade das questões">Defina a dificuldade das questões</label>
         <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown" required>
             <option value="">Dificuldade...</option>
             @foreach (Dificuldade dificuldade in Model.Dificuldades)
@@ -73,7 +74,7 @@
     </div>
     @* Tipo das Questões *@
     <div class="field required">
-        <label data-ajuda="Clique na caixa abaixo para escolher o Tipo das Questões">Tipo das Questões</label>
+        <label data-ajuda="Clique na caixa abaixo para escolher o tipo das questões">Determine o tipo das questões</label>
         <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" required>
             <option value="">Tipo</option>
             <option value="2">Somente discursivas</option>
@@ -83,7 +84,7 @@
     </div>
     @* Qte das Questões *@
     <div class="field">
-        <label data-ajuda="Clique na(s) caixa(s) abaixo para fornecer a Quantidade das Questões">Quantidade das Questões</label>
+        <label data-ajuda="Clique na(s) caixa(s) abaixo para fornecer a quantidade das questões para cada tipo">Delimite a quantidade das questões para cada tipo</label>
     </div>
     <div class="two fields"> 
         <div class="field required">
