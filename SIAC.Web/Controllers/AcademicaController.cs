@@ -28,7 +28,7 @@ namespace SIAC.Controllers
             }
         }
 
-        // POST: academica/listar
+        // POST: historico/academica/listar
         [HttpPost]
         public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina)
         {
@@ -294,7 +294,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Agendada", new { codigo = codigo });
         }
 
-        // GET: avaliacao/academica/detalhe/ACAD201520001
+        // GET: historico/avaliacao/academica/detalhe/ACAD201520001
         public ActionResult Detalhe(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -309,7 +309,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: avaliacao/academica/configurar/ACAD201520001
+        // GET: principal/avaliacao/academica/configurar/ACAD201520001
         [HttpGet]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Configurar(string codigo)
@@ -340,7 +340,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: avaliacao/academica/imprimir/ACAD201520001
+        // GET: principal/avaliacao/academica/imprimir/ACAD201520001
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Imprimir(string codigo)
         {
@@ -360,7 +360,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: avaliacao/academica/agendada/ACAD201520001
+        // GET: historico/avaliacao/academica/agendada/ACAD201520001
         public ActionResult Agendada(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -375,7 +375,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
-        // POST: avaliacao/academica/trocar/ACAD201520001
+        // POST: principal/avaliacao/academica/trocar/ACAD201520001
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult TrocarQuestao(string codigoAvaliacao, int tipo, int indice, int codQuestao)
@@ -467,7 +467,7 @@ namespace SIAC.Controllers
             return Json(String.Empty);
         }
 
-        // POST: avaliacao/academica/salvar/ACAD201520001
+        // POST: principal/avaliacao/academica/salvar/ACAD201520001
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Salvar(string codigo)
@@ -489,8 +489,8 @@ namespace SIAC.Controllers
 
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
-        
-        // POST: avaliacao/academica/desfazer/ACAD201520001
+
+        // POST: principal/avaliacao/academica/desfazer/ACAD201520001
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Desfazer(string codigoAvaliacao, int tipoQuestao, int indice, int codQuestao)
@@ -571,7 +571,7 @@ namespace SIAC.Controllers
             return Json(new { Tempo = tempo, Intervalo = quantidadeMilissegundo, FlagLiberada = flagLiberada });
         }
 
-        // POST: avaliacao/academica/liberar/ACAD201520001
+        // POST: principal/avaliacao/academica/liberar/ACAD201520001
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult AlternarLiberar(string codAvaliacao)
@@ -583,7 +583,7 @@ namespace SIAC.Controllers
             return Json(false);
         }
 
-        // GET: avaliacao/academica/acompanhar/ACAD201520007
+        // GET: principal/avaliacao/academica/acompanhar/ACAD201520007
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Acompanhar(string codigo)
         {
@@ -601,7 +601,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Agendada", new { codigo = codigo });
         }
 
-        // POST: academica/printar/ACAD201520007/20150123
+        // POST: principal/academica/printar/ACAD201520007/20150123
         [HttpPost]
         public ActionResult Printar(string codAvaliacao, string imageData)
         {
@@ -619,7 +619,7 @@ namespace SIAC.Controllers
             return Json(false);
         }
 
-        // GET: academica/realizar
+        // GET: principal/academica/realizar/ACAD2015200007
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE })]
         public ActionResult Realizar(string codigo)
         {
@@ -638,7 +638,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Agendada", new { codigo = codigo });
         }
 
-        // POST: academica/resultado/ACAD201520001
+        // POST: principal/academica/resultado/ACAD201520001
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE })]
         public ActionResult Resultado(string codigo, FormCollection form)
@@ -712,7 +712,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST: academica/desistir/ACAD201520016
+        // POST: principal/academica/desistir/ACAD201520016
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE })]
         public void Desistir(string codigo)
@@ -749,7 +749,7 @@ namespace SIAC.Controllers
             }
         }
 
-        // POST: academica/pendente
+        // POST: principal/academica/pendente
         [HttpGet]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Pendente()
@@ -759,7 +759,7 @@ namespace SIAC.Controllers
             return View(AvalAcademica.ListarCorrecaoPendentePorProfessor(codProfessor));
         }
 
-        // GET: avaliacao/academica/corrigir/ACAD201520016
+        // GET: historico/avaliacao/academica/corrigir/ACAD201520016
         [HttpGet]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Corrigir(string codigo)
@@ -775,8 +775,8 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
-        
-        // POST: academica/arquivar
+
+        // POST: principal/academica/arquivar
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Arquivar(string codigo)
@@ -788,7 +788,7 @@ namespace SIAC.Controllers
             return Json(false);
         }
 
-        // POST: academica/avaliacao/carregaralunos/ACAD201520016
+        // POST: principal/academica/avaliacao/carregaralunos/ACAD201520016
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult CarregarAlunos(string codigo)
@@ -808,7 +808,7 @@ namespace SIAC.Controllers
             return Json(null);
         }
 
-        // POST: academica/avaliacao/carregarquestoesdiscursivas/ACAD201520016
+        // POST: principal/academica/avaliacao/carregarquestoesdiscursivas/ACAD201520016
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR})]
         public ActionResult CarregarQuestoesDiscursivas(string codigo)
@@ -831,7 +831,7 @@ namespace SIAC.Controllers
             return Json(null);
         }
 
-        // POST: academica/avaliacao/carregarrespostasdiscursivas/ACAD201520016/20150123
+        // POST: principal/academica/avaliacao/carregarrespostasdiscursivas/ACAD201520016/20150123
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult CarregarRespostasDiscursivas(string codigo, string matrAluno)
@@ -861,7 +861,7 @@ namespace SIAC.Controllers
             return Json(null);
         }
 
-        // POST: academica/avaliacao/carregarrespostasporquestao/ACAD201520016/2699
+        // POST: principal/academica/avaliacao/carregarrespostasporquestao/ACAD201520016/2699
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR})]
         public ActionResult CarregarRespostasPorQuestao(string codigo, string codQuestao)
@@ -892,7 +892,7 @@ namespace SIAC.Controllers
             return Json(null);
         }
 
-        // POST: academica/avaliacao/corrigirquestaoaluno/ACAD201520016/20120065/2699
+        // POST: principal/academica/avaliacao/corrigirquestaoaluno/ACAD201520016/20120065/2699
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult CorrigirQuestaoAluno(string codigo, string matrAluno, string codQuestao, string notaObtida, string profObservacao)
@@ -909,7 +909,7 @@ namespace SIAC.Controllers
             return Json(false);
         }
 
-        // POST: academica/avaliacao/detalheindividual/ACAD201520016/20120065
+        // POST: principal/academica/avaliacao/detalheindividual/ACAD201520016/20120065
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult DetalheIndividual(string codigo, string matricula)

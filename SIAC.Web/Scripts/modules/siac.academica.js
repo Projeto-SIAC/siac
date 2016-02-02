@@ -552,7 +552,7 @@ siac.Academica.Configurar = (function () {
             url: '/principal/avaliacao/academica/desfazer',
             data: {
                 codigoAvaliacao: _codAvaliacao,
-                tipo: codTipoQuestao,
+                tipoQuestao: codTipoQuestao,
                 indice: indice,
                 codQuestao: codQuestao
             },
