@@ -17,7 +17,7 @@
 
             carregar();
             siac.Lembrete.iniciar();
-            habilitarAjuda();
+            siac.Ajuda.iniciar();
         });
     }
 
@@ -299,13 +299,23 @@
             ;
         }
     }
+    
+    
 
-    function habilitarAjuda() {
+    return {
+        iniciar: iniciar,
+        mensagem: mensagem,
+        aviso: aviso
+    }
+})();
+
+siac.Ajuda = siac.Ajuda || (function () {
+    function iniciar() {
         $('.ui.ajuda.button').popup({
             content: 'O Sistema de Ajuda permitirá que você, ao pousar o mouse em cima dos elementos, saiba mais detalhes sobre sua funcionalidade.'
         });
 
-        if ($('.ui.ajuda.button').hasClass('active')) 
+        if ($('.ui.ajuda.button').hasClass('active'))
             ativarAjuda();
 
         $('.ui.ajuda.button').click(function () {
@@ -331,9 +341,9 @@
 
     function ativarAjuda() {
         $('body').find('[data-ajuda]').map(function () {
-            var $elemento = $(this);
-            var textoTitulo = $elemento.data('ajuda-titulo');
-            var textoAjuda = $elemento.data('ajuda').trim();
+            var $elemento   = $(this),
+                textoTitulo = $elemento.data('ajuda-titulo'),
+                textoAjuda  = $elemento.data('ajuda').trim();
 
             $elemento.popup({
                 on: 'hover',
@@ -352,19 +362,17 @@
             data: { estado: estado },
             complete: function () {
                 if (estado) {
-                    ativarAjuda()
+                    ativarAjuda();
                 }
                 else {
-                    desativarAjuda()
+                    desativarAjuda();
                 }
             }
         });
     }
 
     return {
-        iniciar: iniciar,
-        mensagem: mensagem,
-        aviso: aviso
+        iniciar: iniciar
     }
 })();
 
