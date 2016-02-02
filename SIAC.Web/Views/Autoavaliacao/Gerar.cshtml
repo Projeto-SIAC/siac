@@ -19,6 +19,8 @@
             <tbody>                
             </tbody>
         </table>
+        <div class="ui segment">
+        </div>
     </div>
     <div class="actions">
         <div class="ui negative button">Voltar</div>
@@ -35,7 +37,7 @@
     </div>
     @* Disciplinas *@
     <div class="field required">
-        <label for="ddlDisciplinas" data-ajuda="Clique na caixa abaixo para escolher a(s) Disciplina(s)">
+        <label for="ddlDisciplinas" data-ajuda="Clique na caixa abaixo para escolher a(s) disciplina(s).">
             Escolha a(s) disciplina(s)
         </label>
         <select id="ddlDisciplinas" name="ddlDisciplinas" class="ui search dropdown" multiple required>
@@ -48,7 +50,7 @@
     </div>
     @* Temas *@
     <div class="field required">
-        <label data-ajuda="Selecione a Disciplina abaixo e depois clique na caixa que surgirá para escolher o(s) Tema(s) dessa Disciplina">
+        <label data-ajuda="Selecione a disciplina abaixo e depois clique na caixa que surgirá para selecionar o(s) tema(s) dessa disciplina.">
             Selecione o(s) tema(s)
         </label>
         <div class="ui styled fluid tema accordion">
@@ -57,7 +59,7 @@
     </div>
     @* Dificuldade das Questões *@
     <div class="field required">
-        <label data-ajuda="Selecione a Disciplina abaixo e depois clique na caixa que surgirá para escolher a Dificuldade das Questões dessa Disciplina">
+        <label data-ajuda="Selecione a disciplina abaixo e depois clique na caixa que surgirá para definir a dificuldade das questões dessa disciplina.">
             Defina a dificuldade das questões
         </label>
         <div class="ui styled fluid dificuldade accordion">
@@ -65,7 +67,7 @@
     </div>
     @* Tipo das Questões *@
     <div class="field required">
-        <label data-ajuda="Clique na caixa abaixo para escolher o Tipo das Questões">
+        <label data-ajuda="Clique na caixa abaixo para determinar o tipo das questões.">
             Determine o tipo das questões
         </label>
         <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" data-padrao="1" required>
@@ -77,7 +79,7 @@
     </div>
     @* Qte das Questões *@
     <div class="field required">
-        <label data-ajuda="Selecione a Disciplina abaixo e depois clique na caixa que surgirá para escolher a Quantidade das Questões dessa Disciplina">
+        <label data-ajuda="Selecione a disciplina abaixo e depois clique na caixa que surgirá para delimitar a quantidade das questões dessa disciplina para cada tipo.">
             Delimite a quantidade das questões para cada tipo
         </label>
         <div class="ui styled fluid quantidade accordion">
@@ -87,7 +89,7 @@
         <div class="field">
             <div class="ui toggle checkbox">
                 <input id="chkAvalicoesSeparadas" name="chkAvalicoesSeparadas" type="checkbox" checked>
-                <label for="chkAvalicoesSeparadas">Gerar uma autoavaliação para cada disciplina</label>
+                <label for="chkAvalicoesSeparadas" data-ajuda="Ativa esta opção para gerar uma avaliação para cada disciplina escolhida. Ou desative, para gerar uma única avaliação com todas as disciplinas.">Gerar uma autoavaliação para cada disciplina</label>
             </div>
         </div>
     </div>

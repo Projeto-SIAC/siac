@@ -790,10 +790,10 @@ siac.Autoavaliacao.Gerar = (function () {
     }
 
     function confirmar() {
-        $modal = $('.ui.confirmar.modal');
-        $ddlDisciplinas = $('#ddlDisciplinas :selected');
-        $ddlTipo = $('#ddlTipo');
-        $table = $modal.find('tbody').html('');
+        var $modal = $('.ui.confirmar.modal');
+        var $ddlDisciplinas = $('#ddlDisciplinas :selected');
+        var $ddlTipo = $('#ddlTipo');
+        var $table = $modal.find('tbody').html('');
         for (var i = 0; i < $ddlDisciplinas.length; i++) {
             $tr = $('<tr></tr>');
             $tdDisciplina = $('<td></td>').html('<b>' + $ddlDisciplinas.eq(i).text() + '</b>');
@@ -812,6 +812,10 @@ siac.Autoavaliacao.Gerar = (function () {
             $tdDificuldade = $('<td></td>').text($('#ddlDificuldade' + $ddlDisciplinas.eq(i).val() + ' :selected').text());
             $table.append($tr.append($tdDisciplina).append($tdTemas).append($tdQteQuestoes).append($tdDificuldade));
         }
+        var $checkBox = $('#chkAvalicoesSeparadas').parents('.ui.checkbox').clone();
+        $checkBox.find('input').removeAttr('id name').attr('readonly', 'readonly');
+        $checkBox.find('label').removeAttr('for');
+        $modal.find('.ui.segment').html($checkBox);
         $modal.modal('show');
     }
 

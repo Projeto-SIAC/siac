@@ -101,7 +101,7 @@
     color: rgba(0,0,0,.6);
     border: 0 solid transparent;
     border-radius: .28571429rem;
-    font-size: 1.15em;
+    font-size: 1.05em;
     /*font-weight: bold;*/
 }
 
@@ -111,7 +111,7 @@
     border-color: #DB2828!important;
     color: #FFF!important;
     border-radius: .28571429rem;
-    font-size: 1.15em;
+    font-size: 1.05em;
     /*font-weight: bold;*/
 }
 
@@ -121,17 +121,17 @@
     border-color: #2185D0!important;
     color: #FFF!important;
     border-radius: .28571429rem;
-    font-size: 1.15em;
+    font-size: 1.05em;
     /*font-weight: bold;*/
 }
 
 .ajs-message.ajs-green {
     text-align: left;
     background-color: #21BA45 !important;
-      border-color: #21BA45 !important;
-      color: #FFFFFF !important;
+    border-color: #21BA45 !important;
+    color: #FFFFFF !important;
     border-radius: .28571429rem;
-    font-size: 1.15em;
+    font-size: 1.05em;
     /*font-weight: bold;*/
 }
 

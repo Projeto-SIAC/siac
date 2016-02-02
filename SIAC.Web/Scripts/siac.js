@@ -17,7 +17,7 @@
 
             carregar();
             siac.Lembrete.iniciar();
-            habilitarAjuda();
+            siac.Ajuda.iniciar();
         });
     }
 
@@ -299,23 +299,33 @@
             ;
         }
     }
+    
+    
 
-    function habilitarAjuda() {
+    return {
+        iniciar: iniciar,
+        mensagem: mensagem,
+        aviso: aviso
+    }
+})();
+
+siac.Ajuda = siac.Ajuda || (function () {
+    function iniciar() {
         $('.ui.ajuda.button').popup({
-            content: 'O sistema de Ajuda permitirá que você, ao pousar o mouse em cima dos elementos, saberá mais detalhes sobre sua funcionalidade'
+            content: 'O Sistema de Ajuda permitirá que você, ao pousar o mouse em cima dos elementos, saiba mais detalhes sobre sua funcionalidade.'
         });
 
-        if ($('.ui.ajuda.button').hasClass('active')) 
+        if ($('.ui.ajuda.button').hasClass('active'))
             ativarAjuda();
 
         $('.ui.ajuda.button').click(function () {
             var $btnAjuda = $(this);
             if ($btnAjuda.hasClass('active')) {
                 enviarAjudaEstado(false);
-                siac.Lembrete.Notificacoes.exibir('Sistema de Ajuda desativado!', 'info');
+                siac.Lembrete.Notificacoes.exibir('O Sistema de Ajuda foi desativado!', 'info');
             } else {
                 enviarAjudaEstado(true);
-                siac.Lembrete.Notificacoes.exibir('Sistema de Ajuda ativado!', 'info');
+                siac.Lembrete.Notificacoes.exibir('O Sistema de Ajuda foi ativado!', 'info');
             }
         });
     }
@@ -331,11 +341,13 @@
 
     function ativarAjuda() {
         $('body').find('[data-ajuda]').map(function () {
-            var $elemento = $(this);
-            var textoAjuda = $elemento.data('ajuda');
+            var $elemento   = $(this),
+                textoTitulo = $elemento.data('ajuda-titulo'),
+                textoAjuda  = $elemento.data('ajuda').trim();
 
             $elemento.popup({
                 on: 'hover',
+                title: textoTitulo || 'Ajuda',
                 content: textoAjuda
             });
         });
@@ -350,19 +362,17 @@
             data: { estado: estado },
             complete: function () {
                 if (estado) {
-                    ativarAjuda()
+                    ativarAjuda();
                 }
                 else {
-                    desativarAjuda()
+                    desativarAjuda();
                 }
             }
         });
     }
 
     return {
-        iniciar: iniciar,
-        mensagem: mensagem,
-        aviso: aviso
+        iniciar: iniciar
     }
 })();
 
