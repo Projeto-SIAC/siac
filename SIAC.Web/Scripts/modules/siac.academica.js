@@ -99,7 +99,7 @@ siac.Academica.Agendar = (function () {
         }
 
         if ($('#txtData').val() && $('#txtHoraInicio').val()) {
-            var strDate = $('#txtData').val() + ' ' + $('#txtHoraInicio').val();
+            var strDate = siac.Utilitario.formatarData($('#txtData').val() + 'T' + $('#txtHoraInicio').val());
             if (!siac.Utilitario.dataEFuturo(strDate)) {
                 lstErro.append('<li>Especifique uma data de aplicação futura</li>');
                 retorno = false;
@@ -112,8 +112,8 @@ siac.Academica.Agendar = (function () {
         }
 
         if ($('#txtData').val() && $('#txtHoraInicio').val() && $('#txtHoraTermino').val()) {
-            var strDateA = $('#txtData').val() + ' ' + $('#txtHoraInicio').val();
-            var strDateB = $('#txtData').val() + ' ' + $('#txtHoraTermino').val();
+            var strDateA = $('#txtData').val() + 'T' + $('#txtHoraInicio').val();
+            var strDateB = $('#txtData').val() + 'T' + $('#txtHoraTermino').val();
             if (siac.Utilitario.compararData(strDateA, strDateB) >= 0) {
                 lstErro.append('<li>Especifique uma hora de término maior que a hora de início</li>');
                 retorno = false;
@@ -789,7 +789,7 @@ siac.Academica.Agendada = (function () {
 
 siac.Academica.Realizar = (function () {
     var _codAvaliacao, _matriculaUsuario, _dtTermino;
-    var _controleInterval, _controleRestante;
+    var _controleInterval, _controleRestante, _controleNotificacao;
 
     function iniciar() {
         var $elemento;
@@ -804,6 +804,8 @@ siac.Academica.Realizar = (function () {
         _dtTermino = new Date();
         _dtTermino.setTime(Date.parse($elemento.attr('data-termino')));
         $elemento.removeAttr('data-termino');
+
+        $('.ui.sticky').sticky();
 
         window.onbeforeunload = function () {
             return 'Você está realizando uma avaliação.';
@@ -866,6 +868,7 @@ siac.Academica.Realizar = (function () {
                         url: "/acesso/conectado",
                         success: function () {
                             finalizar();
+                            $(this).modal('hide');
                         },
                         error: function () {
                             siac.mensagem('Conecte-se à internet antes de confirmar.');
@@ -883,8 +886,8 @@ siac.Academica.Realizar = (function () {
         });
 
         var date = new Date();
-        $('#lblHoraInicio').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
-        $('#lblHoraTermino').text(_dtTermino.getHours() + 'h' + ("0" + (_dtTermino.getMinutes())).slice(-2) + 'min');
+        $('#lblHoraInicio').text(("0" + (date.getHours())).slice(-2) + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
+        $('#lblHoraTermino').text(("0" + (_dtTermino.getHours())).slice(-2) + 'h' + ("0" + (_dtTermino.getMinutes())).slice(-2) + 'min');
 
         relogio();
         temporizador(_dtTermino);
@@ -894,7 +897,7 @@ siac.Academica.Realizar = (function () {
     function relogio() {
         setInterval(function () {
             date = new Date();
-            $('#lblHoraAgora').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
+            $('#lblHoraAgora').text(("0" + (date.getHours())).slice(-2) + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
         }, 1000);
     }
 
@@ -938,7 +941,7 @@ siac.Academica.Realizar = (function () {
         var retorno = true;
         for (var i = 0, length = $Objects.length; i < length; i++) {
             var _this = $Objects.eq(i);
-            $label = _this.parents('.content').prev().find('.ui.label');
+            $label = _this.closest('.questao').find('.ui.label');
             if (_this.attr('name').indexOf('rdo') > -1) {
                 if ($('input[name="' + _this.attr('name') + '"]:checked').length === 0) {
                     $label.removeAttr('style').addClass('red').html('Não respondida').transition('tada');
@@ -955,16 +958,12 @@ siac.Academica.Realizar = (function () {
 
     function confirmar() {
         var $modal = $('.ui.gabarito.modal');
+        var $basicSegment = $('form .ui.basic.segment').clone();
 
-        var $accordion = $('form .ui.accordion').clone();
-
-        $accordion.removeAttr('style');
-
-        $modal.find('.content').html($('<div class="ui form"></div>').append($accordion));
-
-        var $modalAccordion = $modal.find('.ui.accordion');
-
-        $modalAccordion.accordion({
+        $basicSegment.removeAttr('style');
+        $modal.find('.content').html($('<div class="ui form"></div>').append($basicSegment));
+        $modalBasicSegment = $modal.find('.ui.basic.segment');
+        $modal.find('.ui.accordion').accordion({
             onChange: function () {
                 $('.ui.gabarito.modal').modal('refresh');
             },
@@ -976,10 +975,8 @@ siac.Academica.Realizar = (function () {
         for (var i = 0; i < $lstOriginalTextarea.length; i++) {
             $lstCloneTextarea.eq(i).val($lstOriginalTextarea.eq(i).val());
         }
-
-        var $lstInput = $modalAccordion.find(':input,a');
-
-        for (var i = 0, length = $lstInput.length; i < length; i++) {
+        var $lstInput = $modalBasicSegment.find(':input,a');
+        for (var i = 0; i < $lstInput.length; i++) {
             $lstInput.eq(i)
                 .attr({
                     'readonly': 'readonly'
@@ -988,7 +985,6 @@ siac.Academica.Realizar = (function () {
                 .off()
             ;
         }
-
         $modal.modal('show');
     }
 
@@ -1035,7 +1031,7 @@ siac.Academica.Realizar = (function () {
                     },
                     onDeny: function () {
                         $('html, body').animate({
-                            scrollTop: $(".title .label.red").offset().top
+                            scrollTop: $(".questao .label.red").offset().top
                         }, 1000);
                     }
                 })
@@ -1082,7 +1078,7 @@ siac.Academica.Realizar = (function () {
             });
 
             $('textarea[name^="txtResposta"], input[name^="rdoResposta"]').change(function () {
-                var $label = $(this).parents('.content').prev().find('.ui.label');
+                var $label = $(this).closest('.questao').find('.ui.label');
                 if ($(this).val()) {
                     $label.removeClass('red');
                     $label.removeAttr('style');
@@ -1196,7 +1192,9 @@ siac.Academica.Realizar = (function () {
                     if (chatQteMensagem > 1) {
                         document.title = 'Você recebeu ' + chatQteMensagem + ' mensagens - SIAC';
                     }
-                    siac.aviso('Você recebeu uma mensagem')
+                    if (_controleNotificacao)
+                        _controleNotificacao.dismiss()
+                    _controleNotificacao = siac.Lembrete.Notificacoes.exibir('Você recebeu uma mensagem');
                 }
             }
         };

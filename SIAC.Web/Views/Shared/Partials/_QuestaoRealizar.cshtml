@@ -4,56 +4,52 @@
     var i = (int)ViewData["Index"];
 }
 
-<div id="@Model.CodQuestao" class="title">
-    <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + Model.Enunciado).ToShortString(80))
-    <div class="ui small label" style="display:none">Respondida</div>
-</div>
-<div id="@Model.CodQuestao" class="content">
-    <div class="ui segment">
-        <div class="ui dividing header" style="text-align:justify">
-            @Html.Raw((i.GetIndiceQuestao() + ". " + Model.Enunciado).ToHtml("p"))
-        </div>
-        @if (Model.CodTipoQuestao == TipoQuestao.OBJETIVA)
-        {
-            var lstAlternativa = Model.EmbaralharAlternativa();
-            <div class="grouped fields">
-                <label>Selecione a alternativa</label>
-                @for (int j = 0; j < lstAlternativa.Count; j++)
-                {
-                    <div class="field">
-                        <div class="ui radio checkbox">
-                            <input type="radio" name="rdoResposta@(Model.CodQuestao)" value="@lstAlternativa[j].CodOrdem" />
-                            <label><b>@j.GetIndiceAlternativa()</b>) @lstAlternativa[j].Enunciado</label>
-                        </div>
+<div id="@Model.CodQuestao" class="ui questao segment">
+    <div class="ui dividing header" style="text-align:justify">
+        @Html.Raw((i.GetIndiceQuestao() + ". " + Model.Enunciado).ToHtml("p"))
+    </div>
+    <div class="ui ribbon label" style="display:none">Respondida</div>
+    @if (Model.CodTipoQuestao == TipoQuestao.OBJETIVA)
+    {
+        List<Alternativa> lstAlternativa = Model.EmbaralharAlternativa();
+        <div class="grouped fields">
+            <label>Selecione a alternativa</label>
+            @for (int j = 0; j < lstAlternativa.Count; j++)
+            {
+                <div class="field">
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="rdoResposta@(Model.CodQuestao)" value="@lstAlternativa[j].CodOrdem" />
+                        <label><b>@j.GetIndiceAlternativa()</b>) @lstAlternativa[j].Enunciado</label>
                     </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="field">
+            <label>Responda abaixo</label>
+            <textarea name="txtResposta@(Model.CodQuestao)" id="txtResposta@(Model.CodQuestao)" placeholder="Resposta..." rows="3"></textarea>
+        </div>
+    }
+    <div class="ui accordion">
+        @if (Model.QuestaoAnexo.Count > 0)
+        {
+            <div class="title"><i class="icon dropdown"></i>Anexos</div>
+            <div class="content">
+                @foreach (QuestaoAnexo anexo in Model.QuestaoAnexo)
+                {
+                    @Html.Partial("_Anexo", anexo)
                 }
             </div>
         }
-        else
-        {
+        <div class="title" data-ajuda="Clique aqui para deixar um comentário sobre essa questão para o professor.">
+            <i class="icon dropdown"></i>Algo de errado com a questão?
+        </div>
+        <div class="content">
             <div class="field">
-                <label>Resposta</label>
-                <textarea name="txtResposta@(Model.CodQuestao)" id="txtResposta@(Model.CodQuestao)" placeholder="Resposta..." rows="3"></textarea>
-            </div>
-        }
-
-        <div class="accordion">
-            @if (Model.QuestaoAnexo.Count > 0)
-            {
-                <div class="title"><i class="icon dropdown"></i>Anexos</div>
-                <div class="content">
-                    @foreach (QuestaoAnexo anexo in Model.QuestaoAnexo)
-                    {
-                        @Html.Partial("_Anexo", anexo)
-                    }
-                </div>
-            }
-            <div class="title"><i class="icon dropdown"></i>Comentário</div>
-            <div class="content">
-                <div class="field">
-                    <label>Comentário</label>
-                    <textarea name="txtComentario@(Model.CodQuestao)" id="txtComentario@(Model.CodQuestao)" placeholder="Comentário..." rows="3"></textarea>
-                </div>
+                <label>Comente abaixo</label>
+                <textarea name="txtComentario@(Model.CodQuestao)" id="txtComentario@(Model.CodQuestao)" placeholder="Comentário..." rows="3"></textarea>
             </div>
         </div>
     </div>
