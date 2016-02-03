@@ -14,7 +14,7 @@
 
 <h2>@ViewBag.Title <div class="ui right floated informacoes button">Informações</div></h2>
 
-<div class="ui info hidden message" data-ajuda-mensagem>
+<div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
     <div class="header">
         Algumas observações
     </div>
