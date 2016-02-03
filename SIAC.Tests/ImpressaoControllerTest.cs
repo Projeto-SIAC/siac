@@ -7,55 +7,42 @@ namespace SIAC.Tests
     [TestClass]
     public class ImpressaoControllerTest
     {
+        ImpressaoController controller = new ImpressaoController();
+
         [TestMethod]
         public void TestIndexRedirecionamento()
         {
-            var controller = new ImpressaoController();
-
-            var result = controller.Index() as RedirectToRouteResult;
-
-            Assert.AreEqual("Principal", result.RouteValues["controller"]);
+            RedirectToRouteResult resultado = controller.Index() as RedirectToRouteResult;
+            Assert.AreEqual("Principal", resultado.RouteValues["controller"]);
         }
 
         [TestMethod]
         public void TestInstitucionalComCodigoNulo()
         {
-            var controller = new ImpressaoController();
-
-            var result = controller.Institucional(null) as RedirectToRouteResult;
-
-            Assert.AreEqual("Principal", result.RouteValues["controller"]);
+            RedirectToRouteResult resultado = controller.Institucional(null) as RedirectToRouteResult;
+            Assert.AreEqual("Principal", resultado.RouteValues["controller"]);
         }
 
 
         [TestMethod]
         public void TestAvaliacaoComCodigoNulo()
         {
-            var controller = new ImpressaoController();
-
-            var result = controller.Avaliacao(null) as RedirectToRouteResult;
-
-            Assert.AreEqual("Principal", result.RouteValues["controller"]);
+            RedirectToRouteResult resultado = controller.Avaliacao(null) as RedirectToRouteResult;
+            Assert.AreEqual("Principal", resultado.RouteValues["controller"]);
         }
 
         [TestMethod]
         public void TestInstitucionalComCodigoVazio()
         {
-            var controller = new ImpressaoController();
-
-            var result = controller.Institucional("") as RedirectToRouteResult;
-
-            Assert.AreEqual("Principal", result.RouteValues["controller"]);
+            RedirectToRouteResult resultado = controller.Institucional("") as RedirectToRouteResult;
+            Assert.AreEqual("Principal", resultado.RouteValues["controller"]);
         }
 
         [TestMethod]
         public void TestAvaliacaoComCodigoVazio()
         {
-            var controller = new ImpressaoController();
-
-            var result = controller.Avaliacao("") as RedirectToRouteResult;
-
-            Assert.AreEqual("Principal", result.RouteValues["controller"]);
+            RedirectToRouteResult resultado = controller.Avaliacao("") as RedirectToRouteResult;
+            Assert.AreEqual("Principal", resultado.RouteValues["controller"]);
         }
     }
 }

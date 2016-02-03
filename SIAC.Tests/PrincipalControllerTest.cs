@@ -10,20 +10,17 @@ namespace SIAC.Tests
     [TestClass]
     public class PrincipalControllerTest
     {
+        PrincipalController controller = new PrincipalController();
+
         [TestMethod]
         public void TestPendenteModel()
         {
             HttpContext.Current = MockHelper.FakeHttpContext("http://siac.apphb.com/principal/pendente");
-
             Helpers.Sessao.Inserir("UsuarioMatricula", "20150002");
 
-            var controller = new PrincipalController();           
-
-            var result = controller.Pendente() as ViewResult;
-
-            var modelEsperado = new List<Avaliacao>();
-
-            Assert.AreEqual(modelEsperado.GetType(), result.Model.GetType());
+            List<Avaliacao> esperado = new List<Avaliacao>();
+            ViewResult resultado = controller.Pendente() as ViewResult;
+            Assert.AreEqual(esperado.GetType(), resultado.Model.GetType());
         }        
     }
 }

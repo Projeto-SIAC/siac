@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SIAC.Controllers;
+using System;
 using System.Web.Mvc;
 
 namespace SIAC.Tests
@@ -7,14 +8,13 @@ namespace SIAC.Tests
     [TestClass]
     public class ErroControllerTest
     {
+        ErroController controller = new ErroController();
+
         [TestMethod]
         public void TestIndexComCodigoZero()
         {
-            var controller = new ErroController();           
-
-            var result = controller.Index(0) as ViewResult;
-
-            Assert.AreNotEqual("", result.ViewBag.Codigo);
+            ViewResult resultado = controller.Index(0) as ViewResult;
+            Assert.AreNotEqual(String.Empty, resultado.ViewBag.Codigo);
         }
     }
 }
