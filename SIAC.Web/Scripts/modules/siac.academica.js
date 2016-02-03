@@ -789,7 +789,7 @@ siac.Academica.Agendada = (function () {
 
 siac.Academica.Realizar = (function () {
     var _codAvaliacao, _matriculaUsuario, _dtTermino;
-    var _controleInterval, _controleRestante;
+    var _controleInterval, _controleRestante, _controleNotificacao;
 
     function iniciar() {
         var $elemento;
@@ -804,6 +804,8 @@ siac.Academica.Realizar = (function () {
         _dtTermino = new Date();
         _dtTermino.setTime(Date.parse($elemento.attr('data-termino')));
         $elemento.removeAttr('data-termino');
+
+        $('.ui.sticky').sticky();
 
         window.onbeforeunload = function () {
             return 'Você está realizando uma avaliação.';
@@ -1190,7 +1192,9 @@ siac.Academica.Realizar = (function () {
                     if (chatQteMensagem > 1) {
                         document.title = 'Você recebeu ' + chatQteMensagem + ' mensagens - SIAC';
                     }
-                    siac.aviso('Você recebeu uma mensagem')
+                    if (_controleNotificacao)
+                        _controleNotificacao.dismiss()
+                    _controleNotificacao = siac.Lembrete.Notificacoes.exibir('Você recebeu uma mensagem');
                 }
             }
         };
