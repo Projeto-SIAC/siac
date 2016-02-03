@@ -51,7 +51,7 @@
 </div>
 
 <div class="ui gabarito modal">
-    <div class="header">Verifique e confirme</div>
+    <div class="header">Verificar e confirmar as respostas fornecidas</div>
     <div class="content">
 
     </div>
@@ -66,7 +66,7 @@
         Ínicio
         <div id="lblHoraInicio" class="detail">@DateTime.Now.ToString("HH'h'mm'min'")</div>
     </div>
-    <div class="ui label" data-termino="@Model.Avaliacao.DtTermino.Value.ToString("yyyy-MM-dd HH:mm")">
+    <div class="ui label" data-termino="@Model.Avaliacao.DtTermino.Value.ToString("yyyy-MM-dd'T'HH:mm")">
         Término
         <div id="lblHoraTermino" class="detail"></div>
     </div>
@@ -82,12 +82,10 @@
 
 <form class="ui form" action="@Url.Action("Resultado", new { codigo = Model.Avaliacao.CodAvaliacao })" method="post">
     <div class="ui basic segment">
-        <div class="ui accordion">
-            @for (int i = 0; i < lstQuestao.Count; i++)
-            {
-                @Html.Partial("_QuestaoRealizar", lstQuestao[i], new ViewDataDictionary() { { "Index", i } })
-            }
-        </div>
+        @for (int i = 0; i < lstQuestao.Count; i++)
+        {
+            @Html.Partial("_QuestaoRealizar", lstQuestao[i], new ViewDataDictionary() { { "Index", i } })
+        }
     </div>
     <div class="ui trigger button">Desistir</div>
     <div class="ui popup">

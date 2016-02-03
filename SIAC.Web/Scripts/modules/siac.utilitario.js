@@ -5,13 +5,13 @@
                 data = '';
             if (dataBrasil.indexOf(' ') > 0) {
                 var i = dataBrasil.indexOf(' ');
-                hora = dataBrasil.substring(i).trim();
-                data = dataBrasil.substring(0, i).trim();
+                hora = dataBrasil.substring(i + 1).trim();
+                data = dataBrasil.substring(0, i + 1).trim();
             }
             else if (dataBrasil.indexOf('T') > 0) {
                 var i = dataBrasil.indexOf('T');
-                hora = dataBrasil.substring(i).trim();
-                data = dataBrasil.substring(0, i).trim();
+                hora = dataBrasil.substring(i + 1).trim();
+                data = dataBrasil.substring(0, i + 1).trim();
             }
             else {
                 data = dataBrasil.trim();
