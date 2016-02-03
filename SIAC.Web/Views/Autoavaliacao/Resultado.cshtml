@@ -8,7 +8,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-<div class="ui info message hidden" data-ajuda-mensagem>
+<div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
     <div class="header">
         Observações
     </div>

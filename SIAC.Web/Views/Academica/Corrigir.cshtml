@@ -28,6 +28,21 @@
     }
 </h2>
 
+<div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
+    <div class="header">
+        Ajuda
+    </div>
+    <ul class="list">
+        <li>Aqui em corrigir você poderá dar valores às respostas discursivas dos alunos que realizaram esta avaliação.</li>
+        <li>O botão <b>Corrigir</b> serve para abrir a tela de seleção da questão/aluno à ser corrigido(a).</li>
+        <li>No painel de Corrigir Avaliação preencha a <b>Nota Obtida</b> pelo aluno e o seu <b>Comentário de Correção</b> para cada questão.</li>
+        <li>O botão <b>Salvar</b> serve para enviar a nota do aluno e seu comentário para ser salvo no sistema.</li>
+        <li>O ícone <i class="checkmark icon"></i> indica que a resposta do aluno está <b>correta</b>.</li>
+        <li>O ícone <i class="remove icon"></i> indica que a resposta do aluno está <b>errada</b>.</li>
+        <li>O ícone <i class="write icon"></i> indica que a questão é <b>discursiva</b></li>
+    </ul>
+</div>
+
 @Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
 
 @* Placeholder da opção de Correção por Aluno *@
@@ -141,6 +156,7 @@
 </div>
 
 <div class="ui modal fullscreen corrigir">
+    <i class="close icon"></i>
     <div class="header">
         Corrigir Avaliação
     </div>
