@@ -6,22 +6,16 @@
     var codPessoa = Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula);
 }
 
+@section Styles {
+    <style>
+        .ui.fixed.sticky + form {
+            margin-top: 68px;
+        }
+    </style>
+}
+
 <h2 data-usuario="@codPessoa">
     @ViewBag.Title
-    <div class="ui trigger icon right floated chat button"><i class="icon comments outline"></i></div>
-    <div class="ui chat popup wide" data-position="top right">
-        <div class="header">
-            @Model.Professor.Usuario.PessoaFisica.PrimeiroNome
-        </div>
-        <div class="content">
-            <div class="ui comments" style="height: 200px;width:300px; overflow-y:scroll;">
-            </div>
-            <div class="ui icon fluid input">
-                <input id="txtChatMensagem" type="text" placeholder="Aperte enter para enviar..." maxlength="500" />
-                <i class="send link icon enviar"></i>
-            </div>
-        </div>
-    </div>
     <div class="ui right floated informacoes button">Informações</div>
 </h2>
 
@@ -62,33 +56,49 @@
     </div>
 </div>
 
-<div class="ui labels">
-    <div class="ui label">
-        Ínicio
-        <div id="lblHoraInicio" class="detail">@DateTime.Now.ToString("HH'h'mm'min'")</div>
-    </div>
-    <div class="ui label" data-termino="@Model.Avaliacao.DtTermino.Value.ToString("yyyy-MM-dd HH:mm")">
-        Término
-        <div id="lblHoraTermino" class="detail"></div>
-    </div>
-    <div class="ui label">
-        Agora
-        <div id="lblHoraAgora" class="detail">00h00min</div>
-    </div>
-    <div class="ui label">
-        Restante
-        <div id="lblHoraRestante" class="detail">00h00min</div>
+<div class="ui sticky">
+    <div class="ui segment">
+        <div class="ui trigger icon right floated chat button"><i class="icon comments outline"></i></div>
+        <div class="ui chat popup wide" data-position="top right">
+            <div class="header">
+                @Model.Professor.Usuario.PessoaFisica.PrimeiroNome
+            </div>
+            <div class="content">
+                <div class="ui comments" style="height: 200px;width:300px; overflow-y:scroll;">
+                </div>
+                <div class="ui icon fluid input">
+                    <input id="txtChatMensagem" type="text" placeholder="Aperte enter para enviar..." maxlength="500" />
+                    <i class="send link icon enviar"></i>
+                </div>
+            </div>
+        </div>
+        <div class="ui labels">
+            <div class="ui label">
+                Ínicio
+                <div id="lblHoraInicio" class="detail">@DateTime.Now.ToString("HH'h'mm'min'")</div>
+            </div>
+            <div class="ui label" data-termino="@Model.Avaliacao.DtTermino.Value.ToString("yyyy-MM-dd'T'HH:mm")">
+                Término
+                <div id="lblHoraTermino" class="detail"></div>
+            </div>
+            <div class="ui label">
+                Agora
+                <div id="lblHoraAgora" class="detail">00h00min</div>
+            </div>
+            <div class="ui label">
+                Restante
+                <div id="lblHoraRestante" class="detail">00h00min</div>
+            </div>
+        </div>
     </div>
 </div>
 
 <form class="ui form" action="@Url.Action("Resultado", new { codigo = Model.Avaliacao.CodAvaliacao })" method="post">
     <div class="ui basic segment">
-        <div class="ui accordion">
-            @for (int i = 0; i < lstQuestao.Count; i++)
-            {
-                @Html.Partial("_QuestaoRealizar", lstQuestao[i], new ViewDataDictionary() { { "Index", i } })
-            }
-        </div>
+        @for (int i = 0; i < lstQuestao.Count; i++)
+        {
+            @Html.Partial("_QuestaoRealizar", lstQuestao[i], new ViewDataDictionary() { { "Index", i } })
+        }
     </div>
     <div class="ui trigger button">Desistir</div>
     <div class="ui popup">

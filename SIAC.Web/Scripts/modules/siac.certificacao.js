@@ -1115,7 +1115,7 @@ siac.Certificacao.Agendada = (function () {
 
 siac.Certificacao.Realizar = (function () {
     var _codAvaliacao, _matriculaUsuario, _dtTermino;
-    var _controleInterval, _controleRestante;
+    var _controleInterval, _controleRestante, _controleNotificacao;
 
     function iniciar() {
         var $elemento;
@@ -1138,7 +1138,7 @@ siac.Certificacao.Realizar = (function () {
         setInterval(function () {
             $.ajax({
                 type: 'GET',
-                url: '/Acesso/Conectado'
+                url: '/acesso/conectado'
             });
         }, 1000 * 60 * 15);
 
@@ -1192,6 +1192,7 @@ siac.Certificacao.Realizar = (function () {
                         url: "/acesso/conectado",
                         success: function () {
                             finalizar();
+                            $(this).modal('hide');
                         },
                         error: function () {
                             siac.mensagem('Conecte-se à internet antes de confirmar.');
@@ -1209,8 +1210,8 @@ siac.Certificacao.Realizar = (function () {
         });
 
         var date = new Date();
-        $('#lblHoraInicio').text(date.getHours() + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
-        $('#lblHoraTermino').text(_dtTermino.getHours() + 'h' + ("0" + (_dtTermino.getMinutes())).slice(-2) + 'min');
+        $('#lblHoraInicio').text(("0" + (date.getHours())).slice(-2) + 'h' + ("0" + (date.getMinutes())).slice(-2) + 'min');
+        $('#lblHoraTermino').text(("0" + (_dtTermino.getHours())).slice(-2) + 'h' + ("0" + (_dtTermino.getMinutes())).slice(-2) + 'min');
 
         relogio();
         temporizador(_dtTermino);
@@ -1264,7 +1265,7 @@ siac.Certificacao.Realizar = (function () {
         var retorno = true;
         for (var i = 0, length = $Objects.length; i < length; i++) {
             var _this = $Objects.eq(i);
-            var $label = _this.parents('.content').prev().find('.ui.label');
+            var $label = _this.closest('.questao').find('.ui.label');
             if (_this.attr('name').indexOf('rdo') > -1) {
                 if ($('input[name="' + _this.attr('name') + '"]:checked').length === 0) {
                     $label.removeAttr('style').addClass('red').html('Não respondida').transition('tada');
@@ -1281,16 +1282,12 @@ siac.Certificacao.Realizar = (function () {
 
     function confirmar() {
         var $modal = $('.ui.gabarito.modal');
+        var $basicSegment = $('form .ui.basic.segment').clone();
 
-        var $accordion = $('form .ui.accordion').clone();
-
-        $accordion.removeAttr('style');
-
-        $modal.find('.content').html($('<div class="ui form"></div>').append($accordion));
-
-        var $modalAccordion = $modal.find('.ui.accordion');
-
-        $modalAccordion.accordion({
+        $basicSegment.removeAttr('style');
+        $modal.find('.content').html($('<div class="ui form"></div>').append($basicSegment));
+        $modalBasicSegment = $modal.find('.ui.basic.segment');
+        $modal.find('.ui.accordion').accordion({
             onChange: function () {
                 $('.ui.gabarito.modal').modal('refresh');
             },
@@ -1302,10 +1299,8 @@ siac.Certificacao.Realizar = (function () {
         for (var i = 0; i < $lstOriginalTextarea.length; i++) {
             $lstCloneTextarea.eq(i).val($lstOriginalTextarea.eq(i).val());
         }
-
-        var $lstInput = $modalAccordion.find(':input,a');
-
-        for (var i = 0, length = $lstInput.length; i < length; i++) {
+        var $lstInput = $modalBasicSegment.find(':input,a');
+        for (var i = 0; i < $lstInput.length; i++) {
             $lstInput.eq(i)
                 .attr({
                     'readonly': 'readonly'
@@ -1314,7 +1309,6 @@ siac.Certificacao.Realizar = (function () {
                 .off()
             ;
         }
-
         $modal.modal('show');
     }
 
@@ -1350,7 +1344,6 @@ siac.Certificacao.Realizar = (function () {
                 };
                 certHub.server.avaliadoFinalizou(codAval, usrMatr);
                 $('form').submit();
-
             };
 
             $('.ui.continuar.modal')
@@ -1361,7 +1354,7 @@ siac.Certificacao.Realizar = (function () {
                     },
                     onDeny: function () {
                         $('html, body').animate({
-                            scrollTop: $(".title .label.red").offset().top
+                            scrollTop: $(".questao .label.red").offset().top
                         }, 1000);
                     }
                 })
@@ -1406,7 +1399,7 @@ siac.Certificacao.Realizar = (function () {
             });
 
             $('textarea[name^="txtResposta"], input[name^="rdoResposta"]').change(function () {
-                var $label = $(this).parents('.content').prev().find('.ui.label');
+                var $label = $(this).closest('.questao').find('.ui.label');
                 if ($(this).val()) {
                     $label.removeClass('red');
                     $label.removeAttr('style');
@@ -1518,7 +1511,9 @@ siac.Certificacao.Realizar = (function () {
                     if (chatQteMensagem > 1) {
                         document.title = 'Você recebeu ' + chatQteMensagem + ' mensagens - SIAC';
                     }
-                    siac.aviso('Você recebeu uma mensagem')
+                    if (_controleNotificacao)
+                        _controleNotificacao.dismiss()
+                    _controleNotificacao = siac.Lembrete.Notificacoes.exibir('Você recebeu uma mensagem');
                 }
             }
         };

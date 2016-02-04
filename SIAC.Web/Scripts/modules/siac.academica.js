@@ -931,7 +931,7 @@ siac.Academica.Realizar = (function () {
         var retorno = true;
         for (var i = 0, length = $Objects.length; i < length; i++) {
             var _this = $Objects.eq(i);
-            $label = _this.closest('.questao').find('.ui.label');
+            var $label = _this.closest('.questao').find('.ui.label');
             if (_this.attr('name').indexOf('rdo') > -1) {
                 if ($('input[name="' + _this.attr('name') + '"]:checked').length === 0) {
                     $label.removeAttr('style').addClass('red').html('Não respondida').transition('tada');
