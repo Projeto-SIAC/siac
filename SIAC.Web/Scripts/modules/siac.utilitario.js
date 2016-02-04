@@ -86,13 +86,23 @@
         data.Horas = splitedSomenteHora[HORA_HORAS];
         data.Minutos = splitedSomenteHora[HORA_MINUTOS];
 
-        if (data.Ano >= agora.getFullYear())
-            if (data.Mes >= agora.getMonth())
-                if (data.Dia >= agora.getDate())
-                    if (data.Horas >= agora.getHours())
+        console.log('Data  =>', data.Ano, data.Mes, data.Dia, data.Horas, data.Minutos);
+        console.log('Agora  =>', agora.getFullYear(), agora.getMonth(), agora.getDate(), agora.getHours(), agora.getMinutes());
+
+        if (data.Ano > agora.getFullYear())
+            return true;
+        else if (data.Ano == agora.getFullYear())
+            if (data.Mes > agora.getMonth())
+                return true;
+            else if (data.Mes == agora.getMonth())
+                if (data.Dia > agora.getDate())
+                    return true;
+                else if (data.Dia == agora.getDate())
+                    if (data.Horas > agora.getHours())
+                        return true;
+                    else if (data.Horas == agora.getHours())
                         if (data.Minutos > agora.getMinutes())
                             return true;
-
         return false;
 	}
 

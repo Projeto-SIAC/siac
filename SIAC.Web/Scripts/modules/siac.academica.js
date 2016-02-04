@@ -4,9 +4,7 @@ siac.Academica.Agendar = (function () {
     var _notificacao;
 
     function iniciar() {
-        $('.ui.informacoes.modal')
-            .modal()
-        ;
+        $('.ui.informacoes.modal').modal();
 
         $('#txtData, #txtHoraInicio, #txtHoraTermino').change(function () {            
             var $data = $('#txtData');
@@ -46,28 +44,20 @@ siac.Academica.Agendar = (function () {
             }
         });
 
-        $('.ui.accordion').accordion({
-            animateChildren: false
-        });
+        $('.ui.accordion').accordion({ animateChildren: false });
 
-        $('.ui.dropdown')
-            .dropdown()
-        ;
+        $('.ui.dropdown').dropdown();
 
         $('.cancelar.button').popup({ on: 'click' });
 
-        $('.ui.confirmar.modal')
-            .modal({
+        $('.ui.confirmar.modal').modal({
                 onApprove: function () {
                     $('form').addClass('loading').submit();
                 }
-            })
-        ;
+            });
 
         $('.informacoes.button').click(function () {
-            $('.ui.informacoes.modal')
-                .modal('show')
-            ;
+            $('.ui.informacoes.modal').modal('show');
         });
 
         $('.confirmar.button').click(function () {

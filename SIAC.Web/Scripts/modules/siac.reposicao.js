@@ -304,8 +304,8 @@ siac.Reposicao.Agendar = (function () {
             var $horaInicio = $('#txtHoraInicio');
             var $horaTermino = $('#txtHoraTermino');
             if ($data.val() && $horaInicio.val() && $horaTermino.val()) {
-                var start = $data.val() + "T" + $horaInicio.val();
-                var end = $data.val() + "T" + $horaTermino.val();
+                var start = siac.Utilitario.formatarData($data.val() + "T" + $horaInicio.val());
+                var end = siac.Utilitario.formatarData($data.val() + "T" + $horaTermino.val());
                 $.ajax({
                     data: {
                         start: start,
@@ -378,7 +378,7 @@ siac.Reposicao.Agendar = (function () {
         }
 
         if ($('#txtData').val() && $('#txtHoraInicio').val()) {
-            var strDate = $('#txtData').val() + ' ' + $('#txtHoraInicio').val();
+            var strDate = siac.Utilitario.formatarData($('#txtData').val() + 'T' + $('#txtHoraInicio').val());
             if (!siac.Utilitario.dataEFuturo(strDate)) {
                 lstErro.append('<li>Especifique uma data de aplicação futura</li>');
                 retorno = false;
@@ -391,10 +391,30 @@ siac.Reposicao.Agendar = (function () {
         }
 
         if ($('#txtData').val() && $('#txtHoraInicio').val() && $('#txtHoraTermino').val()) {
-            var strDateA = $('#txtData').val() + ' ' + $('#txtHoraInicio').val();
-            var strDateB = $('#txtData').val() + ' ' + $('#txtHoraTermino').val();
+            var strDateA = $('#txtData').val() + 'T' + $('#txtHoraInicio').val();
+            var strDateB = $('#txtData').val() + 'T' + $('#txtHoraTermino').val();
             if (siac.Utilitario.compararData(strDateA, strDateB) >= 0) {
                 lstErro.append('<li>Especifique uma hora de término maior que a hora de início</li>');
+                retorno = false;
+            }
+        }
+
+        if ($('#txtHoraTermino').val()) {
+            var splitedVal = $('#txtHoraTermino').val().split(':');
+            var hora = splitedVal[0],
+                minuto = splitedVal[1];
+            if (hora < 0 || hora > 23 || minuto > 59 || minuto < 0) {
+                lstErro.append('<li>Especifique a hora de término válida</li>');
+                retorno = false;
+            }
+        }
+
+        if ($('#txtHoraInicio').val()) {
+            var splitedVal = $('#txtHoraInicio').val().split(':');
+            var hora = splitedVal[0],
+                minuto = splitedVal[1];
+            if (hora < 0 || hora > 23 || minuto > 59 || minuto < 0) {
+                lstErro.append('<li>Especifique a hora de início válida</li>');
                 retorno = false;
             }
         }
