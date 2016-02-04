@@ -6,23 +6,33 @@
             if (dataBrasil.indexOf(' ') > 0) {
                 var i = dataBrasil.indexOf(' ');
                 hora = dataBrasil.substring(i + 1).trim();
-                data = dataBrasil.substring(0, i + 1).trim();
+                data = dataBrasil.substring(0, i).trim();
             }
             else if (dataBrasil.indexOf('T') > 0) {
                 var i = dataBrasil.indexOf('T');
                 hora = dataBrasil.substring(i + 1).trim();
-                data = dataBrasil.substring(0, i + 1).trim();
+                data = dataBrasil.substring(0, i).trim();
             }
             else {
                 data = dataBrasil.trim();
             }
             var temp = data.split('/');
             if (temp) {
-                if (temp[0].length == 4) {
-                    return (temp[0] + '-' + temp[1] + '-' + temp[2] + 'T' + hora).trim();
+                if (hora) {
+                    if (temp[0].length == 4) {
+                        return (temp[0] + '-' + temp[1] + '-' + temp[2] + 'T' + hora).trim();
+                    }
+                    else {
+                        return (temp[2] + '-' + temp[1] + '-' + temp[0] + 'T' + hora).trim();
+                    }
                 }
                 else {
-                    return (temp[2] + '-' + temp[1] + '-' + temp[0] + 'T' + hora).trim();
+                    if (temp[0].length == 4) {
+                        return (temp[0] + '-' + temp[1] + '-' + temp[2]).trim();
+                    }
+                    else {
+                        return (temp[2] + '-' + temp[1] + '-' + temp[0]).trim();
+                    }
                 }
             }
         }
@@ -45,13 +55,21 @@
 	}
 
 	// return true or false
-	function dataEFuturo(strData) {
-		timeDataAgora = new Date().getTime();
-		timeData = Date.parse(formatarData(strData));
-		console.log(formatarData(strData), timeData, timeDataAgora)
+    function dataEFuturo(strData) {
+        var dataAgora = new Date();
+        timeDataAgora = dataAgora.getTime();
+
+        var data = new Date();
+        var timeData = Date.parse(formatarData(strData));
+        data.setTime(timeData);
+        var offsetData = data.getTimezoneOffset() * 60 * 1000;
+
+        timeData = timeData + offsetData;
+
 		if (timeData && timeDataAgora) {
 		    return (timeData > timeDataAgora);
 		}
+
 		return false;
 	}
 
