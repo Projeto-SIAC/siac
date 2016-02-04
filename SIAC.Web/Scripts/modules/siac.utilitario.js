@@ -56,21 +56,44 @@
 
 	// return true or false
     function dataEFuturo(strData) {
-        var dataAgora = new Date();
-        timeDataAgora = dataAgora.getTime();
+        var DATA            = 0,
+            HORA            = 1,
+            DATA_ANO        = 0,
+            DATA_MES        = 1,
+            DATA_DIA        = 2,
+            HORA_HORAS      = 0,
+            HORA_MINUTOS    = 1,
+            SEPARADOR       = 'T',
+            SEPARADOR_DATA  = '-',
+            SEPARADOR_HORA  = ':';
 
-        var data = new Date();
-        var timeData = Date.parse(formatarData(strData));
-        data.setTime(timeData);
-        var offsetData = data.getTimezoneOffset() * 60 * 1000;
 
-        timeData = timeData + offsetData;
+        var agora = new Date();
+        var data = {};
 
-		if (timeData && timeDataAgora) {
-		    return (timeData > timeDataAgora);
-		}
+        var _strData = formatarData(strData);
 
-		return false;
+        var splitedData = _strData.split(SEPARADOR);
+        var strSomenteData = splitedData[DATA],
+            strSomenteHora = splitedData[HORA];
+
+        var splitedSomenteData = strSomenteData.split(SEPARADOR_DATA),
+            splitedSomenteHora = strSomenteHora.split(SEPARADOR_HORA);
+
+        data.Ano = splitedSomenteData[DATA_ANO];
+        data.Mes = --splitedSomenteData[DATA_MES];
+        data.Dia = splitedSomenteData[DATA_DIA];
+        data.Horas = splitedSomenteHora[HORA_HORAS];
+        data.Minutos = splitedSomenteHora[HORA_MINUTOS];
+
+        if (data.Ano >= agora.getFullYear())
+            if (data.Mes >= agora.getMonth())
+                if (data.Dia >= agora.getDate())
+                    if (data.Horas >= agora.getHours())
+                        if (data.Minutos > agora.getMinutes())
+                            return true;
+
+        return false;
 	}
 
 	function validarCPF(strCPF) {

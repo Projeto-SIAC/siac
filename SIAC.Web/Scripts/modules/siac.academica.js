@@ -13,8 +13,8 @@ siac.Academica.Agendar = (function () {
             var $horaInicio = $('#txtHoraInicio');
             var $horaTermino = $('#txtHoraTermino');
             if ($data.val() && $horaInicio.val() && $horaTermino.val()) {
-                var start = siac.Utilitario.formatarData($data.val() + " " + $horaInicio.val());
-                var end = siac.Utilitario.formatarData($data.val() + " " + $horaTermino.val());
+                var start = siac.Utilitario.formatarData($data.val() + "T" + $horaInicio.val());
+                var end = siac.Utilitario.formatarData($data.val() + "T" + $horaTermino.val());
                 $.ajax({
                     data: {
                         start: start,
