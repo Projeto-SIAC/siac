@@ -1135,6 +1135,8 @@ siac.Certificacao.Realizar = (function () {
             return 'Você está realizando uma avaliação.';
         };
 
+        $('.ui.sticky').sticky();
+
         setInterval(function () {
             $.ajax({
                 type: 'GET',

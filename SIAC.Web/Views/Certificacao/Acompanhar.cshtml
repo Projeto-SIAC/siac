@@ -122,8 +122,9 @@
     </div>
 </div>
 
+<a class="ui button" href="@Url.Action("Agendada")">Voltar</a>
+
 @section Scripts{
-    @Scripts.Render("~/bundles/js/certificacao")
-    @Scripts.Render("~/bundles/signalR")
+    @Scripts.Render("~/bundles/js/certificacao", "~/bundles/signalR")
     <script src="~/signalr/hubs"></script>
 }
