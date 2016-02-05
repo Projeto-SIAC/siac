@@ -373,7 +373,7 @@ else if (Model.Avaliacao.FlagRealizada)
     }
 }
 
-<a href="@Url.Action("Index")" class="ui button">Histórico</a>
+<a href="@Url.Action("Index")" class="ui button">Voltar para Histórico</a>
 @if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
 {
     if (!Sistema.AvaliacaoUsuario.ContainsKey(Model.Avaliacao.CodAvaliacao.ToLower()))
