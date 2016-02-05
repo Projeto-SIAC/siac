@@ -9,6 +9,30 @@
     <div class="ui right floated informacoes button">Informações</div>
     <div class="ui right floated questoes button">Questões</div>
 </h2>
+
+
+<div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
+    <div class="header">
+        Ajuda
+    </div>
+    <ul class="list">
+        <li>Aqui em Configurar Certificação você poderá definir quais questões estarão presentes nessa avaliação de certificação.</li>
+        <li>O painel <b>Seleção de Questão</b> serve para realizar a busca de questões no sistema. A busca só irá iniciar se todos os parâmetros forem fornecidos.</li>
+        <li>Clique em <b>Tema(s)</b> para selecionar o(s) tema(s) das questões.</li>
+        <li>Clique em <b>Dificuldade</b> para selecionar a dificuldade máxima das questões.</li>
+        <li>Clique em <b>Selecionar</b> para selecionar o tipo das questões.</li>
+        <li>No painel de resultados:
+            <ul>
+                <li>O botão <b>Detalhes</b> serve para ver mais informações sobre a questão.</li>
+                <li>O botão <b>Adicionar</b> serve para inserir essa questão na lista temporária.</li>
+                <li>O botão <b>Remover</b> serve para retirar essa questão da lista temporária.</li>
+            </ul>
+        </li>
+        <li>O botão <b>Questões</b> serve para ver as questões já selecionadas dessa avaliação de certificação.</li>
+        <li>Por fim, não esqueça de confirmar as alterações clicando no botão <b>Prosseguir</b> ao fim desta página.</li>
+    </ul>
+</div>
+
 @Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 2 } })
 @Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
 

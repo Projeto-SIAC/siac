@@ -11,6 +11,20 @@
     </div>
 </h2>
 
+<div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
+    <div class="header">
+        Ajuda
+    </div>
+    <ul class="list">
+        <li>Aqui em Selecionar Avaliados você poderá selecionar os alunos que poderão realizar essa avaliação de certificação.</li>
+        <li>Clique em <b>Filtro</b> para selecionar o tipo de filtro para a pesquisa. Ex.: <i>Pessoa</i></li>
+        <li>Na caixa <b>Buscar</b> insira o termo para pesquisar no sistema baseando-se no filtro selecionado. Ex.: <i>João Maria</i></li>
+        <li>Clique em <b>Selecionar</b> para inserir o resultado obtido da pesquisa na lista temporária de <b>Selecionados</b></li>
+        <li>O botão <i class="remove icon"></i><b>Remover</b> serve para remover o selecionado em questão da lista de temporários</li>
+        <li>Por fim, não esqueça de confirmar as alterações clicando no botão <b>Salvar</b> ao fim desta página.</li>
+    </ul>
+</div>
+
 @Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
 @Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 4 } })
 
