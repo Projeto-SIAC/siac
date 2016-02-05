@@ -26,6 +26,30 @@
     }
 </h2>
 
+@if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
+{
+    <div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
+        <div class="header">
+            Ajuda
+        </div>
+        <ul class="list">
+            <li>Aqui você poderá visualizar, além dos dados de sua avaliação, liberar a mesma para os alunos a realizarem.</li>
+            <li>O botão <b>Imprimir</b> serve para abrir a tela de impressão de avaliação onde você poderá imprimir sua avaliação e aplicar em sala de aula.</li>
+            <li>O botão <b>Arquivar</b> serve para arquivar sua avaliação deixando-a em estado de espera para você tomar ações quando for de seu desejo.</li>
+            <li>O botão <b>Reagendar</b> serve para abrir a tela de agendamento em que você poderá redefinir uma nova data para aplicação de avaliação.</li>
+            @if (!Model.Avaliacao.FlagVencida)
+            {
+                <li>O botão <b>Configurar</b> serve para abrir a tela de configuração de avaliação na qual você irá manipular as questões da mesma.</li>
+                if (!Model.Avaliacao.FlagLiberada)
+                {
+                    <li>O botão <b>Liberar</b> serve para você liberar esta avaliação pros seus alunos.</li>
+                }
+                <li>O botão <b>Acompanhar</b> serve para abrir a tela de acompanhando onde você poderá ver, em tempo real, a situaçõo de todos os alunos que estão realizando essa avaliação no momento</li>
+            }
+        </ul>
+    </div>
+}
+
 <div class="ui basic segment" data-categoria="@codCategoria">
     <div class="ui fluid styled accordion">
         <div class="active title"><i class="dropdown icon"></i>Detalhes</div>

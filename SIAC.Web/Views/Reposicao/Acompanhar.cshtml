@@ -60,6 +60,20 @@
     </div>
 </div>
 
+<div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
+    <div class="header">
+        Ajuda
+    </div>
+    <ul class="list">
+        <li>Aqui em Acompanhar você poderá visualizar e interagir em tempo real com os alunos que estão realizando esta avaliação</li>
+        <li>O botão <b>Alertar Todos</b> serve para enviar uma mensagem à todos os avaliados, em tempo real.</li>
+        <li>O botão <b>Ver Prova</b> serve para obter uma imagem em tempo real da tela de avaliação do aluno</li>
+        <li>O botão <b>Alertar</b> serve para enviar uma mensagem à um aluno específico, em tempo real.</li>
+        <li>O botão <i class="table icon"></i> serve para visualizar o gabarito preenchido pelo aluno</li>
+        <li>O botão <i class="chat icon"></i> serve para abrir uma tela de conversa privada entre você e o avaliado</li>
+    </ul>
+</div>
+
 <div class="ui labels">
     <div class="ui label">Acadêmica<div class="detail">@Model.Academica.Avaliacao.CodAvaliacao</div></div>
     <div class="ui label">Disciplina<div class="detail">@Model.Disciplina.Descricao</div></div>

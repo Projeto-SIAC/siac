@@ -7,8 +7,9 @@
 <h2>@ViewBag.Title</h2> 
 
 <div class="ui termo modal">
-    <div class="header">Você está ciente de...</div>
+    <div class="header">@ViewBag.Title</div>
     <div class="content">
+        <h3>Você está ciente do objetivo dessa funcionalidade?</h3>
         @Html.Raw(Model.Termo.ToHtml("p"))
     </div>
     <div class="actions">
