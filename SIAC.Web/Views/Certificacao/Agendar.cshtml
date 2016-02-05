@@ -33,20 +33,20 @@
     </div>
     <div class="three fields">
         <div class="field required">
-            <label>Data de Aplicação</label>
+            <label data-ajuda="Defina abaixo os valores para a data de aplicação da avaliação.">Defina a data de aplicação</label>
             <input id="txtData" name="txtData" type="text" data-mask="00/00/0000" placeholder="Data" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("dd-MM-yyyy") : "")" required />
         </div>
         <div class="field required">
-            <label>Hora de Início</label>
+            <label data-ajuda="Forneça abaixo os valores para a hora de início da aplicação.">Forneça a hora de início</label>
             <input id="txtHoraInicio" name="txtHoraInicio" type="text" data-mask="00:00" placeholder="Hora de início" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("HH:mm") : "")" required />
         </div>
         <div class="field required">
-            <label>Hora de Término</label>
+            <label data-ajuda="Forneça abaixo os valores para a hora de término da aplicação.">Forneça a hora de término</label>
             <input id="txtHoraTermino" name="txtHoraTermino" type="text" data-mask="00:00" placeholder="Hora de término" value="@(Model.Avaliacao.DtTermino.HasValue ? Model.Avaliacao.DtTermino.Value.ToString("HH:mm") : "")" required />
         </div>
     </div>
     <div class="field required">
-        <label>Sala</label>
+        <label data-ajuda="Clique na caixa abaixo para escolher a sala na qual será aplicada a avaliação.">Escolha a sala</label>
         <select id="ddlSala" name="ddlSala" class="ui search dropdown" required>
             <option value="">Sala</option>
             @foreach (Sala sala in Model.Salas)

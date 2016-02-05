@@ -18,7 +18,7 @@
 </div>
 
 <div class="ui confirmar modal">
-    <div class="header">Verificação e confirmação</div>
+    <div class="header">Verificar e confirmar os dados fornecidos</div>
     <div class="content">
         <table class="ui very basic table">
             <thead>
@@ -47,7 +47,7 @@
     </div>
     @* Disciplinas *@
     <div class="field required">
-        <label>Disciplina</label>
+        <label data-ajuda="Clique na caixa abaixo para escolher a disciplina.">Escolha a disciplina</label>
         <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" required>
             <option value="">Disciplina</option>
             @foreach (Disciplina disc in Model.Disciplinas)
@@ -58,24 +58,14 @@
     </div>
     @* Temas *@
     <div class="field required">
-        <label>Tema (s)</label>
+        <label data-ajuda="Clique na caixa abaixo para selecionar o(s) tema(s).">Selecione o(s) tema(s)</label>
         <select id="ddlTemas" name="ddlTemas" class="ui search dropdown fluid tema" multiple required>
             <option value="">Temas...</option>
         </select>
     </div>
-    @* Tipo das Questões *@
-    <div class="field required">
-        <label>Tipo das Questões</label>
-        <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" required>
-            <option value="">Tipo</option>
-            <option value="2">Somente discursivas</option>
-            <option value="1">Somente objetivas</option>
-            <option value="3">Misto</option>
-        </select>
-    </div>
     @* Dificuldade das Questões *@
     <div class="field required">
-        <label>Dificuldade das Questões</label>
+        <label data-ajuda="Clique na caixa abaixo para definir a dificuldade das questões.">Defina a dificuldade das questões</label>
         <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown" required>
             <option value="">Dificuldade...</option>
             @foreach (Dificuldade d in Model.Dificuldades)
@@ -83,9 +73,21 @@
                 <option value="@d.CodDificuldade">@d.Descricao</option>
             }
         </select>
+    </div>    
+    @* Tipo das Questões *@
+    <div class="field required">
+        <label data-ajuda="Clique na caixa abaixo para determinar o tipo das questões.">Determine o tipo das questões</label>
+        <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" required>
+            <option value="">Tipo</option>
+            <option value="2">Somente discursivas</option>
+            <option value="1">Somente objetivas</option>
+            <option value="3">Misto</option>
+        </select>
     </div>
     @* Qte das Questões *@
-    <div class="field"><label>Quantidade das Questões</label></div>
+    <div class="field">
+        <label data-ajuda="Clique na(s) caixa(s) abaixo para delimitar a quantidade das questões para cada tipo.">Delimite a quantidade das questões para cada tipo</label>
+    </div>
     <div class="two fields">
         <div class="field required">
             <label>Objetiva</label>
