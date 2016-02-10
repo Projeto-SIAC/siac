@@ -141,5 +141,9 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        // POST: acesso/apresentacao
+        [HttpPost]
+        public void Apresentacao() => Sessao.Inserir("Apresentacao", true);
     }
 }
