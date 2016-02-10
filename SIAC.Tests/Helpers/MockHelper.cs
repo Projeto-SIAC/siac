@@ -31,7 +31,7 @@ namespace SIAC.Tests
 
         public static void FakeLoginUsuario(string matricula, string path)
         {
-            HttpContext.Current = FakeHttpContext($"http://siac.apphb.com{path}");
+            HttpContext.Current = FakeHttpContext(String.Format("http://siac.apphb.com{0}", path));
             Usuario usuario = Repositorio.GetInstance().Usuario.Find(matricula);
             Sessao.Inserir("UsuarioMatricula", usuario.Matricula);
             Sessao.Inserir("UsuarioNome", usuario.PessoaFisica.Nome);
