@@ -1,22 +1,25 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SIAC.Controllers;
 using SIAC.Models;
+using System;
 using System.Collections.Generic;
-using System.Web;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace SIAC.Tests
 {
     [TestClass]
-    public class PrincipalControllerTest
+    public class HistoricoControllerTest
     {
-        PrincipalController controller = new PrincipalController();
+        HistoricoController controller = new HistoricoController();
 
         [TestMethod]
         public void TestIndexModel()
         {
             string esperado = "20150002";
-            MockHelper.FakeLoginUsuario(esperado, "/principal");
+            MockHelper.FakeLoginUsuario(esperado, "/historico");
             Usuario resultado = (controller.Index() as ViewResult).Model as Usuario;
             Assert.AreEqual(esperado, resultado.Matricula);
         }
@@ -28,15 +31,5 @@ namespace SIAC.Tests
             RedirectToRouteResult resultado = controller.Avaliacao() as RedirectToRouteResult;
             Assert.AreEqual(esperado, resultado.RouteValues["Action"]);
         }
-
-        [TestMethod]
-        public void TestPendenteModel()
-        {
-            MockHelper.FakeLoginUsuario("20150002", "/principal/pendente");
-
-            List<Avaliacao> esperado = new List<Avaliacao>();
-            ViewResult resultado = controller.Pendente() as ViewResult;
-            Assert.AreEqual(esperado.GetType(), resultado.Model.GetType());
-        }        
     }
 }

@@ -26,12 +26,7 @@ namespace SIAC.Tests
             JsonResult esperado = new JsonResult();
             List<object> resultados = new List<object>();
 
-            string matricula = "20150002";
-            HttpContext.Current = MockHelper.FakeHttpContext("http://siac.apphb.com/principal/agenda/academicas");
-            Helpers.Sessao.Inserir("UsuarioMatricula", matricula);
-            Helpers.Sessao.Inserir("UsuarioCategoriaCodigo", 2);
-            var usuario = Repositorio.GetInstance().Usuario.Find(matricula);
-            Sistema.UsuarioAtivo[matricula] = usuario.UsuarioAcesso.Last();
+            MockHelper.FakeLoginUsuario("20150002", "/principal/lembrete");
 
             resultados.Add(controller.Principal());
             resultados.Add(controller.Institucional());

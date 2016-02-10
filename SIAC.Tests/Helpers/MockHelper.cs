@@ -1,5 +1,8 @@
-﻿using System;
+﻿using SIAC.Helpers;
+using SIAC.Models;
+using System;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.SessionState;
 
@@ -24,6 +27,17 @@ namespace SIAC.Tests
                                          httpContext, sessionContainer);
 
             return httpContext;
+        }
+
+        public static void FakeLoginUsuario(string matricula, string path)
+        {
+            HttpContext.Current = FakeHttpContext($"http://siac.apphb.com{path}");
+            Usuario usuario = Repositorio.GetInstance().Usuario.Find(matricula);
+            Sessao.Inserir("UsuarioMatricula", usuario.Matricula);
+            Sessao.Inserir("UsuarioNome", usuario.PessoaFisica.Nome);
+            Sessao.Inserir("UsuarioCategoriaCodigo", usuario.CodCategoria);
+            Sessao.Inserir("UsuarioCategoria", usuario.Categoria.Descricao);
+            Sistema.UsuarioAtivo[matricula] = usuario.UsuarioAcesso.Last();
         }
     }
 }

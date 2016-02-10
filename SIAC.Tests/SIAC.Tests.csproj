@@ -99,6 +99,7 @@
   <ItemGroup>
     <Compile Include="AcessoControllerTest.cs" />
     <Compile Include="Helpers\MockHelper.cs" />
+    <Compile Include="HistoricoControllerTest.cs" />
     <Compile Include="PrincipalControllerTest.cs" />
     <Compile Include="ErroControllerTest.cs" />
     <Compile Include="AgendaControllerTest.cs" />
