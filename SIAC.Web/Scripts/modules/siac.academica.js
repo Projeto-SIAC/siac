@@ -256,12 +256,14 @@ siac.Academica.Detalhe = (function () {
 
         $('.corrigir.button').popup({
             title: 'Corrigir avaliação',
-            content: 'Esta avaliação possui correções pendentes.'
+            content: 'Esta avaliação possui correções pendentes.',
+            position: 'bottom right'
         }).popup('show');
 
         $('.reposicao.button').popup({
             title: 'Agende a reposição',
-            content: 'Esta avaliação possui alunos ausentes.'
+            content: 'Esta avaliação possui alunos ausentes.',
+            position: 'left center'
         }).popup('show');
 
         $('[data-ordenar-id]').click(function () {

@@ -9,6 +9,18 @@
     <div class="ui right floated informacoes button">Informações</div>
 </h2>
 
+<div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
+    <div class="header">
+        Ajuda
+    </div>
+    <ul class="list">
+        <li>Aqui em justificar ausências você poderá inserir as justificativas para os alunos faltosos.</li>
+        <li>O botão <b>Adicionar</b> serve para inserir a justificativa do aluno selecionado.</li>
+        <li>O botão <b>Prosseguir</b> serve para decidir como se procederá a geração dessa avaliação de reposição.</li>
+        <li>Por fim, lembre-se de marcar os alunos que irão realizar essa avaliação de reposição.</li>
+    </ul>
+</div>
+
 @Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 1 } })
 
 @Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
@@ -63,9 +75,9 @@
             <ul></ul>
         </div>
         <div class="field required">
-            <label for="ddlAluno">Aluno</label>
+            <label data-ajuda="Clique na caixa abaixo para selecionar o aluno" for="ddlAluno">Selecione o aluno</label>
             <select id="ddlAluno" name="ddlAluno" class="ui search dropdown" tabindex="0">
-                <option value="">Selecione</option>
+                <option value="">Selecione o aluno</option>
                 @foreach (Aluno aluno in Model.AlunoSemJustificacao.OrderBy(a => a.Usuario.PessoaFisica.Nome))
                 {
                     <option value="@aluno.MatrAluno">@aluno.Usuario.PessoaFisica.Nome</option>
@@ -73,8 +85,8 @@
             </select>
         </div>
         <div class="field required">
-            <label for="txtJustificacao">Justificação</label>
-            <textarea id="txtJustificacao" name="txtJustificacao" rows="2" tabindex="0" placeholder="Justificação"></textarea>
+            <label data-ajuda="Forneça abaixo a justificativa para o aluno selecionado" for="txtJustificacao">Insira a justificativa</label>
+            <textarea id="txtJustificacao" name="txtJustificacao" rows="2" tabindex="0" placeholder="Justificativa"></textarea>
         </div>
         <div class="field">
             <div class="ui adicionar button" tabindex="0">
@@ -85,6 +97,8 @@
 }
 @if (Model.Justificacoes.Count > 0)
 {
+    <h3>Marque abaixo os alunos que realizarão a avaliação de reposição</h3>
+
     <table class="ui selectable stripped table">
         <thead>
             <tr>
