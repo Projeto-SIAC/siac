@@ -8,6 +8,19 @@
     <i class="icon close"></i>
     <div class="header">Pesquisar questão</div>
     <div class="content">
+        <div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
+            <div class="header">
+                Ajuda
+            </div>
+            <ul class="list">
+                <li>Esta área serve para você verificar se existe alguma questão igual a que você pretende cadastrar</li>
+                <li>Insira as palavras-chave no campo abaixo e pressione <b>Enter</b> para separá-las</li>
+                <li>O botão <b>Pesquisar</b> serve para inciar a pesquisa de questões baseada nas palavras-chave que você forneceu.</li>
+                <li>O botão <b>Limpar</b> serve para limpar as palaavras-chave que foram inseridas.</li>
+                <li>O botão <b>Fechar</b> serve para fechar a tela de pesquisa.</li>
+                <li>Obs.: Evite usar termos genéricos como <i>e, para, quando, como, por que, etc...</i> nas palavras-chave</li>
+            </ul>
+        </div>
         <div class="ui form">
             <div class="field">
                 <label>Palavras-chave</label>
@@ -116,7 +129,7 @@
     @* Gerais da Questão *@
     <div class="ui bottom attached active tab segment" data-tab="gerais">
         <div class="field required">
-            <label>Disciplina</label>
+            <label data-ajuda="Clique na caixa abaixo para escolher a disciplina.">Escolha a disciplina</label>
             <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" required>
                 <option value="">Disciplina</option>
                 @foreach (Disciplina obj in Model.Disciplinas)
@@ -126,13 +139,13 @@
             </select>
         </div>
         <div class="field required">
-            <label>Tema</label>
+            <label data-ajuda="Clique na caixa abaixo para selecionar o(s) tema(s).">Selecione o(s) tema(s)</label>
             <select id="ddlTema" name="ddlTema" multiple class="ui multiple search dropdown" required>
                 <option value="">Tema</option>
             </select>
         </div>
         <div class="field required">
-            <label>Dificuldade</label>
+            <label data-ajuda="Clique na caixa abaixo para definir a dificuldade.">Defina a dificuldade</label>
             <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown" required>
                 <option value="">Dificuldade</option>
                 @foreach (Dificuldade obj in Model.Dificuldades)
@@ -142,7 +155,7 @@
             </select>
         </div>
         <div class="field required">
-            <label>Tipo</label>
+            <label data-ajuda="Clique na caixa abaixo para determinar o tipo da questão.">Determine o tipo</label>
             <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" required>
                 <option value="">Tipo</option>
                 @foreach (TipoQuestao obj in Model.Tipos)
@@ -155,7 +168,7 @@
             <div class="field">
                 <div class="ui toggle checkbox">
                     <input id="chkAnexos" name="chkAnexos" type="checkbox" tabindex="0" class="hidden">
-                    <label for="chkAnexos">Esta questão possui anexos</label>
+                    <label data-ajuda="Clique neste botão para indicar se esta questão possuirá anexos ou não." for="chkAnexos">Esta questão possui anexos</label>
                 </div>
             </div>
         </div>
@@ -163,19 +176,19 @@
     @* Detalhes da Questão *@
     <div class="ui bottom attached tab segment" data-tab="detalhes">
         <div class="field required">
-            <label for="txtEnunciado">Enunciado</label>
+            <label data-ajuda="Forneça na caixa abaixo o enunciado da questão" for="txtEnunciado">Forneça o enunciado</label>
             <textarea id="txtEnunciado" name="txtEnunciado" rows="2" required placeholder="Enunciado..."></textarea>
         </div>
         <div class="field">
-            <label for="txtObjetivo">Objetivo</label>
+            <label data-ajuda="Insira na caixa abaixo o objetivo da questão" for="txtObjetivo">Insira o objetivo</label>
             <textarea id="txtObjetivo" name="txtObjetivo" rows="2" placeholder="Objetivo..."></textarea>
         </div>
         <div class="field required questao discursiva">
-            <label for="txtChaveDeResposta">Chave de Resposta</label>
+            <label data-ajuda="Preencher na caixa abaixo a chave de resposta que será utilizada como base de resposta correta para esta questão" for="txtChaveDeResposta">Preencha a chave de resposta</label>
             <textarea id="txtChaveDeResposta" name="txtChaveDeResposta" rows="2" placeholder="Chave de Resposta..."></textarea>
         </div>
         <div class="field questao discursiva">
-            <label for="txtComentario">Comentário</label>
+            <label data-ajuda="Digite na caixa abaixo um comentário sobre esta questão" for="txtComentario">Digite um comentário</label>
             <textarea id="txtComentario" name="txtComentario" rows="2" placeholder="Comentário..."></textarea>
         </div>
     </div>
@@ -192,7 +205,7 @@
         @* Anexos *@
         <div class="ui segment">
             <div class="field">
-                <label>Tipo do Anexo</label>
+                <label data-ajuda="Clique na caixa abaixo para selecionar o tipo do anexo.">Selecione o tipo do anexo</label>
                 <select id="ddlTiposAnexo" name="ddlTiposAnexo" class="ui dropdown">
                     <option value="">Tipo do Anexo</option>
                     @foreach (TipoAnexo obj in Model.TiposAnexo)

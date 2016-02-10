@@ -103,21 +103,21 @@
     @* Detalhes da Questão *@
     <div class="ui bottom attached tab segment" data-tab="detalhes">
         <div class="field required">
-            <label for="txtEnunciado">Enunciado</label>
+            <label data-ajuda="Forneça na caixa abaixo o enunciado da questão" for="txtEnunciado">Forneça o enunciado</label>
             <textarea id="txtEnunciado" name="txtEnunciado" rows="2" required placeholder="Enunciado...">@Model.Enunciado</textarea>
         </div>
         <div class="field">
-            <label for="txtObjetivo">Objetivo</label>
+            <label data-ajuda="Insira na caixa abaixo o objetivo da questão" for="txtObjetivo">Insira o objetivo</label>
             <textarea id="txtObjetivo" name="txtObjetivo" rows="2" placeholder="Objetivo...">@Model.Objetivo</textarea>
         </div>
         @if (Model.CodTipoQuestao == TipoQuestao.DISCURSIVA)
         {
             <div class="field required questao discursiva">
-                <label for="txtChaveDeResposta">Chave de Resposta</label>
+                <label data-ajuda="Preencher na caixa abaixo a chave de resposta que será utilizada como base de resposta correta para esta questão" for="txtChaveDeResposta">Preencha a chave de resposta</label>
                 <textarea required id="txtChaveDeResposta" name="txtChaveDeResposta" rows="2" placeholder="Chave de Resposta...">@Model.ChaveDeResposta</textarea>
             </div>
             <div class="field questao discursiva">
-                <label for="txtComentario">Comentário</label>
+                <label data-ajuda="Digite na caixa abaixo um comentário sobre esta questão" for="txtComentario">Digite um comentário</label>
                 <textarea id="txtComentario" name="txtComentario" rows="2" placeholder="Comentário...">@Model.Comentario</textarea>
             </div>
         }

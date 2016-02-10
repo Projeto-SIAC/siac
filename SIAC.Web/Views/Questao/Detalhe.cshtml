@@ -7,6 +7,17 @@
 
 <h2>@ViewBag.Title</h2>
 
+<div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
+    <div class="header">
+        Ajuda
+    </div>
+    <ul class="list">
+        <li>Aqui em Detalhes você poderá ver as informações referente a esta questão.</li>
+        <li>O botão <b>Arquivar</b> serve para congelar esta questão, deixando-a impossibilitada de ser utilizada em uma avaliação.</li>
+        <li>O botão <b>Editar</b> serve para abrir a página de edição em que você poderá editar algumas informações que tenham sido preenchidas erroneamente.</li>
+    </ul>
+</div>
+
 <div class="ui segment">
     @Html.Partial("_Questao", Model)
 </div>
@@ -37,6 +48,9 @@
     </div>
 }
 
+<a href="@Url.Action("Index")" class="ui button">
+    Minhas Questões
+</a>
 <div data-questao="@Model.CodQuestao" class="ui arquivar toggle @( Model.FlagArquivo ? "active" : "" ) button">
     Arquiva@(Model.FlagArquivo ? "da" : "r")
 </div>

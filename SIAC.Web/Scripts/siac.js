@@ -378,7 +378,8 @@ siac.Ajuda = siac.Ajuda || (function () {
     }
 
     return {
-        iniciar: iniciar
+        iniciar: iniciar,
+        ativarAjuda: ativarAjuda
     }
 })();
 

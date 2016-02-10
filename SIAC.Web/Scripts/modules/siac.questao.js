@@ -354,17 +354,17 @@ siac.Questao.Cadastrar = (function () {
                         </div>\
                         <div class="content ui segment">\
                             <div class="field required">\
-                                <label for="txtAlternativaEnunciado' + i + '">Enunciado</label>\
+                                <label data-ajuda="Digite na caixa abaixo o enunciado da alternativa" for="txtAlternativaEnunciado' + i + '">Digite o enunciado</label>\
                                 <textarea id="txtAlternativaEnunciado' + i + '" name="txtAlternativaEnunciado' + i + '" rows="2" placeholder="Enunciado..."></textarea>\
                             </div>\
                             <div class="field">\
-                                <label for="txtAlternativaComentario' + i + '">Comentário</label>\
+                                <label data-ajuda="Insira na caixa abaixo o porquê desta alternativa está correta/incorreta" for="txtAlternativaComentario' + i + '">Comente o porquê desta alternativa está correta/incorreta</label>\
                                 <textarea id="txtAlternativaComentario' + i + '" name="txtAlternativaComentario' + i + '" rows="2" placeholder="Comentário..."></textarea>\
                             </div>\
                             <div class="field">\
                                 <div class="ui toggle checkbox">\
                                     <input id="chkAlternativaCorreta' + i + '" name="chkAlternativaCorreta' + i + '" type="checkbox" tabindex="0" class="hidden">\
-                                    <label for="chkAlternativaCorreta' + i + '">Correta</label>\
+                                    <label data-ajuda="Clique neste botão para indicar se esta alternativa é a correta." for="chkAlternativaCorreta' + i + '">Esta alternativa é a correta</label>\
                                 </div>\
                             </div>\
                             <div class="field">\
@@ -388,6 +388,10 @@ siac.Questao.Cadastrar = (function () {
         });
         $('.ui.checkbox').checkbox();
         $('.ui.alternativas.accordion .button').popup({ inline: true, on: 'click', position: 'right center' });
+
+        if ($('.ui.ajuda.button').hasClass('active')) {
+            siac.Ajuda.ativarAjuda();
+        }
     }
 
     function renomearAlternativas() {
