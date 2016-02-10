@@ -15,7 +15,6 @@ namespace SIAC.Controllers
             Sessao.UsuarioCategoriaCodigo == Categoria.COLABORADOR ? AvalAvi.ListarPorColaborador(Sessao.UsuarioMatricula) : new List<AvalAvi>();
 
         // GET: institucional/
-        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index() => View(Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario);
 
         // GET: institucional/historico

@@ -16,7 +16,6 @@ namespace SIAC.Controllers
         public ActionResult Index() => RedirectToAction("Index", "Acesso");
 
         [HttpPost]
-        //[OutputCache(Duration = 120)]
         public ActionResult Principal()
         {
             if (Sessao.Retornar("ContadoresPrincipal") == null)
@@ -41,7 +40,6 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
-        //[OutputCache(Duration = 120)]
         public ActionResult Institucional()
         {
             if (Sessao.Retornar("ContadoresInstitucional") == null)
@@ -55,7 +53,6 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
-        //[OutputCache(Duration = 600)]
         public ActionResult Menu()
         {
             if (Sessao.Retornar("ContadoresMenu") == null)

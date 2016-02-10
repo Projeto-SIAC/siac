@@ -10,7 +10,6 @@ namespace SIAC.Controllers
     public class PrincipalController : Controller
     {
         // GET: principal
-        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             Lembrete.AdicionarNotificacao("Este é sua tela principal.", Lembrete.INFO);

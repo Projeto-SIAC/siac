@@ -6,7 +6,6 @@ namespace SIAC.Controllers
     public class ErroController : Controller
     {
         // GET: erro
-        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index(int code = 0)
         {
             switch (code)

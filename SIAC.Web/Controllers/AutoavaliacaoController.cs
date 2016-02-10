@@ -15,7 +15,6 @@ namespace SIAC.Controllers
             AvalAuto.ListarPorPessoa(Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula));
 
         // GET: historico/autoavaliacao
-        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             if (Request.Url.ToString().ToLower().Contains("principal"))

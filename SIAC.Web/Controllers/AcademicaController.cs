@@ -91,7 +91,6 @@ namespace SIAC.Controllers
         }
 
         // GET: historico/avaliacao/academica
-        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             if (Request.Url.ToString().ToLower().Contains("principal"))

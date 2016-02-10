@@ -62,13 +62,11 @@ namespace SIAC.Controllers
             return PartialView("_ListaVisitante", visitantes.Skip((qte * pagina.Value) - qte).Take(qte).ToList());
         }
 
-        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             return View();
         }
 
-        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Cadastrar()
         {
             return View();

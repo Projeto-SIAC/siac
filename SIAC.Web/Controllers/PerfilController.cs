@@ -10,7 +10,6 @@ namespace SIAC.Controllers
     public class PerfilController : Controller
     {
         // GET: perfil
-        [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Index()
         {
             return View(Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario);
