@@ -1,9 +1,17 @@
-﻿using System.Linq;
+﻿using System;
+using System.Configuration;
+using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class dbSIACEntities
     {
+        public dbSIACEntities()
+            : base(Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? ConfigurationManager.AppSettings["CONNECTION_STRING"])
+        {
+
+        }
+
         public int SaveChanges(bool alertar = true)
         {
             if (alertar)
