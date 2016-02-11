@@ -1,10 +1,12 @@
-﻿namespace SIAC.Helpers
+﻿using System;
+
+namespace SIAC.Helpers
 {
     public class Criptografia
     {
         public static string RetornarHash(string senha)
         {
-            string strSenha = Properties.Settings.Default.Salt + senha;
+            string strSenha = Environment.GetEnvironmentVariable("SALT") + senha;
             System.Security.Cryptography.SHA256 sha = new System.Security.Cryptography.SHA256CryptoServiceProvider();
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             sha.ComputeHash(System.Text.ASCIIEncoding.ASCII.GetBytes(strSenha));
