@@ -3,6 +3,7 @@ using SIAC.Models;
 using SIAC.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -131,6 +132,7 @@ namespace SIAC.Controllers
             AvalAcademica acad = new AvalAcademica();
             if (formCollection.HasKeys())
             {
+                
                 DateTime hoje = DateTime.Now;
 
                 /* Chave */
@@ -275,8 +277,8 @@ namespace SIAC.Controllers
                     }
 
                     // Data de Aplicacao
-                    DateTime dtAplicacao = DateTime.Parse(data + " " + horaInicio);
-                    DateTime dtAplicacaoTermino = DateTime.Parse(data + " " + horaTermino);
+                    DateTime dtAplicacao = DateTime.Parse(data + " " + horaInicio, new CultureInfo("pt-BR"));
+                    DateTime dtAplicacaoTermino = DateTime.Parse(data + " " + horaTermino, new CultureInfo("pt-BR"));
 
                     if (dtAplicacao.IsFuture() && dtAplicacaoTermino.IsFuture() && dtAplicacaoTermino > dtAplicacao)
                     {

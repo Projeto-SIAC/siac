@@ -3,6 +3,7 @@ using SIAC.Models;
 using SIAC.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -431,8 +432,8 @@ namespace SIAC.Controllers
                 {
                     if (avi.Questoes.Count > 0)
                     {
-                        avi.Avaliacao.DtAplicacao = DateTime.Parse(form["txtDataInicio"] + " 00:00");
-                        avi.DtTermino = DateTime.Parse(form["txtDataTermino"] + " 23:59");
+                        avi.Avaliacao.DtAplicacao = DateTime.Parse(form["txtDataInicio"] + " 00:00", new CultureInfo("pt-BR"));
+                        avi.DtTermino = DateTime.Parse(form["txtDataTermino"] + " 23:59", new CultureInfo("pt-BR"));
 
                         Repositorio.GetInstance().SaveChanges();
                         Lembrete.AdicionarNotificacao($"Avaliação Institucional agendada com sucesso.", Lembrete.POSITIVO);

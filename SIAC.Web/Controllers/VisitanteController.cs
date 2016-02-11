@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using SIAC.Models;
 using SIAC.ViewModels;
 using SIAC.Helpers;
+using System.Globalization;
 
 namespace SIAC.Controllers
 {
@@ -115,7 +116,7 @@ namespace SIAC.Controllers
 
                 if (!String.IsNullOrEmpty(form["txtDtNascimento"]) && !visitante.Usuario.PessoaFisica.DtNascimento.HasValue)
                 {
-                    visitante.Usuario.PessoaFisica.DtNascimento = DateTime.Parse(form["txtDtNascimento"]);
+                    visitante.Usuario.PessoaFisica.DtNascimento = DateTime.Parse(form["txtDtNascimento"], new CultureInfo("pt-BR"));
                 }
                 if (!String.IsNullOrEmpty(form["ddlSexo"]) && String.IsNullOrEmpty(visitante.Usuario.PessoaFisica.Sexo))
                 {
@@ -128,7 +129,7 @@ namespace SIAC.Controllers
                 }
                 else
                 {
-                    visitante.DtValidade = DateTime.Parse(form["txtDtValidade"] + " 23:59:59");
+                    visitante.DtValidade = DateTime.Parse(form["txtDtValidade"] + " 23:59:59", new CultureInfo("pt-BR"));
                 }
 
                 Repositorio.GetInstance().SaveChanges();
@@ -180,7 +181,7 @@ namespace SIAC.Controllers
                 Visitante visitante = Visitante.ListarPorMatricula(matricula);
                 if (chkDtValidade)
                 {
-                    visitante.DtValidade = DateTime.Parse(txtDtValidade + " 23:59:59");
+                    visitante.DtValidade = DateTime.Parse(txtDtValidade + " 23:59:59", new CultureInfo("pt-BR"));
                 }
                 else
                 {
