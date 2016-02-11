@@ -338,7 +338,7 @@ namespace SIAC
                 lstQuestao.Remove(qst);
             }
 
-            return lstQuestaoEmbalharada;
+            return lstQuestaoEmbalharada.OrderBy(q => q.CodTipoQuestao).ToList();
         }
         #endregion
 
