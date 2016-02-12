@@ -75,7 +75,7 @@
 
         var splitedData = _strData.split(SEPARADOR);
         var strSomenteData = splitedData[DATA],
-            strSomenteHora = splitedData[HORA];
+            strSomenteHora = splitedData[HORA] || "00:00";
 
         var splitedSomenteData = strSomenteData.split(SEPARADOR_DATA),
             splitedSomenteHora = strSomenteHora.split(SEPARADOR_HORA);
