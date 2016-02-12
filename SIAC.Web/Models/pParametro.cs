@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Newtonsoft.Json;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SIAC.Models
@@ -12,7 +13,7 @@ namespace SIAC.Models
             CAIXA_BAIXA = 4
         }
 
-        public int[] OcupacaoCoordenadorAvi => Newtonsoft.Json.JsonConvert.DeserializeObject<int[]>(parametro.CoordenadorAVI).Union(new int[] { Ocupacao.COORDENADOR_AVI }).ToArray();
+        public int[] OcupacaoCoordenadorAvi => JsonConvert.DeserializeObject<int[]>(parametro.CoordenadorAVI).Union(new int[] { Ocupacao.COORDENADOR_AVI }).ToArray();
 
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 
@@ -52,7 +53,7 @@ namespace SIAC.Models
 
         public static void AtualizarOcupacoesCoordenadores(int[] ocupacoes)
         {
-            parametro.CoordenadorAVI = Newtonsoft.Json.JsonConvert.SerializeObject(ocupacoes);
+            parametro.CoordenadorAVI = JsonConvert.SerializeObject(ocupacoes);
             contexto.Parametro.FirstOrDefault().CoordenadorAVI = parametro.CoordenadorAVI;
             contexto.SaveChanges();
         }
