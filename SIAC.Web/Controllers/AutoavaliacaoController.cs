@@ -396,7 +396,12 @@ namespace SIAC.Controllers
                                 if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q => q.FlagGabarito.HasValue && q.FlagGabarito.Value).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
                                 {
                                     avalPessoaResultado.QteAcertoObj++;
+                                    avalQuesPessoaResposta.RespNota = 10;
                                     qteObjetivaAcertoDisciplina[avaliacaoTema.Tema.Disciplina.Descricao]++;
+                                }
+                                else
+                                {
+                                    avalQuesPessoaResposta.RespNota = 0;
                                 }
                             }
                             else
@@ -407,7 +412,8 @@ namespace SIAC.Controllers
                             avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
                         }
                     }
-
+                    IEnumerable<AvalQuesPessoaResposta> lstAvalQuesPessoaResposta = auto.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == codPessoaFisica);
+                    avalPessoaResultado.Nota = lstAvalQuesPessoaResposta.Average(r => r.RespNota);
                     auto.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
                     Repositorio.GetInstance().SaveChanges();
