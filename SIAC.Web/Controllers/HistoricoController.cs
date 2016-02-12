@@ -10,7 +10,6 @@ namespace SIAC.Controllers
         // GET: historico
         public ActionResult Index()
         {
-            Lembrete.AdicionarNotificacao("Este é seu histórico de atividades.", Lembrete.INFO);
             Usuario usuario = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula);
             return View(usuario);
         }

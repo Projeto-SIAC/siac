@@ -8,8 +8,10 @@
 
 <h2>@ViewBag.Title</h2>
 
-<div id="calendar"></div>
-
+<div class="ui basic segment">
+    <div id="calendar"></div>
+</div>
+<a href="@Url.Action("Index", "Principal")" class="ui button">Voltar</a>
 @section Scripts{
     @Scripts.Render("~/bundles/fullcalendar/js", "~/bundles/js/agenda")
 }
