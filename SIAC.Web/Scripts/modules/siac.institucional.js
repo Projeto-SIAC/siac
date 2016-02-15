@@ -106,11 +106,6 @@ siac.Institucional.Questionario = (function () {
                 }
             }
         });
-        $('#ddlModulo').dropdown('set selected', 1);
-        $('#ddlCategoria').dropdown('set selected', 1);
-        $('#ddlIndicador').dropdown('set selected', 1);
-        $('#ddlTipo').dropdown('set selected', 2);
-        $('#txtEnunciado').val('Ainda assim, existem dúvidas a respeito de como a mobilidade dos capitais internacionais cumpre um papel essencial na formulação dos modos de operação convencionais.');
 
         //Adicionando Alternativas por default
         for (var i = 0; i < 5; i++) {
@@ -1117,12 +1112,12 @@ siac.Institucional.Historico = (function () {
     }
 
     function carregarInformacao(header) {
-        var codigo = $(header).text().trim();
+        var codigo = $(header).text().replace(/\D/g, '');
         var $_card = $(header).parent().parent();
         $_card.dimmer('show');
         $.ajax({
             type: 'POST',
-            url: '/institucional/informacao/' + codigo,
+            url: '/institucional/informacao/avi' + codigo,
             success: function (view) {
                 $('.informacoes.modal').remove();
                 $('body').append(view);
@@ -1135,7 +1130,7 @@ siac.Institucional.Historico = (function () {
                 $('.informacoes.modal').modal('show');
             },
             error: function (erro) {
-
+                siac.mensagem('Ocorreu um erro na operação.')
             },
             complete: function (view) {
                 $_card.dimmer('hide');

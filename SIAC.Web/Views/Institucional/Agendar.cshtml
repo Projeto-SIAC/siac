@@ -28,11 +28,11 @@
     <div class="two fields">
         <div class="eight wide field required">
             <label>Data de Ínicio</label>
-            <input id="txtDataInicio" name="txtDataInicio" value="@(Model.Avaliacao.DtAplicacao?.ToString("yyyy-MM-dd"))" placeholder="Data de Início" type="date" data-mask="0000-00-00" required />
+            <input id="txtDataInicio" name="txtDataInicio" value="@(Model.Avaliacao.DtAplicacao?.ToString("dd/MM/yyyy"))" placeholder="Data de Início" type="text" data-mask="00/00/0000" required />
         </div>
         <div class="eight wide field required">
             <label>Data de Término</label>
-            <input id="txtDataTermino" name="txtDataTermino" value="@(Model.DtTermino?.ToString("yyyy-MM-dd"))"  placeholder="Data de Término" type="date" data-mask="0000-00-00" required />
+            <input id="txtDataTermino" name="txtDataTermino" value="@(Model.DtTermino?.ToString("dd/MM/yyyy"))"  placeholder="Data de Término" type="text" data-mask="00/00/0000" required />
         </div>
     </div>
 </form>
