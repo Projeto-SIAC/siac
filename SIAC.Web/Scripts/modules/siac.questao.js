@@ -86,7 +86,7 @@ siac.Questao.Index = (function () {
         });
 
         $(window).scroll(function () {
-            if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+            if ($(window).scrollTop() + $(window).height() > $(document).height() * 0.50) {
                 if ($('.cards .card').length == (_controleQte * pagina)) {
                     pagina++;
                     listar();
@@ -102,7 +102,7 @@ siac.Questao.Index = (function () {
             _controleAjax.abort();
         }
         $cards = $('.ui.cards');
-        $cards.parent().addClass('loading');
+        //$cards.parent().addClass('loading');
         _controleAjax = $.ajax({
             url: '/historico/questao/listar',
             data: {
@@ -127,7 +127,7 @@ siac.Questao.Index = (function () {
                 }
             },
             complete: function () {
-                $cards.parent().removeClass('loading');
+                //$cards.parent().removeClass('loading');
             }
         });
     }

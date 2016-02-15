@@ -12,7 +12,7 @@ siac.Autoavaliacao.Index = (function () {
 
     function iniciar() {
         $(window).scroll(function () {
-            if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+            if ($(window).scrollTop() + $(window).height() > $(document).height() * 0.50) {
                 if ($('.cards .card').length == (_controleQte * pagina)) {
                     pagina++;
                     listar();
@@ -91,7 +91,7 @@ siac.Autoavaliacao.Index = (function () {
             _controleAjax.abort();
         }
         $cards = $('.ui.cards');
-        $cards.parent().addClass('loading');
+        //$cards.parent().addClass('loading');
         _controleAjax = $.ajax({
             url: '/historico/autoavaliacao/listar',
             data: {
@@ -115,7 +115,7 @@ siac.Autoavaliacao.Index = (function () {
                 }
             },
             complete: function () {
-                $cards.parent().removeClass('loading');
+                //$cards.parent().removeClass('loading');
                 adicionarEventoArquivar();
             }
         });

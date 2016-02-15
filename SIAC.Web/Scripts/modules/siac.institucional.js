@@ -1014,7 +1014,7 @@ siac.Institucional.Historico = (function () {
 
     function iniciar() {
         $(window).scroll(function () {
-            if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+            if ($(window).scrollTop() + $(window).height() > $(document).height() * 0.50) {
                 if ($('.cards .card').length == (_controleQte * pagina)) {
                     pagina++;
                     listar();
@@ -1076,7 +1076,7 @@ siac.Institucional.Historico = (function () {
             _controleAjax.abort();
         }
         $cards = $('.ui.cards');
-        $cards.parent().addClass('loading');
+        //$cards.parent().addClass('loading');
         _controleAjax = $.ajax({
             method: 'POST',
             url: '/institucional/listar',
@@ -1098,7 +1098,7 @@ siac.Institucional.Historico = (function () {
                 }
             },
             complete: function () {
-                $cards.parent().removeClass('loading');
+                //$cards.parent().removeClass('loading');
                 ativarInformacaoCard();
             }
         });

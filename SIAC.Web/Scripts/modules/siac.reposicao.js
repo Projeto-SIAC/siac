@@ -469,7 +469,7 @@ siac.Reposicao.Index = (function () {
 
     function iniciar() {
         $(window).scroll(function () {
-            if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+            if ($(window).scrollTop() + $(window).height() > $(document).height() * 0.50) {
                 if ($('.cards .card').length == (_controleQte * pagina)) {
                     pagina++;
                     listar();
@@ -540,7 +540,7 @@ siac.Reposicao.Index = (function () {
             _controleAjax.abort();
         }
         var $cards = $('.ui.cards');
-        $cards.parent().addClass('loading');
+        //$cards.parent().addClass('loading');
         _controleAjax = $.ajax({
             url: '/principal/avaliacao/reposicao/listar',
             data: {
@@ -563,7 +563,7 @@ siac.Reposicao.Index = (function () {
                 }
             },
             complete: function () {
-                $cards.parent().removeClass('loading');
+                //$cards.parent().removeClass('loading');
             }
         });
     }
