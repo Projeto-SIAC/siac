@@ -195,6 +195,8 @@
         <AssociationConnector Association="dbSIACModel.PessoaCategoria" ManuallyRouted="false" />
         <AssociationConnector Association="dbSIACModel.PessoaOcupacao" ManuallyRouted="false" />
         <AssociationConnector Association="dbSIACModel.ProfessorDisciplina" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="dbSIACModel.AvaliacaoProrrogacao" Width="1.5" PointX="21" PointY="26.625" />
+        <AssociationConnector Association="dbSIACModel.FK_AvaliacaoProrrogacao_Avaliacao" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
