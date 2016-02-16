@@ -19,23 +19,30 @@ namespace SIAC.Helpers
             }
         }
 
-        public static bool Apresentacao => context?.Session["Apresentacao"] != null ? (bool)context?.Session["Apresentacao"] : false;
+        public static bool Apresentacao => Retornar("Apresentacao") != null ? (bool)Retornar("Apresentacao") : false;
 
-        public static bool AjudaEstado => context?.Session["AjudaEstado"] != null ? (bool)context?.Session["AjudaEstado"] : false;
+        public static bool AjudaEstado => Retornar("AjudaEstado") != null ? (bool)Retornar("AjudaEstado") : false;
 
-        public static string UsuarioMatricula => (string)context?.Session["UsuarioMatricula"] ?? String.Empty;
+        public static string UsuarioMatricula => (string)Retornar("UsuarioMatricula") ?? String.Empty;
 
-        public static string UsuarioNome => (string)context?.Session["UsuarioNome"] ?? String.Empty;
+        public static string UsuarioNome => (string)Retornar("UsuarioNome") ?? String.Empty;
 
-        public static string UsuarioCategoria => (string)context?.Session["UsuarioCategoria"] ?? String.Empty;
+        public static string UsuarioCategoria => (string)Retornar("UsuarioCategoria") ?? String.Empty;
 
-        public static int UsuarioCategoriaCodigo => (int)context?.Session["UsuarioCategoriaCodigo"];
+        public static int UsuarioCategoriaCodigo => (int)Retornar("UsuarioCategoriaCodigo");
 
-        public static bool UsuarioSenhaPadrao => context?.Session["UsuarioSenhaPadrao"] != null ? (bool)context?.Session["UsuarioSenhaPadrao"] : false;
+        public static bool UsuarioSenhaPadrao => Retornar("UsuarioSenhaPadrao") != null ? (bool)Retornar("UsuarioSenhaPadrao") : false;
 
-        public static void Inserir(string chave, object valor) { if (context != null) context.Session[chave] = valor; } 
+        public static void Inserir(string chave, object valor) { if (context != null) context.Session[chave] = valor; }
 
-        public static object Retornar(string chave) => context?.Session[chave];
+        public static object Retornar(string chave)
+        {
+            if (context?.Session != null)
+            {
+                return context?.Session[chave];
+            }
+            return null;
+        }
 
         public static void Limpar() => context?.Session.Clear();
     }
