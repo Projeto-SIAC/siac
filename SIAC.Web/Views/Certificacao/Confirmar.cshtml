@@ -1,7 +1,7 @@
 ﻿@model AvalCertificacao
 
 @{
-    ViewBag.Title = "Certificação gerada com sucesso.";
+    ViewBag.Title = "Certificação gerada com sucesso";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -47,8 +47,8 @@
             <tr>
                 <th>Disciplina</th>
                 <th>Tema(s)</th>
-                <th>Quantidade</th>
-                <th>Dificuldade</th>
+                <th>Quantidade(s)</th>
+                <th>Índice de Dificuldade</th>
             </tr>
         </thead>
         <tbody>
@@ -81,5 +81,5 @@
     </table>
 </div>
 
-<a href="@Url.Action("Index", "Principal")" class="ui button">Voltar para Principal</a>
+<a href="@Url.Action("Index", "Principal")" class="ui button">Voltar para Tela Principal</a>
 <a href="@Url.Action("Configurar", "Certificacao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui right floated button">Configurar agora</a>

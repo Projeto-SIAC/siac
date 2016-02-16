@@ -528,7 +528,12 @@ siac.Certificacao.Agendar = (function () {
             confirmar();
             return false;
         });
+
+        $('#txtData, #txtHoraInicio, #txtHoraTermino, #ddlTurma, #ddlSala').change(function () {
+            atualizarBotaoConfirmar();
+        });
     }
+
     function validar() {
         var retorno = true;
 
@@ -621,6 +626,15 @@ siac.Certificacao.Agendar = (function () {
         }
         else {
             $form.addClass('error');
+        }
+    }
+
+    function atualizarBotaoConfirmar() {
+        var $btnConfirmar = $('.confirmar.button');
+        if (validar()) {
+            $btnConfirmar.removeClass('disabled');
+        } else {
+            $btnConfirmar.addClass('disabled');
         }
     }
 

@@ -4,6 +4,7 @@
 }
 <h2>
     @ViewBag.Title
+    <div class="ui label">Disciplina:<div class="detail">@Model.Avaliacao.AvalCertificacao.Disciplina.Descricao</div></div>
     <div class="ui right floated informacoes button">
         Informações
     </div>
@@ -34,15 +35,15 @@
     <div class="three fields">
         <div class="field required">
             <label data-ajuda="Defina abaixo os valores para a data de aplicação da avaliação.">Defina a data de aplicação</label>
-            <input id="txtData" name="txtData" type="text" data-mask="00/00/0000" placeholder="Data" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("dd-MM-yyyy") : "")" required />
+            <input id="txtData" name="txtData" type="text" autocomplete="off" data-mask="00/00/0000" placeholder="Data" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("dd-MM-yyyy") : "")" required />
         </div>
         <div class="field required">
             <label data-ajuda="Forneça abaixo os valores para a hora de início da aplicação.">Forneça a hora de início</label>
-            <input id="txtHoraInicio" name="txtHoraInicio" type="text" data-mask="00:00" placeholder="Hora de início" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("HH:mm") : "")" required />
+            <input id="txtHoraInicio" name="txtHoraInicio" type="text" autocomplete="off" data-mask="00:00" placeholder="Hora de início" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("HH:mm") : "")" required />
         </div>
         <div class="field required">
             <label data-ajuda="Forneça abaixo os valores para a hora de término da aplicação.">Forneça a hora de término</label>
-            <input id="txtHoraTermino" name="txtHoraTermino" type="text" data-mask="00:00" placeholder="Hora de término" value="@(Model.Avaliacao.DtTermino.HasValue ? Model.Avaliacao.DtTermino.Value.ToString("HH:mm") : "")" required />
+            <input id="txtHoraTermino" name="txtHoraTermino" type="text" autocomplete="off" data-mask="00:00" placeholder="Hora de término" value="@(Model.Avaliacao.DtTermino.HasValue ? Model.Avaliacao.DtTermino.Value.ToString("HH:mm") : "")" required />
         </div>
     </div>
     <div class="field required">
@@ -56,7 +57,7 @@
         </select>
     </div>
     <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("Detalhe", new { codigo = Model.Avaliacao.CodAvaliacao })' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
-    <button class="ui confirmar button" tabindex="0">Avançar</button>
+    <button class="ui confirmar button disabled" tabindex="0">Avançar</button>
 </form>
 
 @section Scripts{

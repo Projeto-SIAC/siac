@@ -38,7 +38,7 @@
             <li>O botão <b>Reagendar</b> serve para abrir a tela de agendamento em que você poderá redefinir uma nova data para aplicação de avaliação.</li>
             @if (!Model.Avaliacao.FlagVencida)
             {
-                <li>O botão <b>Configurar</b> serve para abrir a tela de configuração de avaliação na qual você irá manipular as questões da mesma.</li>
+                <li>O botão <b>Substituir Questão</b> serve para abrir a tela de configuração de avaliação na qual você poderá substituir as questões desta avaliação acadêmica.</li>
                 if (!Model.Avaliacao.FlagLiberada)
                 {
                     <li>O botão <b>Liberar</b> serve para você liberar esta avaliação pros seus alunos.</li>
@@ -220,7 +220,7 @@
         {
             if (!Sistema.AvaliacaoUsuario.ContainsKey(Model.Avaliacao.CodAvaliacao.ToLower()))
             {
-                <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui configurar button" @(!flagAgora ? "" : "style=\"display:none\"")>Configurar</a>
+                <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui configurar button" @(!flagAgora ? "" : "style=\"display:none\"")>Substituir Questão</a>
                 <div class="ui toggle liberar button">Liberar</div>
             }
         }
