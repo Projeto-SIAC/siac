@@ -1,7 +1,7 @@
 ﻿@model AvalAuto
 
 @{
-    ViewBag.Title = "Autoavaliação";
+    ViewBag.Title = "Autoavaliação gerada com sucesso";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -9,7 +9,7 @@
 <div class="ui icon message positive">
     <i class="icon checkmark"></i>
     <div class="content">        
-        <div class="header">Avaliação gerada com sucesso.</div>
+        <div class="header">Nota:</div>
         <p>Sua autoavalicao encontra-se no seu <b><a href="@Url.Action("Index")">Histórico</a></b> e você poderá realizá-la quando bem entender.
     </div>
 </div>
@@ -22,8 +22,8 @@
             <tr>
                 <th>Disciplina</th>
                 <th>Tema(s)</th>
-                <th>Quantidade</th>
-                <th>Dificuldade</th>
+                <th>Quantidade(s)</th>
+                <th>Índice de Dificuldade</th>
             </tr>
         </thead>
         <tbody>

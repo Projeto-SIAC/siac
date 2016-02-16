@@ -61,7 +61,7 @@
         <li>Aqui em Detalhes você poderá gerenciar os próximos passos que pretende realizar com sua avaliação.</li>
         <li>O botão <b>Histórico</b> serve para abrir a tela de histórico de suas avaliações acadêmicas.</li>
         <li>O botão <b>Arquivar</b> serve para arquivar sua avaliação deixando-a em estado de espera para você tomar ações quando for de seu desejo.</li>
-        <li>O botão <b>Configurar</b> serve para abrir a tela de configuração de avaliação na qual você irá manipular as questões da mesma.</li>
+        <li>O botão <b>Substituir Questão</b> serve para abrir a tela de configuração de avaliação na qual você poderá substituir as questões desta avaliação.</li>
         <li>O botão <b>Imprimir</b> serve para abrir a tela de impressão de avaliação onde você poderá imprimir sua avaliação e aplicar em sala de aula.</li>
         <li>O botão <b>Reagendar</b> serve para abrir a tela de agendamento em que você poderá redefinir uma nova data para aplicação de avaliação.</li>
         <li>O botão <b>Aplicar</b> serve para abrir a tela de aplicação de avaliação para você liberar a mesma pros seus alunos.</li>
@@ -420,7 +420,7 @@ else if (Model.Avaliacao.FlagRealizada)
             <div class="ui arquivar toggle @(Model.Avaliacao.FlagArquivo ? "active" : "") button">Arquiva@(Model.Avaliacao.FlagArquivo ? "da" : "r")</div>
             if (!Model.Avaliacao.FlagArquivo)
             {
-                <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
+                <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Substituir Questão</a>
             }
         }
         if (!Model.Avaliacao.FlagArquivo)

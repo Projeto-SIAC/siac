@@ -183,7 +183,7 @@ namespace SIAC.Controllers
                     AvalAuto.Inserir(auto);
                     Lembrete.AdicionarNotificacao($"Autoavaliação {auto.Avaliacao.CodAvaliacao} gerada com sucesso.", Lembrete.POSITIVO);
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Realizar");
             }
             else
             {

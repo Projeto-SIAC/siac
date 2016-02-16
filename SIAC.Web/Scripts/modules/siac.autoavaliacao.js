@@ -733,7 +733,7 @@ siac.Autoavaliacao.Gerar = (function () {
                                 '<div class="content">'+
                                     '<div class="field">'+
                                         '<select required id="ddlDificuldade' + discs[i] + '" name="ddlDificuldade' + discs[i] + '" class="ui search dropdown">'+
-                                            '<option value="">Dificuldade</option>'+dificuldades+
+                                            '<option value="">Índice de Dificuldade</option>'+dificuldades+
                                         '</select>' +
                                     '</div>' +
                                 '</div>');

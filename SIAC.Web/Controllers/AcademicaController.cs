@@ -121,7 +121,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Confirmar(FormCollection formCollection)
         {
-            if (Helpers.Sessao.UsuarioCategoriaCodigo != Categoria.PROFESSOR)
+            if (Sessao.UsuarioCategoriaCodigo != Categoria.PROFESSOR)
             {
                 if (Session["UrlReferrer"] != null)
                 {
@@ -202,6 +202,11 @@ namespace SIAC.Controllers
                 }
 
                 AvalAcademica.Inserir(acad);
+                Lembrete.AdicionarNotificacao($"Avaliação Acadêmica {acad.Avaliacao.CodAvaliacao} gerada com sucesso.", Lembrete.POSITIVO);
+                if(quantidadeObjetiva + quantidadeDiscursiva > acad.Avaliacao.QteQuestoes())
+                {
+                    Lembrete.AdicionarNotificacao("Avaliação Acadêmica gerada com quantidade de questões inferior ao requisitado", Lembrete.NEGATIVO,0);
+                }
             }
 
             return View(acad);

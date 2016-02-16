@@ -109,9 +109,9 @@
             </select>
         </div>
         <div class="ui three wide field ">
-            <label>Dificuldade</label>
+            <label>Índice de Dificuldade</label>
             <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown fluid dificuldade">
-                <option value="">Dificuldade...</option>
+                <option value="">Índice de Dificuldade...</option>
                 @foreach (Dificuldade d in Model.Dificuldades)
                 {
                     if (d.CodDificuldade <= Model.Avaliacao.CodDificuldade)

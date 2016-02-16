@@ -16,15 +16,15 @@
 </div>
 
 <div class="ui confirmar modal">
-    <div class="header">Verificar e confirmar os dados fornecidos</div>
+    <div class="header">Verifique e confirme os dados fornecidos descritos abaixo</div>
     <div class="content">
         <table class="ui very basic table">
             <thead>
                 <tr>
                     <th>Disciplina</th>
                     <th>Tema(s)</th>
-                    <th>Quantidade</th>
-                    <th>Dificuldade</th>
+                    <th>Quantidade(s)</th>
+                    <th>Índice de Dificuldade</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -63,9 +63,9 @@
     </div>
     @* Dificuldade das Questões *@
     <div class="field required">
-        <label data-ajuda="Clique na caixa abaixo para definir a dificuldade das questões.">Defina a dificuldade das questões</label>
+        <label data-ajuda="Clique na caixa abaixo para definir o índice de dificuldade das questões.">Defina o índice de dificuldade das questões</label>
         <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown" required>
-            <option value="">Dificuldade...</option>
+            <option value="">Índice de Dificuldade...</option>
             @foreach (Dificuldade dificuldade in Model.Dificuldades)
             {
                 <option value="@dificuldade.CodDificuldade">@dificuldade.Descricao</option>

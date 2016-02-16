@@ -5,6 +5,7 @@
 
 
 <h2>@ViewBag.Title 
+    <div class="ui label">Disciplina:<div class="detail">@Model.Avaliacao.AvalAcademica.Disciplina.Descricao</div></div>
     <div class="ui right floated informacoes button">
         Informações
     </div>
@@ -12,7 +13,7 @@
 
 <div class="ui confirmar modal">
     <div class="header">
-        Verificar e confirmar
+        Verifique e confirme os dados fornecidos descritos abaixo
     </div>
     <div class="content">
 
@@ -31,7 +32,7 @@
         <ul class="list"></ul>
     </div>
     <div class="field required">
-        <label data-ajuda="Clique na caixa abaixo para selecionar a turma em que será aplicada a avaliação.">Selecione a turma</label>
+        <label data-ajuda="Clique na caixa abaixo para selecionar a turma em que será aplicada a avaliação. Obs.: Serão listadas as turmas cadastradas no sistema acadêmico no período letivo corrente.">Selecione a turma</label>
         <select id="ddlTurma" name="ddlTurma" class="ui search dropdown" required>
             <option value="">Turma</option>
             @foreach (Turma turma in Model.Turmas)
@@ -44,17 +45,17 @@
     <div class="three fields">
         <div class="field required">
             <label data-ajuda="Defina abaixo os valores para a data de aplicação da avaliação.">Defina a data de aplicação</label>
-            <input id="txtData" name="txtData" type="text" data-mask="00/00/0000" placeholder="Data" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy") : "")" required />
+            <input id="txtData" name="txtData" type="text" autocomplete="off" data-mask="00/00/0000" placeholder="Data" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy") : "")" required />
             @*<input id="txtData" name="txtData" type="date" data-mask="0000-00-00" placeholder="Data" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("yyyy-MM-dd") : "")" required />*@
         </div>
         <div class="field required">
             <label data-ajuda="Forneça abaixo os valores para a hora de início da aplicação.">Forneça a hora de início</label>
-            <input id="txtHoraInicio" name="txtHoraInicio" type="text" data-mask="00:00" placeholder="Hora de início" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("HH:mm") : "")" required />
+            <input id="txtHoraInicio" name="txtHoraInicio" type="text" autocomplete="off" data-mask="00:00" placeholder="Hora de início" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("HH:mm") : "")" required />
             @*<input id="txtHoraInicio" name="txtHoraInicio" type="time" data-mask="00:00" placeholder="Hora de início" value="@(Model.Avaliacao.DtAplicacao.HasValue ? Model.Avaliacao.DtAplicacao.Value.ToString("HH:mm") : "")" required/>*@
         </div>
         <div class="field required">
             <label data-ajuda="Forneça abaixo os valores para a hora de término da aplicação.">Forneça a hora de término</label>
-            <input id="txtHoraTermino" name="txtHoraTermino" type="text" data-mask="00:00" placeholder="Hora de término" value="@(Model.Avaliacao.DtTermino.HasValue ? Model.Avaliacao.DtTermino.Value.ToString("HH:mm") : "")" required />
+            <input id="txtHoraTermino" name="txtHoraTermino" type="text" autocomplete="off" data-mask="00:00" placeholder="Hora de término" value="@(Model.Avaliacao.DtTermino.HasValue ? Model.Avaliacao.DtTermino.Value.ToString("HH:mm") : "")" required />
             @*<input id="txtHoraTermino" name="txtHoraTermino" type="time" data-mask="00:00" placeholder="Hora de término" value="@(Model.Avaliacao.DtTermino.HasValue ? Model.Avaliacao.DtTermino.Value.ToString("HH:mm") : "")" required />*@
         </div>
     </div>
@@ -69,7 +70,7 @@
         </select>
     </div>
     <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("Detalhe", new { codigo = Model.Avaliacao.CodAvaliacao })' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
-    <button class="ui confirmar button" tabindex="0">Avançar</button>
+    <button class="ui confirmar button disabled" tabindex="0">Avançar</button>
 </form>
 
 @section Scripts{
