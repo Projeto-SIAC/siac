@@ -362,18 +362,16 @@ siac.Ajuda = siac.Ajuda || (function () {
     }
 
     function enviarAjudaEstado(estado) {
+        if (estado) {
+            ativarAjuda();
+        }
+        else {
+            desativarAjuda();
+        }
         $.ajax({
             type: 'POST',
             url: '/acesso/ajuda',
-            data: { estado: estado },
-            complete: function () {
-                if (estado) {
-                    ativarAjuda();
-                }
-                else {
-                    desativarAjuda();
-                }
-            }
+            data: { estado: estado }
         });
     }
 
