@@ -15,6 +15,7 @@ namespace SIAC
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleTable.EnableOptimizations = false;
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             ViewEngines.Engines.Add(new SIACViewEngine());
             Models.Parametro.Obter();
