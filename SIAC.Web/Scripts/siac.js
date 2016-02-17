@@ -7,6 +7,8 @@
                 }
             }
 
+            $('.ui.global.loader').parent().dimmer({ closable: false });
+
             window.onbeforeunload = function () { $('.ui.global.loader').parent().dimmer('show'); };
 
             $(document).keydown(function (e) {

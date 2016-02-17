@@ -244,6 +244,8 @@
                     .sidebar('attach events', '.ui.sidebar.menu .item', 'toggle')
               ;
 
+              $('.ui.global.loader').parent().dimmer({ closable: false });
+
               // fix menu when passed
               $('.masthead')
                 .visibility({
