@@ -19,6 +19,7 @@ namespace SIAC.Models
         {
             this.AvaliacaoTema = new HashSet<AvaliacaoTema>();
             this.AvalPessoaResultado = new HashSet<AvalPessoaResultado>();
+            this.AvaliacaoProrrogacao = new HashSet<AvaliacaoProrrogacao>();
         }
     
         public int Ano { get; set; }
@@ -42,5 +43,7 @@ namespace SIAC.Models
         public virtual ICollection<AvaliacaoTema> AvaliacaoTema { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AvalPessoaResultado> AvalPessoaResultado { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AvaliacaoProrrogacao> AvaliacaoProrrogacao { get; set; }
     }
 }

@@ -895,7 +895,7 @@ siac.Academica.Realizar = (function () {
         $('#lblHoraTermino').text(("0" + (_dtTermino.getHours())).slice(-2) + 'h' + ("0" + (_dtTermino.getMinutes())).slice(-2) + 'min');
 
         relogio();
-        temporizador(_dtTermino);
+        temporizador();
         conectarHub(_codAvaliacao, _matriculaUsuario);
     }
 
@@ -906,10 +906,10 @@ siac.Academica.Realizar = (function () {
         }, 1000);
     }
 
-    function temporizador(dtTermino) {
+    function temporizador() {
         setInterval(function () {
-            var offset = dtTermino.getTimezoneOffset() * 60 * 1000;
-            var timeRestante = (dtTermino.getTime() + offset) - (new Date().getTime() + offset);
+            var offset = _dtTermino.getTimezoneOffset() * 60 * 1000;
+            var timeRestante = (_dtTermino.getTime() + offset) - (new Date().getTime() + offset);
 
             if (timeRestante > 0) {
                 var date = new Date();
@@ -1130,6 +1130,12 @@ siac.Academica.Realizar = (function () {
             })
         });
 
+        acadHub.client.prorrogar = function (duracao) {
+            _dtTermino = new Date(_dtTermino.getTime() + duracao * 60000);
+            $('#lblHoraTermino').text(("0" + (_dtTermino.getHours())).slice(-2) + 'h' + ("0" + (_dtTermino.getMinutes())).slice(-2) + 'min');
+            siac.Lembrete.Notificacoes.exibir('O professor prorrogou a duração em ' + duracao + ' minutos', 'info');
+        }
+
         acadHub.client.alertar = function (mensagem) {
             var timeAntes = new Date();
             alert(mensagem);
@@ -1218,12 +1224,17 @@ siac.Academica.Realizar = (function () {
 })();
 
 siac.Academica.Acompanhar = (function () {
-    var _codAvaliacao, _matriculaUsuario;
+    var _codAvaliacao, _matriculaUsuario, _dtTermino;
 
     function iniciar() {
         var $elemento = $('[data-usuario]');
         _matriculaUsuario = $elemento.attr('data-usuario');
         $elemento.removeAttr('data-usuario');
+
+        $elemento = $('[data-termino]');
+        _dtTermino = new Date();
+        _dtTermino.setTime(Date.parse($elemento.attr('data-termino')));
+        $elemento.removeAttr('data-termino');
 
         _codAvaliacao = window.location.pathname.toLowerCase().match(/acad[0-9]+$/)[0];
 
@@ -1250,10 +1261,13 @@ siac.Academica.Acompanhar = (function () {
                 on: 'click'
             })
         ;
+
+        $('.modal').modal();
     }
 
     function conectarHub(avalAcad, usrMatr) {
         var acadHub = $.connection.academicaHub;
+
         $.connection.hub.start().done(function () {
 
             enviarMsg = function enviarMsg(_this) {
@@ -1280,6 +1294,32 @@ siac.Academica.Acompanhar = (function () {
                     }, 0);
                 }
             };
+
+            prorrogar = function prorrogar(duracao, observacao) {
+                if (duracao > 0) {
+                    acadHub.server.prorrogar(avalAcad, duracao, observacao);
+                }
+            }
+
+            $('.prorrogar.button').click(function () {
+                $('.prorrogar.modal').modal('show');
+            });
+            $('.prorrogar.modal').modal({
+                onApprove: function () {
+                    var duracao = $('#txtProrrogarDuracao').val();
+                    var observacao = $('#txtProrrogarObservacao').val();
+                    if (duracao > 0) {
+                        prorrogar(duracao, observacao);
+                        _dtTermino = new Date(_dtTermino.getTime() + duracao * 60000);
+                        $('#lblHoraTermino').text(("0" + (_dtTermino.getHours())).slice(-2) + 'h' + ("0" + (_dtTermino.getMinutes())).slice(-2) + 'min');
+                        $('#txtProrrogarDuracao').val('');
+                        $('#txtProrrogarObservacao').val('');
+                    }
+                    else {
+                        siac.mensagem('Insira uma quantidade válida de minutos para a prorrogação.', 'Prorrogar Avaliação');
+                    }
+                }
+            });
 
             acadHub.server.professorConectou(avalAcad, usrMatr);
             $('.prova.button').on('click', function () {

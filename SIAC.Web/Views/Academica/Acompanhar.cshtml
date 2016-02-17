@@ -33,7 +33,7 @@
 }
 
 <h2 data-usuario="@Sessao.UsuarioMatricula">
-    @ViewBag.Title 
+    @ViewBag.Title     
     <div class="ui trigger right floated button">
         Alertar Todos
     </div>
@@ -58,6 +58,25 @@
         <a href="" target="_blank" class="ui nova guia button">Abrir em Nova Guia</a>
     </div>
 </div>
+<div class="ui prorrogar small modal">
+    <div class="header">Prorrogar Avaliação</div>
+    <div class="content">
+        <div class="ui form">
+            <div class="field required">
+                <label for="txtProrrogarDuracao">Insira a duração da prorrogação (em minutos)</label>
+                <input type="text" data-mask="#0" id="txtProrrogarDuracao" placeholder="Duração" />
+            </div>
+            <div class="field">
+                <label for="txtProrrogarObservacao">Digite uma observação</label>
+                <textarea maxlength="255" id="txtProrrogarObservacao" placeholder="Observação"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Cancelar</div>
+        <div class="ui approve button">Prorrogar</div>
+    </div>
+</div>
 
 <div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
     <div class="header">
@@ -80,7 +99,7 @@
     <div class="ui label">Curso<div class="detail">@Model.Turma.Curso.Descricao</div></div>
     <div class="ui label">Turma<div class="detail">@Model.Turma.CodTurma</div></div>
     <div class="ui label">Início<div class="detail">@Model.Avaliacao.DtAplicacao.Value.ToString("HH'h'mm'min'")</div></div>
-    <div class="ui label">Término<div class="detail">@Model.Avaliacao.DtTermino.Value.ToString("HH'h'mm'min'")</div></div>
+    <div class="ui label">Término<div class="detail" id="lblHoraTermino" data-termino="@Model.Avaliacao.DtTermino.Value.ToString("yyyy-MM-dd'T'HH:mm")">@Model.Avaliacao.DtTermino.Value.ToString("HH'h'mm'min'")</div></div>
 </div>
 
 <div class="ui basic segment">
@@ -141,6 +160,7 @@
 </div>
 
 <a class="ui button" href="@Url.Action("Agendada")">Voltar</a>
+<div class="ui right floated prorrogar icon labeled button">Prorrogar <i class="icon time"></i></div>
 
 
 @section Scripts{

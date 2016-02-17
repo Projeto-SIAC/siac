@@ -297,7 +297,7 @@ namespace SIAC.Hubs
                             codigo = codigo.Remove(codigo.Length - 1);
                             int.TryParse(codigo.Substring(codigo.Length - 4), out ano);
                             codigo = codigo.Remove(codigo.Length - 4);
-                            int codTipoAvaliacao = e.TipoAvaliacao.SingleOrDefault(t=>t.Sigla == codigo).CodTipoAvaliacao;
+                            int codTipoAvaliacao = e.TipoAvaliacao.FirstOrDefault(t=>t.Sigla == codigo).CodTipoAvaliacao;
 
                             Models.AvalAcadReposicao avalReposicao = e.AvalAcadReposicao.FirstOrDefault(acad => acad.Ano == ano && acad.Semestre == semestre && acad.NumIdentificador == numIdentificador && acad.CodTipoAvaliacao == codTipoAvaliacao);
 

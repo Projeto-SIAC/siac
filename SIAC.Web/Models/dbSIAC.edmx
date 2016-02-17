@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="dbSIACModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="dbSIACModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Alternativa">
           <Key>
             <PropertyRef Name="CodOrdem" />
@@ -158,6 +158,23 @@
           <Property Name="FlagLiberada" Type="bit" Nullable="false" />
           <Property Name="Recomendacao" Type="text" />
           <Property Name="FlagArquivo" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AvaliacaoProrrogacao">
+          <Key>
+            <PropertyRef Name="Ano" />
+            <PropertyRef Name="Semestre" />
+            <PropertyRef Name="NumIdentificador" />
+            <PropertyRef Name="CodTipoAvaliacao" />
+            <PropertyRef Name="DtProrrogacao" />
+          </Key>
+          <Property Name="Ano" Type="int" Nullable="false" />
+          <Property Name="Semestre" Type="int" Nullable="false" />
+          <Property Name="NumIdentificador" Type="int" Nullable="false" />
+          <Property Name="CodTipoAvaliacao" Type="int" Nullable="false" />
+          <Property Name="DtProrrogacao" Type="datetime" Nullable="false" />
+          <Property Name="DuracaoAnterior" Type="int" Nullable="false" />
+          <Property Name="DuracaoNova" Type="int" Nullable="false" />
+          <Property Name="Observacao" Type="varchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="AvaliacaoTema">
           <Key>
@@ -2921,6 +2938,24 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_AvaliacaoProrrogacao_Avaliacao">
+          <End Role="Avaliacao" Type="Self.Avaliacao" Multiplicity="1" />
+          <End Role="AvaliacaoProrrogacao" Type="Self.AvaliacaoProrrogacao" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Avaliacao">
+              <PropertyRef Name="CodTipoAvaliacao" />
+              <PropertyRef Name="Ano" />
+              <PropertyRef Name="Semestre" />
+              <PropertyRef Name="NumIdentificador" />
+            </Principal>
+            <Dependent Role="AvaliacaoProrrogacao">
+              <PropertyRef Name="CodTipoAvaliacao" />
+              <PropertyRef Name="Ano" />
+              <PropertyRef Name="Semestre" />
+              <PropertyRef Name="NumIdentificador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ProfessorDisciplina_Disciplina">
           <End Role="Disciplina" Type="Self.Disciplina" Multiplicity="1" />
           <End Role="ProfessorDisciplina" Type="Self.ProfessorDisciplina" Multiplicity="*" />
@@ -2957,6 +2992,7 @@
           <EntitySet Name="AvalCertificacao" EntityType="Self.AvalCertificacao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AvalCertPessoa" EntityType="Self.AvalCertPessoa" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Avaliacao" EntityType="Self.Avaliacao" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AvaliacaoProrrogacao" EntityType="Self.AvaliacaoProrrogacao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AvaliacaoTema" EntityType="Self.AvaliacaoTema" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AvalPessoaResultado" EntityType="Self.AvalPessoaResultado" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AvalQuesPessoaResposta" EntityType="Self.AvalQuesPessoaResposta" Schema="dbo" store:Type="Tables" />
@@ -3553,6 +3589,10 @@
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Visitante" EntitySet="Visitante" />
           </AssociationSet>
+          <AssociationSet Name="FK_AvaliacaoProrrogacao_Avaliacao" Association="Self.FK_AvaliacaoProrrogacao_Avaliacao">
+            <End Role="Avaliacao" EntitySet="Avaliacao" />
+            <End Role="AvaliacaoProrrogacao" EntitySet="AvaliacaoProrrogacao" />
+          </AssociationSet>
           <AssociationSet Name="FK_ProfessorDisciplina_Disciplina" Association="Self.FK_ProfessorDisciplina_Disciplina">
             <End Role="Disciplina" EntitySet="Disciplina" />
             <End Role="ProfessorDisciplina" EntitySet="ProfessorDisciplina" />
@@ -3562,8 +3602,7 @@
             <End Role="ProfessorDisciplina" EntitySet="ProfessorDisciplina" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="dbSIACModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3723,6 +3762,7 @@
           <NavigationProperty Name="TipoAvaliacao" Relationship="Self.FK__Avaliacao__CodTi__3FBB6990" FromRole="Avaliacao" ToRole="TipoAvaliacao" />
           <NavigationProperty Name="AvaliacaoTema" Relationship="Self.FK__AvaliacaoTema__40AF8DC9" FromRole="Avaliacao" ToRole="AvaliacaoTema" />
           <NavigationProperty Name="AvalPessoaResultado" Relationship="Self.FK__AvalPessoaResult__438BFA74" FromRole="Avaliacao" ToRole="AvalPessoaResultado" />
+          <NavigationProperty Name="AvaliacaoProrrogacao" Relationship="dbSIACModel.FK_AvaliacaoProrrogacao_Avaliacao" FromRole="Avaliacao" ToRole="AvaliacaoProrrogacao" />
         </EntityType>
         <EntityType Name="AvaliacaoTema">
           <Key>
@@ -6730,7 +6770,48 @@
             <End Role="Disciplina" EntitySet="Disciplina" />
             <End Role="Professor" EntitySet="Professor" />
           </AssociationSet>
+          <EntitySet Name="AvaliacaoProrrogacao" EntityType="dbSIACModel.AvaliacaoProrrogacao" />
+          <AssociationSet Name="FK_AvaliacaoProrrogacao_Avaliacao" Association="dbSIACModel.FK_AvaliacaoProrrogacao_Avaliacao">
+            <End Role="Avaliacao" EntitySet="Avaliacao" />
+            <End Role="AvaliacaoProrrogacao" EntitySet="AvaliacaoProrrogacao" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="AvaliacaoProrrogacao">
+          <Key>
+            <PropertyRef Name="Ano" />
+            <PropertyRef Name="Semestre" />
+            <PropertyRef Name="NumIdentificador" />
+            <PropertyRef Name="CodTipoAvaliacao" />
+            <PropertyRef Name="DtProrrogacao" />
+          </Key>
+          <Property Name="Ano" Type="Int32" Nullable="false" />
+          <Property Name="Semestre" Type="Int32" Nullable="false" />
+          <Property Name="NumIdentificador" Type="Int32" Nullable="false" />
+          <Property Name="CodTipoAvaliacao" Type="Int32" Nullable="false" />
+          <Property Name="DtProrrogacao" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DuracaoAnterior" Type="Int32" Nullable="false" />
+          <Property Name="DuracaoNova" Type="Int32" Nullable="false" />
+          <Property Name="Observacao" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Avaliacao" Relationship="dbSIACModel.FK_AvaliacaoProrrogacao_Avaliacao" FromRole="AvaliacaoProrrogacao" ToRole="Avaliacao" />
+        </EntityType>
+        <Association Name="FK_AvaliacaoProrrogacao_Avaliacao">
+          <End Type="dbSIACModel.Avaliacao" Role="Avaliacao" Multiplicity="1" />
+          <End Type="dbSIACModel.AvaliacaoProrrogacao" Role="AvaliacaoProrrogacao" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Avaliacao">
+              <PropertyRef Name="CodTipoAvaliacao" />
+              <PropertyRef Name="Ano" />
+              <PropertyRef Name="Semestre" />
+              <PropertyRef Name="NumIdentificador" />
+            </Principal>
+            <Dependent Role="AvaliacaoProrrogacao">
+              <PropertyRef Name="CodTipoAvaliacao" />
+              <PropertyRef Name="Ano" />
+              <PropertyRef Name="Semestre" />
+              <PropertyRef Name="NumIdentificador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7703,6 +7784,20 @@
               <ScalarProperty Name="CodProfessor" ColumnName="CodProfessor" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="AvaliacaoProrrogacao">
+            <EntityTypeMapping TypeName="dbSIACModel.AvaliacaoProrrogacao">
+              <MappingFragment StoreEntitySet="AvaliacaoProrrogacao">
+                <ScalarProperty Name="Observacao" ColumnName="Observacao" />
+                <ScalarProperty Name="DuracaoNova" ColumnName="DuracaoNova" />
+                <ScalarProperty Name="DuracaoAnterior" ColumnName="DuracaoAnterior" />
+                <ScalarProperty Name="DtProrrogacao" ColumnName="DtProrrogacao" />
+                <ScalarProperty Name="CodTipoAvaliacao" ColumnName="CodTipoAvaliacao" />
+                <ScalarProperty Name="NumIdentificador" ColumnName="NumIdentificador" />
+                <ScalarProperty Name="Semestre" ColumnName="Semestre" />
+                <ScalarProperty Name="Ano" ColumnName="Ano" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

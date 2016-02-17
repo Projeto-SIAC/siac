@@ -318,6 +318,9 @@
     <Compile Include="Models\Avaliacao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AvaliacaoProrrogacao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\AvaliacaoTema.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
