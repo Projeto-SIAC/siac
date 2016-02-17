@@ -115,10 +115,7 @@ namespace SIAC.Controllers
 
         // POST: principal/questao/chequecaptcha
         [HttpPost]
-        public bool ChequeCaptcha(string captcha)
-        {
-            return (captcha == Sessao.Retornar("Captcha") as string);
-        }
+        public ActionResult ChequeCaptcha(string captcha) => Json(captcha == (string)Sessao.Retornar("Captcha"));
 
         // POST: principal/questao/novocaptcha
         [HttpPost]
@@ -188,6 +185,7 @@ namespace SIAC.Controllers
             // Anexos
             if (!String.IsNullOrWhiteSpace(formCollection["chkAnexos"]) && !String.IsNullOrWhiteSpace(formCollection["txtQtdAnexos"]))
             {
+                int iAnexoImage = 0;
                 int qteAnexos = int.Parse(formCollection["txtQtdAnexos"]);
                 for (int i = 0; i < qteAnexos; i++)
                 {
@@ -201,8 +199,9 @@ namespace SIAC.Controllers
                                 CodTipoAnexo = tipoAnexo,
                                 Legenda = formCollection["txtAnexoLegenda" + (i + 1)].RemoveSpaces(),
                                 Fonte = !String.IsNullOrWhiteSpace(formCollection["txtAnexoFonte" + (i + 1)]) ? formCollection["txtAnexoFonte" + (i + 1)].RemoveSpaces() : null,
-                                Anexo = new System.IO.BinaryReader(Request.Files[i].InputStream).ReadBytes(Request.Files[i].ContentLength)
+                                Anexo = new System.IO.BinaryReader(Request.Files[iAnexoImage].InputStream).ReadBytes(Request.Files[iAnexoImage].ContentLength)
                             });
+                            iAnexoImage++;
                             break;
                         case TipoAnexo.CODIGO:
                             questao.QuestaoAnexo.Add(new QuestaoAnexo

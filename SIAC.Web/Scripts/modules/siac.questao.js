@@ -861,7 +861,8 @@ siac.Questao.Cadastrar = (function () {
             data: { captcha: $('#txtCaptcha').val() },
             url: "/principal/questao/chequecaptcha",
             success: function (response) {
-                if (response) {
+                console.log(response);
+                if (response === true) {
                     $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
                     $('.ui.confirmar.modal').modal('hide');
                     $('#txtCaptcha').next().prop('class', 'checkmark green icon');
