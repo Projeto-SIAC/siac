@@ -76,17 +76,17 @@
                 Ínicio
                 <div id="lblHoraInicio" class="detail">@DateTime.Now.ToString("HH'h'mm'min'")</div>
             </div>
-            <div class="ui label" data-termino="@Model.Avaliacao.DtTermino.Value.ToString("yyyy-MM-dd'T'HH:mm")">
+            <div class="ui label" data-termino="@Model.Avaliacao.DtTermino.Value.ToString("yyyy','MM','dd','HH','mm")">
                 Término
                 <div id="lblHoraTermino" class="detail"></div>
             </div>
             <div class="ui label">
                 Agora
-                <div id="lblHoraAgora" class="detail">00h00min</div>
+                <div id="lblHoraAgora" class="detail"></div>
             </div>
             <div class="ui label">
                 Restante
-                <div id="lblHoraRestante" class="detail">00h00min</div>
+                <div id="lblHoraRestante" class="detail"></div>
             </div>
         </div>        
     </div>

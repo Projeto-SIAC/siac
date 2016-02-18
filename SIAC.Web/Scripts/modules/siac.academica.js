@@ -806,8 +806,8 @@ siac.Academica.Realizar = (function () {
         _codAvaliacao = window.location.pathname.toLowerCase().match(/acad[0-9]+$/)[0];
 
         $elemento = $('[data-termino]');
-        _dtTermino = new Date();
-        _dtTermino.setTime(Date.parse($elemento.attr('data-termino')));
+        var _dt = $elemento.attr('data-termino').split(',');
+        _dtTermino = new Date(_dt[0], _dt[1], _dt[2], _dt[3], _dt[4]);
         $elemento.removeAttr('data-termino');
 
         $('.ui.sticky').sticky();
