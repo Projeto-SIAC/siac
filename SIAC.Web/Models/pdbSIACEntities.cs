@@ -22,5 +22,14 @@ namespace SIAC.Models
             }
             return base.SaveChanges();
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Helpers.Sessao.Remover("dbSIACEntities");
+            }
+            base.Dispose(disposing);
+        }
     }
 }

@@ -33,7 +33,7 @@ namespace SIAC.Helpers
 
         public static bool UsuarioSenhaPadrao => Retornar("UsuarioSenhaPadrao") != null ? (bool)Retornar("UsuarioSenhaPadrao") : false;
 
-        public static void Inserir(string chave, object valor) { if (context != null) context.Session[chave] = valor; }
+        public static void Inserir(string chave, object valor) { if (context?.Session != null) context.Session[chave] = valor; }
 
         public static object Retornar(string chave)
         {
@@ -43,6 +43,8 @@ namespace SIAC.Helpers
             }
             return null;
         }
+
+        public static void Remover(string chave) => context?.Session?.Remove(chave);
 
         public static void Limpar() => context?.Session.Clear();
     }
