@@ -22,8 +22,18 @@
         Observações
     </div>
     <ul class="list">
-        <li>Clique nos botões de cor <a class="ui red label">Vermelha</a>, <a class=" ui green label">Verde</a> e <a class="ui blue label">Azul</a> para visualizar os comentários de cada questão.</li>
-        <li>Pouse o mouse nas palavras <a class="ui tag label">Correta</a> e <a class="ui tag label">Marcada</a> para visualizar os comentários das questões.</li>
+        <li>Clique nos botões de cor <a class="ui small red label">Vermelha</a>, <a class=" ui small green label">Verde</a> e <a class="ui small blue label">Azul</a> para visualizar os comentários de cada questão.</li>
+        <li>Pouse o mouse nas palavras <a class="ui small tag label">Correta</a> e <a class="ui small tag label">Marcada</a> para visualizar os comentários das questões.</li>
+        @if (!Model.Avaliacao.FlagArquivo)
+        {
+            <li>O botão <b>Imprimir</b> serve para abrir a tela de impressão de avaliação onde você poderá imprimir sua avaliação e realiza-la tradicionalmente.</li>
+            <li>O botão <b>Arquivar</b> serve para arquivar sua avaliação deixando-a em estado de espera para você tomar ações quando for de seu desejo.</li>
+            <li>O botão <b>Realizar</b> serve para abrir a tela de realização de avaliação na qual você poderá iniciar sua avaliação.</li>
+        }
+        else
+        {
+            <li>O botão <b>Desarquivar</b> serve para retirar sua avaliação do estado de espera e então você terá mais opções de utilização desta avaliação.</li>
+        }
     </ul>
 </div>
 
@@ -193,7 +203,7 @@ else
         }
     </div>
 }
-<a class="ui button" href="@Url.Action("Index","Principal")">Voltar para Tela Principal</a>
+<a class="ui left floated button" href="@Url.Action("Index","Principal")">Voltar para Tela Principal</a>
 <a class="ui right floated button" href="@Url.Action("Index")">Ir para Tela de Histórico</a>
 
 @section Scripts {
