@@ -55,8 +55,9 @@
 </div>
 
 <div class="ui termo modal">
-    <div class="header">Você está ciente de...</div>
+    <div class="header">@ViewBag.Title</div>
     <div class="content">
+        <h3>Você está ciente do objetivo dessa funcionalidade?</h3>
         @Html.Raw(Model.Termo.ToHtml("p"))
     </div>
     <div class="actions">
@@ -66,7 +67,7 @@
 </div>
 
 <div class="ui confirmar modal">
-    <div class="header">Verificação e confirmação</div>
+    <div class="header">Verifique e confirme os dados fornecidos descritos abaixo</div>
     <div class="content">
         <div class="ui labels">
             <div class="ui label">

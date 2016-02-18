@@ -13,8 +13,8 @@
         Observações
     </div>
     <ul class="list">
-        <li>Clique nos botões de cor Vermelha, Verde e Azul para visualizar os comentários de cada questão.</li>
-        <li>Pouse o mouse nas palavras ‘Correta’ e ‘Marcada’ para visualizar os comentários das questões.</li>
+        <li>Clique nos botões de cor <a class="ui red label">Vermelha</a>, <a class=" ui green label">Verde</a> e <a class="ui blue label">Azul</a> para visualizar os comentários de cada questão.</li>
+        <li>Pouse o mouse nas palavras <a class="ui tag label">Correta</a> e <a class="ui tag label">Marcada</a> para visualizar os comentários das questões.</li>
     </ul>
 </div>
 
@@ -77,11 +77,11 @@
                                         <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
                                         @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
                                         {
-                                            <a data-html="@("<b>Comentário</b>: " + (!String.IsNullOrWhiteSpace(alternativa.Comentario) ? alternativa.Comentario.Replace("\n", "<br>") : "Não existe comentário cadastrado pelo professor fornecedor"))" data-variation="very wide" class="ui tag label">Correta</a>
+                                            <a data-html="@("<b>Comentário</b>: " + (!String.IsNullOrWhiteSpace(alternativa.Comentario) ? alternativa.Comentario.Replace("\n", "<br>") : "Não existe comentário cadastrado pelo professor fornecedor."))" data-variation="very wide" class="ui tag label">Correta</a>
                                         }
                                         @if (alternativa.CodOrdem == resposta.RespAlternativa)
                                         {
-                                            <a data-html="@("<b>Comentário</b>: " + (!String.IsNullOrWhiteSpace(alternativa.Comentario) ? alternativa.Comentario.Replace("\n", "<br>") : "Não existe comentário cadastrado pelo professor fornecedor"))" data-variation="very wide" class="ui tag label">Marcada</a>
+                                            <a data-html="@("<b>Comentário</b>: " + (!String.IsNullOrWhiteSpace(alternativa.Comentario) ? alternativa.Comentario.Replace("\n", "<br>") : "Não existe comentário cadastrado pelo professor fornecedor."))" data-variation="very wide" class="ui tag label">Marcada</a>
                                         }
                                     </div>
                                 </div>
@@ -113,6 +113,9 @@
     </div>
     }
 </div>
+
+<a class="ui button" href="@Url.Action("Index","Principal")">Voltar para Tela Principal</a>
+<a class="ui right floated button" href="@Url.Action("Index")">Ir para Tela de Histórico</a>
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/autoavaliacao")

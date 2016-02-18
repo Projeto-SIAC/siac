@@ -560,25 +560,34 @@ siac.Questao.Cadastrar = (function () {
     }
 
     function verificar() {
-        $('.ui.error.message .list').html('');
-        var validado = false;
+        var $errorList = $('form .error.message .list');
+        $errorList.html('');
+
+        $('form').removeClass('error');
+
+        var validado = true;
         if (!$('#ddlDisciplina').val()) {
-            $('.ui.error.message .list').append('<li>É necessário selecionar uma disciplina</li>')
+            $errorList.append('<li>É necessário selecionar uma disciplina</li>');
+            validado = false;
         }
 
         if (!$('#ddlTema :selected').length > 0) {
-            $('.ui.error.message .list').append('<li>É necessário selecionar pelo menos um tema</li>')
+            $errorList.append('<li>É necessário selecionar pelo menos um tema</li>');
+            validado = false;
         }
         if (!$('#ddlDificuldade').val()) {
-            $('.ui.error.message .list').append('<li>É necessário selecionar uma dificuldade</li>')
+            $errorList.append('<li>É necessário selecionar uma dificuldade</li>');
+            validado = false;
         }
 
         if (!$('#ddlTipo').val()) {
-            $('.ui.error.message .list').append('<li>É necessário selecionar um tipo</li>')
+            $errorList.append('<li>É necessário selecionar um tipo</li>');
+            validado = false;
         }
 
         if (!$('#txtEnunciado').val()) {
-            $('.ui.error.message .list').append('<li>É necessário preencher o enunciado</li>')
+            $errorList.append('<li>É necessário preencher o enunciado</li>');
+            validado = false;
         }
 
         if ($('#ddlTipo').val()) {
@@ -622,7 +631,8 @@ siac.Questao.Cadastrar = (function () {
                                 validado = true;
                             }
                             else {
-                                $('.ui.error.message .list').append('<li>É necessário selecionar os arquivos dos anexos</li>')
+                                $errorList.append('<li>É necessário selecionar os arquivos dos anexos</li>');
+                                validado = false;
                             }
                         }
                         else {
@@ -630,15 +640,17 @@ siac.Questao.Cadastrar = (function () {
                         }
                     }
                     else {
-                        $('.ui.error.message .list').append('<li>É necessário selecionar pelo menos umas das alternativas como correta</li>')
+                        $errorList.append('<li>É necessário selecionar pelo menos umas das alternativas como correta</li>');
+                        validado = false;
                     }
                 }
                 else {
-                    $('.ui.error.message .list').append('<li>É necessário preencher os enunciados de todas as alternativas</li>')
+                    $errorList.append('<li>É necessário preencher os enunciados de todas as alternativas</li>');
+                    validado = false;
                 }
             }
             else if (tipo == 2) {
-                if ($('#txtChaveDeResposta').val() != '') {
+                if ($('#txtChaveDeResposta').val()) {
                     if ($('#chkAnexos').is(':checked')) {
                         var ok = true;
                         var qteAnexos = $('#txtQtdAnexos').val();
@@ -658,19 +670,15 @@ siac.Questao.Cadastrar = (function () {
                                     break;
                             }
                         }
-                        if (ok) {
-                            validado = true;
+                        if (!ok) {
+                            $errorList.append('<li>É necessário selecionar os arquivos dos anexos</li>');
+                            validado = false;
                         }
-                        else {
-                            $('.ui.error.message .list').append('<li>É necessário selecionar os arquivos dos anexos</li>')
-                        }
-                    }
-                    else {
-                        validado = true;
                     }
                 }
                 else {
-                    $('.ui.error.message .list').append('<li>É necessário preencher a chave de resposta</li>')
+                    $errorList.append('<li>É necessário preencher a chave de resposta</li>');
+                    validado = false;
                 }
             }
         }
