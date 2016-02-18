@@ -40,6 +40,15 @@ namespace SIAC.Models
                 if (usuario != null && usuario.Senha == Criptografia.RetornarHash(senha))
                     return usuario;
             }
+            else if(HttpContext.Current.Request.Cookies.AllKeys.Contains("SIAC_Login"))
+            {
+                if (HttpContext.Current.Request.Cookies["SIAC_Login"].Value == Criptografia.RetornarHash(matricula))
+                {
+                    Usuario usuario = ListarPorMatricula(matricula);
+                    if (usuario != null && usuario.Senha == Criptografia.RetornarHash(senha))
+                        return usuario;
+                }
+            }
             return null;
         }
 
@@ -60,7 +69,15 @@ namespace SIAC.Models
                     acesso.IpAcesso = HttpContext.Current.RecuperarIp();
                     contexto.UsuarioAcesso.Add(acesso);
                     contexto.SaveChanges();
-                    Sistema.UsuarioAtivo.Add(matricula, acesso);
+                    //if (Sistema.UsuarioAtivo.ContainsKey(matricula))
+                    //{
+                    //    Sistema.UsuarioAtivo[matricula] = acesso;
+                    //}
+                    //else
+                    //{ 
+                    //    Sistema.UsuarioAtivo.Add(matricula, acesso);
+                    //}
+                    Sistema.UsuarioAtivo[matricula] = acesso;
                 }
             }
         }

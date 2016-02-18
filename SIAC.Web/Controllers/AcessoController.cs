@@ -70,6 +70,11 @@ namespace SIAC.Controllers
 
             if (validado)
             {
+                Response.Cookies.Add(new System.Web.HttpCookie("SIAC_Login")
+                {
+                    Expires = DateTime.Now.AddMinutes(30),
+                    Value = Criptografia.RetornarHash(Sessao.UsuarioMatricula)
+                });
                 Lembrete.AdicionarNotificacao("Seu usuário foi autenticado com sucesso.", Lembrete.POSITIVO);
                 if (Request.QueryString["continuar"] != null)
                     return Redirect(Request.QueryString["continuar"].ToString());
