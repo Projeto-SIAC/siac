@@ -724,7 +724,7 @@ siac.Certificacao.Index = (function () {
             _controleAjax.abort();
         }
         $cards = $('.ui.cards');
-        //$cards.parent().addClass('loading');
+        $cards.parent().append('<div class="ui active centered inline text loader">Carregando...</div>');
         _controleAjax = $.ajax({
             url: '/principal/avaliacao/certificacao/listar',
             data: {
@@ -744,10 +744,15 @@ siac.Certificacao.Index = (function () {
                         $cards.append(partial);
                     }
                     _controlePartial = partial;
+                    $('.cards .card.hidden').transition({
+                        animation: 'pulse',
+                        duration: 500,
+                        interval: 200
+                    });
                 }
             },
             complete: function () {
-                //$cards.parent().removeClass('loading');
+                $cards.parent().find('.loader').remove();
             }
         });
     }

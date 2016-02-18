@@ -2,7 +2,7 @@
 
 @foreach (var aval in Model)
 {
-    <div class="card">
+    <div class="card hidden" style="display:none!important">
         <div class="content">
             <a href="@Url.Action("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao })" class="header">
                 @aval.Avaliacao.CodAvaliacao

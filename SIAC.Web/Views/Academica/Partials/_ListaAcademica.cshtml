@@ -2,7 +2,7 @@
 
 @foreach (AvalAcademica acad in Model)
 {
-    <div class="card">
+    <div class="card hidden" style="display:none!important">
         <div class="content">
             <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="header">
                 Código: @acad.Avaliacao.CodAvaliacao

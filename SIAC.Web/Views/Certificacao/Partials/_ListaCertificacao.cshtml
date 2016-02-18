@@ -3,7 +3,7 @@
 @foreach (AvalCertificacao cert in Model)
 {
     bool flagProfessor = cert.Professor.MatrProfessor == Sessao.UsuarioMatricula;
-    <div class="card">
+    <div class="card hidden" style="display:none!important">
         <div class="content">
             <a href="@Url.Action("Detalhe", new { codigo = cert.Avaliacao.CodAvaliacao })" class="header">
                Código: @cert.Avaliacao.CodAvaliacao

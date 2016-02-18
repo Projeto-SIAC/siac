@@ -2,7 +2,7 @@
 
 @foreach (AvalAuto autoavaliacao in Model)
 {
-    <div class="card" data-avaliacao="@autoavaliacao.Avaliacao.CodAvaliacao">
+    <div class="card hidden" style="display:none!important" data-avaliacao="@autoavaliacao.Avaliacao.CodAvaliacao">
         <div class="content">
             <a href="@Url.Action("Detalhe", new { codigo = autoavaliacao.Avaliacao.CodAvaliacao })" class="header">Código: @autoavaliacao.Avaliacao.CodAvaliacao</a>
             <div class="meta">

@@ -1605,7 +1605,7 @@ siac.Academica.Index = (function () {
             _controleAjax.abort();
         }
         var $cards = $('.ui.cards');
-        //$cards.parent().addClass('loading');
+        $cards.parent().append('<div class="ui active centered inline text loader">Carregando...</div>');
         _controleAjax = $.ajax({
             method: 'POST',
             url: '/principal/avaliacao/academica/listar',
@@ -1625,10 +1625,15 @@ siac.Academica.Index = (function () {
                         $cards.append(partial);
                     }
                     _controlePartial = partial;
+                    $('.cards .card.hidden').transition({
+                        animation: 'pulse',
+                        duration: 500,
+                        interval: 200
+                    });
                 }
             },
             complete: function () {
-                //$cards.parent().removeClass('loading');
+                $cards.parent().find('.loader').remove();
             }
         });
     }
