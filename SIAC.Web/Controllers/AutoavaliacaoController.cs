@@ -325,7 +325,7 @@ namespace SIAC.Controllers
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
-                if (auto.CodPessoaFisica == codPessoaFisica)
+                if (auto.CodPessoaFisica == codPessoaFisica && !auto.Avaliacao.FlagRealizada)
                 {
                     return View(auto);
                 }

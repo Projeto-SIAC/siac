@@ -31,7 +31,8 @@
     <div class="header">Você tem certeza?</div>
     <div class="content">
         <input id="txtRef" type="text" hidden />
-        Você está deixando a página. Isso será considerado como <b>cancelamento</b> e você perderá todos os dados.
+        <b>Você está deixando a página.</b>
+        Suas respostas já estão salvas e sua autoavaliação ficará disponível até que você <b>finalize</b>.
     </div>
     <div class="actions">
         <div class="ui cancel button">Voltar para avaliação</div>
@@ -227,7 +228,7 @@
         }
     </div>
     <div class="ui right floated finalizar button green">Finalizar</div>
-    <a href="@Url.Action("Realizar")" class="ui button">Cancelar</a>
+    <a href="@Url.Action("Realizar", new { codigo = "" })" class="ui button">Cancelar</a>
 </form>
 
 @section Scripts {
