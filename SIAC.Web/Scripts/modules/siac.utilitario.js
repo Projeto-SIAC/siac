@@ -86,9 +86,6 @@
         data.Horas = splitedSomenteHora[HORA_HORAS];
         data.Minutos = splitedSomenteHora[HORA_MINUTOS];
 
-        console.log('Data  =>', data.Ano, data.Mes, data.Dia, data.Horas, data.Minutos);
-        console.log('Agora  =>', agora.getFullYear(), agora.getMonth(), agora.getDate(), agora.getHours(), agora.getMinutes());
-
         if (data.Ano > agora.getFullYear())
             return true;
         else if (data.Ano == agora.getFullYear())
