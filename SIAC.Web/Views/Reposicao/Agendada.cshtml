@@ -110,7 +110,7 @@
                         </td>
                         <td>
                             @* Data *@
-                            @Model.Avaliacao.DtAplicacao.Value.ToString("ddd, dd/MM/yyyy")
+                            @Model.Avaliacao.DtAplicacao.Value.ToString("ddd, dd/MM/yyyy", new System.Globalization.CultureInfo("pt-BR"))
                         </td>
                         <td>
                             @* Horário *@
