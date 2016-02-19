@@ -24,18 +24,21 @@
         <div class="header">Autoavaliações Realizadas</div>
         @Model.PessoaFisica.AvalPessoaResultado.Where(a => a.CodTipoAvaliacao == TipoAvaliacao.AUTOAVALIACAO).Count()
     </div>
-    <div class="item">
-        <div class="header">Nota Média Geral</div>
-        @Model.PessoaFisica.AvalPessoaResultado.Average(a => a.Nota ?? 0).ToString("0.##")
-    </div>
-    <div class="item">
-        <div class="header">Maior Nota</div>
-        @Model.PessoaFisica.AvalPessoaResultado.Max(a => a.Nota ?? 0).ToString("0.##")
-    </div>
-    <div class="item">
-        <div class="header">Menor Nota</div>
-        @Model.PessoaFisica.AvalPessoaResultado.Min(a => a.Nota ?? 0).ToString("0.##")
-    </div>
+    @if (Model.PessoaFisica.AvalPessoaResultado.Count > 0)
+    {
+        <div class="item">
+            <div class="header">Nota Média Geral</div>
+            @Model.PessoaFisica.AvalPessoaResultado.Average(a => a.Nota ?? 0).ToString("0.##")
+        </div>
+        <div class="item">
+            <div class="header">Maior Nota</div>
+            @Model.PessoaFisica.AvalPessoaResultado.Max(a => a.Nota ?? 0).ToString("0.##")
+        </div>
+        <div class="item">
+            <div class="header">Menor Nota</div>
+            @Model.PessoaFisica.AvalPessoaResultado.Min(a => a.Nota ?? 0).ToString("0.##")
+        </div>
+    }
     <div class="item">
         <div class="header">Melhor Disciplina</div>
         @(Model.MelhorDisciplina?.Descricao ?? "Nenhuma")
