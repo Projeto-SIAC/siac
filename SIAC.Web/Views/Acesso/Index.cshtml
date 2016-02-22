@@ -2,6 +2,7 @@
 
 @{
     Layout = null;
+    string background = "background" + new Random().Next(1, 4);
 }
 
 <!DOCTYPE html>
@@ -33,35 +34,35 @@
 </head>
 <body id="entrar" class="pushable">
     @*<form action="~/Acesso/Entrar" method="post" class="ui small modal">
-        <i class="close icon"></i>
-        <div class="header">Quais as suas credenciais?</div>
-        <div class="content">
-            <div class="ui form @ViewBag.Erro">
-                <div class="ui message error">
-                    <div class="header">Credenciais inválidas</div>
-                    <p>Note que ambos os campos diferenciam maiúsculas e minúsculas.</p>
-                </div>
-                <div class="field required">
-                    <label for="TextBoxMatricula">Matrícula</label>
-                    <div class="ui icon input">
-                        <input name="txtMatricula" type="text" value="@ViewBag.TextBoxMatricula" placeholder="Matrícula" required pattern="[a-zA-Z0-9]+" />
-                        <i class="icon user"></i>
+            <i class="close icon"></i>
+            <div class="header">Quais as suas credenciais?</div>
+            <div class="content">
+                <div class="ui form @ViewBag.Erro">
+                    <div class="ui message error">
+                        <div class="header">Credenciais inválidas</div>
+                        <p>Note que ambos os campos diferenciam maiúsculas e minúsculas.</p>
                     </div>
-                </div>
-                <div class="field required">
-                    <label for="TextBoxSenha">Senha</label>
-                    <div class="ui icon input">
-                        <input name="txtSenha" type="password" placeholder="Senha" required />
-                        <i class="icon lock"></i>
+                    <div class="field required">
+                        <label for="TextBoxMatricula">Matrícula</label>
+                        <div class="ui icon input">
+                            <input name="txtMatricula" type="text" value="@ViewBag.TextBoxMatricula" placeholder="Matrícula" required pattern="[a-zA-Z0-9]+" />
+                            <i class="icon user"></i>
+                        </div>
+                    </div>
+                    <div class="field required">
+                        <label for="TextBoxSenha">Senha</label>
+                        <div class="ui icon input">
+                            <input name="txtSenha" type="password" placeholder="Senha" required />
+                            <i class="icon lock"></i>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="actions">
-            <input type="reset" value="Cancelar" class="ui cancel button" onclick="window.stop();$('.form').removeClass('error').removeClass('loading');" />
-            <input type="submit" value="Entrar" class="ui primary button" onclick="if ($('.form input:required:invalid').length == 0) { $('.ui.form').addClass('loading') } else { $('.form input:required:invalid').first().parent().transition('tada') }" />
-        </div>
-    </form>*@
+            <div class="actions">
+                <input type="reset" value="Cancelar" class="ui cancel button" onclick="window.stop();$('.form').removeClass('error').removeClass('loading');" />
+                <input type="submit" value="Entrar" class="ui primary button" onclick="if ($('.form input:required:invalid').length == 0) { $('.ui.form').addClass('loading') } else { $('.form input:required:invalid').first().parent().transition('tada') }" />
+            </div>
+        </form>*@
     <div class="ui large top fixed menu transition hidden">
         <div class="ui container">
             <div class="item">
@@ -92,11 +93,11 @@
         <a class="item" href="#entrar">Entrar</a>
     </div>
     <div class="pusher">
-        <div class="ui inverted vertical masthead center aligned segment background">
+        <div class="ui inverted vertical masthead center aligned segment background2">
             @*<video id="myVideo" autoplay="autoplay" loop="loop" muted="muted" onplay="$('.masthead').removeClass('background')" onerror="$('.masthead').addClass('background');">
-                <source src="~/resources/videos/background.webm" type="video/webm" />
-                <source src="~/resources/videos/background.mp4" type="video/mp4" />
-            </video>*@
+                    <source src="~/resources/videos/background.webm" type="video/webm" />
+                    <source src="~/resources/videos/background.mp4" type="video/mp4" />
+                </video>*@
             <div class="ui container">
                 <div class="ui large secondary inverted text menu">
                     <a class="toc item">
@@ -128,13 +129,13 @@
                 </h1>
                 <h2 style="margin-top: 0">Possibitando o conhecimento do aprendizado</h2>
                 <div class="ui text container">
-                    <form method="post" class="ui large form @(Model.Erro ? "error" : "")">                        
+                    <form method="post" class="ui large form @(Model.Erro ? "error" : "")">
                         <div class="fields">
                             <div class="seven wide field required">
                                 @*<label for="TextBoxMatricula">Matrícula</label>*@
                                 <div class="ui left icon input">
                                     <i class="icon user"></i>
-                                    <input name="txtMatricula" type="text" value="@Model.Matricula" placeholder="Matrícula" required pattern="[a-zA-Z0-9]+" autofocus />
+                                    <input name="txtMatricula" type="text" value="@Model.Matricula" placeholder="Matrícula" autocomplete="off" required pattern="[a-zA-Z0-9]+" autofocus />
                                 </div>
                             </div>
                             <div class="seven wide field required">
@@ -153,11 +154,11 @@
                             <p>Note que ambos os campos diferenciam maiúsculas e minúsculas.</p>
                             @foreach (string mensagem in Model.Mensagens)
                             {
-                                <p>@mensagem</p>
+                            <p>@mensagem</p>
                             }
                         </div>
                     </form>
-                </div>                
+                </div>
             </div>
         </div>
         <div id="projeto" class="ui vertical stripe segment">
@@ -165,8 +166,10 @@
                 <div class="row">
                     <div class="eight wide column">
                         <h3 class="ui header">Nova forma de aprendizado</h3>
-                        <p>O objetivo principal é o de promover autoavaliações por parte dos alunos, dos professores, 
-                        dos funcionários e dos convidados pela instituição a participarem dessa nova forma de aprendizado.</p>
+                        <p>
+                            O objetivo principal é o de promover autoavaliações por parte dos alunos, dos professores,
+                            dos funcionários e dos convidados pela instituição a participarem dessa nova forma de aprendizado.
+                        </p>
                         <h3 class="ui header">Avaliações institucionais</h3>
                         <p>Um segundo objetivo é o de permitir à administração elaborar e gerar avaliações institucionais para o público acadêmico e, após análise, esses dados serem utilizados nas tomadas de decisão.</p>
                     </div>

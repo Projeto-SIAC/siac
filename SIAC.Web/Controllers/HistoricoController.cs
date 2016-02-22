@@ -8,11 +8,7 @@ namespace SIAC.Controllers
     public class HistoricoController : Controller
     {
         // GET: historico
-        public ActionResult Index()
-        {
-            Usuario usuario = Usuario.ListarPorMatricula(Sessao.UsuarioMatricula);
-            return View(usuario);
-        }
+        public ActionResult Index() => View();
 
         // GET: historico/avaliacao
         public ActionResult Avaliacao() => RedirectToAction("Index");

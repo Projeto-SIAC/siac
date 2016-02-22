@@ -182,7 +182,7 @@
     </Content>
     <Content Include="Mvc.sitemap" />
     <Content Include="Resources\images\content\acesso\avatar.png" />
-    <Content Include="Resources\images\layout\background.jpg" />
+    <Content Include="Resources\images\layout\background1.jpg" />
     <Content Include="Resources\images\layout\background3.jpg" />
     <Content Include="Resources\images\layout\loader.gif" />
     <Content Include="Resources\images\layout\ogimage.jpg" />

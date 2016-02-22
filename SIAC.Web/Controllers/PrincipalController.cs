@@ -10,11 +10,7 @@ namespace SIAC.Controllers
     public class PrincipalController : Controller
     {
         // GET: principal
-        public ActionResult Index()
-        {
-            Usuario usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
-            return View(usuario);
-        }
+        public ActionResult Index() => View();
 
         // GET: principal/avaliacao
         public ActionResult Avaliacao() => RedirectToAction("Index");

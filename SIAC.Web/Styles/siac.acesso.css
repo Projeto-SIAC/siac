@@ -121,12 +121,32 @@
     background: none !important;
 }
 
-    .masthead.background {
-        background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background.jpg') !important;
-        background-image: -moz-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background.jpg') !important;
-        background-image: -ms-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background.jpg') !important;
-        background-image: -o-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background.jpg') !important;
-        background-image: linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background.jpg') !important;
+    .masthead.background1 {
+        background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background1.jpg') !important;
+        background-image: -moz-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background1.jpg') !important;
+        background-image: -ms-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background1.jpg') !important;
+        background-image: -o-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background1.jpg') !important;
+        background-image: linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background1.jpg') !important;
+        background-position: center center !important;
+        background-size: cover !important;
+    }
+
+    .masthead.background2 {
+        background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background2.jpg') !important;
+        background-image: -moz-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background2.jpg') !important;
+        background-image: -ms-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background2.jpg') !important;
+        background-image: -o-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background2.jpg') !important;
+        background-image: linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background2.jpg') !important;
+        background-position: center center !important;
+        background-size: cover !important;
+    }
+
+    .masthead.background3 {
+        background-image: -webkit-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background3.jpg') !important;
+        background-image: -moz-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background3.jpg') !important;
+        background-image: -ms-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background3.jpg') !important;
+        background-image: -o-linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background3.jpg') !important;
+        background-image: linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/Resources/images/layout/background3.jpg') !important;
         background-position: center center !important;
         background-size: cover !important;
     }
