@@ -7,7 +7,7 @@ namespace SIAC.Models
 {
     public partial class AvalAcademica
     {
-        public List<Aluno> Alunos => this.Turma.TurmaDiscAluno.Select(t => t.Aluno).ToList();
+        public List<Aluno> Alunos => this.Turma?.TurmaDiscAluno.Select(t => t.Aluno).ToList();
 
         public List<Aluno> AlunosRealizaram
         {

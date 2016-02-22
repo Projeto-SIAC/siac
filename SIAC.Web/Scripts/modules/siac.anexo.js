@@ -1,5 +1,8 @@
 ﻿siac.Anexo = siac.Anexo || (function () {
     function iniciar() {
+        $('.card.anexo.imagem .image').dimmer({
+            on: 'hover'
+        });
         $('.card.anexo.imagem').off().click(function () {
             var $this = $(this);
             var source = $this.find('img').attr('src');

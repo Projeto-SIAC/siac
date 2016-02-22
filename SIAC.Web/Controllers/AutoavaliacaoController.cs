@@ -182,6 +182,10 @@ namespace SIAC.Controllers
 
                     AvalAuto.Inserir(auto);
                     Lembrete.AdicionarNotificacao($"Autoavaliação {auto.Avaliacao.CodAvaliacao} gerada com sucesso.", Lembrete.POSITIVO);
+                    if (qteObjetiva + qteDiscursiva > auto.Avaliacao.QteQuestoes())
+                    {
+                        Lembrete.AdicionarNotificacao("Autoavaliação de "+auto.Disciplina.First().Descricao+" gerada com quantidade de questões inferior ao requisitado", Lembrete.NEGATIVO, 0);
+                    }
                 }
                 return RedirectToAction("Realizar");
             }
@@ -204,6 +208,8 @@ namespace SIAC.Controllers
                 string[] disciplinas = formCollection["ddlDisciplinas"].Split(',');
                 /* Dados */
                 List<int> dificuldades = new List<int>();
+                int quantidadeTotalObjetivas = 0;
+                int quantidadeTotalDiscursivas = 0;
                 foreach (string disciplina in disciplinas)
                 {
                     /* Dificuldade */
@@ -217,14 +223,18 @@ namespace SIAC.Controllers
                     {
                         int.TryParse(formCollection["txtQteObjetiva" + disciplina], out qteObjetiva);
                         int.TryParse(formCollection["txtQteDiscursiva" + disciplina], out qteDiscursiva);
+                        quantidadeTotalObjetivas += qteObjetiva;
+                        quantidadeTotalDiscursivas += qteDiscursiva;
                     }
                     else if (formCollection["ddlTipo"] == "2")
                     {
                         int.TryParse(formCollection["txtQteDiscursiva" + disciplina], out qteDiscursiva);
+                        quantidadeTotalDiscursivas += qteDiscursiva;
                     }
                     else if (formCollection["ddlTipo"] == "1")
                     {
                         int.TryParse(formCollection["txtQteObjetiva" + disciplina], out qteObjetiva);
+                        quantidadeTotalObjetivas += qteObjetiva;
                     }
 
                     /* Temas */
@@ -258,6 +268,10 @@ namespace SIAC.Controllers
 
                 AvalAuto.Inserir(auto);
                 Lembrete.AdicionarNotificacao($"Autoavaliação {auto.Avaliacao.CodAvaliacao} gerada com sucesso.", Lembrete.POSITIVO);
+                if(quantidadeTotalDiscursivas + quantidadeTotalObjetivas > auto.Avaliacao.QteQuestoes())
+                {
+                    Lembrete.AdicionarNotificacao("Autoavaliação gerada com quantidade de questões inferior ao requisitado", Lembrete.NEGATIVO, 0);
+                }
                 return View(auto);
             }
         }

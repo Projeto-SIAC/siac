@@ -1,6 +1,13 @@
 ﻿@model QuestaoAnexo
 <a class="ui anexo imagem card">
-    <div class="image">
+    <div class="blurring dimmable image">
+        <div class="ui dimmer">
+            <div class="content">
+                <div class="center">
+                    <div class="ui inverted button">Expandir</div>
+                </div>
+            </div>
+        </div>
         <img src="@Model.Anexo.GetImageSource()" />
     </div>
     @if(!StringExt.IsNullOrEmpty(Model.Legenda, Model.Fonte)) {
