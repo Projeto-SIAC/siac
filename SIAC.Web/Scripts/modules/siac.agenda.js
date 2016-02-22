@@ -6,6 +6,16 @@
                 center: '',
                 right: 'today agendaDay,agendaWeek,month prev,next'
             },
+            loading: function (isLoading,view){
+                if (isLoading) {
+                    $('.agenda.segment').dimmer({
+                        closable: false
+                    }).dimmer('show');
+                }
+                else {
+                    $('.agenda.segment').dimmer('hide');
+                }
+            },
             lang: 'pt-br',
             eventSources: [
                 {

@@ -8,7 +8,10 @@
 
 <h2>@ViewBag.Title</h2>
 
-<div class="ui basic segment">
+<div class="ui basic agenda segment">
+    <div class="ui inverted dimmer">
+        <div class="ui large text loader">Carregando</div>
+    </div>
     <div id="calendar"></div>
 </div>
 <a href="@Url.Action("Index", "Principal")" class="ui button">Voltar</a>
