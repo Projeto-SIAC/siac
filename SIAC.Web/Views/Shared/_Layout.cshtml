@@ -63,6 +63,8 @@
         </div>
         <div class="ui lero icon button" onmouseover="selecionarFocado()" onclick="leroLero()" style="position: fixed; left:.5em; bottom:.5em; z-index: 1003; display: none"><i class="icon write"></i></div>
         @Scripts.Render("~/bundles/js")
+        @Scripts.Render("~/bundles/signalR")
+        <script src="~/signalr/hubs"></script>
         @RenderSection("Scripts", required: false)
         <script>
             var focado;

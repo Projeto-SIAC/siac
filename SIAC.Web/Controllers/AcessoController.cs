@@ -104,6 +104,7 @@ namespace SIAC.Controllers
         // GET: acesso/sair
         public ActionResult Sair()
         {
+            Sistema.Notificacoes.Remove(Sessao.UsuarioMatricula);
             Sistema.UsuarioAtivo.Remove(Sessao.UsuarioMatricula);
             Sistema.RemoverCookie(Sessao.UsuarioMatricula);
             Sessao.Limpar();

@@ -132,8 +132,9 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult Notificacoes()
         {
-            var notificacoes = Sessao.Retornar("Notificacoes");
-            Sessao.Inserir("Notificacoes", null);
+            List<Dictionary<string, string>> notificacoes = new List<Dictionary<string, string>>();
+            notificacoes.AddRange(Sistema.Notificacoes[Sessao.UsuarioMatricula]);
+            Sistema.Notificacoes[Sessao.UsuarioMatricula].Clear();
             return Json(notificacoes);
         }
     }

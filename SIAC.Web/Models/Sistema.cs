@@ -41,5 +41,8 @@ namespace SIAC.Models
         }
 
         public static string GerarSenhaPadrao(Usuario usuario) => $"{usuario.PessoaFisica.PrimeiroNome.ToLower()}@{usuario.PessoaFisica.Cpf?.Substring(0, 3)}";
+
+        // Notificações
+        public static Dictionary<string, List<Dictionary<string, string>>> Notificacoes = new Dictionary<string, List<Dictionary<string, string>>>();
     }
 }

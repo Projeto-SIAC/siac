@@ -1,9 +1,22 @@
 ﻿siac.Lembrete = siac.Lembrete || {};
 
 siac.Lembrete.iniciar = function () {
+    var _matricula = $('[data-matricula]').data('matricula');
+
     alertify.set('notifier', 'position', 'bottom-left');
 
-    siac.Lembrete.Notificacoes.iniciar();
+    var hub = $.connection.lembreteHub;
+    hub.client.receberNotificacoes = function (data) {
+        if (data) {
+            for (var i in data) {
+                alertify.notify(data[i]['Mensagem'], data[i]['Estilo'], data[i]['Tempo']);
+            }
+        }
+    };
+    $.connection.hub.start().done(function () {
+        hub.server.recuperarNotificacoes(_matricula);
+    });
+
     siac.Lembrete.Lembretes.iniciar();
     siac.Lembrete.Menu.iniciar();
 
@@ -17,21 +30,6 @@ siac.Lembrete.iniciar = function () {
 };
 
 siac.Lembrete.Notificacoes = siac.Lembrete.Notificacoes || (function () {
-    function iniciar() {
-        $.ajax({
-            url: '/lembrete/notificacoes',
-            type: 'post',
-            cache: true,
-            success: function (data) {
-                if (data) {
-                    for (var i in data) {
-                        alertify.notify(data[i]['Mensagem'], data[i]['Estilo'], data[i]['Tempo']);
-                    }
-                }
-            }
-        });
-    }
-
     function exibir(mensagem, estilo, tempo) {
         var mapaEstilo = {
             'normal': 'label',
@@ -47,7 +45,7 @@ siac.Lembrete.Notificacoes = siac.Lembrete.Notificacoes || (function () {
         }
     }
 
-    return { iniciar: iniciar, exibir: exibir }
+    return { exibir: exibir }
 })();
 
 siac.Lembrete.Lembretes = siac.Lembrete.Lembretes || (function () {

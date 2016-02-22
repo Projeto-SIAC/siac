@@ -78,6 +78,7 @@ namespace SIAC.Models
                     //    Sistema.UsuarioAtivo.Add(matricula, acesso);
                     //}
                     Sistema.UsuarioAtivo[matricula] = acesso;
+                    Sistema.Notificacoes[matricula] = new List<Dictionary<string, string>>();
                 }
             }
         }
