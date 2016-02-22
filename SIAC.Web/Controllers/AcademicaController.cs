@@ -695,7 +695,6 @@ namespace SIAC.Controllers
                             avalQuesPessoaResposta.RespComentario = !String.IsNullOrWhiteSpace(form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]) ? form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim() : null;
                             avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
                         }
-
                     }
 
                     IEnumerable<AvalQuesPessoaResposta> lstAvalQuesPessoaResposta = aval.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == codPessoaFisica);

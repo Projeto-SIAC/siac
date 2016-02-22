@@ -11,16 +11,7 @@ namespace SIAC.Tests
     public class PrincipalControllerTest
     {
         PrincipalController controller = new PrincipalController();
-
-        [TestMethod]
-        public void TestIndexModel()
-        {
-            string esperado = "20150002";
-            MockHelper.FakeLoginUsuario(esperado, "/principal");
-            Usuario resultado = (controller.Index() as ViewResult).Model as Usuario;
-            Assert.AreEqual(esperado, resultado.Matricula);
-        }
-
+        
         [TestMethod]
         public void TestAvaliacaoRedirect()
         {

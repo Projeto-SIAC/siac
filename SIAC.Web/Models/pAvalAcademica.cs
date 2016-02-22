@@ -248,10 +248,37 @@ namespace SIAC.Models
             return false;
         }
 
-        public static void RecalcularResultados()
+        public static void RecalcularResultados(string codigo = "")
         {
-            foreach (AvalAcademica acad in contexto.AvalAcademica.ToList())
+            if (String.IsNullOrEmpty(codigo))
             {
+                foreach (AvalAcademica acad in contexto.AvalAcademica.ToList())
+                {
+                    foreach (AvalPessoaResultado avalPessoaResultado in acad.Avaliacao.AvalPessoaResultado)
+                    {
+                        foreach (AvalQuesPessoaResposta pessoaResposta in acad.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == avalPessoaResultado.CodPessoaFisica).ToList())
+                        {
+                            if (pessoaResposta.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
+                            {
+                                if (pessoaResposta.RespAlternativa == pessoaResposta.AvalTemaQuestao.QuestaoTema.Questao.Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value).CodOrdem)
+                                {
+                                    pessoaResposta.RespNota = 10;
+                                }
+                                else
+                                {
+                                    pessoaResposta.RespNota = 0;
+                                }
+                            }
+                        }
+                        avalPessoaResultado.Nota = acad.Avaliacao.PessoaResposta
+                                    .Where(pr => pr.CodPessoaFisica == avalPessoaResultado.CodPessoaFisica)
+                                    .Average(pr => pr.RespNota);
+                    }
+                }
+            }
+            else
+            {
+                AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                 foreach (AvalPessoaResultado avalPessoaResultado in acad.Avaliacao.AvalPessoaResultado)
                 {
                     foreach (AvalQuesPessoaResposta pessoaResposta in acad.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == avalPessoaResultado.CodPessoaFisica).ToList())
