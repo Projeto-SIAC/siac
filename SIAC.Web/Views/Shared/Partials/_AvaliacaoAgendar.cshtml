@@ -1,7 +1,21 @@
 ﻿@model AvaliacaoAgendarViewModel
 
 @{ 
-    int? codSala = Model.Avaliacao.CodTipoAvaliacao == TipoAvaliacao.ACADEMICA ? Model.Avaliacao.AvalAcademica.CodSala : Model.Avaliacao.AvalCertificacao.CodSala;
+    int? codSala = null;
+    switch (Model.Avaliacao.CodTipoAvaliacao)
+    {
+        case TipoAvaliacao.ACADEMICA:
+            codSala = Model.Avaliacao.AvalAcademica.CodSala;
+            break;
+        case TipoAvaliacao.CERTIFICACAO:
+            codSala = Model.Avaliacao.AvalCertificacao.CodSala;
+            break;
+        case TipoAvaliacao.REPOSICAO:
+            codSala = Model.Avaliacao.AvalAcadReposicao.CodSala;
+            break;
+        default:
+            break;
+    }
 }
 
 <div class="ui confirmar modal">
