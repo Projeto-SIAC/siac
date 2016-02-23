@@ -83,7 +83,7 @@ namespace SIAC
             routes.MapRoute(
                 name: "Controle Não Encontrado",
                 url: "{*all}",
-                defaults: new { controller = "Erro", action = "Index", code = "404" }
+                defaults: new { controller = "Erro", action = "Index", code = 404 }
             );
         }
     }
