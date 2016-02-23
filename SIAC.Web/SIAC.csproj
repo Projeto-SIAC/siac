@@ -751,6 +751,7 @@
     <Content Include="Views\Shared\Partials\_Apresentacao.cshtml" />
     <Content Include="Views\Shared\Partials\_AvaliacaoGerar.cshtml" />
     <Content Include="Views\Shared\Partials\_AvaliacaoAgendar.cshtml" />
+    <Content Include="Views\Shared\Partials\_AvaliacaoIndex.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
