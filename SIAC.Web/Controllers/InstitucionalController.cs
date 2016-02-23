@@ -16,7 +16,15 @@ namespace SIAC.Controllers
             Sessao.UsuarioCategoriaCodigo == Categoria.COLABORADOR ? AvalAvi.ListarPorColaborador(Sessao.UsuarioMatricula) : new List<AvalAvi>();
 
         // GET: institucional/
-        public ActionResult Index() => View(Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario);
+        public ActionResult Index()
+        {
+            Usuario usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
+            if (usuario.CodCategoria == Categoria.COLABORADOR && usuario.FlagCoordenadorAvi)
+                return View(usuario);
+            else
+                return RedirectToAction("Andamento");
+        }
+
 
         // GET: institucional/historico
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
@@ -29,7 +37,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
         public ActionResult Configuracao()
         {
-            ViewModels.InstitucionalGerarQuestaoViewModel model = new ViewModels.InstitucionalGerarQuestaoViewModel();
+            InstitucionalGerarQuestaoViewModel model = new InstitucionalGerarQuestaoViewModel();
             model.Modulos = AviModulo.ListarOrdenadamente();
             model.Categorias = AviCategoria.ListarOrdenadamente();
             model.Indicadores = AviIndicador.ListarOrdenadamente();

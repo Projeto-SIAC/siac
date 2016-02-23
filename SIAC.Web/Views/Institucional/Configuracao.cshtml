@@ -52,7 +52,8 @@
                 <textarea rows="2" name="txtObservacao" placeholder="Observação"></textarea>
             </div>
             <br />
-            <input type="submit" class="ui button" value="Cadastrar" />
+            <a href="@Url.Action("Index")" class="ui voltar button">Voltar</a>
+            <input type="submit" class="ui right floated button" value="Cadastrar" />
         </form>
 
     </div>
@@ -89,7 +90,8 @@
                 <textarea rows="2" name="txtObservacao" placeholder="Observação"></textarea>
             </div>
             <br />
-            <input type="submit" class="ui button" value="Cadastrar" />
+            <a href="@Url.Action("Index")" class="ui voltar button">Voltar</a>
+            <input type="submit" class="ui right floated button" value="Cadastrar" />
         </form>
     </div>
     @* Indicador *@
@@ -125,10 +127,12 @@
                 <textarea rows="2" name="txtObservacao" placeholder="Observação"></textarea>
             </div>
             <br />
-            <input type="submit" class="ui button" value="Cadastrar" />
+            <a href="@Url.Action("Index")" class="ui voltar button">Voltar</a>
+            <input type="submit" class="ui right floated button" value="Cadastrar" />
         </form>
     </div>
 </div>
+
 
 @section Scripts{
     @Scripts.Render("~/bundles/js/institucional")

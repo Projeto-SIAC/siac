@@ -48,7 +48,10 @@
                         <div class="ui label">Término:<div class="detail">@avi.DtTermino.Value.ToString("dd/MM/yyyy")</div></div>
                     </div>
                     <a href="@Url.Action("Realizar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">
-                        Realizar
+                        @if (quantidadeRespostas == quantidadeQuestoes)
+                        { <text> Alterar Respostas </text> }
+                        else if(quantidadeRespostas > 0) { <text>  Continuar </text> }
+                        else { <text> Realizar </text>}
                     </a>
                 </div>
             }
