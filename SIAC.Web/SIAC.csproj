@@ -749,6 +749,8 @@
     <Content Include="Views\Acesso\Visitante.cshtml" />
     <Content Include="Scripts\modules\siac.acesso.js" />
     <Content Include="Views\Shared\Partials\_Apresentacao.cshtml" />
+    <Content Include="Views\Shared\Partials\_AvaliacaoGerarForm.cshtml" />
+    <Content Include="Views\Shared\Partials\_AvaliacaoGerarModals.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

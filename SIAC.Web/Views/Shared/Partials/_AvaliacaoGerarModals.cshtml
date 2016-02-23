@@ -1,0 +1,34 @@
+﻿@model AvaliacaoGerarViewModel
+
+<div class="ui termo modal">
+    <div class="header">@ViewBag.Title</div>
+    <div class="content">
+        <h3>Você está ciente do objetivo dessa funcionalidade?</h3>
+        @Html.Raw(Model.Termo.ToHtml("p"))
+    </div>
+    <div class="actions">
+        <a href="@Url.Action("Index","Principal")" class="ui cancel button">Cancelar</a>
+        <div class="ui approve button">Sim, continuar</div>
+    </div>
+</div>
+
+<div class="ui confirmar modal">
+    <div class="header">Verifique e confirme os dados fornecidos descritos abaixo</div>
+    <div class="content">
+        <table class="ui very basic table">
+            <thead>
+                <tr>
+                    <th>Disciplina</th>
+                    <th>Tema(s)</th>
+                    <th>Quantidade(s)</th>
+                    <th>Índice de Dificuldade</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="actions">
+        <div class="ui negative button">Voltar</div>
+        <div class="ui positive button">Confirmar</div>
+    </div>
+</div>

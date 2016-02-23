@@ -1,0 +1,65 @@
+﻿@model AvaliacaoGerarViewModel
+
+<form id="frmAutoavaliacao" method="post" action="@Url.Action("Confirmar")" class="ui form">
+    <div class="ui error message">
+        <div class="header">Verifique</div>
+        <ul class="list"></ul>
+    </div>
+    @* Disciplinas *@
+    <div class="field required">
+        <label data-ajuda="Clique na caixa abaixo para escolher a disciplina.">Escolha a disciplina</label>
+        <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" required>
+            <option value="">Disciplina</option>
+            @foreach (Disciplina disciplina in Model.Disciplinas)
+            {
+                <option value="@disciplina.CodDisciplina">@disciplina.Descricao</option>
+            }
+        </select>
+    </div>
+    @* Temas *@
+    <div class="field required">
+        <label data-ajuda="Clique na caixa abaixo para selecionar o(s) tema(s).">Selecione o(s) tema(s)</label>
+        <select id="ddlTemas" name="ddlTemas" class="ui search dropdown fluid tema" multiple required>
+            <option value="">Temas...</option>
+        </select>
+    </div>
+    @* Dificuldade das Questões *@
+    <div class="field required">
+        <label data-ajuda="Clique na caixa abaixo para definir o índice de dificuldade das questões.">Defina o índice de dificuldade das questões</label>
+        <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown" required>
+            <option value="">Índice de Dificuldade...</option>
+            @foreach (Dificuldade dificuldade in Model.Dificuldades)
+            {
+                <option value="@dificuldade.CodDificuldade">@dificuldade.Descricao</option>
+            }
+        </select>
+    </div>
+    @* Tipo das Questões *@
+    <div class="field required">
+        <label data-ajuda="Clique na caixa abaixo para determinar o tipo das questões.">Determine o tipo das questões</label>
+        <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" required>
+            <option value="">Tipo</option>
+            <option value="2">Somente discursivas</option>
+            <option value="1">Somente objetivas</option>
+            <option value="3">Misto</option>
+        </select>
+    </div>
+    @* Qte das Questões *@
+    <div class="field">
+        <label data-ajuda="Clique na(s) caixa(s) abaixo para delimitar a quantidade de questões para cada tipo.">Delimite a quantidade de questões para cada tipo</label>
+    </div>
+    <div class="two fields">
+        <div class="field required">
+            <label>Objetiva</label>
+            <input id="txtQteObjetiva" name="txtQteObjetiva" data-mask="0#" type="number" placeholder="Quantidade..." required />
+        </div>
+        <div class="field required">
+            <label>Discursiva</label>
+            <input id="txtQteDiscursiva" name="txtQteDiscursiva" data-mask="0#" type="number" placeholder="Quantidade..." required />
+        </div>
+    </div>
+    <div class="field">
+        <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("Index")' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+        <div class="ui prosseguir button">Prosseguir</div>
+    </div>
+</form>
