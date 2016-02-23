@@ -6,11 +6,9 @@
 
 <h2>@ViewBag.Title</h2> 
 
-@Html.Partial("_AvaliacaoGerarModals")
-
 @Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 1 } })
 
-@Html.Partial("_AvaliacaoGerarForm")
+@Html.Partial("_AvaliacaoGerar")
 
 @section Scripts{
     @Scripts.Render("~/bundles/js/certificacao")

@@ -3,11 +3,9 @@
     ViewBag.Title = "Gerar Avaliação Acadêmica";
 }
 
-@Html.Partial("_AvaliacaoGerarModals")
-
 <h2>@ViewBag.Title</h2>
 
-@Html.Partial("_AvaliacaoGerarForm")
+@Html.Partial("_AvaliacaoGerar")
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/academica")
