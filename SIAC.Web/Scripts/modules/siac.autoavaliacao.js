@@ -91,7 +91,7 @@ siac.Autoavaliacao.Index = (function () {
             _controleAjax.abort();
         }
         $cards = $('.ui.cards');
-        $cards.parent().append('<div class="ui active centered inline text loader">Carregando...</div>');
+        $cards.parent().append('<div class="ui active centered inline text loader">Carregando</div>');
         _controleAjax = $.ajax({
             url: '/historico/autoavaliacao/listar',
             data: {

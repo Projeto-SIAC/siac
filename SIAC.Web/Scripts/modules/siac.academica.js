@@ -1605,7 +1605,7 @@ siac.Academica.Index = (function () {
             _controleAjax.abort();
         }
         var $cards = $('.ui.cards');
-        $cards.parent().append('<div class="ui active centered inline text loader">Carregando...</div>');
+        $cards.parent().append('<div class="ui active centered inline text loader">Carregando</div>');
         _controleAjax = $.ajax({
             method: 'POST',
             url: '/principal/avaliacao/academica/listar',

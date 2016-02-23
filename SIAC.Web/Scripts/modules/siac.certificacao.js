@@ -724,7 +724,7 @@ siac.Certificacao.Index = (function () {
             _controleAjax.abort();
         }
         $cards = $('.ui.cards');
-        $cards.parent().append('<div class="ui active centered inline text loader">Carregando...</div>');
+        $cards.parent().append('<div class="ui active centered inline text loader">Carregando</div>');
         _controleAjax = $.ajax({
             url: '/principal/avaliacao/certificacao/listar',
             data: {

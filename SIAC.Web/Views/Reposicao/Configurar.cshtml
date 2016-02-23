@@ -8,37 +8,11 @@
     <div class="ui right floated informacoes button">Informações</div>
 </h2>
 @Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 2 } })
+
 @Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
 
-<div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
-    <div class="header">
-        Ajuda
-    </div>
-    <ul class="list">
-        <li>Aqui em configuração você poderá trocar as atuais questões de sua avaliação por alguma outra equivalente aleatória do sistema.</li>
-        <li>O botão <i class="refresh icon"></i> serve para obter uma nova questão do sistema.</li>
-        <li>O botão <i class="undo icon"></i> serve para desfazer a sua última alteração, caso tenha feito alguma.</li>
-        <li>Não esqueça de confirmar as alterações clicando no botão <b>Salvar</b> ao fim desta página.</li>
-    </ul>
-</div>
+@Html.Partial("_AvaliacaoConfigurar", Model.Avaliacao)
 
-<div class="ui basic segment">
-    <h3 class="ui dividing header">Questões</h3>
-    <div class="ui one cards" @*style="max-height: 25em; overflow-y: auto"*@>
-        @{ 
-            for (int i = 0; i < Model.Avaliacao.Questao.Count; i++)
-            {                
-                <div id="CardQuestao@(i)" class="card">
-                    @Html.Partial("_Questao", Model.Avaliacao.Questao[i], new ViewDataDictionary { { "Index", i } })
-                </div>
-            }
-        }
-    </div>
-</div>
-<form method="post" action="@Url.Action("Salvar", new { codigo = Model.Avaliacao.CodAvaliacao })">
-    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("Detalhe", new { codigo = Model.Avaliacao.CodAvaliacao })' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
-    <div class="ui button salvar">Salvar</div>
-</form>
 
 @section Scripts{
     @Scripts.Render("~/bundles/js/reposicao")

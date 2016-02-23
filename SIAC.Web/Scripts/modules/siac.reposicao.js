@@ -553,7 +553,7 @@ siac.Reposicao.Index = (function () {
             _controleAjax.abort();
         }
         var $cards = $('.ui.cards');
-        $cards.parent().append('<div class="ui active centered inline text loader">Carregando...</div>');
+        $cards.parent().append('<div class="ui active centered inline text loader">Carregando</div>');
         _controleAjax = $.ajax({
             url: '/principal/avaliacao/reposicao/listar',
             data: {
