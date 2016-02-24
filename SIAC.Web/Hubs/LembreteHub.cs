@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNet.SignalR;
-using SIAC.Helpers;
-using SIAC.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Threading.Tasks;
+using Microsoft.AspNet.SignalR;
+using SIAC.Helpers;
+using SIAC.Models;
 
 namespace SIAC.Hubs
 {
@@ -24,7 +24,8 @@ namespace SIAC.Hubs
             List<Dictionary<string, string>> notificacoes = new List<Dictionary<string, string>>();
             notificacoes.AddRange(Sistema.Notificacoes[matricula]);
             Sistema.Notificacoes[matricula].Clear();
-            Clients.Client(Context.ConnectionId).receberNotificacoes(notificacoes);
+            if (Context != null)
+                Clients.Client(Context.ConnectionId).receberNotificacoes(notificacoes);
         }
 
         public void RecuperarMenu(string matricula)
@@ -38,8 +39,9 @@ namespace SIAC.Hubs
                 Dictionary<string, int> menu = new Dictionary<string, int>();
                 menu.Add("avi", AvalAvi.ListarPorUsuario(matricula).Count);
                 UsuarioCache[matricula]["menu"] = menu;
-            }            
-            Clients.Client(Context.ConnectionId).receberMenu(UsuarioCache[matricula]["menu"]);
+            }
+            if (Context != null)
+                Clients.Client(Context.ConnectionId).receberMenu(UsuarioCache[matricula]["menu"]);
         }
 
         public void RecuperarContadoresPrincipal(string matricula)
@@ -62,7 +64,8 @@ namespace SIAC.Hubs
                 }
                 UsuarioCache[matricula]["principal"] =atalho;
             }
-            Clients.Client(Context.ConnectionId).receberContadores(UsuarioCache[matricula]["principal"]);
+            if (Context != null)
+                Clients.Client(Context.ConnectionId).receberContadores(UsuarioCache[matricula]["principal"]);
         }
 
         public void RecuperarContadoresInstitucional(string matricula)
@@ -77,7 +80,8 @@ namespace SIAC.Hubs
                 atalho.Add("andamento", AvalAvi.ListarPorUsuario(Sessao.UsuarioMatricula).Count);
                 UsuarioCache[matricula]["institucional"] = atalho;
             }
-            Clients.Client(Context.ConnectionId).receberContadores(UsuarioCache[matricula]["institucional"]);
+            if (Context != null)
+                Clients.Client(Context.ConnectionId).receberContadores(UsuarioCache[matricula]["institucional"]);
         }
 
         public void RecuperarLembretes(string matricula)
@@ -153,17 +157,39 @@ namespace SIAC.Hubs
                     }
                 }
             }
-            Clients.Client(Context.ConnectionId).receberLembretes(UsuarioLembrete[matricula]);
+            if (Context != null)
+                Clients.Client(Context.ConnectionId).receberLembretes(UsuarioLembrete[matricula]);
         }
 
         public void LembreteVisualizado(string matricula, bool clicado, string lembrete)
         {
             if (clicado)
             {
-
                 UsuarioLembrete[matricula].Remove(lembrete);
                 UsuarioLembreteVisualizado[matricula].Add(lembrete);
             }
+        }
+
+        public async static Task<bool> Iniciar(string matricula)
+        {
+            return await Task.Run(() =>
+            {
+                try
+                {
+                    LembreteHub hub = new LembreteHub();
+                    hub.RecuperarNotificacoes(matricula);
+                    hub.RecuperarMenu(matricula);
+                    hub.RecuperarContadoresPrincipal(matricula);
+                    hub.RecuperarContadoresInstitucional(matricula);
+                    hub.RecuperarLembretes(matricula);
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+                
+            });
         }
 
         public static void Limpar(string matricula)
