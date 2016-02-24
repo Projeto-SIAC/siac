@@ -70,7 +70,7 @@ namespace SIAC
                 name: "Default",
                 url: "{controller}/{action}/{tab}",
                 defaults: new { controller = "Acesso", action = "Index", tab = UrlParameter.Optional },
-                constraints: new { controller = @"^(Principal|Historico|Institucional|Perfil|Acesso|Erro|Configuracoes|Tema|Lembrete)$" }
+                constraints: new { controller = @"^(Principal|Historico|Institucional|Perfil|Acesso|Erro|Configuracoes|Tema)$" }
             );           
 
             routes.MapRoute(

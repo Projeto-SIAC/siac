@@ -160,7 +160,7 @@ namespace SIAC.Models
                 List<AvalAvi> retorno = new List<AvalAvi>();
 
                 foreach (AvalAvi avi in institucionais)
-                    if (avi.Pessoas.Contains(pessoa))
+                    if (avi.Pessoas.FirstOrDefault(p=>p.CodPessoa == pessoa.CodPessoa) != null)
                         retorno.Add(avi);
                 return retorno;
             }
