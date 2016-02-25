@@ -429,7 +429,7 @@ else if (Model.Avaliacao.FlagRealizada)
                 <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Substituir Questão</a>
             }
         }
-        if (!Model.Avaliacao.FlagArquivo)
+        if (!Model.Avaliacao.FlagArquivo && !Model.Avaliacao.FlagRealizada)
         {
             <a href="@Url.Action("Avaliacao", "Impressao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Imprimir</a>
         }

@@ -389,6 +389,9 @@ siac.Autoavaliacao.Realizar = (function () {
                     $.ajax({
                         type: 'GET',
                         url: "/acesso/conectado",
+                        beforeSend: function(){
+                            $('.ui.gabarito.modal .approve.button').addClass('loading');
+                        },
                         success: function () {
                             window.onbeforeunload = function () {
                                 $('.ui.global.loader').parent().dimmer('show');
@@ -398,6 +401,9 @@ siac.Autoavaliacao.Realizar = (function () {
                         },
                         error: function () {
                             siac.mensagem('Conecte-se à internet antes de confirmar.')
+                        },
+                        complete: function () {
+                            $('.ui.gabarito.modal .approve.button').removeClass('loading');
                         }
                     });
                     return false;
