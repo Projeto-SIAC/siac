@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using SIAC.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SIAC.ViewModels;
+using System.Threading.Tasks;
 
 namespace SIAC.Tests
 {
@@ -12,41 +13,41 @@ namespace SIAC.Tests
         AcessoController controller = new AcessoController();
 
         [TestMethod]
-        public void TestIndexComValoresVazios()
+        public async Task TestIndexComValoresVazios()
         {
             FormCollection form = new FormCollection();
             form["txtMatricula"] = String.Empty;
             form["txtSenha"] = String.Empty;
-            AcessoIndexViewModel resultado = (controller.Index(form) as ViewResult).Model as AcessoIndexViewModel;
+            AcessoIndexViewModel resultado = (await controller.Index(form) as ViewResult).Model as AcessoIndexViewModel;
             Assert.AreEqual(true, resultado.Erro);
         }
 
         [TestMethod]
-        public void TestIndexComValoresNulos()
+        public async Task TestIndexComValoresNulos()
         {
             FormCollection form = new FormCollection();
             form["txtMatricula"] = null;
             form["txtSenha"] = null;
-            AcessoIndexViewModel resultado = (controller.Index(form) as ViewResult).Model as AcessoIndexViewModel;
+            AcessoIndexViewModel resultado = (await controller.Index(form) as ViewResult).Model as AcessoIndexViewModel;
             Assert.AreEqual(true, resultado.Erro);
         }
 
 
         [TestMethod]
-        public void TestIndexComValoresEspaco()
+        public async Task TestIndexComValoresEspaco()
         {
             FormCollection form = new FormCollection();
             form["txtMatricula"] = " ";
             form["txtSenha"] = " ";
-            AcessoIndexViewModel resultado = (controller.Index(form) as ViewResult).Model as AcessoIndexViewModel;
+            AcessoIndexViewModel resultado = (await controller.Index(form) as ViewResult).Model as AcessoIndexViewModel;
             Assert.AreEqual(true, resultado.Erro);
         }
 
         [TestMethod]
-        public void TestIndexComFormularioSemChaves()
+        public async Task TestIndexComFormularioSemChaves()
         {
             FormCollection form = new FormCollection();
-            AcessoIndexViewModel resultado = (controller.Index(form) as ViewResult).Model as AcessoIndexViewModel;
+            AcessoIndexViewModel resultado = (await controller.Index(form) as ViewResult).Model as AcessoIndexViewModel;
             Assert.AreEqual(true, resultado.Erro);
         }
 

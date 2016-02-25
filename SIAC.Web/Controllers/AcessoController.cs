@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using SIAC.Helpers;
 using SIAC.Models;
 using SIAC.ViewModels;
+using System.Threading.Tasks;
 
 namespace SIAC.Controllers
 {
@@ -34,7 +35,7 @@ namespace SIAC.Controllers
 
         // POST: /
         [HttpPost]
-        public async System.Threading.Tasks.Task<ActionResult> Index(FormCollection formCollection)
+        public async Task<ActionResult> Index(FormCollection formCollection)
         {
             if (Sistema.Autenticado(Sessao.UsuarioMatricula))
                 return RedirectToAction("Index", "Principal");
