@@ -28,6 +28,8 @@ namespace SIAC
             {
                 Models.Sistema.UsuarioAtivo.Remove(matricula);
                 Models.Sistema.RemoverCookie(matricula);
+                Models.Sistema.Notificacoes.Remove(matricula);
+                Hubs.LembreteHub.Limpar(matricula);
             }
         }
 

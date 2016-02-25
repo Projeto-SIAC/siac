@@ -263,7 +263,6 @@
     <Compile Include="Controllers\CertificacaoController.cs" />
     <Compile Include="Controllers\ImpressaoController.cs" />
     <Compile Include="Controllers\InstitucionalController.cs" />
-    <Compile Include="Controllers\LembreteController.cs" />
     <Compile Include="Controllers\PerfilController.cs" />
     <Compile Include="Controllers\ReposicaoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
@@ -753,6 +752,7 @@
     <Content Include="Views\Shared\Partials\_AvaliacaoAgendar.cshtml" />
     <Content Include="Views\Shared\Partials\_AvaliacaoIndex.cshtml" />
     <Content Include="Views\Shared\Partials\_AvaliacaoConfigurar.cshtml" />
+    <None Include="Properties\PublishProfiles\Felipe.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,11 +1,14 @@
 ﻿siac.Lembrete = siac.Lembrete || {};
 
 siac.Lembrete.iniciar = function () {
-    var _matricula = $('[data-matricula]').data('matricula');
-
     alertify.set('notifier', 'position', 'bottom-left');
 
+    var _matricula = $('[data-matricula]').data('matricula');
+
+    var pathname = window.location.pathname.toLowerCase();
+
     var hub = $.connection.lembreteHub;
+
     hub.client.receberNotificacoes = function (data) {
         if (data) {
             for (var i in data) {
@@ -13,20 +16,54 @@ siac.Lembrete.iniciar = function () {
             }
         }
     };
+
+    hub.client.receberMenu = function (data) {
+        for (var key in data) {
+            if (data.hasOwnProperty(key)) {
+                if (data[key] > 0) {
+                    $('.menu [data-lembrete=' + key + '] .icon').remove();
+                    $('.menu [data-lembrete=' + key + ']').append('<div class="ui label">' + data[key] + '</div>');
+                }
+            }
+        }
+    };
+
+    hub.client.receberContadores = function (data) {
+        for (var key in data) {
+            if (data.hasOwnProperty(key)) {
+                if (data[key] > 0) {
+                    $('[data-lembrete=' + key + ']').append('<div class="ui floating small red label">' + data[key] + '</div>');
+                }
+            }
+        }
+    };
+
+    hub.client.receberLembretes = function (data) {
+        if (data) {
+            for (var i in data) {
+                if (data[i]['Botao']) {
+                    var str = '<p>' + data[i]['Mensagem'] + '</p>' +
+                               '<a href="' + data[i]['Url'] + '" class="ui black basic button">' + data[i]['Botao'] + '</a>';
+                    alertify.notify(str, 'label', 0, function (clicado) { hub.server.lembreteVisualizado(_matricula, clicado, data[i]['Id']) });
+                }
+                else {
+                    alertify.notify(data[i]['Mensagem'], 'label', 0, function (clicado) { hub.server.lembreteVisualizado(_matricula, clicado, data[i]['Id']) });
+                }
+            }
+        }
+    }
+
     $.connection.hub.start().done(function () {
         hub.server.recuperarNotificacoes(_matricula);
+        hub.server.recuperarMenu(_matricula);
+        if (pathname == "/principal") {
+            hub.server.recuperarContadoresPrincipal(_matricula);
+        }
+        else if (pathname == "/institucional") {
+            hub.server.recuperarContadoresInstitucional(_matricula);
+        }
+        hub.server.recuperarLembretes(_matricula);
     });
-
-    siac.Lembrete.Lembretes.iniciar();
-    siac.Lembrete.Menu.iniciar();
-
-    var pathname = window.location.pathname.toLowerCase();
-    if (pathname == "/principal") {
-        siac.Lembrete.Principal.iniciar();
-    }
-    else if (pathname == "/institucional") {
-        siac.Lembrete.Institucional.iniciar();
-    }
 };
 
 siac.Lembrete.Notificacoes = siac.Lembrete.Notificacoes || (function () {
@@ -46,112 +83,4 @@ siac.Lembrete.Notificacoes = siac.Lembrete.Notificacoes || (function () {
     }
 
     return { exibir: exibir }
-})();
-
-siac.Lembrete.Lembretes = siac.Lembrete.Lembretes || (function () {
-    function iniciar() {
-        $.ajax({
-            url: '/lembrete/lembretes',
-            type: 'post',
-            cache: true,
-            success: function (data) {
-                if (data) {
-                    for (var i in data) {
-                        if (data[i]['Botao']) {
-                            var str = '<p>'+data[i]['Mensagem']+'</p>'+
-                                       '<a href="' + data[i]['Url'] + '" class="ui black basic button">' + data[i]['Botao'] + '</a>';
-                            alertify.notify(str, 'label', 0, function (clicado) { lembreteVisualizado(clicado, data[i]['Id']) });
-                        }
-                        else {
-                            alertify.notify(data[i]['Mensagem'], 'label', 0, function (clicado) { lembreteVisualizado(clicado, data[i]['Id']) });
-                        }
-                    }
-                }                
-            }
-        });
-    }
-
-    function lembreteVisualizado(clicado, id) {
-        if (clicado) {
-            $.ajax({
-                url: '/lembrete/lembretevisualizado',
-                type: 'post',
-                data: { id: id}
-            });
-        }
-    }
-
-    return { iniciar: iniciar }
-})();
-
-siac.Lembrete.Menu = siac.Lembrete.Menu || (function () {
-    function iniciar() {
-        $.ajax({
-            url: '/lembrete/menu',
-            type: 'post',
-            cache: true,
-            success: function (data) {
-                for (var key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        if (data[key] > 0) {
-                            $('.menu [data-lembrete=' + key + '] .icon').remove();
-                            $('.menu [data-lembrete=' + key + ']').append('<div class="ui label">' + data[key] + '</div>');
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    return { iniciar: iniciar }
-})();
-
-siac.Lembrete.Principal = siac.Lembrete.Principal || (function () {
-    function iniciar() {
-        contadores();
-    }
-
-    function contadores() {
-        $.ajax({
-            url: '/lembrete/principal',
-            type: 'post',
-            cache: true,
-            success: function (data) {
-                for (var key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        if (data[key] > 0) {
-                            $('[data-lembrete=' + key + ']').append('<div class="ui floating small red label">' + data[key] + '</div>');
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    return { iniciar: iniciar }
-})();
-
-siac.Lembrete.Institucional = siac.Lembrete.Institucional || (function () {
-    function iniciar() {
-        contadores();
-    }
-
-    function contadores() {
-        $.ajax({
-            url: '/lembrete/institucional',
-            type: 'post',
-            cache: true,
-            success: function (data) {
-                for (var key in data) {
-                    if (data.hasOwnProperty(key)) {
-                        if (data[key] > 0) {
-                            $('[data-lembrete=' + key + ']').append('<div class="ui floating small red label">' + data[key] + '</div>');
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    return { iniciar: iniciar }
 })();

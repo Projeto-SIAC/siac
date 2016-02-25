@@ -1,9 +1,9 @@
-﻿using SIAC.Helpers;
-using SIAC.Models;
-using SIAC.ViewModels;
-using System;
+﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using SIAC.Helpers;
+using SIAC.Models;
+using SIAC.ViewModels;
 
 namespace SIAC.Controllers
 {
@@ -34,7 +34,7 @@ namespace SIAC.Controllers
 
         // POST: /
         [HttpPost]
-        public ActionResult Index(FormCollection formCollection)
+        public async System.Threading.Tasks.Task<ActionResult> Index(FormCollection formCollection)
         {
             if (Sistema.Autenticado(Sessao.UsuarioMatricula))
                 return RedirectToAction("Index", "Principal");
@@ -53,6 +53,9 @@ namespace SIAC.Controllers
                     if (usuario != null)
                     {
                         validado = true;
+
+                        Hubs.LembreteHub.Iniciar(usuario.Matricula);
+
                         Sessao.Inserir("UsuarioMatricula", usuario.Matricula);
                         Sessao.Inserir("UsuarioNome", usuario.PessoaFisica.Nome);
                         Sessao.Inserir("UsuarioCategoriaCodigo", usuario.CodCategoria);
@@ -76,6 +79,7 @@ namespace SIAC.Controllers
                     Value = Criptografia.RetornarHash(Sessao.UsuarioMatricula)
                 });
                 Lembrete.AdicionarNotificacao("Seu usuário foi autenticado com sucesso.", Lembrete.POSITIVO);
+                TimeLog.Parar();
                 if (Request.QueryString["continuar"] != null)
                     return Redirect(Request.QueryString["continuar"].ToString());
                 return RedirectToAction("Index", "Principal");
@@ -104,6 +108,7 @@ namespace SIAC.Controllers
         // GET: acesso/sair
         public ActionResult Sair()
         {
+            Hubs.LembreteHub.Limpar(Sessao.UsuarioMatricula);
             Sistema.Notificacoes.Remove(Sessao.UsuarioMatricula);
             Sistema.UsuarioAtivo.Remove(Sessao.UsuarioMatricula);
             Sistema.RemoverCookie(Sessao.UsuarioMatricula);

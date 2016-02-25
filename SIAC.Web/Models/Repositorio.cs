@@ -17,7 +17,7 @@ namespace SIAC.Models
             {
                 Helpers.Sessao.Inserir("dbSIACEntities", new dbSIACEntities());
             }
-            return (dbSIACEntities)Helpers.Sessao.Retornar("dbSIACEntities");
+            return (dbSIACEntities)Helpers.Sessao.Retornar("dbSIACEntities") ?? new dbSIACEntities();
         }
 
         public static void Commit()
