@@ -17,25 +17,28 @@
         <li>Pouse o mouse nas palavras <a class="ui small tag label">Correta</a> e <a class="ui small tag label">Marcada</a> para visualizar os comentários das questões.</li>
     </ul>
 </div>
+@if (Model.Avaliacao.TipoQuestoes != 2)
+{
+    <div class="ui basic segment">
 
-<div class="ui basic segment">
-    <div class="ui dividing header" data-content="Note que os cálculos levam em conta somente as questões objetivas.">
-        Desempenho
-        <div class="ui label">Porcentagem de Acerto<div class="detail">@(Model.Porcentagem.ToString("0.##'%'"))</div></div>
-        <div class="ui label">Quantidade de Acerto<div class="detail">@avalPessoaResultado.QteAcertoObj</div></div>
-    </div>
-    <div class="ui statistics">
-        @foreach (string chave in Model.Desempenho.Keys)
-        {
-            <div class="statistic @(Model.Desempenho[chave]>50 ? "green" : "red")">
-                <div class="value">
-                    @Model.Desempenho[chave].ToString("0.##'%'")
+        <div class="ui dividing header" data-content="Note que os cálculos levam em conta somente as questões objetivas.">
+            Desempenho
+            <div class="ui label">Porcentagem de Acerto<div class="detail">@(Model.Porcentagem.ToString("0.##'%'"))</div></div>
+            <div class="ui label">Quantidade de Acerto<div class="detail">@avalPessoaResultado.QteAcertoObj</div></div>
+        </div>
+        <div class="ui statistics">
+            @foreach (string chave in Model.Desempenho.Keys)
+            {
+                <div class="statistic @(Model.Desempenho[chave] > 50 ? "green" : "red")">
+                    <div class="value">
+                        @Model.Desempenho[chave].ToString("0.##'%'")
+                    </div>
+                    <div class="label">@chave</div>
                 </div>
-                <div class="label">@chave</div>
-            </div>
-        }
+            }
+        </div>
     </div>
-</div>
+}
 
 <div class="ui basic segment">
     <div class="ui dividing header">
@@ -91,7 +94,7 @@
                     else
                     {
                         <div>
-                            <a class="ui ribbon label" data-html="@(("<b>Chave de Resposta</b>: " + lstQuestao[i].ChaveDeResposta).Replace("\n", "<br>"))" data-variation="very wide">Resposta</a>
+                            <a class="ui ribbon label" data-html="@(("<b>Chave de Resposta</b>: " + lstQuestao[i].ChaveDeResposta).Replace("\n", "<br>"))" data-variation="very wide">Chave de Resposta</a>
                             @Html.Raw(resposta.RespDiscursiva.ToHtml("p", "i"))
                         </div>
                     }
