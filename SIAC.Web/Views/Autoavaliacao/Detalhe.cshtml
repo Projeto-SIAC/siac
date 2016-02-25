@@ -80,20 +80,7 @@
     </table>
 </div>
 
-@if (Model.Avaliacao.AvalPessoaResultado.Count == 0)
-{
-    if (!Model.Avaliacao.FlagArquivo)
-    {
-        <a href="@Url.Action("Avaliacao","Impressao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Imprimir</a>
-        <div class="ui arquivar button">Arquivar</div>
-        <a href="@Url.Action("Realizar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Realizar</a>
-    }
-    else
-    {
-        <div class="ui arquivar button">Desarquivar</div>
-    }
-}
-else
+@if (Model.Avaliacao.FlagRealizada)
 {
     // Desempenho
     <div class="ui basic segment">
@@ -203,7 +190,20 @@ else
         }
     </div>
 }
-<a class="ui left floated button" href="@Url.Action("Index","Principal")">Voltar para Tela Principal</a>
+<a class="ui button" href="@Url.Action("Index", "Principal")">Voltar para Tela Principal</a>
+@if (!Model.Avaliacao.FlagRealizada)
+{
+    if (!Model.Avaliacao.FlagArquivo)
+    {
+        <a href="@Url.Action("Avaliacao","Impressao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Imprimir</a>
+        <div class="ui arquivar button">Arquivar</div>
+        <a href="@Url.Action("Realizar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Realizar</a>
+    }
+    else
+    {
+        <div class="ui arquivar button">Desarquivar</div>
+    }
+}
 <a class="ui right floated button" href="@Url.Action("Index")">Ir para Tela de Histórico</a>
 
 @section Scripts {
