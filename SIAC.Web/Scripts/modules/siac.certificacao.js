@@ -1235,7 +1235,7 @@ siac.Certificacao.Realizar = (function () {
         $('#lblHoraTermino').text(("0" + (_dtTermino.getHours())).slice(-2) + 'h' + ("0" + (_dtTermino.getMinutes())).slice(-2) + 'min');
 
         relogio();
-        temporizador(_dtTermino);
+        temporizador();
         conectarHub(_codAvaliacao, _matriculaUsuario);
     }
 
@@ -1246,10 +1246,10 @@ siac.Certificacao.Realizar = (function () {
         }, 1000);
     }
 
-    function temporizador(dtTermino) {
+    function temporizador() {
         setInterval(function () {
-            var offset = dtTermino.getTimezoneOffset() * 60 * 1000;
-            var timeRestante = (dtTermino.getTime() + offset) - (new Date().getTime() + offset);
+            var offset = _dtTermino.getTimezoneOffset() * 60 * 1000;
+            var timeRestante = (_dtTermino.getTime() + offset) - (new Date().getTime() + offset);
 
             if (timeRestante > 0) {
                 var date = new Date();
@@ -1467,6 +1467,12 @@ siac.Certificacao.Realizar = (function () {
             })
         });
 
+        certHub.client.prorrogar = function (duracao) {
+            _dtTermino = new Date(_dtTermino.getTime() + duracao * 60000);
+            $('#lblHoraTermino').text(("0" + (_dtTermino.getHours())).slice(-2) + 'h' + ("0" + (_dtTermino.getMinutes())).slice(-2) + 'min');
+            siac.Lembrete.Notificacoes.exibir('O professor prorrogou a duração em ' + duracao + ' minutos', 'info');
+        }
+
         certHub.client.alertar = function (mensagem) {
             var timeAntes = new Date();
             alert(mensagem);
@@ -1553,7 +1559,7 @@ siac.Certificacao.Realizar = (function () {
 })();
 
 siac.Certificacao.Acompanhar = (function () {
-    var _codAvaliacao, _matriculaUsuario;
+    var _codAvaliacao, _matriculaUsuario, _dtTermino;
 
     function iniciar() {
         var $elemento = $('[data-usuario]');
@@ -1561,6 +1567,11 @@ siac.Certificacao.Acompanhar = (function () {
         _matriculaUsuario = $elemento.attr('data-usuario');
         $elemento.removeAttr('data-usuario');
 
+        $elemento = $('[data-termino]');
+        _dtTermino = new Date();
+        _dtTermino.setTime(Date.parse($elemento.attr('data-termino')));
+        $elemento.removeAttr('data-termino');
+        
         conectarHub(_codAvaliacao, _matriculaUsuario);
 
         $('.ui.accordion')
@@ -1584,6 +1595,8 @@ siac.Certificacao.Acompanhar = (function () {
                 on: 'click'
             })
         ;
+
+        $('.modal').modal();
     }
 
     function conectarHub(codAval, usrMatr) {
@@ -1614,6 +1627,32 @@ siac.Certificacao.Acompanhar = (function () {
                     }, 0);
                 }
             };
+
+            prorrogar = function prorrogar(duracao, observacao) {
+                if (duracao > 0) {
+                    certHub.server.prorrogar(codAval, duracao, observacao);
+                }
+            }
+
+            $('.prorrogar.button').click(function () {
+                $('.prorrogar.modal').modal('show');
+            });
+            $('.prorrogar.modal').modal({
+                onApprove: function () {
+                    var duracao = $('#txtProrrogarDuracao').val();
+                    var observacao = $('#txtProrrogarObservacao').val();
+                    if (duracao > 0) {
+                        prorrogar(duracao, observacao);
+                        _dtTermino = new Date(_dtTermino.getTime() + duracao * 60000);
+                        $('#lblHoraTermino').text(("0" + (_dtTermino.getHours())).slice(-2) + 'h' + ("0" + (_dtTermino.getMinutes())).slice(-2) + 'min');
+                        $('#txtProrrogarDuracao').val('');
+                        $('#txtProrrogarObservacao').val('');
+                    }
+                    else {
+                        siac.mensagem('Insira uma quantidade válida de minutos para a prorrogação.', 'Prorrogar Avaliação');
+                    }
+                }
+            });
 
             certHub.server.professorConectou(codAval, usrMatr);
 

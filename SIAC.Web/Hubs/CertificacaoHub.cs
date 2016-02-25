@@ -265,6 +265,46 @@ namespace SIAC.Hubs
                 Clients.Client(mapping.SelecionarConnectionIdProfessor()).avaliadoFinalizou(usrMatricula);
             }
         }
+
+        public void Prorrogar(string codAvaliacao, int duracao, string observacao)
+        {
+            if (duracao > 0)
+            {
+                var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
+                using (var e = new Models.dbSIACEntities())
+                {
+                    int numIdentificador = 0;
+                    int semestre = 0;
+                    int ano = 0;
+
+                    if (codAvaliacao.Length == 13)
+                    {
+                        string codigo = codAvaliacao;
+                        int.TryParse(codigo.Substring(codigo.Length - 4), out numIdentificador);
+                        codigo = codigo.Remove(codigo.Length - 4);
+                        int.TryParse(codigo.Substring(codigo.Length - 1), out semestre);
+                        codigo = codigo.Remove(codigo.Length - 1);
+                        int.TryParse(codigo.Substring(codigo.Length - 4), out ano);
+                        codigo = codigo.Remove(codigo.Length - 4);
+                        int codTipoAvaliacao = e.TipoAvaliacao.FirstOrDefault(t => t.Sigla == codigo).CodTipoAvaliacao;
+
+                        Models.Avaliacao aval = e.Avaliacao.FirstOrDefault(acad => acad.Ano == ano && acad.Semestre == semestre && acad.NumIdentificador == numIdentificador && acad.CodTipoAvaliacao == codTipoAvaliacao);
+
+                        var prorrogacao = new Models.AvaliacaoProrrogacao();
+                        prorrogacao.DtProrrogacao = DateTime.Now;
+                        prorrogacao.Observacao = String.IsNullOrWhiteSpace(observacao) ? null : observacao;
+                        prorrogacao.DuracaoAnterior = aval.Duracao.Value;
+                        prorrogacao.DuracaoNova = prorrogacao.DuracaoAnterior + duracao;
+                        aval.Duracao = prorrogacao.DuracaoNova;
+                        aval.AvaliacaoProrrogacao.Add(prorrogacao);
+
+                        e.SaveChanges();
+
+                        Clients.Clients(mapping.ListarConnectionIdAvaliados()).prorrogar(duracao);
+                    }
+                }
+            }
+        }
     }
 
     public class CertificacaoMapping
