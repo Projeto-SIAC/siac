@@ -867,7 +867,7 @@ siac.Reposicao.Realizar = (function () {
         $('#lblHoraTermino').text(("0" + (_dtTermino.getHours())).slice(-2) + 'h' + ("0" + (_dtTermino.getMinutes())).slice(-2) + 'min');
 
         relogio();
-        temporizador(_dtTermino);
+        temporizador();
         conectarHub(_codAvaliacao, _matriculaUsuario);
     }
 
@@ -878,10 +878,10 @@ siac.Reposicao.Realizar = (function () {
         }, 1000);
     }
 
-    function temporizador(dtTermino) {
+    function temporizador() {
         setInterval(function () {
-            var offset = dtTermino.getTimezoneOffset() * 60 * 1000;
-            var timeRestante = (dtTermino.getTime() + offset) - (new Date().getTime() + offset);
+            var offset = _dtTermino.getTimezoneOffset() * 60 * 1000;
+            var timeRestante = (_dtTermino.getTime() + offset) - (new Date().getTime() + offset);
 
             if (timeRestante > 0) {
                 var date = new Date();
@@ -1102,6 +1102,12 @@ siac.Reposicao.Realizar = (function () {
             })
         });
 
+        hub.client.prorrogar = function (duracao) {
+            _dtTermino = new Date(_dtTermino.getTime() + duracao * 60000);
+            $('#lblHoraTermino').text(("0" + (_dtTermino.getHours())).slice(-2) + 'h' + ("0" + (_dtTermino.getMinutes())).slice(-2) + 'min');
+            siac.Lembrete.Notificacoes.exibir('O professor prorrogou a duração em ' + duracao + ' minutos', 'info');
+        }
+
         hub.client.alertar = function (mensagem) {
             var timeAntes = new Date();
             alert(mensagem);
@@ -1190,7 +1196,7 @@ siac.Reposicao.Realizar = (function () {
 })();
 
 siac.Reposicao.Acompanhar = (function () {
-    var _codAvaliacao, _matriculaUsuario;
+    var _codAvaliacao, _matriculaUsuario, _dtTermino;
 
     function iniciar() {
         var $elemento = $('[data-usuario]');
@@ -1198,6 +1204,11 @@ siac.Reposicao.Acompanhar = (function () {
         $elemento.removeAttr('data-usuario');
 
         _codAvaliacao = window.location.pathname.toLowerCase().match(/repo[0-9]+$/)[0];
+
+        $elemento = $('[data-termino]');
+        _dtTermino = new Date();
+        _dtTermino.setTime(Date.parse($elemento.attr('data-termino')));
+        $elemento.removeAttr('data-termino');
 
         conectarHub(_codAvaliacao, _matriculaUsuario);
 
@@ -1215,7 +1226,9 @@ siac.Reposicao.Acompanhar = (function () {
         $('.trigger.button').popup({
                 inline: true,
                 on: 'click'
-            });
+        });
+
+        $('.modal').modal();
     }
 
     function conectarHub(aval, usrMatr) {
@@ -1246,6 +1259,32 @@ siac.Reposicao.Acompanhar = (function () {
                     }, 0);
                 }
             };
+
+            prorrogar = function prorrogar(duracao, observacao) {
+                if (duracao > 0) {
+                    hub.server.prorrogar(aval, duracao, observacao);
+                }
+            }
+
+            $('.prorrogar.button').click(function () {
+                $('.prorrogar.modal').modal('show');
+            });
+            $('.prorrogar.modal').modal({
+                onApprove: function () {
+                    var duracao = $('#txtProrrogarDuracao').val();
+                    var observacao = $('#txtProrrogarObservacao').val();
+                    if (duracao > 0) {
+                        prorrogar(duracao, observacao);
+                        _dtTermino = new Date(_dtTermino.getTime() + duracao * 60000);
+                        $('#lblHoraTermino').text(("0" + (_dtTermino.getHours())).slice(-2) + 'h' + ("0" + (_dtTermino.getMinutes())).slice(-2) + 'min');
+                        $('#txtProrrogarDuracao').val('');
+                        $('#txtProrrogarObservacao').val('');
+                    }
+                    else {
+                        siac.mensagem('Insira uma quantidade válida de minutos para a prorrogação.', 'Prorrogar Avaliação');
+                    }
+                }
+            });
 
             hub.server.professorConectou(aval, usrMatr);
             $('.prova.button').on('click', function () {
