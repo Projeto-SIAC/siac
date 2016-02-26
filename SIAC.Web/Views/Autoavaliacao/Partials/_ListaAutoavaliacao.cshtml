@@ -2,11 +2,14 @@
 
 @foreach (AvalAuto autoavaliacao in Model)
 {
+    var dtCadastro = autoavaliacao.Avaliacao.DtCadastro.ToElapsedTimeString();
     <div class="card hidden" style="display:none!important" data-avaliacao="@autoavaliacao.Avaliacao.CodAvaliacao">
         <div class="content">
-            <a href="@Url.Action("Detalhe", new { codigo = autoavaliacao.Avaliacao.CodAvaliacao })" class="header">Código: @autoavaliacao.Avaliacao.CodAvaliacao</a>
+            <a href="@Url.Action("Detalhe", new { codigo = autoavaliacao.Avaliacao.CodAvaliacao })" class="header">
+                @autoavaliacao.Disciplina.First().Descricao @(autoavaliacao.Disciplina.Count > 1 ? "+" + (autoavaliacao.Disciplina.Count - 1) : "")
+            </a>
             <div class="meta">
-                <span title="@autoavaliacao.Avaliacao.DtCadastro.ToBrazilianString()">@autoavaliacao.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
+                Gerada @(dtCadastro.Contains('/') ? "em" : "há") <span title="@autoavaliacao.Avaliacao.DtCadastro.ToBrazilianString()">@dtCadastro</span>
             </div>
             @if (autoavaliacao.Avaliacao.FlagPendente)
             {
@@ -14,21 +17,19 @@
             }
             else if (autoavaliacao.Avaliacao.FlagArquivo)
             {
-                <span class="ui ribbon label"><i class="archive icon"></i>Arquivo</span>
+                <span class="ui ribbon label"><i class="archive icon"></i>Arquivada</span>
             }
-            
+            else if (autoavaliacao.Avaliacao.FlagRealizada)
+            {
+                <span class="ui ribbon label"><i class="checkmark icon"></i>Realizada</span>
+            }
             <div class="description">
-                <p><b>Dificuldade</b>: @autoavaliacao.Dificuldade.Descricao</p>
-                <p><b>Quantidade de Questões</b>: @autoavaliacao.Avaliacao.QteQuestoes()</p>
+                <p title="@autoavaliacao.Dificuldade.Comentario"><b>Índ. de Dificuldade</b>: @autoavaliacao.Dificuldade.Descricao</p>
+                <p><b>Quant. de Questões</b>: @autoavaliacao.Avaliacao.QteQuestoes()</p>
             </div>
         </div>
         <div class="extra content">
-            <div class="ui tag labels">
-                @foreach (Disciplina disciplina in autoavaliacao.Disciplina)
-                {
-                    <div class="ui label">@disciplina.Descricao</div>
-                }
-            </div>
+            <div class="ui tag label">@autoavaliacao.Avaliacao.CodAvaliacao</div>
         </div>
         @if (autoavaliacao.Avaliacao.FlagPendente)
         {
