@@ -209,6 +209,40 @@
                         </tbody>
                     </table>
                 </div>
+
+                @if(Model.CodTipoAvaliacao == TipoAvaliacao.REPOSICAO)
+                {
+                    if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
+                    {
+                        <div class="title"><i class="dropdown icon"></i>Alunos</div>
+                        <div class="content">
+                            <table class="ui striped table">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Matrícula</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        @switch (Model.CodTipoAvaliacao)
+                                        {
+                                            case TipoAvaliacao.REPOSICAO:
+                                            {
+                                                foreach (Aluno aluno in Model.AvalAcadReposicao.Alunos.OrderBy(a=>a.Usuario.PessoaFisica.Nome))
+                                                {
+                                                    <tr>
+                                                        <td>@aluno.Usuario.PessoaFisica.Nome</td>
+                                                        <td>@aluno.Usuario.Matricula</td>
+                                                    </tr>
+                                                }
+                                                break;
+                                            }
+                                        }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                }
             </div>
         }
         else

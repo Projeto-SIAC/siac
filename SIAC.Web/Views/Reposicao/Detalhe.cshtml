@@ -125,6 +125,30 @@
                 </tr>
             </tbody>
         </table>
+        <div class="ui dividing header">
+            Alunos
+        </div>
+        <table class="ui striped table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Matrícula</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Aluno aluno in Model.Alunos.OrderBy(a => a.Usuario.PessoaFisica.Nome))
+                {
+                    <tr>
+                        <td>
+                            @aluno.Usuario.PessoaFisica.Nome
+                        </td>
+                        <td>
+                            @aluno.Usuario.Matricula
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 }
 else if (Model.Avaliacao.FlagRealizada)
@@ -280,7 +304,7 @@ else if (Model.Avaliacao.FlagRealizada)
         List<AvalQuesPessoaResposta> lstPessoaResposta = lstResposta.Where(p => p.CodPessoaFisica == codPessoaFisica).ToList();
         AvalPessoaResultado avalPessoaResultado = Model.Avaliacao.AvalPessoaResultado.FirstOrDefault(r => r.CodPessoaFisica == codPessoaFisica);
         int quantidadeAcerto = lstPessoaResposta.Where(p => p.RespNota.HasValue && p.RespNota.Value == 10).Count();
-        double porcentagem =quantidadeAcerto / lstQuestao.Count;
+        double porcentagem = quantidadeAcerto / lstQuestao.Count;
         if (avalPessoaResultado != null)
         {
             <div class="ui basic segment">
@@ -290,7 +314,7 @@ else if (Model.Avaliacao.FlagRealizada)
                 <div class="ui statistics">
                     <div class="statistic">
                         <div class="value">
-                            @((((double)quantidadeAcerto/ (double)lstQuestao.Count) * 100).ToString("0.##'%'"))
+                            @((((double)quantidadeAcerto / (double)lstQuestao.Count) * 100).ToString("0.##'%'"))
                         </div>
                         <div class="label">
                             Porcentagem de Acerto
@@ -384,9 +408,9 @@ else if (Model.Avaliacao.FlagRealizada)
                     }
                 </div>
             </div>
+            }
         }
     }
-}
 
 <a href="@Url.Action("Index")" class="ui button">Voltar para Histórico</a>
 @if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
@@ -395,15 +419,15 @@ else if (Model.Avaliacao.FlagRealizada)
     {
         if (Model.Avaliacao.FlagArquivo || !Model.Avaliacao.FlagRealizada)
         {
-        <div class="ui arquivar toggle @(Model.Avaliacao.FlagArquivo ? "active" : "") button">Arquiva@(Model.Avaliacao.FlagArquivo ? "da" : "r")</div>
+            <div class="ui arquivar toggle @(Model.Avaliacao.FlagArquivo ? "active" : "") button">Arquiva@(Model.Avaliacao.FlagArquivo ? "da" : "r")</div>
             if (!Model.Avaliacao.FlagArquivo)
             {
-            <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Substituir Questão</a>
+                <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Substituir Questão</a>
             }
         }
-        if (!Model.Avaliacao.FlagArquivo)
+        if (!Model.Avaliacao.FlagArquivo && !Model.Avaliacao.FlagRealizada)
         {
-        <a href="@Url.Action("Avaliacao", "Impressao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Imprimir</a>
+            <a href="@Url.Action("Avaliacao", "Impressao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Imprimir</a>
         }
     }
 }
