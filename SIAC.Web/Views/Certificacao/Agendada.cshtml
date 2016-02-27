@@ -124,6 +124,33 @@
 
         @if (codCategoria == Categoria.PROFESSOR)
         {
+            <div class="title"><i class="dropdown icon"></i>Avaliados</div>
+            <div class="content">
+                <div class="ui one cards" style="max-height: 25em; overflow-y: auto">
+                    <table class="ui striped table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Matrícula</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (PessoaFisica pessoaFisica in Model.PessoaFisica.OrderBy(pf => pf.Nome))
+                            {
+                                <tr>
+                                    <td>
+                                        @pessoaFisica.Nome
+                                    </td>
+                                    <td>
+                                        @pessoaFisica.Usuario.LastOrDefault().Matricula
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <div class="title">
                 <i class="dropdown icon"></i>Questões
             </div>

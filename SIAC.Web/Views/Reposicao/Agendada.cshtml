@@ -124,6 +124,36 @@
                 </tbody>
             </table>
         </div>
+        <div class="title"><i class="dropdown icon"></i>Alunos</div>
+        <div class="content">
+            <div class="ui one cards" style="max-height: 25em; overflow-y: auto">
+                <table class="ui striped table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Matrícula</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (Aluno aluno in Model.Alunos.OrderBy(a => a.Usuario.PessoaFisica.Nome))
+                        {
+
+
+
+                            <tr>
+                                <td>
+                                    @aluno.Usuario.PessoaFisica.Nome
+                                </td>
+                                <td>
+                                    @aluno.Usuario.Matricula
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         @if (codCategoria == Categoria.PROFESSOR)
         {
             <div class="title"><i class="dropdown icon"></i>Questões</div>
@@ -179,36 +209,6 @@
                         contador++;
                     }
 
-                </div>
-            </div>
-
-            <div class="title"><i class="dropdown icon"></i>Alunos</div>
-            <div class="content">
-                <div class="ui one cards" style="max-height: 25em; overflow-y: auto">
-                    <table class="ui striped table">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Matrícula</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (Aluno aluno in Model.Alunos.OrderBy(a => a.Usuario.PessoaFisica.Nome))
-                            {
-
-
-
-                                <tr>
-                                    <td>
-                                        @aluno.Usuario.PessoaFisica.Nome
-                                    </td>
-                                    <td>
-                                        @aluno.Usuario.Matricula
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
                 </div>
             </div>
         }

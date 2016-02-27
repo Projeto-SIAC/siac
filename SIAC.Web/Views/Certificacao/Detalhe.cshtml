@@ -129,6 +129,31 @@
                 </tr>
             </tbody>
         </table>
+
+        <div class="ui dividing header">
+            Avaliados
+        </div>
+        <table class="ui striped table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Matrícula</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (PessoaFisica pessoaFisica in Model.PessoaFisica.OrderBy(pf => pf.Nome))
+                {
+                    <tr>
+                        <td>
+                            @pessoaFisica.Nome
+                        </td>
+                        <td>
+                            @pessoaFisica.Usuario.LastOrDefault().Matricula
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 }
 else if (Model.Avaliacao.FlagRealizada)
