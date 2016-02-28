@@ -20,12 +20,25 @@
     </div>
 </div>
 
+<div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
+    <div class="header">
+        Ajuda
+    </div>
+    <ul class="list">
+        <li>Aqui em Público você poderá selecionar os que poderão realizar esta avaliação institucional.</li>
+        <li>Clique em <b>Filtro</b> para selecionar o tipo de filtro para a pesquisa. Ex.: <i>Pessoa</i></li>
+        <li>Na caixa <b>Buscar</b> insira o termo para pesquisar no sistema baseando-se no filtro selecionado. Ex.: <i>João Maria</i></li>
+        <li>Clique em <b>Selecionar</b> para inserir o resultado obtido da pesquisa na lista temporária de <b>Selecionados</b></li>
+        <li>O botão <i class="remove icon"></i><b>Remover</b> serve para remover o selecionado em questão da lista de temporários</li>
+        <li>Por fim, não esqueça de confirmar as alterações clicando no botão <b>Prosseguir</b> ao fim desta página.</li>
+    </ul>
+</div>
 
 <div class="ui segment">
     <div class="ui form">
         <div class="fields">
             <div class="four wide field">
-                <label>Filtro</label>
+                <label data-ajuda="Clique na caixa abaixo para selecionar o filtro da pesquisa.">Selecione o filtro</label>
                 <select id="ddlFiltro" name="ddlFiltro" class="ui dropdown">
                     <option value="">Filtro</option>
                     @foreach (AviTipoPublico publico in Model.TiposPublico)
@@ -35,7 +48,7 @@
                 </select>
             </div>
             <div class="twelve wide field">
-                <label>Buscar</label>
+                <label data-ajuda="Forneça abaixo o termo para ser buscado (baseado no filtro selecionado).">Forneça o termo para buscar</label>
                 <div class="ui search">
                     <div class="ui icon input">
                         <input class="prompt" type="text" placeholder="Buscar...">

@@ -12,7 +12,7 @@
         Prosseguir operação?
     </div>
     <div class="content">
-        <p>Deseja encerrar o cadastramento de questões e continuar a geração de Av. Institucional?</p>
+        <p>Deseja prosseguir o agendamento e continuar a geração de Av. Institucional?</p>
     </div>
     <div class="actions">
         <div class="ui cancel red basic inverted button"><i class="remove icon"></i>Não</div>
@@ -27,12 +27,12 @@
     </div>
     <div class="two fields">
         <div class="eight wide field required">
-            <label>Data de Ínicio</label>
-            <input id="txtDataInicio" name="txtDataInicio" value="@(Model.Avaliacao.DtAplicacao?.ToString("dd/MM/yyyy"))" placeholder="Data de Início" type="text" data-mask="00/00/0000" required />
+            <label data-ajuda="Insira abaixo a data de início para o período de validade desta avaliação institucional">Insira a data de início</label>
+            <input id="txtDataInicio" name="txtDataInicio" autocomplete="off" value="@(Model.Avaliacao.DtAplicacao?.ToString("dd/MM/yyyy"))" placeholder="Data de Início" type="text" data-mask="00/00/0000" required />
         </div>
         <div class="eight wide field required">
-            <label>Data de Término</label>
-            <input id="txtDataTermino" name="txtDataTermino" value="@(Model.DtTermino?.ToString("dd/MM/yyyy"))"  placeholder="Data de Término" type="text" data-mask="00/00/0000" required />
+            <label data-ajuda="Insira abaixo a data de término para o período de validade desta avaliação institucional">Insira a data de término</label>
+            <input id="txtDataTermino" name="txtDataTermino" autocomplete="off" value="@(Model.DtTermino?.ToString("dd/MM/yyyy"))"  placeholder="Data de Término" type="text" data-mask="00/00/0000" required />
         </div>
     </div>
 </form>

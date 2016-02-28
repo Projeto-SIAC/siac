@@ -134,7 +134,7 @@
     @* Gerais da Questão *@
     <div class="ui bottom attached active tab segment gerais" data-tab="gerais">
         <div class="field required">
-            <label>Módulo</label>
+            <label data-ajuda="Clique na caixa abaixo para escolher o módulo da próxima questão">Escolha o módulo</label>
             <select id="ddlModulo" name="ddlModulo" class="ui search dropdown" required>
                 <option value="">Módulos</option>
                 @foreach (AviModulo modulo in Model.Modulos)
@@ -144,7 +144,7 @@
             </select>
         </div>
         <div class="field required">
-            <label>Categoria</label>
+            <label data-ajuda="Clique na caixa abaixo para selecionar a categoria da próxima questão">Selecione a categoria</label>
             <select id="ddlCategoria" name="ddlCategoria" class="ui search dropdown" required>
                 <option value="">Categoria</option>
                 @foreach (AviCategoria categoria in Model.Categorias)
@@ -154,7 +154,7 @@
             </select>
         </div>
         <div class="field required">
-            <label>Indicador</label>
+            <label data-ajuda="Clique na caixa abaixo para definir o indicador da próxima questão">Defina o indicador</label>
             <select id="ddlIndicador" name="ddlIndicador" class="ui search dropdown" required>
                 <option value="">Indicador</option>
                 @foreach (AviIndicador indicador in Model.Indicadores)
@@ -164,7 +164,7 @@
             </select>
         </div>
         <div class="field required">
-            <label>Tipo</label>
+            <label data-ajuda="Clique na caixa abaixo para determinar o tipo da próxima questão">Determine o tipo</label>
             <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" required>
                 <option value="">Tipo</option>
                 @foreach (TipoQuestao tipo in Model.Tipos)
@@ -178,11 +178,11 @@
     @* Detalhes da Questão *@
     <div class="ui bottom attached tab segment detalhes" data-tab="detalhes">
         <div class="field required">
-            <label for="txtEnunciado">Enunciado</label>
+            <label data-ajuda="Forneça abaixo o enunciado da próxima questão" for="txtEnunciado">Forneça o enunciado</label>
             <textarea id="txtEnunciado" name="txtEnunciado" rows="2" required placeholder="Enunciado..."></textarea>
         </div>
         <div class="field">
-            <label for="txtObservacao">Observação</label>
+            <label data-ajuda="Descreva abaixo uma observação para a próxima questão" for="txtObservacao">Descreva uma observação</label>
             <textarea id="txtObservacao" name="txtObservacao" rows="2" placeholder="Observação..."></textarea>
         </div>
     </div>
@@ -197,12 +197,12 @@
             <div class="inline fields">
                 <div class="four wide field">
                     <div class="ui toggle checkbox">
-                        <input name="chkAlternativaDiscursiva" id="chkAlternativaDiscursiva" type="checkbox" />
-                        <label>Alternativa Discursiva</label>
+                        <input name="chkAlternativaDiscursiva" id="chkAlternativaDiscursiva" type="checkbox"/>
+                        <label data-ajuda="Marque esta caixa para permitir um texto além das alternativas propostas">Alternativa Discursiva</label>
                     </div>
                 </div>
                 <div class="twelve wide disabled field">
-                    <input name="txtAlternativaDiscursiva" id="txtAlternativaDiscursiva" type="text" placeholder="Enunciado para descrição. Ex.: 'Outro', 'Mais', etc..." />
+                    <input name="txtAlternativaDiscursiva" id="txtAlternativaDiscursiva" type="text" placeholder="Enunciado para a alternativa discursiva. Ex.: 'Outro', 'Mais', etc..." />
                 </div>
             </div>
         </div>

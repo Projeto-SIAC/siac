@@ -5,6 +5,17 @@
 
 <h2>@ViewBag.Title</h2>
 
+<div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
+    <div class="header">
+        Ajuda
+    </div>
+    <ul class="list">
+        <li>Aqui em Configurar Av. Institucional você poderá reordenar os módulos/indicadores e as categorias/questões de acordo com sua preferência.</li>
+        <li>O botão <i class="tiny arrow up icon"></i> serve para <b>subir</b> o item selecionado.</li>
+        <li>O botão <i class="tiny arrow down icon"></i> serve para <b>descer</b> o item selecionado.</li>
+    </ul>
+</div>
+
 <div class="ui basic confirmar modal">
     <div class="ui icon header">
         <i class="help icon"></i>

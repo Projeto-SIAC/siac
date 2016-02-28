@@ -136,7 +136,7 @@ siac.Institucional.Questionario = (function () {
                         '</div>' +
                         '<div class="content ui segment">' +
                             '<div class="field required">' +
-                                '<label for="txtAlternativaEnunciado' + i + '">Enunciado</label>' +
+                                '<label data-ajuda="Insira abaixo o enunciado desta alternativa" for="txtAlternativaEnunciado' + i + '">Insira o enunciado</label>' +
                                 '<textarea id="txtAlternativaEnunciado' + i + '" name="txtAlternativaEnunciado' + i + '" rows="2" placeholder="Enunciado..."></textarea>' +
                             '</div>' +
                             '<div class="field">' +
