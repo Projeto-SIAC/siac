@@ -31,7 +31,7 @@
         </div>
         <div class="statistic @(avalPessoaResultado.Nota >= Parametro.Obter().ValorNotaMedia ? "green" : "red")">
             <div class="value">
-                @avalPessoaResultado.Nota
+                @avalPessoaResultado.Nota.Value.ToString("0.0")
             </div>
             <div class="label">
                 Nota @(lstPessoaResposta.Where(r => !r.RespNota.HasValue).Count() == 0 ? "" : "Parcial")

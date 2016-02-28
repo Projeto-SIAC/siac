@@ -871,12 +871,18 @@ siac.Academica.Realizar = (function () {
                     $.ajax({
                         type: 'GET',
                         url: "/acesso/conectado",
+                        beforeSend: function () {
+                            $('.ui.gabarito.modal .approve.button').addClass('loading');
+                        },
                         success: function () {
                             finalizar();
-                            $(this).modal('hide');
+                            $('.ui.gabarito.modal').modal('hide');
                         },
                         error: function () {
                             siac.mensagem('Conecte-se à internet antes de confirmar.');
+                        },
+                        complete: function () {
+                            $('.ui.gabarito.modal .approve.button').removeClass('loading');
                         }
                     });
                     return false;
