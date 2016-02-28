@@ -54,7 +54,7 @@
         <ul class="list"></ul>
     </div>
     <div class="ui top attached tabular menu">
-        <div class="item" data-tab="questoes">Questões da AVI</div>
+        <div class="item" data-tab="questoes">Questões</div>
         <div class="active item" data-tab="gerais">Gerais</div>
         <div class="item" data-tab="detalhes">Detalhes</div>
         <div class="item questao objetiva" data-tab="alternativas">Alternativas</div>
@@ -136,7 +136,7 @@
         <div class="field required">
             <label data-ajuda="Clique na caixa abaixo para escolher o módulo da próxima questão">Escolha o módulo</label>
             <select id="ddlModulo" name="ddlModulo" class="ui search dropdown" required>
-                <option value="">Módulos</option>
+                <option value="">Módulo</option>
                 @foreach (AviModulo modulo in Model.Modulos)
                 {
                     <option value="@modulo.CodAviModulo">@modulo.Descricao</option>

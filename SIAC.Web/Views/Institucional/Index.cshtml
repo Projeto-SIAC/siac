@@ -9,6 +9,13 @@
 <div class="ui stackable grid dashmenu">
     <div class="stackable doubling four columns centered row">
         
+        @Html.Partial("_Atalho", new ViewDataDictionary() {
+            { "Url", Url.Action("Andamento") },
+            { "Icone", "wait" },
+            { "Descricao", "Av. Institucional em Andamento" },
+            { "Lembrete", "andamento" }
+        })
+
         @if (Model.FlagCoordenadorAvi)
         {
             @Html.Partial("_Atalho", new ViewDataDictionary() {
@@ -16,26 +23,20 @@
                 { "Icone", "add circle" },
                 { "Descricao", "Gerar Nova" }
             })
-
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Configuracao") },
-                { "Icone", "settings" },
-                { "Descricao", "Configurar" }
-            })
             
             @Html.Partial("_Atalho", new ViewDataDictionary() {
                 { "Url", Url.Action("Historico", "Institucional") },
                 { "Icone", "file text outline" },
                 { "Descricao", "Histórico de Av. Institucional" }
             })
-        }
 
-        @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Andamento") },
-            { "Icone", "wait" },
-            { "Descricao", "Av. Institucional em Andamento" },
-            { "Lembrete", "andamento" }
-        })
+
+            @Html.Partial("_Atalho", new ViewDataDictionary() {
+                { "Url", Url.Action("Configuracao") },
+                { "Icone", "settings" },
+                { "Descricao", "Configurar" }
+            })
+        }        
 
     </div>
 </div>
