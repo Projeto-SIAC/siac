@@ -3,7 +3,7 @@
 @foreach (AvalAvi avi in Model)
 {
     string dtCadastro = @avi.Avaliacao.DtCadastro.ToElapsedTimeString();
-    <div class="card" data-avi="@avi.Avaliacao.CodAvaliacao">
+    <div class="card hidden" style="display:none!important" data-avi="@avi.Avaliacao.CodAvaliacao">
         <div class="ui dimmer">
             <div class="ui text loader">Carregando</div>
         </div>

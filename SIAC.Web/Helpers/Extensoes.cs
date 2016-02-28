@@ -204,7 +204,7 @@ namespace SIAC
             double segundos = (DateTime.Now - dt).TotalSeconds;
             if (segundos < 1)
             {
-                s = "Agora a pouco";
+                s = "pouco";
             }
             else if (segundos < 60)
             {

@@ -1008,18 +1008,19 @@ siac.Institucional.Historico = (function () {
 
     var pagina = 1;
     var ordenar = "data_desc";
-    var categorias = [];
+    var categoria = "";
     var pesquisa = "";
 
     function iniciar() {
         $(window).scroll(function () {
-            if ($(window).scrollTop() + $(window).height() > $(document).height() * 0.50) {
+            if ($(window).scrollTop() + $(window).height() > $(document).height() * 0.5) {
                 if ($('.cards .card').length == (_controleQte * pagina)) {
                     pagina++;
                     listar();
                 }
             }
         });
+        $('.ui.dropdown').dropdown();
 
         $('.pesquisa input').keyup(function () {
             var _this = this;
@@ -1029,6 +1030,7 @@ siac.Institucional.Historico = (function () {
             _controleTimeout = setTimeout(function () {
                 pesquisa = _this.value;
                 pagina = 1;
+                $(_this).closest('.input').addClass('loading');
                 listar();
             }, 500);
         });
@@ -1040,21 +1042,8 @@ siac.Institucional.Historico = (function () {
         $('.categoria.item').click(function () {
             var $_this = $(this);
             pagina = 1;
-            var _categoria = $_this.attr('data-categoria');
-            if ($_this.hasClass('active')) {
-                var _tempCategorias = categorias;
-                categorias = [];
-                for (var i = 0, length = _tempCategorias.length; i < length; i++) {
-                    if (_tempCategorias[i] != _categoria) {
-                        categorias.push(_tempCategorias[i]);
-                    }
-                }
-                $_this.removeClass('active');
-            }
-            else {
-                categorias.push(_categoria);
-                $_this.addClass('active');
-            }
+            categoria = $_this.attr('data-categoria');
+            $_this.closest('.segment').addClass('loading');
             listar();
         });
 
@@ -1062,9 +1051,8 @@ siac.Institucional.Historico = (function () {
             var $_this = $(this);
             pagina = 1;
             ordenar = $_this.attr('data-ordenar');
+            $_this.closest('.segment').addClass('loading');
             listar();
-            $('.ordenar.item').removeClass('active');
-            $_this.addClass('active');
         });
 
         listar();
@@ -1075,7 +1063,7 @@ siac.Institucional.Historico = (function () {
             _controleAjax.abort();
         }
         $cards = $('.ui.cards');
-        //$cards.parent().addClass('loading');
+        $cards.parent().append('<div class="ui active centered inline text loader">Carregando</div>');
         _controleAjax = $.ajax({
             method: 'POST',
             url: '/institucional/listar',
@@ -1083,7 +1071,7 @@ siac.Institucional.Historico = (function () {
                 pagina: pagina,
                 pesquisa: pesquisa,
                 ordenar: ordenar,
-                categorias: categorias
+                categoria: categoria
             },
             success: function (partial) {
                 if (partial != _controlePartial) {
@@ -1094,10 +1082,17 @@ siac.Institucional.Historico = (function () {
                         $cards.append(partial);
                     }
                     _controlePartial = partial;
+                    $('.cards .card.hidden').transition({
+                        animation: 'pulse',
+                        duration: 500,
+                        interval: 200
+                    });
                 }
             },
             complete: function () {
-                //$cards.parent().removeClass('loading');
+                $('.segment.loading').removeClass('loading');
+                $('.input.loading').removeClass('loading');
+                $cards.parent().find('.active.loader').remove();
                 ativarInformacaoCard();
             }
         });

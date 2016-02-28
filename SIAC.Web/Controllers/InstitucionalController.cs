@@ -47,41 +47,30 @@ namespace SIAC.Controllers
 
         // POST: institucional/listar
         [HttpPost]
-        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias)
+        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string categoria)
         {
             int quantidade = 12;
             List<AvalAvi> institucionais = Institucionais;
             pagina = pagina ?? 1;
             if (!String.IsNullOrWhiteSpace(pesquisa))
-                institucionais = Institucionais.Where(a => a.Avaliacao.CodAvaliacao.ToLower().Contains(pesquisa.ToLower())).ToList();
-
-            if (categorias != null)
+                institucionais = Institucionais
+                    .Where(a => a.Avaliacao.CodAvaliacao.ToLower().Contains(pesquisa.ToLower())
+                    || a.Titulo.ToLower().Contains(pesquisa.ToLower()))
+                    .ToList();
+            
+            switch (categoria)
             {
-                if (categorias.Contains("gerada") && !categorias.Contains("andamento") && !categorias.Contains("concluida"))
-                {
+                case "gerada":
                     institucionais = institucionais.Where(a => !a.FlagAndamento && !a.FlagConcluida).ToList();
-                }
-                else if (!categorias.Contains("gerada") && categorias.Contains("andamento") && !categorias.Contains("concluida"))
-                {
+                    break;
+                case "andamento":
                     institucionais = institucionais.Where(a => a.FlagAndamento && !a.FlagConcluida).ToList();
-                }
-                else if (!categorias.Contains("gerada") && !categorias.Contains("andamento") && categorias.Contains("concluida"))
-                {
+                    break;
+                case "concluida":
                     institucionais = institucionais.Where(a => a.FlagConcluida).ToList();
-                }
-                else if (!categorias.Contains("gerada") && categorias.Contains("andamento") && categorias.Contains("concluida"))
-                {
-                    institucionais = institucionais.Where(a => a.FlagAndamento || a.FlagConcluida).ToList();
-                }
-                else if (categorias.Contains("gerada") && !categorias.Contains("andamento") && categorias.Contains("concluida"))
-                {
-                    institucionais = institucionais.Where(a => !a.FlagAndamento || a.FlagConcluida).ToList();
-                }
-                else if (categorias.Contains("gerada") && categorias.Contains("andamento") && !categorias.Contains("concluida"))
-                {
-                    institucionais = institucionais.Where(a => a.FlagAndamento || !a.FlagConcluida).ToList();
-                }
+                    break;
             }
+
             switch (ordenar)
             {
                 case "data_desc":
