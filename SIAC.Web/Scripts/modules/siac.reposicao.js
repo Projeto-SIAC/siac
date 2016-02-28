@@ -482,7 +482,7 @@ siac.Reposicao.Index = (function () {
 
     function iniciar() {
         $(window).scroll(function () {
-            if ($(window).scrollTop() + $(window).height() > $(document).height() * 0.50) {
+            if ($(window).scrollTop() + $(window).height() > $(document).height() * 0.5) {
                 if ($('.cards .card').length == (_controleQte * pagina)) {
                     pagina++;
                     listar();
@@ -500,6 +500,7 @@ siac.Reposicao.Index = (function () {
             _controleTimeout = setTimeout(function () {
                 pesquisa = _this.value;
                 pagina = 1;
+                $(_this).closest('.input').addClass('loading');
                 listar();
             }, 500);
         });
@@ -512,6 +513,7 @@ siac.Reposicao.Index = (function () {
             var $_this = $(this);
             pagina = 1;
             categoria = $_this.attr('data-categoria');
+            $_this.closest('.segment').addClass('loading');
             listar();
         });
 
@@ -519,6 +521,7 @@ siac.Reposicao.Index = (function () {
             var $_this = $(this);
             pagina = 1;
             disciplina = $_this.attr('data-disciplina');
+            $_this.closest('.segment').addClass('loading');
             listar();
         });
 
@@ -526,6 +529,7 @@ siac.Reposicao.Index = (function () {
             var $_this = $(this);
             pagina = 1;
             ordenar = $_this.attr('data-ordenar');
+            $_this.closest('.segment').addClass('loading');
             listar();
         });
 
@@ -565,6 +569,8 @@ siac.Reposicao.Index = (function () {
                 }
             },
             complete: function () {
+                $('.segment.loading').removeClass('loading');
+                $('.input.loading').removeClass('loading');
                 $cards.parent().find('.loader').remove();
             }
         });

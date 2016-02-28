@@ -22,6 +22,7 @@ siac.Questao.Index = (function () {
             _controleTimeout = setTimeout(function () {
                 pesquisa = _this.value;
                 pagina = 1;
+                $(_this).closest('.input').addClass('loading');
                 listar();
             }, 500);
         });
@@ -34,6 +35,7 @@ siac.Questao.Index = (function () {
             var $_this = $(this);
             pagina = 1;
             tipo = $_this.attr('data-tipo');
+            $_this.closest('.segment').addClass('loading');
             listar();
         });
 
@@ -41,6 +43,7 @@ siac.Questao.Index = (function () {
             var $_this = $(this);
             pagina = 1;
             dificuldade = $_this.attr('data-dificuldade');
+            $_this.closest('.segment').addClass('loading');
             listar();
         });
 
@@ -51,6 +54,7 @@ siac.Questao.Index = (function () {
             if (!disciplina) {
                 tema = "";
             }
+            $_this.closest('.segment').addClass('loading');
             listar();
         });
 
@@ -59,6 +63,7 @@ siac.Questao.Index = (function () {
             pagina = 1;
             disciplina = $_this.parents('[data-disciplina]').attr('data-disciplina');
             tema = $_this.attr('data-tema');
+            $_this.closest('.segment').addClass('loading');
             listar();
         });
 
@@ -66,13 +71,14 @@ siac.Questao.Index = (function () {
             var $_this = $(this);
             pagina = 1;
             ordenar = $_this.attr('data-ordenar');
+            $_this.closest('.segment').addClass('loading');
             listar();
             $('.ordenar.item').removeClass('active');
             $_this.addClass('active');
         });
 
         $(window).scroll(function () {
-            if ($(window).scrollTop() + $(window).height() > $(document).height() * 0.50) {
+            if ($(window).scrollTop() + $(window).height() > $(document).height() * 0.5) {
                 if ($('.cards .card').length == (_controleQte * pagina)) {
                     pagina++;
                     listar();
@@ -118,6 +124,8 @@ siac.Questao.Index = (function () {
                 }
             },
             complete: function () {
+                $('.segment.loading').removeClass('loading');
+                $('.input.loading').removeClass('loading');
                 $cards.parent().find('.loader').remove();
             }
         });
