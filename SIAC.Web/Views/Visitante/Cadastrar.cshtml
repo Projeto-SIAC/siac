@@ -26,21 +26,21 @@
         <div class="ui dividing header">Informações Pessoais</div>
         <div class="fields">
             <div class="twelve wide field required">
-                <label>Nome</label>
+                <label data-ajuda="Forneça abaixo o nome do visitante">Forneça o nome</label>
                 <input type="text" name="txtNome" placeholder="Nome" required />
             </div>
             <div class="four wide field required">
-                <label>CPF</label>
+                <label data-ajuda="Insira abaixo o CPF do visitante">Insira o CPF</label>
                 <input type="text" name="txtCpf" data-mask="000.000.000-00" placeholder="CPF" required />
             </div>
         </div>
         <div class="two fields">
             <div class="field">
-                <label>Data de Nascimento</label>
+                <label data-ajuda="Digite abaixo a data de nascimento do visitante">Digite a data de nascimento</label>
                 <input type="text" name="txtDtNasc" data-mask="00/00/0000" placeholder="Data de Nascimento" />
             </div>
             <div class="field">
-                <label>Sexo</label>
+                <label data-ajuda="Clique na caixa abaixo para selecionar o sexo do visitante">Selecione o sexo</label>
                 <select name="ddlSexo" class="ui dropdown">
                     <option value="">Sexo</option>
                     <option value="F">Feminino</option>
@@ -59,7 +59,7 @@
                     <div class="ui basic segment">
                         <div class="ui toggle checkbox">
                             <input type="checkbox" name="chkDtValidade">
-                            <label>Possui data de validade</label>
+                            <label data-ajuda="Marque esta caixa caso queira que o visitante tenha uma data de validade para seu uso">Possui data de validade</label>
                         </div>
                     </div>
                 </div>

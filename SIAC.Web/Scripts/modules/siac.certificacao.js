@@ -182,8 +182,8 @@ siac.Certificacao.Configurar = (function () {
 
         $('.questoes.modal .card').map(function () {
             _arrayQuestoes.push($(this).attr('id'))
-            if ($(this).find('.tipo.label').text() == _OBJ) _qteObjetiva++;
-            else if ($(this).find('.tipo.label').text() == _DISC) _qteDiscursiva++;
+            if ($(this).find('.tipo.label').text().trim() == _OBJ) _qteObjetiva++;
+            else if ($(this).find('.tipo.label').text().trim() == _DISC) _qteDiscursiva++;
         });
         //Fim da Obtenção de Dados
 
@@ -247,7 +247,7 @@ siac.Certificacao.Configurar = (function () {
 
         $('.ui.acao.button').click(function () {
             var $_this = $(this);
-            var tipo = $_this.parents('.card').find('.label').last().text();
+            var tipo = $_this.parents('.card').find('.tipo.label').text().trim();
             var id = $_this.parents('.card').attr('id');
             if ($_this.html() == "Adicionar") {
                 adicionarQuestao(id, tipo);
@@ -302,7 +302,7 @@ siac.Certificacao.Configurar = (function () {
 
                     $resultado.find('.acao.button').off('click').click(function () {
                         var $_this = $(this);
-                        var tipo = $_this.parents('.card').find('.tipo.label').text();
+                        var tipo = $_this.parents('.card').find('.tipo.label').text().trim();
                         if ($_this.html() == _ADD) {
                             var id = $_this.parents('.card').attr('id');
                             adicionarQuestao(id, tipo);

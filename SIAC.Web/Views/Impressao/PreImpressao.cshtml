@@ -13,19 +13,19 @@
 
 <form class="ui form" method="post">
     <div class="field required">
-        <label>Título</label>
+        <label data-ajuda="Forneça abaixo o título desta avaliação">Forneça o título</label>
         <input type="text" name="txtTitulo" placeholder="Título" value="@($"{Model.Avaliacao.TipoAvaliacao.Descricao} {Model.Avaliacao.CodAvaliacao}")" required />        
     </div>
     <div class="field required">
-        <label>Instituição</label>
+        <label data-ajuda="Digite abaixo o nome da instituição para esta avaliação">Digite o nome da instituição</label>
         <input type="text" name="txtInstituicao" placeholder="Instituição" value="@($"{Model.Avaliacao.Professor.Instituicao?.PessoaJuridica.NomeFantasia}")" required />
     </div>
     <div class="field required">
-        <label>Professor</label>
+        <label data-ajuda="Informe abaixo o nome do professor desta avaliação">Informe o nome do professor</label>
         <input type="text" name="txtProfessor" placeholder="Professor" value="@($"{Model.Avaliacao.Professor.Usuario.PessoaFisica.Nome}")" required />
     </div>
     <div class="field">
-        <label>Campos</label>
+        <label data-ajuda="Insira abaixo os campos que você queira definir para seus alunos preencherem">Insira os campos</label>
         <select name="ddlCampos" tabindex="0" class="ui search dropdown" multiple>
             <option value="">Campos</option>
             <option value="Nome" selected>Nome</option>
@@ -36,13 +36,13 @@
         </select>
     </div>
     <div class="field">
-        <label>Instruções</label>
+        <label data-ajuda="Descreva abaixo todas as instruções para auxiliarem na realização desta avaliação">Descreva as instruções desta avaliação</label>
         <textarea name="txtInstrucoes" placeholder="Instruções"></textarea>
     </div>
     <div class="field">
         <div class="ui toggle checkbox">
             <input type="checkbox" name="chkArquivar" checked>
-            <label>Arquivar após imprimir</label>
+            <label data-ajuda="Marque esta caixa caso queira deixar esta avaliação arquivada">Arquivar após imprimir</label>
         </div>
     </div>
     <div class="field">

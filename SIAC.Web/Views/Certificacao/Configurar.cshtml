@@ -64,7 +64,7 @@
                         <div class="meta">
                             Cadastrada @(dtCadastro.Contains('/') ? "em" : "há") <span title="@questao.DtCadastro.ToBrazilianString()">@dtCadastro</span>
                         </div>
-                        <span class="ui ribbon label">
+                        <span class="ui ribbon tipo label">
                             @if (questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
                             {
                                 <i class="checkmark box icon"></i>
@@ -115,7 +115,7 @@
 <form class="ui form">
     <div class="ui fields">
         <div class="ui ten wide field">
-            <label>Tema(s)</label>
+            <label data-ajuda="Clique na caixa abaixo para selecionar o(s) tema(s) para a busca">Selecione o(s) Tema(s)</label>
             <select id="ddlTemas" name="ddlTemas" class="ui search dropdown fluid tema" multiple>
                 <option value="">Temas...</option>
                 @foreach (Tema t in Model.Avaliacao.Temas)
@@ -125,12 +125,12 @@
             </select>
         </div>
         <div class="ui three wide field ">
-            <label>Índice de Dificuldade</label>
+            <label data-ajuda="Clique na caixa abaixo para definir o índice de dificuldade máximo das questões para a busca">Defina o índice de dificuldade</label>
             <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown fluid dificuldade">
                 <option value="">Índ. de Dificuldade...</option>
                 @foreach (Dificuldade d in Model.Dificuldades)
                 {
-                    if (d.CodDificuldade <= Model.Avaliacao.CodDificuldade)
+                    if (d.CodDificuldade <= Model.Avaliacao.CodDificuldade) 
                     {
                         <option value="@d.CodDificuldade">@d.Descricao</option>
                     }
@@ -138,7 +138,7 @@
             </select>
         </div>
         <div class="ui three wide field">
-            <label>Tipo</label>
+            <label data-ajuda="Clique na caixa abaixo para determinar o tipo das questões para a busca">Determine o tipo</label>
             <select id="ddlTipo" name="ddlTipo" class="ui search dropdown fluid dificuldade">
                 <option value="">Tipo...</option>
                 @foreach (TipoQuestao t in Model.TiposQuestao)
