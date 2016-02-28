@@ -753,6 +753,7 @@
     <Content Include="Views\Shared\Partials\_AvaliacaoIndex.cshtml" />
     <Content Include="Views\Shared\Partials\_AvaliacaoConfigurar.cshtml" />
     <None Include="Properties\PublishProfiles\Felipe.pubxml" />
+    <Content Include="Views\Academica\Partials\_PassoAPasso.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

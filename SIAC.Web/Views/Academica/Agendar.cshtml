@@ -5,11 +5,13 @@
 
 
 <h2>@ViewBag.Title 
-    <div class="ui label">Disciplina:<div class="detail">@Model.Avaliacao.AvalAcademica.Disciplina.Descricao</div></div>
+    <div class="ui label">Disciplina<div class="detail">@Model.Avaliacao.AvalAcademica.Disciplina.Descricao</div></div>
     <div class="ui right floated informacoes button">
         Informações
     </div>
 </h2>
+
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 3 } })
 
 @Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
 

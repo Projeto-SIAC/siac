@@ -2,7 +2,7 @@
     int passo = (int)ViewData["Passo"]; 
 }
 
-<div class="ui four fluid ordered steps">
+<div class="ui three fluid ordered steps">
     <div class="@(passo > 1 ? "completed" : passo == 1 ? "active" : "") step">
         <div class="content">
             <div class="title">Gerar</div>
@@ -19,12 +19,6 @@
         <div class="content">
             <div class="title">Agendar</div>
             <div class="description">Agende a avaliação</div>
-        </div>
-    </div>
-    <div class="@(passo == 4 ? "active" : "") step">
-        <div class="content">
-            <div class="title">Avaliados</div>
-            <div class="description">Selecione os avaliados que realizarão a avaliação</div>
         </div>
     </div>
 </div>

@@ -5,6 +5,8 @@
 
 <h2>@ViewBag.Title</h2>
 
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 1 } })
+
 @Html.Partial("_AvaliacaoGerar")
 
 @section Scripts {
