@@ -8,16 +8,19 @@
 {
     <h2>@ViewBag.Title</h2>
     <div class="ui basic segment">
-        <div class="ui stackable three cards">
+        <div class="ui stackable two cards">
             @foreach (AvalAvi avi in Model)
             {
+                string dtCadastro = @avi.Avaliacao.DtCadastro.ToElapsedTimeString();
                 int quantidadeQuestoes = avi.QteQuestoes;
                 int quantidadeRespostas = AviQuestaoPessoaResposta.ObterRespostasPessoa(avi, PessoaFisica.ListarPorMatricula(Sessao.UsuarioMatricula)).Count;
                 <div class="card">
                     <div class="content">
-                        <a href="@Url.Action("Realizar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="header">Código: @avi.Avaliacao.CodAvaliacao</a>
+                        <a href="@Url.Action("Realizar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="header">
+                            @avi.Titulo
+                        </a>
                         <div class="meta">
-                            <span>@avi.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
+                            Gerada @(dtCadastro.Contains('/') ? "em" : "há") <span title="@avi.Avaliacao.DtCadastro.ToBrazilianString()">@dtCadastro</span>
                         </div>
                         @if (quantidadeRespostas == quantidadeQuestoes)
                         {
@@ -29,28 +32,28 @@
                         }
                         else
                         {
-                            <span class="ui ribbon label"><i class="warning icon"></i>Nova</span>
+                            <span class="ui ribbon label"><i class="flag icon"></i>Nova</span>
                         }
                         <div class="description">
                             <p>
-                                <b>Quantidade de Questões</b>: @avi.QteQuestoes
+                                <b>Quant. de Questões</b>: @avi.QteQuestoes
                             </p>
                             @if (quantidadeRespostas > 0)
                             {
                                 <p>
-                                    <b>Quantidade de Respostas</b>: @quantidadeRespostas
+                                    <b>Quant. de Respostas</b>: @quantidadeRespostas
                                 </p>
                             }
                         </div>
                     </div>
                     <div class="extra content">
-                        <div class="ui label">Início:<div class="detail">@avi.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy")</div></div>
-                        <div class="ui label">Término:<div class="detail">@avi.DtTermino.Value.ToString("dd/MM/yyyy")</div></div>
+                        <div class="ui label">Início<div class="detail">@avi.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy")</div></div>
+                        <div class="ui label">Término<div class="detail">@avi.DtTermino.Value.ToString("dd/MM/yyyy")</div></div>
                     </div>
                     <a href="@Url.Action("Realizar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">
                         @if (quantidadeRespostas == quantidadeQuestoes)
                         { <text> Alterar Respostas </text> }
-                        else if(quantidadeRespostas > 0) { <text>  Continuar </text> }
+                        else if(quantidadeRespostas > 0) { <text> Continuar </text> }
                         else { <text> Realizar </text>}
                     </a>
                 </div>

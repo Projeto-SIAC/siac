@@ -1111,12 +1111,12 @@ siac.Institucional.Historico = (function () {
     }
 
     function carregarInformacao(header) {
-        var codigo = $(header).text().replace(/\D/g, '');
+        var codigo = $(header).closest('[data-avi]').data('avi');
         var $_card = $(header).parent().parent();
         $_card.dimmer('show');
         $.ajax({
             type: 'POST',
-            url: '/institucional/informacao/avi' + codigo,
+            url: '/institucional/informacao/' + codigo,
             success: function (view) {
                 $('.informacoes.modal').remove();
                 $('body').append(view);

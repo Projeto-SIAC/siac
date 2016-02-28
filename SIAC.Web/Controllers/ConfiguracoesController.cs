@@ -97,8 +97,17 @@ namespace SIAC.Controllers
                 return RedirectToAction("Institucional", new { tab = "Coordenadores" });
             }
             ConfiguracoesInstitucionalViewModel model = new ConfiguracoesInstitucionalViewModel();
-            model.Ocupacoes = Repositorio.GetInstance().Ocupacao.Where(o=>o.CodOcupacao != Ocupacao.COORDENADOR_AVI && o.CodOcupacao != Ocupacao.ADMINISTRADOR_SIAC).ToList();
-            model.Coordenadores = Repositorio.GetInstance().Ocupacao.FirstOrDefault(o => o.CodOcupacao == Ocupacao.COORDENADOR_AVI)?.PessoaFisica.ToList();
+            model.Ocupacoes = Repositorio.GetInstance()
+                .Ocupacao
+                .Where(o=>o.CodOcupacao != Ocupacao.COORDENADOR_AVI 
+                    && o.CodOcupacao != Ocupacao.ADMINISTRADOR_SIAC)
+                .ToList();
+            model.Coordenadores = Repositorio.GetInstance()
+                .Ocupacao
+                .FirstOrDefault(o => o.CodOcupacao == Ocupacao.COORDENADOR_AVI)?
+                .PessoaFisica
+                .Where(p=> p.Usuario.FirstOrDefault(u=>u.Matricula == Sessao.UsuarioMatricula) == null)
+                .ToList();
             return View(model);
         }
 
@@ -138,7 +147,7 @@ namespace SIAC.Controllers
             {
                 string strPesquisa = pesquisa.Trim().ToLower();
                 var lstPessoas = PessoaFisica.Listar().Where(p => 
-                    (p.Usuario.FirstOrDefault(u=>u.Professor.Count > 0 || u.Colaborador.Count > 0) != null) &&
+                    (p.Usuario.FirstOrDefault(u=> u.Colaborador.Count > 0) != null) &&
                     (p.Nome.ToLower().Contains(strPesquisa) ||
                     (!String.IsNullOrEmpty(p.Cpf) && p.Cpf.Contains(strPesquisa)) ||
                     p.Usuario.FirstOrDefault(u => u.Matricula.ToLower().Contains(strPesquisa)) != null)

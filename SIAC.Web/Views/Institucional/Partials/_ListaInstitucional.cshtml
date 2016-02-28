@@ -2,18 +2,19 @@
 
 @foreach (AvalAvi avi in Model)
 {
-    <div class="card">
+    string dtCadastro = @avi.Avaliacao.DtCadastro.ToElapsedTimeString();
+    <div class="card" data-avi="@avi.Avaliacao.CodAvaliacao">
         <div class="ui dimmer">
             <div class="ui text loader">Carregando</div>
         </div>
         <div class="content">
             <a class="header">
-                Código: @avi.Avaliacao.CodAvaliacao
+                @avi.Titulo.ToShortString(80)
             </a>
             <div class="meta">
-                <span title="@avi.Avaliacao.DtCadastro.ToBrazilianString()">@avi.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
+                Gerada @(dtCadastro.Contains('/') ? "em" : "há") <span title="@avi.Avaliacao.DtCadastro.ToBrazilianString()">@dtCadastro</span>
             </div>
-            @if (Sessao.UsuarioCategoriaCodigo == 3)
+            @if (Sessao.UsuarioCategoriaCodigo == Categoria.COLABORADOR)
             {
                 if (!avi.FlagQuestionario)
                 {
@@ -43,18 +44,18 @@
             <div class="description">
                 @if (avi.FlagQuestionario)
                 {
-                    <p><b>Quantidade de Questões</b>: @avi.QteQuestoes</p>
+                    <p><b>Quant. de Questões</b>: @avi.QteQuestoes</p>
                 }
             </div>
         </div>
         @if (avi.FlagAgendada)
         {
             <div class="extra content">
-                <div class="ui label">Início:<div class="detail">@avi.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy")</div></div>
-                <div class="ui label">Término:<div class="detail">@avi.DtTermino.Value.ToString("dd/MM/yyyy")</div></div>
+                <div class="ui label">Início<div class="detail">@avi.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy")</div></div>
+                <div class="ui label">Término<div class="detail">@avi.DtTermino.Value.ToString("dd/MM/yyyy")</div></div>
             </div>
         }
-        @if (Sessao.UsuarioCategoriaCodigo == 3)
+        @if (Sessao.UsuarioCategoriaCodigo == Categoria.COLABORADOR)
         {
             if (!avi.FlagQuestionario)
             {
