@@ -482,7 +482,7 @@ siac.Reposicao.Index = (function () {
 
     function iniciar() {
         $(window).scroll(function () {
-            if ($(window).scrollTop() + $(window).height() > $(document).height() * 0.50) {
+            if ($(window).scrollTop() + $(window).height() > $(document).height() * 0.5) {
                 if ($('.cards .card').length == (_controleQte * pagina)) {
                     pagina++;
                     listar();
@@ -500,6 +500,7 @@ siac.Reposicao.Index = (function () {
             _controleTimeout = setTimeout(function () {
                 pesquisa = _this.value;
                 pagina = 1;
+                $(_this).closest('.input').addClass('loading');
                 listar();
             }, 500);
         });
@@ -512,6 +513,7 @@ siac.Reposicao.Index = (function () {
             var $_this = $(this);
             pagina = 1;
             categoria = $_this.attr('data-categoria');
+            $_this.closest('.segment').addClass('loading');
             listar();
         });
 
@@ -519,6 +521,7 @@ siac.Reposicao.Index = (function () {
             var $_this = $(this);
             pagina = 1;
             disciplina = $_this.attr('data-disciplina');
+            $_this.closest('.segment').addClass('loading');
             listar();
         });
 
@@ -526,6 +529,7 @@ siac.Reposicao.Index = (function () {
             var $_this = $(this);
             pagina = 1;
             ordenar = $_this.attr('data-ordenar');
+            $_this.closest('.segment').addClass('loading');
             listar();
         });
 
@@ -565,6 +569,8 @@ siac.Reposicao.Index = (function () {
                 }
             },
             complete: function () {
+                $('.segment.loading').removeClass('loading');
+                $('.input.loading').removeClass('loading');
                 $cards.parent().find('.loader').remove();
             }
         });
@@ -774,8 +780,7 @@ siac.Reposicao.Realizar = (function () {
         _codAvaliacao = window.location.pathname.toLowerCase().match(/repo[0-9]+$/)[0];
 
         $elemento = $('[data-termino]');
-        var _dt = $elemento.attr('data-termino').split(',');
-        _dtTermino = new Date(_dt[0], _dt[1], _dt[2], _dt[3], _dt[4]);
+        _dtTermino = $elemento.attr('data-termino').toString().toDateObject();
         $elemento.removeAttr('data-termino');
 
         $('.ui.sticky').sticky();
@@ -1190,8 +1195,7 @@ siac.Reposicao.Acompanhar = (function () {
         _codAvaliacao = window.location.pathname.toLowerCase().match(/repo[0-9]+$/)[0];
 
         $elemento = $('[data-termino]');
-        _dtTermino = new Date();
-        _dtTermino.setTime(Date.parse($elemento.attr('data-termino')));
+        _dtTermino = $elemento.attr('data-termino').toString().toDateObject();
         $elemento.removeAttr('data-termino');
 
         conectarHub(_codAvaliacao, _matriculaUsuario);

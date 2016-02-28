@@ -100,7 +100,7 @@
     <div class="ui label">Acadêmica<div class="detail">@Model.Academica.Avaliacao.CodAvaliacao</div></div>
     <div class="ui label">Disciplina<div class="detail">@Model.Disciplina.Descricao</div></div>
     <div class="ui label">Início<div class="detail">@Model.Avaliacao.DtAplicacao.Value.ToString("HH'h'mm'min'")</div></div>
-    <div class="ui label">Término<div class="detail" id="lblHoraTermino" data-termino="@Model.Avaliacao.DtTermino.Value.ToString("yyyy-MM-dd'T'HH:mm")">@Model.Avaliacao.DtTermino.Value.ToString("HH'h'mm'min'")</div></div>
+    <div class="ui label">Término<div class="detail" id="lblHoraTermino" data-termino="@Model.Avaliacao.DtTermino.Value.ToJSString()">@Model.Avaliacao.DtTermino.Value.ToString("HH'h'mm'min'")</div></div>
 </div>
 
 <div class="ui basic segment">

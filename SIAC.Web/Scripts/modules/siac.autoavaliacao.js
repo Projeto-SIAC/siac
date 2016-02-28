@@ -1,7 +1,7 @@
 ﻿siac.Autoavaliacao = siac.Autoavaliacao || {};
 
 siac.Autoavaliacao.Index = (function () {
-    var _controleTimeout, _controlePartial, _controleQte = 10, _controleAjax;
+    var _controleTimeout, _controlePartial, _controleQte = 12, _controleAjax;
 
     var pagina = 1;
     var ordenar = "data_desc";
@@ -12,7 +12,7 @@ siac.Autoavaliacao.Index = (function () {
 
     function iniciar() {
         $(window).scroll(function () {
-            if ($(window).scrollTop() + $(window).height() > $(document).height() * 0.50) {
+            if ($(window).scrollTop() + $(window).height() > $(document).height() * 0.5) {
                 if ($('.cards .card').length == (_controleQte * pagina)) {
                     pagina++;
                     listar();
@@ -30,6 +30,7 @@ siac.Autoavaliacao.Index = (function () {
             _controleTimeout = setTimeout(function () {
                 pesquisa = _this.value;
                 pagina = 1;
+                $(_this).closest('.input').addClass('loading');
                 listar();
             }, 500);
         });
@@ -43,6 +44,7 @@ siac.Autoavaliacao.Index = (function () {
             var $_this = $(this);
             pagina = 1;
             categoria = $_this.attr('data-categoria');
+            $_this.closest('.segment').addClass('loading');
             listar();
         });
 
@@ -50,6 +52,7 @@ siac.Autoavaliacao.Index = (function () {
             var $_this = $(this);
             pagina = 1;
             dificuldade = $_this.attr('data-dificuldade');
+            $_this.closest('.segment').addClass('loading');
             listar();
         });
 
@@ -57,6 +60,7 @@ siac.Autoavaliacao.Index = (function () {
             var $_this = $(this);
             pagina = 1;
             disciplina = $_this.attr('data-disciplina');
+            $_this.closest('.segment').addClass('loading');
             listar();
         });
 
@@ -64,6 +68,7 @@ siac.Autoavaliacao.Index = (function () {
             var $_this = $(this);
             pagina = 1;
             ordenar = $_this.attr('data-ordenar');
+            $_this.closest('.segment').addClass('loading');
             listar();
             $('.ordenar.item').removeClass('active');
             $_this.addClass('active');
@@ -106,6 +111,8 @@ siac.Autoavaliacao.Index = (function () {
                 }
             },
             complete: function () {
+                $('.segment.loading').removeClass('loading');
+                $('.input.loading').removeClass('loading');
                 $cards.parent().find('.loader').remove();
                 adicionarEventoArquivar();
             }

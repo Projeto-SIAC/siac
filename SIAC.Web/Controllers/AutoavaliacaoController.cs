@@ -32,7 +32,7 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string categoria, string disciplina, string dificuldade)
         {
-            int quantidade = 10;
+            int quantidade = 12;
             List<AvalAuto> autoavaliacoes = Autoavaliacoes;
             pagina = pagina ?? 1;
             if (!String.IsNullOrWhiteSpace(pesquisa))
