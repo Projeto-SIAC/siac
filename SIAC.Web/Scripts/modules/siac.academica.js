@@ -1529,7 +1529,7 @@ siac.Academica.Index = (function () {
 
     var pagina = 1;
     var ordenar = "data_desc";
-    var categorias = [];
+    var categoria = "";
     var disciplina = "";
     var pesquisa = "";
 
@@ -1563,21 +1563,7 @@ siac.Academica.Index = (function () {
         $('.categoria.item').click(function () {
             var $_this = $(this);
             pagina = 1;
-            var _categoria = $_this.attr('data-categoria');
-            if ($_this.hasClass('active')) {
-                var _tempCategorias = categorias;
-                categorias = [];
-                for (var i = 0, length = _tempCategorias.length; i < length; i++) {
-                    if (_tempCategorias[i] != _categoria) {
-                        categorias.push(_tempCategorias[i]);
-                    }
-                }
-                $_this.removeClass('active');
-            }
-            else {
-                categorias.push(_categoria);
-                $_this.addClass('active');
-            }
+            categoria = $_this.attr('data-categoria');
             listar();
         });
 
@@ -1613,7 +1599,7 @@ siac.Academica.Index = (function () {
                 pagina: pagina,
                 ordenar: ordenar,
                 disciplina: disciplina,
-                categorias: categorias,
+                categoria: categoria,
                 pesquisa: pesquisa
             },
             success: function (partial) {

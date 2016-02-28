@@ -46,7 +46,7 @@ namespace SIAC.Controllers
 
         // POST: historico/avaliacao/certificacao/listar
         [HttpPost]
-        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina)
+        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string categoria, string disciplina)
         {
             int quantidade = 12;
             List<AvalCertificacao> certificacoes = Certificacoes;
@@ -61,32 +61,17 @@ namespace SIAC.Controllers
                 certificacoes = certificacoes.Where(a => a.CodDisciplina == int.Parse(disciplina)).ToList();
             }
 
-            if (categorias != null)
+            switch (categoria)
             {
-                if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && !categorias.Contains("realizada"))
-                {
+                case "agendada":
                     certificacoes = certificacoes.Where(a => a.Avaliacao.FlagAgendada).ToList();
-                }
-                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
-                {
-                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagArquivo).ToList();
-                }
-                else if (!categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
-                {
+                    break;
+                case "realizada":
                     certificacoes = certificacoes.Where(a => a.Avaliacao.FlagRealizada).ToList();
-                }
-                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && categorias.Contains("realizada"))
-                {
-                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagArquivo).ToList();
-                }
-                else if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
-                {
-                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagAgendada).ToList();
-                }
-                else if (categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
-                {
-                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagArquivo || a.Avaliacao.FlagAgendada).ToList();
-                }
+                    break;
+                case "arquivo":
+                    certificacoes = certificacoes.Where(a => a.Avaliacao.FlagArquivo).ToList();
+                    break;
             }
 
             switch (ordenar)

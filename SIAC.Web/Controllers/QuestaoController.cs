@@ -27,7 +27,7 @@ namespace SIAC.Controllers
 
         // POST: historico/questao/listar
         [HttpPost]
-        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] tipos, string disciplina, string tema, string dificuldade)
+        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string tipo, string disciplina, string tema, string dificuldade)
         {
             int quantidade = 10;
             List<Questao> questoes = Questoes;
@@ -53,16 +53,14 @@ namespace SIAC.Controllers
                 questoes = questoes.Where(q => q.CodDificuldade == int.Parse(dificuldade)).ToList();
             }
 
-            if (tipos != null)
+            switch (tipo)
             {
-                if (tipos.Contains("objetiva") && !tipos.Contains("discursiva"))
-                {
+                case "objetiva":
                     questoes = questoes.Where(q => q.CodTipoQuestao == TipoQuestao.OBJETIVA).ToList();
-                }
-                else if (!tipos.Contains("objetiva") && tipos.Contains("discursiva"))
-                {
+                    break;
+                case "discursiva":
                     questoes = questoes.Where(q => q.CodTipoQuestao == TipoQuestao.DISCURSIVA).ToList();
-                }
+                    break;
             }
 
             switch (ordenar)

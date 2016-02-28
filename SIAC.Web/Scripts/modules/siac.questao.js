@@ -8,7 +8,7 @@ siac.Questao.Index = (function () {
     var dificuldade = "";
     var disciplina = "";
     var tema = "";
-    var tipos = [];
+    var tipo = "";
     var pesquisa = "";
 
     function iniciar() {
@@ -33,21 +33,7 @@ siac.Questao.Index = (function () {
         $('.tipo.item').click(function () {
             var $_this = $(this);
             pagina = 1;
-            var _tipo = $_this.attr('data-tipo');
-            if ($_this.hasClass('active')) {
-                var _tempTipos = tipos;
-                tipos = [];
-                for (var i = 0, length = _tempTipos.length; i < length; i++) {
-                    if (_tempTipos[i] != _tipo) {
-                        tipos.push(_tempTipos[i]);
-                    }
-                }
-                $_this.removeClass('active');
-            }
-            else {
-                tipos.push(_tipo);
-                $_this.addClass('active');
-            }
+            tipo = $_this.attr('data-tipo');
             listar();
         });
 
@@ -111,7 +97,7 @@ siac.Questao.Index = (function () {
                 dificuldade: dificuldade,
                 disciplina: disciplina,
                 tema: tema,
-                tipos: tipos,
+                tipo: tipo,
                 pesquisa: pesquisa
             },
             method: 'POST',

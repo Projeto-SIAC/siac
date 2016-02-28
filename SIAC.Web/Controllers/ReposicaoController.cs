@@ -31,7 +31,7 @@ namespace SIAC.Controllers
 
         // POST: principal/avaliacao/reposicao/listar            
         [HttpPost]
-        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina)
+        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string categoria, string disciplina)
         {
             int quantidade = 12;
             List<AvalAcadReposicao> reposicoes = Reposicoes;
@@ -46,32 +46,17 @@ namespace SIAC.Controllers
                 reposicoes = reposicoes.Where(a => a.Disciplina.CodDisciplina == int.Parse(disciplina)).ToList();
             }
 
-            if (categorias != null)
+            switch (categoria)
             {
-                if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && !categorias.Contains("realizada"))
-                {
+                case "agendada":
                     reposicoes = reposicoes.Where(a => a.Avaliacao.FlagAgendada).ToList();
-                }
-                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
-                {
-                    reposicoes = reposicoes.Where(a => a.Avaliacao.FlagArquivo).ToList();
-                }
-                else if (!categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
-                {
+                    break;
+                case "realizada":
                     reposicoes = reposicoes.Where(a => a.Avaliacao.FlagRealizada).ToList();
-                }
-                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && categorias.Contains("realizada"))
-                {
-                    reposicoes = reposicoes.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagArquivo).ToList();
-                }
-                else if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
-                {
-                    reposicoes = reposicoes.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagAgendada).ToList();
-                }
-                else if (categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
-                {
-                    reposicoes = reposicoes.Where(a => a.Avaliacao.FlagArquivo || a.Avaliacao.FlagAgendada).ToList();
-                }
+                    break;
+                case "arquivo":
+                    reposicoes = reposicoes.Where(a => a.Avaliacao.FlagArquivo).ToList();
+                    break;
             }
 
             switch (ordenar)

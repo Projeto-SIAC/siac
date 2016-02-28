@@ -31,7 +31,7 @@ namespace SIAC.Controllers
 
         // POST: historico/academica/listar
         [HttpPost]
-        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina)
+        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string categoria, string disciplina)
         {
             int quantidade = 12;
             List<AvalAcademica> academicas = Academicas;
@@ -47,32 +47,17 @@ namespace SIAC.Controllers
                 academicas = academicas.Where(a => a.CodDisciplina == int.Parse(disciplina)).ToList();
             }
 
-            if (categorias != null)
+            switch (categoria)
             {
-                if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && !categorias.Contains("realizada"))
-                {
+                case "agendada":
                     academicas = academicas.Where(a => a.Avaliacao.FlagAgendada).ToList();
-                }
-                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
-                {
-                    academicas = academicas.Where(a => a.Avaliacao.FlagArquivo).ToList();
-                }
-                else if (!categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
-                {
+                    break;
+                case "realizada":
                     academicas = academicas.Where(a => a.Avaliacao.FlagRealizada).ToList();
-                }
-                else if (!categorias.Contains("agendada") && categorias.Contains("arquivo") && categorias.Contains("realizada"))
-                {
-                    academicas = academicas.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagArquivo).ToList();
-                }
-                else if (categorias.Contains("agendada") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
-                {
-                    academicas = academicas.Where(a => a.Avaliacao.FlagRealizada || a.Avaliacao.FlagAgendada).ToList();
-                }
-                else if (categorias.Contains("agendada") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
-                {
-                    academicas = academicas.Where(a => a.Avaliacao.FlagArquivo || a.Avaliacao.FlagAgendada).ToList();
-                }
+                    break;
+                case "arquivo":
+                    academicas = academicas.Where(a => a.Avaliacao.FlagArquivo).ToList();
+                    break;
             }
 
             switch (ordenar)

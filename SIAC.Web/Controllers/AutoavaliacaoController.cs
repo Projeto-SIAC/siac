@@ -30,7 +30,7 @@ namespace SIAC.Controllers
 
         // POST: historico/autoavaliacao/listar
         [HttpPost]
-        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string[] categorias, string disciplina, string dificuldade)
+        public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string categoria, string disciplina, string dificuldade)
         {
             int quantidade = 10;
             List<AvalAuto> autoavaliacoes = Autoavaliacoes;
@@ -50,32 +50,17 @@ namespace SIAC.Controllers
                 autoavaliacoes = autoavaliacoes.Where(a => a.CodDificuldade == int.Parse(dificuldade)).ToList();
             }
 
-            if (categorias != null)
+            switch (categoria)
             {
-                if (categorias.Contains("pendente") && !categorias.Contains("arquivo") && !categorias.Contains("realizada"))
-                {
+                case "pendente":
                     autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.FlagPendente).ToList();
-                }
-                else if (!categorias.Contains("pendente") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
-                {
+                    break;
+                case "realizada":
+                    autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.FlagRealizada).ToList();
+                    break;
+                case "arquivo":
                     autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.FlagArquivo).ToList();
-                }
-                else if (!categorias.Contains("pendente") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
-                {
-                    autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.AvalPessoaResultado.Count > 0).ToList();
-                }
-                else if (!categorias.Contains("pendente") && categorias.Contains("arquivo") && categorias.Contains("realizada"))
-                {
-                    autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.AvalPessoaResultado.Count > 0 || a.Avaliacao.FlagArquivo).ToList();
-                }
-                else if (categorias.Contains("pendente") && !categorias.Contains("arquivo") && categorias.Contains("realizada"))
-                {
-                    autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.AvalPessoaResultado.Count > 0 || a.Avaliacao.FlagPendente).ToList();
-                }
-                else if (categorias.Contains("pendente") && categorias.Contains("arquivo") && !categorias.Contains("realizada"))
-                {
-                    autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.FlagArquivo || a.Avaliacao.FlagPendente).ToList();
-                }
+                    break;
             }
 
             switch (ordenar)
