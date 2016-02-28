@@ -182,7 +182,7 @@ namespace SIAC.Controllers
 
                     AvalAuto.Inserir(auto);
                     Lembrete.AdicionarNotificacao($"Autoavaliação {auto.Avaliacao.CodAvaliacao} gerada com sucesso.", Lembrete.POSITIVO);
-                    if (qteObjetiva + qteDiscursiva > auto.Avaliacao.QteQuestoes())
+                    if (qteObjetiva + qteDiscursiva > auto.Avaliacao.Questao.Count)
                     {
                         Lembrete.AdicionarNotificacao("Autoavaliação de "+auto.Disciplina.First().Descricao+" gerada com quantidade de questões inferior ao requisitado", Lembrete.NEGATIVO, 0);
                     }
@@ -268,7 +268,7 @@ namespace SIAC.Controllers
 
                 AvalAuto.Inserir(auto);
                 Lembrete.AdicionarNotificacao($"Autoavaliação {auto.Avaliacao.CodAvaliacao} gerada com sucesso.", Lembrete.POSITIVO);
-                if(quantidadeTotalDiscursivas + quantidadeTotalObjetivas > auto.Avaliacao.QteQuestoes())
+                if(quantidadeTotalDiscursivas + quantidadeTotalObjetivas > auto.Avaliacao.Questao.Count)
                 {
                     Lembrete.AdicionarNotificacao("Autoavaliação gerada com quantidade de questões inferior ao requisitado", Lembrete.NEGATIVO, 0);
                 }

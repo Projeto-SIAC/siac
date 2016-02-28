@@ -203,7 +203,7 @@ namespace SIAC.Controllers
 
                 AvalAcademica.Inserir(acad);
                 Lembrete.AdicionarNotificacao($"Avaliação Acadêmica {acad.Avaliacao.CodAvaliacao} gerada com sucesso.", Lembrete.POSITIVO);
-                if(quantidadeObjetiva + quantidadeDiscursiva > acad.Avaliacao.QteQuestoes())
+                if(quantidadeObjetiva + quantidadeDiscursiva > acad.Avaliacao.Questao.Count)
                 {
                     Lembrete.AdicionarNotificacao("Avaliação Acadêmica gerada com quantidade de questões inferior ao requisitado", Lembrete.NEGATIVO,0);
                 }

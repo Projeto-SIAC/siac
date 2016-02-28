@@ -68,6 +68,8 @@ namespace SIAC.Models
 
         public int CodDificuldade => Questao.Max(q => q.CodDificuldade);
 
+        public Dificuldade Dificuldade => Questao.Count > 0 ? contexto.Dificuldade.Find(this.Questao.Max(q => q.CodDificuldade)) : null;
+
         public int TipoQuestoes
         {
             get

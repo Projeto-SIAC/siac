@@ -1,14 +1,15 @@
 ﻿@model List<AvalAcadReposicao>
 
-@foreach (var aval in Model)
+@foreach (AvalAcadReposicao aval in Model)
 {
+    var dtCadastro = aval.Avaliacao.DtCadastro.ToElapsedTimeString();
     <div class="card hidden" style="display:none!important">
         <div class="content">
             <a href="@Url.Action("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao })" class="header">
-                @aval.Avaliacao.CodAvaliacao
+                @aval.Disciplina.Descricao
             </a>
             <div class="meta">
-                <span title="@aval.Avaliacao.DtCadastro.ToBrazilianString()">@aval.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
+                Gerada @(dtCadastro.Contains('/') ? "em" : "há") <span title="@aval.Avaliacao.DtCadastro.ToBrazilianString()">@dtCadastro</span>
             </div>
             @if (aval.Avaliacao.FlagRealizada)
             {
@@ -32,7 +33,7 @@
             {
                 if (aval.Avaliacao.FlagArquivo)
                 {
-                    <span class="ui ribbon label"><i class="archive icon"></i>Arquivo</span>
+                    <span class="ui ribbon label"><i class="archive icon"></i>Arquivada</span>
                 }
                 else if (aval.Avaliacao.FlagAgendada)
                 {
@@ -40,12 +41,16 @@
                 }
             }
             <div class="description">
-                @if (aval.Avaliacao.FlagAgendada)
+                @*@if (aval.Avaliacao.FlagAgendada)
                 {
                     <p><b>Aplicação</b>: @aval.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy HH'h'mm'min'")</p>
+                }*@
+                @if (aval.Avaliacao.Dificuldade != null)
+                {
+                    <p title="@aval.Avaliacao.Dificuldade.Comentario"><b>Índ. de Dificuldade</b>: @aval.Avaliacao.Dificuldade.Descricao</p>
                 }
-                <p><b>Quantidade de Alunos</b>: @aval.Alunos.Count</p>
-                <p><b>Quantidade de Questões</b>: @aval.Avaliacao.QteQuestoes()</p>
+                <p><b>Quant. de Alunos</b>: @aval.Alunos.Count</p>
+                <p><b>Quant. de Questões</b>: @aval.Avaliacao.Questao.Count</p>
             </div>
         </div>
         <div class="extra content">

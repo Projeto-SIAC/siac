@@ -2,13 +2,14 @@
 
 @foreach (AvalAcademica acad in Model)
 {
+    var dtCadastro = acad.Avaliacao.DtCadastro.ToElapsedTimeString();
     <div class="card hidden" style="display:none!important">
         <div class="content">
             <a href="@Url.Action("Detalhe", new { codigo = acad.Avaliacao.CodAvaliacao })" class="header">
-                Código: @acad.Avaliacao.CodAvaliacao
+                @acad.Disciplina.Descricao
             </a>
             <div class="meta">
-                <span title="@acad.Avaliacao.DtCadastro.ToBrazilianString()">@acad.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
+                Gerada @(dtCadastro.Contains('/') ? "em" : "há") <span title="@acad.Avaliacao.DtCadastro.ToBrazilianString()">@dtCadastro</span>
             </div>
             @if (acad.Avaliacao.FlagRealizada)
             {
@@ -32,7 +33,7 @@
             {
                 if (acad.Avaliacao.FlagArquivo)
                 {
-                    <span class="ui ribbon label"><i class="archive icon"></i>Arquivo</span>
+                    <span class="ui ribbon label"><i class="archive icon"></i>Arquivada</span>
                 }
                 else if (acad.Avaliacao.FlagAgendada)
                 {
@@ -42,14 +43,18 @@
             <div class="description">
                 @if (acad.NumTurma.HasValue)
                 {
-                <p><b>Turma</b>: @acad.Turma.Curso.Descricao (@acad.Turma.CodTurma)</p>
+                    <p><b>Turma</b>: @acad.Turma.Curso.Descricao (@acad.Turma.CodTurma)</p>
                 }
-                <p><b>Quantidade de Questões</b>: @acad.Avaliacao.QteQuestoes()</p>
+                @if (acad.Avaliacao.Dificuldade != null)
+                {
+                    <p title="@acad.Avaliacao.Dificuldade.Comentario"><b>Índ. de Dificuldade</b>: @acad.Avaliacao.Dificuldade.Descricao</p>
+                }
+                <p><b>Quant. de Questões</b>: @acad.Avaliacao.Questao.Count</p>
             </div>
         </div>
         <div class="content">
             <div class="ui tag label">
-                @acad.Disciplina.Descricao
+                @acad.Avaliacao.CodAvaliacao
             </div>
         </div>
         @if (acad.Avaliacao.FlagRealizada)

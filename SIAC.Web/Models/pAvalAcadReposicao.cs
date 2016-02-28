@@ -117,7 +117,7 @@ namespace SIAC.Models
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
                 case Categoria.PROFESSOR:
-                    int codProfessor = usuario.Professor.First().CodProfessor;
+                    int codProfessor = usuario.Professor.LastOrDefault()?.CodProfessor ?? 0;
                     return contexto.AvalAcadReposicao
                         .Where(a => a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
                             && a.Justificacao.Count > 0 && a.Justificacao.FirstOrDefault().CodProfessor == codProfessor
@@ -126,7 +126,7 @@ namespace SIAC.Models
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
                 case Categoria.COLABORADOR:
-                    int codColaborador = usuario.Colaborador.First().CodColaborador;
+                    int codColaborador = usuario.Colaborador.LastOrDefault()?.CodColaborador ?? 0;
                     return contexto.AvalAcadReposicao
                         .Where(a => a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
                             && a.Justificacao.Count > 0

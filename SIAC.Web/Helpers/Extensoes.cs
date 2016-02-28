@@ -209,22 +209,22 @@ namespace SIAC
             else if (segundos < 60)
             {
                 double q = Math.Round(segundos);
-                s = q > 1 ? q + " segundos atrás" : q + " segundo atrás";
+                s = q > 1 ? q + " segundos" : q + " segundo";
             }
             else if (segundos < 3600)
             {
                 double q = Math.Round(segundos / 60);
-                s = q > 1 ? q + " minutos atrás" : q + " minuto atrás";
+                s = q > 1 ? q + " minutos" : q + " minuto";
             }
             else if (segundos < 86400)
             {
                 double q = Math.Round((segundos / 60) / 60);
-                s = q > 1 ? q + " horas atrás" : q + " hora atrás";
+                s = q > 1 ? q + " horas" : q + " hora";
             }
             else if (segundos < (86400 * 15))
             {
                 double q = Math.Round(((segundos / 60) / 60) / 24);
-                s = q > 1 ? q + " dias atrás" : q + " dia atrás";
+                s = q > 1 ? q + " dias" : q + " dia";
             }
             else
             {

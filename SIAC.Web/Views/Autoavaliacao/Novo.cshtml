@@ -11,28 +11,26 @@
         <div class="ui stackable three cards">
         @foreach (AvalAuto auto in Model.Geradas)
         {
+            var dtCadastro = auto.Avaliacao.DtCadastro.ToElapsedTimeString();
             <div class="card">
                 <div class="content">
-                    <a href="@Url.Action("Realizar", new { codigo = auto.Avaliacao.CodAvaliacao })" class="header">Código: @auto.Avaliacao.CodAvaliacao</a>
+                    <a href="@Url.Action("Realizar", new { codigo = auto.Avaliacao.CodAvaliacao })" class="header">
+                        @auto.Disciplina.First().Descricao @(auto.Disciplina.Count > 1 ? "+" + (auto.Disciplina.Count - 1) : "")
+                    </a>
                     <div class="meta">
-                        <span>@auto.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
+                        Gerada @(dtCadastro.Contains('/') ? "em" : "há") <span title="@auto.Avaliacao.DtCadastro.ToBrazilianString()">@dtCadastro</span>
                     </div>
                     <div class="description">
                         <p>
                             <b>Índice de Dificuldade</b>: @auto.Dificuldade.Descricao
                         </p>
                         <p>
-                            <b>Quantidade de Questões</b>: @auto.Avaliacao.QteQuestoes()
+                            <b>Quantidade de Questões</b>: @auto.Avaliacao.Questao.Count
                         </p>
                     </div>
                 </div>
                 <div class="extra content">
-                    <div class="ui labels">
-                        @foreach (Disciplina disciplina in auto.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
-                        {
-                            <div class="ui tag label">@disciplina.Descricao</div>
-                        }
-                    </div>
+                    <div class="ui tag label">@auto.Avaliacao.CodAvaliacao</div>
                 </div>
                 <a href="@Url.Action("Realizar", new { codigo = auto.Avaliacao.CodAvaliacao })" class="ui button">
                     Realizar

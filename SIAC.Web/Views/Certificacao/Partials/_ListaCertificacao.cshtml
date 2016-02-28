@@ -2,14 +2,15 @@
 
 @foreach (AvalCertificacao cert in Model)
 {
+    var dtCadastro = cert.Avaliacao.DtCadastro.ToElapsedTimeString();
     bool flagProfessor = cert.Professor.MatrProfessor == Sessao.UsuarioMatricula;
     <div class="card hidden" style="display:none!important">
         <div class="content">
             <a href="@Url.Action("Detalhe", new { codigo = cert.Avaliacao.CodAvaliacao })" class="header">
-               Código: @cert.Avaliacao.CodAvaliacao
+               @cert.Disciplina.Descricao
             </a>
             <div class="meta">
-                <span title="@cert.Avaliacao.DtCadastro.ToBrazilianString()">@cert.Avaliacao.DtCadastro.ToElapsedTimeString()</span>
+                Gerada @(dtCadastro.Contains('/') ? "em" : "há") <span title="@cert.Avaliacao.DtCadastro.ToBrazilianString()">@dtCadastro</span>
             </div>
             @if (cert.Avaliacao.FlagRealizada)
             {
@@ -33,7 +34,7 @@
             {
                 if (cert.Avaliacao.FlagArquivo)
                 {
-                    <span class="ui ribbon label"><i class="archive icon"></i>Arquivo</span>
+                    <span class="ui ribbon label"><i class="archive icon"></i>Arquivada</span>
                 }
                 else if (cert.PessoaFisica.Count > 0 && cert.Avaliacao.FlagAgendada)
                 {
@@ -45,20 +46,24 @@
                 }                
             }
             <div class="description">
-                @if (cert.Avaliacao.DtAplicacao.HasValue)
+                @*@if (cert.Avaliacao.DtAplicacao.HasValue)
                 {
                 <p><b>Aplicação</b>: @cert.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy HH'h'mm'min'")</p>
+                }*@
+                @if (cert.Avaliacao.Dificuldade != null)
+                {
+                    <p title="@cert.Avaliacao.Dificuldade.Comentario"><b>Índ. de Dificuldade</b>: @cert.Avaliacao.Dificuldade.Descricao</p>
                 }
                 @if (cert.PessoaFisica.Count > 0)
                 {
-                    <p><b>Quantidade de Avaliados</b>: @cert.PessoaFisica.Count</p>
+                    <p><b>Quant. de Avaliados</b>: @cert.PessoaFisica.Count</p>
                 }
-                <p><b>Quantidade de Questões</b>: @cert.Avaliacao.QteQuestoes()</p>
+                <p><b>Quant. de Questões</b>: @cert.Avaliacao.Questao.Count</p>
             </div>
         </div>
         <div class="extra content">
             <div class="ui tag label">
-                @cert.Disciplina.Descricao
+                @cert.Avaliacao.CodAvaliacao
             </div>
         </div>
         @if (cert.Avaliacao.FlagRealizada)

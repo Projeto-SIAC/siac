@@ -178,7 +178,7 @@ namespace SIAC.Models
             switch (usuario.CodCategoria)
             {
                 case Categoria.ESTUDANTE:
-                    int codAluno = usuario.Aluno.First().CodAluno;
+                    int codAluno = usuario.Aluno.LastOrDefault()?.CodAluno ?? 0;
                     return contexto.AvalAcademica
                         .Where(a =>
                             a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
@@ -188,7 +188,7 @@ namespace SIAC.Models
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
                 case Categoria.PROFESSOR:
-                    int codProfessor = usuario.Professor.First().CodProfessor;
+                    int codProfessor = usuario.Professor.LastOrDefault()?.CodProfessor ?? 0;
                     return contexto.AvalAcademica
                         .Where(a => a.CodProfessor == codProfessor
                             && a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
@@ -197,7 +197,7 @@ namespace SIAC.Models
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
                 case Categoria.COLABORADOR:
-                    int codColaborador = usuario.Colaborador.First().CodColaborador;
+                    int codColaborador = usuario.Colaborador.LastOrDefault()?.CodColaborador ?? 0;
                     return contexto.AvalAcademica
                         .Where(a =>
                             a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
