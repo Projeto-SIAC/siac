@@ -36,19 +36,15 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
-        public static int ObterNovaOrdem(AvalAvi avi, int modulo, int categoria, int indicador)
+        public static int ObterNovaOrdem(AvalAvi avi)
         {
-            AviQuestao questao = contexto.AviQuestao
+            int questaoIndice = contexto.AviQuestao
                 .Where(aq => aq.Ano == avi.Ano
                     && aq.Semestre == avi.Semestre
                     && aq.CodTipoAvaliacao == avi.CodTipoAvaliacao
-                    && aq.NumIdentificador == avi.NumIdentificador
-                    && aq.CodAviModulo == modulo
-                    && aq.CodAviCategoria == categoria
-                    && aq.CodAviIndicador == indicador)
-                .OrderByDescending(aq => aq.CodOrdem)
-                .FirstOrDefault();
-            return questao != null ? questao.CodOrdem + 1 : 1;
+                    && aq.NumIdentificador == avi.NumIdentificador)
+                    .Max(q => q.CodOrdem);
+            return questaoIndice + 1;
         }
 
         public static void Remover(AviQuestao questao)

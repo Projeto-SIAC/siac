@@ -235,7 +235,7 @@ namespace SIAC.Controllers
                 questao.CodAviModulo = int.Parse(form["ddlModulo"]);
                 questao.CodAviCategoria = int.Parse(form["ddlCategoria"]);
                 questao.CodAviIndicador = int.Parse(form["ddlIndicador"]);
-                questao.CodOrdem = AviQuestao.ObterNovaOrdem(avi, questao.CodAviModulo, questao.CodAviCategoria, questao.CodAviIndicador);
+                questao.CodOrdem = AviQuestao.ObterNovaOrdem(avi);
 
                 questao.Enunciado = form["txtEnunciado"].Trim();
                 questao.Observacao = !String.IsNullOrWhiteSpace(form["txtObservacao"]) ? form["txtObservacao"].RemoveSpaces() : null;

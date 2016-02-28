@@ -94,7 +94,6 @@ siac.Institucional.Questionario = (function () {
         $('.tab.questoes .remover.button.tiny').click(function () {
             deletarQuestao(this);
         });
-        $('.cancelar.button').popup({ on: 'click', inline: true });
         $('.ui.checkbox').checkbox({
             onChange: function () {
                 var checked = $(this).is(':checked');

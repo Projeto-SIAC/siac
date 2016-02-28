@@ -62,7 +62,10 @@
             }
             else if (!avi.FlagPublico)
             {
-                <a href="@Url.Action("Publico", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Público</a>
+                <div class="ui buttons">
+                    <a href="@Url.Action("Questionario", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Questionário</a>
+                    <a href="@Url.Action("Publico", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Público</a>
+                </div>
             }
             else if (!avi.FlagAgendada)
             {
