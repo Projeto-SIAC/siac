@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Realizar Certificação";
-    List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
     var codPessoa = Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula);
 }
 
@@ -19,98 +18,11 @@
     <div class="ui right floated informacoes button">Informações</div>
 </h2>
 
-<div class="ui continuar small modal">
-    <div class="header">Atenção</div>
-    <div class="content">
-        <p>Você ainda tem tempo para responder as questões restantes.</p>
-        <p><b>Essa ação não poderá ser desfeita</b>.</p>
-    </div>
-    <div class="actions">
-        <div class="ui cancel button">Cancelar</div>
-        <div class="ui approve button">Confirmar</div>
-    </div>
-</div>
-
 @Html.Partial("_AvaliacaoInformacoes", Model.Avaliacao)
 
-<div class="ui small confirmar modal">
-    <div class="header">Você tem certeza?</div>
-    <div class="content">
-        <input id="txtRef" type="text" hidden />
-        Você está deixando a página. Isso será considerado como <b>desistência</b> e você perderá todos os dados.
-    </div>
-    <div class="actions">
-        <div class="ui cancel button">Voltar para avaliação</div>
-        <div class="ui approve button">Deixar a página</div>
-    </div>
-</div>
-
-<div class="ui gabarito modal">
-    <div class="header">Verificar e confirmar as respostas fornecidas</div>
-    <div class="content">
-
-    </div>
-    <div class="actions">
-        <div class="ui cancel button">Voltar</div>
-        <div class="ui approve button">Confirmar</div>
-    </div>
-</div>
-
-<div class="ui sticky">
-    <div class="ui segment">
-        <div class="ui trigger icon right floated chat button"><i class="icon comments outline"></i></div>
-        <div class="ui chat popup wide" data-position="top right">
-            <div class="header">
-                @Model.Professor.Usuario.PessoaFisica.PrimeiroNome
-            </div>
-            <div class="content">
-                <div class="ui comments" style="height: 200px;width:300px; overflow-y:scroll;">
-                </div>
-                <div class="ui icon fluid input">
-                    <input id="txtChatMensagem" type="text" placeholder="Aperte enter para enviar..." maxlength="500" />
-                    <i class="send link icon enviar"></i>
-                </div>
-            </div>
-        </div>
-        <div class="ui labels">
-            <div class="ui label">
-                Ínicio
-                <div id="lblHoraInicio" class="detail">@DateTime.Now.ToString("HH'h'mm'min'")</div>
-            </div>
-            <div class="ui label" data-termino="@Model.Avaliacao.DtTermino.Value.ToString("yyyy','MM','dd','HH','mm")">
-                Término
-                <div id="lblHoraTermino" class="detail"></div>
-            </div>
-            <div class="ui label">
-                Agora
-                <div id="lblHoraAgora" class="detail"></div>
-            </div>
-            <div class="ui label">
-                Restante
-                <div id="lblHoraRestante" class="detail"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<form class="ui form" action="@Url.Action("Resultado", new { codigo = Model.Avaliacao.CodAvaliacao })" method="post">
-    <div class="ui basic segment">
-        @for (int i = 0; i < lstQuestao.Count; i++)
-        {
-            @Html.Partial("_QuestaoRealizar", lstQuestao[i], new ViewDataDictionary() { { "Index", i } })
-        }
-    </div>
-    <div class="ui trigger button">Desistir</div>
-    <div class="ui popup">
-        <div class="header">Desistir</div>
-        <div class="content">Tem certeza que deseja desistir da avaliação? <b>Essa ação não poderá ser desfeita</b>.</div>
-        <div class="content"><div class="ui right floated small desistir button">Confirmar</div></div>
-    </div>
-    <div class="ui finalizar button">Finalizar</div>
-</form>
+@Html.Partial("_AvaliacaoRealizar", Model.Avaliacao)
 
 @section Scripts{
-@Scripts.Render("~/bundles/js/certificacao")
-    @Scripts.Render("~/bundles/signalR")
+    @Scripts.Render("~/bundles/js/certificacao", "~/bundles/signalR")
     <script src="~/signalr/hubs"></script>
 }
