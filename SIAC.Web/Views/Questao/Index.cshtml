@@ -13,71 +13,73 @@
 
 <div class="ui stackable grid" style="clear:both">
     <div class="sixteen wide column no-padding-bottom">
-        <div class="ui basic secondary segment">
-            <h3>Pesquisar</h3>
-            <div class="sixteen wide column no-padding-bottom">
-                <div class="ui fluid icon pesquisa input">
-                    <input type="text" placeholder="Pesquisar..." />
-                    <i class="search icon"></i>
+        <div class="ui secondary segment">
+            <div class="ui stackable grid">
+                <div class="six wide column">
+                    <h3>Pesquisar</h3>
+                    <div class="ui fluid icon pesquisa input">
+                        <input type="text" placeholder="Pesquisar..." />
+                        <i class="search icon"></i>
+                    </div>
                 </div>
-            </div>
-            <h3>Filtrar</h3>
-            <div class="sixteen wide column no-padding-top no-padding-bottom">
-                <div class="ui text menu" style="margin-bottom:0">
-                    <div class="ui dropdown item">
-                        Ordenar
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <a class="active ordenar item" data-ordenar="data_desc">
-                                Mais recentes
-                            </a>
-                            <a class="ordenar item" data-ordenar="data">
-                                Mais antigas
-                            </a>
+                <div class="ten wide column">
+                    <h3>Filtrar</h3>
+                    <div class="ui secondary menu" style="margin-bottom:0">
+                        <div class="ui dropdown item">
+                            Ordenar
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <a class="active ordenar item" data-ordenar="data_desc">
+                                    Mais recentes
+                                </a>
+                                <a class="ordenar item" data-ordenar="data">
+                                    Mais antigas
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="ui dropdown item">
-                        Tipo
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <a class="tipo item active" data-tipo="">Todos</a>
-                            <a class="tipo item" data-tipo="objetiva">
-                                Objetiva
-                            </a>
-                            <a class="tipo item" data-tipo="discursiva">
-                                Discursiva
-                            </a>
+                        <div class="ui dropdown item">
+                            Tipo
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <a class="tipo item active" data-tipo="">Todos</a>
+                                <a class="tipo item" data-tipo="objetiva">
+                                    Objetiva
+                                </a>
+                                <a class="tipo item" data-tipo="discursiva">
+                                    Discursiva
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="ui dropdown item">
-                        Índ. de Dificuldade
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <a class="dificuldade item active selected" data-dificuldade="">Todos</a>
-                            @foreach (Dificuldade dificuldade in Model.Dificuldades)
-                            {
-                                <a class="dificuldade item" data-dificuldade="@dificuldade.CodDificuldade">@dificuldade.Descricao</a>
-                            }
+                        <div class="ui dropdown item">
+                            Índ. de Dificuldade
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <a class="dificuldade item active selected" data-dificuldade="">Todos</a>
+                                @foreach (Dificuldade dificuldade in Model.Dificuldades)
+                                {
+                                    <a class="dificuldade item" data-dificuldade="@dificuldade.CodDificuldade">@dificuldade.Descricao</a>
+                                }
+                            </div>
                         </div>
-                    </div>
-                    <div class="ui dropdown item">
-                        Disciplina
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <a class="disciplina item active selected" data-disciplina="">Todos</a>
-                            @foreach (Disciplina disciplina in Model.Disciplinas)
-                            {
-                                <div class="ui dropdown disciplina item" data-disciplina="@disciplina.CodDisciplina">
-                                    @disciplina.Descricao
-                                    <div class="menu">
-                                        <a class="tema item active selected" data-tema="">Todos</a>
-                                        @foreach (Tema tema in disciplina.Tema)
-                                        {
-                                            <a class="item tema" data-tema="@tema.CodTema">@tema.Descricao</a>
-                                        }
+                        <div class="ui dropdown item">
+                            Disciplina
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <a class="disciplina item active selected" data-disciplina="">Todos</a>
+                                @foreach (Disciplina disciplina in Model.Disciplinas)
+                                {
+                                    <div class="ui dropdown disciplina item" data-disciplina="@disciplina.CodDisciplina">
+                                        @disciplina.Descricao
+                                        <div class="menu">
+                                            <a class="tema item active selected" data-tema="">Todos</a>
+                                            @foreach (Tema tema in disciplina.Tema)
+                                            {
+                                                <a class="item tema" data-tema="@tema.CodTema">@tema.Descricao</a>
+                                            }
+                                        </div>
                                     </div>
-                                </div>
-                            }
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>

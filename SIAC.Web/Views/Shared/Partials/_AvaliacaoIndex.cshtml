@@ -2,79 +2,81 @@
 
 <div class="ui stackable grid" style="clear:both">
     <div class="sixteen wide column no-padding-bottom">
-        <div class="ui basic secondary segment">
-            <h3>Pesquisar</h3>
-            <div class="sixteen wide column no-padding-bottom">
-                <div class="ui fluid icon pesquisa input">
-                    <input type="text" placeholder="Pesquisar..." />
-                    <i class="search icon"></i>
+        <div class="ui secondary segment">
+            <div class="ui stackable grid">
+                <div class="six wide column">
+                    <h3>Pesquisar</h3>
+                    <div class="ui fluid icon pesquisa input">
+                        <input type="text" placeholder="Pesquisar..." />
+                        <i class="search icon"></i>
+                    </div>
                 </div>
-            </div>
-            <h3>Filtros</h3>
-            <div class="sixteen wide column no-padding-top no-padding-bottom">
-                <div class="ui text menu" style="margin-bottom:0">
-                    <div class="ui dropdown item">
-                        Ordenar
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <a class="active ordenar item" data-ordenar="data_desc">
-                                Mais recentes
-                            </a>
-                            <a class="ordenar item" data-ordenar="data">
-                                Mais antigas
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ui dropdown item">
-                        Categoria
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <a class="categoria item active" data-categoria="">Todas</a>
-                            <a class="categoria item" data-categoria="realizada">
-                                Realizada
-                            </a>
-                            <a class="categoria item" data-categoria="arquivo">
-                                Arquivada
-                            </a>
-                            @if (ViewContext.RouteData.Values["controller"].ToString().ToLower() == "autoavaliacao")
-                            {
-                                <a class="categoria item" data-categoria="pendente">
-                                    Pendente
-                                </a>
-                            }
-                            else
-                            {
-                                <a class="categoria item" data-categoria="agendada">
-                                    Agendada
-                                </a>
-                            }
-                        </div>
-                    </div>
-                    @if (Model.Dificuldades.Count > 0)
-                    {
+                <div class="ten wide column">
+                    <h3>Filtros</h3>
+                    <div class="ui secondary menu" style="margin-bottom:0">
                         <div class="ui dropdown item">
-                            Índ. de Dificuldade
+                            Ordenar
                             <i class="dropdown icon"></i>
                             <div class="menu">
-                                <a class="dificuldade item active selected" data-dificuldade="">Todos</a>
-                                @foreach (Dificuldade dificuldade in Model.Dificuldades)
+                                <a class="active ordenar item" data-ordenar="data_desc">
+                                    Mais recentes
+                                </a>
+                                <a class="ordenar item" data-ordenar="data">
+                                    Mais antigas
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ui dropdown item">
+                            Categoria
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <a class="categoria item active" data-categoria="">Todas</a>
+                                <a class="categoria item" data-categoria="realizada">
+                                    Realizada
+                                </a>
+                                <a class="categoria item" data-categoria="arquivo">
+                                    Arquivada
+                                </a>
+                                @if (ViewContext.RouteData.Values["controller"].ToString().ToLower() == "autoavaliacao")
                                 {
-                                    <a class="dificuldade item" data-dificuldade="@dificuldade.CodDificuldade">@dificuldade.Descricao</a>
+                                    <a class="categoria item" data-categoria="pendente">
+                                        Pendente
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a class="categoria item" data-categoria="agendada">
+                                        Agendada
+                                    </a>
                                 }
                             </div>
                         </div>
-                    }
-                    <div class="ui dropdown item">
-                        Disciplina
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <a class="disciplina item active selected" data-disciplina="">Todos</a>
-                            @foreach (Disciplina disciplina in Model.Disciplinas)
-                            {
-                                <a class="disciplina item" data-disciplina="@disciplina.CodDisciplina">
-                                    @disciplina.Descricao
-                                </a>
-                            }
+                        @if (Model.Dificuldades.Count > 0)
+                        {
+                            <div class="ui dropdown item">
+                                Índ. de Dificuldade
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                    <a class="dificuldade item active selected" data-dificuldade="">Todos</a>
+                                    @foreach (Dificuldade dificuldade in Model.Dificuldades)
+                                    {
+                                        <a class="dificuldade item" data-dificuldade="@dificuldade.CodDificuldade">@dificuldade.Descricao</a>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        <div class="ui dropdown item">
+                            Disciplina
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <a class="disciplina item active selected" data-disciplina="">Todos</a>
+                                @foreach (Disciplina disciplina in Model.Disciplinas)
+                                {
+                                    <a class="disciplina item" data-disciplina="@disciplina.CodDisciplina">
+                                        @disciplina.Descricao
+                                    </a>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>

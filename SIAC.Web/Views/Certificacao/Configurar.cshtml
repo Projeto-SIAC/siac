@@ -21,7 +21,8 @@
         <li>Clique em <b>Tema(s)</b> para selecionar o(s) tema(s) das questões.</li>
         <li>Clique em <b>Dificuldade</b> para selecionar a dificuldade máxima das questões.</li>
         <li>Clique em <b>Tipo</b> para selecionar o tipo das questões.</li>
-        <li>No painel de resultados:
+        <li>
+            No painel de resultados:
             <ul>
                 <li>O botão <b>Detalhes</b> serve para ver mais informações sobre a questão.</li>
                 <li>O botão <b>Adicionar</b> serve para inserir essa questão na lista temporária.</li>
@@ -56,21 +57,34 @@
         <div class="ui three cards">
             @foreach (Questao questao in Model.Avaliacao.Questao)
             {
-            <div id="@questao.CodQuestao" class="card">
-                <div class="content">
-                    <div class="header" data-enunciado="@questao.Enunciado">@questao.Enunciado.ToShortString(140)</div>
-                    <div class="meta"><span title="@questao.DtCadastro.ToBrazilianString()">@questao.DtCadastro.ToElapsedTimeString()</span></div>
-                    <div class="description ui labels">
-                        <span class="ui label">@questao.Disciplina.Descricao</span>
-                        <span class="ui label">@questao.Dificuldade.Descricao</span>
-                        <span class="ui tipo label">@questao.TipoQuestao.Descricao</span>
+                var dtCadastro = questao.DtCadastro.ToElapsedTimeString();
+                <div id="@questao.CodQuestao" class="card">
+                    <div class="content">
+                        <div class="header" data-enunciado="@questao.Enunciado">@questao.Enunciado.ToShortString(140)</div>
+                        <div class="meta">
+                            Cadastrada @(dtCadastro.Contains('/') ? "em" : "há") <span title="@questao.DtCadastro.ToBrazilianString()">@dtCadastro</span>
+                        </div>
+                        <span class="ui ribbon label">
+                            @if (questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
+                            {
+                                <i class="checkmark box icon"></i>
+                            }
+                            else
+                            {
+                                <i class="write icon"></i>
+                            }
+                            @questao.TipoQuestao.Descricao
+                        </span>
+                        <div class="description ui labels">
+                            <p><b>Disciplina</b>: @questao.Disciplina.Descricao</p>
+                            <p title="@questao.Dificuldade.Comentario"><b>Índ. de Dificuldade</b>: @questao.Dificuldade.Descricao</p>
+                        </div>
+                    </div>
+                    <div class="ui two bottom attached buttons">
+                        <div class="ui detalhe button">Detalhes</div>
+                        <div class="ui acao button">Remover</div>
                     </div>
                 </div>
-                <div class="ui two bottom attached buttons">
-                    <div class="ui detalhe button">Detalhes</div>
-                    <div class="ui acao button">Remover</div>
-                </div>
-            </div>
             }
         </div>
     </div>
@@ -92,8 +106,10 @@
 
 <h3>
     Seleção de Questão
-    @if (Model.Avaliacao.TipoQuestoes == TipoQuestao.OBJETIVA || Model.Avaliacao.TipoQuestoes == 3) { <div class="ui right floated quantidade obj label">Objetiva(s) <div class="ui detail">0</div></div> }
-    @if (Model.Avaliacao.TipoQuestoes == TipoQuestao.DISCURSIVA || Model.Avaliacao.TipoQuestoes == 3) { <div class="ui right floated quantidade disc label">Discursiva(s) <div class="ui detail">0</div></div> }
+    @if (Model.Avaliacao.TipoQuestoes == TipoQuestao.OBJETIVA || Model.Avaliacao.TipoQuestoes == 3)
+    { <div class="ui right floated quantidade obj label">Objetiva(s) <div class="ui detail">0</div></div> }
+    @if (Model.Avaliacao.TipoQuestoes == TipoQuestao.DISCURSIVA || Model.Avaliacao.TipoQuestoes == 3)
+    { <div class="ui right floated quantidade disc label">Discursiva(s) <div class="ui detail">0</div></div> }
 </h3>
 
 <form class="ui form">
@@ -111,7 +127,7 @@
         <div class="ui three wide field ">
             <label>Índice de Dificuldade</label>
             <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown fluid dificuldade">
-                <option value="">Índice de Dificuldade...</option>
+                <option value="">Índ. de Dificuldade...</option>
                 @foreach (Dificuldade d in Model.Dificuldades)
                 {
                     if (d.CodDificuldade <= Model.Avaliacao.CodDificuldade)

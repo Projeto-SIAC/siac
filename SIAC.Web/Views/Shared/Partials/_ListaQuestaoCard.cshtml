@@ -2,14 +2,27 @@
 
 @foreach (Questao questao in Model)
 {
+    var dtCadastro = questao.DtCadastro.ToElapsedTimeString();
     <div id="@questao.CodQuestao" class="card">
         <div class="content">
             <div class="header" data-enunciado="@questao.Enunciado">@questao.Enunciado.ToShortString(140)</div>
-            <div class="meta"><span title="@questao.DtCadastro.ToBrazilianString()">@questao.DtCadastro.ToElapsedTimeString()</span></div>
+            <div class="meta">
+                Cadastrada @(dtCadastro.Contains('/') ? "em" : "há") <span title="@questao.DtCadastro.ToBrazilianString()">@dtCadastro</span>
+            </div>
+            <span class="ui ribbon label">
+                @if (questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
+                {
+                    <i class="checkmark box icon"></i>
+                }
+                else
+                {
+                    <i class="write icon"></i>
+                }
+                @questao.TipoQuestao.Descricao
+            </span>
             <div class="description ui labels">
-                <span class="ui label">@questao.Disciplina.Descricao</span>
-                <span class="ui label">@questao.Dificuldade.Descricao</span>
-                <span class="ui tipo label">@questao.TipoQuestao.Descricao</span>
+                <p><b>Disciplina</b>: @questao.Disciplina.Descricao</p>
+                <p title="@questao.Dificuldade.Comentario"><b>Índ. de Dificuldade</b>: @questao.Dificuldade.Descricao</p>
             </div>
         </div>
         <div class="ui two bottom attached buttons">
