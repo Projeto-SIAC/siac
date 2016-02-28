@@ -1,5 +1,11 @@
 ﻿@model AvalAvi
 
+@{
+    int indMod = 1;
+    int indCat = 1;
+    int indInd = 1;
+}
+
 <div class="ui informacoes modal">
     <i class="icon close"></i>
     <div class="header">Informações sobre a Av. Institucional</div>
@@ -32,6 +38,30 @@
                 </div>
             </div>
 
+            @* Prazo *@
+            @if (Model.FlagAgendada)
+            {
+                <div class="title"><i class="dropdown icon"></i>Prazo</div>
+                <div class="content">
+                    <div class="ui basic segment">
+                        <table class="ui prazo table">
+                            <thead>
+                                <tr>
+                                    <th>Data de Início</th>
+                                    <th>Data de Término</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>@Model.Avaliacao.DtAplicacao.Value.ToShortDateString()</td>
+                                    <td>@Model.DtTermino.Value.ToShortDateString()</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+
             @* Questionário *@
             @if (Model.FlagQuestionario)
             {
@@ -40,23 +70,28 @@
                     <div class="accordion">
                         @foreach (MapAviModulo modulo in Model.MapQuestoes)
                         {
-                            <div class="title"><i class="dropdown icon"></i>@modulo.Modulo.Descricao</div>
-                            <div class="content">
-                                <div class="accordion">
-                                    @foreach (MapAviCategoria categoria in modulo.Categorias)
+                        <div class="title"><i class="dropdown icon"></i>@indMod. @modulo.Modulo.Descricao</div>
+                        <div class="content">
+                            <div class="accordion">
+                                @foreach (MapAviCategoria categoria in modulo.Categorias)
                                     {
-                                        <div class="title"><i class="dropdown icon"></i>@categoria.Categoria.Descricao</div>
-                                        <div class="content">
-                                            <div class="ui bulleted list">
-                                                @foreach (MapAviIndicador indicador in categoria.Indicadores)
-                                                {
-                                                    <div class="item">@indicador.Indicador.Descricao  <a class="ui label">@indicador.Questoes.Count Questões</a></div>
-                                                }
-                                            </div>
+                                    <div class="title"><i class="dropdown icon"></i>@indMod.@indCat. @categoria.Categoria.Descricao</div>
+                                    <div class="content">
+                                        <div class="ui list">
+                                            @foreach (MapAviIndicador indicador in categoria.Indicadores)
+                                            {
+                                                <div class="item"><b>@indMod.@indCat.@indInd.</b> @indicador.Indicador.Descricao <div class="ui label">@indicador.Questoes.Count quest@(indicador.Questoes.Count > 1 ? "ões" : "ão")</div></div>
+                                                indInd++;
+                                            }
                                         </div>
-                                    }
-                                </div>
+                                    </div>
+                                    indInd = 1;
+                                    indCat++;
+                                }
                             </div>
+                        </div>
+                            indCat = 1;
+                            indMod++;
                         }
                     </div>
                 </div>
@@ -83,29 +118,7 @@
                 </div>
             }
 
-            @* Prazo *@
-            @if (Model.FlagAgendada)
-            {
-                <div class="title"><i class="dropdown icon"></i>Prazo</div>
-                <div class="content">
-                    <div class="ui basic segment">
-                        <table class="ui prazo table">
-                            <thead>
-                                <tr>
-                                    <th>Data de Início</th>
-                                    <th>Data de Término</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>@Model.Avaliacao.DtAplicacao.Value.ToShortDateString()</td>
-                                    <td>@Model.DtTermino.Value.ToShortDateString()</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            }
+
         </div>
     </div>
 </div>
