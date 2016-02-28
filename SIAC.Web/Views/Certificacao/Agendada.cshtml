@@ -206,8 +206,8 @@
                                 </div>
                             }
                         </div>
-                        
-                        contador++;                        
+
+                        contador++;
                     }
                 </div>
             </div>
@@ -279,7 +279,6 @@ else if (codCategoria == Categoria.ESTUDANTE)
 
 
 @section Scripts {
-    @Scripts.Render("~/bundles/js/certificacao")
-    @Scripts.Render("~/bundles/signalR")
+    @Scripts.Render("~/bundles/js/certificacao", "~/bundles/signalR")
     <script src="~/signalr/hubs"></script>
 }

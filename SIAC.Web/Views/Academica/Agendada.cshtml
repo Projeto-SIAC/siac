@@ -175,7 +175,6 @@
                         </div>
                         contador++;
                     }
-
                 </div>
             </div>
         }
@@ -244,7 +243,6 @@ else if (codCategoria == Categoria.ESTUDANTE)
 }
 
 @section Scripts {
-    @Scripts.Render("~/bundles/js/academica")
-    @Scripts.Render("~/bundles/signalR")
+    @Scripts.Render("~/bundles/js/academica", "~/bundles/signalR")
     <script src="~/signalr/hubs"></script>
 }

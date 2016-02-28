@@ -60,7 +60,7 @@
                 Ínicio
                 <div id="lblHoraInicio" class="detail">@DateTime.Now.ToString("HH'h'mm'min'")</div>
             </div>
-            <div class="ui label" data-termino="@Model.DtTermino.Value.ToString("yyyy','MM','dd','HH','mm")">
+            <div class="ui label" data-termino="@Model.DtTermino.Value.ToJSString()">
                 Término
                 <div id="lblHoraTermino" class="detail"></div>
             </div>

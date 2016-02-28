@@ -118,6 +118,11 @@
 		return true;
 	}
 
+	String.prototype.toDateObject = function () {
+	    var _dt = this.split(',');
+	    return new Date(_dt[0], _dt[1], _dt[2], _dt[3], _dt[4]);
+	}
+
 	String.prototype.encurtarTextoEm = function (length) {
 		var text = '';
 		var str = this;

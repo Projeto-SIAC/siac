@@ -137,9 +137,6 @@
                     <tbody>
                         @foreach (Aluno aluno in Model.Alunos.OrderBy(a => a.Usuario.PessoaFisica.Nome))
                         {
-
-
-
                             <tr>
                                 <td>
                                     @aluno.Usuario.PessoaFisica.Nome
@@ -254,8 +251,8 @@
         {
             if (!Sistema.AvaliacaoUsuario.ContainsKey(Model.Avaliacao.CodAvaliacao.ToLower()))
             {
-            <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui configurar button" @(!flagAgora ? "" : "style=\"display:none\"")>Configurar Questões</a>
-            <div class="ui toggle liberar button">Liberar</div>
+                <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui configurar button" @(!flagAgora ? "" : "style=\"display:none\"")>Configurar Questões</a>
+                <div class="ui toggle liberar button">Liberar</div>
             }
         }
         else
@@ -278,7 +275,6 @@ else if (codCategoria == Categoria.ESTUDANTE)
 }
 
 @section Scripts {
-    @Scripts.Render("~/bundles/js/reposicao")
-    @Scripts.Render("~/bundles/signalR")
+    @Scripts.Render("~/bundles/js/reposicao", "~/bundles/signalR")
     <script src="~/signalr/hubs"></script>
 }
