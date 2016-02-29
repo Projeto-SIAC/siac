@@ -38,12 +38,7 @@ namespace SIAC.Models
 
         public static int ObterNovaOrdem(AvalAvi avi)
         {
-            int questaoIndice = avi.AviQuestao.Count > 0 ? contexto.AviQuestao
-                .Where(aq => aq.Ano == avi.Ano
-                    && aq.Semestre == avi.Semestre
-                    && aq.CodTipoAvaliacao == avi.CodTipoAvaliacao
-                    && aq.NumIdentificador == avi.NumIdentificador)
-                    .Max(q => q.CodOrdem) : 0;
+            int questaoIndice = avi.AviQuestao.Count > 0 ? avi.AviQuestao.Max(q => q.CodOrdem) : 0;
             return questaoIndice + 1;
         }
 

@@ -57,33 +57,35 @@
         }
         @if (Sessao.UsuarioCategoriaCodigo == Categoria.COLABORADOR)
         {
-            if (!avi.FlagQuestionario)
-            {
-                <a href="@Url.Action("Questionario", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Questionário</a>
-            }
-            else if (!avi.FlagPublico)
-            {
-                <div class="ui buttons">
+            <div class="ui buttons">
+                @if (!avi.FlagQuestionario)
+                {
+                    <a href="@Url.Action("Questionario", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Questionário</a>
+                }
+                else if (!avi.FlagPublico)
+                {
                     <a href="@Url.Action("Questionario", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Questionário</a>
                     <a href="@Url.Action("Publico", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Público-alvo</a>
-                </div>
-            }
-            else if (!avi.FlagAgendada)
-            {
-                <a href="@Url.Action("Agendar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
-            }
-            else if (!avi.FlagAndamento && !avi.FlagConcluida)
-            {
-                <a href="@Url.Action("Agendar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
-            }
-            else if (!avi.FlagConcluida)
-            {
-                <a href="@Url.Action("Resultado", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
-            }
-            else if (avi.FlagConcluida)
-            {
-                <a href="@Url.Action("Resultado", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
-            }
+                }
+                else if (!avi.FlagAgendada)
+                {
+                    <a href="@Url.Action("Questionario", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Questionário</a>
+                    <a href="@Url.Action("Agendar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
+                }
+                else if (!avi.FlagAndamento && !avi.FlagConcluida)
+                {
+                    <a href="@Url.Action("Questionario", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Questionário</a>
+                    <a href="@Url.Action("Agendar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Agendar</a>
+                }
+                else if (!avi.FlagConcluida)
+                {
+                    <a href="@Url.Action("Resultado", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+                }
+                else if (avi.FlagConcluida)
+                {
+                    <a href="@Url.Action("Resultado", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+                }
+            </div>
         }
     </div>
 }
