@@ -1,21 +1,21 @@
 ﻿siac.Institucional = siac.Institucional || {};
 
 siac.Institucional.Configuracao = (function () {
-	function iniciar() {
+    function iniciar() {
 
-		$('.ui.dropdown').dropdown();
-		$('.ui.accordion').accordion({ animateChildren: false });
+        $('.ui.dropdown').dropdown();
+        $('.ui.accordion').accordion({ animateChildren: false });
 
-		$('.tabular.menu .item').tab({
-			history: true,
-			historyType: 'state',
-			path: '/institucional/configuracao'
-		});
-	}
+        $('.tabular.menu .item').tab({
+            history: true,
+            historyType: 'state',
+            path: '/institucional/configuracao'
+        });
+    }
 
-	return {
-		iniciar: iniciar
-	}
+    return {
+        iniciar: iniciar
+    }
 })();
 
 siac.Institucional.Gerar = (function () {
@@ -473,10 +473,10 @@ siac.Institucional.Questionario = (function () {
             $content.find('.item').map(function () {
                 //Obter somente o texto do elemento 'DIV' Pai
                 var alternativa = $(this).clone().children().remove().end().text().trim();
-                
+
                 var $ALTERNATIVA_TEMPLATE = $('<div class="field required">' +
-                                                '<label for="txtEditarAlternativa' + indice + '">Alternativa '+indice+'</label>' +
-                                                '<textarea id="txtEditarAlternativa' + indice + '" name="txtEditarAlternativa' + indice + '" rows="2" required placeholder="Alternativa...">'+alternativa+'</textarea>' +
+                                                '<label for="txtEditarAlternativa' + indice + '">Alternativa ' + indice + '</label>' +
+                                                '<textarea id="txtEditarAlternativa' + indice + '" name="txtEditarAlternativa' + indice + '" rows="2" required placeholder="Alternativa...">' + alternativa + '</textarea>' +
                                             '</div>');
 
                 //Caso a alternativa seja discursiva
@@ -511,16 +511,16 @@ siac.Institucional.Questionario = (function () {
                 }
                 return false;
             }
-        }).modal('show');   
+        }).modal('show');
     }
 
-    function editarQuestao(modulo, categoria, indicador, ordem,$content) {
+    function editarQuestao(modulo, categoria, indicador, ordem, $content) {
         var $button = $('.editar.modal .approve.button');
         $button.addClass('loading');
         var form = $('form.edicao').serialize();
         $.ajax({
             type: 'POST',
-            url: '/institucional/editarquestao/' + _codAvaliacao+'?modulo='+modulo+'&categoria='+categoria+'&indicador='+indicador+'&ordem='+ordem,
+            url: '/institucional/editarquestao/' + _codAvaliacao + '?modulo=' + modulo + '&categoria=' + categoria + '&indicador=' + indicador + '&ordem=' + ordem,
             data: form,
             dataType: 'json',
             success: function (form) {
@@ -626,7 +626,7 @@ siac.Institucional.Configurar = (function () {
     function subirElemento(button) {
         var $title = $(button).parent();
         var $content = $title.next();
-                
+
         $title.insertBefore($title.prev().prev());
         $content.insertBefore($content.prev().prev());
 
@@ -656,9 +656,9 @@ siac.Institucional.Configurar = (function () {
         return _arrayQuestoesOrdem;
     }
 
-	return {
-		iniciar: iniciar
-	}
+    return {
+        iniciar: iniciar
+    }
 })();
 
 siac.Institucional.Publico = (function () {
@@ -667,6 +667,7 @@ siac.Institucional.Publico = (function () {
     var _results = [];
     var _content = [];
     var _result;
+
     function iniciar() {
         _codAvaliacao = window.location.pathname.toLowerCase().match(/avi[0-9]+$/)[0];
         $('.cancelar.button').popup({ on: 'click', inline: true });
@@ -676,7 +677,7 @@ siac.Institucional.Publico = (function () {
         $('.ui.accordion').accordion({
             animateChildren: false
         });
-        
+
         $('#ddlFiltro').change(function () {
             filtrar($(this).val());
         });
@@ -722,13 +723,13 @@ siac.Institucional.Publico = (function () {
             success: function (data) {
                 _content = data;
                 $buscar.search({
-                      source: _content,
-                      onSelect: function onSelect(result, response) {
-                          _result = result;
-                          $('.selecionar.button').removeClass('disabled');
-                      },
-                      minCharacters: 3
-                  });
+                    source: _content,
+                    onSelect: function onSelect(result, response) {
+                        _result = result;
+                        $('.selecionar.button').removeClass('disabled');
+                    },
+                    minCharacters: 3
+                });
                 $buscar.find('input').val('');
             },
             error: function () {
@@ -817,7 +818,7 @@ siac.Institucional.Publico = (function () {
 
         $.ajax({
             type: 'post',
-            url: '/institucional/salvarpublico/'+_codAvaliacao,
+            url: '/institucional/salvarpublico/' + _codAvaliacao,
             data: {
                 selecao: _results
             },
@@ -866,7 +867,7 @@ siac.Institucional.Agendar = (function () {
             $('.error.message .list').append('<li>A Data de Início não pode ser posterior à Data de Término</li>');
             valido = false;
         }
-        else if (siac.Utilitario.compararData(dataInicio,new Date().toJSON().slice(0,10)) == -1) {
+        else if (siac.Utilitario.compararData(dataInicio, new Date().toJSON().slice(0, 10)) == -1) {
             $('.error.message .list').append('<li>A Data de Início não pode ser inferior à Data de Hoje</li>');
             valido = false;
         }
@@ -912,12 +913,12 @@ siac.Institucional.Realizar = (function () {
             var _questao = $(this).parents('[data-questao]');
             var alternativa = $(this).data('alternativa');
             var _alternativaDiscursiva = _questao.find($('input[type=text]'));
-            
-            if(_alternativaDiscursiva.attr('id') == alternativa){
+
+            if (_alternativaDiscursiva.attr('id') == alternativa) {
                 _alternativaDiscursiva.removeAttr('readonly').focus();
             }
             else {
-                _alternativaDiscursiva.attr('readonly','readonly');
+                _alternativaDiscursiva.attr('readonly', 'readonly');
                 enviarRespostaObjetiva(this);
             }
         });
@@ -967,7 +968,7 @@ siac.Institucional.Realizar = (function () {
                 ordem: questaoOrdem,
                 resposta: resposta
             },
-            beforeSend: function() {
+            beforeSend: function () {
                 siac.Lembrete.Notificacoes.exibir('Salvando respostas...')
             },
             success: function () {

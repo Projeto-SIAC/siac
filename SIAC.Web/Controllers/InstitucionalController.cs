@@ -540,7 +540,10 @@ namespace SIAC.Controllers
                 AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
                 if (avi != null && !avi.FlagAndamento)
                     if (avi.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                    {
+                        avi.AviPublico.Clear();
                         avi.InserirPublico(selecao);
+                    }
             }
             return Json("/institucional/agendar/" + codigo);
         }
