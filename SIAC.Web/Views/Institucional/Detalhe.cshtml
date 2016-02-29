@@ -1,0 +1,139 @@
+﻿@model AvalAvi
+@{
+    ViewBag.Title = "Detalhes de Avaliação Institucional";
+    List<MapAviModulo> mapModulo = Model.MapQuestoes;
+}
+
+<h2>
+    @ViewBag.Title
+    @if (!Model.FlagQuestionario)
+    {
+        <span class="ui label"><i class="certificate icon"></i>Gerada</span>
+    }
+    else if (!Model.FlagPublico)
+    {
+    <span class="ui label"><i class="list icon"></i>Preenchida</span>
+    }
+    else if (!Model.FlagAgendada)
+    {
+    <span class="ui label"><i class="users icon"></i>Destinada</span>
+    }
+    else if (!Model.FlagAndamento && !Model.FlagConcluida)
+    {
+    <span class="ui label"><i class="wait icon"></i>Configurada</span>
+    }
+    else if (!Model.FlagConcluida)
+    {
+    <span class="ui label"><i class="write icon"></i>Andamento</span>
+    }
+    else if (Model.FlagConcluida)
+    {
+    <span class="ui label"><i class="checkmark icon"></i>Concluída</span>
+    }
+</h2>
+
+<div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
+    <div class="header">
+        Ajuda
+    </div>
+    <ul class="list">
+        <li>Aqui em Detalhes você poderá gerenciar os próximos passos que pretende realizar com sua avaliação.</li>
+        <li>O botão <b>Histórico</b> serve para abrir a tela de histórico de suas avaliações acadêmicas.</li>
+        <li>O botão <b>Arquivar</b> serve para arquivar sua avaliação deixando-a em estado de espera para você tomar ações quando for de seu desejo.</li>
+        <li>O botão <b>Configurar Questões</b> serve para abrir a tela de configuração de avaliação na qual você poderá substituir as questões desta avaliação.</li>
+        <li>O botão <b>Imprimir</b> serve para abrir a tela de impressão de avaliação onde você poderá imprimir sua avaliação e aplicar em sala de aula.</li>
+        <li>O botão <b>Reagendar</b> serve para abrir a tela de agendamento em que você poderá redefinir uma nova data para aplicação de avaliação.</li>
+        <li>O botão <b>Aplicar</b> serve para abrir a tela de aplicação de avaliação para você liberar a mesma pros seus alunos.</li>
+    </ul>
+</div>
+
+<div class="ui basic segment">
+    <div class="ui dividing header">
+        Dados gerais
+    </div>
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th class="ui one wide">Identificador</th>
+                <th class="ui two wide">Coordenador</th>
+                <th class="ui four wide">Título</th>
+                <th class="ui nine wide">Objetivo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><b>@Model.Avaliacao.CodAvaliacao</b></td>
+                <td>@Model.Colaborador.Usuario.PessoaFisica.Nome</td>
+                <td>@Model.Titulo</td>
+                <td>@Model.Objetivo</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@if (Model.FlagAgendada)
+{
+    <div class="ui basic segment">
+        <div class="ui dividing header">
+            Agendamento
+        </div>
+        <table class="ui striped table">
+            <thead>
+                <tr>
+                    <th>Data de Início</th>
+                    <th>Data de Término</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.Avaliacao.DtAplicacao.Value.ToShortDateString()</td>
+                    <td>@Model.DtTermino.Value.ToShortDateString()</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+
+@* Público *@
+@if (Model.FlagPublico)
+{
+    <div class="ui basic segment">
+        <div class="ui dividing header">
+            Público-alvo
+        </div>
+        <table class="ui striped table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Tipo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (AviPublico publico in Model.AviPublico)
+                {
+                    <tr>
+                        <td>@publico.Descricao</td>
+                        <td><a class="ui label">@publico.AviTipoPublico.Descricao</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<a href="@Url.Action("Historico")" class="ui button">Voltar para Histórico</a>
+@if(!Model.FlagAndamento && !Model.FlagConcluida)
+{
+    <a href="@Url.Action("Questionario", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">@(Model.FlagQuestionario ? "Atualizar Questionário" : "Criar Questionário" )</a>
+    if (Model.FlagQuestionario)
+    {
+        <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Ordenar Questões</a>
+    }
+    <a href="@Url.Action("Publico", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Definir Público</a>
+    <a href="@Url.Action("Agendar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">@(Model.FlagAgendada ? "Reagendar" : "Agendar")</a>
+}
+else if (Model.FlagAndamento || Model.FlagConcluida)
+{
+    <a href="@Url.Action("Resultado", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Resultados</a>
+    <a href="@Url.Action("Imprimir", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Imprimir</a>
+}

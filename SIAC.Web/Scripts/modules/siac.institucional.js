@@ -1093,7 +1093,6 @@ siac.Institucional.Historico = (function () {
                 $('.segment.loading').removeClass('loading');
                 $('.input.loading').removeClass('loading');
                 $cards.parent().find('.active.loader').remove();
-                ativarInformacaoCard();
             }
         });
     }
@@ -1103,39 +1102,6 @@ siac.Institucional.Historico = (function () {
             scrollTop: 0
         }, 500);
         return false;
-    }
-
-    function carregarInformacao(header) {
-        var codigo = $(header).closest('[data-avi]').data('avi');
-        var $_card = $(header).parent().parent();
-        $_card.dimmer('show');
-        $.ajax({
-            type: 'POST',
-            url: '/institucional/informacao/' + codigo,
-            success: function (view) {
-                $('.informacoes.modal').remove();
-                $('body').append(view);
-                $('.ui.accordion').accordion({
-                    animateChildren: false,
-                    onChange: function () {
-                        $('.informacoes.modal').modal('refresh');
-                    }
-                });
-                $('.informacoes.modal').modal('show');
-            },
-            error: function (erro) {
-                siac.mensagem('Ocorreu um erro na operação.')
-            },
-            complete: function (view) {
-                $_card.dimmer('hide');
-            }
-        })
-    }
-
-    function ativarInformacaoCard() {
-        $('.card a.header').off().click(function () {
-            carregarInformacao(this);
-        });
     }
 
     return {

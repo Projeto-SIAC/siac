@@ -187,6 +187,24 @@ namespace SIAC.Controllers
             return RedirectToAction("Gerar");
         }
 
+        // GET: institucional/detalhe
+        public ActionResult Detalhe(string codigo)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
+                if (avi != null)
+                {
+                    if (avi.Colaborador.Usuario.Matricula == Sessao.UsuarioMatricula)
+                    {
+                        return View(avi);
+                    }
+                }
+            }
+
+            return RedirectToAction("Historico");
+        }
+
         // GET: institucional/questionario
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
         public ActionResult Questionario(string codigo)

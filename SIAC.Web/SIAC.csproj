@@ -755,6 +755,7 @@
     <None Include="Properties\PublishProfiles\Felipe.pubxml" />
     <Content Include="Views\Academica\Partials\_PassoAPasso.cshtml" />
     <Content Include="Views\Shared\Partials\_AvaliacaoRealizar.cshtml" />
+    <Content Include="Views\Institucional\Detalhe.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -8,7 +8,7 @@
             <div class="ui text loader">Carregando</div>
         </div>
         <div class="content">
-            <a class="header">
+            <a href="@Url.Action("Detalhe",new { codigo = avi.Avaliacao.CodAvaliacao })" class="header">
                 @avi.Titulo.ToShortString(80)
             </a>
             <div class="meta">
