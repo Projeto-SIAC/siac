@@ -1650,6 +1650,9 @@ siac.Academica.Index = (function () {
 siac.Academica.Corrigir = (function () {
     var _dicQuestoes = {};
     var _codAvaliacao;
+    
+    var labelClidada = false;
+    var labelMatricula = "";
 
     function iniciar() {
         _codAvaliacao = window.location.pathname.toLowerCase().match(/acad[0-9]+$/)[0];
@@ -1697,6 +1700,13 @@ siac.Academica.Corrigir = (function () {
                         }
                         $ddlCorrecaoValor.parent().removeClass('loading').removeClass('disabled');
                         $ddlCorrecaoValor.dropdown('set selected', -1);
+
+                        if (labelClidada) {
+                            $ddlCorrecaoValor.val(labelMatricula);
+                            $ddlCorrecaoValor.change();
+                            labelClidada = false;
+                            labelMatricula = "";
+                        }
                     },
                     error: function () {
                         siac.mensagem('Ocorreu um erro.');
@@ -1788,6 +1798,7 @@ siac.Academica.Corrigir = (function () {
                         },
                         complete: function () {
                             $('.modal.corrigir form').removeClass('loading');
+                            $(_this).dropdown('set selected', valor);
                         }
 
                     });
@@ -1847,6 +1858,7 @@ siac.Academica.Corrigir = (function () {
                         },
                         complete: function () {
                             $('.modal.corrigir form').removeClass('loading');
+                            $(_this).dropdown('set selected',valor);
                         }
                     });
                 }
@@ -1857,16 +1869,19 @@ siac.Academica.Corrigir = (function () {
             var $this = $(this);
             var codQuestao = $this.data('questao');
             var matr = $this.parents('[id]').attr('id');
+            var $modal = $('.modal.corrigir');
 
-            $('.modal.corrigir').modal('show');
-            $('.modal.corrigir form').addClass('loading');
-            $('#ddlCorrecaoModo').dropdown('set selected', 'aluno').change();
-            window.setTimeout(function () {
-                $('#ddlCorrecaoValor').dropdown('set selected', matr);
-            }, 1000);
+            $modal.modal('show');
+            $modal.find('form').addClass('loading');
 
+            labelClidada = true;
+            labelMatricula = matr;
 
+            $('#ddlCorrecaoModo').change().dropdown('set selected', 'aluno');
 
+            //window.setTimeout(function () {
+            //    $modal.find('form').removeClass('loading');
+            //}, 1000);
         });
 
         $('.reposicao.button').popup({
