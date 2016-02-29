@@ -6,6 +6,18 @@
 
 <h2>@ViewBag.Title</h2>
 
+<div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
+    <div class="header">
+        Ajuda
+    </div>
+    <ul class="list">
+        <li>Aqui em Configurações de Av. Institucional você poderá gerenciar os módulos/indicadores e categorias para os próximos usos.</li>
+        <li>A guia <b>Módulo</b> serve para abrir a área de configuração dos módulos das avaliações institucionais.</li>
+        <li>A guia <b>Categoria</b> serve para abrir a área de configuração das categorias das avaliações institucionais.</li>
+        <li>A guia <b>Indicador</b> serve para abrir a área de configuração dos indicadores das avaliações institucionais.</li>
+    </ul>
+</div>
+
 <div class="ui form">
 
     @* Menu das Abas *@
@@ -23,7 +35,7 @@
                 <table class="ui striped table">
                     <thead>
                         <tr>
-                            <th>Módulo</th>
+                            <th>Módulo(s)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,15 +52,15 @@
         <br />
         <form method="post" action="@Url.Action("CadastrarModulo")">
             <div class="field required">
-                <label>Título</label>
+                <label data-ajuda="Forneça abaixo o título do módulo a ser cadastrado.">Forneça o título</label>
                 <input type="text" name="txtTitulo" maxlength="100" placeholder="Título" required />
             </div>
             <div class="field required">
-                <label>Objetivo</label>
+                <label data-ajuda="Descreva abaixo o objetivo deste módulo.">Descreva o objetivo</label>
                 <textarea rows="5" name="txtObjetivo" placeholder="Objetivo" required></textarea>
             </div>
             <div class="field">
-                <label>Observação</label>
+                <label data-ajuda="Insira abaixo uma observação sobre este módulo.">Insira uma observação</label>
                 <textarea rows="2" name="txtObservacao" placeholder="Observação"></textarea>
             </div>
             <br />
@@ -65,7 +77,7 @@
                 <table class="ui striped table">
                     <thead>
                         <tr>
-                            <th>Categoria</th>
+                            <th>Categoria(s)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,11 +94,11 @@
         <br />
         <form method="post" action="@Url.Action("CadastrarCategoria")">
             <div class="field required">
-                <label>Título</label>
+                <label data-ajuda="Forneça abaixo o título para a categoria a ser cadastrada.">Forneça o título</label>
                 <input type="text" name="txtTitulo" placeholder="Título" required />
             </div>
             <div class="field">
-                <label>Observação</label>
+                <label data-ajuda="Insira abaixo uma observação sobre esta categoria.">Insira uma observação</label>
                 <textarea rows="2" name="txtObservacao" placeholder="Observação"></textarea>
             </div>
             <br />
@@ -102,7 +114,7 @@
                 <table class="ui striped table">
                     <thead>
                         <tr>
-                            <th>Indicador</th>
+                            <th>Indicador(es)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -119,11 +131,11 @@
         <br />
         <form method="post" action="@Url.Action("CadastrarIndicador")">
             <div class="field required">
-                <label>Título</label>
+                <label data-ajuda="Forneça abaixo o título para o indicador a ser cadastrado.">Forneça o título</label>
                 <input type="text" name="txtTitulo" placeholder="Título" required />
             </div>
             <div class="field">
-                <label>Observação</label>
+                <label data-ajuda="Insira abaixo uma observação sobre este indicador.">Insira uma observação</label>
                 <textarea rows="2" name="txtObservacao" placeholder="Observação"></textarea>
             </div>
             <br />

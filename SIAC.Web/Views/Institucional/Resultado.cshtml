@@ -40,9 +40,16 @@
                                                             <h3 class="ui dividing header" data-content="@questao.Observacao">@questao.Enunciado.Replace(Environment.NewLine, "</br>")</h3>
                                                             <div style="max-height: 15em; overflow-y:auto">
                                                                 <h4>Respostas</h4>
-                                                                @foreach (AviQuestaoPessoaResposta resposta in questao.Respostas)
+                                                                @if (questao.Respostas.Count > 0)
                                                                 {
-                                                                    <p><i>"@resposta.RespDiscursiva"</i></p>
+                                                                    foreach (AviQuestaoPessoaResposta resposta in questao.Respostas)
+                                                                    {
+                                                                       <p><i>"@resposta.RespDiscursiva"</i></p>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <b>Nenhuma resposta cadastrada</b>
                                                                 }
                                                             </div>
                                                         }
@@ -100,7 +107,7 @@
         }
     </div>
 </div>
-<a href="@Url.Action("Historico")" class="ui voltar button">Voltar</a>
+<a href="@Url.Action("Detalhe",new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui voltar button">Voltar para Detalhe</a>
 <a class="ui imprimir button" href="@Url.Action("Institucional", "Impressao", new { codigo = Model.Avaliacao.CodAvaliacao })">Imprimir</a>
 @Html.Partial("_InstitucionalInformacoes", Model)
 

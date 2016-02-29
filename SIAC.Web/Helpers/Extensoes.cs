@@ -96,6 +96,19 @@ namespace SIAC
             return newStr;
         }
 
+        public static string Sumarizada(this string descricao, params int[] indices)
+        {
+            string indice = "";
+            string caracterSeparador = ".";
+
+            foreach (int i in indices)
+            {
+                indice += i + caracterSeparador;
+            }
+
+            return indice + " " + descricao;
+        }
+
         #endregion
 
         // Int
