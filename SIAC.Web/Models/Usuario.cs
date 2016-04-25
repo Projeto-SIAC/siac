@@ -18,6 +18,7 @@ namespace SIAC.Models
         public Usuario()
         {
             this.Aluno = new HashSet<Aluno>();
+            this.Candidato = new HashSet<Candidato>();
             this.Colaborador = new HashSet<Colaborador>();
             this.Professor = new HashSet<Professor>();
             this.UsuarioAcesso = new HashSet<UsuarioAcesso>();
@@ -33,6 +34,8 @@ namespace SIAC.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Aluno> Aluno { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Candidato> Candidato { get; set; }
         public virtual Categoria Categoria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Colaborador> Colaborador { get; set; }

@@ -16,11 +16,11 @@ namespace SIAC.Models
     {
         public int Ano { get; set; }
         public int Semestre { get; set; }
-        public int NumIdentificador { get; set; }
         public int CodTipoAvaliacao { get; set; }
+        public int NumIdentificador { get; set; }
         public System.DateTime DtProrrogacao { get; set; }
-        public int DuracaoAnterior { get; set; }
-        public int DuracaoNova { get; set; }
+        public Nullable<int> DuracaoAnterior { get; set; }
+        public Nullable<int> DuracaoNova { get; set; }
         public string Observacao { get; set; }
     
         public virtual Avaliacao Avaliacao { get; set; }

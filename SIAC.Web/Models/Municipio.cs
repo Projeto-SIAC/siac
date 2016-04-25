@@ -18,15 +18,18 @@ namespace SIAC.Models
         public Municipio()
         {
             this.Bairro = new HashSet<Bairro>();
+            this.Candidato = new HashSet<Candidato>();
         }
     
-        public int CodMunicipio { get; set; }
         public int CodPais { get; set; }
         public int CodEstado { get; set; }
+        public int CodMunicipio { get; set; }
         public string Descricao { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bairro> Bairro { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Candidato> Candidato { get; set; }
         public virtual Estado Estado { get; set; }
     }
 }

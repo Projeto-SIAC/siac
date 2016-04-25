@@ -12,23 +12,19 @@ namespace SIAC.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class AvalQuesPessoaResposta
+    public partial class SimCandidatoQuestao
     {
         public int Ano { get; set; }
-        public int Semestre { get; set; }
-        public int CodTipoAvaliacao { get; set; }
         public int NumIdentificador { get; set; }
-        public int CodDisciplina { get; set; }
-        public int CodTema { get; set; }
+        public int CodCandidato { get; set; }
+        public int CodDiaRealizacao { get; set; }
+        public int CodProva { get; set; }
         public int CodQuestao { get; set; }
-        public int CodPessoaFisica { get; set; }
         public Nullable<int> RespAlternativa { get; set; }
         public string RespDiscursiva { get; set; }
-        public string RespComentario { get; set; }
-        public Nullable<double> RespNota { get; set; }
-        public string ProfObservacao { get; set; }
+        public Nullable<decimal> NotaDiscursiva { get; set; }
     
-        public virtual PessoaFisica PessoaFisica { get; set; }
-        public virtual AvalTemaQuestao AvalTemaQuestao { get; set; }
+        public virtual SimCandidatoProva SimCandidatoProva { get; set; }
+        public virtual SimProvaQuestao SimProvaQuestao { get; set; }
     }
 }

@@ -153,7 +153,7 @@
                                         <h4 class="ui dividing header" data-content="@questao.Observacao">
                                             @questao.Enunciado.Replace(Environment.NewLine, "</br>").Sumarizada(indMod,indCat,indInd,indQue)
                                         </h4>
-                                        @if (questao.FlagDiscursiva.HasValue && questao.FlagDiscursiva.Value)
+                                        @if (questao.FlagDiscursiva)
                                         {
                                             <div class="field">
                                                 <label>Respostas</label>    

@@ -16,15 +16,15 @@ namespace SIAC.Models
     {
         public int AnoLetivo { get; set; }
         public int SemestreLetivo { get; set; }
-        public int CodDisciplina { get; set; }
-        public int CodProfessor { get; set; }
-        public int CodDia { get; set; }
-        public string CodTurno { get; set; }
-        public int CodHorario { get; set; }
-        public int CodGrupo { get; set; }
         public int CodCurso { get; set; }
         public int Periodo { get; set; }
+        public string CodTurno { get; set; }
         public int NumTurma { get; set; }
+        public int CodDisciplina { get; set; }
+        public int CodProfessor { get; set; }
+        public int CodGrupo { get; set; }
+        public int CodDia { get; set; }
+        public int CodHorario { get; set; }
         public int CodSala { get; set; }
     
         public virtual DiaSemana DiaSemana { get; set; }

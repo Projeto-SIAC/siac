@@ -12,33 +12,35 @@ namespace SIAC.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Campus
+    public partial class Simulado
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Campus()
+        public Simulado()
         {
-            this.Bloco = new HashSet<Bloco>();
-            this.Diretoria = new HashSet<Diretoria>();
-            this.PessoaLocalTrabalho = new HashSet<PessoaLocalTrabalho>();
-            this.AviPublico = new HashSet<AviPublico>();
+            this.SimCandidato = new HashSet<SimCandidato>();
+            this.SimDiaRealizacao = new HashSet<SimDiaRealizacao>();
+            this.SimSala = new HashSet<SimSala>();
         }
     
-        public int CodInstituicao { get; set; }
-        public int CodCampus { get; set; }
-        public int CodPessoaJuridica { get; set; }
-        public int CodColaboradorDiretor { get; set; }
-        public string Sigla { get; set; }
+        public int Ano { get; set; }
+        public int NumIdentificador { get; set; }
+        public string Titulo { get; set; }
+        public string Descricao { get; set; }
+        public int CodColaborador { get; set; }
+        public System.DateTime DtInicioInscricao { get; set; }
+        public System.DateTime DtTerminoInscricao { get; set; }
+        public System.DateTime DtCadastro { get; set; }
+        public Nullable<int> QteVagas { get; set; }
+        public bool FlagSimuladoEncerrado { get; set; }
+        public bool FlagInscricaoEncerrado { get; set; }
+        public bool FlagProvaEncerrada { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Bloco> Bloco { get; set; }
         public virtual Colaborador Colaborador { get; set; }
-        public virtual Instituicao Instituicao { get; set; }
-        public virtual PessoaJuridica PessoaJuridica { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Diretoria> Diretoria { get; set; }
+        public virtual ICollection<SimCandidato> SimCandidato { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PessoaLocalTrabalho> PessoaLocalTrabalho { get; set; }
+        public virtual ICollection<SimDiaRealizacao> SimDiaRealizacao { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AviPublico> AviPublico { get; set; }
+        public virtual ICollection<SimSala> SimSala { get; set; }
     }
 }

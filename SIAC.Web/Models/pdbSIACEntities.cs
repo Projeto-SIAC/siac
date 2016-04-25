@@ -7,7 +7,8 @@ namespace SIAC.Models
     public partial class dbSIACEntities
     {
         public dbSIACEntities()
-            : base(Environment.GetEnvironmentVariable("SIAC_DB") ?? ConfigurationManager.AppSettings["SIAC_DB"])
+            : base("name=SIACEntities")
+        //: base(Environment.GetEnvironmentVariable("SIAC_DB") /*?? ConfigurationManager.AppSettings["SIAC_DB"]*/)
         {
 
         }

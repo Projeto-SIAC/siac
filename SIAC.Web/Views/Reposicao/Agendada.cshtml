@@ -172,7 +172,7 @@
                                         {
                                             <div class="item" data-html="@(!String.IsNullOrWhiteSpace(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
                                                 <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
-                                                @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
+                                                @if (alternativa.FlagGabarito)
                                                 {
                                                     <a class="ui tiny green label">Correta</a>
                                                 }

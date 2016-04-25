@@ -14,10 +14,10 @@ namespace SIAC.Models
     
     public partial class PessoaFormacao
     {
-        public int CodOrdem { get; set; }
         public int CodPessoaFisica { get; set; }
         public int CodArea { get; set; }
         public int CodNivelEnsino { get; set; }
+        public int CodOrdem { get; set; }
         public string Curso { get; set; }
         public Nullable<int> Ano { get; set; }
     

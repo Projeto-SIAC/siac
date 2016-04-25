@@ -20,8 +20,8 @@ namespace SIAC.Models
             this.MatrizCurricularDisciplina = new HashSet<MatrizCurricularDisciplina>();
         }
     
-        public int CodMatriz { get; set; }
         public int CodCurso { get; set; }
+        public int CodMatriz { get; set; }
         public Nullable<int> CargaHoraria { get; set; }
     
         public virtual Curso Curso { get; set; }

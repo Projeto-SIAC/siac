@@ -18,6 +18,7 @@ namespace SIAC.Models
         public Turno()
         {
             this.Horario = new HashSet<Horario>();
+            this.SimDiaRealizacao = new HashSet<SimDiaRealizacao>();
             this.Turma = new HashSet<Turma>();
         }
     
@@ -26,6 +27,8 @@ namespace SIAC.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Horario> Horario { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SimDiaRealizacao> SimDiaRealizacao { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Turma> Turma { get; set; }
     }

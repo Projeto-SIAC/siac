@@ -21,17 +21,17 @@ namespace SIAC.Models
             this.AviQuestaoPessoaResposta = new HashSet<AviQuestaoPessoaResposta>();
         }
     
-        public int CodOrdem { get; set; }
-        public int NumIdentificador { get; set; }
-        public int CodTipoAvaliacao { get; set; }
         public int Ano { get; set; }
         public int Semestre { get; set; }
-        public int CodAviIndicador { get; set; }
-        public int CodAviCategoria { get; set; }
+        public int CodTipoAvaliacao { get; set; }
+        public int NumIdentificador { get; set; }
         public int CodAviModulo { get; set; }
+        public int CodAviCategoria { get; set; }
+        public int CodAviIndicador { get; set; }
+        public int CodOrdem { get; set; }
         public string Enunciado { get; set; }
         public string Observacao { get; set; }
-        public Nullable<bool> FlagDiscursiva { get; set; }
+        public bool FlagDiscursiva { get; set; }
     
         public virtual AvalAvi AvalAvi { get; set; }
         public virtual AviCategoria AviCategoria { get; set; }

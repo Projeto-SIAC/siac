@@ -23,6 +23,7 @@ namespace SIAC.Models
             this.Diretoria = new HashSet<Diretoria>();
             this.ProReitoria = new HashSet<ProReitoria>();
             this.Reitoria = new HashSet<Reitoria>();
+            this.Simulado = new HashSet<Simulado>();
         }
     
         public int CodColaborador { get; set; }
@@ -41,5 +42,7 @@ namespace SIAC.Models
         public virtual ICollection<ProReitoria> ProReitoria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reitoria> Reitoria { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Simulado> Simulado { get; set; }
     }
 }

@@ -20,12 +20,12 @@ namespace SIAC.Models
             this.AvalAcademica = new HashSet<AvalAcademica>();
             this.AvalAcadReposicao = new HashSet<AvalAcadReposicao>();
             this.AvalCertificacao = new HashSet<AvalCertificacao>();
+            this.SimSala = new HashSet<SimSala>();
             this.TurmaDiscProfHorario = new HashSet<TurmaDiscProfHorario>();
         }
     
         public int CodSala { get; set; }
-        public int CodInstituicao { get; set; }
-        public int CodCampus { get; set; }
+        public int CodBloco { get; set; }
         public string Descricao { get; set; }
         public string Sigla { get; set; }
         public string RefLocal { get; set; }
@@ -37,7 +37,9 @@ namespace SIAC.Models
         public virtual ICollection<AvalAcadReposicao> AvalAcadReposicao { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AvalCertificacao> AvalCertificacao { get; set; }
-        public virtual Campus Campus { get; set; }
+        public virtual Bloco Bloco { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SimSala> SimSala { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TurmaDiscProfHorario> TurmaDiscProfHorario { get; set; }
     }

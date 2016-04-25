@@ -20,8 +20,8 @@ namespace SIAC.Models
             this.UsuarioAcessoPagina = new HashSet<UsuarioAcessoPagina>();
         }
     
-        public int CodOrdem { get; set; }
         public string Matricula { get; set; }
+        public int CodOrdem { get; set; }
         public System.DateTime DtAcesso { get; set; }
         public string IpAcesso { get; set; }
     

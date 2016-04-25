@@ -24,11 +24,11 @@ namespace SIAC.Models
         }
     
         public int CodCurso { get; set; }
+        public int CodColabCoordenador { get; set; }
         public int CodNivelEnsino { get; set; }
         public int CodDiretoria { get; set; }
         public int CodCampus { get; set; }
         public int CodInstituicao { get; set; }
-        public int CodColabCoordenador { get; set; }
         public string Descricao { get; set; }
         public string Sigla { get; set; }
     

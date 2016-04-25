@@ -14,11 +14,11 @@ namespace SIAC.Models
     
     public partial class AviPublico
     {
-        public int CodOrdem { get; set; }
-        public int NumIdentificador { get; set; }
-        public int CodTipoAvaliacao { get; set; }
         public int Ano { get; set; }
         public int Semestre { get; set; }
+        public int CodTipoAvaliacao { get; set; }
+        public int NumIdentificador { get; set; }
+        public int CodOrdem { get; set; }
         public int CodAviTipoPublico { get; set; }
     
         public virtual AvalAvi AvalAvi { get; set; }

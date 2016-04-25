@@ -252,7 +252,9 @@
     <Content Include="Resources\videos\background.mp4" />
     <Content Include="Scripts\plugins\jquery.signalR-2.2.0.min.js" />
     <Content Include="Styles\themes\semantic.min.css" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -362,7 +364,13 @@
     <Compile Include="Models\Bairro.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Bloco.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Campus.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Candidato.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Categoria.cs">
@@ -529,6 +537,30 @@
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Selecao.cs" />
+    <Compile Include="Models\SimCandidato.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SimCandidatoProva.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SimCandidatoQuestao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SimDiaRealizacao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SimProva.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SimProvaQuestao.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SimSala.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Simulado.cs">
+      <DependentUpon>dbSIAC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Sistema.cs" />
     <Compile Include="Models\Telefone.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>

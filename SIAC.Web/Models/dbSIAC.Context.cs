@@ -34,6 +34,7 @@ namespace SIAC.Models
         public virtual DbSet<AvalAvi> AvalAvi { get; set; }
         public virtual DbSet<AvalCertificacao> AvalCertificacao { get; set; }
         public virtual DbSet<Avaliacao> Avaliacao { get; set; }
+        public virtual DbSet<AvaliacaoProrrogacao> AvaliacaoProrrogacao { get; set; }
         public virtual DbSet<AvaliacaoTema> AvaliacaoTema { get; set; }
         public virtual DbSet<AvalPessoaResultado> AvalPessoaResultado { get; set; }
         public virtual DbSet<AvalQuesPessoaResposta> AvalQuesPessoaResposta { get; set; }
@@ -47,7 +48,9 @@ namespace SIAC.Models
         public virtual DbSet<AviQuestaoPessoaResposta> AviQuestaoPessoaResposta { get; set; }
         public virtual DbSet<AviTipoPublico> AviTipoPublico { get; set; }
         public virtual DbSet<Bairro> Bairro { get; set; }
+        public virtual DbSet<Bloco> Bloco { get; set; }
         public virtual DbSet<Campus> Campus { get; set; }
+        public virtual DbSet<Candidato> Candidato { get; set; }
         public virtual DbSet<Categoria> Categoria { get; set; }
         public virtual DbSet<Colaborador> Colaborador { get; set; }
         public virtual DbSet<Curso> Curso { get; set; }
@@ -80,6 +83,14 @@ namespace SIAC.Models
         public virtual DbSet<QuestaoTema> QuestaoTema { get; set; }
         public virtual DbSet<Reitoria> Reitoria { get; set; }
         public virtual DbSet<Sala> Sala { get; set; }
+        public virtual DbSet<SimCandidato> SimCandidato { get; set; }
+        public virtual DbSet<SimCandidatoProva> SimCandidatoProva { get; set; }
+        public virtual DbSet<SimCandidatoQuestao> SimCandidatoQuestao { get; set; }
+        public virtual DbSet<SimDiaRealizacao> SimDiaRealizacao { get; set; }
+        public virtual DbSet<SimProva> SimProva { get; set; }
+        public virtual DbSet<SimProvaQuestao> SimProvaQuestao { get; set; }
+        public virtual DbSet<SimSala> SimSala { get; set; }
+        public virtual DbSet<Simulado> Simulado { get; set; }
         public virtual DbSet<Telefone> Telefone { get; set; }
         public virtual DbSet<Tema> Tema { get; set; }
         public virtual DbSet<TipoAnexo> TipoAnexo { get; set; }

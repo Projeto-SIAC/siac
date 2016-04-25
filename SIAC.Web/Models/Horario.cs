@@ -21,8 +21,8 @@ namespace SIAC.Models
         }
     
         public int CodGrupo { get; set; }
-        public int CodHorario { get; set; }
         public string CodTurno { get; set; }
+        public int CodHorario { get; set; }
         public Nullable<System.DateTime> HoraInicio { get; set; }
         public Nullable<System.DateTime> HoraTermino { get; set; }
     

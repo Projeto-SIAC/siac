@@ -20,11 +20,11 @@ namespace SIAC.Models
             this.Justificacao = new HashSet<Justificacao>();
         }
     
-        public int CodPessoaFisica { get; set; }
-        public int NumIdentificador { get; set; }
-        public int CodTipoAvaliacao { get; set; }
-        public int Semestre { get; set; }
         public int Ano { get; set; }
+        public int Semestre { get; set; }
+        public int CodTipoAvaliacao { get; set; }
+        public int NumIdentificador { get; set; }
+        public int CodPessoaFisica { get; set; }
         public Nullable<System.DateTime> HoraTermino { get; set; }
         public Nullable<int> QteAcertoObj { get; set; }
         public Nullable<double> Nota { get; set; }

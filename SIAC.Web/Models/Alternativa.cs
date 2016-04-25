@@ -14,11 +14,11 @@ namespace SIAC.Models
     
     public partial class Alternativa
     {
-        public int CodOrdem { get; set; }
         public int CodQuestao { get; set; }
+        public int CodOrdem { get; set; }
         public string Enunciado { get; set; }
         public string Comentario { get; set; }
-        public Nullable<bool> FlagGabarito { get; set; }
+        public bool FlagGabarito { get; set; }
     
         public virtual Questao Questao { get; set; }
     }

@@ -141,7 +141,7 @@
                     </div>
                     <div class="field">
                         <div class="ui toggle checkbox disabled">
-                            <input id="chkAlternativaCorreta@(alt.CodOrdem+1)" name="chkAlternativaCorreta@(alt.CodOrdem+1)" @(alt.FlagGabarito.HasValue && alt.FlagGabarito.Value ? "checked" : "") disabled readonly type="checkbox" tabindex="0" class="hidden">
+                            <input id="chkAlternativaCorreta@(alt.CodOrdem+1)" name="chkAlternativaCorreta@(alt.CodOrdem+1)" @(alt.FlagGabarito ? "checked" : "") disabled readonly type="checkbox" tabindex="0" class="hidden">
                             <label for="chkAlternativaCorreta@(alt.CodOrdem+1)">Correta</label>
                         </div>
                     </div>

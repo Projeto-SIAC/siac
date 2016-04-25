@@ -21,8 +21,8 @@ namespace SIAC.Models
         }
     
         public int CodQuestao { get; set; }
-        public int CodTema { get; set; }
         public int CodDisciplina { get; set; }
+        public int CodTema { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AvalTemaQuestao> AvalTemaQuestao { get; set; }

@@ -14,9 +14,9 @@ namespace SIAC.Models
     
     public partial class QuestaoAnexo
     {
+        public int CodQuestao { get; set; }
         public int CodOrdem { get; set; }
         public int CodTipoAnexo { get; set; }
-        public int CodQuestao { get; set; }
         public byte[] Anexo { get; set; }
         public string Legenda { get; set; }
         public string Fonte { get; set; }

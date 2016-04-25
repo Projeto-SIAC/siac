@@ -14,15 +14,15 @@ namespace SIAC.Models
     
     public partial class AviQuestaoAlternativa
     {
-        public int CodAlternativa { get; set; }
-        public int NumIdentificador { get; set; }
-        public int CodTipoAvaliacao { get; set; }
-        public int Semestre { get; set; }
         public int Ano { get; set; }
-        public int CodAviIndicador { get; set; }
-        public int CodAviCategoria { get; set; }
+        public int Semestre { get; set; }
+        public int CodTipoAvaliacao { get; set; }
+        public int NumIdentificador { get; set; }
         public int CodAviModulo { get; set; }
+        public int CodAviCategoria { get; set; }
+        public int CodAviIndicador { get; set; }
         public int CodOrdem { get; set; }
+        public int CodAlternativa { get; set; }
         public string Enunciado { get; set; }
         public bool FlagAlternativaDiscursiva { get; set; }
     

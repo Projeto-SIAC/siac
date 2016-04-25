@@ -260,7 +260,7 @@ namespace SIAC.Models
                         {
                             if (pessoaResposta.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
                             {
-                                if (pessoaResposta.RespAlternativa == pessoaResposta.AvalTemaQuestao.QuestaoTema.Questao.Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value).CodOrdem)
+                                if (pessoaResposta.RespAlternativa == pessoaResposta.AvalTemaQuestao.QuestaoTema.Questao.Alternativa.Single(a => a.FlagGabarito).CodOrdem)
                                 {
                                     pessoaResposta.RespNota = 10;
                                 }
@@ -285,7 +285,7 @@ namespace SIAC.Models
                     {
                         if (pessoaResposta.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
                         {
-                            if (pessoaResposta.RespAlternativa == pessoaResposta.AvalTemaQuestao.QuestaoTema.Questao.Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value).CodOrdem)
+                            if (pessoaResposta.RespAlternativa == pessoaResposta.AvalTemaQuestao.QuestaoTema.Questao.Alternativa.Single(a => a.FlagGabarito).CodOrdem)
                             {
                                 pessoaResposta.RespNota = 10;
                             }

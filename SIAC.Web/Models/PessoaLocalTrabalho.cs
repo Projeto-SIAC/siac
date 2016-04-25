@@ -15,7 +15,7 @@ namespace SIAC.Models
     public partial class PessoaLocalTrabalho
     {
         public int CodPessoa { get; set; }
-        public int CodInstituicao { get; set; }
+        public Nullable<int> CodInstituicao { get; set; }
         public Nullable<int> CodReitoria { get; set; }
         public Nullable<int> CodProReitoria { get; set; }
         public Nullable<int> CodCampus { get; set; }

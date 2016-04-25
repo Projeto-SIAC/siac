@@ -12,24 +12,24 @@ namespace SIAC.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class AvalAcadReposicao
+    public partial class SimDiaRealizacao
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public AvalAcadReposicao()
+        public SimDiaRealizacao()
         {
-            this.Justificacao = new HashSet<Justificacao>();
+            this.SimProva = new HashSet<SimProva>();
         }
     
         public int Ano { get; set; }
-        public int Semestre { get; set; }
-        public int CodTipoAvaliacao { get; set; }
         public int NumIdentificador { get; set; }
-        public int CodSala { get; set; }
-        public Nullable<double> Valor { get; set; }
+        public int CodDiaRealizacao { get; set; }
+        public System.DateTime DtRealizacao { get; set; }
+        public string CodTurno { get; set; }
+        public int Duracao { get; set; }
     
-        public virtual Sala Sala { get; set; }
-        public virtual Avaliacao Avaliacao { get; set; }
+        public virtual Turno Turno { get; set; }
+        public virtual Simulado Simulado { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Justificacao> Justificacao { get; set; }
+        public virtual ICollection<SimProva> SimProva { get; set; }
     }
 }

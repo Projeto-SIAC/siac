@@ -14,8 +14,8 @@ namespace SIAC.Models
     
     public partial class UsuarioOpiniao
     {
-        public int CodOrdem { get; set; }
         public string Matricula { get; set; }
+        public int CodOrdem { get; set; }
         public string Opiniao { get; set; }
         public Nullable<System.DateTime> DtEnvio { get; set; }
     

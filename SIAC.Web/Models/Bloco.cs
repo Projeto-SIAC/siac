@@ -12,24 +12,24 @@ namespace SIAC.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class AvalAcadReposicao
+    public partial class Bloco
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public AvalAcadReposicao()
+        public Bloco()
         {
-            this.Justificacao = new HashSet<Justificacao>();
+            this.Sala = new HashSet<Sala>();
         }
     
-        public int Ano { get; set; }
-        public int Semestre { get; set; }
-        public int CodTipoAvaliacao { get; set; }
-        public int NumIdentificador { get; set; }
-        public int CodSala { get; set; }
-        public Nullable<double> Valor { get; set; }
+        public int CodBloco { get; set; }
+        public Nullable<int> CodInstituicao { get; set; }
+        public Nullable<int> CodCampus { get; set; }
+        public string Descricao { get; set; }
+        public string Sigla { get; set; }
+        public string RefLocal { get; set; }
+        public string Observacao { get; set; }
     
-        public virtual Sala Sala { get; set; }
-        public virtual Avaliacao Avaliacao { get; set; }
+        public virtual Campus Campus { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Justificacao> Justificacao { get; set; }
+        public virtual ICollection<Sala> Sala { get; set; }
     }
 }

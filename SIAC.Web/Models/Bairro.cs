@@ -20,10 +20,10 @@ namespace SIAC.Models
             this.Endereco = new HashSet<Endereco>();
         }
     
-        public int CodBairro { get; set; }
-        public int CodEstado { get; set; }
         public int CodPais { get; set; }
+        public int CodEstado { get; set; }
         public int CodMunicipio { get; set; }
+        public int CodBairro { get; set; }
         public string Descricao { get; set; }
     
         public virtual Municipio Municipio { get; set; }

@@ -14,8 +14,8 @@ namespace SIAC.Models
     
     public partial class Endereco
     {
-        public int CodOrdem { get; set; }
         public int CodPessoa { get; set; }
+        public int CodOrdem { get; set; }
         public int CodMunicipio { get; set; }
         public int CodBairro { get; set; }
         public int CodPais { get; set; }

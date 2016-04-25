@@ -20,12 +20,12 @@ namespace SIAC.Models
             this.AvalTemaQuestao = new HashSet<AvalTemaQuestao>();
         }
     
-        public int CodTema { get; set; }
-        public int CodDisciplina { get; set; }
-        public int NumIdentificador { get; set; }
-        public int CodTipoAvaliacao { get; set; }
-        public int Semestre { get; set; }
         public int Ano { get; set; }
+        public int Semestre { get; set; }
+        public int CodTipoAvaliacao { get; set; }
+        public int NumIdentificador { get; set; }
+        public int CodDisciplina { get; set; }
+        public int CodTema { get; set; }
     
         public virtual Avaliacao Avaliacao { get; set; }
         public virtual Tema Tema { get; set; }

@@ -21,10 +21,10 @@ namespace SIAC.Models
             this.AviQuestao = new HashSet<AviQuestao>();
         }
     
-        public int NumIdentificador { get; set; }
-        public int CodTipoAvaliacao { get; set; }
-        public int Semestre { get; set; }
         public int Ano { get; set; }
+        public int Semestre { get; set; }
+        public int CodTipoAvaliacao { get; set; }
+        public int NumIdentificador { get; set; }
         public int CodColabCoordenador { get; set; }
         public string Titulo { get; set; }
         public string Objetivo { get; set; }

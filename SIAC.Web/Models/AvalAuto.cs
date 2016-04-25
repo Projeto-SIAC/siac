@@ -14,12 +14,12 @@ namespace SIAC.Models
     
     public partial class AvalAuto
     {
-        public int NumIdentificador { get; set; }
-        public int CodTipoAvaliacao { get; set; }
-        public int Semestre { get; set; }
         public int Ano { get; set; }
-        public int CodDificuldade { get; set; }
+        public int Semestre { get; set; }
+        public int CodTipoAvaliacao { get; set; }
+        public int NumIdentificador { get; set; }
         public int CodPessoaFisica { get; set; }
+        public int CodDificuldade { get; set; }
     
         public virtual Avaliacao Avaliacao { get; set; }
         public virtual Dificuldade Dificuldade { get; set; }

@@ -20,9 +20,10 @@ namespace SIAC.Models
             this.AvalAcademica = new HashSet<AvalAcademica>();
             this.AvalCertificacao = new HashSet<AvalCertificacao>();
             this.MatrizCurricularDisciplina = new HashSet<MatrizCurricularDisciplina>();
+            this.SimProva = new HashSet<SimProva>();
             this.Tema = new HashSet<Tema>();
-            this.TurmaDiscAluno = new HashSet<TurmaDiscAluno>();
             this.TurmaDiscProfHorario = new HashSet<TurmaDiscProfHorario>();
+            this.TurmaDiscAluno = new HashSet<TurmaDiscAluno>();
             this.Professor = new HashSet<Professor>();
         }
     
@@ -40,11 +41,13 @@ namespace SIAC.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MatrizCurricularDisciplina> MatrizCurricularDisciplina { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SimProva> SimProva { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tema> Tema { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TurmaDiscAluno> TurmaDiscAluno { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TurmaDiscProfHorario> TurmaDiscProfHorario { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TurmaDiscAluno> TurmaDiscAluno { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Professor> Professor { get; set; }
     }

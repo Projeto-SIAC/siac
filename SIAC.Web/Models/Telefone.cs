@@ -14,8 +14,8 @@ namespace SIAC.Models
     
     public partial class Telefone
     {
-        public int CodOrdem { get; set; }
         public int CodPessoa { get; set; }
+        public int CodOrdem { get; set; }
         public int CodTipoContato { get; set; }
         public Nullable<int> CodDDI { get; set; }
         public Nullable<int> CodDDD { get; set; }

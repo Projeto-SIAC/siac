@@ -20,6 +20,7 @@ namespace SIAC.Models
             this.Alternativa = new HashSet<Alternativa>();
             this.QuestaoAnexo = new HashSet<QuestaoAnexo>();
             this.QuestaoTema = new HashSet<QuestaoTema>();
+            this.SimProvaQuestao = new HashSet<SimProvaQuestao>();
         }
     
         public int CodQuestao { get; set; }
@@ -43,5 +44,7 @@ namespace SIAC.Models
         public virtual ICollection<QuestaoAnexo> QuestaoAnexo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuestaoTema> QuestaoTema { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SimProvaQuestao> SimProvaQuestao { get; set; }
     }
 }

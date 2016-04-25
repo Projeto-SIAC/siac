@@ -17,20 +17,19 @@ namespace SIAC.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Avaliacao()
         {
+            this.AvaliacaoProrrogacao = new HashSet<AvaliacaoProrrogacao>();
             this.AvaliacaoTema = new HashSet<AvaliacaoTema>();
             this.AvalPessoaResultado = new HashSet<AvalPessoaResultado>();
-            this.AvaliacaoProrrogacao = new HashSet<AvaliacaoProrrogacao>();
         }
     
         public int Ano { get; set; }
         public int Semestre { get; set; }
-        public int NumIdentificador { get; set; }
         public int CodTipoAvaliacao { get; set; }
+        public int NumIdentificador { get; set; }
         public System.DateTime DtCadastro { get; set; }
         public Nullable<System.DateTime> DtAplicacao { get; set; }
         public Nullable<int> Duracao { get; set; }
         public bool FlagLiberada { get; set; }
-        public string Recomendacao { get; set; }
         public bool FlagArquivo { get; set; }
     
         public virtual AvalAcademica AvalAcademica { get; set; }
@@ -40,10 +39,10 @@ namespace SIAC.Models
         public virtual AvalCertificacao AvalCertificacao { get; set; }
         public virtual TipoAvaliacao TipoAvaliacao { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AvaliacaoProrrogacao> AvaliacaoProrrogacao { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AvaliacaoTema> AvaliacaoTema { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AvalPessoaResultado> AvalPessoaResultado { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AvaliacaoProrrogacao> AvaliacaoProrrogacao { get; set; }
     }
 }

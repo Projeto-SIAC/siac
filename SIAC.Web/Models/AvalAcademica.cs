@@ -14,15 +14,15 @@ namespace SIAC.Models
     
     public partial class AvalAcademica
     {
-        public int NumIdentificador { get; set; }
-        public int CodTipoAvaliacao { get; set; }
-        public int Semestre { get; set; }
         public int Ano { get; set; }
+        public int Semestre { get; set; }
+        public int CodTipoAvaliacao { get; set; }
+        public int NumIdentificador { get; set; }
         public string CodTurno { get; set; }
-        public Nullable<int> NumTurma { get; set; }
-        public Nullable<int> Periodo { get; set; }
-        public Nullable<int> CodCurso { get; set; }
-        public Nullable<int> CodSala { get; set; }
+        public int NumTurma { get; set; }
+        public int Periodo { get; set; }
+        public int CodCurso { get; set; }
+        public int CodSala { get; set; }
         public int CodProfessor { get; set; }
         public int CodDisciplina { get; set; }
         public Nullable<double> Valor { get; set; }

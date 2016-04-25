@@ -15,9 +15,9 @@ namespace SIAC.Models
     public partial class MatrizCurricularDisciplina
     {
         public int CodCurso { get; set; }
+        public int Periodo { get; set; }
         public int CodMatriz { get; set; }
         public int CodDisciplina { get; set; }
-        public int Periodo { get; set; }
         public int DiscCargaHoraria { get; set; }
     
         public virtual Disciplina Disciplina { get; set; }

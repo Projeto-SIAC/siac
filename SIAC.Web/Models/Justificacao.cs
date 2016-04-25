@@ -20,13 +20,13 @@ namespace SIAC.Models
             this.AvalAcadReposicao = new HashSet<AvalAcadReposicao>();
         }
     
-        public int CodJustificacao { get; set; }
         public int CodProfessor { get; set; }
+        public int CodJustificacao { get; set; }
+        public int CodPessoaFisica { get; set; }
         public int Ano { get; set; }
         public int Semestre { get; set; }
         public int CodTipoAvaliacao { get; set; }
         public int NumIdentificador { get; set; }
-        public int CodPessoaFisica { get; set; }
         public System.DateTime DtCadastro { get; set; }
         public Nullable<System.DateTime> DtConfirmacao { get; set; }
         public string Descricao { get; set; }

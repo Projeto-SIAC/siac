@@ -21,8 +21,8 @@ namespace SIAC.Models
             this.QuestaoTema = new HashSet<QuestaoTema>();
         }
     
-        public int CodTema { get; set; }
         public int CodDisciplina { get; set; }
+        public int CodTema { get; set; }
         public string Descricao { get; set; }
         public string Comentario { get; set; }
     

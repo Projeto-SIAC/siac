@@ -20,8 +20,8 @@ namespace SIAC.Models
             this.Municipio = new HashSet<Municipio>();
         }
     
-        public int CodEstado { get; set; }
         public int CodPais { get; set; }
+        public int CodEstado { get; set; }
         public string Descricao { get; set; }
         public string Sigla { get; set; }
     

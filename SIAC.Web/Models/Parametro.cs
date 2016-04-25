@@ -19,6 +19,8 @@ namespace SIAC.Models
         public int NumeracaoQuestao { get; set; }
         public int NumeracaoAlternativa { get; set; }
         public int QteSemestres { get; set; }
+        public int PeriodoLetivoAnoAtual { get; set; }
+        public int PeriodoLetivoSemestreAtual { get; set; }
         public string TermoResponsabilidade { get; set; }
         public string NotaUsoAcademica { get; set; }
         public double ValorNotaMedia { get; set; }

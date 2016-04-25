@@ -16,12 +16,12 @@ namespace SIAC.Models
     {
         public int AnoLetivo { get; set; }
         public int SemestreLetivo { get; set; }
-        public int CodDisciplina { get; set; }
         public int CodCurso { get; set; }
-        public int CodAluno { get; set; }
         public int Periodo { get; set; }
-        public int NumTurma { get; set; }
         public string CodTurno { get; set; }
+        public int NumTurma { get; set; }
+        public int CodDisciplina { get; set; }
+        public int CodAluno { get; set; }
     
         public virtual Aluno Aluno { get; set; }
         public virtual Disciplina Disciplina { get; set; }

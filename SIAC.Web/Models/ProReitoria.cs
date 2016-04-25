@@ -21,8 +21,8 @@ namespace SIAC.Models
             this.AviPublico = new HashSet<AviPublico>();
         }
     
-        public int CodProReitoria { get; set; }
         public int CodInstituicao { get; set; }
+        public int CodProReitoria { get; set; }
         public int CodPessoaJuridica { get; set; }
         public int CodColaboradorProReitor { get; set; }
         public string Sigla { get; set; }

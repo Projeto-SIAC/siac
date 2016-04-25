@@ -466,7 +466,7 @@ namespace SIAC.Controllers
 
                 //Campus
                 string codCampus = formCollection["ddlSalaCampus"];
-                sala.Campus = Campus.ListarPorCodigo(codCampus);
+                //sala.Campus = Campus.ListarPorCodigo(codCampus);
                 sala.Descricao = formCollection["txtSalaDescricao"];
                 sala.Sigla = formCollection["txtSalaSigla"];
 

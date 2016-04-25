@@ -54,7 +54,7 @@
                     <i class="dropdown icon"></i>@((i.GetIndiceQuestao() + ". " + lstQuestao[i].Enunciado).ToShortString(80))
                     @if (lstQuestao[i].CodTipoQuestao == TipoQuestao.OBJETIVA)
                     {
-                        Alternativa correta = lstQuestao[i].Alternativa.Single(a => a.FlagGabarito.HasValue && a.FlagGabarito.Value);
+                        Alternativa correta = lstQuestao[i].Alternativa.Single(a => a.FlagGabarito);
                         <div class="ui @(resposta.RespAlternativa == correta.CodOrdem ? "green" : "red" ) label">@(resposta.RespAlternativa == correta.CodOrdem ? Html.Raw("<i class=\"checkmark icon\"></i>Correta") : Html.Raw("<i class=\"remove icon\"></i>Incorreta") )</div>
                     }
                     else if (resposta.RespNota.HasValue)
@@ -75,7 +75,7 @@
                                     <div class="item">
                                         <div class="middle aligned content">
                                             <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
-                                            @if (alternativa.FlagGabarito.HasValue && alternativa.FlagGabarito.Value)
+                                            @if (alternativa.FlagGabarito)
                                             {
                                                 <a data-html="@(("<b>Comentário</b>: " + alternativa.Comentario).Replace("\n", "<br>"))" data-variation="very wide" class="ui tag label">Correta</a>
                                             }

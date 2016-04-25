@@ -368,7 +368,7 @@ namespace SIAC
 
             foreach (var alt in questao.Alternativa)
             {
-                if (alt.FlagGabarito.HasValue && alt.FlagGabarito.Value)
+                if (alt.FlagGabarito)
                 {
                     if (unica == true)
                     {

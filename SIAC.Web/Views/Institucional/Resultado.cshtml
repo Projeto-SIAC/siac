@@ -35,7 +35,7 @@
                                                 <div class="content" data-questao="@questao.CodOrdem">
                                                     <div class="ui segment">
                                                         @* Discursiva *@
-                                                        @if (questao.FlagDiscursiva.HasValue && questao.FlagDiscursiva.Value)
+                                                        @if (questao.FlagDiscursiva)
                                                         {
                                                             <h3 class="ui dividing header" data-content="@questao.Observacao">@questao.Enunciado.Replace(Environment.NewLine, "</br>")</h3>
                                                             <div style="max-height: 15em; overflow-y:auto">

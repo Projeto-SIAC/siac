@@ -14,8 +14,8 @@ namespace SIAC.Models
     
     public partial class Email
     {
-        public int CodOrdem { get; set; }
         public int CodPessoa { get; set; }
+        public int CodOrdem { get; set; }
         public int CodTipoContato { get; set; }
         public string Email1 { get; set; }
     

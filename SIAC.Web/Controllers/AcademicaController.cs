@@ -663,7 +663,7 @@ namespace SIAC.Controllers
                                     int.TryParse(strRespAlternativa, out respAlternativa);
                                 }
                                 avalQuesPessoaResposta.RespAlternativa = respAlternativa;
-                                if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q => q.FlagGabarito.HasValue && q.FlagGabarito.Value).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
+                                if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q => q.FlagGabarito).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
                                 {
                                     avalQuesPessoaResposta.RespNota = 10;
                                     avalPessoaResultado.QteAcertoObj++;

@@ -298,7 +298,7 @@ namespace SIAC.Controllers
                                     {
                                         qteObjetivaDisciplina[avaliacaoTema.Tema.Disciplina.Descricao]++;
                                         qteObjetiva++;
-                                        if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q => q.FlagGabarito.HasValue && q.FlagGabarito.Value).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
+                                        if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q => q.FlagGabarito).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
                                             qteObjetivaAcertoDisciplina[avaliacaoTema.Tema.Disciplina.Descricao]++;
                                     }
                                 }
@@ -392,7 +392,7 @@ namespace SIAC.Controllers
                                 qteObjetivaDisciplina[avaliacaoTema.Tema.Disciplina.Descricao]++;
                                 qteObjetiva++;
                                 avalQuesPessoaResposta.RespAlternativa = int.Parse(form["rdoResposta" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]);
-                                if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q => q.FlagGabarito.HasValue && q.FlagGabarito.Value).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
+                                if (avalTemaQuestao.QuestaoTema.Questao.Alternativa.First(q => q.FlagGabarito).CodOrdem == avalQuesPessoaResposta.RespAlternativa)
                                 {
                                     avalPessoaResultado.QteAcertoObj++;
                                     avalQuesPessoaResposta.RespNota = 10;

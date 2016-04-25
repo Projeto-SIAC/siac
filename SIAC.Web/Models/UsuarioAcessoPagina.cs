@@ -14,11 +14,11 @@ namespace SIAC.Models
     
     public partial class UsuarioAcessoPagina
     {
-        public int NumIdentificador { get; set; }
         public string Matricula { get; set; }
         public int CodOrdem { get; set; }
+        public int NumIdentificador { get; set; }
         public string Pagina { get; set; }
-        public Nullable<System.DateTime> DtAbertura { get; set; }
+        public System.DateTime DtAbertura { get; set; }
         public string PaginaReferencia { get; set; }
         public string Dados { get; set; }
     
