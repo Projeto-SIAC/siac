@@ -9,7 +9,14 @@ namespace SIAC
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.LowercaseUrls = true;
-            
+
+            routes.MapRoute(
+                name: "Simulados",
+                url: "Simulado/{controller}/{action}/{codigo}",
+                defaults: new { controller = "Institucional", action = "Index", codigo = UrlParameter.Optional },
+                constraints: new { controller = @"^(Gerencia)$" }
+            );
+
             routes.MapRoute(
                 name: "Institucional",
                 url:"Institucional/{action}/{codigo}",

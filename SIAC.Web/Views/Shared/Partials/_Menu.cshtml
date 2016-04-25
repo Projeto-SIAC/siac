@@ -10,7 +10,9 @@
     <a href="@Url.Action("Index", "Historico")" class="@(path.StartsWith("/historico")? "active blue" : "") item" title="Navegar para Histórico das Atividades">
         <i class="time icon"></i><span class="content">Histórico</span>
     </a>
-
+    <a href="@Url.Action("Index", "Gerencia")" class="@(path.StartsWith("/simulado") ? "active blue" : "") item" title="Navegar para Simulados">
+        <i class="copy icon"></i><span class="content">Simulados</span>
+    </a>
     @if (Sessao.UsuarioCategoriaCodigo <= Categoria.COLABORADOR)
     {
         <a href="@Url.Action("Index", "Institucional")" class="@(path.StartsWith("/institucional") ? "active blue" : "") item" data-lembrete="avi" title="Navegar para Av. Institucional">
@@ -20,7 +22,6 @@
             <i class="user icon"></i><span class="content">Perfil</span>
         </a>
     }
-
     @if (Sessao.UsuarioCategoriaCodigo == Categoria.COLABORADOR || Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.FlagCoordenadorAvi)
     {
         <a href="@Url.Action("Index", "Configuracoes")" class="@(path.StartsWith("/configuracoes")? "active blue" : "") item" title="Navegar para Configurações">

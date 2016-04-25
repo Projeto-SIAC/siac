@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "Gerência dos Simulados";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
+    <div class="header">
+        Área de Simulados
+    </div>
+    <ul class="list">
+        <li>Os ícones abaixo compõe as ações principais desta área.</li>
+    </ul>
+</div>
+
+<div class="ui stackable grid dashmenu">
+    <div class="stackable doubling four columns centered row">
+        @Html.Partial("_Atalho", new ViewDataDictionary() {
+            { "Url", Url.Action("", "") },
+            { "Icone", "plus" },
+            { "Descricao", "Novo Simulado" },
+            { "Mensagem", "" }
+        })
+        @Html.Partial("_Atalho", new ViewDataDictionary() {
+            { "Url", Url.Action("", "") },
+            { "Icone", "list" },
+            { "Descricao", "Simulados" },
+            { "Mensagem", "" }
+        })
+        @Html.Partial("_Atalho", new ViewDataDictionary() {
+            { "Url", Url.Action("", "") },
+            { "Icone", "cogs" },
+            { "Descricao", "Dados Gerais" },
+            { "Mensagem", "" }
+        })
+    </div>
+</div>
+
+
+

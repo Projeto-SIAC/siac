@@ -263,6 +263,7 @@
     <Compile Include="Controllers\AutoavaliacaoController.cs" />
     <Compile Include="Controllers\AcademicaController.cs" />
     <Compile Include="Controllers\CertificacaoController.cs" />
+    <Compile Include="Controllers\GerenciaController.cs" />
     <Compile Include="Controllers\ImpressaoController.cs" />
     <Compile Include="Controllers\InstitucionalController.cs" />
     <Compile Include="Controllers\PerfilController.cs" />
@@ -788,6 +789,7 @@
     <Content Include="Views\Academica\Partials\_PassoAPasso.cshtml" />
     <Content Include="Views\Shared\Partials\_AvaliacaoRealizar.cshtml" />
     <Content Include="Views\Institucional\Detalhe.cshtml" />
+    <Content Include="Views\Gerencia\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
