@@ -1,0 +1,29 @@
+﻿@model Simulado
+
+<div class="ui informacoes modal">
+    <i class="icon close"></i>
+    <div class="header">Informações sobre o simulado</div>
+    <div class="content">
+        <table class="ui striped table">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @* Título *@
+                        @Model.Titulo
+                    </td>
+                    <td>
+                        @* Descrição *@
+                        @Model.Descricao
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

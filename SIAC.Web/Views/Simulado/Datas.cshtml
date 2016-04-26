@@ -1,0 +1,54 @@
+﻿@model Simulado
+@{
+    ViewBag.Title = "Datas";
+}
+
+<h2>
+    @ViewBag.Title
+    <div class="ui right floated informacoes button">Informações</div>
+</h2>
+
+@Html.Partial("_SimuladoInformacoes")
+
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 2 } })
+
+<div class="ui confirmar modal">
+    <div class="header">
+        Verifique e confirme os dados fornecidos descritos abaixo
+    </div>
+    <div class="content">
+
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Voltar</div>
+        <div class="ui approve button">Confirmar</div>
+    </div>
+</div>
+
+<form class="ui form" method="post">
+    <div class="ui error message">
+        <div class="header">Verifique</div>
+        <ul class="list"></ul>
+    </div>
+    <div class="three fields">
+        <div class="field required">
+            <label data-ajuda="Defina abaixo a data de início do prazo de abertura das inscrições deste simulado.">Defina a data de início das inscrições</label>
+            <input id="txtInicioInscricao" name="txtInicioInscricao" type="text" autocomplete="off" data-mask="00/00/0000" placeholder="Data de Início" required />
+        </div>
+        <div class="field required">
+            <label data-ajuda="Defina abaixo a data de término do prazo de abertura das inscrições deste simulado.">Defina a data de término das inscrições</label>
+            <input id="txtTerminoInscricao" name="txtTerminoInscricao" type="text" autocomplete="off" data-mask="00/00/0000" placeholder="Data de Término" required />
+        </div>
+        <div class="field required">
+            <label data-ajuda="Forneça abaixo a quantidade limite de vagas para as inscrições.">Forneça a quantidade de vagas</label>
+            <input id="txtQteVagas" name="txtQteVagas" type="number" autocomplete="off" placeholder="Quantidade de Vagas" required />
+        </div>
+    </div>
+    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("","Gerencia")' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+    <button class="ui confirmar button" tabindex="0">Avançar</button>
+</form>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/simulado")
+}

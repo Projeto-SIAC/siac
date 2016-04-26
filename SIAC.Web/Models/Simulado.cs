@@ -27,8 +27,8 @@ namespace SIAC.Models
         public string Titulo { get; set; }
         public string Descricao { get; set; }
         public int CodColaborador { get; set; }
-        public System.DateTime DtInicioInscricao { get; set; }
-        public System.DateTime DtTerminoInscricao { get; set; }
+        public Nullable<System.DateTime> DtInicioInscricao { get; set; }
+        public Nullable<System.DateTime> DtTerminoInscricao { get; set; }
         public System.DateTime DtCadastro { get; set; }
         public Nullable<int> QteVagas { get; set; }
         public bool FlagSimuladoEncerrado { get; set; }
