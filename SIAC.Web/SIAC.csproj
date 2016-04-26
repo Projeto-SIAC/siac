@@ -798,7 +798,6 @@
     <Content Include="Views\Gerencia\Index.cshtml" />
     <Content Include="Views\Simulado\Novo.cshtml" />
     <Content Include="Views\Simulado\Partials\_PassoAPasso.cshtml" />
-    <Content Include="Views\Simulado\Partials\_SimuladoGerar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
