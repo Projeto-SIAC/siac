@@ -798,6 +798,9 @@
     <Content Include="Views\Gerencia\Index.cshtml" />
     <Content Include="Views\Simulado\Novo.cshtml" />
     <Content Include="Views\Simulado\Partials\_PassoAPasso.cshtml" />
+    <Content Include="Views\Simulado\Provas.cshtml" />
+    <Content Include="Views\Simulado\Partials\_SimuladoInformacoes.cshtml" />
+    <Content Include="Views\Simulado\Datas.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

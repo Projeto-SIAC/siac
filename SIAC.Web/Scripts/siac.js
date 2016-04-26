@@ -249,6 +249,12 @@
             if (pathname.indexOf('/novo') >= 0) {
                 siac.Simulado.Novo.iniciar();
             }
+            else if (pathname.indexOf('/provas') >= 0) {
+                siac.Simulado.Provas.iniciar();
+            }
+            else if (pathname.indexOf('/datas') >= 0) {
+                siac.Simulado.Datas.iniciar();
+            }
         }
     }
 

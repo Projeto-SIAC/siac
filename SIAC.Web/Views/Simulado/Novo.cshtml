@@ -38,7 +38,7 @@
     </div>
 </div>
 
-<form method="post" action="@Url.Action("Novo")" class="ui form">
+<form method="post" class="ui form">
     <div class="ui error message">
         <div class="header">Verifique</div>
         <ul class="list"></ul>
@@ -58,8 +58,6 @@
         <div class="ui prosseguir button">Prosseguir</div>
     </div>
 </form>
-
-@*@Html.Partial("_SimuladoGerar")*@
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/simulado")

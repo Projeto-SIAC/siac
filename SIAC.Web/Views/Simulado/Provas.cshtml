@@ -1,0 +1,17 @@
+﻿@model Simulado
+@{
+    ViewBag.Title = "Provas";
+}
+
+<h2>
+    @ViewBag.Title
+    <div class="ui right floated informacoes button">Informações</div>
+</h2>
+
+@Html.Partial("_SimuladoInformacoes")
+
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 2 } })
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/simulado")
+}
