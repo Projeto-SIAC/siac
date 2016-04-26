@@ -118,6 +118,7 @@
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Simulados" url="~/simulado/gerencia">
       <mvcSiteMapNode title="Gerência dos Simulados" controller="Gerencia" action="Index" />
+      <mvcSiteMapNode title="Novo Simulado" controller="Simulado" action="Novo" />
     </mvcSiteMapNode>
       <mvcSiteMapNode title="Perfil" controller="Perfil" action="Index" />
     </mvcSiteMapNode>

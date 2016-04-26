@@ -245,6 +245,11 @@
                 siac.Acesso.Visitante.iniciar();
             }
         }
+        else if (pathname.indexOf('/simulado') == 0) {
+            if (pathname.indexOf('/novo') >= 0) {
+                siac.Simulado.Novo.iniciar();
+            }
+        }
     }
 
     var HTML_MENSAGEM_TEMPLATE = '<div class="ui small mensagem modal">' +

@@ -199,6 +199,10 @@
     <Content Include="Resources\images\layout\logo-black.png" />
     <Content Include="Resources\images\layout\logo.png" />
     <Content Include="Scripts\libs\moment.min.js" />
+    <Content Include="Scripts\modules\siac.simulado.js" />
+    <Content Include="Scripts\modules\siac.academica - Copy.min.js">
+      <DependentUpon>siac.simulado.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\modules\siac.academica.js" />
     <Content Include="Scripts\modules\siac.academica.min.js">
       <DependentUpon>siac.academica.js</DependentUpon>
@@ -268,6 +272,7 @@
     <Compile Include="Controllers\InstitucionalController.cs" />
     <Compile Include="Controllers\PerfilController.cs" />
     <Compile Include="Controllers\ReposicaoController.cs" />
+    <Compile Include="Controllers\SimuladoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\VisitanteController.cs" />
     <Compile Include="Filters\AutenticacaoFilterAttribute.cs" />
@@ -489,6 +494,7 @@
     <Compile Include="Models\ProReitoria.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\pSimulado.cs" />
     <Compile Include="Models\pTurmaDiscProfHorario.cs" />
     <Compile Include="Models\pVisitante.cs" />
     <Compile Include="Models\Questao.cs">
@@ -790,6 +796,9 @@
     <Content Include="Views\Shared\Partials\_AvaliacaoRealizar.cshtml" />
     <Content Include="Views\Institucional\Detalhe.cshtml" />
     <Content Include="Views\Gerencia\Index.cshtml" />
+    <Content Include="Views\Simulado\Novo.cshtml" />
+    <Content Include="Views\Simulado\Partials\_PassoAPasso.cshtml" />
+    <Content Include="Views\Simulado\Partials\_SimuladoGerar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
