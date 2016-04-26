@@ -1,0 +1,42 @@
+﻿
+@model GerenciaEditarBlocoViewModel
+
+<i class="icon close"></i>
+<div class="header">
+    Editar Bloco "@Model.Bloco.Descricao"
+</div>
+<div class="content">
+    <div class="ui form">
+        <div class="field required">
+            <label>Campus</label>
+            <select name="ddlCampus" class="ui fluid search dropdown" required">
+                <option value="">Campus</option>
+                @foreach (Campus c in Model.Campi)
+                {
+                    <option value="@c.CodComposto" @(Model.Bloco.Campus.CodComposto == c.CodComposto ? "selected" : "") >@c.PessoaJuridica.NomeFantasia</option>
+                }
+            </select>
+        </div>
+        <div class="field required">
+            <label>Descrição</label>
+            <input type="text" name="txtDescricao" placeholder="Descrição" maxlength="50" value="@Model.Bloco.Descricao" required />
+        </div>
+        <div class="field">
+            <label>Sigla</label>
+            <input type="text" name="txtSigla" placeholder="Sigla" maxlength="15" value="@Model.Bloco.Sigla" required />
+        </div>
+        <div class="field">
+            <label>Referência da Localização</label>
+            <input type="text" name="txtRefLocal" placeholder="Referência da Localização" maxlength="255" value="@Model.Bloco.RefLocal" />
+        </div>
+        <div class="field">
+            <label>Observação</label>
+            <input type="text" name="txtObservacao" placeholder="Observação" maxlength="140" value="@Model.Bloco.Observacao" />
+        </div>
+    </div>
+</div>
+<div class="actions">
+    <input type="reset" value="Cancelar" class="ui cancel button" />
+    <input type="submit" value="Salvar" class="ui approve button" />
+</div>
+

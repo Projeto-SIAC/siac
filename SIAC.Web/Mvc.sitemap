@@ -95,7 +95,7 @@
       <mvcSiteMapNode title="Controle de Visitantes" controller="Visitante" action="Index">
         <mvcSiteMapNode title="Cadastrar Visitante" controller="Visitante" action="Cadastrar">
           <mvcSiteMapNode title="Confirmação de Cadastro" controller="Visitante" action="Confirmar" />
-        </mvcSiteMapNode>      
+        </mvcSiteMapNode>
         <mvcSiteMapNode title="Detalhes" controller="Visitante" action="Detalhe" preservedRouteParameters="codigo"/>
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Usuários" controller="Usuario" action="Index">
@@ -117,8 +117,13 @@
       <mvcSiteMapNode title="Andamento" controller="Institucional" action="Andamento"/>
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Simulados" url="~/simulado/gerencia">
-      <mvcSiteMapNode title="Gerência dos Simulados" controller="Gerencia" action="Index" />
+      <mvcSiteMapNode title="Gerência" controller="Gerencia" action="Index">
+        <mvcSiteMapNode title="Dados Gerais" controller="Gerencia" action="Dados">
+          <mvcSiteMapNode title="Blocos" controller="Gerencia" action="Blocos" />
+          <mvcSiteMapNode title="Salas" controller="Gerencia" action="Salas" />
+        </mvcSiteMapNode>
+      </mvcSiteMapNode>
     </mvcSiteMapNode>
-      <mvcSiteMapNode title="Perfil" controller="Perfil" action="Index" />
-    </mvcSiteMapNode>
+    <mvcSiteMapNode title="Perfil" controller="Perfil" action="Index" />
+  </mvcSiteMapNode>
 </mvcSiteMap>

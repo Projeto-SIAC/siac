@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Gerência dos Simulados";
+    ViewBag.Title = "Dados Gerais";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -17,25 +17,28 @@
 <div class="ui stackable grid dashmenu">
     <div class="stackable doubling four columns centered row">
         @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Novo", "Simulados") },
-            { "Icone", "plus" },
-            { "Descricao", "Novo Simulado" },
+            { "Url", Url.Action("Parametros", "Configuracoes") },
+            { "Icone", "user" },
+            { "Descricao", "Professores" },
             { "Mensagem", "" }
         })
         @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Index", "Simulados") },
-            { "Icone", "list" },
-            { "Descricao", "Simulados" },
+            { "Url", Url.Action("Parametros", "Configuracoes") },
+            { "Icone", "cube" },
+            { "Descricao", "Disciplinas" },
             { "Mensagem", "" }
         })
         @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Dados", "Gerencia") },
-            { "Icone", "cogs" },
-            { "Descricao", "Dados Gerais" },
+            { "Url", Url.Action("Blocos", "Gerencia") },
+            { "Icone", "building outline" },
+            { "Descricao", "Blocos" },
+            { "Mensagem", "" }
+        })
+        @Html.Partial("_Atalho", new ViewDataDictionary() {
+            { "Url", Url.Action("Salas", "Gerencia") },
+            { "Icone", "marker" },
+            { "Descricao", "Salas" },
             { "Mensagem", "" }
         })
     </div>
 </div>
-
-
-

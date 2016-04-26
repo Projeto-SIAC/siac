@@ -463,6 +463,7 @@
     <Compile Include="Models\pAviQuestao.cs" />
     <Compile Include="Models\pAviQuestaoPessoaResposta.cs" />
     <Compile Include="Models\pAviTipoPublico.cs" />
+    <Compile Include="Models\pBloco.cs" />
     <Compile Include="Models\pdbSIACEntities.cs" />
     <Compile Include="Models\Pessoa.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
@@ -621,6 +622,9 @@
     <Compile Include="ViewModels\ConfiguracoesInstitucionalViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracoesParametrosViewModel.cs" />
     <Compile Include="ViewModels\ErroIndexViewModel.cs" />
+    <Compile Include="ViewModels\GerenciaEditarBlocoViewModel.cs" />
+    <Compile Include="ViewModels\GerenciaBlocosViewModel.cs" />
+    <Compile Include="ViewModels\GerenciaSalasViewModel.cs" />
     <Compile Include="ViewModels\ImpressaoAvaliacaoViewModel.cs" />
     <Compile Include="ViewModels\InstitucionalGerarQuestaoViewModel.cs" />
     <Compile Include="ViewModels\InstitucionalPublicoViewModel.cs" />
@@ -790,6 +794,10 @@
     <Content Include="Views\Shared\Partials\_AvaliacaoRealizar.cshtml" />
     <Content Include="Views\Institucional\Detalhe.cshtml" />
     <Content Include="Views\Gerencia\Index.cshtml" />
+    <Content Include="Views\Gerencia\Dados.cshtml" />
+    <Content Include="Views\Gerencia\Blocos.cshtml" />
+    <Content Include="Views\Gerencia\Salas.cshtml" />
+    <Content Include="Views\Gerencia\Partials\_CarregarBloco.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
