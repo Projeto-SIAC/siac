@@ -7,7 +7,7 @@ namespace SIAC.Models
     {
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 
-        public static List<Bloco> ListarOrdenadamente() => contexto.Bloco.OrderBy(b => b.Descricao).OrderBy(b => b.Campus.PessoaJuridica.NomeFantasia).ToList();
+        public static List<Bloco> ListarOrdenadamente() => contexto.Bloco.OrderBy(b => b.Descricao).OrderBy(b => b.Campus.Sigla).ToList();
 
         public static Bloco ListarPorCodigo(int codBloco) => contexto.Bloco.Find(codBloco);
 

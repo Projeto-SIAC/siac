@@ -45,7 +45,7 @@ namespace SIAC.Controllers
                 string sigla = form["txtSigla"].Trim();
                 string refLocal = form["txtRefLocal"].Trim();
                 string observacao = form["txtObservacao"].Trim();
-                if (!StringExt.IsNullOrWhiteSpace(campusCodComposto, descricao))
+                if (!StringExt.IsNullOrWhiteSpace(campusCodComposto, descricao, sigla))
                 {
                     Bloco bloco = new Bloco();
                     bloco.Campus = Campus.ListarPorCodigo(campusCodComposto);
@@ -61,7 +61,7 @@ namespace SIAC.Controllers
                 }
                 else
                 {
-                    mensagem = "É necessário Campus e Descrição para cadastrar um novo bloco.";
+                    mensagem = "É necessário Campus, Descrição e Sigla para cadastrar um novo bloco.";
                 }
             }
 
@@ -69,7 +69,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Blocos");
         }
 
-        // POST: gerencia/editarbloco
+        // POST: gerencia/carregarbloco
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult CarregarBloco(int bloco)
@@ -87,7 +87,7 @@ namespace SIAC.Controllers
         public ActionResult EditarBloco(int codigo, FormCollection form)
         {
             string lembrete = Lembrete.NEGATIVO;
-            string mensagem = "Ocorreu um erro ao tentar cadastrar um novo bloco.";
+            string mensagem = "Ocorreu um erro ao tentar editar um bloco.";
 
             Bloco bloco = Bloco.ListarPorCodigo(codigo);
 
@@ -99,7 +99,7 @@ namespace SIAC.Controllers
                 string refLocal = form["txtRefLocal"].Trim();
                 string observacao = form["txtObservacao"].Trim();
 
-                if (!StringExt.IsNullOrWhiteSpace(campusCodComposto, descricao))
+                if (!StringExt.IsNullOrWhiteSpace(campusCodComposto, descricao, sigla))
                 {
                     bloco.Campus = Campus.ListarPorCodigo(campusCodComposto);
                     bloco.Descricao = descricao;
@@ -110,11 +110,11 @@ namespace SIAC.Controllers
                     Repositorio.GetInstance().SaveChanges();
 
                     lembrete = Lembrete.POSITIVO;
-                    mensagem = $"Novo bloco \"{bloco.Descricao}\" editado com sucesso.";
+                    mensagem = $"Bloco \"{bloco.Descricao}\" editado com sucesso.";
                 }
                 else
                 {
-                    mensagem = "É necessário Campus e Descrição para editar um bloco.";
+                    mensagem = "É necessário Campus, Descrição e Sigla para editar um bloco.";
                 }
             }
 
@@ -128,7 +128,7 @@ namespace SIAC.Controllers
         public void ExcluirBloco(int codigo)
         {
             string lembrete = Lembrete.NEGATIVO;
-            string mensagem = "Ocorreu um erro ao tentar cadastrar um novo bloco.";
+            string mensagem = "Ocorreu um erro ao tentar excluir um bloco.";
 
             Bloco bloco = Bloco.ListarPorCodigo(codigo);
 
@@ -154,6 +154,128 @@ namespace SIAC.Controllers
 
         // GET: gerencia/salas
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
-        public ActionResult Salas() => View(new ViewModels.GerenciaSalasViewModel());
+        public ActionResult Salas()
+        {
+            GerenciaSalasViewModel viewModel = new GerenciaSalasViewModel();
+            viewModel.Campi = Campus.ListarOrdenadamente();
+            viewModel.Blocos = Bloco.ListarOrdenadamente();
+            viewModel.Salas = Sala.ListarOrdenadamente();
+
+            return View(viewModel);
+        }
+
+        // POST: gerencia/novasala
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public ActionResult NovaSala(FormCollection form)
+        {
+            string lembrete = Lembrete.NEGATIVO;
+            string mensagem = "Ocorreu um erro ao tentar cadastrar uma nova sala.";
+
+            if (form.HasKeys())
+            {
+                string bloco = form["ddlBloco"].Trim();
+                string descricao = form["txtDescricao"].Trim();
+                string sigla = form["txtSigla"].Trim();
+                string refLocal = form["txtRefLocal"].Trim();
+                string observacao = form["txtObservacao"].Trim();
+                if (!StringExt.IsNullOrWhiteSpace(bloco, descricao, sigla))
+                {
+                    Sala sala = new Sala();
+                    sala.Bloco = Bloco.ListarPorCodigo(int.Parse(bloco));
+                    sala.Descricao = descricao;
+                    sala.Sigla = String.IsNullOrWhiteSpace(sigla) ? null : sigla;
+                    sala.RefLocal = String.IsNullOrWhiteSpace(refLocal) ? null : refLocal;
+                    sala.Observacao = String.IsNullOrWhiteSpace(observacao) ? null : observacao;
+
+                    Sala.Inserir(sala);
+
+                    lembrete = Lembrete.POSITIVO;
+                    mensagem = $"Novo sala \"{sala.Descricao}\" cadastrada com sucesso.";
+                }
+                else
+                {
+                    mensagem = "É necessário Bloco, Descrição e Sigla para cadastrar uma nova sala.";
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, lembrete);
+            return RedirectToAction("Salas");
+        }
+
+        // POST: gerencia/carregarsala
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public ActionResult CarregarSala(int sala)
+        {
+            GerenciaEditarSalaViewModel viewModel = new GerenciaEditarSalaViewModel();
+            viewModel.Campi = Campus.ListarOrdenadamente();
+            viewModel.Blocos = Bloco.ListarOrdenadamente();
+            viewModel.Sala = Sala.ListarPorCodigo(sala);
+
+            return PartialView("_CarregarSala", viewModel);
+        }
+
+        // POST: gerencia/editarsala
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public ActionResult EditarSala(int codigo, FormCollection form)
+        {
+            string lembrete = Lembrete.NEGATIVO;
+            string mensagem = "Ocorreu um erro ao tentar editar uma sala.";
+
+            Sala sala = Sala.ListarPorCodigo(codigo);
+
+            if (sala != null && form.HasKeys())
+            {
+                string bloco = form["ddlBloco"].Trim();
+                string descricao = form["txtDescricao"].Trim();
+                string sigla = form["txtSigla"].Trim();
+                string refLocal = form["txtRefLocal"].Trim();
+                string observacao = form["txtObservacao"].Trim();
+                if (!StringExt.IsNullOrWhiteSpace(bloco, descricao, sigla))
+                {
+                    sala.Bloco = Bloco.ListarPorCodigo(int.Parse(bloco));
+                    sala.Descricao = descricao;
+                    sala.Sigla = String.IsNullOrWhiteSpace(sigla) ? null : sigla;
+                    sala.RefLocal = String.IsNullOrWhiteSpace(refLocal) ? null : refLocal;
+                    sala.Observacao = String.IsNullOrWhiteSpace(observacao) ? null : observacao;
+
+                    Repositorio.GetInstance().SaveChanges();
+
+                    lembrete = Lembrete.POSITIVO;
+                    mensagem = $"Sala \"{sala.Descricao}\" editada com sucesso.";
+                }
+                else
+                {
+                    mensagem = "É necessário Bloco, Descrição e Sigla para editar uma nova sala.";
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, lembrete);
+            return RedirectToAction("Salas");
+        }
+
+        // POST: gerencia/excluirsala
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public void ExcluirSala(int codigo)
+        {
+            string lembrete = Lembrete.NEGATIVO;
+            string mensagem = "Ocorreu um erro ao tentar excluir uma sala.";
+
+            Sala sala = Sala.ListarPorCodigo(codigo);
+
+            if (sala != null)
+            {
+                Repositorio.GetInstance().Sala.Remove(sala);
+                Repositorio.GetInstance().SaveChanges();
+
+                lembrete = Lembrete.POSITIVO;
+                mensagem = $"Sala \"{sala.Descricao}\" excluída com sucesso.";
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, lembrete);
+        }
     }
 }

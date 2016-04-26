@@ -91,7 +91,7 @@
             @foreach (Bloco bloco in Model.Blocos)
             {
                 <tr>
-                    <td bloco-campus>@bloco.Campus.PessoaJuridica.NomeFantasia</td>
+                    <td bloco-campus data-content="@bloco.Campus.PessoaJuridica.NomeFantasia">@bloco.Campus.Sigla</td>
                     <td bloco-descricao>@bloco.Descricao</td>
                     <td bloco-sigla>@bloco.Sigla</td>
                     <td>
@@ -111,6 +111,7 @@
         $(function () {
             $('.ui.modal').modal();
             $('.ui.dropdown').dropdown();
+            $('[data-content]').popup();
             $('.novo.button').click(function () { $('.ui.novo.modal').modal('show') });
             $('.editar.button').click(function () {
                 var _this = $(this);
@@ -141,7 +142,7 @@
                     $modal = $('.ui.excluir.modal'),
                     bloco = _this.data('bloco'),
                     blocoDescricao = _this.closest('tr').find('[bloco-descricao]').text(),
-                    blocoCampus = _this.closest('tr').find('[bloco-campus]').text(),
+                    blocoCampus = _this.closest('tr').find('[bloco-campus]').data('content'),
                     blocoSigla = _this.closest('tr').find('[bloco-sigla]').text();
 
                 $modal.find('[bloco-descricao]').text(blocoDescricao);

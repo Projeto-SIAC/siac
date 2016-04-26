@@ -624,6 +624,7 @@
     <Compile Include="ViewModels\ErroIndexViewModel.cs" />
     <Compile Include="ViewModels\GerenciaEditarBlocoViewModel.cs" />
     <Compile Include="ViewModels\GerenciaBlocosViewModel.cs" />
+    <Compile Include="ViewModels\GerenciaEditarSalaViewModel.cs" />
     <Compile Include="ViewModels\GerenciaSalasViewModel.cs" />
     <Compile Include="ViewModels\ImpressaoAvaliacaoViewModel.cs" />
     <Compile Include="ViewModels\InstitucionalGerarQuestaoViewModel.cs" />
