@@ -1,0 +1,89 @@
+﻿@model SimuladoSalasViewModel
+@{
+    ViewBag.Title = "Salas";
+}
+
+<h2>
+    @ViewBag.Title
+    <div class="ui right floated informacoes button">Informações</div>
+</h2>
+
+@Html.Partial("_SimuladoInformacoes", Model.Simulado)
+
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 4 } })
+
+<div class="ui segment">
+    <form method="post" class="ui form">
+        <div class="fields">
+            <div class="five wide field required">
+                <label data-ajuda="Clique na caixa abaixo para selecionar o campus.">Selecione o campus</label>
+                <select id="ddlCampus" name="ddlCampus" class="ui dropdown" required>
+                    <option value="">Campus</option>
+                    @foreach (Campus campus in Model.Campi)
+                    {
+                        <option value="@campus.CodComposto">@campus.Sigla</option>
+                    }
+                </select>
+            </div>
+            <div class="five wide field required">
+                <label data-ajuda="Clique na caixa abaixo para selecionar o bloco do campus.">Selecione o bloco</label>
+                <select id="ddlBloco" name="ddlBloco" class="ui dropdown" required>
+                    <option value="">Bloco</option>
+                    @foreach (Bloco bloco in Model.Blocos)
+                    {
+                        <option value="@bloco.CodBloco">@bloco.Sigla</option>
+                    }
+                </select>
+            </div>
+            <div class="six wide field required">
+                <label data-ajuda="Clique na caixa abaixo para selecionar a sala do bloco.">Selecione a sala</label>
+                <select id="ddlSala" name="ddlSala" class="ui dropdown" required>
+                    <option value="">Sala</option>
+                    @foreach (Sala sala in Model.Salas)
+                    {
+                        <option value="@sala.CodSala">@sala.Sigla</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="field">
+            <input type="submit" value="Selecionar" class="ui right floated selecionar button"/>
+        </div>
+        <br />
+    </form>
+</div>
+
+<div class="ui basic segment" style="max-height:30em">
+    <h3 class="header">Salas Selecionadas</h3>
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th>Campus</th>
+                <th>Bloco</th>
+                <th>Sala</th>
+                <th>Sigla</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (SimSala simSala in Model.Simulado.SimSala)
+            {
+                <tr>
+                    <td sala-campus data-content="@simSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia">@simSala.Sala.Bloco.Campus.Sigla</td>
+                    <td sala-bloco data-content="@simSala.Sala.Bloco.Descricao">@simSala.Sala.Bloco.Sigla</td>
+                    <td sala-descricao>@simSala.Sala.Descricao</td>
+                    <td sala-sigla>@simSala.Sala.Sigla</td>
+                    <td>
+                        <a data-sala="@simSala.Sala.CodSala" class="ui remover tiny button"><i class="trash icon"></i>Remover</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script id="blocos" type="application/json">@Html.Raw(Model.BlocosEmJson)</script>
+    <script id="salas" type="application/json">@Html.Raw(Model.SalasEmJson)</script>
+    @Scripts.Render("~/bundles/js/simulado")
+}

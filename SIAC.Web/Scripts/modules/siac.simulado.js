@@ -117,7 +117,7 @@ siac.Simulado.Provas = (function () {
 })();
 
 siac.Simulado.Datas = (function () {
-    
+
     function iniciar() {
         $('.ui.informacoes.modal').modal();
 
@@ -172,7 +172,7 @@ siac.Simulado.Datas = (function () {
         }
 
         if (inicioInscricao && terminoInscricao) {
-            var strDateA = inicioInscricao  + 'T00:00:00';
+            var strDateA = inicioInscricao + 'T00:00:00';
             var strDateB = terminoInscricao + 'T00:00:00';
             if (siac.Utilitario.compararData(strDateA, strDateB) >= 0) {
                 lstErro.append('<li>Especifique uma data de término posterior à data de início</li>');
@@ -215,6 +215,82 @@ siac.Simulado.Datas = (function () {
             $form.addClass('error');
         }
     }
+
+    return {
+        iniciar: iniciar
+    }
+})();
+
+siac.Simulado.Salas = (function () {
+    var _blocos = [],
+        _salas = [],
+        ddlCampus = $('[name=ddlCampus]'),
+        ddlBloco = $('[name=ddlBloco]'),
+        ddlSala = $('[name=ddlSala]');
+
+    function iniciar() {
+        _blocos = JSON.parse($('script#blocos').html());
+        _salas = JSON.parse($('script#salas').html());
+        $('script#salas').remove();
+        $('script#blocos').remove();
+
+        $('.informacoes.button').click(function () {
+            $('.ui.informacoes.modal').modal('show');
+        });
+
+        $('.ui.dropdown').dropdown();
+        $('[data-content]').popup();
+
+        ddlCampus.off('change').change(function () {
+            atualizarBlocos()
+        });
+        ddlBloco.off('change').change(function () {
+            atualizarSalas()
+        });
+    };
+
+    function atualizarBlocos() {
+        var codCampus = ddlCampus.val(),
+            label = 'Bloco';
+
+        ddlBloco.html('<option value="">'+label+'</option>');
+
+        for (var i = 0, length = _blocos.length; i < length; i++) {
+            if (_blocos[i].Campus == codCampus) {
+                ddlBloco.append('<option value="' + _blocos[i].CodBloco + '">' + _blocos[i].Descricao + '</option>');
+            }
+        }
+
+        ddlBloco
+            .dropdown('refresh')
+            .dropdown('set placeholder text', label)
+            .dropdown('set value', '')
+        ;
+
+        atualizarSalas();
+    };
+
+    function atualizarSalas() {
+        var codBloco = ddlBloco.val(),
+            label = 'Sala';
+
+        ddlSala.html('<option value="">' + label + '</option>');
+
+        if (codBloco) {
+            for (var i = 0, length = _salas.length; i < length; i++) {
+                if (_salas[i].CodBloco == codBloco) {
+                    ddlSala.append('<option value="' + _salas[i].CodSala + '">' + _salas[i].Descricao + '</option>');
+                }
+            }
+        }
+
+        ddlSala
+            .dropdown('refresh')
+            .dropdown('set placeholder text', label)
+            .dropdown('set value', '')
+        ;
+    }
+
 
     return {
         iniciar: iniciar

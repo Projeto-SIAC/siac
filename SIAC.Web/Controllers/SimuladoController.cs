@@ -1,5 +1,6 @@
 ﻿using SIAC.Helpers;
 using SIAC.Models;
+using SIAC.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -97,6 +98,27 @@ namespace SIAC.Controllers
 
                         return RedirectToAction("Salas", new { codigo = sim.Codigo });
                     }
+                }
+            }
+
+            return RedirectToAction("", "Gerencia");
+        }
+
+        public ActionResult Salas(string codigo)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
+                    SimuladoSalasViewModel model = new SimuladoSalasViewModel();
+                    model.Simulado = sim;
+                    model.Campi = Campus.ListarOrdenadamente();
+                    model.Blocos = Bloco.ListarOrdenadamente();
+                    model.Salas = Sala.ListarOrdenadamente();
+                    
+                    return View(model);
                 }
             }
 

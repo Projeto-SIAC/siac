@@ -255,6 +255,9 @@
             else if (pathname.indexOf('/datas') >= 0) {
                 siac.Simulado.Datas.iniciar();
             }
+            else if (pathname.indexOf('/salas') >= 0) {
+                siac.Simulado.Salas.iniciar();
+            }
         }
     }
 
