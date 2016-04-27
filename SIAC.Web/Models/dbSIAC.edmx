@@ -945,6 +945,7 @@
           <Property Name="Sigla" Type="varchar" MaxLength="15" />
           <Property Name="RefLocal" Type="varchar" MaxLength="255" />
           <Property Name="Observacao" Type="varchar" MaxLength="140" />
+          <Property Name="Capacidade" Type="int" />
         </EntityType>
         <EntityType Name="SimCandidato">
           <Key>
@@ -6523,6 +6524,7 @@
           <NavigationProperty Name="Bloco" Relationship="Self.FK__Sala__CodBloco__2AA05119" FromRole="Sala" ToRole="Bloco" />
           <NavigationProperty Name="SimSala" Relationship="Self.FK__SimSala__CodSala__4183B671" FromRole="Sala" ToRole="SimSala" />
           <NavigationProperty Name="TurmaDiscProfHorario" Relationship="Self.FK__TurmaDisc__CodSa__08162EEB" FromRole="Sala" ToRole="TurmaDiscProfHorario" />
+          <Property Name="Capacidade" Type="Int32" />
         </EntityType>
         <EntityType Name="SimCandidato">
           <Key>
@@ -10055,6 +10057,7 @@
           <EntitySetMapping Name="Sala">
             <EntityTypeMapping TypeName="dbSIACModel.Sala">
               <MappingFragment StoreEntitySet="Sala">
+                <ScalarProperty Name="Capacidade" ColumnName="Capacidade" />
                 <ScalarProperty Name="CodSala" ColumnName="CodSala" />
                 <ScalarProperty Name="CodBloco" ColumnName="CodBloco" />
                 <ScalarProperty Name="Descricao" ColumnName="Descricao" />

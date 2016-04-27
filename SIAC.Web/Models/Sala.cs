@@ -30,6 +30,7 @@ namespace SIAC.Models
         public string Sigla { get; set; }
         public string RefLocal { get; set; }
         public string Observacao { get; set; }
+        public Nullable<int> Capacidade { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AvalAcademica> AvalAcademica { get; set; }
