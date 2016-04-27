@@ -40,9 +40,13 @@
                 <label>Descrição</label>
                 <input type="text" name="txtDescricao" placeholder="Descrição" maxlength="50" required />
             </div>
-            <div class="field">
+            <div class="field required">
                 <label>Sigla</label>
                 <input type="text" name="txtSigla" placeholder="Sigla" maxlength="15" required />
+            </div>
+            <div class="field required">
+                <label>Capacidade</label>
+                <input type="text" data-mask="0#" name="txtCapacidade" placeholder="Capacidade" required />
             </div>
             <div class="field">
                 <label>Referência da Localização</label>
@@ -99,6 +103,7 @@
                 <th>Bloco</th>
                 <th>Sala</th>
                 <th>Sigla</th>
+                <th>Capacidade</th>
                 <th></th>
             </tr>
         </thead>
@@ -110,6 +115,7 @@
                     <td sala-bloco data-content="@sala.Bloco.Descricao">@sala.Bloco.Sigla</td>
                     <td sala-descricao>@sala.Descricao</td>
                     <td sala-sigla>@sala.Sigla</td>
+                    <td sala-capacidade>@sala.Capacidade</td>
                     <td>
                         <a data-sala="@sala.CodSala" class="ui editar tiny button"><i class="write icon"></i>Editar</a>
                         <a data-sala="@sala.CodSala" class="ui excluir tiny button"><i class="trash icon"></i>Excluir</a>
