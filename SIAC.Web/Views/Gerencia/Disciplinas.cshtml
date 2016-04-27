@@ -4,7 +4,58 @@
     ViewBag.Title = "Disciplinas";
 }
 
-<h2>@ViewBag.Title</h2>
+<h2>
+    @ViewBag.Title
+    <a class="ui novo right floated button"><i class="add icon"></i>Novo</a>
+</h2>
+
+<form action="@Url.Action("NovaDisciplina")" method="post" class="ui novo modal">
+    <i class="icon close"></i>
+    <div class="header">
+        Nova Disciplina
+    </div>
+    <div class="content">
+        <div class="ui form">
+            <div class="field required">
+                <label>Descrição</label>
+                <input type="text" name="txtDescricao" placeholder="Descrição" maxlength="50" required />
+            </div>
+            <div class="field required">
+                <label>Sigla</label>
+                <input type="text" name="txtSigla" placeholder="Sigla" maxlength="15" required />
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <input type="reset" value="Cancelar" class="ui cancel button" />
+        <input type="submit" value="Cadastrar" class="ui approve button" />
+    </div>
+</form>
+
+<form action="@Url.Action("EditarDisciplina")" method="post" class="ui editar modal"></form>
+
+<div class="ui excluir small modal">
+    <i class="icon close"></i>
+    <div class="header">
+        Excluir Disciplina
+    </div>
+    <div class="content">
+        <div class="ui list">
+            <div class="item">
+                <div class="header">Disciplina</div>
+                <div disciplina-descricao class="description"></div>
+            </div>
+            <div class="item">
+                <div class="header">Sigla</div>
+                <div disciplina-sigla class="description"></div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Cancelar</div>
+        <div class="ui approve red button">Excluir</div>
+    </div>
+</div>
 
 <div class="ui basic segment" style="max-height:30em;overflow-y:auto">
     <table class="ui striped table">
@@ -13,7 +64,7 @@
                 <th>#</th>
                 <th>Disciplina</th>
                 <th>Sigla</th>
-                @*<th></th>*@
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -21,16 +72,21 @@
             {
                 <tr>
                     <td>@(i + 1)</td>
-                    <td>@Model.Disciplinas[i].Descricao</td>
-                    <td>@Model.Disciplinas[i].Sigla</td>
-                    @*<td>
-                        <a data-bloco="@bloco.CodBloco" class="ui editar tiny button"><i class="write icon"></i>Editar</a>
-                        <a data-bloco="@bloco.CodBloco" class="ui excluir tiny button"><i class="trash icon"></i>Excluir</a>
-                    </td>*@
+                    <td disciplina-descricao>@Model.Disciplinas[i].Descricao</td>
+                    <td disciplina-sigla>@Model.Disciplinas[i].Sigla</td>
+                    <td>
+                        <a data-disciplina="@Model.Disciplinas[i].CodDisciplina" class="ui editar tiny button"><i class="write icon"></i>Editar</a>
+                        <a data-disciplina="@Model.Disciplinas[i].CodDisciplina" class="ui excluir tiny button"><i class="trash icon"></i>Excluir</a>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
 
+
 <a class="ui button" href="@Url.Action("Dados", "Gerencia")">Voltar</a>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/gerencia")
+}

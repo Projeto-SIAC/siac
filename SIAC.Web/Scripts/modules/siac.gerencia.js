@@ -154,7 +154,7 @@ siac.Gerencia.Salas = (function () {
 
             ddlBloco
                 .dropdown('refresh')
-                .dropdown('set text', 'Bloco')
+                .dropdown('set placeholder text', 'Bloco')
                 .dropdown('set value', '')
             ;
         });
@@ -166,7 +166,61 @@ siac.Gerencia.Salas = (function () {
 })();
 
 siac.Gerencia.Disciplinas = (function () {
-    function iniciar() { }
+    function iniciar() {
+        $('.ui.dropdown').dropdown();
+
+        $('.novo.button').click(function () { $('.ui.novo.modal').modal('show') });
+
+        $('.editar.button').click(function () {
+            var _this = $(this);
+            $.ajax({
+                url: '/simulado/gerencia/carregardisciplina',
+                method: 'POST',
+                data: {
+                    'disciplina': _this.data('disciplina')
+                },
+                beforeSend: function () {
+                    _this.addClass('loading');
+                },
+                success: function (data) {
+                    $('form.editar').attr('action', '/simulado/gerencia/editardisciplina/' + _this.data('disciplina'))
+                    $('.ui.editar.modal').html(data).modal('show');
+                },
+                error: function () {
+                    siac.mensagem('Falha ao recuperar a Disciplina para edição. Atualize a página para tentar novamente.');
+                },
+                complete: function () {
+                    _this.removeClass('loading');
+                }
+            });
+        });
+
+        $('.excluir.button').click(function () {
+            var _this = $(this),
+                $modal = $('.ui.excluir.modal'),
+                disciplina = _this.data('disciplina'),
+                disciplinaDescricao = _this.closest('tr').find('[disciplina-descricao]').text(),
+                disciplinaSigla = _this.closest('tr').find('[disciplina-sigla]').text();
+
+            $modal.find('[disciplina-descricao]').text(disciplinaDescricao);
+            $modal.find('[disciplina-sigla]').text(disciplinaSigla);
+
+            $modal.modal({
+                onApprove: function () {
+                    $.ajax({
+                        url: '/simulado/gerencia/excluirdisciplina',
+                        method: 'POST',
+                        data: {
+                            'codigo': disciplina
+                        },
+                        complete: function () {
+                            location.reload();
+                        }
+                    });
+                }
+            }).modal('show');
+        });
+    }
 
     return {
         iniciar: iniciar

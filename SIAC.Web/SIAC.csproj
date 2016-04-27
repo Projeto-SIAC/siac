@@ -816,6 +816,7 @@
     <Content Include="Views\Simulado\Provas.cshtml" />
     <Content Include="Views\Gerencia\Professores.cshtml" />
     <Content Include="Views\Gerencia\Disciplinas.cshtml" />
+    <Content Include="Views\Gerencia\Partials\_CarregarDisciplina.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
