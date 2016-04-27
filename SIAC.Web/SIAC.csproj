@@ -628,6 +628,8 @@
     <Compile Include="ViewModels\GerenciaEditarBlocoViewModel.cs" />
     <Compile Include="ViewModels\GerenciaBlocosViewModel.cs" />
     <Compile Include="ViewModels\GerenciaEditarSalaViewModel.cs" />
+    <Compile Include="ViewModels\GerenciaDisciplinasViewModel.cs" />
+    <Compile Include="ViewModels\GerenciaProfessoresViewModel.cs" />
     <Compile Include="ViewModels\GerenciaSalasViewModel.cs" />
     <Compile Include="ViewModels\ImpressaoAvaliacaoViewModel.cs" />
     <Compile Include="ViewModels\InstitucionalGerarQuestaoViewModel.cs" />
@@ -808,6 +810,8 @@
     <Content Include="Views\Simulado\Partials\_PassoAPasso.cshtml" />
     <Content Include="Views\Simulado\Partials\_SimuladoInformacoes.cshtml" />
     <Content Include="Views\Simulado\Provas.cshtml" />
+    <Content Include="Views\Gerencia\Professores.cshtml" />
+    <Content Include="Views\Gerencia\Disciplinas.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -19,6 +19,8 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Dados() => View();
 
+        #region Blocos
+
         // GET: gerencia/blocos
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Blocos()
@@ -152,6 +154,10 @@ namespace SIAC.Controllers
             Lembrete.AdicionarNotificacao(mensagem, lembrete);
         }
 
+        #endregion
+
+        #region Salas
+
         // GET: gerencia/salas
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Salas()
@@ -281,5 +287,27 @@ namespace SIAC.Controllers
 
             Lembrete.AdicionarNotificacao(mensagem, lembrete);
         }
+
+        #endregion
+
+        #region Disciplinas
+
+        // GET: gerencia/disciplinas
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public ActionResult Disciplinas() => View(new GerenciaDisciplinasViewModel() {
+            Disciplinas = Disciplina.ListarOrdenadamente()
+        });
+
+        #endregion
+
+        #region Professores
+
+        // GET: gerencia/professores
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public ActionResult Professores() => View(new GerenciaProfessoresViewModel() {
+            Professores = Professor.ListarOrdenadamente()
+        });
+
+        #endregion
     }
 }
