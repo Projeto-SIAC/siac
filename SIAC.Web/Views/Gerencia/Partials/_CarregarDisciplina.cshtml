@@ -1,0 +1,22 @@
+﻿@model Disciplina
+
+<i class="icon close"></i>
+<div class="header">
+    Editar Disciplina "@Model.Descricao"
+</div>
+<div class="content">
+    <div class="ui form">
+        <div class="field required">
+            <label>Descrição</label>
+            <input type="text" name="txtDescricao" placeholder="Descrição" maxlength="50" required value="@Model.Descricao" />
+        </div>
+        <div class="field required">
+            <label>Sigla</label>
+            <input type="text" name="txtSigla" placeholder="Sigla" maxlength="15" required value="@Model.Sigla" />
+        </div>
+    </div>
+</div>
+<div class="actions">
+    <input type="reset" value="Cancelar" class="ui cancel button" />
+    <input type="submit" value="Salvar" class="ui approve button" />
+</div>

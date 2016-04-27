@@ -298,6 +298,118 @@ namespace SIAC.Controllers
             Disciplinas = Disciplina.ListarOrdenadamente()
         });
 
+        // POST: gerencia/novadisciplina
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public ActionResult NovaDisciplina(FormCollection form)
+        {
+            string lembrete = Lembrete.NEGATIVO;
+            string mensagem = "Ocorreu um erro ao tentar cadastrar uma nova disciplina.";
+
+            if (form.HasKeys())
+            {
+                string descricao = form["txtDescricao"].Trim();
+                string sigla = form["txtSigla"].Trim();
+                if (!StringExt.IsNullOrWhiteSpace(descricao, sigla))
+                {
+                    Disciplina disciplina = new Disciplina()
+                    {
+                        Descricao = descricao,
+                        Sigla = sigla,
+                        Tema = new List<Tema> {
+                            new Tema()
+                            {
+                                CodTema = 1,
+                                Descricao = "Simulado"
+                            }
+                        }
+                    };
+
+                    Disciplina.Inserir(disciplina);
+
+                    lembrete = Lembrete.POSITIVO;
+                    mensagem = $"Nova disciplina \"{disciplina.Descricao}\" cadastrada com sucesso.";
+                }
+                else
+                {
+                    mensagem = "É necessário Descrição e Sigla para cadastrar uma nova disciplina.";
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, lembrete);
+            return RedirectToAction("Disciplinas");
+        }
+
+        // POST: gerencia/carregardisciplina
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public ActionResult CarregarDisciplina(int disciplina) => PartialView("_CarregarDisciplina", Disciplina.ListarPorCodigo(disciplina));
+
+        // POST: gerencia/editardisciplina
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public ActionResult EditarDisciplina(int codigo, FormCollection form)
+        {
+            string lembrete = Lembrete.NEGATIVO;
+            string mensagem = "Ocorreu um erro ao tentar editar uma disciplina.";
+
+            Disciplina disciplina = Disciplina.ListarPorCodigo(codigo);
+
+            if (disciplina != null && form.HasKeys())
+            {
+                string descricao = form["txtDescricao"].Trim();
+                string sigla = form["txtSigla"].Trim();
+
+                if (!StringExt.IsNullOrWhiteSpace(descricao, sigla))
+                {
+                    disciplina.Descricao = descricao;
+                    disciplina.Sigla = sigla;
+
+                    Repositorio.GetInstance().SaveChanges();
+
+                    lembrete = Lembrete.POSITIVO;
+                    mensagem = $"Disciplina \"{disciplina.Descricao}\" editada com sucesso.";
+                }
+                else
+                {
+                    mensagem = "É necessário Descrição e Sigla para editar uma disciplina.";
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, lembrete);
+            return RedirectToAction("Disciplinas");
+        }
+
+        // POST: gerencia/excluirdisciplina
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public void ExcluirDisciplina(int codigo)
+        {
+            string lembrete = Lembrete.NEGATIVO;
+            string mensagem = "Ocorreu um erro ao tentar excluir uma disciplina.";
+
+            Disciplina disciplina = Disciplina.ListarPorCodigo(codigo);
+
+            if (disciplina != null)
+            {
+                if (disciplina.Tema.Count == 0 || (disciplina.Tema.Count == 1 && disciplina.Tema.First().Descricao.ToLower() == "simulado"))
+                {
+                    Repositorio.GetInstance().Disciplina.Remove(disciplina);
+                    Repositorio.GetInstance().SaveChanges();
+
+                    lembrete = Lembrete.POSITIVO;
+                    mensagem = $"Disciplina \"{disciplina.Descricao}\" excluída com sucesso.";
+                }
+                else
+                {
+                    lembrete = Lembrete.NEGATIVO;
+                    mensagem = $"É necessário excluir primeiro os temas da disciplina \"{disciplina.Descricao}\". Esta disciplina contém {disciplina.Tema.Count} temas relacionados.";
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, lembrete);
+        }
+
         #endregion
 
         #region Professores
