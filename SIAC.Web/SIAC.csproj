@@ -211,6 +211,7 @@
     <Content Include="Scripts\modules\siac.certificacao.min.js">
       <DependentUpon>siac.certificacao.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\modules\siac.gerencia.js" />
     <Content Include="Scripts\modules\siac.lembrete.js" />
     <Content Include="Scripts\modules\siac.agenda.js" />
     <Content Include="Scripts\modules\siac.perfil.js" />
