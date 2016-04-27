@@ -1,0 +1,37 @@
+﻿@model GerenciaProfessoresViewModel
+
+@{
+    ViewBag.Title = "Professores";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="ui basic segment" style="max-height:30em;overflow-y:auto">
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Professor</th>
+                <th>Matrícula</th>
+                @*<th></th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0, length = Model.Professores.Count; i < length; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@Model.Professores[i].Usuario.PessoaFisica.Nome</td>
+                    <td>@Model.Professores[i].MatrProfessor</td>
+                    @*<td>
+                            <a data-bloco="@bloco.CodBloco" class="ui editar tiny button"><i class="write icon"></i>Editar</a>
+                            <a data-bloco="@bloco.CodBloco" class="ui excluir tiny button"><i class="trash icon"></i>Excluir</a>
+                        </td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<a class="ui button" href="@Url.Action("Dados", "Gerencia")">Voltar</a>
+

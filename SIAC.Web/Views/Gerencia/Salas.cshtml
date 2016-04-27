@@ -40,9 +40,13 @@
                 <label>Descrição</label>
                 <input type="text" name="txtDescricao" placeholder="Descrição" maxlength="50" required />
             </div>
-            <div class="field">
+            <div class="field required">
                 <label>Sigla</label>
                 <input type="text" name="txtSigla" placeholder="Sigla" maxlength="15" required />
+            </div>
+            <div class="field required">
+                <label>Capacidade</label>
+                <input type="text" data-mask="0#" name="txtCapacidade" placeholder="Capacidade" required />
             </div>
             <div class="field">
                 <label>Referência da Localização</label>
@@ -91,7 +95,7 @@
     </div>
 </div>
 
-<div class="ui basic segment" style="max-height:30em">
+<div class="ui basic segment" style="max-height:30em;overflow-y:auto">
     <table class="ui striped table">
         <thead>
             <tr>
@@ -99,6 +103,7 @@
                 <th>Bloco</th>
                 <th>Sala</th>
                 <th>Sigla</th>
+                <th>Capacidade</th>
                 <th></th>
             </tr>
         </thead>
@@ -110,6 +115,7 @@
                     <td sala-bloco data-content="@sala.Bloco.Descricao">@sala.Bloco.Sigla</td>
                     <td sala-descricao>@sala.Descricao</td>
                     <td sala-sigla>@sala.Sigla</td>
+                    <td sala-capacidade>@sala.Capacidade</td>
                     <td>
                         <a data-sala="@sala.CodSala" class="ui editar tiny button"><i class="write icon"></i>Editar</a>
                         <a data-sala="@sala.CodSala" class="ui excluir tiny button"><i class="trash icon"></i>Excluir</a>
@@ -123,94 +129,8 @@
 <a class="ui button" href="@Url.Action("Dados", "Gerencia")">Voltar</a>
 
 @section Scripts {
-    <script id="blocos" type="application/json">@Html.Raw(Model.BlocosEmJson)</script>
-    <script>
-        $(function () {
-            var _blocos = JSON.parse($('script#blocos').html());
-
-            $('.ui.modal').modal();
-            $('.ui.dropdown').dropdown();
-            $('[data-content]').popup();
-            atualizarBlocosPorCampus('.novo.modal');
-            $('.novo.button').click(function () { $('.ui.novo.modal').modal('show') });
-            $('.editar.button').click(function () {
-                var _this = $(this);
-                $.ajax({
-                    url: "@Url.Action("CarregarSala", "Gerencia")",
-                    method: 'POST',
-                    data: {
-                        'sala': _this.data('sala')
-                    },
-                    beforeSend: function () {
-                        _this.addClass('loading');
-                    },
-                    success: function (data) {
-                        $('form.editar').attr('action', '@Url.Action("EditarSala")/' + _this.data('sala'))
-                        $('.ui.editar.modal').html(data).modal('show');
-                        $('.ui.editar.modal .ui.dropdown').dropdown();
-                        atualizarBlocosPorCampus('.editar.modal');
-                    },
-                    error: function () {
-                        siac.mensagem('Falha ao recuperar a Sala para edição. Atualize a página para tentar novamente.');
-                    },
-                    complete: function () {
-                        _this.removeClass('loading');
-                    }
-                });
-            });
-            $('.excluir.button').click(function () {
-                var _this = $(this),
-                    $modal = $('.ui.excluir.modal'),
-                    sala = _this.data('sala'),
-                    salaDescricao = _this.closest('tr').find('[sala-descricao]').text(),
-                    salaCampus = _this.closest('tr').find('[sala-campus]').data('content'),
-                    salaBloco = _this.closest('tr').find('[sala-bloco]').data('content'),
-                    salaSigla = _this.closest('tr').find('[sala-sigla]').text();
-
-                $modal.find('[sala-descricao]').text(salaDescricao);
-                $modal.find('[sala-campus]').text(salaCampus);
-                $modal.find('[sala-bloco]').text(salaBloco);
-                $modal.find('[sala-sigla]').text(salaSigla);
-
-                $modal.modal({
-                    onApprove: function () {
-                        $.ajax({
-                            url: "@Url.Action("ExcluirSala", "Gerencia")",
-                            method: 'POST',
-                            data: {
-                                'codigo': sala
-                            },
-                            complete: function () {
-                                location.reload();
-                            }
-                        });
-                    }
-                }).modal('show');
-            });
-
-            function atualizarBlocosPorCampus(contexto) {
-                var ddlCampus = $(contexto + ' [name=ddlCampus]'),
-                    ddlBloco = $(contexto + ' [name=ddlBloco]');
-
-                ddlCampus.off('change').change(function () {
-                    var _this = $(this),
-                        codCampus = _this.val();
-
-                    ddlBloco.html('<option value="">Bloco</option>');
-
-                    for (var i = 0, length = _blocos.length; i < length; i++) {
-                        if (_blocos[i].Campus == codCampus) {
-                            ddlBloco.append('<option value="'+ _blocos[i].CodBloco +'">' + _blocos[i].Descricao + '</option>');
-                        }
-                    }
-
-                    ddlBloco
-                        .dropdown('refresh')
-                        .dropdown('set text', '')
-                        .dropdown('set value', '')
-                    ;
-                });
-            }
-        });
+    <script id="blocos" type="application/json">
+        @Html.Raw(Model.BlocosEmJson)
     </script>
+    @Scripts.Render("~/bundles/js/gerencia")
 }

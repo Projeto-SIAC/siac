@@ -81,6 +81,10 @@ namespace SIAC
                 "~/scripts/modules/siac.simulado.js"
             ));
 
+            bundles.Add(new ScriptBundle("~/bundles/js/gerencia").Include(
+                "~/scripts/modules/siac.gerencia.js"
+            ));
+
             bundles.Add(new ScriptBundle("~/bundles/signalR").Include(
                 "~/scripts/plugins/jquery.signalR-2.2.0.min.js"
             ));

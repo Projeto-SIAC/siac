@@ -199,10 +199,6 @@
     <Content Include="Resources\images\layout\logo-black.png" />
     <Content Include="Resources\images\layout\logo.png" />
     <Content Include="Scripts\libs\moment.min.js" />
-    <Content Include="Scripts\modules\siac.simulado.js" />
-    <Content Include="Scripts\modules\siac.academica - Copy.min.js">
-      <DependentUpon>siac.simulado.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\modules\siac.academica.js" />
     <Content Include="Scripts\modules\siac.academica.min.js">
       <DependentUpon>siac.academica.js</DependentUpon>
@@ -215,10 +211,12 @@
     <Content Include="Scripts\modules\siac.certificacao.min.js">
       <DependentUpon>siac.certificacao.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\modules\siac.gerencia.js" />
     <Content Include="Scripts\modules\siac.lembrete.js" />
     <Content Include="Scripts\modules\siac.agenda.js" />
     <Content Include="Scripts\modules\siac.perfil.js" />
     <Content Include="Scripts\modules\siac.reposicao.js" />
+    <Content Include="Scripts\modules\siac.simulado.js" />
     <Content Include="Scripts\modules\siac.usuario.js" />
     <Content Include="Scripts\modules\siac.visitante.js" />
     <Content Include="Scripts\plugins\jquery.address-1.6.min.js" />
@@ -632,6 +630,8 @@
     <Compile Include="ViewModels\GerenciaBlocosViewModel.cs" />
     <Compile Include="ViewModels\GerenciaEditarSalaViewModel.cs" />
     <Compile Include="ViewModels\SimuladoSalasViewModel.cs" />
+    <Compile Include="ViewModels\GerenciaDisciplinasViewModel.cs" />
+    <Compile Include="ViewModels\GerenciaProfessoresViewModel.cs" />
     <Compile Include="ViewModels\GerenciaSalasViewModel.cs" />
     <Compile Include="ViewModels\ImpressaoAvaliacaoViewModel.cs" />
     <Compile Include="ViewModels\InstitucionalGerarQuestaoViewModel.cs" />
@@ -806,12 +806,16 @@
     <Content Include="Views\Gerencia\Blocos.cshtml" />
     <Content Include="Views\Gerencia\Salas.cshtml" />
     <Content Include="Views\Gerencia\Partials\_CarregarBloco.cshtml" />
+    <Content Include="Views\Gerencia\Partials\_CarregarSala.cshtml" />
+    <Content Include="Views\Simulado\Datas.cshtml" />
     <Content Include="Views\Simulado\Novo.cshtml" />
     <Content Include="Views\Simulado\Partials\_PassoAPasso.cshtml" />
-    <Content Include="Views\Simulado\Provas.cshtml" />
     <Content Include="Views\Simulado\Partials\_SimuladoInformacoes.cshtml" />
     <Content Include="Views\Simulado\Datas.cshtml" />
     <Content Include="Views\Simulado\Salas.cshtml" />
+    <Content Include="Views\Simulado\Provas.cshtml" />
+    <Content Include="Views\Gerencia\Professores.cshtml" />
+    <Content Include="Views\Gerencia\Disciplinas.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -19,6 +19,8 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Dados() => View();
 
+        #region Blocos
+
         // GET: gerencia/blocos
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Blocos()
@@ -152,6 +154,10 @@ namespace SIAC.Controllers
             Lembrete.AdicionarNotificacao(mensagem, lembrete);
         }
 
+        #endregion
+
+        #region Salas
+
         // GET: gerencia/salas
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Salas()
@@ -177,14 +183,16 @@ namespace SIAC.Controllers
                 string bloco = form["ddlBloco"].Trim();
                 string descricao = form["txtDescricao"].Trim();
                 string sigla = form["txtSigla"].Trim();
+                string capacidade = form["txtCapacidade"].Trim();
                 string refLocal = form["txtRefLocal"].Trim();
                 string observacao = form["txtObservacao"].Trim();
-                if (!StringExt.IsNullOrWhiteSpace(bloco, descricao, sigla))
+                if (!StringExt.IsNullOrWhiteSpace(bloco, descricao, sigla, capacidade))
                 {
                     Sala sala = new Sala();
                     sala.Bloco = Bloco.ListarPorCodigo(int.Parse(bloco));
                     sala.Descricao = descricao;
-                    sala.Sigla = String.IsNullOrWhiteSpace(sigla) ? null : sigla;
+                    sala.Sigla = sigla;
+                    sala.Capacidade = int.Parse(capacidade);
                     sala.RefLocal = String.IsNullOrWhiteSpace(refLocal) ? null : refLocal;
                     sala.Observacao = String.IsNullOrWhiteSpace(observacao) ? null : observacao;
 
@@ -195,7 +203,7 @@ namespace SIAC.Controllers
                 }
                 else
                 {
-                    mensagem = "É necessário Bloco, Descrição e Sigla para cadastrar uma nova sala.";
+                    mensagem = "É necessário Bloco, Descrição, Sigla e Capacidade para cadastrar uma nova sala.";
                 }
             }
 
@@ -231,13 +239,15 @@ namespace SIAC.Controllers
                 string bloco = form["ddlBloco"].Trim();
                 string descricao = form["txtDescricao"].Trim();
                 string sigla = form["txtSigla"].Trim();
+                string capacidade = form["txtCapacidade"].Trim();
                 string refLocal = form["txtRefLocal"].Trim();
                 string observacao = form["txtObservacao"].Trim();
-                if (!StringExt.IsNullOrWhiteSpace(bloco, descricao, sigla))
+                if (!StringExt.IsNullOrWhiteSpace(bloco, descricao, sigla, capacidade))
                 {
                     sala.Bloco = Bloco.ListarPorCodigo(int.Parse(bloco));
                     sala.Descricao = descricao;
-                    sala.Sigla = String.IsNullOrWhiteSpace(sigla) ? null : sigla;
+                    sala.Sigla = sigla;
+                    sala.Capacidade = int.Parse(capacidade);
                     sala.RefLocal = String.IsNullOrWhiteSpace(refLocal) ? null : refLocal;
                     sala.Observacao = String.IsNullOrWhiteSpace(observacao) ? null : observacao;
 
@@ -248,7 +258,7 @@ namespace SIAC.Controllers
                 }
                 else
                 {
-                    mensagem = "É necessário Bloco, Descrição e Sigla para editar uma nova sala.";
+                    mensagem = "É necessário Bloco, Descrição, Sigla e Capacidade para editar uma sala.";
                 }
             }
 
@@ -277,5 +287,27 @@ namespace SIAC.Controllers
 
             Lembrete.AdicionarNotificacao(mensagem, lembrete);
         }
+
+        #endregion
+
+        #region Disciplinas
+
+        // GET: gerencia/disciplinas
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public ActionResult Disciplinas() => View(new GerenciaDisciplinasViewModel() {
+            Disciplinas = Disciplina.ListarOrdenadamente()
+        });
+
+        #endregion
+
+        #region Professores
+
+        // GET: gerencia/professores
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public ActionResult Professores() => View(new GerenciaProfessoresViewModel() {
+            Professores = Professor.ListarOrdenadamente()
+        });
+
+        #endregion
     }
 }

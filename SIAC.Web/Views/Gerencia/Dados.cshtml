@@ -17,15 +17,15 @@
 <div class="ui stackable grid dashmenu">
     <div class="stackable doubling four columns centered row">
         @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Parametros", "Configuracoes") },
-            { "Icone", "user" },
-            { "Descricao", "Professores" },
+            { "Url", Url.Action("Disciplinas", "Gerencia") },
+            { "Icone", "cube" },
+            { "Descricao", "Disciplinas" },
             { "Mensagem", "" }
         })
         @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Parametros", "Configuracoes") },
-            { "Icone", "cube" },
-            { "Descricao", "Disciplinas" },
+            { "Url", Url.Action("Professores", "Gerencia") },
+            { "Icone", "user" },
+            { "Descricao", "Professores" },
             { "Mensagem", "" }
         })
         @Html.Partial("_Atalho", new ViewDataDictionary() {
@@ -42,3 +42,6 @@
         })
     </div>
 </div>
+
+
+<a class="ui button" href="@Url.Action("Index", "Gerencia")">Voltar</a>

@@ -30,7 +30,7 @@
                 <label>Descrição</label>
                 <input type="text" name="txtDescricao" placeholder="Descrição" maxlength="50" required />
             </div>
-            <div class="field">
+            <div class="field required">
                 <label>Sigla</label>
                 <input type="text" name="txtSigla" placeholder="Sigla" maxlength="15" required />
             </div>
@@ -77,7 +77,7 @@
     </div>
 </div>
 
-<div class="ui basic segment" style="max-height:30em">
+<div class="ui basic segment" style="max-height:30em;overflow-y:auto">
     <table class="ui striped table">
         <thead>
             <tr>
@@ -107,63 +107,5 @@
 <a class="ui button" href="@Url.Action("Dados", "Gerencia")">Voltar</a>
 
 @section Scripts {
-    <script>
-        $(function () {
-            $('.ui.modal').modal();
-            $('.ui.dropdown').dropdown();
-            $('[data-content]').popup();
-            $('.novo.button').click(function () { $('.ui.novo.modal').modal('show') });
-            $('.editar.button').click(function () {
-                var _this = $(this);
-                $.ajax({
-                    url: "@Url.Action("CarregarBloco", "Gerencia")",
-                    method: 'POST',
-                    data: {
-                        'bloco': _this.data('bloco')
-                    },
-                    beforeSend: function () {
-                        _this.addClass('loading');
-                    },
-                    success: function (data) {
-                        $('form.editar').attr('action', '@Url.Action("EditarBloco")/' + _this.data('bloco'))
-                        $('.ui.editar.modal').html(data).modal('show');
-                        $('.ui.editar.modal .ui.dropdown').dropdown();
-                    },
-                    error: function () {
-                        siac.mensagem('Falha ao recuperar o Bloco para edição. Atualize a página para tentar novamente.');
-                    },
-                    complete: function () {
-                        _this.removeClass('loading');
-                    }
-                });
-            });
-            $('.excluir.button').click(function () {
-                var _this = $(this),
-                    $modal = $('.ui.excluir.modal'),
-                    bloco = _this.data('bloco'),
-                    blocoDescricao = _this.closest('tr').find('[bloco-descricao]').text(),
-                    blocoCampus = _this.closest('tr').find('[bloco-campus]').data('content'),
-                    blocoSigla = _this.closest('tr').find('[bloco-sigla]').text();
-
-                $modal.find('[bloco-descricao]').text(blocoDescricao);
-                $modal.find('[bloco-campus]').text(blocoCampus);
-                $modal.find('[bloco-sigla]').text(blocoSigla);
-
-                $modal.modal({
-                    onApprove: function () {
-                        $.ajax({
-                            url: "@Url.Action("ExcluirBloco", "Gerencia")",
-                            method: 'POST',
-                            data: {
-                                'codigo': bloco
-                            },
-                            complete: function () {
-                                location.reload();
-                            }
-                        });
-                    }
-                }).modal('show');
-            });
-        });
-    </script>
+    @Scripts.Render("~/bundles/js/gerencia")
 }

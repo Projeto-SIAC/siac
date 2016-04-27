@@ -31,9 +31,13 @@
             <label>Descrição</label>
             <input type="text" name="txtDescricao" placeholder="Descrição" maxlength="50" required value="@Model.Sala.Descricao" />
         </div>
-        <div class="field">
+        <div class="field required">
             <label>Sigla</label>
             <input type="text" name="txtSigla" placeholder="Sigla" maxlength="15" required value="@Model.Sala.Sigla" />
+        </div>
+        <div class="field required">
+            <label>Capacidade</label>
+            <input type="text" data-mask="0#" name="txtCapacidade" placeholder="Capacidade" required value="@Model.Sala.Capacidade" />
         </div>
         <div class="field">
             <label>Referência da Localização</label>

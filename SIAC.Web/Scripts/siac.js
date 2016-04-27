@@ -258,6 +258,20 @@
             else if (pathname.indexOf('/salas') >= 0) {
                 siac.Simulado.Salas.iniciar();
             }
+            else if (pathname.indexOf('/gerencia/') >= 0) {
+                if (pathname.indexOf('/blocos') >= 0) {
+                    siac.Gerencia.Blocos.iniciar();
+                }
+                else if (pathname.indexOf('/salas') >= 0) {
+                    siac.Gerencia.Salas.iniciar();
+                }
+                else if (pathname.indexOf('/disciplinas') >= 0) {
+                    siac.Gerencia.Disciplinas.iniciar();
+                }
+                else if (pathname.indexOf('/professores') >= 0) {
+                    siac.Gerencia.Professores.iniciar();
+                }
+            }
         }
     }
 
@@ -315,8 +329,8 @@
             ;
         }
     }
-    
-    
+
+
 
     return {
         iniciar: iniciar,
