@@ -148,7 +148,7 @@ namespace SIAC.Controllers
                 {
                     lembrete = Lembrete.NEGATIVO;
                     mensagem = $"É necessário excluir primeiro as salas do Bloco \"{bloco.Descricao}\". Este bloco contém {bloco.Sala.Count} salas relacionadas.";
-                }                
+                }
             }
 
             Lembrete.AdicionarNotificacao(mensagem, lembrete);
@@ -294,7 +294,8 @@ namespace SIAC.Controllers
 
         // GET: gerencia/disciplinas
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
-        public ActionResult Disciplinas() => View(new GerenciaDisciplinasViewModel() {
+        public ActionResult Disciplinas() => View(new GerenciaDisciplinasViewModel()
+        {
             Disciplinas = Disciplina.ListarOrdenadamente()
         });
 
@@ -416,9 +417,163 @@ namespace SIAC.Controllers
 
         // GET: gerencia/professores
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
-        public ActionResult Professores() => View(new GerenciaProfessoresViewModel() {
-            Professores = Professor.ListarOrdenadamente()
+        public ActionResult Professores() => View(new GerenciaProfessoresViewModel()
+        {
+            Professores = Professor.ListarOrdenadamente(),
+            Disciplinas = Disciplina.ListarOrdenadamente()
         });
+
+        // POST: gerencia/novoprofessor
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public ActionResult NovoProfessor(FormCollection form)
+        {
+            string lembrete = Lembrete.NEGATIVO;
+            string mensagem = "Ocorreu um erro ao tentar cadastrar um(a) novo(a) professor(a).";
+
+            if (form.HasKeys())
+            {
+                string nome = form["txtNome"].Trim();
+                string matricula = form["txtMatricula"].Trim();
+                string senha = form["txtSenha"];
+                string senhaConfirmacao = form["txtSenhaConfirmacao"];
+                string[] disciplinas = form["ddlDisciplina"].Split(',');
+                if (!StringExt.IsNullOrWhiteSpace(nome, matricula, senha, senha) && disciplinas.Length > 0)
+                {
+                    if (senha == senhaConfirmacao)
+                    {
+                        int codPessoa = Pessoa.Inserir(new Pessoa() { TipoPessoa = Pessoa.FISICA });
+
+                        PessoaFisica pf = new PessoaFisica();
+                        pf.CodPessoa = codPessoa;
+                        pf.Nome = nome;
+                        pf.Categoria.Add(Categoria.ListarPorCodigo(Categoria.PROFESSOR));
+
+                        int codPessoaFisica = PessoaFisica.Inserir(pf);
+
+                        Usuario usuario = new Usuario();
+                        usuario.Matricula = matricula;
+                        usuario.CodPessoaFisica = codPessoaFisica;
+                        usuario.CodCategoria = Categoria.PROFESSOR;
+                        usuario.Senha = Criptografia.RetornarHash(senhaConfirmacao);
+
+                        int codUsuario = Usuario.Inserir(usuario);
+
+                        Professor professor = new Professor();
+                        professor.MatrProfessor = usuario.Matricula;
+
+                        foreach (string disciplina in disciplinas)
+                        {
+                            professor.Disciplina.Add(Disciplina.ListarPorCodigo(int.Parse(disciplina)));
+                        }
+
+                        Professor.Inserir(professor);
+
+                        lembrete = Lembrete.POSITIVO;
+                        mensagem = $"Novo(a) professor(a) \"{pf.Nome}\" cadastrado(a) com sucesso.";
+                    }
+                    else
+                    {
+                        mensagem = "A Senha informada deve ser igual à Confirmação da Senha.";
+                    }
+                }
+                else
+                {
+                    mensagem = "Todos os campos são necessário para cadastrar um(a) novo(a) professor(a).";
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, lembrete);
+            return RedirectToAction("Professores");
+        }
+
+        // POST: gerencia/carregarprofessor
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public ActionResult CarregarProfessor(string professor) => PartialView("_CarregarProfessor", new GerenciaEditarProfessorViewModel()
+        {
+            Professor = Professor.ListarPorMatricula(professor),
+            Disciplinas = Disciplina.ListarOrdenadamente()
+        });
+
+        // POST: gerencia/carregarprofessordisciplinas
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public ActionResult CarregarProfessorDisciplinas(string professor) => PartialView("_CarregarProfessorDisciplinas", Professor.ListarPorMatricula(professor));
+
+        // POST: gerencia/editarprofessor
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public ActionResult EditarProfessor(string codigo, FormCollection form)
+        {
+            string lembrete = Lembrete.NEGATIVO;
+            string mensagem = "Ocorreu um erro ao tentar editar um(a) professor(a).";
+
+            Professor professor = Professor.ListarPorMatricula(codigo);
+
+            if (professor != null && form.HasKeys())
+            {
+                string nome = form["txtNome"].Trim();
+                string[] disciplinas = String.IsNullOrEmpty(form["ddlDisciplina"]) ? new string[0] : form["ddlDisciplina"].Split(',');
+
+                if (!StringExt.IsNullOrWhiteSpace(nome))
+                {
+                    professor.Usuario.PessoaFisica.Nome = nome;
+
+                    professor.Disciplina.Clear();
+
+                    foreach (string disciplina in disciplinas)
+                    {
+                        professor.Disciplina.Add(Disciplina.ListarPorCodigo(int.Parse(disciplina)));
+                    }
+
+                    Repositorio.GetInstance().SaveChanges();
+
+                    lembrete = Lembrete.POSITIVO;
+                    mensagem = $"Professor(a) \"{nome}\" editado(a) com sucesso.";
+                }
+                else
+                {
+                    mensagem = "Todos os campos são necessário para editar um(a) professor(a).";
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, lembrete);
+            return RedirectToAction("Professores");
+        }
+
+        // POST: gerencia/excluirprofessor
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public void ExcluirProfessor(string codigo)
+        {
+            string lembrete = Lembrete.NEGATIVO;
+            string mensagem = "Ocorreu um erro ao tentar excluir um(a) professor(a).";
+
+            Professor professor = Professor.ListarPorMatricula(codigo);
+
+            if (professor != null)
+            {
+                try
+                {
+                    Repositorio.GetInstance().Professor.Remove(professor);
+                    Repositorio.GetInstance().SaveChanges();
+
+                    lembrete = Lembrete.POSITIVO;
+                    mensagem = $"Professor(a) \"{professor.Usuario.PessoaFisica.Nome}\" excluído(a) com sucesso.";
+                }
+                catch
+                {
+                    Repositorio.Dispose();
+                    Repositorio.Commit();
+
+                    lembrete = Lembrete.NEGATIVO;
+                    mensagem = $"Não é possível excluir este(a) professor(a).";
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, lembrete);
+        }
 
         #endregion
     }

@@ -34,7 +34,7 @@
             <div class="ui relaxed list">
                 @switch (Model.CodCategoria)
                 {
-                    case 1:
+                    case Categoria.ESTUDANTE:
                         <div class="item">
                             <div class="header">Instituição</div>
                             @Model.Aluno.Last().Turma.Curso.Diretoria.Campus.Instituicao.PessoaJuridica.NomeFantasia
@@ -75,15 +75,15 @@
                             </div>
                         </div>
                         break;
-                    case 2:
+                    case Categoria.PROFESSOR:
                         <div class="item">
                             <div class="header">Instituição</div>
-                            @Model.Professor.Last().Instituicao.PessoaJuridica.NomeFantasia
+                            @(Model.Professor.Last().Instituicao?.PessoaJuridica.NomeFantasia ?? "Não disponível")
                         </div>
 
                         <div class="item">
                             <div class="header">Campus</div>
-                            @Model.Professor.Last().Campus.PessoaJuridica.NomeFantasia
+                            @(Model.Professor.Last().Campus?.PessoaJuridica.NomeFantasia ?? "Não disponível")
                         </div>
 
                         <div class="item">

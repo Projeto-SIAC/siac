@@ -1,0 +1,34 @@
+﻿@model Professor
+
+@{ 
+    List<Disciplina> disciplinas = Model.Disciplina.OrderBy(d => d.Descricao).ToList();
+}
+
+<i class="icon close"></i>
+<div class="header">
+    Disciplinas Lecionadas por "@Model.Usuario.PessoaFisica.Nome"
+</div>
+<div class="content">
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Disciplina</th>
+                <th>Sigla</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0, length = disciplinas.Count; i < length; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@disciplinas[i].Descricao</td>
+                    <td>@disciplinas[i].Sigla</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="actions">
+    <div class="ui cancel button">Fechar</div>
+</div>
