@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - SIAC Simulados</title>
+    <link href="~/resources/images/layout/logo-black.png" rel="shortcut icon" />
+    @Styles.Render("~/bundles/css")
+    <style>
+        .menu .item.logo {
+            font-size: 1.25em;
+            border-left: 0!important;
+        }
+    </style>
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <div class="pusher">
+        <div class="ui menu" style="border-radius:0">
+            <div class="ui container">
+                @*<a href="~/" class="item">
+                <img src="~/resources/images/layout/logo-black.png" />
+            </a>*@
+                <a href="@Url.Action("", "Inscricao")" class="item logo">
+                    <b>SIAC</b>&nbsp;Simulados
+                </a>
+                <a href="#" class="item">Calendário</a>
+                <a href="#" class="item">Candidato</a>
+                <div class="right menu">
+                    <a href="#" class="item">Administrar</a>
+                </div>
+            </div>
+        </div>
+        <div class="ui container">
+            <div class="ui stackable grid">
+                @*<div class="sixteen wide column" style="padding-top: 0; padding-bottom: 0">
+                    @Html.MvcSiteMap().SiteMapPath()
+                </div>*@
+                <div class="twelve wide column">
+                    <div class="ui segment">
+                        @RenderBody()
+                    </div>
+                </div>
+                <div class="four wide column">
+                    <div class="ui segment">
+                        <div class="ui center aligned icon header">
+                            <i class="icon user"></i>
+                            <div class="content" style="padding-left:0!important">
+                                Área do Candidado
+                                <div class="sub header">
+                                    Informações sobre inscrição e simulados passados.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui fluid buttons">
+                            <div class="ui primary button">Acessar</div>
+                            <div class="or" data-text="ou"></div>
+                            <div class="ui button">Cadastrar</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Scripts.Render("~/bundles/js")
+        @Scripts.Render("~/bundles/signalR")
+        <script src="~/signalr/hubs"></script>
+        @RenderSection("Scripts", required: false)        
+        <div class="ui page dimmer">
+            <div class="ui large text global loader">Carregando</div>
+        </div>
+    </div>
+</body>
+</html>

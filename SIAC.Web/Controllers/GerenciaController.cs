@@ -12,16 +12,16 @@ namespace SIAC.Controllers
     [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR, Categoria.PROFESSOR })]
     public class GerenciaController : Controller
     {
-        // GET: gerencia
+        // GET: simulado/gerencia
         public ActionResult Index() => View();
 
-        // GET: gerencia/dados
+        // GET: simulado/gerencia/dados
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Dados() => View();
 
         #region Blocos
 
-        // GET: gerencia/blocos
+        // GET: simulado/gerencia/blocos
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Blocos()
         {
@@ -32,7 +32,7 @@ namespace SIAC.Controllers
             return View(viewModel);
         }
 
-        // POST: gerencia/novobloco
+        // POST: simulado/gerencia/novobloco
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult NovoBloco(FormCollection form)
@@ -71,7 +71,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Blocos");
         }
 
-        // POST: gerencia/carregarbloco
+        // POST: simulado/gerencia/carregarbloco
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult CarregarBloco(int bloco)
@@ -83,7 +83,7 @@ namespace SIAC.Controllers
             return PartialView("_CarregarBloco", viewModel);
         }
 
-        // POST: gerencia/editarbloco
+        // POST: simulado/gerencia/editarbloco
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult EditarBloco(int codigo, FormCollection form)
@@ -124,7 +124,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Blocos");
         }
 
-        // POST: gerencia/excluirbloco
+        // POST: simulado/gerencia/excluirbloco
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public void ExcluirBloco(int codigo)
@@ -158,7 +158,7 @@ namespace SIAC.Controllers
 
         #region Salas
 
-        // GET: gerencia/salas
+        // GET: simulado/gerencia/salas
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Salas()
         {
@@ -170,7 +170,7 @@ namespace SIAC.Controllers
             return View(viewModel);
         }
 
-        // POST: gerencia/novasala
+        // POST: simulado/gerencia/novasala
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult NovaSala(FormCollection form)
@@ -211,7 +211,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Salas");
         }
 
-        // POST: gerencia/carregarsala
+        // POST: simulado/gerencia/carregarsala
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult CarregarSala(int sala)
@@ -224,7 +224,7 @@ namespace SIAC.Controllers
             return PartialView("_CarregarSala", viewModel);
         }
 
-        // POST: gerencia/editarsala
+        // POST: simulado/gerencia/editarsala
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult EditarSala(int codigo, FormCollection form)
@@ -266,7 +266,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Salas");
         }
 
-        // POST: gerencia/excluirsala
+        // POST: simulado/gerencia/excluirsala
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public void ExcluirSala(int codigo)
@@ -292,14 +292,14 @@ namespace SIAC.Controllers
 
         #region Disciplinas
 
-        // GET: gerencia/disciplinas
+        // GET: simulado/gerencia/disciplinas
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Disciplinas() => View(new GerenciaDisciplinasViewModel()
         {
             Disciplinas = Disciplina.ListarOrdenadamente()
         });
 
-        // POST: gerencia/novadisciplina
+        // POST: simulado/gerencia/novadisciplina
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult NovaDisciplina(FormCollection form)
@@ -341,12 +341,12 @@ namespace SIAC.Controllers
             return RedirectToAction("Disciplinas");
         }
 
-        // POST: gerencia/carregardisciplina
+        // POST: simulado/gerencia/carregardisciplina
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult CarregarDisciplina(int disciplina) => PartialView("_CarregarDisciplina", Disciplina.ListarPorCodigo(disciplina));
 
-        // POST: gerencia/editardisciplina
+        // POST: simulado/gerencia/editardisciplina
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult EditarDisciplina(int codigo, FormCollection form)
@@ -381,7 +381,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Disciplinas");
         }
 
-        // POST: gerencia/excluirdisciplina
+        // POST: simulado/gerencia/excluirdisciplina
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public void ExcluirDisciplina(int codigo)
@@ -415,7 +415,7 @@ namespace SIAC.Controllers
 
         #region Professores
 
-        // GET: gerencia/professores
+        // GET: simulado/gerencia/professores
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Professores() => View(new GerenciaProfessoresViewModel()
         {
@@ -423,7 +423,7 @@ namespace SIAC.Controllers
             Disciplinas = Disciplina.ListarOrdenadamente()
         });
 
-        // POST: gerencia/novoprofessor
+        // POST: simulado/gerencia/novoprofessor
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult NovoProfessor(FormCollection form)
@@ -496,12 +496,12 @@ namespace SIAC.Controllers
             Disciplinas = Disciplina.ListarOrdenadamente()
         });
 
-        // POST: gerencia/carregarprofessordisciplinas
+        // POST: simulado/gerencia/carregarprofessordisciplinas
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult CarregarProfessorDisciplinas(string professor) => PartialView("_CarregarProfessorDisciplinas", Professor.ListarPorMatricula(professor));
 
-        // POST: gerencia/editarprofessor
+        // POST: simulado/gerencia/editarprofessor
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult EditarProfessor(string codigo, FormCollection form)
@@ -542,7 +542,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Professores");
         }
 
-        // POST: gerencia/excluirprofessor
+        // POST: simulado/gerencia/excluirprofessor
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public void ExcluirProfessor(string codigo)

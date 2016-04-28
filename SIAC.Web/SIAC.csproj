@@ -267,6 +267,7 @@
     <Compile Include="Controllers\CertificacaoController.cs" />
     <Compile Include="Controllers\GerenciaController.cs" />
     <Compile Include="Controllers\ImpressaoController.cs" />
+    <Compile Include="Controllers\InscricaoController.cs" />
     <Compile Include="Controllers\InstitucionalController.cs" />
     <Compile Include="Controllers\PerfilController.cs" />
     <Compile Include="Controllers\ReposicaoController.cs" />
@@ -630,6 +631,7 @@
     <Compile Include="ViewModels\GerenciaBlocosViewModel.cs" />
     <Compile Include="ViewModels\GerenciaEditarSalaViewModel.cs" />
     <Compile Include="ViewModels\GerenciaEditarProfessorViewModel.cs" />
+    <Compile Include="ViewModels\InscricaoIndexViewModel.cs" />
     <Compile Include="ViewModels\SimuladoSalasViewModel.cs" />
     <Compile Include="ViewModels\GerenciaDisciplinasViewModel.cs" />
     <Compile Include="ViewModels\GerenciaProfessoresViewModel.cs" />
@@ -820,6 +822,8 @@
     <Content Include="Views\Gerencia\Partials\_CarregarDisciplina.cshtml" />
     <Content Include="Views\Gerencia\Partials\_CarregarProfessor.cshtml" />
     <Content Include="Views\Gerencia\Partials\_CarregarProfessorDisciplinas.cshtml" />
+    <Content Include="Views\Inscricao\Index.cshtml" />
+    <Content Include="Views\Shared\Simulados\_Layout.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
