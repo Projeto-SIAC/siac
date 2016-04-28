@@ -38,5 +38,47 @@ namespace SIAC.Controllers
                 Repositorio.GetInstance().SaveChanges(false);
             }
         }
+
+        // POST: perfil/alterarsenha
+        [HttpPost]
+        public ActionResult AlterarSenha(string senhaAtual, string senhaNova, string senhaConfirmacao)
+        {
+            string lembrete = Lembrete.NEGATIVO;
+            string mensagem = "Ocorreu um erro ao tentar alterar a senha.";
+
+            if (!StringExt.IsNullOrWhiteSpace(senhaAtual, senhaNova, senhaConfirmacao))
+            {
+                Usuario usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
+                
+                string hashSenhaAtual = Criptografia.RetornarHash(senhaAtual);
+                if (hashSenhaAtual == usuario.Senha)
+                {
+                    if (senhaNova == senhaConfirmacao)
+                    {
+                        string hashSenhaNova = Criptografia.RetornarHash(senhaNova);
+                        usuario.Senha = hashSenhaNova;
+                        Repositorio.Commit();
+
+                        lembrete = Lembrete.POSITIVO;
+                        mensagem = "Senha alterada com sucesso.";
+                    }
+                    else
+                    {
+                        mensagem = "A confirmação da senha deve ser igual a senha nova.";
+                    }
+                }
+                else
+                {
+                    mensagem = "A senha atual informada está incorreta.";
+                }
+            }
+            else
+            {
+                mensagem = "Todos os campos são necessários para alterar a senha.";
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, lembrete);
+            return RedirectToAction("Index");
+        }
     }
 }
