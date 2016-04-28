@@ -305,27 +305,35 @@
     <Compile Include="Models\Aluno.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AlunoPartial.cs" />
+    <Compile Include="Models\AnexoPartial.cs" />
     <Compile Include="Models\Area.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AvalAcademica.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AvalAcademicaPartial.cs" />
     <Compile Include="Models\AvalAcadReposicao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AvalAcadReposicaoPartial.cs" />
     <Compile Include="Models\AvalAuto.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AvalAutoPartial.cs" />
     <Compile Include="Models\AvalAvi.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AvalAviPartial.cs" />
     <Compile Include="Models\AvalCertificacao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AvalCertificacaoPartial.cs" />
     <Compile Include="Models\Avaliacao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AvaliacaoPartial.cs" />
     <Compile Include="Models\AvaliacaoProrrogacao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -335,57 +343,71 @@
     <Compile Include="Models\AvalPessoaResultado.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AvalPessoaResultadoPartial.cs" />
     <Compile Include="Models\AvalQuesPessoaResposta.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AvalQuesPessoaRespostaPartial.cs" />
     <Compile Include="Models\AvalTemaQuestao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AviCategoria.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AviCategoriaPartial.cs" />
     <Compile Include="Models\AviIndicador.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AviIndicadorPartial.cs" />
     <Compile Include="Models\AviModulo.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AviModuloPartial.cs" />
     <Compile Include="Models\AviPublico.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AviPublicoPartial.cs" />
     <Compile Include="Models\AviQuestao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AviQuestaoAlternativa.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AviQuestaoPartial.cs" />
     <Compile Include="Models\AviQuestaoPessoaResposta.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AviQuestaoPessoaRespostaPartial.cs" />
     <Compile Include="Models\AviTipoPublico.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AviTipoPublicoPartial.cs" />
     <Compile Include="Models\Bairro.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Bloco.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BlocoPartial.cs" />
     <Compile Include="Models\Campus.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CampusPartial.cs" />
     <Compile Include="Models\Candidato.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Categoria.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CategoriaPartial.cs" />
     <Compile Include="Models\Colaborador.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ColaboradorPartial.cs" />
     <Compile Include="Models\Curso.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CursoPartial.cs" />
     <Compile Include="Models\dbSIAC.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -401,18 +423,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dbSIAC.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\dbSIACEntitiesPartial.cs" />
     <Compile Include="Models\DiaSemana.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Dificuldade.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DificuldadePartial.cs" />
     <Compile Include="Models\Diretoria.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DiretoriaPartial.cs" />
     <Compile Include="Models\Disciplina.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DisciplinaPartial.cs" />
     <Compile Include="Models\Email.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -427,9 +453,11 @@
     <Compile Include="Models\Horario.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\HorarioPartial.cs" />
     <Compile Include="Models\Instituicao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\InstituicaoPartial.cs" />
     <Compile Include="Models\Justificacao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -440,40 +468,32 @@
     <Compile Include="Models\MatrizCurricularDisciplina.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MatrizCurricularPartial.cs" />
     <Compile Include="Models\Municipio.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\NivelEnsino.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\NivelEnsinoPartial.cs" />
     <Compile Include="Models\Ocupacao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\OcupacaoPartial.cs" />
     <Compile Include="Models\Pais.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Parametro.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\pAvalAcadReposicao.cs" />
-    <Compile Include="Models\pAvalAvi.cs" />
-    <Compile Include="Models\pAvalCertificacao.cs" />
-    <Compile Include="Models\pAvalQuesPessoaResposta.cs" />
-    <Compile Include="Models\pAviCategoria.cs" />
-    <Compile Include="Models\pAviIndicador.cs" />
-    <Compile Include="Models\pAviModulo.cs" />
-    <Compile Include="Models\pAviPublico.cs" />
-    <Compile Include="Models\pAviQuestao.cs" />
-    <Compile Include="Models\pAviQuestaoPessoaResposta.cs" />
-    <Compile Include="Models\pAviTipoPublico.cs" />
-    <Compile Include="Models\pBloco.cs" />
-    <Compile Include="Models\pdbSIACEntities.cs" />
+    <Compile Include="Models\ParametroPartial.cs" />
     <Compile Include="Models\Pessoa.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PessoaFisica.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PessoaFisicaPartial.cs" />
     <Compile Include="Models\PessoaFormacao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -483,65 +503,36 @@
     <Compile Include="Models\PessoaLocalTrabalho.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\pOcupacao.cs" />
-    <Compile Include="Models\pPessoaLocalTrabalho.cs" />
-    <Compile Include="Models\pProReitoria.cs" />
-    <Compile Include="Models\pReitoria.cs" />
+    <Compile Include="Models\PessoaLocalTrabalhoPartial.cs" />
+    <Compile Include="Models\PessoaPartial.cs" />
     <Compile Include="Models\Professor.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProfessorPartial.cs" />
     <Compile Include="Models\ProReitoria.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\pSimulado.cs" />
-    <Compile Include="Models\pTurmaDiscProfHorario.cs" />
-    <Compile Include="Models\pVisitante.cs" />
+    <Compile Include="Models\ProReitoriaPartial.cs" />
     <Compile Include="Models\Questao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\QuestaoAnexo.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\QuestaoPartial.cs" />
     <Compile Include="Models\QuestaoTema.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\QuestaoTemaPartial.cs" />
     <Compile Include="Models\Reitoria.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ReitoriaPartial.cs" />
     <Compile Include="Models\Repositorio.cs" />
-    <Compile Include="Models\pAluno.cs" />
-    <Compile Include="Models\pAnexo.cs" />
-    <Compile Include="Models\pAvalAcademica.cs" />
-    <Compile Include="Models\pAvalAuto.cs" />
-    <Compile Include="Models\pAvaliacao.cs" />
-    <Compile Include="Models\pAvalPessoaResultado.cs" />
-    <Compile Include="Models\pCampus.cs" />
-    <Compile Include="Models\pCategoria.cs" />
-    <Compile Include="Models\pColaborador.cs" />
-    <Compile Include="Models\pCurso.cs" />
-    <Compile Include="Models\pDificuldade.cs" />
-    <Compile Include="Models\pDiretoria.cs" />
-    <Compile Include="Models\pDisciplina.cs" />
-    <Compile Include="Models\pHorario.cs" />
-    <Compile Include="Models\pInstituicao.cs" />
-    <Compile Include="Models\pMatrizCurricular.cs" />
-    <Compile Include="Models\pNivelEnsino.cs" />
-    <Compile Include="Models\pParametro.cs" />
-    <Compile Include="Models\pPessoa.cs" />
-    <Compile Include="Models\pPessoaFisica.cs" />
-    <Compile Include="Models\pProfessor.cs" />
-    <Compile Include="Models\pQuestao.cs" />
-    <Compile Include="Models\pQuestaoTema.cs" />
-    <Compile Include="Models\pSala.cs" />
-    <Compile Include="Models\pTema.cs" />
-    <Compile Include="Models\pTipoAvaliacao.cs" />
-    <Compile Include="Models\pTipoQuestao.cs" />
-    <Compile Include="Models\pTurma.cs" />
-    <Compile Include="Models\pTurno.cs" />
-    <Compile Include="Models\pUsuario.cs" />
     <Compile Include="Models\Sala.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SalaPartial.cs" />
     <Compile Include="Models\Selecao.cs" />
     <Compile Include="Models\SimCandidato.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
@@ -567,6 +558,7 @@
     <Compile Include="Models\Simulado.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SimuladoPartial.cs" />
     <Compile Include="Models\Sistema.cs" />
     <Compile Include="Models\Telefone.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
@@ -574,18 +566,21 @@
     <Compile Include="Models\Tema.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TemaPartial.cs" />
     <Compile Include="Models\TipoAnexo.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TipoAvaliacao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TipoAvaliacaoPartial.cs" />
     <Compile Include="Models\TipoContato.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TipoQuestao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TipoQuestaoPartial.cs" />
     <Compile Include="Models\Turma.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -595,9 +590,12 @@
     <Compile Include="Models\TurmaDiscProfHorario.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TurmaDiscProfHorarioPartial.cs" />
+    <Compile Include="Models\TurmaPartial.cs" />
     <Compile Include="Models\Turno.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TurnoPartial.cs" />
     <Compile Include="Models\Usuario.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -610,9 +608,11 @@
     <Compile Include="Models\UsuarioOpiniao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UsuarioPartial.cs" />
     <Compile Include="Models\Visitante.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\VisitantePartial.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="ViewModels\AcessoIndexViewModel.cs" />
