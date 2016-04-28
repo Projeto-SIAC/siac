@@ -12,6 +12,75 @@
 
 @Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 2 } })
 
+<h3 class="header">
+    Dias de Realização
+    <div class="ui right floated novo dia button">Novo Dia</div>
+</h3>
+<div class="ui basic segment" style="max-height:30em">
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th>Dia</th>
+                <th>Data</th>
+                <th>Início</th>
+                <th>Término</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao)
+            {
+                <tr>
+                    <td>@dia.CodDiaRealizacao</td>
+                    <td>@dia.DtRealizacao.ToBrazilianString()</td>
+                    <td>@dia.DtRealizacao.ToShortTimeString()</td>
+                    <td>@dia.DtRealizacao.AddMinutes(dia.Duracao).ToShortTimeString()</td>
+                    @*<td sala-campus data-content="@simSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia">@simSala.Sala.Bloco.Campus.Sigla</td>
+                    <td sala-bloco data-content="@simSala.Sala.Bloco.Descricao">@simSala.Sala.Bloco.Sigla</td>
+                    <td sala-descricao>@simSala.Sala.Descricao</td>
+                    <td sala-sigla>@simSala.Sala.Sigla</td>*@
+                    <td>
+                        <a class="ui remover tiny button"><i class="trash icon"></i>Remover</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<form action="@Url.Action("NovoDia", new { codigo = Model.Codigo })" method="post" class="ui novo modal">
+    <i class="icon close"></i>
+    <div class="header">
+        Novo Dia
+    </div>
+    <div class="content">
+        <div class="ui form">
+            <div class="ui error message">
+                <div class="header">Verifique</div>
+                <ul class="list"></ul>
+            </div>
+            <div class="three fields">
+                <div class="field required">
+                    <label>Data de Realização</label>
+                    <input type="text" name="txtDataRealizacao" data-mask="00/00/0000" placeholder="Data de Realização" />
+                </div>
+                <div class="field required">
+                    <label>Horário de Início</label>
+                    <input type="text" name="txtHorarioInicio" data-mask="00:00" placeholder="Horário de Início" />
+                </div>
+                <div class="field required">
+                    <label>Horário de Término</label>
+                    <input type="text" name="txtHorarioTermino" data-mask="00:00" placeholder="Horário de Início" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <input type="reset" value="Cancelar" class="ui cancel button" />
+        <input type="submit" value="Cadastrar" class="ui approve button" />
+    </div>
+</form>
+
 @section Scripts {
     @Scripts.Render("~/bundles/js/simulado")
 }

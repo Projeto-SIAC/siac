@@ -13,7 +13,7 @@ namespace SIAC.Controllers
     [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
     public class SimuladoController : Controller
     {
-        //public ActionResult Index() => View();
+        private dbSIACEntities contexto => Repositorio.GetInstance();
 
         public ActionResult Novo() => View();
 
@@ -117,12 +117,75 @@ namespace SIAC.Controllers
                     model.Campi = Campus.ListarOrdenadamente();
                     model.Blocos = Bloco.ListarOrdenadamente();
                     model.Salas = Sala.ListarOrdenadamente();
-                    
+
                     return View(model);
                 }
             }
 
             return RedirectToAction("", "Gerencia");
+        }
+
+        [HttpPost]
+        public ActionResult Salas(string codigo, FormCollection form)
+        {
+            string ddlCampus = form["ddlCampus"];
+            string ddlBloco = form["ddlBloco"];
+            string ddlSala = form["ddlSala"];
+
+            if (!StringExt.IsNullOrWhiteSpace(codigo, ddlCampus, ddlBloco, ddlSala))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
+                    int codSala = int.Parse(ddlSala);
+
+                    SimSala simSala = contexto.SimSala.FirstOrDefault(s => s.Ano == sim.Ano
+                                                                      && s.NumIdentificador == sim.NumIdentificador
+                                                                      && s.CodSala == codSala);
+                    if (simSala == null)
+                    {
+                        sim.SimSala.Add(new SimSala()
+                        {
+                            Sala = Sala.ListarPorCodigo(int.Parse(ddlSala))
+                        });
+
+                        Repositorio.Commit();
+                    }
+
+                    return RedirectToAction("Salas", new { codigo = codigo });
+                }
+            }
+
+            return RedirectToAction("Salas", new { codigo = codigo });
+        }
+
+        [HttpPost]
+        public ActionResult RemoverSala(string codigo, int codSala)
+        {
+            if (!StringExt.IsNullOrWhiteSpace(codigo, codSala.ToString()))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
+                    SimSala simSala = contexto.SimSala
+                        .FirstOrDefault(s => s.Ano == sim.Ano && s.NumIdentificador == sim.NumIdentificador && s.CodSala == codSala);
+
+                    sim.SimSala.Remove(simSala);
+                    Repositorio.Commit();
+
+                    return RedirectToAction("Salas", new { codigo = codigo });
+                }
+            }
+
+            return RedirectToAction("Salas", new { codigo = codigo });
+        }
+
+        [HttpPost]
+        public ActionResult NovoDia(string codigo, FormCollection form)
+        {
+            return RedirectToAction("provas", new { codigo = codigo });
         }
     }
 }

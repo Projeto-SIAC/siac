@@ -13,7 +13,11 @@
 @Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 4 } })
 
 <div class="ui segment">
-    <form method="post" class="ui form">
+    <form class="ui form" method="post">
+        <div class="ui error message">
+            <div class="header">Verifique</div>
+            <ul class="list"></ul>
+        </div>
         <div class="fields">
             <div class="five wide field required">
                 <label data-ajuda="Clique na caixa abaixo para selecionar o campus.">Selecione o campus</label>
@@ -29,25 +33,25 @@
                 <label data-ajuda="Clique na caixa abaixo para selecionar o bloco do campus.">Selecione o bloco</label>
                 <select id="ddlBloco" name="ddlBloco" class="ui dropdown" required>
                     <option value="">Bloco</option>
-                    @foreach (Bloco bloco in Model.Blocos)
+                    @*@foreach (Bloco bloco in Model.Blocos)
                     {
                         <option value="@bloco.CodBloco">@bloco.Sigla</option>
-                    }
+                    }*@
                 </select>
             </div>
             <div class="six wide field required">
                 <label data-ajuda="Clique na caixa abaixo para selecionar a sala do bloco.">Selecione a sala</label>
                 <select id="ddlSala" name="ddlSala" class="ui dropdown" required>
                     <option value="">Sala</option>
-                    @foreach (Sala sala in Model.Salas)
+                    @*@foreach (Sala sala in Model.Salas)
                     {
                         <option value="@sala.CodSala">@sala.Sigla</option>
-                    }
+                    }*@
                 </select>
             </div>
         </div>
         <div class="field">
-            <input type="submit" value="Selecionar" class="ui right floated selecionar button"/>
+            <input type="submit" value="Selecionar" class="ui right floated selecionar button" />
         </div>
         <br />
     </form>
@@ -81,6 +85,8 @@
         </tbody>
     </table>
 </div>
+<div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("","Gerencia")' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+<a href="@Url.Action("","Gerencia")" class="ui right floated button" tabindex="0">Finalizar</a>
 
 @section Scripts {
     <script id="blocos" type="application/json">@Html.Raw(Model.BlocosEmJson)</script>
