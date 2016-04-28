@@ -254,6 +254,7 @@
     <Content Include="Resources\videos\background.mp4" />
     <Content Include="Scripts\plugins\jquery.signalR-2.2.0.min.js" />
     <Content Include="Styles\themes\semantic.min.css" />
+    <Content Include="Views\Simulado\Datas.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -807,11 +808,9 @@
     <Content Include="Views\Gerencia\Salas.cshtml" />
     <Content Include="Views\Gerencia\Partials\_CarregarBloco.cshtml" />
     <Content Include="Views\Gerencia\Partials\_CarregarSala.cshtml" />
-    <Content Include="Views\Simulado\Datas.cshtml" />
     <Content Include="Views\Simulado\Novo.cshtml" />
     <Content Include="Views\Simulado\Partials\_PassoAPasso.cshtml" />
     <Content Include="Views\Simulado\Partials\_SimuladoInformacoes.cshtml" />
-    <Content Include="Views\Simulado\Datas.cshtml" />
     <Content Include="Views\Simulado\Salas.cshtml" />
     <Content Include="Views\Simulado\Provas.cshtml" />
     <Content Include="Views\Gerencia\Professores.cshtml" />

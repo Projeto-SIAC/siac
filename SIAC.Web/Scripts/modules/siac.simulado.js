@@ -222,13 +222,15 @@ siac.Simulado.Datas = (function () {
 })();
 
 siac.Simulado.Salas = (function () {
-    var _blocos = [],
+    var _codigo = '',
+        _blocos = [],
         _salas = [],
         ddlCampus = $('[name=ddlCampus]'),
         ddlBloco = $('[name=ddlBloco]'),
         ddlSala = $('[name=ddlSala]');
 
     function iniciar() {
+        _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+$/)[0];
         _blocos = JSON.parse($('script#blocos').html());
         _salas = JSON.parse($('script#salas').html());
         $('script#salas').remove();
@@ -246,6 +248,15 @@ siac.Simulado.Salas = (function () {
         });
         ddlBloco.off('change').change(function () {
             atualizarSalas()
+        });
+        
+        $('.selecionar.button').click(function () {
+            validar();
+        });
+
+        $('.remover.button').click(function () {
+            removerSala($(this).data('sala'));
+            $(this).addClass('loading');
         });
     };
 
@@ -291,6 +302,55 @@ siac.Simulado.Salas = (function () {
         ;
     }
 
+    function validar() {
+        var $errorList = $('form .error.message .list');
+
+        $errorList.html('');
+        $('form').removeClass('error');
+
+        var valido = true;
+
+        if (!ddlCampus.val().trim()) {
+            $errorList.append('<li>Selecione o campus</li>');
+            valido = false;
+        }
+        if (!ddlBloco.val().trim()) {
+            $errorList.append('<li>Selecione o bloco</li>');
+            valido = false;
+        }
+        if (!ddlSala.val().trim()) {
+            $errorList.append('<li>Selecione a sala</li>');
+            valido = false;
+        }
+
+        if (valido) {
+            selecionarSala();
+        }
+        else {
+            $('form').addClass('error');
+            $('html, body').animate({
+                scrollTop: $('form .error.message').offset().top
+            }, 1000);
+        }
+    }
+
+    function selecionarSala() {
+        $('form').submit();
+    }
+
+    function removerSala(codSala) {
+        var _btnRemover = $(this);
+        $.ajax({
+            type: 'POST',
+            url: '/simulado/removersala/' + _codigo,
+            data: {
+                codSala: codSala
+            },
+            complete: function () {
+                location.reload();
+            }
+        })
+    }
 
     return {
         iniciar: iniciar
