@@ -1,0 +1,28 @@
+﻿@model GerenciaEditarProfessorViewModel
+
+<i class="icon close"></i>
+<div class="header">
+    Editar Professor "@Model.Professor.Usuario.PessoaFisica.Nome"
+</div>
+<div class="content">
+    <div class="ui form">
+        <div class="field required">
+            <label>Nome Completo</label>
+            <input type="text" name="txtNome" placeholder="Nome" maxlength="100" required value="@Model.Professor.Usuario.PessoaFisica.Nome" />
+        </div>
+        <div class="field required">
+            <label>Disciplinas Lecionadas</label>
+            <select name="ddlDisciplina" class="ui fluid search dropdown" multiple required">
+                <option value="">Disciplina</option>
+                @foreach (Disciplina d in Model.Disciplinas)
+                {
+                    <option @(Model.Professor.Leciona(d.CodDisciplina) ? "selected" : "") value="@d.CodDisciplina">@d.Descricao</option>
+                }
+            </select>
+        </div>
+    </div>
+</div>
+<div class="actions">
+    <input type="reset" value="Cancelar" class="ui cancel button" />
+    <input type="submit" value="Salvar" class="ui approve button" />
+</div>

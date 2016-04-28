@@ -630,6 +630,7 @@
     <Compile Include="ViewModels\GerenciaEditarBlocoViewModel.cs" />
     <Compile Include="ViewModels\GerenciaBlocosViewModel.cs" />
     <Compile Include="ViewModels\GerenciaEditarSalaViewModel.cs" />
+    <Compile Include="ViewModels\GerenciaEditarProfessorViewModel.cs" />
     <Compile Include="ViewModels\SimuladoSalasViewModel.cs" />
     <Compile Include="ViewModels\GerenciaDisciplinasViewModel.cs" />
     <Compile Include="ViewModels\GerenciaProfessoresViewModel.cs" />
@@ -816,6 +817,8 @@
     <Content Include="Views\Gerencia\Professores.cshtml" />
     <Content Include="Views\Gerencia\Disciplinas.cshtml" />
     <Content Include="Views\Gerencia\Partials\_CarregarDisciplina.cshtml" />
+    <Content Include="Views\Gerencia\Partials\_CarregarProfessor.cshtml" />
+    <Content Include="Views\Gerencia\Partials\_CarregarProfessorDisciplinas.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -34,7 +34,7 @@
             <div class="ui relaxed list">
                 @switch (Model.CodCategoria)
                 {
-                    case 1:
+                    case Categoria.ESTUDANTE:
                         <div class="item">
                             <div class="header">Instituição</div>
                             @Model.Aluno.Last().Turma.Curso.Diretoria.Campus.Instituicao.PessoaJuridica.NomeFantasia
@@ -75,15 +75,15 @@
                             </div>
                         </div>
                         break;
-                    case 2:
+                    case Categoria.PROFESSOR:
                         <div class="item">
                             <div class="header">Instituição</div>
-                            @Model.Professor.Last().Instituicao.PessoaJuridica.NomeFantasia
+                            @(Model.Professor.Last().Instituicao?.PessoaJuridica.NomeFantasia ?? "Não disponível")
                         </div>
 
                         <div class="item">
                             <div class="header">Campus</div>
-                            @Model.Professor.Last().Campus.PessoaJuridica.NomeFantasia
+                            @(Model.Professor.Last().Campus?.PessoaJuridica.NomeFantasia ?? "Não disponível")
                         </div>
 
                         <div class="item">
@@ -127,8 +127,34 @@
     </div>
 </div>
 
+<form action="@Url.Action("AlterarSenha")" method="post" class="ui small senha modal">
+    <i class="close icon"></i>
+    <div class="header">Alterar senha</div>
+    <div class="content">
+        <div class="ui form">
+            <div class="field required">
+                <label>Digite a senha atual</label>
+                <input type="password" name="senhaAtual" autocomplete="off" placeholder="Senha atual" required />
+            </div>
+            <div class="field required">
+                <label>Digete a nova senha</label>
+                <input type="password" name="senhaNova" autocomplete="off" placeholder="Senha nova" required />
+            </div>
+            <div class="field required">
+                <label>Confirme a nova senha</label>
+                <input type="password" name="senhaConfirmacao" autocomplete="off" placeholder="Confirmação da nova senha" required />
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <input type="reset" value="Cancelar" class="ui cancel button" />
+        <input type="submit" value="Alterar" class="ui approve button" />
+    </div>
+</form>
+
 <a href="@Url.Action("Index", "Principal")" class="ui button">Voltar para Principal</a>
 <div class="ui opiniao button">Enviar opinião</div>
+<div class="ui right floated senha button"><i class="lock icon"></i> Alterar senha</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/perfil")  

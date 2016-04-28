@@ -167,6 +167,8 @@ siac.Gerencia.Salas = (function () {
 
 siac.Gerencia.Disciplinas = (function () {
     function iniciar() {
+        $('.ui.modal').modal();
+
         $('.ui.dropdown').dropdown();
 
         $('.novo.button').click(function () { $('.ui.novo.modal').modal('show') });
@@ -228,7 +230,90 @@ siac.Gerencia.Disciplinas = (function () {
 })();
 
 siac.Gerencia.Professores = (function () {
-    function iniciar() { }
+    function iniciar() {
+        $('.ui.modal').modal();
+
+        $('.ui.dropdown').dropdown();
+        
+        $('.novo.button').click(function () { $('.ui.novo.modal').modal('show') });
+
+        $('.disciplinas.button').click(function () {
+            var _this = $(this),
+                _professor = _this.data('professor');
+
+            $.ajax({
+                url: '/simulado/gerencia/carregarprofessordisciplinas',
+                method: 'POST',
+                data: {
+                    'professor': _professor
+                },
+                beforeSend: function () {
+                    _this.addClass('loading');
+                },
+                success: function (data) {
+                    $('.ui.disciplinas.modal').html(data).modal('show');
+                },
+                error: function () {
+                    siac.mensagem('Falha ao recuperar o Professor para listagem. Atualize a página para tentar novamente.');
+                },
+                complete: function () {
+                    _this.removeClass('loading');
+                }
+            });
+        });
+
+        $('.editar.button').click(function () {
+            var _this = $(this)
+                _professor = _this.data('professor');;
+            $.ajax({
+                url: '/simulado/gerencia/carregarprofessor',
+                method: 'POST',
+                data: {
+                    'professor': _professor
+                },
+                beforeSend: function () {
+                    _this.addClass('loading');
+                },
+                success: function (data) {
+                    $('form.editar').attr('action', '/simulado/gerencia/editarprofessor/' + _professor)
+                    $('.ui.editar.modal').html(data).modal('show');
+                    $('.ui.editar.modal .ui.dropdown').dropdown();
+                },
+                error: function () {
+                    siac.mensagem('Falha ao recuperar o Professor para edição. Atualize a página para tentar novamente.');
+                },
+                complete: function () {
+                    _this.removeClass('loading');
+                }
+            });
+        });
+
+        $('.excluir.button').click(function () {
+            var _this = $(this),
+                $modal = $('.ui.excluir.modal'),
+                professor = _this.data('professor'),
+                professorNome = _this.closest('tr').find('[professor-nome]').text(),
+                professorMatricula = _this.closest('tr').find('[professor-matricula]').text();
+
+            $modal.find('[professor-nome]').text(professorNome);
+            $modal.find('[professor-matricula]').text(professorMatricula);
+
+            $modal.modal({
+                onApprove: function () {
+                    $.ajax({
+                        url: '/simulado/gerencia/excluirprofessor',
+                        method: 'POST',
+                        data: {
+                            'codigo': professor
+                        },
+                        complete: function () {
+                            location.reload();
+                        }
+                    });
+                }
+            }).modal('show');
+        });
+    }
 
     return {
         iniciar: iniciar

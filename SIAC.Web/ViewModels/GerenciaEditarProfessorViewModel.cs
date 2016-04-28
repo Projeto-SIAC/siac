@@ -7,9 +7,9 @@ using Newtonsoft.Json;
 
 namespace SIAC.ViewModels
 {
-    public class GerenciaProfessoresViewModel
+    public class GerenciaEditarProfessorViewModel
     {
         public List<Disciplina> Disciplinas { get; set; } = new List<Disciplina>();
-        public List<Professor> Professores { get; set; } = new List<Professor>();
+        public Professor Professor { get; set; }
     }
 }

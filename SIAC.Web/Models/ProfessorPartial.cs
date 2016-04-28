@@ -5,9 +5,11 @@ namespace SIAC.Models
 {
     public partial class Professor
     {
-        public Instituicao Instituicao => this.TurmaDiscProfHorario.OrderBy(t=>t.AnoLetivo).LastOrDefault()?.Turma.Curso.Diretoria.Campus.Instituicao;
+        public Instituicao Instituicao => this.TurmaDiscProfHorario.OrderBy(t => t.AnoLetivo).LastOrDefault()?.Turma.Curso.Diretoria.Campus.Instituicao;
 
         public Campus Campus => this.TurmaDiscProfHorario.OrderBy(t => t.AnoLetivo).LastOrDefault()?.Turma.Curso.Diretoria.Campus;
+
+        public bool Leciona(int codDisciplina) => this.Disciplina.FirstOrDefault(d => d.CodDisciplina == codDisciplina) != null;
 
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 
@@ -19,9 +21,9 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
-        public static List<Disciplina> ObterDisciplinas(int codProfessor) => contexto.Professor.FirstOrDefault(p=>p.CodProfessor == codProfessor)?.Disciplina.OrderBy(d => d.Descricao).ToList();
+        public static List<Disciplina> ObterDisciplinas(int codProfessor) => contexto.Professor.FirstOrDefault(p => p.CodProfessor == codProfessor)?.Disciplina.OrderBy(d => d.Descricao).ToList();
 
-        public static List<Disciplina> ObterDisciplinas(string matrProfessor) => contexto.Professor.FirstOrDefault(p => p.MatrProfessor == matrProfessor)?.Disciplina.OrderBy(d=>d.Descricao).ToList();
+        public static List<Disciplina> ObterDisciplinas(string matrProfessor) => contexto.Professor.FirstOrDefault(p => p.MatrProfessor == matrProfessor)?.Disciplina.OrderBy(d => d.Descricao).ToList();
 
         public static List<Professor> ListarOrdenadamente() => contexto.Professor.OrderBy(p => p.Usuario.PessoaFisica.Nome).ToList();
     }

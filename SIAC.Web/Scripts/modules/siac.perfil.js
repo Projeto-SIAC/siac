@@ -17,6 +17,9 @@
         $('.opiniao.button').click(function () {
             $('.opiniao.modal').modal('show');
         });
+        $('.senha.button').click(function () {
+            $('.senha.modal').modal('show');
+        });
     }
 
     function verificar() {
