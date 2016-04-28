@@ -58,7 +58,20 @@ siac.Simulado.Novo = (function () {
 siac.Simulado.Provas = (function () {
     function iniciar() {
         $('.ui.informacoes.modal').modal();
+        $('.ui.accordion').accordion();
 
+        $('.novo.dia.button').click(function () {
+            $('.novo.modal').modal('show');
+        })
+
+        $('.novo.modal .approve.button').click(function () {
+            if (!validarNovoDia()) {
+                $('.novo.modal .form').addClass('error');
+                return false;
+            } else {
+                $('form.novo').submit();
+            }
+        })
 
         //$('.ui.termo.modal').modal({ closable: false }).modal('show');
         //$('.cancelar.button').popup({ on: 'click' });
@@ -78,28 +91,47 @@ siac.Simulado.Provas = (function () {
         //});
     }
 
-    function prosseguir() {
-        //var $errorList = $('form .error.message .list');
+    function validarNovoDia() {
+        var dataRealizacao = $('[name=txtDataRealizacao]').val(),
+            horarioInicio = $('[name=txtHorarioInicio]').val(),
+            horarioTermino = $('[name=txtHorarioTermino]').val(),
+            retorno = true;
 
-        //$errorList.html('');
-        //$('form').removeClass('error');
+        lstErro = $('.novo.modal .form .error.message .list');
+        lstErro.html('');
+        $('.novo.modal .form').removeClass('error');
 
-        //var valido = true;
+        if (!dataRealizacao) {
+            lstErro.append('<li>Especifique a data de realização</li>');
+            retorno = false;
+        } else {
+            var strDate = siac.Utilitario.formatarData(dataRealizacao + 'T00:00:00');
+            if (!siac.Utilitario.dataEFuturo(strDate)) {
+                lstErro.append('<li>Especifique uma data de realização futura</li>');
+                retorno = false;
+            }
+        }
 
-        //if (!$('#txtTitulo').val().trim()) {
-        //    $errorList.append('<li>Insira o título</li>');
-        //    valido = false;
-        //}
+        if (!horarioInicio) {
+            lstErro.append('<li>Especifique o horário de início das provas</li>');
+            retorno = false;
+        }
 
-        //if (valido) {
-        //    confirmar();
-        //}
-        //else {
-        //    $('form').addClass('error');
-        //    $('html, body').animate({
-        //        scrollTop: $('form .error.message').offset().top
-        //    }, 1000);
-        //}
+        if (!horarioTermino) {
+            lstErro.append('<li>Especifique o horário de término das provas</li>');
+            retorno = false;
+        }
+
+        if (dataRealizacao && horarioInicio && horarioTermino) {
+            var strDateA = dataRealizacao + 'T' + horarioInicio + ':00';
+            var strDateB = dataRealizacao + 'T' + horarioTermino + ':00';
+            if (siac.Utilitario.compararData(strDateA, strDateB) >= 0) {
+                lstErro.append('<li>Especifique um horário de término superior ao horário de início</li>');
+                retorno = false;
+            }
+        }
+
+        return retorno;
     }
 
     function confirmar() {

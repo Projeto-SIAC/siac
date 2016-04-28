@@ -13,8 +13,6 @@ namespace SIAC.Controllers
     [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
     public class SimuladoController : Controller
     {
-        //public ActionResult Index() => View();
-
         private dbSIACEntities contexto => Repositorio.GetInstance();
 
         public ActionResult Novo() => View();
@@ -145,7 +143,6 @@ namespace SIAC.Controllers
                     SimSala simSala = contexto.SimSala.FirstOrDefault(s => s.Ano == sim.Ano
                                                                       && s.NumIdentificador == sim.NumIdentificador
                                                                       && s.CodSala == codSala);
-
                     if (simSala == null)
                     {
                         sim.SimSala.Add(new SimSala()
@@ -153,11 +150,6 @@ namespace SIAC.Controllers
                             Sala = Sala.ListarPorCodigo(int.Parse(ddlSala))
                         });
 
-                        //simSala = new SimSala();
-                        //simSala.Simulado = sim;
-                        //simSala.Sala = Sala.ListarPorCodigo(int.Parse(ddlSala));
-
-                        //contexto.SimSala.Add(simSala);
                         Repositorio.Commit();
                     }
 
@@ -180,11 +172,7 @@ namespace SIAC.Controllers
                     SimSala simSala = contexto.SimSala
                         .FirstOrDefault(s => s.Ano == sim.Ano && s.NumIdentificador == sim.NumIdentificador && s.CodSala == codSala);
 
-                    //contexto.SimSala.Remove(simSala);
-
                     sim.SimSala.Remove(simSala);
-
-                    //contexto.SaveChanges();
                     Repositorio.Commit();
 
                     return RedirectToAction("Salas", new { codigo = codigo });
@@ -192,6 +180,12 @@ namespace SIAC.Controllers
             }
 
             return RedirectToAction("Salas", new { codigo = codigo });
+        }
+
+        [HttpPost]
+        public ActionResult NovoDia(string codigo, FormCollection form)
+        {
+            return RedirectToAction("provas", new { codigo = codigo });
         }
     }
 }
