@@ -28,19 +28,15 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao)
+            @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao.OrderBy(s => s.DtRealizacao).ToList())
             {
                 <tr>
                     <td>@dia.CodDiaRealizacao</td>
                     <td>@dia.DtRealizacao.ToBrazilianString()</td>
                     <td>@dia.DtRealizacao.ToShortTimeString()</td>
                     <td>@dia.DtRealizacao.AddMinutes(dia.Duracao).ToShortTimeString()</td>
-                    @*<td sala-campus data-content="@simSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia">@simSala.Sala.Bloco.Campus.Sigla</td>
-                    <td sala-bloco data-content="@simSala.Sala.Bloco.Descricao">@simSala.Sala.Bloco.Sigla</td>
-                    <td sala-descricao>@simSala.Sala.Descricao</td>
-                    <td sala-sigla>@simSala.Sala.Sigla</td>*@
                     <td>
-                        <a class="ui remover tiny button"><i class="trash icon"></i>Remover</a>
+                        <a data-dia="@dia.CodDiaRealizacao" class="ui remover tiny button"><i class="trash icon"></i>Remover</a>
                     </td>
                 </tr>
             }
@@ -62,15 +58,15 @@
             <div class="three fields">
                 <div class="field required">
                     <label>Data de Realização</label>
-                    <input type="text" name="txtDataRealizacao" data-mask="00/00/0000" placeholder="Data de Realização" />
+                    <input type="text" autocomplete="off" name="txtDataRealizacao" data-mask="00/00/0000" placeholder="Data de Realização" />
                 </div>
                 <div class="field required">
                     <label>Horário de Início</label>
-                    <input type="text" name="txtHorarioInicio" data-mask="00:00" placeholder="Horário de Início" />
+                    <input type="text" autocomplete="off" name="txtHorarioInicio" data-mask="00:00" placeholder="Horário de Início" />
                 </div>
                 <div class="field required">
                     <label>Horário de Término</label>
-                    <input type="text" name="txtHorarioTermino" data-mask="00:00" placeholder="Horário de Início" />
+                    <input type="text" autocomplete="off" name="txtHorarioTermino" data-mask="00:00" placeholder="Horário de Início" />
                 </div>
             </div>
         </div>
@@ -80,6 +76,9 @@
         <input type="submit" value="Cadastrar" class="ui approve button" />
     </div>
 </form>
+
+<div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("","Gerencia")' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+<a href="@Url.Action("Datas", new { codigo = Model.Codigo })" class="ui right floated button" tabindex="0">Avançar</a>
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/simulado")
