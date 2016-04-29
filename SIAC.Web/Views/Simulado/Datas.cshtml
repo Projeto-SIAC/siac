@@ -10,7 +10,7 @@
 
 @Html.Partial("_SimuladoInformacoes")
 
-@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 2 } })
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 3 } })
 
 <div class="ui confirmar modal">
     <div class="header">
@@ -45,7 +45,7 @@
         </div>
     </div>
     <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("","Gerencia")' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
-    <button class="ui confirmar button" tabindex="0">Avançar</button>
+    <button class="ui right floated confirmar button" tabindex="0">Avançar</button>
 </form>
 
 

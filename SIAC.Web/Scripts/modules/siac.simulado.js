@@ -56,9 +56,16 @@ siac.Simulado.Novo = (function () {
 })();
 
 siac.Simulado.Provas = (function () {
+    var _codigo = '';
+
     function iniciar() {
+        _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+$/)[0];
+
         $('.ui.informacoes.modal').modal();
         $('.ui.accordion').accordion();
+        $('[data-html]').popup({
+            on: 'click'
+        });
 
         $('.novo.dia.button').click(function () {
             $('.novo.modal').modal('show');
@@ -73,22 +80,14 @@ siac.Simulado.Provas = (function () {
             }
         })
 
-        //$('.ui.termo.modal').modal({ closable: false }).modal('show');
-        //$('.cancelar.button').popup({ on: 'click' });
-        //$('.ui.confirmar.modal')
-        // .modal({
-        //     onApprove: function () {
-        //         $('form').submit();
-        //     }
-        // });
-
         $('.informacoes.button').click(function () {
             $('.ui.informacoes.modal').modal('show');
         });
 
-        //$('.prosseguir.button').click(function () {
-        //    prosseguir();
-        //});
+        $('.remover.button').click(function () {
+            removerDia($(this).data('dia'));
+            $(this).addClass('loading');
+        });
     }
 
     function validarNovoDia() {
@@ -134,13 +133,15 @@ siac.Simulado.Provas = (function () {
         return retorno;
     }
 
-    function confirmar() {
-        //$modal = $('.ui.confirmar.modal');
-
-        //$('#txtModalTitulo').val($('#txtTitulo').val());
-        //$('#txtModalDescricao').val($('#txtDescricao').val());
-
-        //$modal.modal('show');
+    function removerDia(codDia) {
+        $.ajax({
+            type: 'POST',
+            url: '/simulado/removerdia/' + _codigo,
+            data: { codDia: codDia },
+            complete: function () {
+                location.reload();
+            }
+        })
     }
 
     return {
@@ -375,9 +376,7 @@ siac.Simulado.Salas = (function () {
         $.ajax({
             type: 'POST',
             url: '/simulado/removersala/' + _codigo,
-            data: {
-                codSala: codSala
-            },
+            data: { codSala: codSala },
             complete: function () {
                 location.reload();
             }

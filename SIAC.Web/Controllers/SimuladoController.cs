@@ -92,7 +92,7 @@ namespace SIAC.Controllers
                         sim.FlagInscricaoEncerrado = false;
                         sim.QteVagas = int.Parse(qteVagas);
                         sim.DtInicioInscricao = DateTime.Parse(inicioInscricao, new CultureInfo("pt-BR"));
-                        sim.DtTerminoInscricao = DateTime.Parse(terminoInscricao, new CultureInfo("pt-BR"));
+                        sim.DtTerminoInscricao = DateTime.Parse($"{terminoInscricao} 23:59:59", new CultureInfo("pt-BR"));
 
                         Repositorio.GetInstance().SaveChanges();
 
@@ -185,7 +185,67 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult NovoDia(string codigo, FormCollection form)
         {
-            return RedirectToAction("provas", new { codigo = codigo });
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
+                    string strDataRealizacao = form["txtDataRealizacao"];
+                    string strHorarioInicio = form["txtHorarioInicio"];
+                    string strHorarioTermino = form["txtHorarioTermino"];
+
+                    if (!StringExt.IsNullOrWhiteSpace(strDataRealizacao, strHorarioInicio, strHorarioTermino))
+                    {
+                        CultureInfo cultureBr = new CultureInfo("pt-BR");
+                        /* Simulado */
+                        DateTime dataRealizacao = DateTime.Parse($"{strDataRealizacao} {strHorarioInicio}", cultureBr);
+                        TimeSpan inicio = TimeSpan.Parse(strHorarioInicio, cultureBr);
+                        TimeSpan termino = TimeSpan.Parse(strHorarioTermino, cultureBr);
+
+                        SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.DtRealizacao.Date == dataRealizacao.Date);
+
+                        if (diaRealizacao != null && inicio >= diaRealizacao.DtRealizacao.TimeOfDay && inicio <= diaRealizacao.DtRealizacao.AddMinutes(diaRealizacao.Duracao).TimeOfDay)
+                        {
+                            Lembrete.AdicionarNotificacao($"Já existe um data marcada com a realização nesse periodo {dataRealizacao.ToShortDateString()}: {inicio} - {termino} ", Lembrete.NEGATIVO, 10);
+                        }
+                        else
+                        {
+                            int codDiaRealizacao = sim.SimDiaRealizacao.Count > 0 ? sim.SimDiaRealizacao.Max(s => s.CodDiaRealizacao) + 1 : 1;
+
+                            diaRealizacao = new SimDiaRealizacao();
+                            diaRealizacao.CodDiaRealizacao = codDiaRealizacao;
+                            diaRealizacao.DtRealizacao = dataRealizacao;
+                            diaRealizacao.CodTurno = "V";
+                            diaRealizacao.Duracao = int.Parse((termino - dataRealizacao.TimeOfDay).TotalMinutes.ToString());
+
+                            sim.SimDiaRealizacao.Add(diaRealizacao);
+                            Repositorio.GetInstance().SaveChanges();
+                        }
+                    }
+                }
+            }
+
+            return RedirectToAction("Provas", new { codigo = codigo });
+        }
+
+        [HttpPost]
+        public ActionResult RemoverDia(string codigo, int codDia)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
+                    SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
+
+                    sim.SimDiaRealizacao.Remove(diaRealizacao);
+                    Repositorio.GetInstance().SaveChanges();
+                }
+            }
+
+            return RedirectToAction("Provas", new { codigo = codigo });
         }
     }
 }
