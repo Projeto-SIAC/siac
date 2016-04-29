@@ -42,6 +42,10 @@
 }
 
 /* dashboard */
+.dashmenu {
+    clear: both;
+}
+
 .dashmenu > div.row > div.column {
     padding: 1.5em 0.5em;
 }

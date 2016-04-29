@@ -7,58 +7,55 @@
 
 <h2>@ViewBag.Title</h2>
 
-@if (Model.Simulados.Count == 0)
+@if (Model.Simulados.Count > 0)
 {
     <div class="ui basic segment">
         <div class="ui three cards">
-            <div class="card">
-                <div class="content">
-                    <a href="@Url.Action("Detalhe")" class="header">
-                        SimulENEM 2016/1
-                    </a>
-                    <div class="meta">
-                        Aberto há 5 dias
+            @foreach (Simulado simulado in Model.Simulados)
+            {
+                var dtAberto = simulado.DtInicioInscricao?.ToElapsedTimeString() ?? "";
+                <div class="card">
+                    <div class="content">
+                        <a href="#" class="header">
+                            @simulado.Titulo
+                        </a>
+                        <div class="meta">
+                            Aberto @(dtAberto.Contains("/") ? "em" : "há") <time datetime="@(simulado.DtInicioInscricao?.ToJSString())">@dtAberto</time>
+                        </div>
+                        <div class="description">
+                            @if (String.IsNullOrWhiteSpace(simulado.Descricao))
+                            {
+                                <p><b>Início das Inscrições</b>:@(simulado.DtInicioInscricao?.ToString("dd/MM/yyyy"))</p>
+                                <p><b>Término das Inscrições</b>: @(simulado.DtTerminoInscricao?.ToString("dd/MM/yyyy"))</p>
+                                <p><b>Primeiro Dia de Provas</b>: @(simulado.PrimeiroDiaRealizacao?.DtRealizacao.ToString("dd/MM/yyyy HH:mm"))</p>
+                            }
+                            else {
+                                @Html.Raw(simulado.Descricao.ToShortString(140).ToHtml("p"))
+                            }
+                        </div>
                     </div>
-                    <div class="description">
-                        <p><b>Quant. Provas</b>: 5 </p>
-                        <p><b>Primeiro Dia</b>: 26 de março, 2016</p>
+                    <div class="extra content">
+                        <div class="ui tag label">@simulado.Codigo</div>
+                    </div>
+                    <div class="ui two buttons">
+                        <a data-simulado="@simulado.Codigo" class="ui detalhe button"><i class="plus icon"></i>Detalhes</a>
+                        @if (Sessao.Candidato != null && simulado.CandidatoInscrito(Sessao.Candidato.CodCandidato))
+                        {
+                            <a class="ui active toggle button"><i class="checkmark icon"></i>Inscrito</a>
+                        }
+                        else
+                        {
+                            <a class="ui inscricao button">Inscrição</a>
+                        }
                     </div>
                 </div>
-                <div class="extra content">
-                    <div class="ui tag label">SIMUL2016000001</div>
-                </div>
-                <div class="ui two buttons">
-                    <a class="ui button"><i class="plus icon"></i>Detalhes</a>
-                    <a class="ui toggle active button"><i class="checkmark icon"></i>Inscrito</a>
-                </div>
-            </div>
-            <div class="card">
-                <div class="content">
-                    <a href="@Url.Action("Detalhe")" class="header">
-                        SimulIF 2016/2
-                    </a>
-                    <div class="meta">
-                        Aberto há 5 dias
-                    </div>
-                    <div class="description">
-                        <p><b>Quant. Provas</b>: 3 </p>
-                        <p><b>Primeiro Dia</b>: 09 de abril, 2016</p>
-                    </div>
-                </div>
-                <div class="extra content">
-                    <div class="ui tag label">SIMUL2016000002</div>
-                </div>
-                <div class="ui two buttons">
-                    <a class="ui button"><i class="plus icon"></i>Detalhes</a>
-                    <a class="ui toggle button">Inscrição</a>
-                </div>
-            </div>
+            }
         </div>
     </div>
 }
 else
 {
-    <div style="padding: 5em;">
+    <div style="padding: 3.5em;">
         <h2 class="ui center aligned icon header">
             <i class="icon frown"></i>
             Não há simulados cadastrados

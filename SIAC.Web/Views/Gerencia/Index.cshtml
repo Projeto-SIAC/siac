@@ -3,7 +3,10 @@
     ViewBag.Title = "Gerência de Simulados";
 }
 
-<h2>@ViewBag.Title</h2>
+<h2>
+    @ViewBag.Title
+    <a href="@Url.Action("Index", "Inscricao")" class="ui right floated small button" target="_blank"><i class="external icon"></i> Abrir área pública</a>
+</h2>
 
 <div class="ui info message @((Sessao.AjudaEstado)?"":"hidden")" data-ajuda-mensagem>
     <div class="header">

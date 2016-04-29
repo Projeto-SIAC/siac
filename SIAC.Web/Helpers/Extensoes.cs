@@ -282,6 +282,11 @@ namespace SIAC
             return dt.ToString("yyyy','MM','dd','HH','mm");
         }
 
+        public static string ToHtmlDateTimeString(this DateTime dt)
+        {
+            return dt.ToString("yyyy'-'MM'-'dd' 'HH'-'mm");
+        }
+
         public static int SemestreAtual(this DateTime dt) => dt.Month > 6 ? 2 : 1;
         #endregion
 
