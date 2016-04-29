@@ -11,14 +11,14 @@ namespace SIAC
             routes.LowercaseUrls = true;
             
             routes.MapRoute(
-                name: "SimuladosGerencia",
-                url: "Simulado/Gerencia/{action}/{codigo}",
+                name: "AreaDeSimulados",
+                url: "Simulado/{controller}/{action}/{codigo}",
                 defaults: new { controller = "Gerencia", action = "Index", codigo = UrlParameter.Optional },
-                constraints: new { controller = @"^(Gerencia)$" }
+                constraints: new { controller = @"^(Gerencia|Inscricao|Candidato)$" }
             );
 
             routes.MapRoute(
-                name: "Simulados",
+                name: "Simulado",
                 url: "Simulado/{action}/{codigo}",
                 defaults: new { controller = "Simulado", action = "Index", codigo = UrlParameter.Optional }
             );

@@ -1,0 +1,69 @@
+﻿@model InscricaoIndexViewModel
+
+@{
+    ViewBag.Title = "Calendário de Simulados";
+    Layout = "~/Views/Shared/Simulados/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model.Simulados.Count == 0)
+{
+    <div class="ui basic segment">
+        <div class="ui three cards">
+            <div class="card">
+                <div class="content">
+                    <a href="@Url.Action("Detalhe")" class="header">
+                        SimulENEM 2016/1
+                    </a>
+                    <div class="meta">
+                        Aberto há 5 dias
+                    </div>
+                    <div class="description">
+                        <p><b>Quant. Provas</b>: 5 </p>
+                        <p><b>Primeiro Dia</b>: 26 de março, 2016</p>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <div class="ui tag label">SIMUL2016000001</div>
+                </div>
+                <div class="ui two buttons">
+                    <a class="ui button"><i class="plus icon"></i>Detalhes</a>
+                    <a class="ui toggle active button"><i class="checkmark icon"></i>Inscrito</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="content">
+                    <a href="@Url.Action("Detalhe")" class="header">
+                        SimulIF 2016/2
+                    </a>
+                    <div class="meta">
+                        Aberto há 5 dias
+                    </div>
+                    <div class="description">
+                        <p><b>Quant. Provas</b>: 3 </p>
+                        <p><b>Primeiro Dia</b>: 09 de abril, 2016</p>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <div class="ui tag label">SIMUL2016000002</div>
+                </div>
+                <div class="ui two buttons">
+                    <a class="ui button"><i class="plus icon"></i>Detalhes</a>
+                    <a class="ui toggle button">Inscrição</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div style="padding: 5em;">
+        <h2 class="ui center aligned icon header">
+            <i class="icon frown"></i>
+            Não há simulados cadastrados
+            <div class="sub header">Deseja se cadastrar para ser avisado? <a href="#">Cadastre-se</a></div>
+        </h2>
+    </div>
+}
+
