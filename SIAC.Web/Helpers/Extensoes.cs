@@ -109,6 +109,16 @@ namespace SIAC
             return indice + " " + descricao;
         }
 
+        public static string Between(this string str, int indexA, int indexB)
+        {
+            string r = string.Empty;
+            for (int i = indexA; i < indexB; i++)
+            {
+                r += str[i];
+            }
+            return r;
+        }
+
         #endregion
 
         // Int

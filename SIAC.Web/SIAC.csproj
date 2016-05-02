@@ -266,6 +266,7 @@
     <Compile Include="Controllers\AgendaController.cs" />
     <Compile Include="Controllers\AutoavaliacaoController.cs" />
     <Compile Include="Controllers\AcademicaController.cs" />
+    <Compile Include="Controllers\CandidatoController.cs" />
     <Compile Include="Controllers\CertificacaoController.cs" />
     <Compile Include="Controllers\GerenciaController.cs" />
     <Compile Include="Controllers\ImpressaoController.cs" />
@@ -285,6 +286,7 @@
     <Compile Include="Controllers\ConfiguracoesController.cs" />
     <Compile Include="Controllers\QuestaoController.cs" />
     <Compile Include="Controllers\TemaController.cs" />
+    <Compile Include="Filters\CandidatoFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -292,11 +294,13 @@
     <Compile Include="Helpers\CorDinamica.cs" />
     <Compile Include="Helpers\Criptografia.cs" />
     <Compile Include="Helpers\DevGerarQuestao.cs" />
+    <Compile Include="Helpers\Formate.cs" />
     <Compile Include="Helpers\LeroLero.cs" />
     <Compile Include="Helpers\Extensoes.cs" />
     <Compile Include="Helpers\Sessao.cs" />
     <Compile Include="Helpers\StringExt.cs" />
     <Compile Include="Helpers\TimeLog.cs" />
+    <Compile Include="Helpers\Valida.cs" />
     <Compile Include="Hubs\LembreteHub.cs" />
     <Compile Include="Hubs\ReposicaoHub.cs" />
     <Compile Include="Hubs\AcademicaHub.cs" />
@@ -399,6 +403,7 @@
     <Compile Include="Models\Candidato.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CandidatoPartial.cs" />
     <Compile Include="Models\Categoria.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -625,6 +630,8 @@
     <Compile Include="ViewModels\AvaliacaoGerarViewModel.cs" />
     <Compile Include="ViewModels\AvaliacaoIndexViewModel.cs" />
     <Compile Include="ViewModels\AvaliacaoResultadoViewModel.cs" />
+    <Compile Include="ViewModels\CandidatoCadastrarViewModel.cs" />
+    <Compile Include="ViewModels\CandidatoAcessarViewModel.cs" />
     <Compile Include="ViewModels\CertificacaoConfigurarViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracoesInstitucionalViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracoesParametrosViewModel.cs" />
@@ -824,6 +831,10 @@
     <Content Include="Views\Gerencia\Partials\_CarregarProfessorDisciplinas.cshtml" />
     <Content Include="Views\Inscricao\Index.cshtml" />
     <Content Include="Views\Shared\Simulados\_Layout.cshtml" />
+    <Content Include="Views\Candidato\Acessar.cshtml" />
+    <Content Include="Views\Candidato\Cadastrar.cshtml" />
+    <Content Include="Views\Candidato\Index.cshtml" />
+    <Content Include="Views\Candidato\Perfil.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

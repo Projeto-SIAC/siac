@@ -80,7 +80,6 @@ namespace SIAC.Controllers
                     Value = Criptografia.RetornarHash(Sessao.UsuarioMatricula)
                 });
                 Lembrete.AdicionarNotificacao("Seu usuário foi autenticado com sucesso.", Lembrete.POSITIVO);
-                TimeLog.Parar();
                 if (Request.QueryString["continuar"] != null)
                     return Redirect(Request.QueryString["continuar"].ToString());
                 return RedirectToAction("Index", "Principal");

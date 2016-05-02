@@ -1,5 +1,11 @@
 ﻿<!DOCTYPE html>
 
+@{ 
+    string path = Request.Url.PathAndQuery.ToLower();
+    bool acessarOuCadastrar = path.Contains("acessar") || path.Contains("cadastrar");
+    bool conectado = Sessao.Candidato != null;
+}
+
 <html lang="pt-br">
 <head>
     <meta charset="utf-8" />
@@ -10,8 +16,9 @@
     <style>
         .menu .item.logo {
             font-size: 1.25em;
-            border-left: 0!important;
+            border-left: 0 !important;
         }
+
         .background {
             position: absolute;
             width: 100%;
@@ -39,52 +46,67 @@
         <div class="ui menu" style="border-radius:0">
             <div class="ui container">
                 @*<a href="~/" class="item">
-                <img src="~/resources/images/layout/logo-black.png" />
-            </a>*@
+                        <img src="~/resources/images/layout/logo-black.png" />
+                    </a>*@
                 <a href="@Url.Action("", "Inscricao")" class="item logo">
                     <b>SIAC</b>&nbsp;Simulados
                 </a>
-                <a href="#" class="item">Calendário</a>
-                <a href="#" class="item">Candidato</a>
+                <a href="@Url.Action("Index", "Inscricao")" class="item">Calendário</a>
+                <a href="@Url.Action("Index", "Candidato")" class="item">Candidato</a>
                 <div class="right menu">
+                    @if (conectado)
+                    {
+                        <div class="ui dropdown item">
+                            @Sessao.Candidato.PrimeiroNome
+                            <i class="dropdown icon"></i>
+                            <div class="menu">
+                                <a href="@Url.Action("Inscricoes", "Candidato")" class="item">Inscrições</a>
+                                <a href="@Url.Action("Perfil", "Candidato")" class="item">Perfil</a>
+                                <a href="@Url.Action("Desconectar", "Candidato")" class="item">Sair</a>
+                            </div>
+                        </div>
+                    }
                     <a href="@Url.Action("Index", "Gerencia")" class="item"><i class="lock icon"></i></a>
                 </div>
             </div>
         </div>
         <div class="ui container">
-            <div class="ui stackable grid">
-                @*<div class="sixteen wide column" style="padding-top: 0; padding-bottom: 0">
-                    @Html.MvcSiteMap().SiteMapPath()
-                </div>*@
-                <div class="twelve wide column">
+            <div class="ui centered stackable grid">
+                <div class="@(acessarOuCadastrar ? "eight" : "twelve") wide column">
                     <div class="ui segment">
                         @RenderBody()
                     </div>
                 </div>
-                <div class="four wide column">
-                    <div class="ui segment">
-                        <div class="ui center aligned icon header">
-                            <i class="icon user"></i>
-                            <div class="content" style="padding-left:0!important">
-                                Área do Candidado
-                                <div class="sub header">
-                                    Informações sobre inscrição e simulados passados.
+                @if (!acessarOuCadastrar && !conectado)
+                {
+                    <div class="four wide column">
+                        <div class="ui segment">
+                            <div class="ui center aligned icon header">
+                                <i class="icon user"></i>
+                                <div class="content" style="padding-left:0!important">
+                                    Área do Candidado
+                                    <div class="sub header">
+                                        Informações sobre inscrição e simulados passados.
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="ui fluid buttons">
-                            <div class="ui primary button">Acessar</div>
-                            <div class="or" data-text="ou"></div>
-                            <div class="ui button">Cadastrar</div>
+                            <div class="ui fluid buttons">
+                                <a href="@Url.Action("Acessar", "Candidato")" class="ui primary button">Acessar</a>
+                                <div class="or" data-text="ou"></div>
+                                <a href="@Url.Action("Cadastrar", "Candidato")" class="ui button">Cadastrar</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
         @Scripts.Render("~/bundles/js")
         @Scripts.Render("~/bundles/signalR")
         <script src="~/signalr/hubs"></script>
-        @RenderSection("Scripts", required: false)        
+        <script>
+            $(function () { $('.ui.dropdown').dropdown(); })();
+        </script>
+        @RenderSection("Scripts", required: false)
         <div class="ui page dimmer">
             <div class="ui large text global loader">Carregando</div>
         </div>

@@ -1,0 +1,42 @@
+﻿@model CandidatoCadastrarViewModel
+
+@{
+    ViewBag.Title = "Cadastrar";
+    Layout = "~/Views/Shared/Simulados/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<form method="post" class="ui @(Model.TemMensagem ? "error" : "") form">
+    @if (Model.TemMensagem)
+    {
+        <div class="ui error message">
+            <p>@Model.Mensagem</p>
+        </div>
+    }
+    <div class="field required">
+        <label>Nome Completo</label>
+        <input type="text" name="Nome" placeholder="Nome Completo" autocomplete="off" value="@Model.Nome" required />
+    </div>
+    <div class="field required">
+        <label>Email</label>
+        <input type="email" name="Email" placeholder="Email" autocomplete="off" value="@Model.Email" required />
+    </div>
+    <div class="field required">
+        <label>CPF</label>
+        <input type="text" name="Cpf" placeholder="CPF" autocomplete="off" data-mask="000.000.000-00" value="@Model.Cpf" required />
+    </div>
+    <div class="field required">
+        <label>Senha</label>
+        <input type="password" name="Senha" placeholder="Senha" autocomplete="off" required />
+    </div>
+    <div class="field required">
+        <label>Confirmação da Senha</label>
+        <input type="password" name="SenhaConfirmacao" placeholder="Confirmação da Senha" autocomplete="off" required />
+    </div>
+    <input type="submit" value="Cadastrar" class="ui primary button" />
+    <a href="@Url.Action("Acessar")" class="ui right floated basic button">Já sou cadastrado</a>
+</form>
+
+
+
