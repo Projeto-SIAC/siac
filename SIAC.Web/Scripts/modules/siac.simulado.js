@@ -63,20 +63,21 @@ siac.Simulado.Provas = (function () {
 
         $('.ui.informacoes.modal').modal();
         $('.ui.accordion').accordion();
+        $('.ui.dropdown').dropdown();
         $('[data-html]').popup({
             on: 'click'
         });
 
         $('.novo.dia.button').click(function () {
-            $('.novo.modal').modal('show');
+            $('.novo.dia.modal').modal('show');
         })
 
-        $('.novo.modal .approve.button').click(function () {
+        $('.novo.dia.modal .approve.button').click(function () {
             if (!validarNovoDia()) {
-                $('.novo.modal .form').addClass('error');
+                $('.novo.dia.modal .form').addClass('error');
                 return false;
             } else {
-                $('form.novo').submit();
+                $('form.novo.dia').submit();
             }
         })
 
@@ -88,6 +89,10 @@ siac.Simulado.Provas = (function () {
             removerDia($(this).data('dia'));
             $(this).addClass('loading');
         });
+
+        $('.provas.button').click(function () {
+            carregarProvas($(this));
+        });
     }
 
     function validarNovoDia() {
@@ -96,9 +101,9 @@ siac.Simulado.Provas = (function () {
             horarioTermino = $('[name=txtHorarioTermino]').val(),
             retorno = true;
 
-        lstErro = $('.novo.modal .form .error.message .list');
+        lstErro = $('.novo.dia.modal .form .error.message .list');
         lstErro.html('');
-        $('.novo.modal .form').removeClass('error');
+        $('.novo.dia.modal .form').removeClass('error');
 
         if (!dataRealizacao) {
             lstErro.append('<li>Especifique a data de realização</li>');
@@ -142,6 +147,49 @@ siac.Simulado.Provas = (function () {
                 location.reload();
             }
         })
+    }
+
+    function carregarProvas($button) {
+        var codDia = $button.data('dia'),
+            $modalProvas = $('.ui.provas.modal');
+
+        $.ajax({
+            type: 'POST',
+            url: '/simulado/carregarprovas/' + _codigo,
+            data: { codDia: codDia },
+            beforeSend: function(){
+                $button.addClass('loading');
+            },
+            success: function (data) {
+                $modalProvas.html(data).modal('show');
+                $modalProvas.find('.novo.prova.button').off('click').click(function () {
+                    abrirModalNovoDia(codDia);
+                });
+            },
+            error: function () {
+                siac.mensagem('Falha ao recuperar as Provas desse dia. Atualize a página para tentar novamente.');
+            },
+            complete: function () {
+                $button.removeClass('loading');
+            }
+        })
+    }
+
+    function abrirModalNovoDia(codDia) {
+        var $form = $('form.novo.prova'),
+            url = $form.prop('action');
+
+        if (url.indexOf('=') > -1) {
+            url = url.replace(/=[0-9]+/, '=' + codDia);
+        } else {
+            url = url + '?codDia=' + codDia;
+        }
+
+        $form.prop('action', url);
+
+        $form.modal({
+            closable: false
+        }).modal('show').data('dia', codDia);
     }
 
     return {

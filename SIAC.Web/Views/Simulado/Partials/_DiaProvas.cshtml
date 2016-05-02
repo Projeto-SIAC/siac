@@ -1,0 +1,44 @@
+﻿@model SimDiaRealizacao
+@{
+    List<SimProva> provas = Model.SimProva.ToList();
+}
+
+<i class="icon close"></i>
+<div class="header">
+    Provas de @Model.DtRealizacao.ToBrazilianString()
+</div>
+<div class="content">
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Título</th>
+                <th>Disciplina</th>
+                <th>Professor</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0, length = provas.Count; i < length; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@provas[i].Titulo</td>
+                    <td>@provas[i].Disciplina.Descricao</td>
+                    @if (provas[i].Professor != null)
+                    {
+                        <td>provas[i].Professor.Usuario.PessoaFisica.PrimeiroNome</td>
+                    }
+                    else
+                    {
+                        <td>Nâo Definido</td>
+                    }
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="actions">
+    <div class="ui novo prova button">Nova Prova</div>
+    <div class="ui cancel button">Fechar</div>
+</div>

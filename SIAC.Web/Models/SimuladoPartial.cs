@@ -26,7 +26,7 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
-        public static int ObterNumIdentificador() => 
+        public static int ObterNumIdentificador() =>
             contexto.Simulado.Where(s => s.Ano == DateTime.Now.Year).Count() + 1;
 
         public static Simulado ListarPorCodigo(string codigo)
@@ -42,10 +42,39 @@ namespace SIAC.Models
         {
             return contexto.Simulado
                 //.Where(simulado =>
-                  //  !simulado.FlagInscricaoEncerrado
-                    //&& simulado.DtInicioInscricao.Value <= DateTime.Today
-                    //&& simulado.DtTerminoInscricao.Value >= DateTime.Today
+                //  !simulado.FlagInscricaoEncerrado
+                //&& simulado.DtInicioInscricao.Value <= DateTime.Today
+                //&& simulado.DtTerminoInscricao.Value >= DateTime.Today
                 /*)*/.OrderByDescending(s => s.DtInicioInscricao).ToList();
+        }
+
+        public static List<Questao> ObterQuestoes(int codDisciplina, int quantidadeQuestoes)
+        {
+            List<Questao> questoes = new List<Questao>();
+            Random r = new Random();
+
+            if (quantidadeQuestoes > 0)
+            {
+                List<Questao> temp = new List<Questao>();
+
+                temp = (from q in contexto.Questao
+                        where q.QuestaoTema.FirstOrDefault().CodDisciplina == codDisciplina
+                        //&& QuestaoTema.PrazoValido(qt)
+                        select q).ToList();
+                
+                if (temp.Count != 0 && questoes.Count < quantidadeQuestoes)
+                {
+                    for (int i = 0; i < quantidadeQuestoes; i++)
+                    {
+                        int random = r.Next(0, temp.Count);
+
+                        Questao questaoEscolhida = temp.ElementAtOrDefault(random);
+                        questoes.Add(questaoEscolhida);
+                        temp.Remove(questaoEscolhida);
+                    }
+                }
+            }
+            return questoes;
         }
     }
 }
