@@ -1,8 +1,206 @@
-﻿
+﻿@model CandidatoPerfilViewModel
+
 @{
     ViewBag.Title = "Perfil";
     Layout = "~/Views/Shared/Simulados/_Layout.cshtml";
 }
 
-<h2>Perfil</h2>
+<h2>@ViewBag.Title</h2>
+@if (!@Model.Candidato.PerfilCompleto)
+{
+    <div class="ui warning message">
+        <p>Você precisa completar seu Perfil antes de começar a se inscrever nos simulados.</p>
+    </div>
+}
+
+<form method="post" class="ui form">
+    <div class="field ">
+        <label>Nome Completo</label>
+        <input type="text" name="Nome" placeholder="Nome Completo" autocomplete="off" value="@Model.Candidato.Nome" required />
+    </div>
+    <div class="field ">
+        <label>Email</label>
+        <input type="email" name="Email" placeholder="Email" autocomplete="off" value="@Model.Candidato.Email" required />
+    </div>
+    <div class="field ">
+        <label>CPF</label>
+        <input type="text" placeholder="CPF" autocomplete="off" data-mask="000.000.000-00" value="@Model.Candidato.Cpf" disabled />
+    </div>
+    <div class="three fields">
+        <div class="field ">
+            <label>Número do RG</label>
+            <input name="RgNumero" type="text" placeholder="Número do RG" autocomplete="off" data-mask="0#" value="@Model.Candidato.RgNumero" />
+        </div>
+        <div class="field ">
+            <label>Orgão do RG</label>
+            <input name="RgOrgao" type="text" placeholder="Orgão do RG" autocomplete="off" value="@Model.Candidato.RgOrgao" />
+        </div>
+        <div class="field ">
+            <label>Data de Expedição do RG</label>
+            <input name="RgDtExpedicao" type="text" placeholder="Data de Expedição do RG" autocomplete="off" data-mask="00/00/0000" value="@Model.Candidato.RgDtExpedicao" />
+        </div>
+    </div>
+    <div class="two fields">
+        <div class="field">
+            <label>Sexo</label>
+            <select name="Sexo" class="ui dropdown">
+                <option value="">Selecione</option>
+                <option @(Model.Candidato.Sexo?[0] == (char)Candidato.Sexos.Feminino) value="@((char)Candidato.Sexos.Feminino)">Feminino</option>
+                <option @(Model.Candidato.Sexo?[0] == (char)Candidato.Sexos.Masculino) value="@((char)Candidato.Sexos.Masculino)">Masculino</option>
+                <option @(Model.Candidato.Sexo?[0] == (char)Candidato.Sexos.NaoInformado) value="@((char)Candidato.Sexos.NaoInformado)">Não informar</option>
+            </select>
+        </div>
+        <div class="field">
+            <label>Data de Nascimento</label>
+            <input name="DtNascimento" type="text" placeholder="Data de Nascimento" autocomplete="off" data-mask="00/00/0000" value="@(Model.Candidato.DtNascimento?.ToString("ddMMyyyy"))" />
+        </div>
+    </div>
+    <div class="two fields">
+        <div class="field">
+            <label>Telefone Fixo</label>
+            <input name="TelefoneFixo" type="text" placeholder="Telefone Fixo" autocomplete="off" data-mask="(00) 0000-0000" value="@(Model.Candidato.TelefoneFixo)" />
+        </div>
+        <div class="field">
+            <label>Celular</label>
+            <input name="TelefoneCelular" type="text" placeholder="Celular" autocomplete="off" class="celular" value="@(Model.Candidato.TelefoneCelular)" />
+        </div>
+    </div>
+    <div class="three fields">
+        <div class="field">
+            <label>País</label>
+            <select name="Pais" id="ddlPais" class="ui search dropdown">
+                <option value="">Selecione</option>
+                @foreach (Pais pais in Model.Paises)
+                {
+                    <option value="@pais.CodPais">@pais.Descricao</option>
+                }
+            </select>
+        </div>
+        <div class="field">
+            <label>Estado</label>
+            <select name="Estado" id="ddlEstado" class="ui search dropdown">
+                <option value="">Selecione</option>
+            </select>
+        </div>
+        <div class="field">
+            <label>Munícipio</label>
+            <select name="Municipio" id="ddlMunicipio" class="ui search dropdown">
+                <option value="">Selecione</option>
+            </select>
+        </div>
+    </div>
+    <h4 class="ui dividing header">Outras Informações</h4>
+    <div class="ui segment">
+        <div class="inline field">
+            <div class="ui slider checkbox">
+                <input name="Adventista" type="checkbox" @(Model.Candidato.FlagAdventista.HasValue && Model.Candidato.FlagAdventista.Value ? "checked" : "") />
+                <label>Sou adventista e guardo o sábado</label>
+            </div>
+        </div>
+    </div>
+    <div class="ui segment">
+        <div class="inline field">
+            <div class="ui slider checkbox">
+                <input name="NecessidadeEspecial" id="ckbNecessidade" type="checkbox" @(Model.Candidato.FlagNecessidadeEspecial.HasValue && Model.Candidato.FlagNecessidadeEspecial.Value ? "checked" : "") />
+                <label>Tenho necessidades especiais</label>
+            </div>
+        </div>
+        <div class="field @(Model.Candidato.FlagNecessidadeEspecial.HasValue && Model.Candidato.FlagNecessidadeEspecial.Value ? "" : "disabled")">
+            <label>Descreva sua necessidade especial</label>
+            <input name="DescricaoNecessidadeEspecial" type="text" id="txtNecessidade" placeholder="Deficência" autocomplete="off" value="@(Model.Candidato.DescricaoNecessidadeEspecial)" @(Model.Candidato.FlagNecessidadeEspecial.HasValue && Model.Candidato.FlagNecessidadeEspecial.Value ? "" : "disabled") />
+        </div>
+    </div>
+    <input type="submit" value="Atualizar" class="ui primary button" />
+    <a href="@Url.Action("Index")" class="ui right floated basic button">Voltar</a>
+</form>
+
+@section Scripts {
+    <script id="estados" type="application/json">@Html.Raw(Model.EstadosEmJson)</script>
+    <script id="municipios" type="application/json">@Html.Raw(Model.MunicipiosEmJson)</script>
+    <script>
+        $(function () {
+            var _estados = JSON.parse($('script#estados').html()),
+                _municipios = JSON.parse($('script#municipios').html()),
+                _ddlPais = $('#ddlPais'),
+                _ddlEstado = $('#ddlEstado'),
+                _ddlMunicipio = $('#ddlMunicipio');
+
+            $('script#estados').remove();
+            $('script#municipios').remove();
+
+            _ddlPais.off('change').on('change', function () {
+                var pais = $(this).val();
+
+                _ddlEstado.html('<option value="">Selecione</option>');
+                _ddlMunicipio.html('<option value="">Selecione</option>');
+
+                for (var i = 0, length = _estados.length; i < length; i++) {
+                    if (_estados[i].Pais == pais) {
+                        _ddlEstado.append('<option value="' + _estados[i].Estado + '">' + _estados[i].Descricao + '</option>');
+                    }
+                }
+
+                _ddlEstado
+                    .dropdown('refresh')
+                    .dropdown('set placeholder text', 'Selecione')
+                    .dropdown('set value', '')
+                ;
+
+                _ddlMunicipio
+                    .dropdown('refresh')
+                    .dropdown('set placeholder text', 'Selecione')
+                    .dropdown('set value', '')
+                ;
+            }).change();
+
+            _ddlEstado.off('change').on('change', function () {
+                var estado = $(this).val();
+
+                _ddlMunicipio.html('<option value="">Selecione</option>');
+
+                for (var i = 0, length = _municipios.length; i < length; i++) {
+                    if (_municipios[i].Estado == estado) {
+                        _ddlMunicipio.append('<option value="' + _municipios[i].Municipio + '">' + _municipios[i].Descricao + '</option>');
+                    }
+                }
+
+                _ddlMunicipio
+                    .dropdown('refresh')
+                    .dropdown('set placeholder text', 'Selecione')
+                    .dropdown('set value', '')
+                ;
+            });
+
+            $('#ckbNecessidade').off('change').on('change', function () {
+                var checked = $(this).is(':checked'),
+                    txtNecessidade = $('#txtNecessidade');
+
+                if (checked) {
+                    txtNecessidade.removeAttr('disabled');
+                    txtNecessidade.parent().removeClass('disabled');
+                }
+                else {
+                    txtNecessidade.attr('disabled', 'disabled');
+                    txtNecessidade.parent().addClass('disabled');
+                }
+            });
+
+            $('.ui.checkbox').checkbox();
+
+            var SPMaskBehavior = function (val) {
+                return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+            };
+
+            var spOptions = {
+                onKeyPress: function (val, e, field, options) {
+                    field.mask(SPMaskBehavior.apply({}, arguments), options);
+                }
+            };
+
+            $('.celular').mask(SPMaskBehavior, spOptions);
+            
+            
+        })();
+    </script>
+}
 

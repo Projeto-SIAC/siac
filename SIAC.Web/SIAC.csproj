@@ -480,6 +480,7 @@
     <Compile Include="Models\Municipio.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MunicipioPartial.cs" />
     <Compile Include="Models\NivelEnsino.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -632,6 +633,7 @@
     <Compile Include="ViewModels\AvaliacaoResultadoViewModel.cs" />
     <Compile Include="ViewModels\CandidatoCadastrarViewModel.cs" />
     <Compile Include="ViewModels\CandidatoAcessarViewModel.cs" />
+    <Compile Include="ViewModels\CandidatoPerfilViewModel.cs" />
     <Compile Include="ViewModels\CertificacaoConfigurarViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracoesInstitucionalViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracoesParametrosViewModel.cs" />

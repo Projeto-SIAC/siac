@@ -8,8 +8,36 @@ namespace SIAC.Models
 {
     public partial class Candidato
     {
+        public enum Sexos
+        {
+            Feminino = 'F',
+            Masculino = 'M',
+            NaoInformado = 'N'
+        };
+
         public string PrimeiroNome => this.Nome.Split(' ').First();
         public string UltimoNome => this.Nome.Split(' ').Last();
+
+        public bool PerfilCompleto
+        {
+            get
+            {
+                if (CodEstado != null && CodMunicipio != null && CodPais != null)
+                {
+                    if (RgDtExpedicao != null && RgNumero != null && RgOrgao != null)
+                    {
+                        if (DtNascimento != null && Sexo != null && FlagAdventista != null && FlagNecessidadeEspecial != null)
+                        {
+                            if (!String.IsNullOrWhiteSpace(TelefoneCelular) || !String.IsNullOrWhiteSpace(TelefoneFixo))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+        }
 
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 

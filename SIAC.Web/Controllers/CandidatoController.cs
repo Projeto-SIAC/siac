@@ -103,10 +103,20 @@ namespace SIAC.Controllers
 
         // GET: simulado/candidato/perfil
         [CandidatoFilter]
-        public ActionResult Perfil()
+        public ActionResult Perfil() => View(new CandidatoPerfilViewModel()
         {
-            return View();
-        }
+            Candidato = Sessao.Candidato,
+            Paises = Municipio.ListarPaisesOrdenadamente(),
+            Estados = Municipio.ListarEstadosOrdenadamente(),
+            Municipios = Municipio.ListarOrdenadamente()
+        });
 
+        [HttpPost]
+        [CandidatoFilter]
+        public ActionResult Perfil(CandidatoPerfilViewModel model)
+        {
+            // TODO
+            return View(model);
+        }
     }
 }
