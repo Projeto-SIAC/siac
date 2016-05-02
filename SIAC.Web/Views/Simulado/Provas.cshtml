@@ -38,6 +38,7 @@
                     <td>@dia.DtRealizacao.AddMinutes(dia.Duracao).ToShortTimeString()</td>
                     <td>
                         <a data-dia="@dia.CodDiaRealizacao" class="ui provas tiny button"><i class="copy icon"></i>Provas</a>
+                        <a data-dia="@dia.CodDiaRealizacao" class="ui editar tiny button"><i class="edit icon"></i>Editar</a>
                         <a data-dia="@dia.CodDiaRealizacao" class="ui remover tiny button"><i class="trash icon"></i>Remover</a>
                     </td>
                 </tr>
@@ -79,7 +80,7 @@
     </div>
 </form>
 
-<div class="ui provas small modal"></div>
+<div class="ui provas modal"></div>
 
 <form action="@Url.Action("NovaProva", new { codigo = Model.Simulado.Codigo })" method="post" class="ui novo prova modal">
     <i class="icon close"></i>

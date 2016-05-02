@@ -281,7 +281,7 @@ namespace SIAC.Controllers
                 {
                     string ddlDisciplina = form["ddlDisciplina"];
                     string txtQteQuestoes = form["txtQteQuestoes"];
-                    string txtTitulo = form["txtQteQuestoes"];
+                    string txtTitulo = form["txtTitulo"];
                     string txtDescricao = form["txtDescricao"];
 
                     if (!StringExt.IsNullOrWhiteSpace(ddlDisciplina, txtQteQuestoes, txtTitulo))
@@ -323,6 +323,29 @@ namespace SIAC.Controllers
                 }
             }
 
+            return RedirectToAction("Provas", new { codigo = codigo });
+        }
+        
+        [HttpPost]
+        public ActionResult RemoverProva(string codigo, int codDia, int codProva)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
+                    SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
+
+                    if (diaRealizacao!= null)
+                    {
+                        SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
+                        prova.SimProvaQuestao.Clear();
+                        diaRealizacao.SimProva.Remove(prova);
+                        Repositorio.Commit();
+                    }
+                }
+            }
             return RedirectToAction("Provas", new { codigo = codigo });
         }
 

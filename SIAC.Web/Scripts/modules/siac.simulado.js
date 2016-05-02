@@ -157,13 +157,16 @@ siac.Simulado.Provas = (function () {
             type: 'POST',
             url: '/simulado/carregarprovas/' + _codigo,
             data: { codDia: codDia },
-            beforeSend: function(){
+            beforeSend: function () {
                 $button.addClass('loading');
             },
             success: function (data) {
                 $modalProvas.html(data).modal('show');
                 $modalProvas.find('.novo.prova.button').off('click').click(function () {
-                    abrirModalNovoDia(codDia);
+                    abrirModalNovaProva(codDia);
+                });
+                $modalProvas.find('.remover.button').off('click').click(function () {
+                    removerProva(codDia, $(this));
                 });
             },
             error: function () {
@@ -175,7 +178,7 @@ siac.Simulado.Provas = (function () {
         })
     }
 
-    function abrirModalNovoDia(codDia) {
+    function abrirModalNovaProva(codDia) {
         var $form = $('form.novo.prova'),
             url = $form.prop('action');
 
@@ -190,6 +193,31 @@ siac.Simulado.Provas = (function () {
         $form.modal({
             closable: false
         }).modal('show').data('dia', codDia);
+    }
+
+    function removerProva(codDia, $button) {
+        var codProva = $button.data('prova');
+
+        $.ajax({
+            type: 'POST',
+            url: '/simulado/removerprova/' + _codigo,
+            data: {
+                codDia: codDia,
+                codProva: codProva
+            },
+            beforeSend: function(){
+                $button.addClass('loading');
+            },
+            success: function() {
+                location.reload();
+            },
+            error: function () {
+                siac.mensagem('Aconteceu um erro na operação! Atualize a página para tentar novamente.')
+            },
+            complete: function () {
+                $button.removeClass('loading');
+            }
+        })
     }
 
     return {
@@ -330,7 +358,7 @@ siac.Simulado.Salas = (function () {
         ddlBloco.off('change').change(function () {
             atualizarSalas()
         });
-        
+
         $('.selecionar.button').click(function () {
             validar();
         });
@@ -345,7 +373,7 @@ siac.Simulado.Salas = (function () {
         var codCampus = ddlCampus.val(),
             label = 'Bloco';
 
-        ddlBloco.html('<option value="">'+label+'</option>');
+        ddlBloco.html('<option value="">' + label + '</option>');
 
         for (var i = 0, length = _blocos.length; i < length; i++) {
             if (_blocos[i].Campus == codCampus) {
