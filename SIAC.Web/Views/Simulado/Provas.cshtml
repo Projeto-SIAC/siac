@@ -1,4 +1,4 @@
-﻿@model Simulado
+﻿@model SimuladoProvaViewModel
 @{
     ViewBag.Title = "Provas";
 }
@@ -8,7 +8,7 @@
     <div class="ui right floated informacoes button">Informações</div>
 </h2>
 
-@Html.Partial("_SimuladoInformacoes")
+@Html.Partial("_SimuladoInformacoes", Model.Simulado)
 
 @Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 2 } })
 
@@ -16,6 +16,7 @@
     Dias de Realização
     <div class="ui right floated novo dia button">Novo Dia</div>
 </h3>
+
 <div class="ui basic segment" style="max-height:30em">
     <table class="ui striped table">
         <thead>
@@ -28,7 +29,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao.OrderBy(s => s.DtRealizacao).ToList())
+            @foreach (SimDiaRealizacao dia in Model.Simulado.SimDiaRealizacao.OrderBy(s => s.DtRealizacao).ToList())
             {
                 <tr>
                     <td>@dia.CodDiaRealizacao</td>
@@ -36,6 +37,8 @@
                     <td>@dia.DtRealizacao.ToShortTimeString()</td>
                     <td>@dia.DtRealizacao.AddMinutes(dia.Duracao).ToShortTimeString()</td>
                     <td>
+                        <a data-dia="@dia.CodDiaRealizacao" class="ui provas tiny button"><i class="copy icon"></i>Provas</a>
+                        <a data-dia="@dia.CodDiaRealizacao" class="ui editar tiny button"><i class="edit icon"></i>Editar</a>
                         <a data-dia="@dia.CodDiaRealizacao" class="ui remover tiny button"><i class="trash icon"></i>Remover</a>
                     </td>
                 </tr>
@@ -44,7 +47,7 @@
     </table>
 </div>
 
-<form action="@Url.Action("NovoDia", new { codigo = Model.Codigo })" method="post" class="ui novo modal">
+<form action="@Url.Action("NovoDia", new { codigo = Model.Simulado.Codigo })" method="post" class="ui novo dia modal">
     <i class="icon close"></i>
     <div class="header">
         Novo Dia
@@ -77,8 +80,49 @@
     </div>
 </form>
 
+<div class="ui provas modal"></div>
+
+<form action="@Url.Action("NovaProva", new { codigo = Model.Simulado.Codigo })" method="post" class="ui novo prova modal">
+    <i class="icon close"></i>
+    <div class="header">
+        Nova Prova
+    </div>
+    <div class="content">
+        <div class="ui form">
+            <div class="two fields">
+                <div class="field required">
+                    <label>Disciplina</label>
+                    <select name="ddlDisciplina" class="ui fluid search dropdown" required">
+                        <option value="">Disciplina</option>
+                        @foreach (Disciplina d in Model.Disciplinas)
+                        {
+                            <option value="@d.CodDisciplina">@d.Descricao</option>
+                        }
+                    </select>
+                </div>
+                <div class="field required">
+                    <label>Quantidade de Questões</label>
+                    <input type="number" name="txtQteQuestoes" placeholder="Quantidade de Questões" required />
+                </div>
+            </div>
+            <div class="field required">
+                <label data-ajuda="Forneça na caixa abaixo o título">Forneça o título</label>
+                <input id="txtTitulo" name="txtTitulo" maxlength="250" placeholder="Título" required />
+            </div>
+            <div class="field">
+                <label data-ajuda="Descreva no espaço abaixo uma descrição para este simulado">Insira uma descrição</label>
+                <textarea id="txtDescricao" name="txtDescricao" rows="5" placeholder="Descrição"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <input type="reset" value="Cancelar" class="ui cancel button" />
+        <input type="submit" value="Cadastrar" class="ui approve button" />
+    </div>
+</form>
+
 <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("","Gerencia")' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
-<a href="@Url.Action("Datas", new { codigo = Model.Codigo })" class="ui right floated button" tabindex="0">Avançar</a>
+<a href="@Url.Action("Datas", new { codigo = Model.Simulado.Codigo })" class="ui right floated button" tabindex="0">Avançar</a>
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/simulado")
