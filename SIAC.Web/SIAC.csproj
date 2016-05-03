@@ -264,6 +264,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AgendaController.cs" />
+    <Compile Include="Controllers\ArquivoController.cs" />
     <Compile Include="Controllers\AutoavaliacaoController.cs" />
     <Compile Include="Controllers\AcademicaController.cs" />
     <Compile Include="Controllers\CandidatoController.cs" />
@@ -625,6 +626,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="ViewModels\AcessoIndexViewModel.cs" />
+    <Compile Include="ViewModels\ArquivoIndexViewModel.cs" />
     <Compile Include="ViewModels\AutoavaliacaoDetalheViewModel.cs" />
     <Compile Include="ViewModels\AutoavaliacaoNovoViewModel.cs" />
     <Compile Include="ViewModels\AvaliacaoAgendarViewModel.cs" />
@@ -839,6 +841,10 @@
     <Content Include="Views\Candidato\Index.cshtml" />
     <Content Include="Views\Candidato\Perfil.cshtml" />
     <Content Include="Views\Simulado\Partials\_DiaProvas.cshtml" />
+    <Content Include="Views\Arquivo\Index.cshtml" />
+    <Content Include="Views\Arquivo\Partials\_ListaSimulado.cshtml" />
+    <Content Include="Views\Arquivo\Abertos.cshtml" />
+    <Content Include="Views\Arquivo\Encerrados.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

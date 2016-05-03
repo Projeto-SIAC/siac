@@ -1,0 +1,52 @@
+﻿@model ArquivoIndexViewModel
+
+@{
+    ViewBag.Title = "Arquivo de Simulados";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>
+    @ViewBag.Title
+    <a class="ui right floated button" href="@Url.Action("Novo", "Simulado")"><i class="plus icon"></i>Novo Simulado</a>
+</h2>
+
+<div class="ui basic segment">
+    <h4 class="ui dividing header">Simulados Abertos</h4>
+
+    @if (Model.Abertos.Count > 0)
+    {
+        <div style="margin-bottom:.5em" class="ui three cards">
+            @Html.Partial("_ListaSimulado", Model.Abertos)
+        </div>
+        
+        if (Model.MaisAbertos)
+        {
+            <a class="ui right floated icon labeled button" href="@Url.Action("Abertos")"><i class="ellipsis horizontal icon"></i> Mais Simulados Abertos</a>
+        }
+    }
+    else
+    {
+        <div class="ui message">Não há simulados abertos.</div>
+    }
+</div>
+
+<div class="ui basic segment">
+    <h4 class="ui dividing header">Simulados Encerrados</h4>
+
+    @if (Model.Encerrados.Count > 0)
+    {
+        <div style="margin-bottom:.5em" class="ui three cards">
+            @Html.Partial("_ListaSimulado", Model.Encerrados)
+        </div>
+        if (Model.MaisEncerrados)
+        {
+            <a class="ui right floated icon labeled button" href="@Url.Action("Encerrados")"><i class="ellipsis horizontal icon"></i> Mais Simulados Encerrados</a>
+        }
+    }
+    else
+    {
+        <div class="ui message">Não há simulados encerrados.</div>
+    }
+</div>
+
+<a class="ui button" href="@Url.Action("Index", "Gerencia")">Voltar para Gerência de Simulados</a>
