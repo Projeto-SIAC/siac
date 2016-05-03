@@ -90,6 +90,10 @@ siac.Simulado.Provas = (function () {
             $(this).addClass('loading');
         });
 
+        $('.editar.button').click(function () {
+            editarDia($(this));
+        });
+
         $('.provas.button').click(function () {
             carregarProvas($(this));
         });
@@ -145,6 +149,38 @@ siac.Simulado.Provas = (function () {
             data: { codDia: codDia },
             complete: function () {
                 location.reload();
+            }
+        })
+    }
+
+    function editarDia($button) {
+        var codDia = $button.data('dia');
+
+        $.ajax({
+            type: 'POST',
+            url: '/simulado/carregardia/' + _codigo,
+            data: {
+                codDia: codDia
+            },
+            beforeSend: function () {
+                $button.addClass('loading');
+            },
+            success: function (data) {
+                $('.editar.dia.modal').remove();
+                $('body').append($(data))
+
+                $('.editar.modal [data-mask]').map(function () {
+                    $(this).mask($(this).data('mask'));
+                });
+
+                $('.editar.dia.modal')
+                    .modal('show');
+            },
+            error: function () {
+                siac.mensagem('Aconteceu um erro na operação! Atualize a página para tentar novamente.')
+            },
+            complete: function () {
+                $button.removeClass('loading');
             }
         })
     }
@@ -212,7 +248,8 @@ siac.Simulado.Provas = (function () {
             beforeSend: function(){
                 $button.addClass('loading');
             },
-            success: function() {
+            success: function () {
+                $('.provas.modal').modal('hide');
                 location.reload();
             },
             error: function () {

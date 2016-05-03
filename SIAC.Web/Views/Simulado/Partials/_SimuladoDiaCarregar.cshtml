@@ -1,0 +1,34 @@
+﻿@model SimDiaRealizacao
+
+<form action="@Url.Action("EditarDia", new { codigo = Model.Simulado.Codigo, codDia = Model.CodDiaRealizacao })" method="post" class="ui editar dia modal">
+    <i class="icon close"></i>
+    <div class="header">
+        Editar Dia: @Model.DtRealizacao.ToBrazilianString()
+    </div>
+    <div class="content">
+        <div class="ui form">
+            <div class="ui error message">
+                <div class="header">Verifique</div>
+                <ul class="list"></ul>
+            </div>
+            <div class="three fields">
+                <div class="field required">
+                    <label>Data de Realização</label>
+                    <input type="text" value="@Model.DtRealizacao.ToString("ddMMyyyy")" autocomplete="off" name="txtDataRealizacao" data-mask="00/00/0000" placeholder="Data de Realização" />
+                </div>
+                <div class="field required">
+                    <label>Horário de Início</label>
+                    <input type="text" value="@Model.DtRealizacao.ToString("HHmm")"  autocomplete="off" name="txtHorarioInicio" data-mask="00:00" placeholder="Horário de Início" />
+                </div>
+                <div class="field required">
+                    <label>Horário de Término</label>
+                    <input type="text" value="@Model.DtRealizacao.AddMinutes(Model.Duracao).ToString("HHmm")" autocomplete="off" name="txtHorarioTermino" data-mask="00:00" placeholder="Horário de Início" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <input type="reset" value="Cancelar" class="ui cancel button" />
+        <input type="submit" value="Editar" class="ui approve button" />
+    </div>
+</form>
