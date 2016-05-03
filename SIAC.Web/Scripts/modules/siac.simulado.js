@@ -534,3 +534,14 @@ siac.Simulado.Salas = (function () {
         iniciar: iniciar
     }
 })();
+
+siac.Simulado.Detalhe = (function () {
+
+    function iniciar() {
+
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})()

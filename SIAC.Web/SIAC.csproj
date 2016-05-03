@@ -841,6 +841,7 @@
     <Content Include="Views\Simulado\Partials\_DiaProvas.cshtml" />
     <Content Include="Views\Simulado\Partials\_SimuladoProvaCarregar.cshtml" />
     <Content Include="Views\Simulado\Partials\_SimuladoDiaCarregar.cshtml" />
+    <Content Include="Views\Simulado\Detalhe.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

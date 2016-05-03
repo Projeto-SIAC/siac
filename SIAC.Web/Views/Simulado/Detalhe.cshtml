@@ -1,0 +1,72 @@
+﻿@model Simulado
+@{
+    ViewBag.Title = "Detalhe do Simulado";
+}
+
+<h2>
+    @ViewBag.Title
+    @if (Model.FlagSimuladoEncerrado)
+    {
+        <span class="ui label"><i class="lock icon"></i>Encerrado</span>
+    }
+    else if (Model.DtTerminoInscricao < DateTime.Now)
+    {
+        <span class="ui label"><i class="remove user icon"></i>Inscrições Encerradas</span>
+    }
+    else if (Model.DtInicioInscricao >= DateTime.Now)
+    {
+        <span class="ui label"><i class="add user icon"></i>Inscrições Abertas</span>
+    }
+</h2>
+
+<div class="ui basic segment">
+    <div class="ui dividing header">
+        Detalhes
+    </div>
+    <table class="ui striped table">
+        <tbody>
+            <tr>
+                <td><b>Titulo:</b></td>
+                <td>@Model.Titulo</td>
+            </tr>
+            <tr>
+                <td><b>Descrição:</b></td>
+                <td>@Model.Descricao</td>
+            </tr>
+            <tr>
+                <td><b>Coordenador:</b></td>
+                <td>@Model.Colaborador.Usuario.PessoaFisica.Nome</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@if (Model.DtInicioInscricao != null)
+{
+    <div class="ui basic segment">
+        <div class="ui dividing header">
+            Prazo
+        </div>
+        <table class="ui striped table">
+            <thead>
+                <tr>
+                    <th>Data de cadastro:</th>
+                    <th>Data de início das inscrições:</th>
+                    <th>Data de término das inscrições:</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.DtCadastro.ToBrazilianString()</td>
+                    <td>@Model.DtInicioInscricao.Value.ToString("dd/MM/yyyy")</td>
+                    <td>@Model.DtTerminoInscricao.Value.ToString("dd/MM/yyyy")</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/simulado")
+}

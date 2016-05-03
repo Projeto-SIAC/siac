@@ -499,5 +499,20 @@ namespace SIAC.Controllers
             return RedirectToAction("Provas", new { codigo = codigo });
         }
 
+        public ActionResult Detalhe(string codigo)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
+                    return View(sim);
+                }
+            }
+
+            return RedirectToAction("", "Gerencia");
+        }
+
     }
 }
