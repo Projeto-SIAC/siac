@@ -13,7 +13,7 @@
     </div>
 }
 
-<form method="post" class="ui form">
+<form action="@Url.Action("Perfil", new { codigo = Model.Candidato.Cpf })" method="post" class="ui form">
     <div class="field ">
         <label>Nome Completo</label>
         <input type="text" name="Nome" placeholder="Nome Completo" autocomplete="off" value="@Model.Candidato.Nome" required />
@@ -37,7 +37,7 @@
         </div>
         <div class="field ">
             <label>Data de Expedição do RG</label>
-            <input name="RgDtExpedicao" type="text" placeholder="Data de Expedição do RG" autocomplete="off" data-mask="00/00/0000" value="@Model.Candidato.RgDtExpedicao" />
+            <input name="RgDtExpedicao" type="text" placeholder="Data de Expedição do RG" autocomplete="off" data-mask="00/00/0000" value="@(Model.Candidato.RgDtExpedicao?.ToString("ddMMyyyy"))" />
         </div>
     </div>
     <div class="two fields">
@@ -45,9 +45,9 @@
             <label>Sexo</label>
             <select name="Sexo" class="ui dropdown">
                 <option value="">Selecione</option>
-                <option @(Model.Candidato.Sexo?[0] == (char)Candidato.Sexos.Feminino) value="@((char)Candidato.Sexos.Feminino)">Feminino</option>
-                <option @(Model.Candidato.Sexo?[0] == (char)Candidato.Sexos.Masculino) value="@((char)Candidato.Sexos.Masculino)">Masculino</option>
-                <option @(Model.Candidato.Sexo?[0] == (char)Candidato.Sexos.NaoInformado) value="@((char)Candidato.Sexos.NaoInformado)">Não informar</option>
+                <option @(Model.Candidato.Sexo?[0] == (char)Candidato.Sexos.Feminino ? "selected" : "") value="@((char)Candidato.Sexos.Feminino)">Feminino</option>
+                <option @(Model.Candidato.Sexo?[0] == (char)Candidato.Sexos.Masculino ? "selected" : "") value="@((char)Candidato.Sexos.Masculino)">Masculino</option>
+                <option @(Model.Candidato.Sexo?[0] == (char)Candidato.Sexos.NaoInformado ? "selected" : "") value="@((char)Candidato.Sexos.NaoInformado)">Não informar</option>
             </select>
         </div>
         <div class="field">
@@ -72,7 +72,7 @@
                 <option value="">Selecione</option>
                 @foreach (Pais pais in Model.Paises)
                 {
-                    <option value="@pais.CodPais">@pais.Descricao</option>
+                    <option @(Model.Candidato.CodPais == pais.CodPais ? "selected" : "") value="@pais.CodPais">@pais.Descricao</option>
                 }
             </select>
         </div>
@@ -80,12 +80,26 @@
             <label>Estado</label>
             <select name="Estado" id="ddlEstado" class="ui search dropdown">
                 <option value="">Selecione</option>
+                @if (Model.Candidato.Municipio != null)
+                {
+                    foreach (Estado estado in Model.Candidato.Municipio?.Estado.Pais.Estado)
+                    {
+                        <option @(Model.Candidato.CodEstado == estado.CodEstado ? "selected" : "") value="@estado.CodEstado">@estado.Descricao</option>
+                    }
+                }
             </select>
         </div>
         <div class="field">
             <label>Munícipio</label>
             <select name="Municipio" id="ddlMunicipio" class="ui search dropdown">
                 <option value="">Selecione</option>
+                @if (Model.Candidato.Municipio != null)
+                {
+                    foreach (Municipio municipio in Model.Candidato.Municipio?.Estado.Municipio)
+                    {
+                        <option @(Model.Candidato.CodMunicipio == municipio.CodMunicipio ? "selected" : "") value="@municipio.CodMunicipio">@municipio.Descricao</option>
+                    }
+                }
             </select>
         </div>
     </div>
@@ -93,7 +107,7 @@
     <div class="ui segment">
         <div class="inline field">
             <div class="ui slider checkbox">
-                <input name="Adventista" type="checkbox" @(Model.Candidato.FlagAdventista.HasValue && Model.Candidato.FlagAdventista.Value ? "checked" : "") />
+                @Html.CheckBox("Adventista", Model.Candidato.FlagAdventista.HasValue && Model.Candidato.FlagAdventista.Value)
                 <label>Sou adventista e guardo o sábado</label>
             </div>
         </div>
@@ -101,7 +115,7 @@
     <div class="ui segment">
         <div class="inline field">
             <div class="ui slider checkbox">
-                <input name="NecessidadeEspecial" id="ckbNecessidade" type="checkbox" @(Model.Candidato.FlagNecessidadeEspecial.HasValue && Model.Candidato.FlagNecessidadeEspecial.Value ? "checked" : "") />
+                @Html.CheckBox("NecessidadeEspecial", Model.Candidato.FlagNecessidadeEspecial.HasValue && Model.Candidato.FlagNecessidadeEspecial.Value, new { id = "ckbNecessidade" })
                 <label>Tenho necessidades especiais</label>
             </div>
         </div>
@@ -151,7 +165,8 @@
                     .dropdown('set placeholder text', 'Selecione')
                     .dropdown('set value', '')
                 ;
-            }).change();
+
+            });
 
             _ddlEstado.off('change').on('change', function () {
                 var estado = $(this).val();

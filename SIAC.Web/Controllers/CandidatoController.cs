@@ -105,7 +105,6 @@ namespace SIAC.Controllers
         [CandidatoFilter]
         public ActionResult Perfil() => View(new CandidatoPerfilViewModel()
         {
-            Candidato = Sessao.Candidato,
             Paises = Municipio.ListarPaisesOrdenadamente(),
             Estados = Municipio.ListarEstadosOrdenadamente(),
             Municipios = Municipio.ListarOrdenadamente()
@@ -113,10 +112,74 @@ namespace SIAC.Controllers
 
         [HttpPost]
         [CandidatoFilter]
-        public ActionResult Perfil(CandidatoPerfilViewModel model)
+        public ActionResult Perfil(string codigo, CandidatoPerfilViewModel model)
         {
-            // TODO
-            return View(model);
+            if (codigo == Sessao.Candidato.Cpf)
+            {
+                if (ModelState.IsValid)
+                {
+                    Candidato c = Candidato.ListarPorCPF(Sessao.Candidato.Cpf);
+
+                    if (!string.IsNullOrWhiteSpace(model.Nome))
+                    {
+                        c.Nome = model.Nome;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(model.Email))
+                    {
+                        c.Email = model.Email;
+                    }
+
+                    if (model.RgDtExpedicao != null && !string.IsNullOrWhiteSpace(model.RgOrgao) && model.RgNumero > 0)
+                    {
+                        c.RgDtExpedicao = model.RgDtExpedicao;
+                        c.RgNumero = model.RgNumero;
+                        c.RgOrgao = model.RgOrgao;
+                    }
+
+                    if (model.DtNascimento != null)
+                    {
+                        c.DtNascimento = model.DtNascimento;
+                    }
+
+                    if (model.Sexo != null)
+                    {
+                        c.Sexo = model.Sexo;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(model.TelefoneCelular) || !string.IsNullOrWhiteSpace(model.TelefoneFixo))
+                    {
+                        c.TelefoneCelular = model.TelefoneCelular;
+                        c.TelefoneFixo = model.TelefoneFixo;
+                    }
+
+                    c.Municipio = Municipio.ListarPorCodigo(model.Pais, model.Estado, model.Municipio);
+
+                    c.FlagAdventista = model.Adventista;
+
+                    c.FlagNecessidadeEspecial = model.NecessidadeEspecial;
+
+                    if (model.NecessidadeEspecial)
+                    {
+                        c.DescricaoNecessidadeEspecial = model.DescricaoNecessidadeEspecial;
+                    }
+                    else
+                    {
+                        c.DescricaoNecessidadeEspecial = null;
+                    }
+
+                    Repositorio.Commit();
+                }
+                else
+                {
+                    //Lembrete.AdicionarNotificacao("Erro nas informações inseridas", Lembrete.NEGATIVO, 5);
+                }
+            }
+
+            return RedirectToAction("Perfil", "Candidato", new
+            {
+                codigo = ""
+            });
         }
     }
 }
