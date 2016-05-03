@@ -168,6 +168,10 @@ siac.Simulado.Provas = (function () {
                 $modalProvas.find('.remover.button').off('click').click(function () {
                     removerProva(codDia, $(this));
                 });
+
+                $modalProvas.find('.editar.button').off('click').click(function () {
+                    editarProva(codDia, $(this));
+                });
             },
             error: function () {
                 siac.mensagem('Falha ao recuperar as Provas desse dia. Atualize a página para tentar novamente.');
@@ -177,7 +181,7 @@ siac.Simulado.Provas = (function () {
             }
         })
     }
-
+    
     function abrirModalNovaProva(codDia) {
         var $form = $('form.novo.prova'),
             url = $form.prop('action');
@@ -210,6 +214,36 @@ siac.Simulado.Provas = (function () {
             },
             success: function() {
                 location.reload();
+            },
+            error: function () {
+                siac.mensagem('Aconteceu um erro na operação! Atualize a página para tentar novamente.')
+            },
+            complete: function () {
+                $button.removeClass('loading');
+            }
+        })
+    }
+
+    function editarProva(codDia, $button) {
+        var codProva = $button.data('prova');
+
+        $.ajax({
+            type: 'POST',
+            url: '/simulado/carregarprova/' + _codigo,
+            data: {
+                codDia: codDia,
+                codProva: codProva
+            },
+            beforeSend: function () {
+                $button.addClass('loading');
+            },
+            success: function (data) {
+                $('.editar.prova.modal').remove();
+                $('body').append($(data))
+
+                $('.editar.prova.modal')
+                    .modal('show');
+                $('.editar.prova.modal .dropdown').dropdown();
             },
             error: function () {
                 siac.mensagem('Aconteceu um erro na operação! Atualize a página para tentar novamente.')

@@ -9,6 +9,7 @@ namespace SIAC.ViewModels
     public class SimuladoProvaViewModel
     {
         public Simulado Simulado { get; set; }
+        public SimProva Prova { get; set; } = new SimProva();
         public List<Disciplina> Disciplinas { get; set; }
     }
 }

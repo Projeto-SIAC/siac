@@ -271,6 +271,37 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        public ActionResult CarregarProva(string codigo, int codDia, int codProva)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
+                    SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
+
+                    if (diaRealizacao != null)
+                    {
+                        SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
+
+                        if (prova == null) prova = new SimProva();
+
+                        var model = new SimuladoProvaViewModel()
+                        {
+                            Simulado = sim,
+                            Prova = prova,
+                            Disciplinas = Disciplina.ListarOrdenadamente()
+                        };
+
+                        return PartialView("_SimuladoProvaCarregar", model);
+                    }
+                }
+            }
+            return RedirectToAction("Provas", new { codigo = codigo });
+        }
+
+        [HttpPost]
         public ActionResult NovaProva(string codigo, int codDia, FormCollection form)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -325,7 +356,63 @@ namespace SIAC.Controllers
 
             return RedirectToAction("Provas", new { codigo = codigo });
         }
-        
+
+        [HttpPost]
+        public ActionResult EditarProva(string codigo, int codDia, int codProva, FormCollection form)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
+                    string ddlDisciplina = form["ddlDisciplina"];
+                    string txtQteQuestoes = form["txtQteQuestoes"];
+                    string txtTitulo = form["txtTitulo"];
+                    string txtDescricao = form["txtDescricao"];
+
+                    if (!StringExt.IsNullOrWhiteSpace(ddlDisciplina, txtQteQuestoes, txtTitulo))
+                    {
+                        SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
+
+                        SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
+
+                        //prova.CodProva = diaRealizacao.SimProva.Count > 0 ? diaRealizacao.SimProva.Max(p => p.CodProva) + 1 : 1;
+                        prova.Titulo = txtTitulo;
+                        prova.Descricao = String.IsNullOrWhiteSpace(txtDescricao) ? String.Empty : txtDescricao;
+                        prova.QteQuestoes = int.Parse(txtQteQuestoes);
+                        prova.CodDisciplina = int.Parse(ddlDisciplina);
+
+                        List<Questao> questoes = Simulado.ObterQuestoes(prova.CodDisciplina, prova.QteQuestoes);
+
+                        prova.SimProvaQuestao.Clear();
+
+                        foreach (Questao questao in questoes)
+                        {
+                            prova.SimProvaQuestao.Add(new SimProvaQuestao()
+                            {
+                                Questao = questao
+                            });
+                        }
+
+                        if (questoes.Count >= prova.QteQuestoes)
+                        {
+                            diaRealizacao.SimProva.Add(prova);
+                            Repositorio.Commit();
+
+                            Lembrete.AdicionarNotificacao($"Prova editada com sucesso neste simulado!", Lembrete.POSITIVO);
+                        }
+                        else
+                        {
+                            Lembrete.AdicionarNotificacao($"Foi gerada uma quantidade menor de questões para a prova deste simulado!", Lembrete.NEGATIVO);
+                        }
+                    }
+                }
+            }
+
+            return RedirectToAction("Provas", new { codigo = codigo });
+        }
+
         [HttpPost]
         public ActionResult RemoverProva(string codigo, int codDia, int codProva)
         {
