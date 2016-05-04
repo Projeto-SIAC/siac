@@ -231,7 +231,7 @@ namespace SIAC.Controllers
 
                         if (diaRealizacao != null && inicio >= diaRealizacao.DtRealizacao.TimeOfDay && inicio <= diaRealizacao.DtRealizacao.AddMinutes(diaRealizacao.Duracao).TimeOfDay)
                         {
-                            Lembrete.AdicionarNotificacao($"Já existe um data marcada com a realização nesse periodo {dataRealizacao.ToShortDateString()}: {inicio} - {termino} ", Lembrete.NEGATIVO, 10);
+                            Lembrete.AdicionarNotificacao($"Já existe uma data marcada com a realização nesse período: {dataRealizacao.ToShortDateString()} ({inicio.ToString("HH:mm")} até {termino.ToString("HH:mm")}).", Lembrete.NEGATIVO, 10);
                         }
                         else
                         {
@@ -274,11 +274,11 @@ namespace SIAC.Controllers
                         TimeSpan inicio = TimeSpan.Parse(strHorarioInicio, cultureBr);
                         TimeSpan termino = TimeSpan.Parse(strHorarioTermino, cultureBr);
 
-                        SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.DtRealizacao.Date == dataRealizacao.Date);
+                        SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.DtRealizacao.Date == dataRealizacao.Date && s.CodDiaRealizacao != codDia);
 
                         if (diaRealizacao != null && inicio >= diaRealizacao.DtRealizacao.TimeOfDay && inicio <= diaRealizacao.DtRealizacao.AddMinutes(diaRealizacao.Duracao).TimeOfDay)
                         {
-                            Lembrete.AdicionarNotificacao($"Já existe um data marcada com a realização nesse periodo {dataRealizacao.ToShortDateString()}: {inicio} - {termino} ", Lembrete.NEGATIVO, 10);
+                            Lembrete.AdicionarNotificacao($"Já existe uma data marcada com a realização nesse período: {dataRealizacao.ToShortDateString()} ({inicio.ToString("HH:mm")} até {termino.ToString("HH:mm")}).", Lembrete.NEGATIVO, 10);
                         }
                         else
                         {
