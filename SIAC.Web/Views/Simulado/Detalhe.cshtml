@@ -1,6 +1,8 @@
 ﻿@model Simulado
 @{
     ViewBag.Title = "Detalhe do Simulado";
+    int? vagasSimulado = Model.QteVagas;
+    int? capacidadeSelecionada = Model.SimSala.Sum(s => s.Sala.Capacidade);
 }
 
 <h2>
@@ -13,9 +15,13 @@
     {
         <span class="ui label"><i class="remove user icon"></i>Inscrições Encerradas</span>
     }
-    else if (Model.DtInicioInscricao >= DateTime.Now)
+    else if (Model.DtInicioInscricao <= DateTime.Now)
     {
         <span class="ui label"><i class="add user icon"></i>Inscrições Abertas</span>
+    }
+    else
+    {
+        <span class="ui label"><i class="wait icon"></i>Gerado</span>
     }
 </h2>
 
@@ -26,16 +32,20 @@
     <table class="ui striped table">
         <tbody>
             <tr>
-                <td><b>Titulo:</b></td>
+                <td><b>Titulo</b></td>
                 <td>@Model.Titulo</td>
             </tr>
             <tr>
-                <td><b>Descrição:</b></td>
+                <td><b>Descrição</b></td>
                 <td>@Model.Descricao</td>
             </tr>
             <tr>
-                <td><b>Coordenador:</b></td>
+                <td><b>Coordenador</b></td>
                 <td>@Model.Colaborador.Usuario.PessoaFisica.Nome</td>
+            </tr>
+            <tr>
+                <td><b>Vagas</b></td>
+                <td>@Model.QteVagas</td>
             </tr>
         </tbody>
     </table>
@@ -50,9 +60,9 @@
         <table class="ui striped table">
             <thead>
                 <tr>
-                    <th>Data de cadastro:</th>
-                    <th>Data de início das inscrições:</th>
-                    <th>Data de término das inscrições:</th>
+                    <th>Data de cadastro</th>
+                    <th>Data de início das inscrições</th>
+                    <th>Data de término das inscrições</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,6 +76,91 @@
     </div>
 }
 
+@if (Model.SimDiaRealizacao.Count > 0)
+{
+    <div class="ui basic segment">
+        <div class="ui dividing header">
+            Provas
+        </div>
+        <div class="ui fluid accordion">
+            @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao)
+            {
+                <div class="title">
+                    <i class="dropdown icon"></i>
+                    @dia.DtRealizacao.ToBrazilianString()
+                </div>
+                <div class="content">
+                    <table class="ui striped table">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Disciplina</th>
+                                <th>Professor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (SimProva prova in dia.SimProva)
+                            {
+                                <tr>
+                                    <td>@prova.Titulo</td>
+                                    <td>@prova.Disciplina.Descricao</td>
+                                    @if (prova.Professor != null)
+                                    {
+                                        <td>provas[i].Professor.Usuario.PessoaFisica.PrimeiroNome</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Nâo Definido</td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@if (Model.SimSala.Count > 0)
+    {
+        <div class="ui basic segment" style="max-height:30em">
+        <h3 class="header">
+            Salas Selecionadas
+            <div class="ui label">Vagas do Simulado<span class="detail">@vagasSimulado</span></div>
+            <div class="ui @(vagasSimulado > capacidadeSelecionada ? "red": "green") label">Capacidade Selecionada<span class="detail">@capacidadeSelecionada</span></div>
+        </h3>
+        <table class="ui striped table">
+            <thead>
+                <tr>
+                    <th>Campus</th>
+                    <th>Bloco</th>
+                    <th>Sala</th>
+                    <th>Sigla</th>
+                    <th>Capacidade</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (SimSala simSala in Model.SimSala)
+                {
+                    <tr>
+                        <td data-content="@simSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia">@simSala.Sala.Bloco.Campus.Sigla</td>
+                        <td data-content="@simSala.Sala.Bloco.Descricao">@simSala.Sala.Bloco.Sigla</td>
+                        <td>@simSala.Sala.Descricao</td>
+                        <td>@simSala.Sala.Sigla</td>
+                        <td>@simSala.Sala.Capacidade</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    }
+
+<a href="@Url.Action("","Gerencia")" class="ui button">Voltar para Histórico</a>
+<a href="@Url.Action("Provas", new { codigo = Model.Codigo })" class="ui button">Provas</a>
+<a href="@Url.Action("Datas", new { codigo = Model.Codigo })" class="ui button">Datas</a>
+<a href="@Url.Action("Salas", new { codigo = Model.Codigo })" class="ui button">Salas</a>
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/simulado")

@@ -48,7 +48,7 @@ namespace SIAC.Models
                 /*)*/.OrderByDescending(s => s.DtInicioInscricao).ToList();
         }
 
-        public static List<Questao> ObterQuestoes(int codDisciplina, int quantidadeQuestoes)
+        public static List<Questao> ObterQuestoes(int codDisciplina, int quantidadeQuestoes, int codTipo = TipoQuestao.OBJETIVA)
         {
             List<Questao> questoes = new List<Questao>();
             Random r = new Random();
@@ -59,6 +59,7 @@ namespace SIAC.Models
 
                 temp = (from q in contexto.Questao
                         where q.QuestaoTema.FirstOrDefault().CodDisciplina == codDisciplina
+                        && q.CodTipoQuestao == codTipo
                         //&& QuestaoTema.PrazoValido(qt)
                         select q).ToList();
                 

@@ -92,11 +92,20 @@ namespace SIAC.Controllers
                     string qteVagas = form["txtQteVagas"];
                     if (!StringExt.IsNullOrWhiteSpace(inicioInscricao, terminoInscricao, qteVagas))
                     {
+                        DateTime inicio = DateTime.Parse(inicioInscricao, new CultureInfo("pt-BR"));
+                        DateTime termino = DateTime.Parse($"{terminoInscricao} 23:59:59", new CultureInfo("pt-BR"));
+                        
+                        if (sim.DtInicioInscricao <= DateTime.Now)
+                        {
+                            Lembrete.AdicionarNotificacao("As incrições já foram iniciadas, você não pode mais alterar o início", Lembrete.NEGATIVO);
+                            return View(sim);
+                        }
+
                         /* Simulado */
                         sim.FlagInscricaoEncerrado = false;
                         sim.QteVagas = int.Parse(qteVagas);
-                        sim.DtInicioInscricao = DateTime.Parse(inicioInscricao, new CultureInfo("pt-BR"));
-                        sim.DtTerminoInscricao = DateTime.Parse($"{terminoInscricao} 23:59:59", new CultureInfo("pt-BR"));
+                        sim.DtInicioInscricao = inicio;
+                        sim.DtTerminoInscricao = termino;
 
                         Repositorio.GetInstance().SaveChanges();
 

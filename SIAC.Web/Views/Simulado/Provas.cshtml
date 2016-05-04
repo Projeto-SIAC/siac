@@ -122,7 +122,7 @@
 </form>
 
 
-<div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("","Gerencia")' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+<div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("Detalhe", new { codigo = Model.Simulado.Codigo })' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
 <a href="@Url.Action("Datas", new { codigo = Model.Simulado.Codigo })" class="ui right floated button" tabindex="0">Avançar</a>
 
 @section Scripts {

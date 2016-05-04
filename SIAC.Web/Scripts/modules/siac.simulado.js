@@ -416,12 +416,14 @@ siac.Simulado.Salas = (function () {
         $('script#salas').remove();
         $('script#blocos').remove();
 
+        $('.ui.dropdown').dropdown();
+        $('[data-html]').popup({
+            on: 'click'
+        });
+
         $('.informacoes.button').click(function () {
             $('.ui.informacoes.modal').modal('show');
         });
-
-        $('.ui.dropdown').dropdown();
-        $('[data-content]').popup();
 
         ddlCampus.off('change').change(function () {
             atualizarBlocos()
@@ -538,7 +540,10 @@ siac.Simulado.Salas = (function () {
 siac.Simulado.Detalhe = (function () {
 
     function iniciar() {
-
+        $('.ui.accordion').accordion({
+            animateChildren:false
+        });
+        $('[data-content]').popup();
     }
 
     return {

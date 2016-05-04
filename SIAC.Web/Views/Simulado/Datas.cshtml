@@ -33,18 +33,18 @@
     <div class="three fields">
         <div class="field required">
             <label data-ajuda="Defina abaixo a data de início do prazo de abertura das inscrições deste simulado.">Defina a data de início das inscrições</label>
-            <input id="txtInicioInscricao" name="txtInicioInscricao" type="text" autocomplete="off" data-mask="00/00/0000" placeholder="Data de Início" required />
+            <input id="txtInicioInscricao" value="@Model.DtInicioInscricao.Value.ToString("ddMMyyyy")" name="txtInicioInscricao" type="text" autocomplete="off" data-mask="00/00/0000" placeholder="Data de Início" required />
         </div>
         <div class="field required">
             <label data-ajuda="Defina abaixo a data de término do prazo de abertura das inscrições deste simulado.">Defina a data de término das inscrições</label>
-            <input id="txtTerminoInscricao" name="txtTerminoInscricao" type="text" autocomplete="off" data-mask="00/00/0000" placeholder="Data de Término" required />
+            <input id="txtTerminoInscricao" value="@Model.DtTerminoInscricao.Value.ToString("ddMMyyyy")" name="txtTerminoInscricao" type="text" autocomplete="off" data-mask="00/00/0000" placeholder="Data de Término" required />
         </div>
         <div class="field required">
             <label data-ajuda="Forneça abaixo a quantidade limite de vagas para as inscrições.">Forneça a quantidade de vagas</label>
-            <input id="txtQteVagas" name="txtQteVagas" type="number" autocomplete="off" placeholder="Quantidade de Vagas" required />
+            <input id="txtQteVagas" value="@Model.QteVagas" name="txtQteVagas" type="number" autocomplete="off" placeholder="Quantidade de Vagas" required />
         </div>
     </div>
-    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("","Gerencia")' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("Detalhe", new { codigo = Model.Codigo })' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
     <button class="ui right floated confirmar button" tabindex="0">Avançar</button>
 </form>
 
