@@ -85,6 +85,10 @@ namespace SIAC
                 "~/scripts/modules/siac.gerencia.js"
             ));
 
+            bundles.Add(new ScriptBundle("~/bundles/js/arquivo").Include(
+                "~/scripts/modules/siac.arquivo.js"
+            ));
+
             bundles.Add(new ScriptBundle("~/bundles/signalR").Include(
                 "~/scripts/plugins/jquery.signalR-2.2.0.min.js"
             ));
@@ -103,7 +107,7 @@ namespace SIAC
                 "~/styles/semantic.min.css",
                 "~/styles/themes/semantic.min.css",
                 "~/styles/alertify.min.css",
-                "~/styles/siac.min.css"
+                "~/styles/siac.css"
             ));
 
             bundles.Add(new StyleBundle("~/bundles/fullcalendar/css").Include(
@@ -113,7 +117,7 @@ namespace SIAC
 
             bundles.Add(new StyleBundle("~/bundles/css/acesso").Include(
                 "~/styles/semantic.min.css",
-                "~/styles/siac.acesso.min.css"
+                "~/styles/siac.acesso.css"
             ));
         }
     }

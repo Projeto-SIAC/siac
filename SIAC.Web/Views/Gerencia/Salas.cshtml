@@ -129,8 +129,6 @@
 <a class="ui button" href="@Url.Action("Dados", "Gerencia")">Voltar para Dados Gerais</a>
 
 @section Scripts {
-    <script id="blocos" type="application/json">
-        @Html.Raw(Model.BlocosEmJson)
-    </script>
+    <script id="blocos" type="application/json">@Html.Raw(Model.BlocosEmJson)</script>
     @Scripts.Render("~/bundles/js/gerencia")
 }

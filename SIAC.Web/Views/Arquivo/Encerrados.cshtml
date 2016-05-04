@@ -1,8 +1,16 @@
 ﻿
 @{
-    ViewBag.Title = "Encerrados";
+    ViewBag.Title = "Simulados Encerrados";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Encerrados</h2>
+<h2>
+    @ViewBag.Title
+    <a class="ui right floated button" href="@Url.Action("Novo", "Simulado")"><i class="plus icon"></i>Novo Simulado</a>
+</h2>
 
+@Html.Partial("_ArquivoSimulado")
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/arquivo")
+}

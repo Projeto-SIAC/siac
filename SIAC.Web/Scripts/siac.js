@@ -272,6 +272,14 @@
                     siac.Gerencia.Professores.iniciar();
                 }
             }
+            else if (pathname.indexOf('/arquivo/') >= 0) {
+                if (pathname.indexOf('/abertos') >= 0) {
+                    siac.Arquivo.Abertos.iniciar();
+                }
+                else if (pathname.indexOf('/encerrados') >= 0) {
+                    siac.Arquivo.Encerrados.iniciar();
+                }
+            }
         }
     }
 

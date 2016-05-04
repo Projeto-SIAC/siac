@@ -4,23 +4,5 @@
     "inputFiles": [
       "Scripts/libs/html2canvas.js"
     ]
-  },
-  {
-    "outputFileName": "Styles/siac.acesso.css",
-    "inputFiles": [
-      "Styles/siac.acesso.css"
-    ]
-  },
-  {
-    "outputFileName": "Styles/siac.css",
-    "inputFiles": [
-      "Styles/siac.css"
-    ]
-  },
-  {
-    "outputFileName": "Scripts/siac.js",
-    "inputFiles": [
-      "Scripts/siac.js"
-    ]
   }
 ]

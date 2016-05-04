@@ -200,6 +200,10 @@
     <Content Include="Resources\images\layout\logo-black.png" />
     <Content Include="Resources\images\layout\logo.png" />
     <Content Include="Scripts\libs\moment.min.js" />
+    <Content Include="Scripts\modules\siac.arquivo.js" />
+    <Content Include="Scripts\modules\siac.academica - Copy.min.js">
+      <DependentUpon>siac.arquivo.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\modules\siac.academica.js" />
     <Content Include="Scripts\modules\siac.academica.min.js">
       <DependentUpon>siac.academica.js</DependentUpon>
@@ -845,6 +849,7 @@
     <Content Include="Views\Arquivo\Partials\_ListaSimulado.cshtml" />
     <Content Include="Views\Arquivo\Abertos.cshtml" />
     <Content Include="Views\Arquivo\Encerrados.cshtml" />
+    <Content Include="Views\Arquivo\Partials\_ArquivoSimulado.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
