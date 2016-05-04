@@ -1,0 +1,65 @@
+﻿@model Simulado
+
+<div class="ui detalhe modal">
+    <i class="close icon"></i>
+    <div class="header">
+        @Model.Titulo
+    </div>
+    <div class="content">
+        @Html.Raw(Model.Descricao.ToHtml("p"))
+        <div class="ui basic segment">
+            <div class="ui dividing header">
+                Prazo de Inscrição
+            </div>
+            <table class="ui striped table">
+                <thead>
+                    <tr>
+                        <th>Data de Início</th>
+                        <th>Data de Término</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.DtInicioInscricao.Value.ToString("dd/MM/yyyy")</td>
+                        <td>@Model.DtTerminoInscricao.Value.ToString("dd/MM/yyyy")</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        @if (Model.SimDiaRealizacao.Count > 0)
+        { 
+        <div class="ui basic segment">
+            <div class="ui dividing header">
+                Dias de Realização
+            </div>
+            <table class="ui striped table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Duração</th>
+                        <th>Disciplina(s)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao.OrderBy(d=>d.DtRealizacao))
+                    {
+                        <tr>
+                            <td>@dia.DtRealizacao.ToString("dd/MM/yyyy' às 'HH:mm")</td>
+                            <td>@dia.Duracao minutos</td>
+                            <td>
+                                @foreach (SimProva prova in dia.SimProva)
+                                {
+                                    <label class="ui label">@prova.Disciplina.Descricao</label>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>            
+        </div>
+        }
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Fechar</div>
+    </div>
+</div>

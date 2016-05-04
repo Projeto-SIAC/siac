@@ -64,3 +64,31 @@ else
     </div>
 }
 
+@section Scripts {
+    <script>
+        $(function () {
+            $('.detalhe.button').click(function () {
+                var _this = $(this),
+                    simulado = _this.data('simulado');
+
+                _this.addClass('loading');
+
+                $.ajax({
+                    url: '/simulado/inscricao/detalhe',
+                    type: 'POST',
+                    data: {
+                        codigo: simulado
+                    },
+                    success: function (modal) {
+                        $('.detalhe.modal').remove();
+                        $('body').append(modal);
+                        $('.detalhe.modal').modal('show');
+                    },
+                    complete: function () {
+                        _this.removeClass('loading');
+                    }
+                });
+            });
+        })();
+    </script>
+}

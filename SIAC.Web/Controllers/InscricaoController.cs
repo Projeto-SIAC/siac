@@ -22,5 +22,20 @@ namespace SIAC.Controllers
         {
             return null;
         }
+
+        // POST: simulado/inscricao/detalhe
+        [HttpPost]
+        public ActionResult Detalhe(string codigo)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado s = Simulado.ListarPorCodigo(codigo);
+                if (s != null)
+                {
+                    return PartialView("_SimuladoDetalhe", s);
+                }
+            }
+            return Json(string.Empty);
+        }
     }
 }
