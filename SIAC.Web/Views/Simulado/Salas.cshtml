@@ -1,6 +1,8 @@
 ﻿@model SimuladoSalasViewModel
 @{
     ViewBag.Title = "Salas";
+    int? vagasSimulado = Model.Simulado.QteVagas;
+    int? capacidadeSelecionada = Model.Simulado.SimSala.Sum(s => s.Sala.Capacidade);
 }
 
 <h2>
@@ -33,20 +35,12 @@
                 <label data-ajuda="Clique na caixa abaixo para selecionar o bloco do campus.">Selecione o bloco</label>
                 <select id="ddlBloco" name="ddlBloco" class="ui dropdown" required>
                     <option value="">Bloco</option>
-                    @*@foreach (Bloco bloco in Model.Blocos)
-                    {
-                        <option value="@bloco.CodBloco">@bloco.Sigla</option>
-                    }*@
                 </select>
             </div>
             <div class="six wide field required">
                 <label data-ajuda="Clique na caixa abaixo para selecionar a sala do bloco.">Selecione a sala</label>
                 <select id="ddlSala" name="ddlSala" class="ui dropdown" required>
                     <option value="">Sala</option>
-                    @*@foreach (Sala sala in Model.Salas)
-                    {
-                        <option value="@sala.CodSala">@sala.Sigla</option>
-                    }*@
                 </select>
             </div>
         </div>
@@ -58,7 +52,11 @@
 </div>
 
 <div class="ui basic segment" style="max-height:30em">
-    <h3 class="header">Salas Selecionadas</h3>
+    <h3 class="header">
+        Salas Selecionadas
+        <div class="ui label">Vagas do Simulado<span class="detail">@vagasSimulado</span></div>
+        <div class="ui @(vagasSimulado > capacidadeSelecionada ? "red": "green") label">Capacidade Selecionada<span class="detail">@capacidadeSelecionada</span></div>
+    </h3>
     <table class="ui striped table">
         <thead>
             <tr>
@@ -66,6 +64,7 @@
                 <th>Bloco</th>
                 <th>Sala</th>
                 <th>Sigla</th>
+                <th>Capacidade</th>
                 <th></th>
             </tr>
         </thead>
@@ -77,6 +76,7 @@
                     <td sala-bloco data-content="@simSala.Sala.Bloco.Descricao">@simSala.Sala.Bloco.Sigla</td>
                     <td sala-descricao>@simSala.Sala.Descricao</td>
                     <td sala-sigla>@simSala.Sala.Sigla</td>
+                    <td>@simSala.Sala.Capacidade</td>
                     <td>
                         <a data-sala="@simSala.Sala.CodSala" class="ui remover tiny button"><i class="trash icon"></i>Remover</a>
                     </td>
@@ -89,7 +89,11 @@
 <a href="@Url.Action("","Gerencia")" class="ui right floated button" tabindex="0">Finalizar</a>
 
 @section Scripts {
-    <script id="blocos" type="application/json">@Html.Raw(Model.BlocosEmJson)</script>
-    <script id="salas" type="application/json">@Html.Raw(Model.SalasEmJson)</script>
-    @Scripts.Render("~/bundles/js/simulado")
+    <script id="blocos" type="application/json">
+        @Html.Raw(Model.BlocosEmJson)
+</script>
+<script id="salas" type="application/json">
+    @Html.Raw(Model.SalasEmJson)
+</script>
+@Scripts.Render("~/bundles/js/simulado")
 }

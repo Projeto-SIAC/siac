@@ -246,19 +246,7 @@
             }
         }
         else if (pathname.indexOf('/simulado') == 0) {
-            if (pathname.indexOf('/novo') >= 0) {
-                siac.Simulado.Novo.iniciar();
-            }
-            else if (pathname.indexOf('/provas') >= 0) {
-                siac.Simulado.Provas.iniciar();
-            }
-            else if (pathname.indexOf('/datas') >= 0) {
-                siac.Simulado.Datas.iniciar();
-            }
-            else if (pathname.indexOf('/salas') >= 0) {
-                siac.Simulado.Salas.iniciar();
-            }
-            else if (pathname.indexOf('/gerencia/') >= 0) {
+            if (pathname.indexOf('/gerencia/') >= 0) {
                 if (pathname.indexOf('/blocos') >= 0) {
                     siac.Gerencia.Blocos.iniciar();
                 }
@@ -279,6 +267,21 @@
                 else if (pathname.indexOf('/encerrados') >= 0) {
                     siac.Arquivo.Encerrados.iniciar();
                 }
+			}
+            else if (pathname.indexOf('/novo') >= 0) {
+                siac.Simulado.Novo.iniciar();
+            }
+            else if (pathname.indexOf('/provas') >= 0) {
+                siac.Simulado.Provas.iniciar();
+            }
+            else if (pathname.indexOf('/datas') >= 0) {
+                siac.Simulado.Datas.iniciar();
+            }
+            else if (pathname.indexOf('/salas') >= 0) {
+                siac.Simulado.Salas.iniciar();
+            }
+            else if (pathname.indexOf('/detalhe') >= 0) {
+                siac.Simulado.Detalhe.iniciar();
             }
         }
     }
@@ -386,9 +389,9 @@ siac.Ajuda = siac.Ajuda || (function () {
     function ativarAjuda() {
         $('body').find('[data-ajuda-mensagem]').show('slow');
         $('body').find('[data-ajuda]').map(function () {
-            var $elemento   = $(this),
+            var $elemento = $(this),
                 textoTitulo = $elemento.data('ajuda-titulo'),
-                textoAjuda  = $elemento.data('ajuda').trim();
+                textoAjuda = $elemento.data('ajuda').trim();
 
             $elemento.popup({
                 on: 'hover',

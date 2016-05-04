@@ -90,6 +90,10 @@ siac.Simulado.Provas = (function () {
             $(this).addClass('loading');
         });
 
+        $('.editar.button').click(function () {
+            editarDia($(this));
+        });
+
         $('.provas.button').click(function () {
             carregarProvas($(this));
         });
@@ -149,6 +153,38 @@ siac.Simulado.Provas = (function () {
         })
     }
 
+    function editarDia($button) {
+        var codDia = $button.data('dia');
+
+        $.ajax({
+            type: 'POST',
+            url: '/simulado/carregardia/' + _codigo,
+            data: {
+                codDia: codDia
+            },
+            beforeSend: function () {
+                $button.addClass('loading');
+            },
+            success: function (data) {
+                $('.editar.dia.modal').remove();
+                $('body').append($(data))
+
+                $('.editar.modal [data-mask]').map(function () {
+                    $(this).mask($(this).data('mask'));
+                });
+
+                $('.editar.dia.modal')
+                    .modal('show');
+            },
+            error: function () {
+                siac.mensagem('Aconteceu um erro na operação! Atualize a página para tentar novamente.')
+            },
+            complete: function () {
+                $button.removeClass('loading');
+            }
+        })
+    }
+
     function carregarProvas($button) {
         var codDia = $button.data('dia'),
             $modalProvas = $('.ui.provas.modal');
@@ -168,6 +204,10 @@ siac.Simulado.Provas = (function () {
                 $modalProvas.find('.remover.button').off('click').click(function () {
                     removerProva(codDia, $(this));
                 });
+
+                $modalProvas.find('.editar.button').off('click').click(function () {
+                    editarProva(codDia, $(this));
+                });
             },
             error: function () {
                 siac.mensagem('Falha ao recuperar as Provas desse dia. Atualize a página para tentar novamente.');
@@ -177,7 +217,7 @@ siac.Simulado.Provas = (function () {
             }
         })
     }
-
+    
     function abrirModalNovaProva(codDia) {
         var $form = $('form.novo.prova'),
             url = $form.prop('action');
@@ -208,8 +248,39 @@ siac.Simulado.Provas = (function () {
             beforeSend: function(){
                 $button.addClass('loading');
             },
-            success: function() {
+            success: function () {
+                $('.provas.modal').modal('hide');
                 location.reload();
+            },
+            error: function () {
+                siac.mensagem('Aconteceu um erro na operação! Atualize a página para tentar novamente.')
+            },
+            complete: function () {
+                $button.removeClass('loading');
+            }
+        })
+    }
+
+    function editarProva(codDia, $button) {
+        var codProva = $button.data('prova');
+
+        $.ajax({
+            type: 'POST',
+            url: '/simulado/carregarprova/' + _codigo,
+            data: {
+                codDia: codDia,
+                codProva: codProva
+            },
+            beforeSend: function () {
+                $button.addClass('loading');
+            },
+            success: function (data) {
+                $('.editar.prova.modal').remove();
+                $('body').append($(data))
+
+                $('.editar.prova.modal')
+                    .modal('show');
+                $('.editar.prova.modal .dropdown').dropdown();
             },
             error: function () {
                 siac.mensagem('Aconteceu um erro na operação! Atualize a página para tentar novamente.')
@@ -463,3 +534,14 @@ siac.Simulado.Salas = (function () {
         iniciar: iniciar
     }
 })();
+
+siac.Simulado.Detalhe = (function () {
+
+    function iniciar() {
+
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})()

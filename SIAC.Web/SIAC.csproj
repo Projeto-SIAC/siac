@@ -850,6 +850,9 @@
     <Content Include="Views\Arquivo\Abertos.cshtml" />
     <Content Include="Views\Arquivo\Encerrados.cshtml" />
     <Content Include="Views\Arquivo\Partials\_ArquivoSimulado.cshtml" />
+    <Content Include="Views\Simulado\Partials\_SimuladoProvaCarregar.cshtml" />
+    <Content Include="Views\Simulado\Partials\_SimuladoDiaCarregar.cshtml" />
+    <Content Include="Views\Simulado\Detalhe.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
