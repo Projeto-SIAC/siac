@@ -5,7 +5,7 @@
 
 <i class="icon close"></i>
 <div class="header">
-    Provas de @Model.DtRealizacao.ToBrazilianString()
+    Provas para o Dia de Realização "@Model.DtRealizacao.ToBrazilianString()"
 </div>
 <div class="content">
     <table class="ui striped table">
@@ -14,7 +14,8 @@
                 <th>#</th>
                 <th>Título</th>
                 <th>Disciplina</th>
-                <th>Professor</th>
+                <th>Prof. Responsável</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -22,16 +23,22 @@
             {
                 <tr>
                     <td>@(i + 1)</td>
-                    <td>@provas[i].Titulo</td>
+                    <td>
+                        @provas[i].Titulo
+                        <div class="ui small label">@provas[i].QteQuestoes Questões</div>
+                    </td>
                     <td>@provas[i].Disciplina.Descricao</td>
-                    @if (provas[i].Professor != null)
-                    {
-                        <td>provas[i].Professor.Usuario.PessoaFisica.PrimeiroNome</td>
-                    }
-                    else
-                    {
-                        <td>Nâo Definido</td>
-                    }
+                    <td>
+                        @if (provas[i].Professor != null)
+                        {
+                            @provas[i].Professor.Usuario.PessoaFisica.PrimeiroNome
+
+                        }
+                        else
+                        {
+                            <text>Não Definido</text>
+                        }
+                    </td>
                     <td>
                         <a data-prova="@provas[i].CodProva" class="ui editar tiny button"><i class="edit icon"></i>Editar</a>
                         <a data-prova="@provas[i].CodProva" class="ui remover tiny button"><i class="trash icon"></i>Remover</a>

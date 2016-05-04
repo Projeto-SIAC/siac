@@ -38,14 +38,20 @@ namespace SIAC.Models
             return contexto.Simulado.FirstOrDefault(s => s.Ano == ano && s.NumIdentificador == numIdentificador);
         }
 
+        public static List<Simulado> ListarNaoEncerradoOrdenadamente() =>
+            contexto.Simulado.Where(s => !s.FlagSimuladoEncerrado).OrderByDescending(s => s.DtCadastro).ToList();
+
+        public static List<Simulado> ListarEncerradoOrdenadamente() =>
+            contexto.Simulado.Where(s => s.FlagSimuladoEncerrado).OrderByDescending(s => s.DtCadastro).ToList();
+
         public static List<Simulado> ListarPorInscricoesAbertas()
         {
             return contexto.Simulado
-                //.Where(simulado =>
-                //  !simulado.FlagInscricaoEncerrado
-                //&& simulado.DtInicioInscricao.Value <= DateTime.Today
-                //&& simulado.DtTerminoInscricao.Value >= DateTime.Today
-                /*)*/.OrderByDescending(s => s.DtInicioInscricao).ToList();
+                .Where(simulado =>
+                  !simulado.FlagInscricaoEncerrado
+                && simulado.DtInicioInscricao.Value <= DateTime.Today
+                && simulado.DtTerminoInscricao.Value >= DateTime.Today
+                ).OrderByDescending(s => s.DtInicioInscricao).ToList();
         }
 
         public static List<Questao> ObterQuestoes(int codDisciplina, int quantidadeQuestoes, int codTipo = TipoQuestao.OBJETIVA)

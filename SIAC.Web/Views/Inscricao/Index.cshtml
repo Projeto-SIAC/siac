@@ -20,7 +20,7 @@
                             @simulado.Titulo
                         </a>
                         <div class="meta">
-                            Aberto @(dtAberto.Contains("/") ? "em" : "há") <time datetime="@(simulado.DtInicioInscricao?.ToJSString())">@dtAberto</time>
+                            Aberto @(dtAberto.Contains("/") ? "em" : "há") <time datetime="@(simulado.DtInicioInscricao?.ToHtmlDateTimeString())">@dtAberto</time>
                         </div>
                         <div class="description">
                             @if (String.IsNullOrWhiteSpace(simulado.Descricao))
@@ -59,7 +59,7 @@ else
         <h2 class="ui center aligned icon header">
             <i class="icon frown"></i>
             Não há simulados cadastrados
-            <div class="sub header">Deseja se cadastrar para ser avisado? <a href="@Url.Action("Cadastrar", "Candidato")">Cadastre-se</a></div>
+            <div class="sub header">Deseja se cadastrar para ser avisado quando um novo simulado estiver disponível? <a href="@Url.Action("Cadastrar", "Candidato")">Cadastre-se</a></div>
         </h2>
     </div>
 }

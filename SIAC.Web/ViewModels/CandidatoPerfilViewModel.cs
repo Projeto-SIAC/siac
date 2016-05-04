@@ -9,7 +9,7 @@ namespace SIAC.ViewModels
 {
     public class CandidatoPerfilViewModel
     {
-        public Candidato Candidato { get; set; }
+        public Candidato Candidato => Helpers.Sessao.Candidato;
 
         public string Nome { get; set; }
         public string Email { get; set; }

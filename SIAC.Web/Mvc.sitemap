@@ -130,6 +130,10 @@
       <mvcSiteMapNode title="Datas" controller="Simulado" action="Datas" preservedRouteParameters="codigo" />
       <mvcSiteMapNode title="Salas" controller="Simulado" action="Salas" preservedRouteParameters="codigo" />
       <mvcSiteMapNode title="Detalhe" controller="Simulado" action="Detalhe" preservedRouteParameters="codigo" />
+      <mvcSiteMapNode title="Arquivo" controller="Arquivo" action="Index">
+        <mvcSiteMapNode title="Simulados Abertos" controller="Arquivo" action="Abertos" />
+        <mvcSiteMapNode title="Simulados Encerrados" controller="Arquivo" action="Encerrados" />
+      </mvcSiteMapNode>
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Perfil" controller="Perfil" action="Index" />
   </mvcSiteMapNode>
