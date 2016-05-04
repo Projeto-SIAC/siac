@@ -23,6 +23,25 @@
     {
         <span class="ui label"><i class="wait icon"></i>Gerado</span>
     }
+
+    <div class="ui right floated floating dropdown labeled icon button">
+        <i class="dropdown icon"></i>
+        <span class="text">Ações para este simulado</span>
+        <div class="menu">
+            <a href="@Url.Action("Provas", new { codigo = Model.Codigo })" class="item">
+                <i class="copy icon"></i>
+                Gerenciar Provas
+            </a>
+            <a href="@Url.Action("Datas", new { codigo = Model.Codigo })" class="item">
+                <i class="wait icon"></i>
+                Gerenciar Datas
+            </a>
+            <a href="@Url.Action("Salas", new { codigo = Model.Codigo })" class="item">
+                <i class="marker icon"></i>
+                Selecionar Salas
+            </a>
+        </div>
+    </div>
 </h2>
 
 <div class="ui basic segment">
@@ -85,51 +104,51 @@
         <div class="ui fluid accordion">
             @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao)
             {
-                <div class="title">
-                    <i class="dropdown icon"></i>
-                    @dia.DtRealizacao.ToBrazilianString()
-                </div>
-                <div class="content">
-                    <table class="ui striped table">
-                        <thead>
-                            <tr>
-                                <th>Título</th>
-                                <th>Disciplina</th>
-                                <th>Professor</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (SimProva prova in dia.SimProva)
+            <div class="title">
+                <i class="dropdown icon"></i>
+                @dia.DtRealizacao.ToBrazilianString()
+            </div>
+            <div class="content">
+                <table class="ui striped table">
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Disciplina</th>
+                            <th>Professor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (SimProva prova in dia.SimProva)
                             {
-                                <tr>
-                                    <td>@prova.Titulo</td>
-                                    <td>@prova.Disciplina.Descricao</td>
-                                    @if (prova.Professor != null)
+                            <tr>
+                                <td>@prova.Titulo</td>
+                                <td>@prova.Disciplina.Descricao</td>
+                                @if (prova.Professor != null)
                                     {
-                                        <td>provas[i].Professor.Usuario.PessoaFisica.PrimeiroNome</td>
+                                    <td>provas[i].Professor.Usuario.PessoaFisica.PrimeiroNome</td>
                                     }
                                     else
                                     {
-                                        <td>Nâo Definido</td>
+                                    <td>Nâo Definido</td>
                                     }
-                                </tr>
+                            </tr>
                             }
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
+            </div>
             }
         </div>
     </div>
 }
 
 @if (Model.SimSala.Count > 0)
-    {
-        <div class="ui basic segment" style="max-height:30em">
-        <h3 class="header">
+{
+    <div class="ui basic segment" style="max-height:30em">
+        <div class="ui dividing header">
             Salas Selecionadas
             <div class="ui label">Vagas do Simulado<span class="detail">@vagasSimulado</span></div>
             <div class="ui @(vagasSimulado > capacidadeSelecionada ? "red": "green") label">Capacidade Selecionada<span class="detail">@capacidadeSelecionada</span></div>
-        </h3>
+        </div>
         <table class="ui striped table">
             <thead>
                 <tr>
@@ -144,23 +163,21 @@
             <tbody>
                 @foreach (SimSala simSala in Model.SimSala)
                 {
-                    <tr>
-                        <td data-content="@simSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia">@simSala.Sala.Bloco.Campus.Sigla</td>
-                        <td data-content="@simSala.Sala.Bloco.Descricao">@simSala.Sala.Bloco.Sigla</td>
-                        <td>@simSala.Sala.Descricao</td>
-                        <td>@simSala.Sala.Sigla</td>
-                        <td>@simSala.Sala.Capacidade</td>
-                    </tr>
+                <tr>
+                    <td data-content="@simSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia">@simSala.Sala.Bloco.Campus.Sigla</td>
+                    <td data-content="@simSala.Sala.Bloco.Descricao">@simSala.Sala.Bloco.Sigla</td>
+                    <td>@simSala.Sala.Descricao</td>
+                    <td>@simSala.Sala.Sigla</td>
+                    <td>@simSala.Sala.Capacidade</td>
+                </tr>
                 }
             </tbody>
         </table>
     </div>
-    }
+}
 
 <a href="@Url.Action("","Gerencia")" class="ui button">Voltar para Histórico</a>
-<a href="@Url.Action("Provas", new { codigo = Model.Codigo })" class="ui button">Provas</a>
-<a href="@Url.Action("Datas", new { codigo = Model.Codigo })" class="ui button">Datas</a>
-<a href="@Url.Action("Salas", new { codigo = Model.Codigo })" class="ui button">Salas</a>
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/simulado")

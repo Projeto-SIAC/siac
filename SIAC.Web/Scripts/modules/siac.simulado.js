@@ -544,6 +544,9 @@ siac.Simulado.Detalhe = (function () {
             animateChildren:false
         });
         $('[data-content]').popup();
+        $('.ui.dropdown').dropdown({
+            action: 'select'
+        });
     }
 
     return {
