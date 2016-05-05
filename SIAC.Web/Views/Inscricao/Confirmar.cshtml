@@ -1,0 +1,139 @@
+﻿@model Simulado
+
+@{
+    ViewBag.Title = $"Confirmar Inscrição no {Model.Titulo}";
+    Layout = "~/Views/Shared/Simulados/_Layout.cshtml";
+    Candidato candidato = Sessao.Candidato;
+}
+
+<h2>
+    @ViewBag.Title
+    <div class="ui right floated detalhe basic button"><i class="plus icon"></i>Detalhes</div>
+</h2>
+
+@Html.Partial("_SimuladoDetalhe")
+
+<div class="ui basic segment">
+    <div class="ui form">
+        <h4 class="ui dividing header">Meus Dados</h4>
+        <div class="field ">
+            <label>Nome Completo</label>
+            <input type="text" value="@candidato.Nome" readonly />
+        </div>
+        <div class="field ">
+            <label>Email</label>
+            <input type="email" value="@candidato.Email" readonly />
+        </div>
+        <div class="field ">
+            <label>CPF</label>
+            <input type="text" data-mask="000.000.000-00" value="@candidato.Cpf" readonly />
+        </div>
+        <div class="three fields">
+            <div class="field ">
+                <label>Número do RG</label>
+                <input type="text" value="@candidato.RgNumero" readonly />
+            </div>
+            <div class="field ">
+                <label>Orgão do RG</label>
+                <input type="text" value="@candidato.RgOrgao" readonly />
+            </div>
+            <div class="field ">
+                <label>Data de Expedição do RG</label>
+                <input type="text" data-mask="00/00/0000" value="@(candidato.RgDtExpedicao?.ToString("ddMMyyyy"))" readonly />
+            </div>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                <label>Sexo</label>
+                @if (candidato.Sexo[0] == (char)Candidato.Sexos.Feminino)
+            {
+                    <input type="text" value="Feminino" readonly />
+                }
+                else if (candidato.Sexo?[0] == (char)Candidato.Sexos.Masculino)
+                {
+                    <input type="text" value="Masculino" readonly />
+                }
+                else if (candidato.Sexo?[0] == (char)Candidato.Sexos.NaoInformado)
+                {
+                    <input type="text" value="Não informado" readonly />
+                }
+            </div>
+            <div class="field">
+                <label>Data de Nascimento</label>
+                <input type="text" data-mask="00/00/0000" value="@(candidato.DtNascimento?.ToString("ddMMyyyy"))" readonly />
+            </div>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                <label>Telefone Fixo</label>
+                <input type="text" value="@(candidato.TelefoneFixo)" readonly />
+            </div>
+            <div class="field">
+                <label>Celular</label>
+                <input type="text" value="@(candidato.TelefoneCelular)" readonly />
+            </div>
+        </div>
+        <div class="three fields">
+            <div class="field">
+                <label>País</label>
+                @if (candidato.Municipio != null)
+            {
+                    <input type="text" value="@candidato.Municipio.Estado.Pais.Descricao" readonly />
+                }
+            </div>
+            <div class="field">
+                <label>Estado</label>
+                @if (candidato.Municipio != null)
+            {
+                    <input type="text" value="@candidato.Municipio.Estado.Descricao" readonly />
+                }
+            </div>
+            <div class="field">
+                <label>Munícipio</label>
+                @if (candidato.Municipio != null)
+            {
+                    <input type="text" value="@candidato.Municipio.Descricao" readonly />
+                }
+            </div>
+
+        </div>
+        <h4 class="ui dividing header">Outras Informações</h4>
+        <div class="ui segment">
+            <div class="inline field">
+                <div class="ui slider checkbox">
+                    @Html.CheckBox("Adventista", candidato.FlagAdventista.HasValue && candidato.FlagAdventista.Value, new { @readonly = "readonly" })
+                    <label>Sou adventista e guardo o sábado</label>
+                </div>
+            </div>
+        </div>
+        <div class="ui segment">
+            <div class="inline field">
+                <div class="ui slider checkbox">
+                    @Html.CheckBox("NecessidadeEspecial", candidato.FlagNecessidadeEspecial.HasValue && candidato.FlagNecessidadeEspecial.Value, new { @readonly = "readonly" })
+                    <label>Tenho necessidades especiais</label>
+                </div>
+            </div>
+            <div class="field @(candidato.FlagNecessidadeEspecial.HasValue && candidato.FlagNecessidadeEspecial.Value ? "" : "disabled")">
+                <label>Descreva sua necessidade especial</label>
+                <input type="text" value="@(candidato.DescricaoNecessidadeEspecial)" @(candidato.FlagNecessidadeEspecial.HasValue && candidato.FlagNecessidadeEspecial.Value ? "" : "disabled") readonly />
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="#" class="ui right floated primary button">Confirmar</a>
+<a href="@Url.Action("Perfil", "Candidato")?inscricao=@Model.Codigo" class="ui right floated basic button">Atualizar Dados</a>
+<a href="@Url.Action("Index")" class="ui basic button">Voltar</a>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('.ui.dropdown').dropdown();
+            $('.ui.checkbox').checkbox();
+            $('.ui.modal').modal();
+            $('.detalhe.button').click(function () {
+                $('.detalhe.modal').modal('show');
+            });
+        })();
+    </script>
+}

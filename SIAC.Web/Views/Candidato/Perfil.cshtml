@@ -13,7 +13,7 @@
     </div>
 }
 
-<form action="@Url.Action("Perfil", new { codigo = Model.Candidato.Cpf })" method="post" class="ui form">
+<form action="@Url.Action("Perfil", new { codigo = Model.Candidato.Cpf })?inscricao=@Request.QueryString["inscricao"]" method="post" class="ui form">
     <div class="field ">
         <label>Nome Completo</label>
         <input type="text" name="Nome" placeholder="Nome Completo" autocomplete="off" value="@Model.Candidato.Nome" required />
@@ -124,8 +124,8 @@
             <input name="DescricaoNecessidadeEspecial" type="text" id="txtNecessidade" placeholder="Deficência" autocomplete="off" value="@(Model.Candidato.DescricaoNecessidadeEspecial)" @(Model.Candidato.FlagNecessidadeEspecial.HasValue && Model.Candidato.FlagNecessidadeEspecial.Value ? "" : "disabled") />
         </div>
     </div>
-    <input type="submit" value="Atualizar" class="ui primary button" />
-    <a href="@Url.Action("Index")" class="ui right floated basic button">Voltar</a>
+    <input type="submit" value="Atualizar" class="ui right floated primary button" />
+    <a href="@Url.Action("Index")" class="ui basic button">Voltar</a>
 </form>
 
 @section Scripts {

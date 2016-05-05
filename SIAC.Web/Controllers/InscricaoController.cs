@@ -1,4 +1,6 @@
-﻿using SIAC.Models;
+﻿using SIAC.Filters;
+using SIAC.Helpers;
+using SIAC.Models;
 using SIAC.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -16,13 +18,6 @@ namespace SIAC.Controllers
             Simulados = Simulado.ListarPorInscricoesAbertas()
         });
 
-        // POST: simulado/inscricao/cadastro
-        [HttpPost]
-        public ActionResult Cadastro(FormCollection form)
-        {
-            return null;
-        }
-
         // POST: simulado/inscricao/detalhe
         [HttpPost]
         public ActionResult Detalhe(string codigo)
@@ -36,6 +31,28 @@ namespace SIAC.Controllers
                 }
             }
             return Json(string.Empty);
+        }
+
+        // GET: simulado/inscricao/confirmar/simul201600122
+        [CandidatoFilter]
+        public ActionResult Confirmar(string codigo)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado s = Simulado.ListarPorInscricoesAbertas().FirstOrDefault(sim => sim.Codigo.ToLower() == codigo.ToLower());
+                if (s != null)
+                {
+                    if (Sessao.Candidato.PerfilCompleto)
+                    {
+                        return View(s);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Perfil", "Candidato");
+                    }
+                }
+            }
+            return RedirectToAction("Index");
         }
     }
 }
