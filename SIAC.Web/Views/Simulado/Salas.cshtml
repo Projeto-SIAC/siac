@@ -78,7 +78,7 @@
                     <td sala-sigla>@simSala.Sala.Sigla</td>
                     <td>@simSala.Sala.Capacidade</td>
                     <td>
-                        <a data-sala="@simSala.Sala.CodSala" class="ui remover tiny button"><i class="trash icon"></i>Remover</a>
+                        <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Esta ação não poderá ser desfeita</p><a data-sala='@(simSala.CodSala)' class='ui remover mini button'>Confirmar</a></div>" class="ui tiny button"><i class="trash icon"></i>Remover</div>
                     </td>
                 </tr>
             }
