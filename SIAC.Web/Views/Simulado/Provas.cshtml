@@ -1,6 +1,6 @@
 ﻿@model SimuladoProvaViewModel
 @{
-    ViewBag.Title = "Provas";
+    ViewBag.Title = "Gerenciar Provas do Simulado";
 }
 
 <h2>
@@ -10,7 +10,7 @@
 
 @Html.Partial("_SimuladoInformacoes", Model.Simulado)
 
-@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 2 } })
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 2 }, { "Simulado", Model.Simulado } })
 
 <h3 class="header">
     Dias de Realização

@@ -1,6 +1,6 @@
 ﻿@model SimuladoSalasViewModel
 @{
-    ViewBag.Title = "Salas";
+    ViewBag.Title = "Selecionar Salas do Simulado";
     int? vagasSimulado = Model.Simulado.QteVagas;
     int? capacidadeSelecionada = Model.Simulado.SimSala.Sum(s => s.Sala.Capacidade);
 }
@@ -12,7 +12,7 @@
 
 @Html.Partial("_SimuladoInformacoes", Model.Simulado)
 
-@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 4 } })
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 4 }, { "Simulado", Model.Simulado } })
 
 <div class="ui segment">
     <form class="ui form" method="post">

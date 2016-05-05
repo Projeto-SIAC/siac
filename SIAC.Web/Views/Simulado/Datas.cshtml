@@ -1,6 +1,6 @@
 ﻿@model Simulado
 @{
-    ViewBag.Title = "Datas";
+    ViewBag.Title = "Gerenciar Datas do Simulado";
 }
 
 <h2>
@@ -10,7 +10,7 @@
 
 @Html.Partial("_SimuladoInformacoes")
 
-@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 3 } })
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() {{ "Passo", 3 }, { "Simulado", Model } })
 
 <div class="ui confirmar modal">
     <div class="header">
@@ -33,11 +33,11 @@
     <div class="three fields">
         <div class="field required">
             <label data-ajuda="Defina abaixo a data de início do prazo de abertura das inscrições deste simulado.">Defina a data de início das inscrições</label>
-            <input id="txtInicioInscricao" value="@Model.DtInicioInscricao.Value.ToString("ddMMyyyy")" name="txtInicioInscricao" type="text" autocomplete="off" data-mask="00/00/0000" placeholder="Data de Início" required />
+            <input id="txtInicioInscricao" value="@(Model.DtInicioInscricao?.ToString("ddMMyyyy"))" name="txtInicioInscricao" type="text" autocomplete="off" data-mask="00/00/0000" placeholder="Data de Início" required />
         </div>
         <div class="field required">
             <label data-ajuda="Defina abaixo a data de término do prazo de abertura das inscrições deste simulado.">Defina a data de término das inscrições</label>
-            <input id="txtTerminoInscricao" value="@Model.DtTerminoInscricao.Value.ToString("ddMMyyyy")" name="txtTerminoInscricao" type="text" autocomplete="off" data-mask="00/00/0000" placeholder="Data de Término" required />
+            <input id="txtTerminoInscricao" value="@(Model.DtTerminoInscricao?.ToString("ddMMyyyy"))" name="txtTerminoInscricao" type="text" autocomplete="off" data-mask="00/00/0000" placeholder="Data de Término" required />
         </div>
         <div class="field required">
             <label data-ajuda="Forneça abaixo a quantidade limite de vagas para as inscrições.">Forneça a quantidade de vagas</label>
