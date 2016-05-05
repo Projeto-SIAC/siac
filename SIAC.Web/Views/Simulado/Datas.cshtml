@@ -1,6 +1,6 @@
 ﻿@model Simulado
 @{
-    ViewBag.Title = "Datas";
+    ViewBag.Title = "Gerenciar Datas do Simulado";
 }
 
 <h2>
@@ -10,7 +10,7 @@
 
 @Html.Partial("_SimuladoInformacoes")
 
-@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 3 } })
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() {{ "Passo", 3 }, { "Simulado", Model } })
 
 <div class="ui confirmar modal">
     <div class="header">

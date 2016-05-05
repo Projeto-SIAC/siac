@@ -44,13 +44,42 @@ namespace SIAC.Controllers
             return RedirectToAction("Novo");
         }
 
+        [HttpPost]
+        public ActionResult Editar(string codigo, FormCollection form)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                {
+                    string titulo = form["txtTitulo"];
+                    string descricao = form["txtDescricao"];
+
+                    if (!StringExt.IsNullOrWhiteSpace(titulo))
+                    {
+                        sim.Titulo = titulo;
+                        sim.Descricao = descricao;
+
+                        Repositorio.Commit();
+                        Lembrete.AdicionarNotificacao($"Simulado editado com sucesso.", Lembrete.POSITIVO);
+                    }
+                    else
+                    {
+                        Lembrete.AdicionarNotificacao($"O campo de Título é obrigatório.", Lembrete.NEGATIVO);
+                    }
+                }
+            }
+            return RedirectToAction("Detalhe", new { codigo = codigo });
+        }
+
         public ActionResult Provas(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     return View(new SimuladoProvaViewModel()
                     {
@@ -60,7 +89,7 @@ namespace SIAC.Controllers
                 }
             }
 
-            return RedirectToAction("", "Gerencia");
+            return RedirectToAction("", "Arquivo");
         }
 
         public ActionResult Datas(string codigo)
@@ -69,13 +98,13 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     return View(sim);
                 }
             }
 
-            return RedirectToAction("", "Gerencia");
+            return RedirectToAction("", "Arquivo");
         }
 
         [HttpPost]
@@ -85,7 +114,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     string inicioInscricao = form["txtInicioInscricao"];
                     string terminoInscricao = form["txtTerminoInscricao"];
@@ -114,7 +143,7 @@ namespace SIAC.Controllers
                 }
             }
 
-            return RedirectToAction("", "Gerencia");
+            return RedirectToAction("", "Arquivo");
         }
 
         public ActionResult Salas(string codigo)
@@ -123,7 +152,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     SimuladoSalasViewModel model = new SimuladoSalasViewModel();
                     model.Simulado = sim;
@@ -135,7 +164,7 @@ namespace SIAC.Controllers
                 }
             }
 
-            return RedirectToAction("", "Gerencia");
+            return RedirectToAction("", "Arquivo");
         }
 
         [HttpPost]
@@ -149,7 +178,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     int codSala = int.Parse(ddlSala);
 
@@ -180,7 +209,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     SimSala simSala = contexto.SimSala
                         .FirstOrDefault(s => s.Ano == sim.Ano && s.NumIdentificador == sim.NumIdentificador && s.CodSala == codSala);
@@ -202,7 +231,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
@@ -222,7 +251,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     string strDataRealizacao = form["txtDataRealizacao"];
                     string strHorarioInicio = form["txtHorarioInicio"];
@@ -269,7 +298,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     string strDataRealizacao = form["txtDataRealizacao"];
                     string strHorarioInicio = form["txtHorarioInicio"];
@@ -314,7 +343,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
@@ -333,7 +362,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
@@ -351,7 +380,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
@@ -380,7 +409,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     string ddlDisciplina = form["ddlDisciplina"];
                     string txtQteQuestoes = form["txtQteQuestoes"];
@@ -436,7 +465,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     string ddlDisciplina = form["ddlDisciplina"];
                     string txtQteQuestoes = form["txtQteQuestoes"];
@@ -492,7 +521,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
@@ -520,7 +549,24 @@ namespace SIAC.Controllers
                 }
             }
 
-            return RedirectToAction("", "Gerencia");
+            return RedirectToAction("", "Arquivo");
+        }
+
+        [HttpPost]
+        public ActionResult Encerrar(string codigo)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
+                    sim.FlagSimuladoEncerrado = true;
+                    Repositorio.Commit();
+                    Lembrete.AdicionarNotificacao("O simulado foi encerrado com sucesso!", Lembrete.INFO);
+                }
+            }
+            return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
     }

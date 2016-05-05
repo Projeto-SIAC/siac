@@ -1,4 +1,7 @@
-﻿@{ int passo = (int)ViewData["Passo"]; }
+﻿@{
+    int passo = (int)ViewData["Passo"];
+    Simulado sim = (Simulado)ViewData["Simulado"]?? new Simulado();
+}
 
 <div class="ui four fluid ordered steps">
     <div class="@(passo > 1 ? "completed" : passo == 1 ? "active" : "") step">
@@ -7,19 +10,19 @@
             <div class="description">Cadastro de dados gerais do simulado</div>
         </div>
     </div>
-    <div class="@(passo > 2 ? "completed" : passo == 2 ? "active" : "") step">
+    <div class="@(sim.SimDiaRealizacao.Count > 0 ? "completed" : passo == 2 ? "active" : "") step">
         <div class="content">
             <div class="title">Provas</div>
             <div class="description">Gerencie as provas do simulado</div>
         </div>
     </div>
-    <div class="@(passo == 3 ? "active" : "") step">
+    <div class="@(sim.DtInicioInscricao.HasValue ? "completed" : passo == 3 ? "active" : "") step">
         <div class="content">
             <div class="title">Datas</div>
             <div class="description">Defina as datas das inscrições do simulado</div>
         </div>
     </div>
-    <div class="@(passo == 4 ? "active" : "") step">
+    <div class="@(sim.SimSala.Count > 0 ? "completed" : passo == 4 ? "active" : "") step">
         <div class="content">
             <div class="title">Salas</div>
             <div class="description">Selecione as salas que serão utilizadas no simulado</div>
