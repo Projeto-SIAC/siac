@@ -38,15 +38,19 @@ namespace SIAC.Controllers
                 sim.Colaborador = Colaborador.ListarPorMatricula(Sessao.UsuarioMatricula);
 
                 Simulado.Inserir(sim);
-                Lembrete.AdicionarNotificacao($"Simulado cadastrado com sucesso.", Lembrete.POSITIVO);
+                Lembrete.AdicionarNotificacao("Simulado cadastrado com sucesso.", Lembrete.POSITIVO);
                 return RedirectToAction("Provas", new { codigo = sim.Codigo });
             }
+            Lembrete.AdicionarNotificacao("Ocorreu um erro na operação.", Lembrete.NEGATIVO);
             return RedirectToAction("Novo");
         }
 
         [HttpPost]
         public ActionResult Editar(string codigo, FormCollection form)
         {
+            string mensagem = "Ocorreu um erro na operação.";
+            string estilo = Lembrete.NEGATIVO;
+
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
@@ -62,14 +66,18 @@ namespace SIAC.Controllers
                         sim.Descricao = descricao;
 
                         Repositorio.Commit();
-                        Lembrete.AdicionarNotificacao($"Simulado editado com sucesso.", Lembrete.POSITIVO);
+
+                        mensagem = "Simulado editado com sucesso.";
+                        estilo = Lembrete.POSITIVO;
                     }
                     else
                     {
-                        Lembrete.AdicionarNotificacao($"O campo de Título é obrigatório.", Lembrete.NEGATIVO);
+                        mensagem = "O campo de Título é obrigatório.";
+                        estilo = Lembrete.NEGATIVO;
                     }
                 }
             }
+            Lembrete.AdicionarNotificacao(mensagem,estilo);
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
@@ -126,7 +134,7 @@ namespace SIAC.Controllers
                         
                         if (sim.DtInicioInscricao <= DateTime.Now)
                         {
-                            Lembrete.AdicionarNotificacao("As incrições já foram iniciadas, você não pode mais alterar o início", Lembrete.NEGATIVO);
+                            Lembrete.AdicionarNotificacao("As incrições já foram iniciadas, você não pode mais alterar o início.", Lembrete.NEGATIVO);
                             return View(sim);
                         }
 
@@ -137,6 +145,8 @@ namespace SIAC.Controllers
                         sim.DtTerminoInscricao = termino;
 
                         Repositorio.GetInstance().SaveChanges();
+
+                        Lembrete.AdicionarNotificacao("As datas foram atualizadas.", Lembrete.POSITIVO);
 
                         return RedirectToAction("Salas", new { codigo = sim.Codigo });
                     }
@@ -194,11 +204,11 @@ namespace SIAC.Controllers
 
                         Repositorio.Commit();
                     }
-
+                    Lembrete.AdicionarNotificacao("A sala foi adicionada com sucesso.", Lembrete.POSITIVO);
                     return RedirectToAction("Salas", new { codigo = codigo });
                 }
             }
-
+            Lembrete.AdicionarNotificacao("Ocorreu um erro na operação.", Lembrete.NEGATIVO);
             return RedirectToAction("Salas", new { codigo = codigo });
         }
 
@@ -217,10 +227,12 @@ namespace SIAC.Controllers
                     sim.SimSala.Remove(simSala);
                     Repositorio.Commit();
 
+                    Lembrete.AdicionarNotificacao("A sala foi removida com sucesso.", Lembrete.POSITIVO);
                     return RedirectToAction("Salas", new { codigo = codigo });
                 }
             }
 
+            Lembrete.AdicionarNotificacao("Ocorreu um erro na operação.", Lembrete.NEGATIVO);
             return RedirectToAction("Salas", new { codigo = codigo });
         }
 
@@ -247,6 +259,9 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult NovoDia(string codigo, FormCollection form)
         {
+            string mensagem = "Ocorreu um erro na operação.";
+            string estilo = Lembrete.NEGATIVO;
+
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
@@ -269,7 +284,8 @@ namespace SIAC.Controllers
 
                         if (diaRealizacao != null && inicio >= diaRealizacao.DtRealizacao.TimeOfDay && inicio <= diaRealizacao.DtRealizacao.AddMinutes(diaRealizacao.Duracao).TimeOfDay)
                         {
-                            Lembrete.AdicionarNotificacao($"Já existe uma data marcada com a realização nesse período: {dataRealizacao.ToShortDateString()} ({inicio.ToString("HH:mm")} até {termino.ToString("HH:mm")}).", Lembrete.NEGATIVO, 10);
+                            mensagem = $"Já existe uma data marcada com a realização nesse período: {dataRealizacao.ToShortDateString()} ({inicio.ToString("HH:mm")} até {termino.ToString("HH:mm")}).";
+                            estilo = Lembrete.NEGATIVO;
                         }
                         else
                         {
@@ -283,17 +299,23 @@ namespace SIAC.Controllers
 
                             sim.SimDiaRealizacao.Add(diaRealizacao);
                             Repositorio.GetInstance().SaveChanges();
+
+                            mensagem = "O dia foi adicionado com sucesso.";
+                            estilo = Lembrete.POSITIVO;
                         }
                     }
                 }
             }
-
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
             return RedirectToAction("Provas", new { codigo = codigo });
         }
 
         [HttpPost]
         public ActionResult EditarDia(string codigo, int codDia, FormCollection form)
         {
+            string mensagem = "Ocorreu um erro na operação.";
+            string estilo = Lembrete.NEGATIVO;
+
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
@@ -316,7 +338,8 @@ namespace SIAC.Controllers
 
                         if (diaRealizacao != null && inicio >= diaRealizacao.DtRealizacao.TimeOfDay && inicio <= diaRealizacao.DtRealizacao.AddMinutes(diaRealizacao.Duracao).TimeOfDay)
                         {
-                            Lembrete.AdicionarNotificacao($"Já existe uma data marcada com a realização nesse período: {dataRealizacao.ToShortDateString()} ({inicio.ToString("HH:mm")} até {termino.ToString("HH:mm")}).", Lembrete.NEGATIVO, 10);
+                            mensagem = $"Já existe uma data marcada com a realização nesse período: {dataRealizacao.ToShortDateString()} ({inicio.ToString("HH:mm")} até {termino.ToString("HH:mm")}).";
+                            estilo = Lembrete.NEGATIVO;
                         }
                         else
                         {
@@ -328,17 +351,23 @@ namespace SIAC.Controllers
                             diaRealizacao.Duracao = int.Parse((termino - dataRealizacao.TimeOfDay).TotalMinutes.ToString());
 
                             Repositorio.Commit();
+
+                            mensagem = "O dia foi editado com sucesso.";
+                            estilo = Lembrete.POSITIVO;
                         }
                     }
                 }
             }
-
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
             return RedirectToAction("Provas", new { codigo = codigo });
         }
 
         [HttpPost]
         public ActionResult RemoverDia(string codigo, int codDia)
         {
+            string mensagem = "Ocorreu um erro na operação.";
+            string estilo = Lembrete.NEGATIVO;
+
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
@@ -349,9 +378,13 @@ namespace SIAC.Controllers
 
                     sim.SimDiaRealizacao.Remove(diaRealizacao);
                     Repositorio.GetInstance().SaveChanges();
+
+                    mensagem = "O dia foi removido com sucesso.";
+                    estilo = Lembrete.POSITIVO;
                 }
             }
 
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
             return RedirectToAction("Provas", new { codigo = codigo });
         }
 
@@ -405,6 +438,9 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult NovaProva(string codigo, int codDia, FormCollection form)
         {
+            string mensagem = "Ocorreu um erro na operação.";
+            string estilo = Lembrete.NEGATIVO;
+
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
@@ -445,22 +481,29 @@ namespace SIAC.Controllers
                             diaRealizacao.SimProva.Add(prova);
                             Repositorio.Commit();
 
-                            Lembrete.AdicionarNotificacao($"Prova cadastrada com sucesso neste simulado!", Lembrete.POSITIVO);
+                            mensagem = "Prova cadastrada com sucesso neste simulado.";
+                            estilo = Lembrete.POSITIVO;
+
                         }
                         else
                         {
-                            Lembrete.AdicionarNotificacao($"Foi gerada uma quantidade menor de questões para a prova deste simulado!", Lembrete.NEGATIVO);
+                            mensagem = "Foi gerada uma quantidade menor de questões para a prova deste simulado.";
+                            estilo = Lembrete.NEGATIVO;
                         }
                     }
                 }
             }
 
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
             return RedirectToAction("Provas", new { codigo = codigo });
         }
 
         [HttpPost]
         public ActionResult EditarProva(string codigo, int codDia, int codProva, FormCollection form)
         {
+            string mensagem = "Ocorreu um erro na operação.";
+            string estilo = Lembrete.NEGATIVO;
+
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
@@ -477,8 +520,7 @@ namespace SIAC.Controllers
                         SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
                         SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
-
-                        //prova.CodProva = diaRealizacao.SimProva.Count > 0 ? diaRealizacao.SimProva.Max(p => p.CodProva) + 1 : 1;
+                        
                         prova.Titulo = txtTitulo;
                         prova.Descricao = String.IsNullOrWhiteSpace(txtDescricao) ? String.Empty : txtDescricao;
                         prova.QteQuestoes = int.Parse(txtQteQuestoes);
@@ -500,23 +542,29 @@ namespace SIAC.Controllers
                         {
                             diaRealizacao.SimProva.Add(prova);
                             Repositorio.Commit();
-
-                            Lembrete.AdicionarNotificacao($"Prova editada com sucesso neste simulado!", Lembrete.POSITIVO);
+                            
+                            mensagem = "Prova editada com sucesso neste simulado.";
+                            estilo = Lembrete.POSITIVO;
                         }
                         else
                         {
-                            Lembrete.AdicionarNotificacao($"Foi gerada uma quantidade menor de questões para a prova deste simulado!", Lembrete.NEGATIVO);
+                            mensagem = "Foi gerada uma quantidade menor de questões para a prova deste simulado.";
+                            estilo = Lembrete.NEGATIVO;
                         }
                     }
                 }
             }
 
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
             return RedirectToAction("Provas", new { codigo = codigo });
         }
 
         [HttpPost]
         public ActionResult RemoverProva(string codigo, int codDia, int codProva)
         {
+            string mensagem = "Ocorreu um erro na operação.";
+            string estilo = Lembrete.NEGATIVO;
+
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
@@ -531,9 +579,14 @@ namespace SIAC.Controllers
                         prova.SimProvaQuestao.Clear();
                         diaRealizacao.SimProva.Remove(prova);
                         Repositorio.Commit();
+
+                        mensagem = "A prova foi removida com sucesso.";
+                        estilo = Lembrete.POSITIVO;
                     }
                 }
             }
+
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
             return RedirectToAction("Provas", new { codigo = codigo });
         }
 
@@ -555,6 +608,9 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult Encerrar(string codigo)
         {
+            string mensagem = "Ocorreu um erro na operação.";
+            string estilo = Lembrete.NEGATIVO;
+
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
@@ -563,9 +619,12 @@ namespace SIAC.Controllers
                 {
                     sim.FlagSimuladoEncerrado = true;
                     Repositorio.Commit();
-                    Lembrete.AdicionarNotificacao("O simulado foi encerrado com sucesso!", Lembrete.INFO);
+                    mensagem = "O simulado foi encerrado com sucesso.";
+                    estilo = Lembrete.INFO;
                 }
             }
+
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
