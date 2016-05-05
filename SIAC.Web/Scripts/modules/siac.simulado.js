@@ -538,8 +538,10 @@ siac.Simulado.Salas = (function () {
 })();
 
 siac.Simulado.Detalhe = (function () {
+    var _codigo = '';
 
     function iniciar() {
+        _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+$/)[0];
         $('.ui.accordion').accordion({
             animateChildren:false
         });
@@ -550,6 +552,20 @@ siac.Simulado.Detalhe = (function () {
 
         $('.editar.item').click(function () {
             $('.editar.modal').modal('show');
+        });
+
+        $('.encerrar.item').click(function () {
+            $('.encerrar.modal').modal({
+                onApprove: function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/simulado/encerrar/' + _codigo,
+                        complete: function () {
+                            location.reload();
+                        }
+                    })
+                }
+            }).modal('show');
         });
     }
 

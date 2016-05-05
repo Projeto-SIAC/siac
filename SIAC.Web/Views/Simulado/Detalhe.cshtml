@@ -23,38 +23,44 @@
     {
         <span class="ui label"><i class="wait icon"></i>Gerado</span>
     }
-
-    <div class="ui right floated floating dropdown labeled icon button">
-        <i class="dropdown icon"></i>
-        <span class="text">Ações para este simulado</span>
-        <div class="menu">
-            <div class="editar item">
-                <i class="edit icon"></i>
-                Editar Dados
+    @if (!Model.FlagSimuladoEncerrado)
+    {
+        <div class="ui right floated floating dropdown labeled icon button">
+            <i class="dropdown icon"></i>
+            <span class="text">Ações para este simulado</span>
+            <div class="menu">
+                <div class="editar item">
+                    <i class="edit icon"></i>
+                    Editar Dados
+                </div>
+                <a href="@Url.Action("Provas", new { codigo = Model.Codigo })" class="item">
+                    <i class="copy icon"></i>
+                    Gerenciar Provas
+                </a>
+                <a href="@Url.Action("Datas", new { codigo = Model.Codigo })" class="item">
+                    <i class="wait icon"></i>
+                    Gerenciar Datas
+                </a>
+                <a href="@Url.Action("Salas", new { codigo = Model.Codigo })" class="item">
+                    <i class="marker icon"></i>
+                    Selecionar Salas
+                </a>
+                <div class="encerrar red inverted item">
+                    <i class="warning sign red icon"></i>
+                    Encerrar Simulado
+                </div>
             </div>
-            <a href="@Url.Action("Provas", new { codigo = Model.Codigo })" class="item">
-                <i class="copy icon"></i>
-                Gerenciar Provas
-            </a>
-            <a href="@Url.Action("Datas", new { codigo = Model.Codigo })" class="item">
-                <i class="wait icon"></i>
-                Gerenciar Datas
-            </a>
-            <a href="@Url.Action("Salas", new { codigo = Model.Codigo })" class="item">
-                <i class="marker icon"></i>
-                Selecionar Salas
-            </a>
         </div>
-    </div>
+    }
 </h2>
 
-<form action="@Url.Action("Editar", new { codigo = Model.Codigo })" method="post"  class="ui editar modal">
+<form action="@Url.Action("Editar", new { codigo = Model.Codigo })" method="post" class="ui editar modal">
     <div class="header">Editar dados do simulado</div>
     <div class="content">
         <div class="ui form">
             <div class="field required">
                 <label data-ajuda="Forneça na caixa abaixo o título">Forneça o título</label>
-                <input id="txtTitulo" name="txtTitulo" value="@Model.Titulo" maxlength="250" placeholder="Título"/>
+                <input id="txtTitulo" name="txtTitulo" value="@Model.Titulo" maxlength="250" placeholder="Título" />
             </div>
             <div class="field">
                 <label data-ajuda="Descreva no espaço abaixo uma descrição para este simulado">Insira uma descrição</label>
@@ -64,9 +70,25 @@
     </div>
     <div class="actions">
         <div class="ui negative button">Voltar</div>
-        <input type="submit" class="ui positive button" value="Editar"/>
+        <input type="submit" class="ui positive button" value="Editar" />
     </div>
 </form>
+
+<div class="ui encerrar modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Encerrar Simulado?
+    </div>
+    <div class="content">
+        <div class="description">
+            <p>Esta função encerrará o simulado e bloqueará a sua manutenção</p>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui button">Cancelar</div>
+        <div class="ui negative button">Encerrar Simulado</div>
+    </div>
+</div>
 
 <div class="ui basic segment">
     <div class="ui dividing header">
@@ -147,18 +169,18 @@
                     <tbody>
                         @foreach (SimProva prova in dia.SimProva)
                             {
-                            <tr>
-                                <td>@prova.Titulo</td>
-                                <td>@prova.Disciplina.Descricao</td>
-                                @if (prova.Professor != null)
+                        <tr>
+                            <td>@prova.Titulo</td>
+                            <td>@prova.Disciplina.Descricao</td>
+                            @if (prova.Professor != null)
                                     {
-                                    <td>provas[i].Professor.Usuario.PessoaFisica.PrimeiroNome</td>
+                                <td>provas[i].Professor.Usuario.PessoaFisica.PrimeiroNome</td>
                                     }
                                     else
                                     {
-                                    <td>Nâo Definido</td>
+                                <td>Nâo Definido</td>
                                     }
-                            </tr>
+                        </tr>
                             }
                     </tbody>
                 </table>
