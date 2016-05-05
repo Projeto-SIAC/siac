@@ -65,7 +65,12 @@ siac.Simulado.Provas = (function () {
         $('.ui.accordion').accordion();
         $('.ui.dropdown').dropdown();
         $('[data-html]').popup({
-            on: 'click'
+            on: 'click',
+            onVisible: function(){
+                $('.remover.button').click(function () {
+                    removerDia($(this));
+                });
+            }
         });
 
         $('.novo.dia.button').click(function () {
@@ -83,11 +88,6 @@ siac.Simulado.Provas = (function () {
 
         $('.informacoes.button').click(function () {
             $('.ui.informacoes.modal').modal('show');
-        });
-
-        $('.remover.button').click(function () {
-            removerDia($(this).data('dia'));
-            $(this).addClass('loading');
         });
 
         $('.editar.button').click(function () {
@@ -142,7 +142,10 @@ siac.Simulado.Provas = (function () {
         return retorno;
     }
 
-    function removerDia(codDia) {
+    function removerDia($button) {
+        var codDia = $button.data('dia');
+        $button.addClass('loading');
+
         $.ajax({
             type: 'POST',
             url: '/simulado/removerdia/' + _codigo,
@@ -417,8 +420,14 @@ siac.Simulado.Salas = (function () {
         $('script#blocos').remove();
 
         $('.ui.dropdown').dropdown();
+
         $('[data-html]').popup({
-            on: 'click'
+            on: 'click',
+            onVisible: function () {
+                $('.remover.button').click(function () {
+                    removerSala($(this));
+                });
+            }
         });
 
         $('.informacoes.button').click(function () {
@@ -434,11 +443,6 @@ siac.Simulado.Salas = (function () {
 
         $('.selecionar.button').click(function () {
             validar();
-        });
-
-        $('.remover.button').click(function () {
-            removerSala($(this).data('sala'));
-            $(this).addClass('loading');
         });
     };
 
@@ -520,8 +524,9 @@ siac.Simulado.Salas = (function () {
         $('form').submit();
     }
 
-    function removerSala(codSala) {
-        var _btnRemover = $(this);
+    function removerSala($button) {
+        var codSala = $button.data('sala');
+        $button.addClass('loading');
         $.ajax({
             type: 'POST',
             url: '/simulado/removersala/' + _codigo,
