@@ -547,6 +547,10 @@ siac.Simulado.Detalhe = (function () {
         $('.ui.dropdown').dropdown({
             action: 'select'
         });
+
+        $('.editar.item').click(function () {
+            $('.editar.modal').modal('show');
+        });
     }
 
     return {

@@ -44,6 +44,35 @@ namespace SIAC.Controllers
             return RedirectToAction("Novo");
         }
 
+        [HttpPost]
+        public ActionResult Editar(string codigo, FormCollection form)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
+                    string titulo = form["txtTitulo"];
+                    string descricao = form["txtDescricao"];
+
+                    if (!StringExt.IsNullOrWhiteSpace(titulo))
+                    {
+                        sim.Titulo = titulo;
+                        sim.Descricao = descricao;
+
+                        Repositorio.Commit();
+                        Lembrete.AdicionarNotificacao($"Simulado editado com sucesso.", Lembrete.POSITIVO);
+                    }
+                    else
+                    {
+                        Lembrete.AdicionarNotificacao($"O campo de Título é obrigatório.", Lembrete.NEGATIVO);
+                    }
+                }
+            }
+            return RedirectToAction("Detalhe", new { codigo = codigo });
+        }
+
         public ActionResult Provas(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
