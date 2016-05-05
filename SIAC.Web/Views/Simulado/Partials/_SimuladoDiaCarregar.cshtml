@@ -3,7 +3,7 @@
 <form action="@Url.Action("EditarDia", new { codigo = Model.Simulado.Codigo, codDia = Model.CodDiaRealizacao })" method="post" class="ui editar dia modal">
     <i class="icon close"></i>
     <div class="header">
-        Editar Dia: @Model.DtRealizacao.ToBrazilianString()
+        Editar Dia "@Model.DtRealizacao.DiaRealizacaoRepresentacao()"
     </div>
     <div class="content">
         <div class="ui form">

@@ -298,6 +298,11 @@ namespace SIAC
         }
 
         public static int SemestreAtual(this DateTime dt) => dt.Month > 6 ? 2 : 1;
+
+        public static string DiaRealizacaoRepresentacao(this DateTime dt)
+        {
+            return dt.ToString("dd/MM/yyyy' às 'HH'h'mm");
+        }
         #endregion
 
         // List<AvaliacaoTema>

@@ -27,7 +27,7 @@
                             {
                                 <p><b>Início das Inscrições</b>:@(simulado.DtInicioInscricao?.ToString("dd/MM/yyyy"))</p>
                                 <p><b>Término das Inscrições</b>: @(simulado.DtTerminoInscricao?.ToString("dd/MM/yyyy"))</p>
-                                <p><b>Primeiro Dia de Provas</b>: @(simulado.PrimeiroDiaRealizacao?.DtRealizacao.ToString("dd/MM/yyyy HH:mm"))</p>
+                                <p><b>Primeiro Dia de Provas</b>: @(simulado.PrimeiroDiaRealizacao?.DtRealizacao.DiaRealizacaoRepresentacao())</p>
                             }
                             else {
                                 @Html.Raw(simulado.Descricao.ToShortString(140).ToHtml("p"))
