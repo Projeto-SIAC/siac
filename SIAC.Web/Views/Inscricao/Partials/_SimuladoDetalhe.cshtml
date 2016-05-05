@@ -44,7 +44,7 @@
                     @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao.OrderBy(d=>d.DtRealizacao))
                     {
                         <tr>
-                            <td>@dia.DtRealizacao.ToString("dd/MM/yyyy' às 'HH:mm")</td>
+                            <td>@dia.DtRealizacao.DiaRealizacaoRepresentacao()</td>
                             <td>@dia.Duracao minutos</td>
                             <td>
                                 @foreach (SimProva prova in dia.SimProva)

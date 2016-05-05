@@ -5,7 +5,7 @@
     string dtCadastro = simulado.DtCadastro.ToElapsedTimeString();
     <div class="card">
         <div class="content">
-            <a href="#" class="header">
+            <a href="@Url.Action("Detalhe", "Simulado", new { codigo = simulado.Codigo })" class="header">
                 @simulado.Titulo
             </a>
             <div class="meta">
@@ -16,7 +16,7 @@
                 {
                     <p><b>Início das Inscrições</b>: @(simulado.DtInicioInscricao?.ToString("dd/MM/yyyy") ?? "Não definido")</p>
                     <p><b>Término das Inscrições</b>: @(simulado.DtTerminoInscricao?.ToString("dd/MM/yyyy") ?? "Não definido")</p>
-                    <p><b>Primeiro Dia de Provas</b>: @(simulado.PrimeiroDiaRealizacao?.DtRealizacao.ToString("dd/MM/yyyy HH:mm") ?? "Não definido")</p>
+                    <p><b>Primeiro Dia de Provas</b>: @(simulado.PrimeiroDiaRealizacao?.DtRealizacao.DiaRealizacaoRepresentacao() ?? "Não definido")</p>
                 }
                 else {
                     @Html.Raw(simulado.Descricao.ToShortString(140).ToHtml("p"))
@@ -26,6 +26,6 @@
         <div class="extra content">
             <div class="ui tag label">@simulado.Codigo</div>
         </div>
-        <a data-simulado="@simulado.Codigo" class="ui detalhe button"><i class="folder open icon"></i>Abrir</a>
+        <a href="@Url.Action("Detalhe", "Simulado", new { codigo = simulado.Codigo })" class="ui detalhe button"><i class="folder open icon"></i>Abrir</a>
     </div>
 }

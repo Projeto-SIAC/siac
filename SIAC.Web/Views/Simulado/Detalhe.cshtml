@@ -74,7 +74,7 @@
 {
     <div class="ui basic segment">
         <div class="ui dividing header">
-            Prazo
+            Prazos
         </div>
         <table class="ui striped table">
             <thead>
@@ -86,9 +86,9 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>@Model.DtCadastro.ToBrazilianString()</td>
-                    <td>@Model.DtInicioInscricao.Value.ToString("dd/MM/yyyy")</td>
-                    <td>@Model.DtTerminoInscricao.Value.ToString("dd/MM/yyyy")</td>
+                    <td>@Model.DtCadastro.ToString("dd/MM/yyyy' às 'HH'h'mm")</td>
+                    <td>@Model.DtInicioInscricao.Value.ToString("dd/MM/yyyy' às 'HH'h'mm")</td>
+                    <td>@Model.DtTerminoInscricao.Value.ToString("dd/MM/yyyy' às 'HH'h'mm")</td>
                 </tr>
             </tbody>
         </table>
@@ -99,43 +99,43 @@
 {
     <div class="ui basic segment">
         <div class="ui dividing header">
-            Provas
+            Dias e Provas
         </div>
         <div class="ui fluid accordion">
-            @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao)
+            @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao.OrderBy(d => d.DtRealizacao))
             {
-            <div class="title">
-                <i class="dropdown icon"></i>
-                @dia.DtRealizacao.ToBrazilianString()
-            </div>
-            <div class="content">
-                <table class="ui striped table">
-                    <thead>
-                        <tr>
-                            <th>Título</th>
-                            <th>Disciplina</th>
-                            <th>Professor</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (SimProva prova in dia.SimProva)
-                            {
+                <div class="title">
+                    <i class="dropdown icon"></i>
+                    <b>@dia.DtRealizacao.DiaRealizacaoRepresentacao()</b>
+                </div>
+                <div class="content">
+                    <table class="ui striped table">
+                        <thead>
                             <tr>
-                                <td>@prova.Titulo</td>
-                                <td>@prova.Disciplina.Descricao</td>
-                                @if (prova.Professor != null)
+                                <th>Título</th>
+                                <th>Disciplina</th>
+                                <th>Prof. Responsável</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (SimProva prova in dia.SimProva)
+                            {
+                                <tr>
+                                    <td>@prova.Titulo <div class="ui small label">@prova.QteQuestoes Questões</div></td>
+                                    <td>@prova.Disciplina.Descricao</td>
+                                    @if (prova.Professor != null)
                                     {
-                                    <td>provas[i].Professor.Usuario.PessoaFisica.PrimeiroNome</td>
+                                        <td>provas[i].Professor.Usuario.PessoaFisica.PrimeiroNome</td>
                                     }
                                     else
                                     {
-                                    <td>Nâo Definido</td>
+                                        <td>Nâo Definido</td>
                                     }
-                            </tr>
+                                </tr>
                             }
-                    </tbody>
-                </table>
-            </div>
+                        </tbody>
+                    </table>
+                </div>
             }
         </div>
     </div>
@@ -163,20 +163,20 @@
             <tbody>
                 @foreach (SimSala simSala in Model.SimSala)
                 {
-                <tr>
-                    <td data-content="@simSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia">@simSala.Sala.Bloco.Campus.Sigla</td>
-                    <td data-content="@simSala.Sala.Bloco.Descricao">@simSala.Sala.Bloco.Sigla</td>
-                    <td>@simSala.Sala.Descricao</td>
-                    <td>@simSala.Sala.Sigla</td>
-                    <td>@simSala.Sala.Capacidade</td>
-                </tr>
+                    <tr>
+                        <td data-content="@simSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia">@simSala.Sala.Bloco.Campus.Sigla</td>
+                        <td data-content="@simSala.Sala.Bloco.Descricao">@simSala.Sala.Bloco.Sigla</td>
+                        <td>@simSala.Sala.Descricao</td>
+                        <td>@simSala.Sala.Sigla</td>
+                        <td>@simSala.Sala.Capacidade</td>
+                    </tr>
                 }
             </tbody>
         </table>
     </div>
 }
 
-<a href="@Url.Action("","Gerencia")" class="ui button">Voltar para Histórico</a>
+<a class="ui button" href="@Url.Action("Index", "Gerencia")">Voltar para Gerência de Simulados</a>
 
 
 @section Scripts {
