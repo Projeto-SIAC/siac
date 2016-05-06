@@ -176,6 +176,11 @@ namespace SIAC.Controllers
                 }
             }
 
+            if (!String.IsNullOrWhiteSpace(Request.QueryString["inscricao"]))
+            {
+                return RedirectToAction("Confirmar", "Inscricao", new { codigo = Request.QueryString["inscricao"] });
+            }
+
             return RedirectToAction("Perfil", "Candidato", new
             {
                 codigo = ""
