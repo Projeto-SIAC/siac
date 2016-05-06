@@ -114,6 +114,7 @@ namespace SIAC.Controllers
             Municipios = Municipio.ListarOrdenadamente()
         });
 
+        // POST: simulado/candidato/perfil
         [HttpPost]
         [CandidatoFilter]
         public ActionResult Perfil(string codigo, CandidatoPerfilViewModel model)
@@ -193,6 +194,7 @@ namespace SIAC.Controllers
 
         // POST: simulado/candidato/alterarsenha
         [HttpPost]
+        [CandidatoFilter]
         public ActionResult AlterarSenha(string senhaAtual, string senhaNova, string senhaConfirmacao)
         {
             string mensagem = "Ocorreu um erro ao tentar alterar a senha.";
@@ -225,6 +227,24 @@ namespace SIAC.Controllers
             }
             TempData["Mensagem"] = mensagem;
             return RedirectToAction("Perfil");
+        }
+
+        // GET: simulado/candidato/inscricoes
+        [CandidatoFilter]
+        public ActionResult Inscricoes(string codigo)
+        {
+            if (String.IsNullOrWhiteSpace(codigo))
+            {
+                return View("ListaInscricoes");
+            }
+
+            Simulado s = Simulado.ListarPorCodigo(codigo);
+            if (s != null && s.CandidatoInscrito(Sessao.Candidato.CodCandidato))
+            {
+                return View(s);
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

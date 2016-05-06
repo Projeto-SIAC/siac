@@ -53,7 +53,7 @@ else
 <h4 class="ui dividing header">Simulados Passados</h4>
 @if (Model.Passados.Count > 0)
 {
-    <div class="ui relaxed feed">
+    <div class="ui feed">
         @foreach (Simulado simulado in Model.Passados.OrderByDescending(d => d.UltimoDiaRealizacao.DtRealizacao).Take(5))
         {
             <div class="event">

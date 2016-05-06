@@ -833,6 +833,7 @@
     <Content Include="Views\Simulado\Detalhe.cshtml" />
     <Content Include="Views\Shared\Partials\_SimuladoDetalhe.cshtml" />
     <Content Include="Views\Inscricao\Confirmar.cshtml" />
+    <Content Include="Views\Candidato\Inscricoes.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
