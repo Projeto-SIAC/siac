@@ -20,8 +20,14 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult Novo(FormCollection form)
         {
-            if (!StringExt.IsNullOrWhiteSpace(form["txtTitulo"]))
+            string titulo = form["txtTitulo"];
+            string descricao = form["txtDescricao"];
+            string strQteVagas = form["txtQteVagas"];
+
+            if (!StringExt.IsNullOrWhiteSpace(titulo,strQteVagas))
             {
+                int qteVagas = int.Parse(strQteVagas);
+
                 Simulado sim = new Simulado();
                 DateTime hoje = DateTime.Now;
                 /* Chave */
@@ -30,8 +36,9 @@ namespace SIAC.Controllers
                 sim.DtCadastro = hoje;
 
                 /* Simulado */
-                sim.Titulo = form["txtTitulo"];
-                sim.Descricao = form["txtDescricao"];
+                sim.Titulo = titulo;
+                sim.Descricao = descricao;
+                sim.QteVagas = qteVagas;
                 sim.FlagInscricaoEncerrado = true;
 
                 /* Colaborador */
@@ -59,20 +66,32 @@ namespace SIAC.Controllers
                 {
                     string titulo = form["txtTitulo"];
                     string descricao = form["txtDescricao"];
+                    string strQteVagas = form["txtQteVagas"];
 
-                    if (!StringExt.IsNullOrWhiteSpace(titulo))
+                    if (!StringExt.IsNullOrWhiteSpace(titulo,strQteVagas))
                     {
+                        int qteVagas = int.Parse(strQteVagas);
+
                         sim.Titulo = titulo;
                         sim.Descricao = descricao;
 
-                        Repositorio.Commit();
+                        if (qteVagas < sim.SimCandidato.Count)
+                        {
+                            mensagem = "A quantidade de vagas fornecida é inferior à quantidade de candidatos já inscritos.";
+                            estilo = Lembrete.NEGATIVO;
+                        }
+                        else
+                        {
+                            sim.QteVagas = qteVagas;
+                            Repositorio.Commit();
 
-                        mensagem = "Simulado editado com sucesso.";
-                        estilo = Lembrete.POSITIVO;
+                            mensagem = "Simulado editado com sucesso.";
+                            estilo = Lembrete.POSITIVO;
+                        }
                     }
                     else
                     {
-                        mensagem = "O campo de Título é obrigatório.";
+                        mensagem = "O campo de Título e Quantidade de vagas são obrigatórios.";
                         estilo = Lembrete.NEGATIVO;
                     }
                 }
@@ -126,8 +145,8 @@ namespace SIAC.Controllers
                 {
                     string inicioInscricao = form["txtInicioInscricao"];
                     string terminoInscricao = form["txtTerminoInscricao"];
-                    string qteVagas = form["txtQteVagas"];
-                    if (!StringExt.IsNullOrWhiteSpace(inicioInscricao, terminoInscricao, qteVagas))
+
+                    if (!StringExt.IsNullOrWhiteSpace(inicioInscricao, terminoInscricao))
                     {
                         DateTime inicio = DateTime.Parse(inicioInscricao, new CultureInfo("pt-BR"));
                         DateTime termino = DateTime.Parse($"{terminoInscricao} 23:59:59", new CultureInfo("pt-BR"));
@@ -139,7 +158,6 @@ namespace SIAC.Controllers
                         }
 
                         /* Simulado */
-                        sim.QteVagas = int.Parse(qteVagas);
                         sim.DtInicioInscricao = inicio;
                         sim.DtTerminoInscricao = termino;
 

@@ -30,6 +30,10 @@
                 <label>Insira uma descrição</label>
                 <textarea id="txtModalDescricao" name="txtDescricao" rows="5" readonly></textarea>
             </div>
+            <div class="field">
+                <label>Insira a quantidade de vagas</label>
+                <input id="txtModalQteVagas" name="txtQteVagas" placeholder="Quantidade de vagas" readonly />
+            </div>
         </div>
     </div>
     <div class="actions">
@@ -43,15 +47,17 @@
         <div class="header">Verifique</div>
         <ul class="list"></ul>
     </div>
-    @* Título *@
     <div class="field required">
         <label data-ajuda="Forneça na caixa abaixo o título">Forneça o título</label>
         <input id="txtTitulo" name="txtTitulo" maxlength="250" placeholder="Título" required />
     </div>
-    @* Objetivo *@
     <div class="field">
         <label data-ajuda="Descreva no espaço abaixo uma descrição para este simulado">Insira uma descrição</label>
         <textarea id="txtDescricao" name="txtDescricao" rows="5" placeholder="Descrição" required></textarea>
+    </div>
+    <div class="field required">
+        <label data-ajuda="Insira a quantidade de vagas para inscrições deste simulado">Insira a quantidade de vagas</label>
+        <input type="number" id="txtQteVagas" name="txtQteVagas" placeholder="Quantidade de vagas" />
     </div>
     <div class="field">
         <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a href='@Url.Action("","Gerencia")' class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
