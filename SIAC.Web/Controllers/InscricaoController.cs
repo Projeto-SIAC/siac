@@ -43,7 +43,7 @@ namespace SIAC.Controllers
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 Simulado s = ListarSimuladoAbertoPorCodigo(codigo);
-                if (s != null && s.FlagTemVaga)
+                if (s != null && s.FlagTemVaga && !s.CandidatoInscrito(Sessao.Candidato.CodCandidato))
                 {
                     if (Sessao.Candidato.PerfilCompleto)
                     {
@@ -66,7 +66,7 @@ namespace SIAC.Controllers
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 Simulado s = ListarSimuladoAbertoPorCodigo(codigo);
-                if (s != null && s.FlagTemVaga)
+                if (s != null && s.FlagTemVaga && !s.CandidatoInscrito(Sessao.Candidato.CodCandidato))
                 {
                     if (Sessao.Candidato.PerfilCompleto)
                     {

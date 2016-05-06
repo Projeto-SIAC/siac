@@ -201,21 +201,9 @@
     <Content Include="Resources\images\layout\logo.png" />
     <Content Include="Scripts\libs\moment.min.js" />
     <Content Include="Scripts\modules\siac.arquivo.js" />
-    <Content Include="Scripts\modules\siac.academica - Copy.min.js">
-      <DependentUpon>siac.arquivo.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\modules\siac.academica.js" />
-    <Content Include="Scripts\modules\siac.academica.min.js">
-      <DependentUpon>siac.academica.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\modules\siac.anexo.js" />
     <Content Include="Scripts\modules\siac.autoavaliacao.js" />
-    <Content Include="Scripts\modules\siac.autoavaliacao.min.js">
-      <DependentUpon>siac.autoavaliacao.js</DependentUpon>
-    </Content>
-    <Content Include="Scripts\modules\siac.certificacao.min.js">
-      <DependentUpon>siac.certificacao.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\modules\siac.gerencia.js" />
     <Content Include="Scripts\modules\siac.lembrete.js" />
     <Content Include="Scripts\modules\siac.agenda.js" />
@@ -229,13 +217,7 @@
     <Content Include="Scripts\libs\jquery.min.js" />
     <Content Include="Scripts\libs\modernizr.js" />
     <Content Include="Scripts\modules\siac.configuracoes.js" />
-    <Content Include="Scripts\modules\siac.configuracoes.min.js">
-      <DependentUpon>siac.configuracoes.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\modules\siac.questao.js" />
-    <Content Include="Scripts\modules\siac.questao.min.js">
-      <DependentUpon>siac.questao.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\siac.min.js">
       <DependentUpon>siac.js</DependentUpon>
     </Content>
@@ -245,13 +227,8 @@
     <Content Include="Styles\semantic.min.css" />
     <Content Include="Scripts\libs\semantic.min.js" />
     <Content Include="Styles\siac.acesso.css" />
-    <Content Include="Styles\siac.acesso.min.css">
-      <DependentUpon>siac.acesso.css</DependentUpon>
-    </Content>
     <Content Include="Styles\siac.css" />
-    <Content Include="Styles\siac.min.css">
-      <DependentUpon>siac.css</DependentUpon>
-    </Content>
+    <Content Include="Styles\siac.simulado.css" />
     <Content Include="Styles\themes\basic\assets\fonts\icons.svg" />
     <Content Include="Styles\themes\default\assets\fonts\icons.svg" />
     <Content Include="Styles\themes\default\assets\images\flags.png" />

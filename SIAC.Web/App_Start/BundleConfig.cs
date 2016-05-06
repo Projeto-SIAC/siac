@@ -110,6 +110,10 @@ namespace SIAC
                 "~/styles/siac.css"
             ));
 
+            bundles.Add(new StyleBundle("~/bundles/css/simulado").Include(
+                "~/styles/siac.simulado.css"
+            ));
+
             bundles.Add(new StyleBundle("~/bundles/fullcalendar/css").Include(
                 "~/styles/fullcalendar.css",
                 "~/styles/fullcalendar.print.css"
