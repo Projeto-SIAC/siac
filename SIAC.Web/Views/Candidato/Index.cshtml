@@ -1,8 +1,116 @@
-﻿
+﻿@model CandidatoIndexViewModel
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Área do Candidato";
     Layout = "~/Views/Shared/Simulados/_Layout.cshtml";
 }
 
 <h2>@ViewBag.Title</h2>
 
+<h4 class="ui dividing header">Simulados Inscritos</h4>
+@if (Model.Inscritos.Count > 0)
+{
+
+<div class="ui three cards">
+    @foreach (Simulado simulado in Model.Inscritos)
+    {
+        var dtAberto = simulado.DtInicioInscricao?.ToElapsedTimeString() ?? "";
+        <div class="card">
+            <div class="content">
+                <a href="@Url.Action("Inscricoes", "Candidato", new { codigo = simulado.Codigo })" class="header">
+                    @simulado.Titulo
+                </a>
+                <div class="meta">
+                    Aberto @(dtAberto.Contains("/") ? "em" : "há") <time datetime="@(simulado.DtInicioInscricao?.ToHtmlDateTimeString())">@dtAberto</time>
+                </div>
+                <div class="description">
+                    @if (String.IsNullOrWhiteSpace(simulado.Descricao))
+                    {
+                        <p><b>Início das Inscrições</b>:@(simulado.DtInicioInscricao?.ToString("dd/MM/yyyy"))</p>
+                        <p><b>Término das Inscrições</b>: @(simulado.DtTerminoInscricao?.ToString("dd/MM/yyyy"))</p>
+                            <p><b>Primeiro Dia de Provas</b>: @(simulado.PrimeiroDiaRealizacao?.DtRealizacao.DiaRealizacaoRepresentacao())</p>
+                    }
+                    else {
+                        @Html.Raw(simulado.Descricao.ToShortString(140).ToHtml("p"))
+                    }
+                </div>
+            </div>
+            <div class="extra content">
+                <div class="ui tag label">@simulado.Codigo</div>
+            </div>
+            <div class="ui two buttons">
+                <a data-simulado="@simulado.Codigo" class="ui detalhe button"><i class="plus icon"></i>Detalhes</a>
+                <a href="@Url.Action("Inscricoes", "Candidato", new { codigo = simulado.Codigo })" class="ui active toggle button"><i class="checkmark icon"></i>Inscrito</a>
+            </div>
+        </div>
+    }
+</div>
+}
+else
+{
+    <div class="ui message">Não há simulados inscritos.</div>
+}
+<h4 class="ui dividing header">Simulados Passados</h4>
+@if (Model.Passados.Count > 0)
+{
+    <div class="ui relaxed feed">
+        @foreach (Simulado simulado in Model.Passados.OrderByDescending(d => d.UltimoDiaRealizacao.DtRealizacao).Take(5))
+        {
+            <div class="event">
+                <div class="content">
+                    <div class="date">
+                        @simulado.UltimoDiaRealizacao.DtRealizacao.ToBrazilianString()
+                    </div>
+                    <div class="summary">
+                        <a href="@Url.Action("Inscricoes", "Candidato", new { codigo = simulado.Codigo })">
+                            @simulado.Titulo
+                        </a>
+                    </div>
+                    <div class="extra text">
+                        @simulado.Descricao.ToShortString(140)
+                    </div>
+                    <div class="meta">
+                        <a href="@Url.Action("Inscricoes", "Candidato", new { codigo = simulado.Codigo })">
+                            <i class="tag icon"></i> @simulado.Codigo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="ui message">Não há simulados passados.</div>
+}
+<a href="@Url.Action("Index", "Inscricao")" class="ui basic button">Voltar para Calendário</a>
+<a href="@Url.Action("Inscricoes", "Candidato")" class="ui right floated basic button">Ver Todas as Inscrições</a>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('.detalhe.button').click(function () {
+                var _this = $(this),
+                    simulado = _this.data('simulado');
+
+                _this.addClass('loading');
+
+                $.ajax({
+                    url: '/simulado/inscricao/detalhe',
+                    type: 'POST',
+                    data: {
+                        codigo: simulado
+                    },
+                    success: function (modal) {
+                        $('.detalhe.modal').remove();
+                        $('body').append(modal);
+                        $('.detalhe.modal').modal('show');
+                    },
+                    complete: function () {
+                        _this.removeClass('loading');
+                    }
+                });
+            });
+        })();
+    </script>
+}

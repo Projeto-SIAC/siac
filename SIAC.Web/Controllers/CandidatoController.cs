@@ -15,7 +15,10 @@ namespace SIAC.Controllers
     {
         // GET: simulado/candidato
         [CandidatoFilter]
-        public ActionResult Index() => View();
+        public ActionResult Index() => View(new CandidatoIndexViewModel() {
+            Inscritos = Simulado.ListarNaoEncerradoOrdenadamente().Where(s=>s.CandidatoInscrito(Sessao.Candidato.CodCandidato)).ToList(),
+            Passados = Simulado.ListarEncerradoOrdenadamente().Where(s => s.CandidatoInscrito(Sessao.Candidato.CodCandidato)).ToList()
+        });
 
         // GET: simulado/candidato/acessar
         public ActionResult Acessar()

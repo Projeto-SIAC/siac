@@ -616,6 +616,7 @@
     <Compile Include="ViewModels\AvaliacaoResultadoViewModel.cs" />
     <Compile Include="ViewModels\CandidatoCadastrarViewModel.cs" />
     <Compile Include="ViewModels\CandidatoAcessarViewModel.cs" />
+    <Compile Include="ViewModels\CandidatoIndexViewModel.cs" />
     <Compile Include="ViewModels\CandidatoPerfilViewModel.cs" />
     <Compile Include="ViewModels\CertificacaoConfigurarViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracoesInstitucionalViewModel.cs" />
@@ -830,7 +831,7 @@
     <Content Include="Views\Simulado\Partials\_SimuladoProvaCarregar.cshtml" />
     <Content Include="Views\Simulado\Partials\_SimuladoDiaCarregar.cshtml" />
     <Content Include="Views\Simulado\Detalhe.cshtml" />
-    <Content Include="Views\Inscricao\Partials\_SimuladoDetalhe.cshtml" />
+    <Content Include="Views\Shared\Partials\_SimuladoDetalhe.cshtml" />
     <Content Include="Views\Inscricao\Confirmar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

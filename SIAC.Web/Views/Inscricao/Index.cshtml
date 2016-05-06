@@ -16,7 +16,7 @@
                 var dtAberto = simulado.DtInicioInscricao?.ToElapsedTimeString() ?? "";
                 <div class="card">
                     <div class="content">
-                        <a href="#" class="header">
+                        <a href="@Url.Action("Inscricoes", "Candidato", new { codigo = simulado.Codigo })" class="header">
                             @simulado.Titulo
                         </a>
                         <div class="meta">
@@ -41,7 +41,7 @@
                         <a data-simulado="@simulado.Codigo" class="ui detalhe button"><i class="plus icon"></i>Detalhes</a>
                         @if (Sessao.Candidato != null && simulado.CandidatoInscrito(Sessao.Candidato.CodCandidato))
                         {
-                            <a class="ui active toggle button"><i class="checkmark icon"></i>Inscrito</a>
+                            <a href="@Url.Action("Inscricoes", "Candidato", new { codigo = simulado.Codigo })" class="ui active toggle button"><i class="checkmark icon"></i>Inscrito</a>
                         }
                         else if (!simulado.FlagTemVaga)
                         {
