@@ -139,7 +139,6 @@ namespace SIAC.Controllers
                         }
 
                         /* Simulado */
-                        sim.FlagInscricaoEncerrado = false;
                         sim.QteVagas = int.Parse(qteVagas);
                         sim.DtInicioInscricao = inicio;
                         sim.DtTerminoInscricao = termino;
@@ -628,5 +627,48 @@ namespace SIAC.Controllers
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
+        [HttpPost]
+        public ActionResult AlterarPermissaoInscricao(string codigo, string acao)
+        {
+            string mensagem = "Ocorreu um erro na operação.";
+            string estilo = Lembrete.NEGATIVO;
+
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
+                    switch (acao)
+                    {
+                        case "Bloquear":
+                            sim.FlagInscricaoEncerrado = true;
+                            mensagem = "As inscrições foram bloqueadas com sucesso.";
+                            estilo = Lembrete.NEGATIVO;
+                            break;
+                        case "Liberar":
+                            if (sim.CadastroCompleto)
+                            {
+                                sim.FlagInscricaoEncerrado = false;
+                                mensagem = "As inscrições foram liberadas com sucesso.";
+                                estilo = Lembrete.POSITIVO;
+                            }
+                            else
+                            {
+                                mensagem = "É necessário terminar o cadastro do simulado.";
+                                estilo = Lembrete.NEGATIVO;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    Repositorio.Commit();
+                    
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
+            return RedirectToAction("Detalhe", new { codigo = codigo });
+        }
     }
 }

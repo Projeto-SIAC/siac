@@ -552,7 +552,7 @@ siac.Simulado.Detalhe = (function () {
         });
         $('[data-content]').popup();
         $('.ui.dropdown').dropdown({
-            action: 'select'
+            action: 'nothing'
         });
 
         $('.editar.item').click(function () {
@@ -565,6 +565,40 @@ siac.Simulado.Detalhe = (function () {
                     $.ajax({
                         type: 'POST',
                         url: '/simulado/encerrar/' + _codigo,
+                        complete: function () {
+                            location.reload();
+                        }
+                    })
+                }
+            }).modal('show');
+        });
+
+        $('.liberar.item').click(function () {
+            $('.liberar.modal').modal({
+                onApprove: function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/simulado/alterarpermissaoinscricao/' + _codigo,
+                        data: {
+                            acao: 'Liberar'
+                        },
+                        complete: function () {
+                            location.reload();
+                        }
+                    })
+                }
+            }).modal('show');
+        });
+
+        $('.bloquear.item').click(function () {
+            $('.bloquear.modal').modal({
+                onApprove: function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/simulado/alterarpermissaoinscricao/' + _codigo,
+                        data: {
+                            acao: 'Bloquear'
+                        },
                         complete: function () {
                             location.reload();
                         }

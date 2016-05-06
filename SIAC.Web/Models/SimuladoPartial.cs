@@ -18,6 +18,8 @@ namespace SIAC.Models
         public SimDiaRealizacao UltimoDiaRealizacao =>
             this.SimDiaRealizacao.OrderBy(d => d.DtRealizacao).LastOrDefault();
 
+        public bool CadastroCompleto => !this.FlagSimuladoEncerrado && !this.FlagProvaEncerrada && this.DtInicioInscricao.HasValue && this.SimDiaRealizacao.Count > 0 && this.SimDiaRealizacao.First().SimProva.Count > 0 && this.SimSala.Count > 0;
+
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 
         public static void Inserir(Simulado simulado)
