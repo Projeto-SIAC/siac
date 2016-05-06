@@ -35,6 +35,7 @@ namespace SIAC.ViewModels
         public bool NecessidadeEspecial { get; set; }
         public string DescricaoNecessidadeEspecial { get; set; }
 
+        public string Mensagem { get; set; }
         public List<Pais> Paises { get; set; } = new List<Pais>();
         public List<Estado> Estados { get; set; } = new List<Estado>();
         public List<Municipio> Municipios { get; set; } = new List<Municipio>();
