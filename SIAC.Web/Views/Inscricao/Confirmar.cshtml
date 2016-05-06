@@ -121,9 +121,11 @@
     </div>
 </div>
 
-<a href="#" class="ui right floated primary button">Confirmar</a>
-<a href="@Url.Action("Perfil", "Candidato")?inscricao=@Model.Codigo" class="ui right floated basic button">Atualizar Dados</a>
-<a href="@Url.Action("Index")" class="ui basic button">Voltar</a>
+<form action="@Url.Action("Confirmado", "Inscricao", new { codigo = Model.Codigo })" method="post">
+    <button type="submit" class="ui right floated primary button">Confirmar</button>
+    <a href="@Url.Action("Perfil", "Candidato")?inscricao=@Model.Codigo" class="ui right floated basic button">Atualizar Dados</a>
+    <a href="@Url.Action("Index")" class="ui basic button">Voltar</a>
+</form>
 
 @section Scripts {
     <script>

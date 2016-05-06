@@ -12,6 +12,9 @@ namespace SIAC.Controllers
 {
     public class InscricaoController : Controller
     {
+        private Simulado ListarSimuladoAbertoPorCodigo(string codigo) => 
+            Simulado.ListarPorInscricoesAbertas().FirstOrDefault(sim => sim.Codigo.ToLower() == codigo.ToLower());
+
         // GET: simulado/inscricao
         public ActionResult Index() => View(new InscricaoIndexViewModel()
         {
@@ -39,12 +42,43 @@ namespace SIAC.Controllers
         {
             if (!String.IsNullOrWhiteSpace(codigo))
             {
-                Simulado s = Simulado.ListarPorInscricoesAbertas().FirstOrDefault(sim => sim.Codigo.ToLower() == codigo.ToLower());
-                if (s != null)
+                Simulado s = ListarSimuladoAbertoPorCodigo(codigo);
+                if (s != null && s.FlagTemVaga)
                 {
                     if (Sessao.Candidato.PerfilCompleto)
                     {
                         return View(s);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Perfil", "Candidato");
+                    }
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        // POST: simulado/inscricao/confirmado/simul201600123
+        [CandidatoFilter]
+        [HttpPost]
+        public ActionResult Confirmado(string codigo)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado s = ListarSimuladoAbertoPorCodigo(codigo);
+                if (s != null && s.FlagTemVaga)
+                {
+                    if (Sessao.Candidato.PerfilCompleto)
+                    {
+                        s.SimCandidato.Add(new SimCandidato()
+                        {
+                            NumInscricao = s.ObterNumInscricao(),
+                            SimSala = s.SimSala.First(),
+                            Candidato = Sessao.Candidato,
+                            DtInscricao = DateTime.Now
+                        });
+                        Repositorio.Commit();
+                        return RedirectToAction("Inscricoes", "Candidado", new { codigo = s.Codigo });
                     }
                     else
                     {

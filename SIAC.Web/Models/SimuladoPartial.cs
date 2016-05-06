@@ -12,11 +12,34 @@ namespace SIAC.Models
         public bool CandidatoInscrito(int codCandidato) =>
            this.SimCandidato.FirstOrDefault(sc => sc.CodCandidato == codCandidato) != null;
 
+        public bool FlagTemVaga => this.QteVagas > this.SimCandidato.Count;
+
         public SimDiaRealizacao PrimeiroDiaRealizacao =>
             this.SimDiaRealizacao.OrderBy(d => d.DtRealizacao).FirstOrDefault();
 
         public SimDiaRealizacao UltimoDiaRealizacao =>
             this.SimDiaRealizacao.OrderBy(d => d.DtRealizacao).LastOrDefault();
+
+        public int ObterNumInscricao()
+        {
+            if (!Sistema.ProxInscricao.ContainsKey(this.Codigo))
+            {
+                Sistema.ProxInscricao[this.Codigo] = this.SimCandidato.Count > 0 ? this.SimCandidato.Max(c => c.NumInscricao) + 1 : 1;
+            }
+            return Sistema.ProxInscricao[this.Codigo]++;
+        }
+
+        public SimSala ObterSalaDisponivel()
+        {
+            foreach (SimSala sala in this.SimSala)
+            {
+                if (sala.Sala.Capacidade > sala.SimCandidato.Count)
+                {
+                    return sala;
+                }
+            }
+            return this.SimSala.FirstOrDefault();
+        }
 
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 
@@ -82,6 +105,6 @@ namespace SIAC.Models
                 }
             }
             return questoes;
-        }
+        }        
     }
 }

@@ -43,6 +43,10 @@
                         {
                             <a class="ui active toggle button"><i class="checkmark icon"></i>Inscrito</a>
                         }
+                        else if (!simulado.FlagTemVaga)
+                        {
+                            <a class="ui negative button"><i class="users icon"></i>Esgotado</a>
+                        }
                         else
                         {
                             <a href="@Url.Action("Confirmar", "Inscricao", new { codigo = simulado.Codigo })" class="ui inscricao button">Inscrição</a>

@@ -44,5 +44,8 @@ namespace SIAC.Models
 
         // Notificações
         public static Dictionary<string, List<Dictionary<string, string>>> Notificacoes = new Dictionary<string, List<Dictionary<string, string>>>();
+
+        // Simulados
+        public static Dictionary<string, int> ProxInscricao = new Dictionary<string, int>();
     }
 }

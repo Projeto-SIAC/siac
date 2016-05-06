@@ -25,9 +25,9 @@
     }
     @if (!Model.FlagSimuladoEncerrado)
     {
-        <div class="ui right floated floating dropdown labeled icon button">
+        <div class="ui right floated floating acoes dropdown labeled icon button">
             <i class="dropdown icon"></i>
-            <span class="text">Ações para este simulado</span>
+            <span class="text">Atalho para Ações</span>
             <div class="menu">
                 <div class="editar item">
                     <i class="edit icon"></i>
@@ -45,6 +45,15 @@
                     <i class="marker icon"></i>
                     Selecionar Salas
                 </a>
+                @if (Model.SimCandidato.Count > 0)
+                {
+                    <div class="divider"></div>
+                    <div class="candidatos item">
+                        <i class="users icon"></i>
+                        Listar Candidatos
+                    </div>
+                }                
+                <div class="divider"></div>
                 <div class="encerrar red inverted item">
                     <i class="warning sign red icon"></i>
                     Encerrar Simulado
@@ -54,7 +63,39 @@
     }
 </h2>
 
+<div class="ui candidatos modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Candidatos Inscritos
+    </div>
+    <div class="content">
+        <table class="ui striped table">
+            <thead>
+                <tr>
+                    <th>Inscrição</th>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (SimCandidato candidato in Model.SimCandidato)
+                {
+                    <tr>
+                        <td>@candidato.NumInscricao.ToString("0000")</td>
+                        <td>@candidato.Candidato.Nome</td>
+                        <td>@Formate.ParaCPF(candidato.Candidato.Cpf)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Fechar</div>
+    </div>
+</div>
+
 <form action="@Url.Action("Editar", new { codigo = Model.Codigo })" method="post" class="ui editar modal">
+    <i class="close icon"></i>
     <div class="header">Editar dados do simulado</div>
     <div class="content">
         <div class="ui form">

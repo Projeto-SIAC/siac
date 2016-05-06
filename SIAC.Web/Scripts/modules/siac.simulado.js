@@ -551,8 +551,8 @@ siac.Simulado.Detalhe = (function () {
             animateChildren:false
         });
         $('[data-content]').popup();
-        $('.ui.dropdown').dropdown({
-            action: 'select'
+        $('.ui.acoes.dropdown').dropdown({
+            action: 'hide'
         });
 
         $('.editar.item').click(function () {
@@ -571,6 +571,10 @@ siac.Simulado.Detalhe = (function () {
                     })
                 }
             }).modal('show');
+        });
+
+        $('.candidatos.item').click(function () {
+            $('.candidatos.modal').modal('show');
         });
     }
 
