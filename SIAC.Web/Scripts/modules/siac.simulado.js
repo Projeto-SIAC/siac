@@ -551,6 +551,7 @@ siac.Simulado.Detalhe = (function () {
             animateChildren:false
         });
         $('[data-content]').popup();
+
         $('.ui.acoes.dropdown').dropdown({
             action: 'hide'
         });
@@ -575,6 +576,40 @@ siac.Simulado.Detalhe = (function () {
 
         $('.candidatos.item').click(function () {
             $('.candidatos.modal').modal('show');
+        });
+
+        $('.liberar.item').click(function () {
+            $('.liberar.modal').modal({
+                onApprove: function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/simulado/alterarpermissaoinscricao/' + _codigo,
+                        data: {
+                            acao: 'Liberar'
+                        },
+                        complete: function () {
+                            location.reload();
+                        }
+                    })
+                }
+            }).modal('show');
+        });
+
+        $('.bloquear.item').click(function () {
+            $('.bloquear.modal').modal({
+                onApprove: function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/simulado/alterarpermissaoinscricao/' + _codigo,
+                        data: {
+                            acao: 'Bloquear'
+                        },
+                        complete: function () {
+                            location.reload();
+                        }
+                    })
+                }
+            }).modal('show');
         });
     }
 

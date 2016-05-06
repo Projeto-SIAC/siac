@@ -11,17 +11,21 @@
     {
         <span class="ui label"><i class="lock icon"></i>Encerrado</span>
     }
-    else if (Model.DtTerminoInscricao < DateTime.Now)
+    else if (Model.FlagInscricaoEncerrado && Model.DtInicioInscricao <= DateTime.Now && Model.DtTerminoInscricao > DateTime.Now)
+    {
+        <span class="ui label"><i class="wait icon"></i>Inscrições Não Liberadas</span>
+    }
+    else if (Model.FlagInscricaoEncerrado || Model.DtTerminoInscricao < DateTime.Now)
     {
         <span class="ui label"><i class="remove user icon"></i>Inscrições Encerradas</span>
     }
-    else if (Model.DtInicioInscricao <= DateTime.Now)
+    else if (!Model.FlagInscricaoEncerrado && Model.DtInicioInscricao <= DateTime.Now)
     {
         <span class="ui label"><i class="add user icon"></i>Inscrições Abertas</span>
     }
     else
     {
-        <span class="ui label"><i class="wait icon"></i>Gerado</span>
+        <span class="ui label"><i class="certificate icon"></i>Gerado</span>
     }
     @if (!Model.FlagSimuladoEncerrado)
     {
@@ -52,9 +56,23 @@
                         <i class="users icon"></i>
                         Listar Candidatos
                     </div>
-                }                
+                }
                 <div class="divider"></div>
-                <div class="encerrar red inverted item">
+                @if (Model.FlagInscricaoEncerrado)
+                {
+                    <div class="liberar item">
+                        <i class="unlock alternate green icon"></i>
+                        Liberar Inscrições
+                    </div>
+                }
+                else
+                {
+                    <div class="bloquear item">
+                        <i class="ban red icon"></i>
+                        Bloquear Inscrições
+                    </div>
+                }
+                <div class="encerrar item">
                     <i class="warning sign red icon"></i>
                     Encerrar Simulado
                 </div>
@@ -78,7 +96,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (SimCandidato candidato in Model.SimCandidato)
+                @foreach (SimCandidato candidato in Model.SimCandidato.OrderBy(c => c.NumInscricao))
                 {
                     <tr>
                         <td>@candidato.NumInscricao.ToString("0000")</td>
@@ -115,7 +133,7 @@
     </div>
 </form>
 
-<div class="ui encerrar modal">
+<div class="ui encerrar small modal">
     <i class="close icon"></i>
     <div class="header">
         Encerrar Simulado?
@@ -127,9 +145,42 @@
     </div>
     <div class="actions">
         <div class="ui button">Cancelar</div>
-        <div class="ui negative button">Encerrar Simulado</div>
+        <div class="ui red approve button">Encerrar Simulado</div>
     </div>
 </div>
+
+<div class="ui liberar small modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Liberar Inscrições do Simulado?
+    </div>
+    <div class="content">
+        <div class="description">
+            <p>Esta função liberará a realização de incrições, caso hoje já esteja no período de inscrições</p>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui button">Cancelar</div>
+        <div class="ui green approve button">Liberar Inscrições</div>
+    </div>
+</div>
+
+<div class="ui bloquear small modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Bloquear Inscrições do Simulado?
+    </div>
+    <div class="content">
+        <div class="description">
+            <p>Esta função bloqueará a realização de incrições deste simulado</p>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui button">Cancelar</div>
+        <div class="ui red approve button">Bloquear Inscrições</div>
+    </div>
+</div>
+
 
 <div class="ui basic segment">
     <div class="ui dividing header">
