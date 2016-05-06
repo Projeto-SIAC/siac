@@ -5,7 +5,10 @@
     Layout = "~/Views/Shared/Simulados/_Layout.cshtml";
 }
 
-<h2>@ViewBag.Title</h2>
+<h2>
+    @ViewBag.Title
+    <div class="ui right floated senha basic button">Alterar Senha</div>
+</h2>
 @if (!@Model.Candidato.PerfilCompleto)
 {
     <div class="ui warning message">
@@ -13,7 +16,44 @@
     </div>
 }
 
+@if (!String.IsNullOrWhiteSpace(Model.Mensagem))
+{
+    <div class="ui message">
+        <i class="close icon"></i>
+        <div class="header">
+            Mensagem do Sistema
+        </div>
+        <p>@Model.Mensagem</p>
+    </div>
+}
+
+<form action="@Url.Action("AlterarSenha")" method="post" class="ui small senha modal">
+    <i class="close icon"></i>
+    <div class="header">Alterar senha</div>
+    <div class="content">
+        <div class="ui form">
+            <div class="field required">
+                <label>Digite a senha atual</label>
+                <input type="password" name="senhaAtual" autocomplete="off" placeholder="Senha atual" required />
+            </div>
+            <div class="field required">
+                <label>Digete a nova senha</label>
+                <input type="password" name="senhaNova" autocomplete="off" placeholder="Senha nova" required />
+            </div>
+            <div class="field required">
+                <label>Confirme a nova senha</label>
+                <input type="password" name="senhaConfirmacao" autocomplete="off" placeholder="Confirmação da nova senha" required />
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <input type="reset" value="Cancelar" class="ui basic cancel button" />
+        <input type="submit" value="Alterar" class="ui primary approve button" />
+    </div>
+</form>
+
 <form action="@Url.Action("Perfil", new { codigo = Model.Candidato.Cpf })?inscricao=@Request.QueryString["inscricao"]" method="post" class="ui form">
+    <h4 class="ui dividing header">Meus Dados</h4>
     <div class="field ">
         <label>Nome Completo</label>
         <input type="text" name="Nome" placeholder="Nome Completo" autocomplete="off" value="@Model.Candidato.Nome" required />
@@ -129,93 +169,108 @@
 </form>
 
 @section Scripts {
-    <script id="estados" type="application/json">@Html.Raw(Model.EstadosEmJson)</script>
-    <script id="municipios" type="application/json">@Html.Raw(Model.MunicipiosEmJson)</script>
-    <script>
-        $(function () {
-            var _estados = JSON.parse($('script#estados').html()),
-                _municipios = JSON.parse($('script#municipios').html()),
-                _ddlPais = $('#ddlPais'),
-                _ddlEstado = $('#ddlEstado'),
-                _ddlMunicipio = $('#ddlMunicipio');
+    <script id="estados" type="application/json">
+        @Html.Raw(Model.EstadosEmJson)
+</script>
+<script id="municipios" type="application/json">
+    @Html.Raw(Model.MunicipiosEmJson)
+</script>
+<script>
+    $(function () {
+        var _estados = JSON.parse($('script#estados').html()),
+            _municipios = JSON.parse($('script#municipios').html()),
+            _ddlPais = $('#ddlPais'),
+            _ddlEstado = $('#ddlEstado'),
+            _ddlMunicipio = $('#ddlMunicipio');
 
-            $('script#estados').remove();
-            $('script#municipios').remove();
+        $('script#estados').remove();
+        $('script#municipios').remove();
 
-            _ddlPais.off('change').on('change', function () {
-                var pais = $(this).val();
+        _ddlPais.off('change').on('change', function () {
+            var pais = $(this).val();
 
-                _ddlEstado.html('<option value="">Selecione</option>');
-                _ddlMunicipio.html('<option value="">Selecione</option>');
+            _ddlEstado.html('<option value="">Selecione</option>');
+            _ddlMunicipio.html('<option value="">Selecione</option>');
 
-                for (var i = 0, length = _estados.length; i < length; i++) {
-                    if (_estados[i].Pais == pais) {
-                        _ddlEstado.append('<option value="' + _estados[i].Estado + '">' + _estados[i].Descricao + '</option>');
-                    }
+            for (var i = 0, length = _estados.length; i < length; i++) {
+                if (_estados[i].Pais == pais) {
+                    _ddlEstado.append('<option value="' + _estados[i].Estado + '">' + _estados[i].Descricao + '</option>');
                 }
+            }
 
-                _ddlEstado
-                    .dropdown('refresh')
-                    .dropdown('set placeholder text', 'Selecione')
-                    .dropdown('set value', '')
+            _ddlEstado
+                .dropdown('refresh')
+                .dropdown('set placeholder text', 'Selecione')
+                .dropdown('set value', '')
+            ;
+
+            _ddlMunicipio
+                .dropdown('refresh')
+                .dropdown('set placeholder text', 'Selecione')
+                .dropdown('set value', '')
+            ;
+
+        });
+
+        _ddlEstado.off('change').on('change', function () {
+            var estado = $(this).val();
+
+            _ddlMunicipio.html('<option value="">Selecione</option>');
+
+            for (var i = 0, length = _municipios.length; i < length; i++) {
+                if (_municipios[i].Estado == estado) {
+                    _ddlMunicipio.append('<option value="' + _municipios[i].Municipio + '">' + _municipios[i].Descricao + '</option>');
+                }
+            }
+
+            _ddlMunicipio
+                .dropdown('refresh')
+                .dropdown('set placeholder text', 'Selecione')
+                .dropdown('set value', '')
+            ;
+        });
+
+        $('#ckbNecessidade').off('change').on('change', function () {
+            var checked = $(this).is(':checked'),
+                txtNecessidade = $('#txtNecessidade');
+
+            if (checked) {
+                txtNecessidade.removeAttr('disabled');
+                txtNecessidade.parent().removeClass('disabled');
+            }
+            else {
+                txtNecessidade.attr('disabled', 'disabled');
+                txtNecessidade.parent().addClass('disabled');
+            }
+        });
+
+        $('.ui.checkbox').checkbox();
+
+        var SPMaskBehavior = function (val) {
+            return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
+        };
+
+        var spOptions = {
+            onKeyPress: function (val, e, field, options) {
+                field.mask(SPMaskBehavior.apply({}, arguments), options);
+            }
+        };
+
+        $('.celular').mask(SPMaskBehavior, spOptions);
+
+        $('.senha.button').click(function () {
+            $('.senha.modal').modal('show');
+        });
+
+        $('.message .close')
+            .on('click', function () {
+                $(this)
+                  .closest('.message')
+                  .transition('fade')
                 ;
-
-                _ddlMunicipio
-                    .dropdown('refresh')
-                    .dropdown('set placeholder text', 'Selecione')
-                    .dropdown('set value', '')
-                ;
-
-            });
-
-            _ddlEstado.off('change').on('change', function () {
-                var estado = $(this).val();
-
-                _ddlMunicipio.html('<option value="">Selecione</option>');
-
-                for (var i = 0, length = _municipios.length; i < length; i++) {
-                    if (_municipios[i].Estado == estado) {
-                        _ddlMunicipio.append('<option value="' + _municipios[i].Municipio + '">' + _municipios[i].Descricao + '</option>');
-                    }
-                }
-
-                _ddlMunicipio
-                    .dropdown('refresh')
-                    .dropdown('set placeholder text', 'Selecione')
-                    .dropdown('set value', '')
-                ;
-            });
-
-            $('#ckbNecessidade').off('change').on('change', function () {
-                var checked = $(this).is(':checked'),
-                    txtNecessidade = $('#txtNecessidade');
-
-                if (checked) {
-                    txtNecessidade.removeAttr('disabled');
-                    txtNecessidade.parent().removeClass('disabled');
-                }
-                else {
-                    txtNecessidade.attr('disabled', 'disabled');
-                    txtNecessidade.parent().addClass('disabled');
-                }
-            });
-
-            $('.ui.checkbox').checkbox();
-
-            var SPMaskBehavior = function (val) {
-                return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
-            };
-
-            var spOptions = {
-                onKeyPress: function (val, e, field, options) {
-                    field.mask(SPMaskBehavior.apply({}, arguments), options);
-                }
-            };
-
-            $('.celular').mask(SPMaskBehavior, spOptions);
-            
-            
-        })();
-    </script>
+            })
+        ;
+    })();
+</script>
 }
 

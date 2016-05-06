@@ -105,6 +105,7 @@ namespace SIAC.Controllers
         [CandidatoFilter]
         public ActionResult Perfil() => View(new CandidatoPerfilViewModel()
         {
+            Mensagem = (string)TempData["Mensagem"],
             Paises = Municipio.ListarPaisesOrdenadamente(),
             Estados = Municipio.ListarEstadosOrdenadamente(),
             Municipios = Municipio.ListarOrdenadamente()
@@ -187,6 +188,40 @@ namespace SIAC.Controllers
             });
         }
 
-
+        // POST: simulado/candidato/alterarsenha
+        [HttpPost]
+        public ActionResult AlterarSenha(string senhaAtual, string senhaNova, string senhaConfirmacao)
+        {
+            string mensagem = "Ocorreu um erro ao tentar alterar a senha.";
+            if (!StringExt.IsNullOrWhiteSpace(senhaAtual, senhaNova, senhaConfirmacao))
+            {
+                Candidato c = Sessao.Candidato;
+                string hashSenhaAtual = Criptografia.RetornarHash(senhaAtual);
+                if (hashSenhaAtual == c.Senha)
+                {
+                    if (senhaNova == senhaConfirmacao)
+                    {
+                        string hashSenhaNova = Criptografia.RetornarHash(senhaNova);
+                        c.Senha = hashSenhaNova;
+                        Repositorio.Commit();
+                        mensagem = "Senha alterada com sucesso.";
+                    }
+                    else
+                    {
+                        mensagem = "A confirmação da senha deve ser igual a senha nova.";
+                    }
+                }
+                else
+                {
+                    mensagem = "A senha atual informada está incorreta.";
+                }
+            }
+            else
+            {
+                mensagem = "Todos os campos são necessários para alterar a senha.";
+            }
+            TempData["Mensagem"] = mensagem;
+            return RedirectToAction("Perfil");
+        }
     }
 }
