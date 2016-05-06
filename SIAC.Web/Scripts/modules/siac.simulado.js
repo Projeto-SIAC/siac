@@ -30,6 +30,11 @@ siac.Simulado.Novo = (function () {
             valido = false;
         }
 
+        if (!$('#txtQteVagas').val().trim() || $('#txtQteVagas').val() <= 0) {
+            $errorList.append('<li>Insira a quantidade de vagas</li>');
+            valido = false;
+        }
+
         if (valido) {
             confirmar();
         }
@@ -46,6 +51,7 @@ siac.Simulado.Novo = (function () {
 
         $('#txtModalTitulo').val($('#txtTitulo').val());
         $('#txtModalDescricao').val($('#txtDescricao').val());
+        $('#txtModalQteVagas').val($('#txtQteVagas').val());
 
         $modal.modal('show');
     }
@@ -325,7 +331,6 @@ siac.Simulado.Datas = (function () {
     function validar() {
         var inicioInscricao = $('#txtInicioInscricao').val(),
             terminoInscricao = $('#txtTerminoInscricao').val(),
-            qteVagas = $('#txtQteVagas').val(),
             retorno = true;
 
         lstErro = $('form .error.message .list');
@@ -363,11 +368,6 @@ siac.Simulado.Datas = (function () {
             }
         }
 
-        if (!qteVagas || qteVagas <= 0) {
-            lstErro.append('<li>Especifique a quantidade de vagas das inscrições</li>');
-            retorno = false;
-        }
-
         return retorno;
     }
 
@@ -380,7 +380,6 @@ siac.Simulado.Datas = (function () {
             $div.find('.button').remove();
             $div.find('#txtInicioInscricao').attr('value', $form.find('#txtInicioInscricao').val());
             $div.find('#txtTerminoInscricao').attr('value', $form.find('#txtTerminoInscricao').val());
-            $div.find('#txtQteVagas').attr('value', $form.find('#txtQteVagas').val());
             for (var i = 0; i < lstInput.length; i++) {
                 lstInput.eq(i)
                     .removeAttr('id')
