@@ -8,6 +8,8 @@ using SIAC.ViewModels;
 using SIAC.Helpers;
 using SIAC.Models;
 using SIAC.Filters;
+using System.Net;
+using System.Net.Mail;
 
 namespace SIAC.Controllers
 {
@@ -74,6 +76,18 @@ namespace SIAC.Controllers
 
                             Candidato.Inserir(c);
                             Sessao.Inserir("SimuladoCandidato", c);
+
+                            SmtpClient client = new SmtpClient("smtp.live.com", 587);
+                            client.Credentials = new NetworkCredential("email@outlook.com", "password");
+                            client.EnableSsl = true;
+
+                            FluentEmail.Email
+                                .From("felipemfpontes@gmail.com", "Felipe Pontes")
+                                .To("franciscobentoifrn@gmail.com", "Francisco Bento")
+                                .Subject("Novo Candidato no SIAC Simulados")
+                                .Body($"{c.PrimeiroNome} se cadastrou no SIAC Simulados.").UsingClient(client)
+                                .Send();
+
                             return RedirectToAction("Perfil");
                         }
                         else
