@@ -25,7 +25,7 @@ namespace SIAC.Models
         public int CodCandidato { get; set; }
         public int NumInscricao { get; set; }
         public System.DateTime DtInscricao { get; set; }
-        public int CodSala { get; set; }
+        public Nullable<int> CodSala { get; set; }
         public Nullable<decimal> EscorePadronizadoFinal { get; set; }
     
         public virtual Candidato Candidato { get; set; }

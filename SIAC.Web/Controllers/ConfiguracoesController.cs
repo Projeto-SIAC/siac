@@ -11,26 +11,14 @@ namespace SIAC.Controllers
     [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR, Categoria.PROFESSOR })]
     public class ConfiguracoesController : Controller
     {
-        public List<UsuarioOpiniao> opinioes
-        {
-            get
-            {
-                return Repositorio.GetInstance().UsuarioOpiniao.ToList();
-            }
-        }
+        public List<UsuarioOpiniao> opinioes => Repositorio.GetInstance().UsuarioOpiniao.ToList();
 
         // GET: configuracoes/
-        public ActionResult Index()
-        {
-            return View();
-        }
+        public ActionResult Index() => View();
 
         // GET: configuracoes/opinioes/
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
-        public ActionResult Opinioes(string tab)
-        {
-            return View((object)tab);
-        }
+        public ActionResult Opinioes(string tab) => View((object)tab);
 
         // POST: configuracoes/listaropinioes/
         [HttpPost]
@@ -173,6 +161,7 @@ namespace SIAC.Controllers
                 temp.NotaUsoCertificacao = formCollection["txtNotaUsoCertificacao"];
                 temp.NotaUsoInstitucional = formCollection["txtNotaUsoInstitucional"];
                 temp.NotaUsoReposicao = formCollection["txtNotaUsoReposicao"];
+                temp.NotaUsoSimulado = formCollection["txtNotaUsoSimulado"];
                 temp.ValorNotaMedia = double.Parse(formCollection["txtValorNotaMedia"].Replace('.', ','));
                 Parametro.Atualizar(temp);
             }

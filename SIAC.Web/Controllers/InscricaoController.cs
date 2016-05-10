@@ -73,7 +73,6 @@ namespace SIAC.Controllers
                         s.SimCandidato.Add(new SimCandidato()
                         {
                             NumInscricao = s.ObterNumInscricao(),
-                            SimSala = s.SimSala.First(),
                             Candidato = Sessao.Candidato,
                             DtInscricao = DateTime.Now
                         });
