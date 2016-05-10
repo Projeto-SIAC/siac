@@ -610,6 +610,10 @@ siac.Simulado.Detalhe = (function () {
                 }
             }).modal('show');
         });
+
+        $('.alterar.prazo.item').click(function () {
+            $('.alterar.prazo.modal').modal('show');
+        });
     }
 
     return {

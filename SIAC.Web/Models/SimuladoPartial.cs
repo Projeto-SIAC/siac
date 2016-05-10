@@ -14,6 +14,12 @@ namespace SIAC.Models
 
         public bool FlagTemVaga => this.QteVagas > this.SimCandidato.Count;
 
+        public bool FlagInscricaoAberta => !this.FlagInscricaoEncerrado && this.DtInicioInscricao <= DateTime.Now && this.DtTerminoInscricao > DateTime.Now;
+
+        public bool FlagInscricaoNaoLiberada => this.FlagInscricaoEncerrado && this.DtInicioInscricao <= DateTime.Now && this.DtTerminoInscricao > DateTime.Now;
+
+        public bool FlagAguardaPrazoInscricao => this.DtInicioInscricao > DateTime.Now;
+
         public SimDiaRealizacao PrimeiroDiaRealizacao =>
             this.SimDiaRealizacao.OrderBy(d => d.DtRealizacao).FirstOrDefault();
 

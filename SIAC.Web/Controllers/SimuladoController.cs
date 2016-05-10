@@ -688,5 +688,44 @@ namespace SIAC.Controllers
             Lembrete.AdicionarNotificacao(mensagem, estilo);
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
+
+        [HttpPost]
+        public ActionResult AlterarPrazo(string codigo, FormCollection form)
+        {
+            string mensagem = "Ocorreu um erro na operação.";
+            string estilo = Lembrete.NEGATIVO;
+            string txtNovoPrazo = form["txtNovoPrazo"];
+
+            if (!StringExt.IsNullOrWhiteSpace(codigo, txtNovoPrazo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
+                    DateTime novoPrazo = DateTime.Parse($"{txtNovoPrazo} 23:59:59", new CultureInfo("pt-BR"));
+
+                    if(novoPrazo < DateTime.Now)
+                    {
+                        mensagem = "A nova data de término não pode ser inferior à hoje.";
+                        estilo = Lembrete.NEGATIVO;
+                    }
+                    else
+                    {
+                        mensagem = "O prazo foi alterado com sucesso.";
+                        estilo = Lembrete.POSITIVO;
+                        sim.DtTerminoInscricao = novoPrazo;
+                        Repositorio.Commit();
+                    }
+                }
+            }
+            else
+            {
+                mensagem = "A nova data de término da inscrição é obrigatória.";
+                estilo = Lembrete.NEGATIVO;
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
+            return RedirectToAction("Detalhe", new { codigo = codigo });
+        }
     }
 }
