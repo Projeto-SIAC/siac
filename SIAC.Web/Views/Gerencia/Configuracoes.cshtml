@@ -1,0 +1,39 @@
+﻿@model GerenciaConfiguracoesViewModel
+
+@{
+    ViewBag.Title = "Configurações";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="ui basic segment">
+    <h4 class="ui dividing header">Envio de Email</h4>
+    <form action="@Url.Action("Configuracoes")" method="post" class="ui form">
+        <div class="field required">
+            <label>Endereço do Host</label>
+            <input type="text" name="SmtpEnderecoHost" placeholder="Endereço do Host" maxlength="200" value="@Model.SmtpEnderecoHost" required />
+        </div>
+        <div class="field required">
+            <label>Porta</label>
+            <input type="text" name="SmtpPorta" data-mask="0#" placeholder="Porta" value="@Model.SmtpPorta" required />
+        </div>
+        <div class="field required">
+            <label>Usuário da Credencial</label>
+            <input type="text" name="SmtpUsuario" placeholder="Usuário da Credencial" maxlength="150" value="@Model.SmtpUsuario" required />
+        </div>
+        <div class="field required">
+            <label>Senha da Credencial</label>
+            <input type="password" name="SmtpSenha" placeholder="Senha da Credencial" maxlength="150" value="@Model.SmtpSenha" required />
+        </div>
+        <div class="ui segment">
+            <div class="inline field">
+                <div class="ui slider checkbox">
+                    @Html.CheckBox("SmptFlagSSL", Model.SmptFlagSSL)
+                    <label>Utilizar SSL</label>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="ui button">Salvar</button>
+    </form>
+</div>
+<a class="ui button" href="@Url.Action("Index", "Gerencia")">Voltar para Gerência de Simulados</a>

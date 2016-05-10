@@ -630,6 +630,7 @@
     <Compile Include="ViewModels\ConfiguracoesInstitucionalViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracoesParametrosViewModel.cs" />
     <Compile Include="ViewModels\ErroIndexViewModel.cs" />
+    <Compile Include="ViewModels\GerenciaConfiguracoesViewModel.cs" />
     <Compile Include="ViewModels\GerenciaEditarBlocoViewModel.cs" />
     <Compile Include="ViewModels\GerenciaBlocosViewModel.cs" />
     <Compile Include="ViewModels\GerenciaEditarSalaViewModel.cs" />
@@ -842,6 +843,7 @@
     <Content Include="Views\Shared\Partials\_SimuladoDetalhe.cshtml" />
     <Content Include="Views\Inscricao\Confirmar.cshtml" />
     <Content Include="Views\Candidato\Inscricoes.cshtml" />
+    <Content Include="Views\Gerencia\Configuracoes.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

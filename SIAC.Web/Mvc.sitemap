@@ -124,6 +124,7 @@
           <mvcSiteMapNode title="Disciplinas" controller="Gerencia" action="Disciplinas" />
           <mvcSiteMapNode title="Professores" controller="Gerencia" action="Professores" />
         </mvcSiteMapNode>
+        <mvcSiteMapNode title="Configurações" controller="Gerencia" action="Configuracoes" />
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Novo Simulado" controller="Simulado" action="Novo" />
       <mvcSiteMapNode title="Provas" controller="Simulado" action="Provas" preservedRouteParameters="codigo" />

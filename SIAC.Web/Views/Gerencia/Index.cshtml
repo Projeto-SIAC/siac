@@ -37,5 +37,11 @@
             { "Descricao", "Dados Gerais" },
             { "Mensagem", "" }
         })
+        @Html.Partial("_Atalho", new ViewDataDictionary() {
+            { "Url", Url.Action("Configuracoes", "Gerencia") },
+            { "Icone", "configure" },
+            { "Descricao", "Configurações" },
+            { "Mensagem", "" }
+        })
     </div>
 </div>

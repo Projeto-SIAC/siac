@@ -77,15 +77,16 @@ namespace SIAC.Controllers
                             Candidato.Inserir(c);
                             Sessao.Inserir("SimuladoCandidato", c);
 
-                            //SmtpClient client = new SmtpClient("smtp.live.com", 587);
-                            //client.Credentials = new NetworkCredential("email@outlook.com", "password");
-                            //client.EnableSsl = true;
+                            //SmtpClient client = new SmtpClient(Parametro.Obter().SmtpEnderecoHost, Parametro.Obter().SmtpPorta);
+                            //client.Credentials = new NetworkCredential(Criptografia.Base64Decode(Parametro.Obter().SmtpUsuario), Criptografia.Base64Decode(Parametro.Obter().SmtpSenha));
+                            //client.EnableSsl = Parametro.Obter().SmtpFlagSSL;
 
                             //FluentEmail.Email
-                            //    .From("felipemfpontes@gmail.com", "Felipe Pontes")
-                            //    .To("franciscobentoifrn@gmail.com", "Francisco Bento")
-                            //    .Subject("Novo Candidato no SIAC Simulados")
-                            //    .Body($"{c.PrimeiroNome} se cadastrou no SIAC Simulados.").UsingClient(client)
+                            //    .From(Criptografia.Base64Decode(Parametro.Obter().SmtpUsuario))
+                            //    .To(c.Email)
+                            //    .Subject("Cadastro efetuado com sucesso.")
+                            //    .Body($"{c.PrimeiroNome} se cadastrou no SIAC Simulados.")
+                            //    .UsingClient(client)
                             //    .Send();
 
                             return RedirectToAction("Perfil");

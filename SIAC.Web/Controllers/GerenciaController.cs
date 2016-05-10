@@ -576,5 +576,33 @@ namespace SIAC.Controllers
         }
 
         #endregion
+
+        #region Configuracoes
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public ActionResult Configuracoes() => View(new GerenciaConfiguracoesViewModel() {
+            SmtpEnderecoHost = Parametro.Obter().SmtpEnderecoHost,
+            SmtpPorta = Parametro.Obter().SmtpPorta,
+            SmptFlagSSL = Parametro.Obter().SmtpFlagSSL,
+            SmtpUsuario = Criptografia.Base64Decode(Parametro.Obter().SmtpUsuario),
+            SmtpSenha = Criptografia.Base64Decode(Parametro.Obter().SmtpSenha)
+        });
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        public ActionResult Configuracoes(GerenciaConfiguracoesViewModel model)
+        {
+            Parametro p = Parametro.Obter();
+
+            p.SmtpEnderecoHost = model.SmtpEnderecoHost;
+            p.SmtpPorta = model.SmtpPorta;
+            p.SmtpFlagSSL = model.SmptFlagSSL;
+            p.SmtpUsuario = Criptografia.Base64Encode(model.SmtpUsuario);
+            p.SmtpSenha = Criptografia.Base64Encode(model.SmtpSenha);
+
+            Parametro.Atualizar(p);
+
+            return RedirectToAction("Configuracoes");
+        }
+        #endregion
     }
 }
