@@ -77,7 +77,7 @@ namespace SIAC.Controllers
                             DtInscricao = DateTime.Now
                         });
                         Repositorio.Commit();
-                        return RedirectToAction("Inscricoes", "Candidado", new { codigo = s.Codigo });
+                        return RedirectToAction("Inscricoes", "Candidato", new { codigo = s.Codigo });
                     }
                     else
                     {

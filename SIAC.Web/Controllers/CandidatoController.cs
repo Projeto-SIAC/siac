@@ -17,8 +17,9 @@ namespace SIAC.Controllers
     {
         // GET: simulado/candidato
         [CandidatoFilter]
-        public ActionResult Index() => View(new CandidatoIndexViewModel() {
-            Inscritos = Simulado.ListarNaoEncerradoOrdenadamente().Where(s=>s.CandidatoInscrito(Sessao.Candidato.CodCandidato)).ToList(),
+        public ActionResult Index() => View(new CandidatoIndexViewModel()
+        {
+            Inscritos = Simulado.ListarNaoEncerradoOrdenadamente().Where(s => s.CandidatoInscrito(Sessao.Candidato.CodCandidato)).ToList(),
             Passados = Simulado.ListarEncerradoOrdenadamente().Where(s => s.CandidatoInscrito(Sessao.Candidato.CodCandidato)).ToList()
         });
 
@@ -250,7 +251,7 @@ namespace SIAC.Controllers
         {
             if (String.IsNullOrWhiteSpace(codigo))
             {
-                return View("ListaInscricoes");
+                return View("ListaInscricoes", Sessao.Candidato.SimCandidato.Select(sc => sc.Simulado).Distinct().OrderByDescending(d => d.PrimeiroDiaRealizacao?.DtRealizacao).ToList());
             }
 
             Simulado s = Simulado.ListarPorCodigo(codigo);

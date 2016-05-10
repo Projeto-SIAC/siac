@@ -1,0 +1,85 @@
+﻿@model List<Simulado>
+
+@{
+    ViewBag.Title = "Inscrições";
+    Layout = "~/Views/Shared/Simulados/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model.Count > 0)
+{
+    <div class="ui relaxed divided items">
+        @foreach (Simulado simulado in Model)
+        {
+            <div class="item">
+                <div class="content">
+                    <a class="ui header" href="@Url.Action("Inscricoes", "Candidato", new { codigo = simulado.Codigo })">
+                        @simulado.Titulo
+                    </a>
+                    <div class="meta">
+                        @(simulado.PrimeiroDiaRealizacao?.DtRealizacao.ToBrazilianString())
+                    </div>
+                    <div class="description">
+                        @simulado.Descricao.ToShortString(140)
+                    </div>
+                    <div class="extra">
+                        <div class="ui label">
+                            <i class="tag icon"></i> @simulado.Codigo
+                        </div>
+                        @if (simulado.FlagSimuladoEncerrado)
+                        {
+                            <div class="ui red label">
+                                <i class="lock icon"></i>
+                                Encerrado
+                            </div>
+
+                        }
+                        else
+                        {
+                            <div class="ui green label">
+                                <i class="checkmark icon"></i>
+                                Inscrito
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="ui message">Não há inscrições.</div>
+}
+
+<a href="@Url.Action("Index", "Candidato")" class="ui basic button">Voltar</a>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('.detalhe.button').click(function () {
+                var _this = $(this),
+                    simulado = _this.data('simulado');
+
+                _this.addClass('loading');
+
+                $.ajax({
+                    url: '/simulado/inscricao/detalhe',
+                    type: 'POST',
+                    data: {
+                        codigo: simulado
+                    },
+                    success: function (modal) {
+                        $('.detalhe.modal').remove();
+                        $('body').append(modal);
+                        $('.detalhe.modal').modal('show');
+                    },
+                    complete: function () {
+                        _this.removeClass('loading');
+                    }
+                });
+            });
+        })();
+    </script>
+}
