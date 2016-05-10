@@ -28,5 +28,11 @@ namespace SIAC.Models
         public string NotaUsoCertificacao { get; set; }
         public string NotaUsoInstitucional { get; set; }
         public string CoordenadorAVI { get; set; }
+        public string NotaUsoSimulado { get; set; }
+        public string SmtpEnderecoHost { get; set; }
+        public int SmtpPorta { get; set; }
+        public string SmtpUsuario { get; set; }
+        public string SmtpSenha { get; set; }
+        public bool SmtpFlagSSL { get; set; }
     }
 }

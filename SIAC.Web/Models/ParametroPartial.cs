@@ -47,6 +47,14 @@ namespace SIAC.Models
             temp.NotaUsoCertificacao = parametro.NotaUsoCertificacao.Trim();
             temp.NotaUsoInstitucional = parametro.NotaUsoInstitucional.Trim();
             temp.NotaUsoReposicao = parametro.NotaUsoReposicao.Trim();
+            temp.NotaUsoSimulado = parametro.NotaUsoSimulado.Trim();
+
+            /* CONFIGURAÇÃO SMTP */
+            temp.SmtpEnderecoHost = parametro.SmtpEnderecoHost;
+            temp.SmtpPorta = parametro.SmtpPorta;
+            temp.SmtpFlagSSL = parametro.SmtpFlagSSL;
+            temp.SmtpUsuario = parametro.SmtpUsuario;
+            temp.SmtpSenha = parametro.SmtpSenha;
 
             contexto.SaveChanges();
         }
