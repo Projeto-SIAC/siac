@@ -23,7 +23,7 @@
                     Ver Sala de Realização
                 </a>
                 <div class="divider"></div>
-                <a href="@Url.Action("", "", new { codigo = Model.Simulado.Codigo })" class="item">
+                <a href="@Url.Action("CartaoInscricao", "Candidato", new { codigo = Model.Simulado.Codigo })" class="item">
                     <i class="print icon"></i>
                     Imprimir Cartão de Inscrição
                 </a>
@@ -121,7 +121,7 @@
                     {
                         <tr>
                             <td>@dia.DtRealizacao.DiaRealizacaoRepresentacao()</td>
-                            <td>@dia.Duracao minutos</td>
+                            <td>@dia.Duracao.ParaRepresentarDuracao()</td>
                             <td>
                                 @foreach (SimProva prova in dia.SimProva)
                                 {
@@ -166,12 +166,14 @@
 }
 
 @if (Model.Simulado.FlagSimuladoEncerrado)
-            {
+{
     <div id="resultados" class="ui small modal">
         <i class="close icon"></i>
         <div class="header">
+            Resultados
         </div>
         <div class="content">
+            <!-- TODO -->
         </div>
         <div class="actions">
             <div class="ui cancel button">Fechar</div>

@@ -267,5 +267,20 @@ namespace SIAC.Controllers
 
             return RedirectToAction("Index");
         }
+
+        // GET: simulado/candidato/cartaoinscricao
+        [CandidatoFilter]
+        public ActionResult CartaoInscricao(string codigo)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado s = Simulado.ListarPorCodigo(codigo);
+                if (s != null && s.CandidatoInscrito(Sessao.Candidato.CodCandidato))
+                {
+                    return View(s.SimCandidato.First(sc => sc.CodCandidato == Sessao.Candidato.CodCandidato));
+                }
+            }
+            return null;
+        }
     }
 }

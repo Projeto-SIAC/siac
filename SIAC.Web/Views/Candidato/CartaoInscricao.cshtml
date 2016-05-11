@@ -1,0 +1,33 @@
+﻿@model SimCandidato
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Cartão de Inscrição - SIAC Simulados</title>
+    <link href="~/Resources/images/layout/logo-black.png" rel="shortcut icon" />
+    @Styles.Render("~/bundles/css")
+</head>
+<body>
+    <div>
+        @Model.Simulado.Titulo
+    </div>
+    <script>
+        var focused = false;
+        window.print();
+        focused = true;
+        var interval = setInterval(function () {
+            if (focused === true) {
+                clearInterval(interval);
+                // window.location.href = "@Url.Action("action", "controller", new { codigo = "codigo" })"
+            }
+        }, 300);
+    </script>
+</body>
+</html>

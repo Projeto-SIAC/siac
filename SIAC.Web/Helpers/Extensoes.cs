@@ -207,6 +207,11 @@ namespace SIAC
                     return true;
             return false;
         }
+
+        public static string ParaRepresentarDuracao(this int minutos)
+        {
+            return TimeSpan.FromMinutes(Convert.ToDouble(minutos)).ToString(@"hh'h'mm'min'");
+        }
         #endregion
 
         // DateTime

@@ -845,6 +845,7 @@
     <Content Include="Views\Candidato\Inscricoes.cshtml" />
     <Content Include="Views\Gerencia\Configuracoes.cshtml" />
     <Content Include="Views\Candidato\ListaInscricoes.cshtml" />
+    <Content Include="Views\Candidato\Imprimir\CartaoInscricao.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
