@@ -20,6 +20,18 @@ namespace SIAC.Models
 
         public bool FlagAguardaPrazoInscricao => this.DtInicioInscricao > DateTime.Now;
 
+        public List<SimProva> Provas {
+            get
+            {
+                List<SimProva> provas = new List<SimProva>();
+                foreach (SimDiaRealizacao dia in this.SimDiaRealizacao)
+                {
+                    provas.AddRange(dia.SimProva);
+                }
+                return provas;
+            }
+        }
+
         public SimDiaRealizacao PrimeiroDiaRealizacao =>
             this.SimDiaRealizacao.OrderBy(d => d.DtRealizacao).FirstOrDefault();
 

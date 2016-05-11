@@ -1,0 +1,45 @@
+﻿@model SimuladoRespostasViewModel
+@{
+    ViewBag.Title = "Corrigir";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="ui form segment">
+    <div class="ui error message">
+        <div class="header">Verifique</div>
+        <ul class="list"></ul>
+    </div>
+    <div class="two fields">
+        <div class="field">
+            <label>Selecione a prova para inserir as respostas</label>
+            <select name="ddlProva" id="ddlProva" class="ui dropdown">
+                <option value="">Selecione a prova</option>
+                @foreach(SimProva prova in Model.Provas)
+                {
+                    <option value="@($"{prova.CodDiaRealizacao}.{prova.CodProva}")">@($"{prova.CodDiaRealizacao}° dia - {prova.Titulo}")</option>
+                }
+            </select>
+        </div>
+        <div class="field">
+            <label>Selecione o candidato</label>
+            <select name="ddlCandidato" id="ddlCandidato" class="ui dropdown">
+                <option value="">Selecione o candidato</option>
+                @foreach (SimCandidato candidato in Model.Candidatos)
+                {
+                    <option value="@candidato.CodCandidato">@(candidato.Candidato.Nome)</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="ui prova button">Corrigir por Prova</div>
+    <div class="ui right floated candidato button">Corrigir por Candidato</div>
+</div>
+
+<div class="lista respostas">
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/simulado")
+}

@@ -67,6 +67,10 @@
                         <i class="users icon"></i>
                         Listar Candidatos
                     </div>
+                    <a href="@Url.Action("Respostas", new { codigo = Model.Codigo })" class="item">
+                        <i class="edit icon"></i>
+                        Inserir Respostas
+                    </a>
                 }
                 <div class="divider"></div>
                 @if (Model.FlagInscricaoEncerrado)

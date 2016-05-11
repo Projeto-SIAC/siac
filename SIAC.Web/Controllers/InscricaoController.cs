@@ -70,12 +70,25 @@ namespace SIAC.Controllers
                 {
                     if (Sessao.Candidato.PerfilCompleto)
                     {
-                        s.SimCandidato.Add(new SimCandidato()
+                        SimCandidato candidato = new SimCandidato()
                         {
                             NumInscricao = s.ObterNumInscricao(),
                             Candidato = Sessao.Candidato,
                             DtInscricao = DateTime.Now
-                        });
+                        };
+
+                        s.SimCandidato.Add(candidato);
+
+                        foreach(SimProva prova in s.Provas)
+                        {
+                            prova.SimCandidatoProva.Add(new SimCandidatoProva()
+                            {
+                                SimCandidato = candidato,
+                                SimProva = prova,
+                                QteAcertos = 0
+                            });
+                        }
+
                         Repositorio.Commit();
                         return RedirectToAction("Inscricoes", "Candidato", new { codigo = s.Codigo });
                     }
