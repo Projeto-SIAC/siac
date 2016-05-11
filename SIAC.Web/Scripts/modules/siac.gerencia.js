@@ -1,4 +1,14 @@
-﻿siac.Gerencia = siac.Gerencia || {};
+﻿siac.Gerencia = siac.Gerencia || {
+    adicionarEventoNoFormulario: function () {
+        $('form').off('submit').on('submit', function () {
+            var $this = $(this);
+            if ($this.hasClass('modal')) {
+                $this.modal('hide');
+            }
+            $this.find('.button[type=submit]').addClass('loading');
+        });
+    }
+};
 
 siac.Gerencia.Blocos = (function () {
     function iniciar() {
@@ -29,6 +39,7 @@ siac.Gerencia.Blocos = (function () {
                 },
                 complete: function () {
                     _this.removeClass('loading');
+                    siac.Gerencia.adicionarEventoNoFormulario();
                 }
             });
         });
@@ -60,6 +71,8 @@ siac.Gerencia.Blocos = (function () {
                 }
             }).modal('show');
         });
+
+        siac.Gerencia.adicionarEventoNoFormulario();
     }
 
     return {
@@ -102,6 +115,7 @@ siac.Gerencia.Salas = (function () {
                 },
                 complete: function () {
                     _this.removeClass('loading');
+                    siac.Gerencia.adicionarEventoNoFormulario();
                 }
             });
         });
@@ -134,6 +148,7 @@ siac.Gerencia.Salas = (function () {
                 }
             }).modal('show');
         });
+        siac.Gerencia.adicionarEventoNoFormulario();
     }
 
     function atualizarBlocosPorCampus(contexto) {
@@ -193,6 +208,7 @@ siac.Gerencia.Disciplinas = (function () {
                 },
                 complete: function () {
                     _this.removeClass('loading');
+                    siac.Gerencia.adicionarEventoNoFormulario();
                 }
             });
         });
@@ -222,6 +238,7 @@ siac.Gerencia.Disciplinas = (function () {
                 }
             }).modal('show');
         });
+        siac.Gerencia.adicionarEventoNoFormulario();
     }
 
     return {
@@ -284,6 +301,7 @@ siac.Gerencia.Professores = (function () {
                 },
                 complete: function () {
                     _this.removeClass('loading');
+                    siac.Gerencia.adicionarEventoNoFormulario();
                 }
             });
         });
@@ -313,6 +331,8 @@ siac.Gerencia.Professores = (function () {
                 }
             }).modal('show');
         });
+
+        siac.Gerencia.adicionarEventoNoFormulario();
     }
 
     return {

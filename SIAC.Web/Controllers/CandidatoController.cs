@@ -251,13 +251,18 @@ namespace SIAC.Controllers
         {
             if (String.IsNullOrWhiteSpace(codigo))
             {
-                return View("ListaInscricoes", Sessao.Candidato.SimCandidato.Select(sc => sc.Simulado).Distinct().OrderByDescending(d => d.PrimeiroDiaRealizacao?.DtRealizacao).ToList());
+                return View("ListaInscricoes", Sessao.Candidato.SimCandidato
+                    .Select(sc => sc.Simulado)
+                    .Distinct()
+                    .OrderByDescending(d => d.PrimeiroDiaRealizacao?.DtRealizacao)
+                    .ToList()
+                );
             }
 
             Simulado s = Simulado.ListarPorCodigo(codigo);
             if (s != null && s.CandidatoInscrito(Sessao.Candidato.CodCandidato))
             {
-                return View(s);
+                return View(s.SimCandidato.First(sc => sc.CodCandidato == Sessao.Candidato.CodCandidato));
             }
 
             return RedirectToAction("Index");

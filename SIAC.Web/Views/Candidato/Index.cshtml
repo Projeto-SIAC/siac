@@ -54,7 +54,7 @@ else
 @if (Model.Passados.Count > 0)
 {
     <div class="ui relaxed divided items">
-        @foreach (Simulado simulado in Model.Passados.OrderByDescending(d => d.UltimoDiaRealizacao.DtRealizacao).Take(5))
+        @foreach (Simulado simulado in Model.Passados.OrderByDescending(d => d.UltimoDiaRealizacao?.DtRealizacao).Take(5))
         {
             <div class="item">
                 <div class="content">
@@ -62,7 +62,7 @@ else
                         @simulado.Titulo
                     </a>
                     <div class="meta">
-                        @simulado.UltimoDiaRealizacao.DtRealizacao.ToBrazilianString()
+                        @(simulado.UltimoDiaRealizacao?.DtRealizacao.ToBrazilianString())
                     </div>
                     <div class="description">
                         @simulado.Descricao.ToShortString(140)

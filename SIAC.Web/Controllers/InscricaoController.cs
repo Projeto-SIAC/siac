@@ -13,12 +13,12 @@ namespace SIAC.Controllers
     public class InscricaoController : Controller
     {
         private Simulado ListarSimuladoAbertoPorCodigo(string codigo) => 
-            Simulado.ListarPorInscricoesAbertas().FirstOrDefault(sim => sim.Codigo.ToLower() == codigo.ToLower());
+            Simulado.ListarParaInscricoes().FirstOrDefault(sim => sim.Codigo.ToLower() == codigo.ToLower());
 
         // GET: simulado/inscricao
         public ActionResult Index() => View(new InscricaoIndexViewModel()
         {
-            Simulados = Simulado.ListarPorInscricoesAbertas()
+            Simulados = Simulado.ListarParaInscricoes()
         });
 
         // POST: simulado/inscricao/detalhe
@@ -86,6 +86,30 @@ namespace SIAC.Controllers
                 }
             }
             return RedirectToAction("Index");
+        }
+
+        // POST: simulado/inscricao/confirmado/simul201600123
+        [CandidatoFilter]
+        [HttpPost]
+        public ActionResult Cancelar(string codigo, string simuladoCancelar)
+        {
+            if (!StringExt.IsNullOrWhiteSpace(codigo, simuladoCancelar))
+            {
+                Simulado s = Simulado.ListarPorCodigo(codigo);
+                if (s != null && s.CandidatoInscrito(Sessao.Candidato.CodCandidato))
+                {
+                    if (codigo.ToLower() == simuladoCancelar.ToLower())
+                    {
+                        s.SimCandidato.Remove(s.SimCandidato.First(sc => sc.CodCandidato == Sessao.Candidato.CodCandidato));
+                        Repositorio.Commit();
+                    }
+                }
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Inscricoes", "Candidato", new { codigo });
+            }
         }
     }
 }

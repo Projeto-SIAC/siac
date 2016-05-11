@@ -47,12 +47,12 @@ namespace SIAC.Models
             return this.SimSala.FirstOrDefault();
         }
 
-        public bool CadastroCompleto => 
-            !this.FlagSimuladoEncerrado 
-            && !this.FlagProvaEncerrada 
-            && this.DtInicioInscricao.HasValue 
-            && this.SimDiaRealizacao.Count > 0 
-            && this.SimDiaRealizacao.First().SimProva.Count > 0 
+        public bool CadastroCompleto =>
+            !this.FlagSimuladoEncerrado
+            && !this.FlagProvaEncerrada
+            && this.DtInicioInscricao.HasValue
+            && this.SimDiaRealizacao.Count > 0
+            && this.SimDiaRealizacao.First().SimProva.Count > 0
             && this.SimSala.Count > 0;
 
         private static dbSIACEntities contexto => Repositorio.GetInstance();
@@ -91,6 +91,11 @@ namespace SIAC.Models
                 ).OrderByDescending(s => s.DtInicioInscricao).ToList();
         }
 
+        public static List<Simulado> ListarParaInscricoes()
+        {
+            return ListarPorInscricoesAbertas().Where(s => s.CadastroCompleto).ToList();
+        }
+
         public static List<Questao> ObterQuestoes(int codDisciplina, int quantidadeQuestoes, int codTipo = TipoQuestao.OBJETIVA)
         {
             List<Questao> questoes = new List<Questao>();
@@ -105,7 +110,7 @@ namespace SIAC.Models
                         && q.CodTipoQuestao == codTipo
                         //&& QuestaoTema.PrazoValido(qt)
                         select q).ToList();
-                
+
                 if (temp.Count != 0 && questoes.Count < quantidadeQuestoes)
                 {
                     for (int i = 0; i < quantidadeQuestoes; i++)
@@ -119,6 +124,6 @@ namespace SIAC.Models
                 }
             }
             return questoes;
-        }        
+        }
     }
 }

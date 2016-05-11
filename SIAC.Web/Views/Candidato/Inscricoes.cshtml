@@ -1,8 +1,8 @@
 ﻿
-@model Simulado
+@model SimCandidato
 
 @{
-    ViewBag.Title = $"{Model.Titulo}";
+    ViewBag.Title = $"{Model.Simulado.Titulo}";
     Layout = "~/Views/Shared/Simulados/_Layout.cshtml";
 }
 
@@ -12,70 +12,78 @@
         <i class="dropdown icon"></i>
         <span class="text">Atalho para Ações</span>
         <div class="menu">
-            <a href="#" class="item">
+            <a data-modal="provas" class="trigger item">
                 <i class="copy icon"></i>
-                Dias e Provas
+                Listar Provas
             </a>
-            <a href="#" class="item">
-                <i class="marker icon"></i>
-                Minhas Sala
-            </a>
-            <div class="divider"></div>
-            <a href="#" class="item">
-                <i class="star icon"></i>
-                Resultados
-            </a>
-            <div class="divider"></div>
-            <a href="#" class="item">
-                <i class="print icon"></i>
-                Imprimir Cartão de Inscrição
-            </a>
-            <div class="divider"></div>
-            <a href="#" class="item">
-                <i class="power red icon"></i>
-                Cancelar Inscrição
-            </a>
+            @if (Model.CodSala.HasValue)
+            {
+                <a data-modal="sala" class="trigger item">
+                    <i class="marker icon"></i>
+                    Ver Sala de Realização
+                </a>
+                <div class="divider"></div>
+                <a href="@Url.Action("", "", new { codigo = Model.Simulado.Codigo })" class="item">
+                    <i class="print icon"></i>
+                    Imprimir Cartão de Inscrição
+                </a>
+            }
+            @if (Model.Simulado.FlagSimuladoEncerrado)
+            {
+                <div class="divider"></div>
+                <a data-modal="resultados" class="trigger item">
+                    <i class="star icon"></i>
+                    Resultados
+                </a>
+            }
+            else {
+                <div class="divider"></div>
+                <a data-modal="cancelar-inscricao" class="trigger item">
+                    <i class="power red icon"></i>
+                    Cancelar Inscrição
+                </a>
+            }
         </div>
     </div>
 </h2>
 
-@Html.Raw(Model.Descricao.ToHtml("p style=\"text-align: justify\""))
+@Html.Raw(Model.Simulado.Descricao.ToHtml("p style=\"text-align: justify\""))
 
 <h4 class="ui dividing header">Linha do Tempo</h4>
 <div class="ui relaxed feed">
     <div class="event">
         <div class="label">
-            <i class="@(Model.DtInicioInscricao > DateTime.Now ? "calendar" : "green checkmark") icon"></i>
+            <i class="@(Model.Simulado.DtInicioInscricao > DateTime.Now ? "calendar" : "green checkmark") icon"></i>
         </div>
         <div class="content">
             <div class="summary">
                 Abertura das Inscrições
             </div>
             <div class="date">
-                @(Model.DtInicioInscricao?.ToBrazilianString())
+                @(Model.Simulado.DtInicioInscricao?.ToBrazilianString())
             </div>
         </div>
     </div>
     <div class="event">
         <div class="label">
-            <i class="@(Model.DtTerminoInscricao > DateTime.Now ? "calendar" : "green checkmark") icon"></i>
+            <i class="@(Model.Simulado.DtTerminoInscricao > DateTime.Now && !Model.Simulado.FlagSimuladoEncerrado ? "calendar" : "green checkmark") icon"></i>
         </div>
         <div class="content">
             <div class="summary">
                 Data Limite para Inscrições
             </div>
             <div class="date">
-                @(Model.DtTerminoInscricao?.ToBrazilianString())
+                @(Model.Simulado.DtTerminoInscricao?.ToBrazilianString())
             </div>
         </div>
     </div>
-    @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao)
+    @foreach (SimDiaRealizacao dia in Model.Simulado.SimDiaRealizacao)
     {
         foreach (SimProva prova in dia.SimProva)
         {
             <div class="event">
                 <div class="label">
-                    <i class="@(dia.DtRealizacao > DateTime.Now ? "file" : "green checkmark") icon"></i>
+                    <i class="@(dia.DtRealizacao > DateTime.Now && !Model.Simulado.FlagSimuladoEncerrado ? "file" : "green checkmark") icon"></i>
                 </div>
                 <div class="content">
                     <div class="summary">
@@ -92,9 +100,126 @@
 
 <a href="@Url.Action("Index")" class="ui basic button">Voltar</a>
 
+<div id="provas" class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Provas do "@Model.Simulado.Titulo"
+    </div>
+    <div class="content">
+        @if (Model.Simulado.SimDiaRealizacao.Count > 0)
+        {
+            <table class="ui striped table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Duração</th>
+                        <th>Disciplina(s) e Quant. de Questões</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (SimDiaRealizacao dia in Model.Simulado.SimDiaRealizacao.OrderBy(d => d.DtRealizacao))
+                    {
+                        <tr>
+                            <td>@dia.DtRealizacao.DiaRealizacaoRepresentacao()</td>
+                            <td>@dia.Duracao minutos</td>
+                            <td>
+                                @foreach (SimProva prova in dia.SimProva)
+                                {
+                                    <div class="ui label">@prova.Disciplina.Descricao <div class="detail">@prova.QteQuestoes</div></div>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Fechar</div>
+    </div>
+</div>
 
+@if (Model.CodSala.HasValue)
+{
+    <div id="sala" class="ui small modal">
+        <i class="close icon"></i>
+        <div class="header">
+            Sala de Realização
+        </div>
+        <div class="content">
+            <div class="ui large breadcrumb">
+                <div class="section" data-title="Instituição" data-content="@Model.SimSala.Sala.Bloco.Campus.Instituicao.PessoaJuridica.NomeFantasia">@Model.SimSala.Sala.Bloco.Campus.Instituicao.Sigla</div>
+                <i class="right chevron icon divider"></i>
+                <div class="section" data-title="Campus" data-content="@Model.SimSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia">@Model.SimSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia</div>
+                <i class="right chevron icon divider"></i>
+                <div class="active section" data-title="Bloco" data-content="@Model.SimSala.Sala.Bloco.Descricao">@Model.SimSala.Sala.Bloco.Descricao</div>
+            </div>
+            <h3>@Model.SimSala.Sala.Descricao <div class="ui label">Sigla <div class="detail">@Model.SimSala.Sala.Sigla</div></div></h3>
+            <p><b>Capacidade:</b> @Model.SimSala.Sala.Capacidade.</p>
+            <p><b>Como chegar:</b> @(Model.SimSala.Sala.RefLocal ?? "Nenhuma informação cadastrada.")</p>
+            <p><b>Observações:</b> @(Model.SimSala.Sala.Observacao ?? "Nenhuma informação cadastrada.")</p>
+        </div>
+        <div class="actions">
+            <div class="ui cancel button">Fechar</div>
+        </div>
+    </div>
+}
 
+@if (Model.Simulado.FlagSimuladoEncerrado)
+            {
+    <div id="resultados" class="ui small modal">
+        <i class="close icon"></i>
+        <div class="header">
+        </div>
+        <div class="content">
+        </div>
+        <div class="actions">
+            <div class="ui cancel button">Fechar</div>
+        </div>
+    </div>
+}
+else {
+    <form action="@Url.Action("Cancelar", "Inscricao", new { codigo = Model.Simulado.Codigo })" method="post" id="cancelar-inscricao" class="ui small modal">
+        <i class="close icon"></i>
+        <div class="header">
+            Cancelar Inscrição no "@Model.Simulado.Titulo"
+        </div>
+        <div class="content">
+            <div class="ui negative message">
+                <div class="header">
+                    Você tem certeza que deseja cancelar inscrição?
+                </div>
+                <p>
+                    Se pretende cancelar a inscrição insira abaixo o código do simulado <code class="ui label">@Model.Simulado.Codigo</code>.
+                </p>
+            </div>
+            <div class="ui form">
+                <div class="field">
+                    <input type="text" name="simuladoCancelar" placeholder="Código do Simulado" autocomplete="off" required />
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui cancel button">Voltar</div>
+            <button type="submit" class="ui red button">Cancelar Inscrição</button>
+        </div>
+    </form>
+}
 
-
-
-
+@section Scripts {
+    <script>
+        $(function () {
+            $('.ui.modal').modal();
+            $('.ui.dropdown').dropdown({ action: 'hide' });
+            $('[data-content]').popup();
+            $('.trigger[data-modal]').click(function () { $('#' + $(this).data('modal') + '.modal').modal('show'); });
+            $('form').submit(function () {
+                var $this = $(this);
+                if ($this.hasClass('modal')) {
+                    $this.modal('hide');
+                }
+                $this.find('.button[type=submit]').addClass('loading');
+            });
+        })();
+    </script>
+}
