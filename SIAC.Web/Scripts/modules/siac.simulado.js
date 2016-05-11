@@ -547,7 +547,7 @@ siac.Simulado.Detalhe = (function () {
     function iniciar() {
         _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+$/)[0];
         $('.ui.accordion').accordion({
-            animateChildren:false
+            animateChildren: false
         });
         $('[data-content]').popup();
 
@@ -614,6 +614,96 @@ siac.Simulado.Detalhe = (function () {
         $('.alterar.prazo.item').click(function () {
             $('.alterar.prazo.modal').modal('show');
         });
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();
+
+siac.Simulado.Respostas = (function () {
+    var _codigo = '',
+        $listaRespostas = '';
+
+
+    function iniciar() {
+        _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+$/)[0];
+        $listaRespostas = $('.lista.respostas');
+        $('.ui.dropdown').dropdown();
+
+        $('.prova.button').click(function () {
+            var $provaButton = $(this);
+
+            if (validarProva()) {
+                var prova = $('#ddlProva').val(),
+                    codDia = prova.split('.')[0],
+                    codProva = prova.split('.')[1];
+
+                console.log(prova, codDia, codProva);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/simulado/corrigirporprova/' + _codigo,
+                    data: {
+                        codDia: codDia,
+                        codProva: codProva
+                    },
+                    beforeSend: function(){
+                        $provaButton.addClass('loading');
+                    },
+                    success: function(data){
+                        if (data) {
+                            $listaRespostas.html(data);
+                        }
+                    },
+                    error: function(){
+                        siac.mensagem('Ocorreu um erro na operação.');
+                    },
+                    complete: function () {
+                        $provaButton.removeClass('loading');
+                    }
+                })
+            }
+        });
+
+        $('.editar.item').click(function () {
+            $('.editar.modal').modal('show');
+        });
+
+        $('.encerrar.item').click(function () {
+            $('.encerrar.modal').modal({
+                onApprove: function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/simulado/encerrar/' + _codigo,
+                        complete: function () {
+                            location.reload();
+                        }
+                    })
+                }
+            }).modal('show');
+        });
+    }
+
+    function validarProva() {
+        var prova = $('#ddlProva').val(),
+            $form = $('.form'),
+            $lstErro = $form.find('.error.message .list');
+
+        $lstErro.html('');
+        $form.removeClass('error');
+
+        if (!prova) {
+            $lstErro.append('<li>Selecione a prova para corrigir</li>');
+            $form.addClass('error');
+            return false;
+        }
+        console.log(prova);
+        return true;
+    }
+
+    function validarCandidato() {
+
     }
 
     return {

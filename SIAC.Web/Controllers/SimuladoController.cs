@@ -727,5 +727,48 @@ namespace SIAC.Controllers
             Lembrete.AdicionarNotificacao(mensagem, estilo);
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
+
+        public ActionResult Respostas(string codigo)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                {
+                    SimuladoRespostasViewModel model = new SimuladoRespostasViewModel();
+                    model.Simulado = sim;
+                    model.Provas = sim.Provas;
+                    model.Candidatos = sim.SimCandidato.OrderBy(c => c.Candidato.Nome).ToList();
+
+                    return View(model);
+                }
+            }
+
+            return RedirectToAction("", "Arquivo");
+        }
+
+        [HttpPost]
+        public ActionResult CorrigirPorProva(string codigo, int codDia, int codProva)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                {
+                    SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
+
+                    if (diaRealizacao != null)
+                    {
+                        SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
+                        
+                        return PartialView("_SimuladoRespostasProva", prova.SimCandidatoProva.OrderBy(p => p.SimCandidato.Candidato.Nome).ToList());
+                    }
+                }
+                
+            }
+            return null;
+        }
     }
 }

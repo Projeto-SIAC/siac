@@ -283,6 +283,9 @@
             else if (pathname.indexOf('/detalhe') >= 0) {
                 siac.Simulado.Detalhe.iniciar();
             }
+            else if (pathname.indexOf('/respostas') >= 0) {
+                siac.Simulado.Respostas.iniciar();
+            }
         }
     }
 

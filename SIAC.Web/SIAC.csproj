@@ -637,6 +637,7 @@
     <Compile Include="ViewModels\GerenciaEditarProfessorViewModel.cs" />
     <Compile Include="ViewModels\InscricaoIndexViewModel.cs" />
     <Compile Include="ViewModels\SimuladoProvaViewModel.cs" />
+    <Compile Include="ViewModels\SimuladoRespostasViewModel.cs" />
     <Compile Include="ViewModels\SimuladoSalasViewModel.cs" />
     <Compile Include="ViewModels\GerenciaDisciplinasViewModel.cs" />
     <Compile Include="ViewModels\GerenciaProfessoresViewModel.cs" />
@@ -846,6 +847,8 @@
     <Content Include="Views\Gerencia\Configuracoes.cshtml" />
     <Content Include="Views\Candidato\ListaInscricoes.cshtml" />
     <Content Include="Views\Candidato\Imprimir\CartaoInscricao.cshtml" />
+    <Content Include="Views\Simulado\Respostas.cshtml" />
+    <Content Include="Views\Simulado\Partials\_SimuladoRespostasProva.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
