@@ -639,8 +639,6 @@ siac.Simulado.Respostas = (function () {
                     codDia = prova.split('.')[0],
                     codProva = prova.split('.')[1];
 
-                console.log(prova, codDia, codProva);
-
                 $.ajax({
                     type: 'POST',
                     url: '/simulado/correcaoporprova/' + _codigo,
@@ -661,6 +659,41 @@ siac.Simulado.Respostas = (function () {
                     },
                     complete: function () {
                         $provaButton.removeClass('loading');
+                    }
+                })
+            }
+        });
+
+        $('.candidato.button').click(function () {
+            var $candidatoButton = $(this);
+
+            if (validarCandidato()) {
+                var prova = $('#ddlProva').val(),
+                    codDia = prova.split('.')[0],
+                    codProva = prova.split('.')[1],
+                    codCandidato = $('#ddlCandidato').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/simulado/correcaoporcandidato/' + _codigo,
+                    data: {
+                        codDia: codDia,
+                        codProva: codProva,
+                        codCandidato: codCandidato
+                    },
+                    beforeSend: function () {
+                        $candidatoButton.addClass('loading');
+                    },
+                    success: function (data) {
+                        if (data) {
+                            $listaRespostas.html(data);
+                        }
+                    },
+                    error: function () {
+                        siac.mensagem('Ocorreu um erro na operação.');
+                    },
+                    complete: function () {
+                        $candidatoButton.removeClass('loading');
                     }
                 })
             }
@@ -698,12 +731,31 @@ siac.Simulado.Respostas = (function () {
             $form.addClass('error');
             return false;
         }
-        console.log(prova);
         return true;
     }
 
     function validarCandidato() {
+        var prova = $('#ddlProva').val(),
+            candidato = $('#ddlCandidato').val(),
+            $form = $('.form'),
+            $lstErro = $form.find('.error.message .list'),
+            valido = true;
 
+        $lstErro.html('');
+        $form.removeClass('error');
+
+        if (!prova) {
+            $lstErro.append('<li>Selecione a prova para corrigir</li>');
+            $form.addClass('error');
+            valido = false;
+        }
+
+        if (!candidato) {
+            $lstErro.append('<li>Selecione o candidato para corrigir</li>');
+            $form.addClass('error');
+            valido = false;
+        }
+        return valido;
     }
 
     return {
