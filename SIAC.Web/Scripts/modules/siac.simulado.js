@@ -643,7 +643,7 @@ siac.Simulado.Respostas = (function () {
 
                 $.ajax({
                     type: 'POST',
-                    url: '/simulado/corrigirporprova/' + _codigo,
+                    url: '/simulado/correcaoporprova/' + _codigo,
                     data: {
                         codDia: codDia,
                         codProva: codProva
