@@ -85,7 +85,7 @@ namespace SIAC.Controllers
                             {
                                 SimCandidato = candidato,
                                 SimProva = prova,
-                                QteAcertos = 0
+                                QteAcertos = -1
                             });
                         }
 

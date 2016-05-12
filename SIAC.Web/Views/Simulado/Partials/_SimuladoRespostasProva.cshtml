@@ -1,12 +1,18 @@
 ﻿@model List<SimCandidatoProva>
+@{ 
+    string codigo = Model.First().SimCandidato.Simulado.Codigo;
+    int codDia = Model.First().SimProva.CodDiaRealizacao;
+    int codProva = Model.First().SimProva.CodProva;
+}
 
-<div class="ui form segment">
+<form action="@Url.Action("InserirRespostasProva", new { codigo = codigo, codDia = codDia, codProva = codProva })" method="post" class="ui form segment">
     <h3 class="header">Candidatos</h3>
     <table class="ui striped table">
         <thead>
             <tr>
                 <th>Nome</th>
                 <th>CPF</th>
+                <th>Quantidade de Questões</th>
                 <th>Quantidade de Acertos</th>
             </tr>
         </thead>
@@ -15,14 +21,18 @@
             {
                 <tr>
                     <td>@candidato.SimCandidato.Candidato.Nome</td>
-                    <td>@candidato.SimCandidato.Candidato.Cpf</td>
+                    <td>@Formate.ParaCPF(candidato.SimCandidato.Candidato.Cpf)</td>
+                    <td>@candidato.SimProva.QteQuestoes</td>
                     <td>
                         <div class="ui field">
-                            <input type="number" name="@candidato.CodCandidato" value="@candidato.QteAcertos" placeholder="Informe a quantidade de acertos do candidato" />
+                            <input type="number" name="@candidato.CodCandidato" value="@(candidato.QteAcertos > -1 ? candidato.QteAcertos.ToString() : "" )" placeholder="Informe a quantidade de acertos do candidato" />
                         </div>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-</div>
+    <div class="ui actions">
+        <input type="submit" class="ui button" value="Enviar respostas"/>
+    </div>
+</form>

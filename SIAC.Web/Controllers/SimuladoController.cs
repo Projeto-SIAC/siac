@@ -749,7 +749,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
-        public ActionResult CorrigirPorProva(string codigo, int codDia, int codProva)
+        public ActionResult CorrecaoPorProva(string codigo, int codDia, int codProva)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
             {
@@ -767,6 +767,72 @@ namespace SIAC.Controllers
                     }
                 }
                 
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult CorrecaoPorCandidato(string codigo, int codDia, int codProva, int codCandidato)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                {
+                    SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
+
+                    if (diaRealizacao != null)
+                    {
+                        SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
+                        SimCandidatoProva candidato = contexto.SimCandidatoProva
+                                                        .FirstOrDefault(p => p.Ano == sim.Ano
+                                                        && p.NumIdentificador == sim.NumIdentificador
+                                                        && p.CodProva == codProva
+                                                        && p.CodDiaRealizacao == codDia
+                                                        && p.CodCandidato == codCandidato);
+
+                        SimuladoRespostasCandidatoViewModel model = new SimuladoRespostasCandidatoViewModel();
+
+                        model.Simulado = sim;
+                        model.Prova = prova;
+                        model.Candidato = candidato.SimCandidato.Candidato;
+                        model.Questoes = prova.SimProvaQuestao.OrderBy(q=>q.CodQuestao).ToList();
+
+                        return PartialView("_SimuladoRespostasCandidato", model);
+                    }
+                }
+
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult InserirRespostasProva(string codigo, int codDia, int codProva, FormCollection form)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                {
+                    SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
+
+                    if (diaRealizacao != null)
+                    {
+                        SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
+
+                        foreach(SimCandidatoProva candidato in prova.SimCandidatoProva)
+                        {
+                            int qteAcerto = -1;
+                            int.TryParse(form[candidato.CodCandidato.ToString()], out qteAcerto);
+                            candidato.QteAcertos = qteAcerto;
+                        }
+
+                        return RedirectToAction("Respostas", new { codigo = codigo });
+                    }
+                }
+
             }
             return null;
         }

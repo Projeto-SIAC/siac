@@ -1,0 +1,40 @@
+﻿@model SimuladoRespostasCandidatoViewModel
+@{
+    int questaoIndice = 1;
+}
+
+<form method="post" class="ui form segment" action="@Url.Action("InserirRespostasCandidato", new { codigo = Model.Simulado.Codigo, codDia = Model.Prova.CodDiaRealizacao, codProva = Model.Prova.CodProva, codCandidato = Model.Candidato.CodCandidato})">
+    <h3 class="header">@($"Prova: {Model.Prova.Titulo} Candidato: {Model.Candidato.Nome}"</h3>
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th>Indíce da Questão</th>
+                <th>Alternativa Marcada </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (SimProvaQuestao questao in Model.Questoes)
+            {
+                <tr>
+                    <td>@questaoIndice++</td>
+                    <td>
+                        <div class="inline fields">
+                            @foreach (Alternativa alternativa in questao.Questao.Alternativa)
+                            {
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="@questao.CodQuestao" checked="" tabindex="0" class="hidden">
+                                        <label>@alternativa.CodOrdem.GetIndiceAlternativa()</label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="ui actions">
+        <input type="submit" class="ui button" value="Enviar respostas" />
+    </div>
+</form>
