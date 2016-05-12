@@ -114,7 +114,7 @@
                 @foreach (SimCandidato candidato in Model.SimCandidato.OrderBy(c => c.NumInscricao))
                 {
                     <tr>
-                        <td>@candidato.NumInscricao.ToString("0000")</td>
+                        <td>@candidato.NumInscricaoRepresentacao</td>
                         <td>@candidato.Candidato.Nome</td>
                         <td>@Formate.ParaCPF(candidato.Candidato.Cpf)</td>
                     </tr>

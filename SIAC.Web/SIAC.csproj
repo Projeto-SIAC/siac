@@ -536,6 +536,7 @@
     <Compile Include="Models\SimCandidato.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SimCandidatoPartial.cs" />
     <Compile Include="Models\SimCandidatoProva.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
@@ -846,9 +847,9 @@
     <Content Include="Views\Candidato\Inscricoes.cshtml" />
     <Content Include="Views\Gerencia\Configuracoes.cshtml" />
     <Content Include="Views\Candidato\ListaInscricoes.cshtml" />
-    <Content Include="Views\Candidato\Imprimir\CartaoInscricao.cshtml" />
     <Content Include="Views\Simulado\Respostas.cshtml" />
     <Content Include="Views\Simulado\Partials\_SimuladoRespostasProva.cshtml" />
+    <Content Include="Views\Candidato\CartaoInscricao.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

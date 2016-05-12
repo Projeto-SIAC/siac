@@ -23,7 +23,7 @@
                     Ver Sala de Realização
                 </a>
                 <div class="divider"></div>
-                <a href="@Url.Action("CartaoInscricao", "Candidato", new { codigo = Model.Simulado.Codigo })" class="item">
+                <a data-url="@Url.Action("CartaoInscricao", "Candidato", new { codigo = Model.Simulado.Codigo })" class="cartao item">
                     <i class="print icon"></i>
                     Imprimir Cartão de Inscrição
                 </a>
@@ -147,15 +147,29 @@
             Sala de Realização
         </div>
         <div class="content">
-            <div class="ui large breadcrumb">
+            <div class="ui breadcrumb">
                 <div class="section" data-title="Instituição" data-content="@Model.SimSala.Sala.Bloco.Campus.Instituicao.PessoaJuridica.NomeFantasia">@Model.SimSala.Sala.Bloco.Campus.Instituicao.Sigla</div>
                 <i class="right chevron icon divider"></i>
-                <div class="section" data-title="Campus" data-content="@Model.SimSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia">@Model.SimSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia</div>
+                <div class="section" data-title="Campus" data-content="@Model.SimSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia">@Model.SimSala.Sala.Bloco.Campus.Sigla</div>
                 <i class="right chevron icon divider"></i>
-                <div class="active section" data-title="Bloco" data-content="@Model.SimSala.Sala.Bloco.Descricao">@Model.SimSala.Sala.Bloco.Descricao</div>
+                <div class="section" data-title="Bloco" data-content="@Model.SimSala.Sala.Bloco.Descricao">@Model.SimSala.Sala.Bloco.Sigla</div>
+                <i class="right chevron icon divider"></i>
+                <div class="section" data-title="Sala" data-content="@Model.SimSala.Sala.Descricao">@Model.SimSala.Sala.Sigla</div>
             </div>
-            <h3>@Model.SimSala.Sala.Descricao <div class="ui label">Sigla <div class="detail">@Model.SimSala.Sala.Sigla</div></div></h3>
-            <p><b>Capacidade:</b> @Model.SimSala.Sala.Capacidade.</p>
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>Sala</th><th>Sigla</th><th>Capacidade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.SimSala.Sala.Descricao</td>
+                        <td>@Model.SimSala.Sala.Sigla</td>
+                        <td>@Model.SimSala.Sala.Capacidade</td>
+                    </tr>
+                </tbody>
+            </table>
             <p><b>Como chegar:</b> @(Model.SimSala.Sala.RefLocal ?? "Nenhuma informação cadastrada.")</p>
             <p><b>Observações:</b> @(Model.SimSala.Sala.Observacao ?? "Nenhuma informação cadastrada.")</p>
         </div>
@@ -221,6 +235,10 @@ else {
                     $this.modal('hide');
                 }
                 $this.find('.button[type=submit]').addClass('loading');
+            });
+            $('.cartao.item').click(function () {
+                var url = $(this).data('url');
+                window.open(url);
             });
         })();
     </script>

@@ -13,11 +13,102 @@
     <title>Cartão de Inscrição - SIAC Simulados</title>
     <link href="~/Resources/images/layout/logo-black.png" rel="shortcut icon" />
     @Styles.Render("~/bundles/css")
+    <style>
+        table.participante > tbody > tr > td:first-child, table > thead > tr > th {
+            text-transform: uppercase !important;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <div>
-        @Model.Simulado.Titulo
+    <div class="ui center aligned inverted segment">
+        <h2>@Model.Simulado.Titulo<br /><small>Cartão de Confirmação de Inscrição</small></h2>
     </div>
+    <table class="ui participante celled table">
+        <thead>
+            <tr>
+                <th colspan="2">
+                    Dados do Participante
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="collapsing">Nome Completo</td>
+                <td>@Model.Candidato.Nome</td>
+            </tr>
+            <tr>
+                <td class="collapsing">Número do CPF</td>
+                <td>@Formate.ParaCPF(Model.Candidato.Cpf)</td>
+            </tr>
+            <tr>
+                <td class="collapsing">Número de Inscrição</td>
+                <td>@Model.NumInscricaoRepresentacao</td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th colspan="3">
+                    Datas e Horários de Início das Provas
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    Data e Hora
+                </th>
+                <th>
+                    Duração
+                </th>
+                <th>
+                    Provas
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var dia in Model.Simulado.SimDiaRealizacao.OrderBy(d => d.DtRealizacao))
+            {
+                <tr>
+                    <td class="collapsing">@dia.DtRealizacao.DiaRealizacaoRepresentacao()</td>
+                    <td class="collapsing">@dia.Duracao.ParaRepresentarDuracao()</td>
+                    <td class="ui labels">
+                        @foreach (var prova in dia.SimProva.OrderBy(p => p.Titulo))
+                        {
+                            <div class="ui label">@prova.Titulo</div>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th colspan="3">
+                    Local das Provas
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    Instituição/Campus
+                </th>
+                <th>
+                    Bloco
+                </th>
+                <th>
+                    Sala
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="collapsing">@Model.SimSala.Sala.Bloco.Campus.Instituicao.PessoaJuridica.NomeFantasia/@Model.SimSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia</td>
+                <td class="collapsing">@Model.SimSala.Sala.Bloco.Descricao</td>
+                <td class="">@Model.SimSala.Sala.Descricao</td>
+            </tr>
+        </tbody>
+    </table>
     <script>
         var focused = false;
         window.print();
@@ -25,7 +116,7 @@
         var interval = setInterval(function () {
             if (focused === true) {
                 clearInterval(interval);
-                // window.location.href = "@Url.Action("action", "controller", new { codigo = "codigo" })"
+                window.close();
             }
         }, 300);
     </script>
