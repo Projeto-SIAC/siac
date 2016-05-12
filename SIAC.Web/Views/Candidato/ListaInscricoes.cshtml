@@ -1,4 +1,4 @@
-﻿@model List<Simulado>
+﻿@model CandidatoInscricoesViewModel
 
 @{
     ViewBag.Title = "Inscrições";
@@ -7,53 +7,75 @@
 
 <h2>@ViewBag.Title</h2>
 
-@if (Model.Count > 0)
+@if (Model.Simulados.Count > 0)
 {
     <div class="ui relaxed divided items">
-        @foreach (Simulado simulado in Model)
+        @foreach (Simulado simulado in Model.Simulados)
         {
-            <div class="item">
-                <div class="content">
-                    <a class="ui header" href="@Url.Action("Inscricoes", "Candidato", new { codigo = simulado.Codigo })">
-                        @simulado.Titulo
-                    </a>
-                    <div class="meta">
-                        @(simulado.PrimeiroDiaRealizacao?.DtRealizacao.ToBrazilianString())
+        <div class="item">
+            <div class="content">
+                <a class="ui header" href="@Url.Action("Inscricoes", "Candidato", new { codigo = simulado.Codigo })">
+                    @simulado.Titulo
+                </a>
+                <div class="meta">
+                    @(simulado.PrimeiroDiaRealizacao?.DtRealizacao.ToBrazilianString())
+                </div>
+                <div class="description">
+                    @simulado.Descricao.ToShortString(140)
+                </div>
+                <div class="extra">
+                    <div class="ui label">
+                        <i class="tag icon"></i> @simulado.Codigo
                     </div>
-                    <div class="description">
-                        @simulado.Descricao.ToShortString(140)
-                    </div>
-                    <div class="extra">
-                        <div class="ui label">
-                            <i class="tag icon"></i> @simulado.Codigo
-                        </div>
-                        @if (simulado.FlagSimuladoEncerrado)
+                    @if (simulado.FlagSimuladoEncerrado)
                         {
-                            <div class="ui red label">
-                                <i class="lock icon"></i>
-                                Encerrado
-                            </div>
+                        <div class="ui red label">
+                            <i class="lock icon"></i>
+                            Encerrado
+                        </div>
 
                         }
                         else
                         {
-                            <div class="ui green label">
-                                <i class="checkmark icon"></i>
-                                Inscrito
-                            </div>
+                        <div class="ui green label">
+                            <i class="checkmark icon"></i>
+                            Inscrito
+                        </div>
                         }
-                    </div>
                 </div>
             </div>
+        </div>
         }
     </div>
+    if (Model.TemAnterior || Model.TemProxima)
+    {
+        <div class="ui basic clearing segment">
+            <div class="ui right floated basic buttons">
+                @if (Model.TemAnterior)
+                {
+                    <button class="ui labeled basic icon button">
+                        <i class="left arrow icon"></i>
+                        Anterior
+                    </button>
+                }
+                @if (Model.TemProxima)
+                {
+                    <button class="ui right labeled basic icon button">
+                        <i class="right arrow icon"></i>
+                        Próxima
+                    </button>
+                }
+            </div>
+        </div>
+    }
 }
 else
 {
     <div class="ui message">Não há inscrições.</div>
 }
 
-<a href="@Url.Action("Index", "Candidato")" class="ui basic button">Voltar</a>
+<a href="@Url.Action("Index", "Candidato")" class="ui basic button">Voltar para Área do Candidato</a>
+
 
 @section Scripts {
     <script>

@@ -249,20 +249,36 @@ namespace SIAC.Controllers
         [CandidatoFilter]
         public ActionResult Inscricoes(string codigo)
         {
-            if (String.IsNullOrWhiteSpace(codigo))
+            if (!String.IsNullOrEmpty(codigo) && codigo.ToLower().StartsWith("simul"))
             {
-                return View("ListaInscricoes", Sessao.Candidato.SimCandidato
-                    .Select(sc => sc.Simulado)
-                    .Distinct()
-                    .OrderByDescending(d => d.PrimeiroDiaRealizacao?.DtRealizacao)
-                    .ToList()
-                );
+                Simulado s = Simulado.ListarPorCodigo(codigo);
+                if (s != null && s.CandidatoInscrito(Sessao.Candidato.CodCandidato))
+                {
+                    return View(s.SimCandidato.First(sc => sc.CodCandidato == Sessao.Candidato.CodCandidato));
+                }
             }
-
-            Simulado s = Simulado.ListarPorCodigo(codigo);
-            if (s != null && s.CandidatoInscrito(Sessao.Candidato.CodCandidato))
+            else
             {
-                return View(s.SimCandidato.First(sc => sc.CodCandidato == Sessao.Candidato.CodCandidato));
+                CandidatoInscricoesViewModel model = new CandidatoInscricoesViewModel();
+                int pagina = String.IsNullOrEmpty(codigo) ? 1 : 0;
+                int qtePorPagina = CandidatoInscricoesViewModel.QtePorPagina;
+                if (pagina == 0)
+                {
+                    int.TryParse(codigo, out pagina);
+                }
+
+                if (pagina > 0)
+                {
+                    List<Simulado> lista = Sessao.Candidato.SimCandidato
+                        .Select(sc => sc.Simulado)
+                        .Distinct()
+                        .OrderByDescending(d => d.PrimeiroDiaRealizacao?.DtRealizacao)
+                        .ToList();
+                    model.Simulados = lista.Skip(qtePorPagina * pagina - qtePorPagina).Take(qtePorPagina).ToList();
+                    model.TemProxima = lista.Count > qtePorPagina;
+                }
+
+                return View("ListaInscricoes", model);
             }
 
             return RedirectToAction("Index");

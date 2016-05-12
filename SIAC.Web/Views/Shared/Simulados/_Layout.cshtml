@@ -27,8 +27,9 @@
                 <a href="@Url.Action("", "Inscricao")" class="item logo">
                     <b>SIAC</b>&nbsp;Simulados
                 </a>
-                <a href="@Url.Action("Index", "Inscricao")" class="item">Calendário</a>
-                <a href="@Url.Action("Index", "Candidato")" class="item">Candidato</a>
+                <a href="@Url.Action("Index", "Inscricao", new { codigo = "" })" class="@(path.Contains("simulado/inscricao") ? "active" : "") item">Calendário</a>
+                <a href="@Url.Action("Index", "Candidato", new { codigo = "" })" class="@(path.EndsWith("simulado/candidato") ? "active" : "") item">Candidato</a>
+                <a href="@Url.Action("Inscricoes", "Candidato", new { codigo = "" })" class="@(path.Contains("simulado/candidato/inscricoes") ? "active" : "") item">Inscrições</a>
                 <div class="right menu">
                     @if (conectado)
                     {
@@ -42,7 +43,7 @@
                             @Sessao.Candidato.PrimeiroNome
                             <i class="dropdown icon"></i>
                             <div class="menu">
-                                <a href="@Url.Action("Inscricoes", "Candidato")" class="item">Inscrições</a>
+                                <a href="@Url.Action("Inscricoes", "Candidato", new { codigo = "" })" class="item">Minhas Inscrições</a>
                                 <a href="@Url.Action("Perfil", "Candidato")" class="item">Perfil</a>
                                 <a href="@Url.Action("Desconectar", "Candidato")" class="item">Sair</a>
                             </div>

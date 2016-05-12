@@ -626,6 +626,7 @@
     <Compile Include="ViewModels\CandidatoCadastrarViewModel.cs" />
     <Compile Include="ViewModels\CandidatoAcessarViewModel.cs" />
     <Compile Include="ViewModels\CandidatoIndexViewModel.cs" />
+    <Compile Include="ViewModels\CandidatoInscricoesViewModel.cs" />
     <Compile Include="ViewModels\CandidatoPerfilViewModel.cs" />
     <Compile Include="ViewModels\CertificacaoConfigurarViewModel.cs" />
     <Compile Include="ViewModels\ConfiguracoesInstitucionalViewModel.cs" />

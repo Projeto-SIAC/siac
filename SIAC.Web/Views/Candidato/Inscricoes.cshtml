@@ -87,7 +87,7 @@
                 </div>
                 <div class="content">
                     <div class="summary">
-                        @prova.Titulo
+                        Prova: @prova.Titulo
                     </div>
                     <div class="date">
                         @(dia.DtRealizacao.ToBrazilianString())
@@ -98,7 +98,7 @@
     }
 </div>
 
-<a href="@Url.Action("Index")" class="ui basic button">Voltar</a>
+<a href="@Url.Action("Index", "Candidato")" class="ui basic button">Voltar para Área do Candidato</a>
 
 <div id="provas" class="ui modal">
     <i class="close icon"></i>
