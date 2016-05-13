@@ -19,25 +19,25 @@ namespace SIAC.Helpers
             Host = Parametro.Obter().SmtpEnderecoHost,
             Port = Parametro.Obter().SmtpPorta,
             EnableSsl = Parametro.Obter().SmtpFlagSSL,
-            Credentials = new NetworkCredential(Criptografia.Base64Decode(Parametro.Obter().SmtpUsuario), 
+            Credentials = new NetworkCredential(Criptografia.Base64Decode(Parametro.Obter().SmtpUsuario),
                 Criptografia.Base64Decode(Parametro.Obter().SmtpSenha))
         };
 
         private static string LerView(string viewname)
         {
-            string caminho = AppDomain.CurrentDomain.BaseDirectory + "\\Views\\Shared\\Email\\__" + viewname+ ".cshtml";
+            string caminho = AppDomain.CurrentDomain.BaseDirectory + "\\Views\\Shared\\Email\\__" + viewname + ".cshtml";
             return File.ReadAllText(caminho);
         }
 
         public static void Enviar(string para, string assunto, string viewname, object model = null)
         {
-            string templated = Engine.Razor.RunCompile(LerView(viewname), $"{para}.{viewname}", null, model);
+            string corpo = Engine.Razor.RunCompile(LerView(viewname), $"{para}.{viewname}", null, model);
 
             FluentEmail.Email
                 .From(Criptografia.Base64Decode(Parametro.Obter().SmtpUsuario))
                 .To(para)
                 .Subject(assunto)
-                .Body(templated)
+                .Body(corpo)
                 .BodyAsHtml()
                 .UsingClient(client)
                 .Send();
@@ -45,7 +45,22 @@ namespace SIAC.Helpers
 
         public static void Cadastro(string email, string nome)
         {
-            Enviar(email, "Cadastro no SIAC Simulados", "Cadastro", new { Nome = nome });
+            var model = new
+            {
+                Nome = nome
+            };
+            Enviar(email, "Cadastro no SIAC Simulados", "Cadastro", model);
+        }
+
+        public static void Inscricao(string email, string nome, string simuladoUrl, string simuladoTitulo)
+        {
+            var model = new
+            {
+                Nome = nome,
+                SimuladoUrl = simuladoUrl,
+                SimuladoTitulo = simuladoTitulo
+            };
+            Enviar(email, "Inscrição realizada no SIAC Simulados", "Inscricao", model);
         }
     }
 }

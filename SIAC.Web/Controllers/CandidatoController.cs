@@ -114,6 +114,8 @@ namespace SIAC.Controllers
         public ActionResult Desconectar()
         {
             Sessao.Remover("SimuladoCandidato");
+            Repositorio.Commit();
+            Repositorio.Dispose();
             return RedirectToAction("");
         }
 

@@ -855,6 +855,7 @@
     <Content Include="Views\Candidato\CartaoInscricao.cshtml" />
     <Content Include="Views\Simulado\Partials\_SimuladoRespostasCandidato.cshtml" />
     <Content Include="Views\Shared\Email\__Cadastro.cshtml" />
+    <Content Include="Views\Shared\Email\__Inscricao.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
