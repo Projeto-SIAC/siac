@@ -12,5 +12,6 @@ namespace SIAC.ViewModels
         public Candidato Candidato { get; set; }
         public SimProva Prova { get; set; }
         public List<SimProvaQuestao> Questoes { get; set; }
+        public List<SimCandidatoQuestao> Respostas { get; set; }
     }
 }
