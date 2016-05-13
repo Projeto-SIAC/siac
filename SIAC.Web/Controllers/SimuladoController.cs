@@ -826,14 +826,26 @@ namespace SIAC.Controllers
                         foreach(SimCandidatoProva candidato in prova.SimCandidatoProva)
                         {
                             int qteAcerto = -1;
-                            int.TryParse(form[candidato.CodCandidato.ToString()], out qteAcerto);
-                            candidato.QteAcertos = qteAcerto;
+                            string qteAcertoForm = form[candidato.CodCandidato.ToString()];
+                            if (!String.IsNullOrEmpty(qteAcertoForm) && qteAcertoForm.IsNumber())
+                            {
+                                int.TryParse(qteAcertoForm, out qteAcerto);
+                            }
+                            if (qteAcerto > -1)
+                            {
+                                candidato.QteAcertos = qteAcerto;
+                            }
+                            else
+                            {
+                                candidato.QteAcertos = null;
+                            }
                         }
+
+                        Repositorio.Commit();
 
                         return RedirectToAction("Respostas", new { codigo = codigo });
                     }
                 }
-
             }
             return null;
         }

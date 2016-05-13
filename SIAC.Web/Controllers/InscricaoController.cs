@@ -84,8 +84,7 @@ namespace SIAC.Controllers
                             prova.SimCandidatoProva.Add(new SimCandidatoProva()
                             {
                                 SimCandidato = candidato,
-                                SimProva = prova,
-                                QteAcertos = -1
+                                SimProva = prova
                             });
                         }
 
@@ -119,7 +118,9 @@ namespace SIAC.Controllers
                 {
                     if (codigo.ToLower() == simuladoCancelar.ToLower())
                     {
-                        s.SimCandidato.Remove(s.SimCandidato.First(sc => sc.CodCandidato == Sessao.Candidato.CodCandidato));
+                        SimCandidato simCandidato = s.SimCandidato.First(sc => sc.CodCandidato == Sessao.Candidato.CodCandidato);
+                        Repositorio.GetInstance().SimCandidatoProva.RemoveRange(simCandidato.SimCandidatoProva);
+                        s.SimCandidato.Remove(simCandidato);
                         Repositorio.Commit();
                     }
                 }

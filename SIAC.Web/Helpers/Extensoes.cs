@@ -119,6 +119,18 @@ namespace SIAC
             return r;
         }
 
+        public static bool IsNumber(this string str)
+        {
+            foreach (var c in str)
+            {
+                if (!char.IsDigit(c) && c != '.' && c != ',' && c != '-')
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         #endregion
 
         // Int

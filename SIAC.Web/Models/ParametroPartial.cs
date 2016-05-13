@@ -57,6 +57,7 @@ namespace SIAC.Models
             temp.SmtpSenha = parametro.SmtpSenha;
 
             contexto.SaveChanges();
+            parametro = contexto.Parametro.FirstOrDefault();
         }
 
         public static void AtualizarOcupacoesCoordenadores(int[] ocupacoes)
