@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using RazorEngine;
 using RazorEngine.Templating;
+using System.Threading.Tasks;
 
 namespace SIAC.Helpers
 {
@@ -29,18 +30,20 @@ namespace SIAC.Helpers
             return File.ReadAllText(caminho);
         }
 
-        public static void Enviar(string para, string assunto, string viewname, object model = null)
+        public async static Task EnviarAsync(string para, string assunto, string viewname, object model = null)
         {
             string corpo = Engine.Razor.RunCompile(LerView(viewname), $"{para}.{viewname}", null, model);
 
-            FluentEmail.Email
-                .From(Criptografia.Base64Decode(Parametro.Obter().SmtpUsuario))
-                .To(para)
-                .Subject(assunto)
-                .Body(corpo)
-                .BodyAsHtml()
-                .UsingClient(client)
-                .Send();
+            await Task.Run(() =>
+                FluentEmail.Email
+                    .From(Criptografia.Base64Decode(Parametro.Obter().SmtpUsuario))
+                    .To(para)
+                    .Subject(assunto)
+                    .Body(corpo)
+                    .BodyAsHtml()
+                    .UsingClient(client)
+                    .Send()
+            );
         }
 
         public static void Cadastro(string email, string nome)
@@ -49,7 +52,7 @@ namespace SIAC.Helpers
             {
                 Nome = nome
             };
-            Enviar(email, "Cadastro no SIAC Simulados", "Cadastro", model);
+            EnviarAsync(email, "Cadastro no SIAC Simulados", "Cadastro", model);
         }
 
         public static void Inscricao(string email, string nome, string simuladoUrl, string simuladoTitulo)
@@ -60,7 +63,21 @@ namespace SIAC.Helpers
                 SimuladoUrl = simuladoUrl,
                 SimuladoTitulo = simuladoTitulo
             };
-            Enviar(email, "Inscrição realizada no SIAC Simulados", "Inscricao", model);
+            EnviarAsync(email, "Inscrição realizada no SIAC Simulados", "Inscricao", model);
+        }
+
+        public async static Task NovoSimuladoDisponivel(List<Candidato> candidatos, string simuladoUrl, string simuladoTitulo)
+        {
+            foreach (Candidato candidato in candidatos)
+            {
+                var model = new
+                {
+                    Nome = candidato.Nome,
+                    SimuladoUrl = simuladoUrl,
+                    SimuladoTitulo = simuladoTitulo
+                };
+                EnviarAsync(candidato.Email, "Novo simulado disponível no SIAC Simulados", "SimuladoDisponivel", model);
+            }
         }
     }
 }

@@ -44,6 +44,8 @@ namespace SIAC.Models
         public static Candidato ListarPorCPF(string cpf) => 
             contexto.Candidato.FirstOrDefault(c => c.Cpf == cpf);
 
+        public static List<Candidato> Listar() => contexto.Candidato.ToList();
+
         public static Candidato Autenticar(string cpf, string senha)
         {
             Candidato candidato = ListarPorCPF(Formate.DeCPF(cpf));

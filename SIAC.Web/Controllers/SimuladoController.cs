@@ -692,6 +692,10 @@ namespace SIAC.Controllers
                                 sim.FlagInscricaoEncerrado = false;
                                 mensagem = "As inscrições foram liberadas com sucesso.";
                                 estilo = Lembrete.POSITIVO;
+
+                                string url = Request.Url.ToString();
+                                string simuladoUrl = url.Remove(url.IndexOf("/")) + Url.Action("Confirmar", "Inscricao", new { codigo = sim.Codigo });
+                                EnviarEmail.NovoSimuladoDisponivel(Candidato.Listar(), simuladoUrl, sim.Titulo);
                             }
                             else
                             {
