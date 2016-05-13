@@ -798,6 +798,7 @@ namespace SIAC.Controllers
                         model.Prova = prova;
                         model.Candidato = candidato.SimCandidato.Candidato;
                         model.Questoes = prova.SimProvaQuestao.OrderBy(q=>q.CodQuestao).ToList();
+                        model.Respostas = candidato.SimCandidatoQuestao.OrderBy(q=>q.CodQuestao).ToList();
 
                         return PartialView("_SimuladoRespostasCandidato", model);
                     }
@@ -828,6 +829,54 @@ namespace SIAC.Controllers
                             int.TryParse(form[candidato.CodCandidato.ToString()], out qteAcerto);
                             candidato.QteAcertos = qteAcerto;
                         }
+
+                        return RedirectToAction("Respostas", new { codigo = codigo });
+                    }
+                }
+
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult InserirRespostasCandidato(string codigo, int codDia, int codProva, int codCandidato, FormCollection form)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                {
+                    SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
+
+                    if (diaRealizacao != null)
+                    {
+                        SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
+                        SimCandidatoProva candidato = contexto.SimCandidatoProva
+                                                        .FirstOrDefault(p => p.Ano == sim.Ano
+                                                        && p.NumIdentificador == sim.NumIdentificador
+                                                        && p.CodProva == codProva
+                                                        && p.CodDiaRealizacao == codDia
+                                                        && p.CodCandidato == codCandidato);
+
+                        candidato.SimCandidatoQuestao.Clear();
+
+                        foreach (SimProvaQuestao questao in prova.SimProvaQuestao)
+                        {
+                            string strQuestao = "questao" + questao.CodQuestao;
+
+                            if (form[strQuestao] != null)
+                            {
+                                int alternativa = int.Parse(form[strQuestao]);
+
+                                candidato.SimCandidatoQuestao.Add(new SimCandidatoQuestao()
+                                {
+                                    SimProvaQuestao = questao,
+                                    RespAlternativa = alternativa
+                                });
+                            }
+                        }
+                        Repositorio.Commit();
 
                         return RedirectToAction("Respostas", new { codigo = codigo });
                     }

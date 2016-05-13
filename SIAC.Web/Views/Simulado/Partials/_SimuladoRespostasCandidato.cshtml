@@ -4,7 +4,7 @@
 }
 
 <form method="post" class="ui form segment" action="@Url.Action("InserirRespostasCandidato", new { codigo = Model.Simulado.Codigo, codDia = Model.Prova.CodDiaRealizacao, codProva = Model.Prova.CodProva, codCandidato = Model.Candidato.CodCandidato})">
-    <h3 class="header">@($"Prova: {Model.Prova.Titulo} Candidato: {Model.Candidato.Nome}"</h3>
+    <h3 class="header">@($"Prova: {Model.Prova.Titulo} || Candidato: {Model.Candidato.Nome}")</h3>
     <table class="ui striped table">
         <thead>
             <tr>
@@ -15,15 +15,18 @@
         <tbody>
             @foreach (SimProvaQuestao questao in Model.Questoes)
             {
+                SimCandidatoQuestao resposta = Model.Respostas.FirstOrDefault(q => q.CodQuestao == questao.CodQuestao);
+                
                 <tr>
-                    <td>@questaoIndice++</td>
+                    <td>@(questaoIndice++)</td>
                     <td>
                         <div class="inline fields">
                             @foreach (Alternativa alternativa in questao.Questao.Alternativa)
                             {
                                 <div class="field">
                                     <div class="ui radio checkbox">
-                                        <input type="radio" name="@questao.CodQuestao" checked="" tabindex="0" class="hidden">
+                                        <input type="radio" name="@($"questao{questao.CodQuestao}")" value="@alternativa.CodOrdem"
+                                            @(resposta != null && resposta.RespAlternativa == alternativa.CodOrdem ? "checked" : "")>
                                         <label>@alternativa.CodOrdem.GetIndiceAlternativa()</label>
                                     </div>
                                 </div>
