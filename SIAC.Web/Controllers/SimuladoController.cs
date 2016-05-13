@@ -874,12 +874,8 @@ namespace SIAC.Controllers
 
                         Repositorio.Commit();
 
-<<<<<<< HEAD
-                        return RedirectToAction("Respostas", new { codigo = codigo });
-=======
                         mensagem = "O preenchimento ocorreu com sucesso.";
                         estilo = Lembrete.POSITIVO;
->>>>>>> origin/master
                     }
                 }
             }
