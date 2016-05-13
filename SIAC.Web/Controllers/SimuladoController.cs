@@ -24,7 +24,7 @@ namespace SIAC.Controllers
             string descricao = form["txtDescricao"];
             string strQteVagas = form["txtQteVagas"];
 
-            if (!StringExt.IsNullOrWhiteSpace(titulo,strQteVagas))
+            if (!StringExt.IsNullOrWhiteSpace(titulo, strQteVagas))
             {
                 int qteVagas = int.Parse(strQteVagas);
 
@@ -68,7 +68,7 @@ namespace SIAC.Controllers
                     string descricao = form["txtDescricao"];
                     string strQteVagas = form["txtQteVagas"];
 
-                    if (!StringExt.IsNullOrWhiteSpace(titulo,strQteVagas))
+                    if (!StringExt.IsNullOrWhiteSpace(titulo, strQteVagas))
                     {
                         int qteVagas = int.Parse(strQteVagas);
 
@@ -96,7 +96,7 @@ namespace SIAC.Controllers
                     }
                 }
             }
-            Lembrete.AdicionarNotificacao(mensagem,estilo);
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
@@ -127,6 +127,12 @@ namespace SIAC.Controllers
 
                 if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
+                    if (sim.DtInicioInscricao <= DateTime.Now)
+                    {
+                        Lembrete.AdicionarNotificacao("Não é possível gerenciar a data após o início do período de inscrições", Lembrete.NEGATIVO);
+                        return RedirectToAction("Detalhe", new { codigo = codigo });
+                    }
+
                     return View(sim);
                 }
             }
@@ -150,10 +156,16 @@ namespace SIAC.Controllers
                     {
                         DateTime inicio = DateTime.Parse(inicioInscricao, new CultureInfo("pt-BR"));
                         DateTime termino = DateTime.Parse($"{terminoInscricao} 23:59:59", new CultureInfo("pt-BR"));
-                        
+
                         if (sim.DtInicioInscricao <= DateTime.Now)
                         {
                             Lembrete.AdicionarNotificacao("As incrições já foram iniciadas, você não pode mais alterar o início.", Lembrete.NEGATIVO);
+                            return View(sim);
+                        }
+
+                        if (sim.DtTerminoInscricao >= sim.SimDiaRealizacao?.First().DtRealizacao)
+                        {
+                            Lembrete.AdicionarNotificacao("A data de término das inscrições tem que ser antes do primeiro dia de prova.", Lembrete.NEGATIVO);
                             return View(sim);
                         }
 
@@ -299,7 +311,12 @@ namespace SIAC.Controllers
 
                         SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.DtRealizacao.Date == dataRealizacao.Date);
 
-                        if (diaRealizacao != null && inicio >= diaRealizacao.DtRealizacao.TimeOfDay && inicio <= diaRealizacao.DtRealizacao.AddMinutes(diaRealizacao.Duracao).TimeOfDay)
+                        if (dataRealizacao >= sim.DtTerminoInscricao)
+                        {
+                            mensagem = "A data da prova tem que ser superior à data de termino de inscrição do simulado.";
+                            estilo = Lembrete.NEGATIVO;
+                        }
+                        else if (diaRealizacao != null && inicio >= diaRealizacao.DtRealizacao.TimeOfDay && inicio <= diaRealizacao.DtRealizacao.AddMinutes(diaRealizacao.Duracao).TimeOfDay)
                         {
                             mensagem = $"Já existe uma data marcada com a realização nesse período: {dataRealizacao.ToShortDateString()} ({inicio.ToString("HH:mm")} até {termino.ToString("HH:mm")}).";
                             estilo = Lembrete.NEGATIVO;
@@ -353,7 +370,12 @@ namespace SIAC.Controllers
 
                         SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.DtRealizacao.Date == dataRealizacao.Date && s.CodDiaRealizacao != codDia);
 
-                        if (diaRealizacao != null && inicio >= diaRealizacao.DtRealizacao.TimeOfDay && inicio <= diaRealizacao.DtRealizacao.AddMinutes(diaRealizacao.Duracao).TimeOfDay)
+                        if (dataRealizacao >= sim.DtTerminoInscricao)
+                        {
+                            mensagem = "A data da prova tem que ser superior à data de termino de inscrição do simulado.";
+                            estilo = Lembrete.NEGATIVO;
+                        }
+                        else if (diaRealizacao != null && inicio >= diaRealizacao.DtRealizacao.TimeOfDay && inicio <= diaRealizacao.DtRealizacao.AddMinutes(diaRealizacao.Duracao).TimeOfDay)
                         {
                             mensagem = $"Já existe uma data marcada com a realização nesse período: {dataRealizacao.ToShortDateString()} ({inicio.ToString("HH:mm")} até {termino.ToString("HH:mm")}).";
                             estilo = Lembrete.NEGATIVO;
@@ -537,7 +559,7 @@ namespace SIAC.Controllers
                         SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
                         SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
-                        
+
                         prova.Titulo = txtTitulo;
                         prova.Descricao = String.IsNullOrWhiteSpace(txtDescricao) ? String.Empty : txtDescricao;
                         prova.QteQuestoes = int.Parse(txtQteQuestoes);
@@ -559,7 +581,7 @@ namespace SIAC.Controllers
                         {
                             diaRealizacao.SimProva.Add(prova);
                             Repositorio.Commit();
-                            
+
                             mensagem = "Prova editada com sucesso neste simulado.";
                             estilo = Lembrete.POSITIVO;
                         }
@@ -590,7 +612,7 @@ namespace SIAC.Controllers
                 {
                     SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
-                    if (diaRealizacao!= null)
+                    if (diaRealizacao != null)
                     {
                         SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
                         prova.SimProvaQuestao.Clear();
@@ -681,7 +703,7 @@ namespace SIAC.Controllers
                             break;
                     }
                     Repositorio.Commit();
-                    
+
                 }
             }
 
@@ -704,11 +726,17 @@ namespace SIAC.Controllers
                 {
                     DateTime novoPrazo = DateTime.Parse($"{txtNovoPrazo} 23:59:59", new CultureInfo("pt-BR"));
 
-                    if(novoPrazo < DateTime.Now)
+                    if (novoPrazo < DateTime.Now)
                     {
                         mensagem = "A nova data de término não pode ser inferior à hoje.";
                         estilo = Lembrete.NEGATIVO;
                     }
+                    else if (novoPrazo >= sim.SimDiaRealizacao?.First().DtRealizacao)
+                    {
+                        mensagem = "A data de termino de inscrição tem que ser antes do primeiro dia de prova do simulado.";
+                        estilo = Lembrete.NEGATIVO;
+                    }
+
                     else
                     {
                         mensagem = "O prazo foi alterado com sucesso.";
@@ -762,11 +790,11 @@ namespace SIAC.Controllers
                     if (diaRealizacao != null)
                     {
                         SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
-                        
+
                         return PartialView("_SimuladoRespostasProva", prova.SimCandidatoProva.OrderBy(p => p.SimCandidato.Candidato.Nome).ToList());
                     }
                 }
-                
+
             }
             return null;
         }
@@ -797,8 +825,8 @@ namespace SIAC.Controllers
                         model.Simulado = sim;
                         model.Prova = prova;
                         model.Candidato = candidato.SimCandidato.Candidato;
-                        model.Questoes = prova.SimProvaQuestao.OrderBy(q=>q.CodQuestao).ToList();
-                        model.Respostas = candidato.SimCandidatoQuestao.OrderBy(q=>q.CodQuestao).ToList();
+                        model.Questoes = prova.SimProvaQuestao.OrderBy(q => q.CodQuestao).ToList();
+                        model.Respostas = candidato.SimCandidatoQuestao.OrderBy(q => q.CodQuestao).ToList();
 
                         return PartialView("_SimuladoRespostasCandidato", model);
                     }
@@ -811,6 +839,9 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult InserirRespostasProva(string codigo, int codDia, int codProva, FormCollection form)
         {
+            string mensagem = "Ocorreu um erro na operação.";
+            string estilo = Lembrete.NEGATIVO;
+
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
@@ -823,7 +854,7 @@ namespace SIAC.Controllers
                     {
                         SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
 
-                        foreach(SimCandidatoProva candidato in prova.SimCandidatoProva)
+                        foreach (SimCandidatoProva candidato in prova.SimCandidatoProva)
                         {
                             int qteAcerto = -1;
                             string qteAcertoForm = form[candidato.CodCandidato.ToString()];
@@ -843,16 +874,25 @@ namespace SIAC.Controllers
 
                         Repositorio.Commit();
 
+<<<<<<< HEAD
                         return RedirectToAction("Respostas", new { codigo = codigo });
+=======
+                        mensagem = "O preenchimento ocorreu com sucesso.";
+                        estilo = Lembrete.POSITIVO;
+>>>>>>> origin/master
                     }
                 }
             }
-            return null;
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
+            return RedirectToAction("Respostas", new { codigo = codigo });
         }
 
         [HttpPost]
         public ActionResult InserirRespostasCandidato(string codigo, int codDia, int codProva, int codCandidato, FormCollection form)
         {
+            string mensagem = "Ocorreu um erro na operação.";
+            string estilo = Lembrete.NEGATIVO;
+
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
@@ -888,14 +928,17 @@ namespace SIAC.Controllers
                                 });
                             }
                         }
+
                         Repositorio.Commit();
 
-                        return RedirectToAction("Respostas", new { codigo = codigo });
+                        mensagem = "O preenchimento ocorreu com sucesso.";
+                        estilo = Lembrete.POSITIVO;
                     }
                 }
 
             }
-            return null;
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
+            return RedirectToAction("Respostas", new { codigo = codigo });
         }
     }
 }
