@@ -72,7 +72,7 @@ siac.Simulado.Provas = (function () {
         $('.ui.dropdown').dropdown();
         $('[data-html]').popup({
             on: 'click',
-            onVisible: function(){
+            onVisible: function () {
                 $('.remover.button').click(function () {
                     removerDia($(this));
                 });
@@ -226,7 +226,7 @@ siac.Simulado.Provas = (function () {
             }
         })
     }
-    
+
     function abrirModalNovaProva(codDia) {
         var $form = $('form.novo.prova'),
             url = $form.prop('action');
@@ -254,7 +254,7 @@ siac.Simulado.Provas = (function () {
                 codDia: codDia,
                 codProva: codProva
             },
-            beforeSend: function(){
+            beforeSend: function () {
                 $button.addClass('loading');
             },
             success: function () {
@@ -646,15 +646,15 @@ siac.Simulado.Respostas = (function () {
                         codDia: codDia,
                         codProva: codProva
                     },
-                    beforeSend: function(){
+                    beforeSend: function () {
                         $provaButton.addClass('loading');
                     },
-                    success: function(data){
+                    success: function (data) {
                         if (data) {
                             $listaRespostas.html(data);
                         }
                     },
-                    error: function(){
+                    error: function () {
                         siac.mensagem('Ocorreu um erro na operação.');
                     },
                     complete: function () {
