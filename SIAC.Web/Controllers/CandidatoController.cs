@@ -65,36 +65,33 @@ namespace SIAC.Controllers
                     if (model.Email.Contains("@"))
                     {
                         model.Cpf = Formate.DeCPF(model.Cpf);
-                        if (model.Cpf.Length == 11 && Valida.CPF(model.Cpf))
+                        if (Candidato.ListarPorCPF(model.Cpf) == null)
                         {
-                            Candidato c = new Candidato()
+                            if (model.Cpf.Length == 11 && Valida.CPF(model.Cpf))
                             {
-                                Nome = model.Nome,
-                                Cpf = model.Cpf,
-                                Email = model.Email,
-                                Senha = Criptografia.RetornarHash(model.Senha)
-                            };
+                                Candidato c = new Candidato()
+                                {
+                                    Nome = model.Nome,
+                                    Cpf = model.Cpf,
+                                    Email = model.Email,
+                                    Senha = Criptografia.RetornarHash(model.Senha)
+                                };
 
-                            Candidato.Inserir(c);
-                            Sessao.Inserir("SimuladoCandidato", c);
+                                Candidato.Inserir(c);
+                                Sessao.Inserir("SimuladoCandidato", c);
 
-                            //SmtpClient client = new SmtpClient(Parametro.Obter().SmtpEnderecoHost, Parametro.Obter().SmtpPorta);
-                            //client.Credentials = new NetworkCredential(Criptografia.Base64Decode(Parametro.Obter().SmtpUsuario), Criptografia.Base64Decode(Parametro.Obter().SmtpSenha));
-                            //client.EnableSsl = Parametro.Obter().SmtpFlagSSL;
+                                EnviarEmail.Cadastro(c.Email, c.Nome);
 
-                            //FluentEmail.Email
-                            //    .From(Criptografia.Base64Decode(Parametro.Obter().SmtpUsuario))
-                            //    .To(c.Email)
-                            //    .Subject("Cadastro efetuado com sucesso.")
-                            //    .Body($"{c.PrimeiroNome} se cadastrou no SIAC Simulados.")
-                            //    .UsingClient(client)
-                            //    .Send();
-
-                            return RedirectToAction("Perfil");
+                                return RedirectToAction("Perfil");
+                            }
+                            else
+                            {
+                                model.Mensagem = "Informe um CPF válido.";
+                            }
                         }
                         else
                         {
-                            model.Mensagem = "Informe um CPF válido.";
+                            model.Mensagem = "Este CPF já está cadastrado.";
                         }
                     }
                     else

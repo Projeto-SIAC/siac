@@ -100,8 +100,8 @@
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RazorEngine, Version=3.2.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
-      <HintPath>..\packages\RazorEngine.3.2.0\lib\net40\RazorEngine.dll</HintPath>
+    <Reference Include="RazorEngine, Version=3.8.2.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorEngine.3.8.2\lib\net45\RazorEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Data.Linq" />
@@ -284,6 +284,7 @@
     <Compile Include="Helpers\CorDinamica.cs" />
     <Compile Include="Helpers\Criptografia.cs" />
     <Compile Include="Helpers\DevGerarQuestao.cs" />
+    <Compile Include="Helpers\EnviarEmail.cs" />
     <Compile Include="Helpers\Formate.cs" />
     <Compile Include="Helpers\LeroLero.cs" />
     <Compile Include="Helpers\Extensoes.cs" />
@@ -853,6 +854,7 @@
     <Content Include="Views\Simulado\Partials\_SimuladoRespostasProva.cshtml" />
     <Content Include="Views\Candidato\CartaoInscricao.cshtml" />
     <Content Include="Views\Simulado\Partials\_SimuladoRespostasCandidato.cshtml" />
+    <Content Include="Views\Shared\Email\__Cadastro.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
