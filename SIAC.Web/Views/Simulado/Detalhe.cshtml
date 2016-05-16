@@ -249,6 +249,10 @@
     </div>
 </div>
 
+<div class="ui sala candidato modal">
+    @* Espaço para listagem de candidato por sala *@
+</div>
+
 <div class="ui basic segment">
     <div class="ui dividing header">
         Detalhes
@@ -377,6 +381,7 @@
                         <td>@simSala.Sala.Descricao</td>
                         <td>@simSala.Sala.Sigla</td>
                         <td>@simSala.Sala.Capacidade</td>
+                        <td><div data-sala="@simSala.CodSala" class="ui icon button"><i class="search icon"></i></div></td>
                     </tr>
                 }
             </tbody>

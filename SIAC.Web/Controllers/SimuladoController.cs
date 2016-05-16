@@ -1002,5 +1002,22 @@ namespace SIAC.Controllers
             Lembrete.AdicionarNotificacao(mensagem, estilo);
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
+
+        [HttpPost]
+        public ActionResult ListarCandidatoPorSala(string codigo, int codSala)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                {
+                    SimSala sala = sim.SimSala.FirstOrDefault(s => s.CodSala == codSala);
+
+                    return PartialView("_SimuladoSalaCandidatos", sala);
+                }
+            }
+            return null;
+        }
     }
 }

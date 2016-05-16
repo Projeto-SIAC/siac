@@ -1,0 +1,30 @@
+﻿@model SimSala
+
+<i class="close icon"></i>
+<div class="header">
+    Candidatos da Sala @Model.Sala.Sigla
+</div>
+<div class="content">
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th>Inscrição</th>
+                <th>Nome</th>
+                <th>CPF</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (SimCandidato candidato in Model.SimCandidato.OrderBy(c => c.Candidato.Nome))
+            {
+                <tr>
+                    <td>@candidato.Candidato.Nome</td>
+                    <td>@candidato.NumInscricaoRepresentacao</td>
+                    <td>@Formate.ParaCPF(candidato.Candidato.Cpf)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="actions">
+    <div class="ui cancel button">Fechar</div>
+</div>

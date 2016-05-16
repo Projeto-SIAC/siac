@@ -636,6 +636,34 @@ siac.Simulado.Detalhe = (function () {
                 }
             }).modal('show');
         });
+
+        $('[data-sala]').click(function () {
+
+            var $button = $(this),
+                codSala = $button.data('sala'),
+                $modal = $('.sala.candidato.modal');
+
+            $.ajax({
+                type: 'POST',
+                url: '/simulado/listarcandidatoporsala/' + _codigo,
+                data: {
+                    codSala: codSala
+                },
+                beforeSend: function(){
+                    $button.addClass('loading');
+                },
+                success: function(data){
+                    $modal.html(data);
+                    $modal.modal('show');
+                },
+                error: function(){
+                    siac.mensagem('Ocorreu um erro na operação.');
+                },
+                complete: function () {
+                    $button.removeClass('loading');
+                }
+            });
+        });
     }
 
     return {
