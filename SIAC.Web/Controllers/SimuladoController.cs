@@ -996,6 +996,11 @@ namespace SIAC.Controllers
                     mensagem = "As salas foram mapeadas com sucesso.";
                     estilo = Lembrete.POSITIVO;
                     Repositorio.Commit();
+
+                    string url = Request.Url.ToString();
+                    string simuladoUrl = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("Inscricoes", "Candidato", new { codigo = sim.Codigo });
+
+                    Helpers.EnviarEmail.CartaoDeInscricaoDisponivel(candidatos.Select(sc => sc.Candidato).ToList(), simuladoUrl, sim.Titulo);
                 }
             }
 
