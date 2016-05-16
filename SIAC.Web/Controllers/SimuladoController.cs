@@ -163,7 +163,7 @@ namespace SIAC.Controllers
                             return View(sim);
                         }
 
-                        if (sim.DtTerminoInscricao >= sim.SimDiaRealizacao?.First().DtRealizacao)
+                        if (sim.DtTerminoInscricao >= sim.SimDiaRealizacao?.FirstOrDefault()?.DtRealizacao)
                         {
                             Lembrete.AdicionarNotificacao("A data de término das inscrições tem que ser antes do primeiro dia de prova.", Lembrete.NEGATIVO);
                             return View(sim);
@@ -311,7 +311,7 @@ namespace SIAC.Controllers
 
                         SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.DtRealizacao.Date == dataRealizacao.Date);
 
-                        if (dataRealizacao >= sim.DtTerminoInscricao)
+                        if (dataRealizacao <= sim.DtTerminoInscricao)
                         {
                             mensagem = "A data da prova tem que ser superior à data de termino de inscrição do simulado.";
                             estilo = Lembrete.NEGATIVO;
@@ -707,8 +707,8 @@ namespace SIAC.Controllers
                                         estilo = Lembrete.POSITIVO;
 
                                         string url = Request.Url.ToString();
-                                        string simuladoUrl = url.Remove(url.IndexOf("/")) + Url.Action("Confirmar", "Inscricao", new { codigo = sim.Codigo });
-                                        EnviarEmail.NovoSimuladoDisponivel(Candidato.Listar(), simuladoUrl, sim.Titulo);
+                                        string simuladoUrl = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("Confirmar", "Inscricao", new { codigo = sim.Codigo });
+                                        Helpers.EnviarEmail.NovoSimuladoDisponivel(Candidato.Listar(), simuladoUrl, sim.Titulo);
                                     }
                                 }
                                 else
@@ -992,11 +992,41 @@ namespace SIAC.Controllers
                         candidato.CodSala = sala.CodSala;
                         indice++;
                     }
-                    
+
                     mensagem = "As salas foram mapeadas com sucesso.";
                     estilo = Lembrete.POSITIVO;
                     Repositorio.Commit();
                 }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
+            return RedirectToAction("Detalhe", new { codigo = codigo });
+        }
+
+        [HttpPost]
+        public ActionResult EnviarEmail(string codigo, string mensagemEmail)
+        {
+            string mensagem = "Um erro ocorreu na operação.";
+            string estilo = Lembrete.NEGATIVO;
+
+            if (!StringExt.IsNullOrWhiteSpace(codigo, mensagemEmail))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                {
+                    string url = Request.Url.ToString();
+                    string simuladoUrl = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("Inscricoes", "Candidato", new { codigo = sim.Codigo });
+
+                    Helpers.EnviarEmail.MensagemParaCandidatos(sim.SimCandidato.Select(s => s.Candidato).ToList(), mensagemEmail.ToHtml("p"), simuladoUrl, sim.Titulo);
+
+                    mensagem = "Mensagem enviada.";
+                    estilo = Lembrete.POSITIVO;
+                }
+            }
+            else
+            {
+                mensagem = "Não é possível enviar uma mensagem vazia.";
             }
 
             Lembrete.AdicionarNotificacao(mensagem, estilo);

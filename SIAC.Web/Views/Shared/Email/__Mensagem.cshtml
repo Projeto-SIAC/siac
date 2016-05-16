@@ -7,8 +7,10 @@
 </head>
 <body>
     <p>Olá, Candidato!</p>
-    <p>Há um novo simulado <a href="@Model.SimuladoUrl">@Model.SimuladoTitulo</a> disponível.</p>
-    <p>Inscreva-se e boa sorte!</p>
+    <p>O organizador do simulado <a href="@Model.SimuladoUrl">@Model.SimuladoTitulo</a> enviou uma mensagem:</p>
+    <blockquote>
+        @Raw(Model.Mensagem)
+    </blockquote>
     <p>&copy; SIAC Simulados.</p>
 </body>
 </html>

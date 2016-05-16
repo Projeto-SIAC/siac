@@ -35,8 +35,9 @@
     {
         <div class="ui right floated floating acoes dropdown labeled icon button">
             <i class="dropdown icon"></i>
-            <span class="text">Atalho para Ações</span>
+            <span class="text">Atalhos para Gerenciamento</span>
             <div class="menu">
+                <div class="header">Administração</div>
                 <div class="editar item">
                     <i class="edit icon"></i>
                     Editar Dados
@@ -63,16 +64,25 @@
                 @if (Model.SimCandidato.Count > 0)
                 {
                     <div class="divider"></div>
+                    <div class="header">Candidatos</div>
+                    <div class="email item">
+                        <i class="mail icon"></i>
+                        Enviar Email para Candidatos
+                    </div>
                     <div class="candidatos item">
                         <i class="users icon"></i>
                         Listar Candidatos
                     </div>
-                    <a href="@Url.Action("Respostas", new { codigo = Model.Codigo })" class="item">
-                        <i class="edit icon"></i>
-                        Inserir Respostas
-                    </a>
+                    if (Model.FlagProvaEncerrada)
+                    {
+                        <a href="@Url.Action("Respostas", new { codigo = Model.Codigo })" class="item">
+                            <i class="edit icon"></i>
+                            Inserir Respostas
+                        </a>
+                    }
                 }
                 <div class="divider"></div>
+                <div class="header">Configuração</div>
                 @if (Model.FlagInscricaoEncerrado)
                 {
                     <div class="liberar item">
@@ -131,6 +141,25 @@
     </div>
 </div>
 
+<form action="@Url.Action("EnviarEmail", new { codigo = Model.Codigo })" method="post" class="ui small email modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Enviar Email para Candidatos
+    </div>
+    <div class="content">
+        <div class="ui form">
+            <div class="field required">
+                <label data-ajuda="Descreva no espaço abaixo a mensagem que deseja enviar">Insira uma mensagem</label>
+                <textarea id="mensagemEmail" name="mensagemEmail" rows="5" placeholder="Mensagem" required></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <button type="reset" class="ui cancel button">Cancelar</button>
+        <button type="submit" class="ui button">Enviar</button>
+    </div>
+</form>
+
 <form action="@Url.Action("Editar", new { codigo = Model.Codigo })" method="post" class="ui editar modal">
     <i class="close icon"></i>
     <div class="header">Editar dados do simulado</div>
@@ -138,21 +167,21 @@
         <div class="ui form">
             <div class="field required">
                 <label data-ajuda="Forneça na caixa abaixo o título">Forneça o título</label>
-                <input id="txtTitulo" name="txtTitulo" value="@Model.Titulo" maxlength="250" placeholder="Título" />
+                <input id="txtTitulo" name="txtTitulo" value="@Model.Titulo" maxlength="250" placeholder="Título" required/>
             </div>
             <div class="field">
                 <label data-ajuda="Descreva no espaço abaixo uma descrição para este simulado">Insira uma descrição</label>
-                <textarea id="txtDescricao" name="txtDescricao" rows="5" placeholder="Descrição">@Model.Descricao</textarea>
+                <textarea id="txtDescricao" name="txtDescricao" rows="5" placeholder="Descrição" required>@Model.Descricao</textarea>
             </div>
             <div class="field required">
                 <label data-ajuda="Insira a quantidade de vagas para inscrições deste simulado">Insira a quantidade de vagas</label>
-                <input type="number" id="txtQteVagas" name="txtQteVagas" value="@Model.QteVagas" placeholder="Quantidade de vagas" />
+                <input type="number" id="txtQteVagas" name="txtQteVagas" value="@Model.QteVagas" placeholder="Quantidade de vagas" required />
             </div>
         </div>
     </div>
     <div class="actions">
-        <div class="ui negative button">Voltar</div>
-        <input type="submit" class="ui positive button" value="Editar" />
+        <div class="ui cancel button">Voltar</div>
+        <button type="submit" class="ui green button">Editar</button>
     </div>
 </form>
 
@@ -167,7 +196,7 @@
         </div>
     </div>
     <div class="actions">
-        <div class="ui button">Cancelar</div>
+        <div class="ui cancel button">Cancelar</div>
         <div class="ui red approve button">Encerrar Simulado</div>
     </div>
 </div>
@@ -183,7 +212,7 @@
         </div>
     </div>
     <div class="actions">
-        <div class="ui button">Cancelar</div>
+        <div class="ui cancel button">Cancelar</div>
         <div class="ui green approve button">Liberar Inscrições</div>
     </div>
 </div>
@@ -199,7 +228,7 @@
         </div>
     </div>
     <div class="actions">
-        <div class="ui button">Cancelar</div>
+        <div class="ui cancel button">Cancelar</div>
         <div class="ui red approve button">Bloquear Inscrições</div>
     </div>
 </div>
@@ -223,13 +252,13 @@
             </div>
             <div class="field required">
                 <label>Nova data de término das inscrições</label>
-                <input autocomplete="off" name="txtNovoPrazo" data-mask="00/00/0000" />
+                <input autocomplete="off" name="txtNovoPrazo" data-mask="00/00/0000" required />
             </div>
         </div>
     </div>
     <div class="actions">
-        <div class="ui negative button">Voltar</div>
-        <input type="submit" class="ui positive button" value="Expandir prazo" />
+        <div class="ui cancel button">Voltar</div>
+        <button type="submit" class="ui green button">Expandir prazo</button>
     </div>
 </form>
 

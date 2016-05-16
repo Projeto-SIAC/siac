@@ -858,6 +858,8 @@
     <Content Include="Views\Shared\Email\__Inscricao.cshtml" />
     <Content Include="Views\Shared\Email\__SimuladoDisponivel.cshtml" />
     <Content Include="Views\Simulado\Partials\_SimuladoSalaCandidatos.cshtml" />
+    <Content Include="Views\Shared\Email\__CartaoDeInscricaoDisponivel.cshtml" />
+    <Content Include="Views\Shared\Email\__Mensagem.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
