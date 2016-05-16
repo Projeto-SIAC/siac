@@ -4,26 +4,111 @@
     <i class="icon close"></i>
     <div class="header">Informações sobre o simulado</div>
     <div class="content">
-        <table class="ui striped table">
-            <thead>
-                <tr>
-                    <th>Título</th>
-                    <th>Descrição</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        @* Título *@
-                        @Model.Titulo
-                    </td>
-                    <td>
-                        @* Descrição *@
-                        @Model.Descricao
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="ui fluid styled accordion">
+            <div class="active title"><i class="dropdown icon"></i>Dados Gerais</div>
+            <div class="active content">
+                <div class="ui basic segment">
+                    <table class="ui geral table">
+                        <tbody>
+                            <tr>
+                                <td><b>Título</b></td>
+                                <td>@Model.Titulo</td>
+                            </tr>
+                            <tr>
+                                <td><b>Descrição</b></td>
+                                <td>@Model.Descricao</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @if (Model.Provas.Count > 0)
+            {
+                <div class="title"><i class="dropdown icon"></i>Dias e Provas</div>
+                <div class="content">
+                    @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao)
+                    {
+                        <div class="ui basic segment">
+                            <h3 class="ui header">@dia.DtRealizacao.DiaRealizacaoRepresentacao()</h3>
+                            <table class="ui table">
+                                <thead>
+                                    <tr>
+                                        <th>Título</th>
+                                        <th>Disciplina</th>
+                                        <th>Prof. Responsável</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (SimProva prova in dia.SimProva)
+                                    {
+                                        <tr>
+                                            <td>@prova.Titulo</td>
+                                            <td>@prova.Disciplina.Descricao</td>
+                                            <td>@(prova.Professor != null ? prova.Professor.Usuario.PessoaFisica.PrimeiroNome : "Não Definido")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            }
+
+            @if (Model.DtInicioInscricao.HasValue)
+            {
+                <div class="title"><i class="dropdown icon"></i>Prazos</div>
+                <div class="content">
+                    <table class="ui table">
+                        <thead>
+                            <tr>
+                                <th>Data de cadastro</th>
+                                <th>Data de início das inscrições</th>
+                                <th>Data de término das inscrições</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Model.DtCadastro.ToString("dd/MM/yyyy' às 'HH'h'mm")</td>
+                                <td>@Model.DtInicioInscricao.Value.ToString("dd/MM/yyyy' às 'HH'h'mm")</td>
+                                <td>@Model.DtTerminoInscricao.Value.ToString("dd/MM/yyyy' às 'HH'h'mm")</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            }
+
+            @* Público *@
+            @if (Model.SimSala.Count > 0)
+            {
+                <div class="title"><i class="dropdown icon"></i>Salas Selecionadas</div>
+                <div class="content">
+                    <table class="ui striped table">
+                        <thead>
+                            <tr>
+                                <th>Campus</th>
+                                <th>Bloco</th>
+                                <th>Sala</th>
+                                <th>Sigla</th>
+                                <th>Capacidade</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (SimSala simSala in Model.SimSala)
+                            {
+                                <tr>
+                                    <td>@simSala.Sala.Bloco.Campus.Sigla</td>
+                                    <td>@simSala.Sala.Bloco.Sigla</td>
+                                    <td>@simSala.Sala.Descricao</td>
+                                    <td>@simSala.Sala.Sigla</td>
+                                    <td>@simSala.Sala.Capacidade</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
     </div>
 </div>
-

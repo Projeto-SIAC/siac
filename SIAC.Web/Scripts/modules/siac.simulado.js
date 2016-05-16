@@ -68,7 +68,9 @@ siac.Simulado.Provas = (function () {
         _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+$/)[0];
 
         $('.ui.informacoes.modal').modal();
-        $('.ui.accordion').accordion();
+        $('.ui.accordion').accordion({
+            animateChildren: false
+        });
         $('.ui.dropdown').dropdown();
         $('[data-html]').popup({
             on: 'click',
@@ -319,6 +321,9 @@ siac.Simulado.Datas = (function () {
         });
 
         $('.informacoes.button').click(function () {
+            $('.ui.accordion').accordion({
+                animateChildren: false
+            });
             $('.ui.informacoes.modal').modal('show');
         });
 
@@ -430,6 +435,9 @@ siac.Simulado.Salas = (function () {
         });
 
         $('.informacoes.button').click(function () {
+            $('.ui.accordion').accordion({
+                animateChildren: false
+            });
             $('.ui.informacoes.modal').modal('show');
         });
 
