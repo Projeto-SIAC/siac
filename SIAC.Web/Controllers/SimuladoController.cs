@@ -695,7 +695,7 @@ namespace SIAC.Controllers
 
                                 string url = Request.Url.ToString();
                                 string simuladoUrl = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("Confirmar", "Inscricao", new { codigo = sim.Codigo });
-                                EnviarEmail.NovoSimuladoDisponivel(Candidato.Listar(), simuladoUrl, sim.Titulo);
+                                Helpers.EnviarEmail.NovoSimuladoDisponivel(Candidato.Listar(), simuladoUrl, sim.Titulo);
                             }
                             else
                             {
@@ -939,6 +939,36 @@ namespace SIAC.Controllers
             }
             Lembrete.AdicionarNotificacao(mensagem, estilo);
             return RedirectToAction("Respostas", new { codigo = codigo });
+        }
+
+        [HttpPost]
+        public ActionResult EnviarEmail(string codigo, string mensagemEmail)
+        {
+            string mensagem = "Um erro ocorreu na operação.";
+            string estilo = Lembrete.NEGATIVO;
+
+            if (!StringExt.IsNullOrWhiteSpace(codigo, mensagemEmail))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                {
+                    string url = Request.Url.ToString();
+                    string simuladoUrl = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("Inscricoes", "Candidato", new { codigo = sim.Codigo });
+
+                    Helpers.EnviarEmail.MensagemParaCandidatos(sim.SimCandidato.Select(s => s.Candidato).ToList(), mensagemEmail.ToHtml("p"), simuladoUrl, sim.Titulo);
+
+                    mensagem = "Mensagem enviada.";
+                    estilo = Lembrete.POSITIVO;
+                }
+            }
+            else
+            {
+                mensagem = "Não é possível enviar uma mensagem vazia.";
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
+            return RedirectToAction("Detalhe", new { codigo = codigo });
         }
     }
 }

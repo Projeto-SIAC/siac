@@ -1,4 +1,14 @@
-﻿siac.Simulado = siac.Simulado || {};
+﻿siac.Simulado = siac.Simulado || {
+    adicionarEventoNoFormulario: function () {
+        $('form').off('submit').on('submit', function () {
+            var $this = $(this);
+            if ($this.hasClass('modal')) {
+                $this.modal('hide');
+            }
+            $this.find('.button[type=submit]').addClass('loading');
+        });
+    }
+};
 
 siac.Simulado.Novo = (function () {
     function iniciar() {
@@ -559,6 +569,10 @@ siac.Simulado.Detalhe = (function () {
             $('.editar.modal').modal('show');
         });
 
+        $('.email.item').click(function () {
+            $('.email.modal').modal('show');
+        });
+
         $('.encerrar.item').click(function () {
             $('.encerrar.modal').modal({
                 onApprove: function () {
@@ -614,6 +628,8 @@ siac.Simulado.Detalhe = (function () {
         $('.alterar.prazo.item').click(function () {
             $('.alterar.prazo.modal').modal('show');
         });
+
+        siac.Simulado.adicionarEventoNoFormulario();
     }
 
     return {

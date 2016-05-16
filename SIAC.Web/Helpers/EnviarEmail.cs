@@ -86,6 +86,14 @@ namespace SIAC.Helpers
             await Task.Run(() => EnviarParaMuitos(candidatos.Select(c=>c.Email).ToArray(), assunto, viewname, model));
         }
 
+        public static async Task MensagemParaCandidatos(List<Candidato> candidatos, string mensagem, string simuladoUrl, string simuladoTitulo)
+        {
+            var model = new { Mensagem = mensagem, SimuladoUrl = simuladoUrl, SimuladoTitulo = simuladoTitulo };
+            var assunto = "Mensagem sobre simulado no SIAC Simulados";
+            var viewname = "Mensagem";
+            await Task.Run(() => EnviarParaMuitos(candidatos.Select(c => c.Email).ToArray(), assunto, viewname, model));
+        }
+
         public static async Task CartaoDeInscricaoDisponivel(List<Candidato> candidatos, string simuladoUrl, string simuladoTitulo)
         {
             var model = new { SimuladoUrl = simuladoUrl, SimuladoTitulo = simuladoTitulo };
