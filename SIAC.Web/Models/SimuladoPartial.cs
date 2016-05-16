@@ -108,34 +108,36 @@ namespace SIAC.Models
             return ListarPorInscricoesAbertas().Where(s => s.CadastroCompleto).ToList();
         }
 
-        public static List<Questao> ObterQuestoes(int codDisciplina, int quantidadeQuestoes, int codTipo = TipoQuestao.OBJETIVA)
+        public static List<int> ObterQuestoesCodigos(int codDisciplina, int quantidadeQuestoes, int codTipo = TipoQuestao.OBJETIVA)
         {
-            List<Questao> questoes = new List<Questao>();
+            List<int> codigos = new List<int>();
             Random r = new Random();
 
             if (quantidadeQuestoes > 0)
             {
-                List<Questao> temp = new List<Questao>();
+                List<int> ids = (from qt in contexto.QuestaoTema
+                                 where qt.CodDisciplina == codDisciplina
+                                 && qt.Questao.CodTipoQuestao == codTipo
+                                 //&& QuestaoTema.PrazoValido(qt)
+                                 select qt.CodQuestao).Distinct().ToList();
 
-                temp = (from q in contexto.Questao
-                        where q.QuestaoTema.FirstOrDefault().CodDisciplina == codDisciplina
-                        && q.CodTipoQuestao == codTipo
-                        //&& QuestaoTema.PrazoValido(qt)
-                        select q).ToList();
-
-                if (temp.Count != 0 && questoes.Count < quantidadeQuestoes)
+                if (ids.Count > quantidadeQuestoes)
                 {
                     for (int i = 0; i < quantidadeQuestoes; i++)
                     {
-                        int random = r.Next(0, temp.Count);
+                        int random = r.Next(0, ids.Count);
+                        int codQuestao = ids[random];
 
-                        Questao questaoEscolhida = temp.ElementAtOrDefault(random);
-                        questoes.Add(questaoEscolhida);
-                        temp.Remove(questaoEscolhida);
+                        codigos.Add(codQuestao);
+                        ids.Remove(codQuestao);
                     }
                 }
+                else
+                {
+                    codigos.AddRange(ids);
+                }
             }
-            return questoes;
+            return codigos;
         }
     }
 }

@@ -503,23 +503,20 @@ namespace SIAC.Controllers
                         prova.QteQuestoes = int.Parse(txtQteQuestoes);
                         prova.CodDisciplina = int.Parse(ddlDisciplina);
 
-                        List<Questao> questoes = Simulado.ObterQuestoes(prova.CodDisciplina, prova.QteQuestoes);
+                        List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, prova.QteQuestoes);
 
                         prova.SimProvaQuestao.Clear();
 
-                        foreach (Questao questao in questoes)
+                        foreach (int codQuestao in questoesCodigos)
                         {
                             prova.SimProvaQuestao.Add(new SimProvaQuestao()
                             {
-                                Questao = questao
+                                CodQuestao = codQuestao
                             });
                         }
 
-                        if (questoes.Count >= prova.QteQuestoes)
+                        if (questoesCodigos.Count >= prova.QteQuestoes)
                         {
-                            diaRealizacao.SimProva.Add(prova);
-                            Repositorio.Commit();
-
                             mensagem = "Prova cadastrada com sucesso neste simulado.";
                             estilo = Lembrete.POSITIVO;
 
@@ -529,6 +526,9 @@ namespace SIAC.Controllers
                             mensagem = "Foi gerada uma quantidade menor de questões para a prova deste simulado.";
                             estilo = Lembrete.NEGATIVO;
                         }
+
+                        diaRealizacao.SimProva.Add(prova);
+                        Repositorio.Commit();
                     }
                 }
             }
@@ -565,23 +565,20 @@ namespace SIAC.Controllers
                         prova.QteQuestoes = int.Parse(txtQteQuestoes);
                         prova.CodDisciplina = int.Parse(ddlDisciplina);
 
-                        List<Questao> questoes = Simulado.ObterQuestoes(prova.CodDisciplina, prova.QteQuestoes);
+                        List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, prova.QteQuestoes);
 
                         prova.SimProvaQuestao.Clear();
 
-                        foreach (Questao questao in questoes)
+                        foreach (int codQuestao in questoesCodigos)
                         {
                             prova.SimProvaQuestao.Add(new SimProvaQuestao()
                             {
-                                Questao = questao
+                                CodQuestao = codQuestao
                             });
                         }
 
-                        if (questoes.Count >= prova.QteQuestoes)
+                        if (questoesCodigos.Count >= prova.QteQuestoes)
                         {
-                            diaRealizacao.SimProva.Add(prova);
-                            Repositorio.Commit();
-
                             mensagem = "Prova editada com sucesso neste simulado.";
                             estilo = Lembrete.POSITIVO;
                         }
@@ -590,6 +587,9 @@ namespace SIAC.Controllers
                             mensagem = "Foi gerada uma quantidade menor de questões para a prova deste simulado.";
                             estilo = Lembrete.NEGATIVO;
                         }
+
+                        diaRealizacao.SimProva.Add(prova);
+                        Repositorio.Commit();
                     }
                 }
             }
@@ -689,13 +689,33 @@ namespace SIAC.Controllers
                         case "Liberar":
                             if (sim.CadastroCompleto)
                             {
-                                sim.FlagInscricaoEncerrado = false;
-                                mensagem = "As inscrições foram liberadas com sucesso.";
-                                estilo = Lembrete.POSITIVO;
+                                if (sim.QteVagas <= sim.SimSala.Sum(s => s.Sala.Capacidade))
+                                {
+                                    bool valido = true;
+                                    foreach(SimProva prova in sim.Provas)
+                                    {
+                                        if(prova.QteQuestoes != prova.SimProvaQuestao.Count)
+                                        {
+                                            valido = false;
+                                            Lembrete.AdicionarNotificacao($"A prova de {prova.Titulo} não tem questões suficientes para realização.", Lembrete.NEGATIVO);
+                                        }
+                                    }
+                                    if (valido)
+                                    {
+                                        sim.FlagInscricaoEncerrado = false;
+                                        mensagem = "As inscrições foram liberadas com sucesso.";
+                                        estilo = Lembrete.POSITIVO;
 
-                                string url = Request.Url.ToString();
-                                string simuladoUrl = url.Remove(url.IndexOf("/")) + Url.Action("Confirmar", "Inscricao", new { codigo = sim.Codigo });
-                                EnviarEmail.NovoSimuladoDisponivel(Candidato.Listar(), simuladoUrl, sim.Titulo);
+                                        string url = Request.Url.ToString();
+                                        string simuladoUrl = url.Remove(url.IndexOf("/")) + Url.Action("Confirmar", "Inscricao", new { codigo = sim.Codigo });
+                                        EnviarEmail.NovoSimuladoDisponivel(Candidato.Listar(), simuladoUrl, sim.Titulo);
+                                    }
+                                }
+                                else
+                                {
+                                    mensagem = "É necessário ter a capacidade das salas superior a quantidade de vagas do simulado.";
+                                    estilo = Lembrete.NEGATIVO;
+                                }
                             }
                             else
                             {
@@ -940,5 +960,50 @@ namespace SIAC.Controllers
             Lembrete.AdicionarNotificacao(mensagem, estilo);
             return RedirectToAction("Respostas", new { codigo = codigo });
         }
+
+        //[HttpPost]
+        //public ActionResult MapearSalas(string codigo)
+        //{
+        //    string mensagem = "Ocorreu um erro na operação.";
+        //    string estilo = Lembrete.NEGATIVO;
+        //    //string txtNovoPrazo = form["txtNovoPrazo"];
+
+        //    if (!StringExt.IsNullOrWhiteSpace(codigo/*, txtNovoPrazo*/))
+        //    {
+        //        Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+        //        if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+        //        {
+        //            DateTime novoPrazo = DateTime.Parse("23:59:59", new CultureInfo("pt-BR"));
+
+        //            if (novoPrazo < DateTime.Now)
+        //            {
+        //                mensagem = "A nova data de término não pode ser inferior à hoje.";
+        //                estilo = Lembrete.NEGATIVO;
+        //            }
+        //            else if (novoPrazo >= sim.SimDiaRealizacao?.First().DtRealizacao)
+        //            {
+        //                mensagem = "A data de termino de inscrição tem que ser antes do primeiro dia de prova do simulado.";
+        //                estilo = Lembrete.NEGATIVO;
+        //            }
+
+        //            else
+        //            {
+        //                mensagem = "O prazo foi alterado com sucesso.";
+        //                estilo = Lembrete.POSITIVO;
+        //                sim.DtTerminoInscricao = novoPrazo;
+        //                Repositorio.Commit();
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        mensagem = "A nova data de término da inscrição é obrigatória.";
+        //        estilo = Lembrete.NEGATIVO;
+        //    }
+
+        //    Lembrete.AdicionarNotificacao(mensagem, estilo);
+        //    return RedirectToAction("Detalhe", new { codigo = codigo });
+        //}
     }
 }
