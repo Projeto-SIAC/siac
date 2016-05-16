@@ -622,6 +622,20 @@ siac.Simulado.Detalhe = (function () {
         $('.alterar.prazo.item').click(function () {
             $('.alterar.prazo.modal').modal('show');
         });
+
+        $('.mapear.item').click(function () {
+            $('.mapear.modal').modal({
+                onApprove: function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/simulado/mapearsalas/' + _codigo,
+                        complete: function () {
+                            location.reload();
+                        }
+                    })
+                }
+            }).modal('show');
+        });
     }
 
     return {

@@ -961,49 +961,46 @@ namespace SIAC.Controllers
             return RedirectToAction("Respostas", new { codigo = codigo });
         }
 
-        //[HttpPost]
-        //public ActionResult MapearSalas(string codigo)
-        //{
-        //    string mensagem = "Ocorreu um erro na operação.";
-        //    string estilo = Lembrete.NEGATIVO;
-        //    //string txtNovoPrazo = form["txtNovoPrazo"];
+        [HttpPost]
+        public ActionResult MapearSalas(string codigo)
+        {
+            string mensagem = "Ocorreu um erro na operação.";
+            string estilo = Lembrete.NEGATIVO;
 
-        //    if (!StringExt.IsNullOrWhiteSpace(codigo/*, txtNovoPrazo*/))
-        //    {
-        //        Simulado sim = Simulado.ListarPorCodigo(codigo);
+            if (!StringExt.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-        //        if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
-        //        {
-        //            DateTime novoPrazo = DateTime.Parse("23:59:59", new CultureInfo("pt-BR"));
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
 
-        //            if (novoPrazo < DateTime.Now)
-        //            {
-        //                mensagem = "A nova data de término não pode ser inferior à hoje.";
-        //                estilo = Lembrete.NEGATIVO;
-        //            }
-        //            else if (novoPrazo >= sim.SimDiaRealizacao?.First().DtRealizacao)
-        //            {
-        //                mensagem = "A data de termino de inscrição tem que ser antes do primeiro dia de prova do simulado.";
-        //                estilo = Lembrete.NEGATIVO;
-        //            }
+                    List<SimCandidato> candidatos = sim.SimCandidato.OrderBy(c => c.Candidato.Nome).ToList();
+                    List<SimSala> salas = sim.SimSala.ToList();
 
-        //            else
-        //            {
-        //                mensagem = "O prazo foi alterado com sucesso.";
-        //                estilo = Lembrete.POSITIVO;
-        //                sim.DtTerminoInscricao = novoPrazo;
-        //                Repositorio.Commit();
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        mensagem = "A nova data de término da inscrição é obrigatória.";
-        //        estilo = Lembrete.NEGATIVO;
-        //    }
+                    int indice = 1;
+                    int salaIndex = 0;
+                    SimSala sala = salas[salaIndex];
 
-        //    Lembrete.AdicionarNotificacao(mensagem, estilo);
-        //    return RedirectToAction("Detalhe", new { codigo = codigo });
-        //}
+                    foreach(SimCandidato candidato in candidatos)
+                    {
+                        if (indice > sala.Sala.Capacidade)
+                        {
+                            sala = salas[++salaIndex];
+                            indice = 1;
+                        }
+
+                        candidato.CodSala = sala.CodSala;
+                        indice++;
+                    }
+                    
+                    mensagem = "As salas foram mapeadas com sucesso.";
+                    estilo = Lembrete.POSITIVO;
+                    Repositorio.Commit();
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
+            return RedirectToAction("Detalhe", new { codigo = codigo });
+        }
     }
 }

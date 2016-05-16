@@ -79,8 +79,12 @@
                         <i class="unlock alternate green icon"></i>
                         Liberar Inscrições
                     </div>
+                    <div class="mapear item">
+                        <i class="building outline green icon"></i>
+                        Mapear Salas
+                    </div>
                 }
-                else if(Model.DtTerminoInscricao > DateTime.Now)
+                else if (Model.DtTerminoInscricao > DateTime.Now)
                 {
                     <div class="bloquear item">
                         <i class="ban red icon"></i>
@@ -229,6 +233,21 @@
     </div>
 </form>
 
+<div class="ui mapear small modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Mapear Salas para os Candidatos?
+    </div>
+    <div class="content">
+        <div class="description">
+            <p>Esta função definirá os locais de prova dos candidatos baseando na ordem alfabética deles e na ordem de cadastro das salas.</p>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui button">Cancelar</div>
+        <div class="ui green approve button">Mapear Salas</div>
+    </div>
+</div>
 
 <div class="ui basic segment">
     <div class="ui dividing header">
