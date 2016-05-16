@@ -91,7 +91,7 @@ namespace SIAC.Controllers
                         Repositorio.Commit();
 
                         string url = Request.Url.ToString();
-                        string simuladoUrl = url.Remove(url.IndexOf("/")) + Url.Action("Inscricoes", "Candidato", new { codigo = s.Codigo });
+                        string simuladoUrl = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("Inscricoes", "Candidato", new { codigo = s.Codigo });
 
                         EnviarEmail.Inscricao(Sessao.Candidato.Email, Sessao.Candidato.Nome, simuladoUrl, s.Titulo);
 

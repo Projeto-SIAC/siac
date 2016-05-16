@@ -163,7 +163,7 @@ namespace SIAC.Controllers
                             return View(sim);
                         }
 
-                        if (sim.DtTerminoInscricao >= sim.SimDiaRealizacao?.First().DtRealizacao)
+                        if (sim.DtTerminoInscricao >= sim.SimDiaRealizacao?.FirstOrDefault()?.DtRealizacao)
                         {
                             Lembrete.AdicionarNotificacao("A data de término das inscrições tem que ser antes do primeiro dia de prova.", Lembrete.NEGATIVO);
                             return View(sim);
@@ -311,7 +311,7 @@ namespace SIAC.Controllers
 
                         SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.DtRealizacao.Date == dataRealizacao.Date);
 
-                        if (dataRealizacao >= sim.DtTerminoInscricao)
+                        if (dataRealizacao <= sim.DtTerminoInscricao)
                         {
                             mensagem = "A data da prova tem que ser superior à data de termino de inscrição do simulado.";
                             estilo = Lembrete.NEGATIVO;
@@ -694,7 +694,7 @@ namespace SIAC.Controllers
                                 estilo = Lembrete.POSITIVO;
 
                                 string url = Request.Url.ToString();
-                                string simuladoUrl = url.Remove(url.IndexOf("/")) + Url.Action("Confirmar", "Inscricao", new { codigo = sim.Codigo });
+                                string simuladoUrl = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("Confirmar", "Inscricao", new { codigo = sim.Codigo });
                                 EnviarEmail.NovoSimuladoDisponivel(Candidato.Listar(), simuladoUrl, sim.Titulo);
                             }
                             else
