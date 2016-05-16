@@ -12,7 +12,7 @@
 
 @Html.Partial("_SimuladoInformacoes", Model.Simulado)
 
-@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 4 }, { "Simulado", Model.Simulado } })
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 3 }, { "Simulado", Model.Simulado } })
 
 <div class="ui segment">
     <form class="ui form" method="post">
@@ -78,7 +78,7 @@
                     <td sala-sigla>@simSala.Sala.Sigla</td>
                     <td>@simSala.Sala.Capacidade</td>
                     <td>
-                        <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Esta ação não poderá ser desfeita</p><a data-sala='@(simSala.CodSala)' class='ui remover mini button'>Confirmar</a></div>" class="ui tiny button"><i class="trash icon"></i>Remover</div>
+                        <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Esta ação não poderá ser desfeita</p><a data-sala='@(simSala.CodSala)' class='ui remover small button'>Confirmar</a></div>" class="ui tiny button"><i class="trash icon"></i>Remover</div>
                     </td>
                 </tr>
             }
@@ -86,7 +86,7 @@
     </table>
 </div>
 <a href="@Url.Action("Detalhe",new { codigo = Model.Simulado.Codigo })" class="ui button" tabindex="0">Voltar para Detalhe</a>
-<a href="@Url.Action("Detalhe",new { codigo = Model.Simulado.Codigo })" class="ui right floated button" tabindex="0">Finalizar</a>
+<a href="@Url.Action("Provas",new { codigo = Model.Simulado.Codigo })" class="ui right floated button" tabindex="0">Avançar</a>
 
 @section Scripts {
     <script id="blocos" type="application/json">

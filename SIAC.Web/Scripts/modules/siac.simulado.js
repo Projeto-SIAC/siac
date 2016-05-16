@@ -115,6 +115,8 @@ siac.Simulado.Provas = (function () {
         $('.provas.button').click(function () {
             carregarProvas($(this));
         });
+
+        siac.Simulado.adicionarEventoNoFormulario();
     }
 
     function validarNovoDia() {
@@ -202,6 +204,7 @@ siac.Simulado.Provas = (function () {
             },
             complete: function () {
                 $button.removeClass('loading');
+                siac.Simulado.adicionarEventoNoFormulario();
             }
         })
     }
@@ -235,6 +238,7 @@ siac.Simulado.Provas = (function () {
             },
             complete: function () {
                 $button.removeClass('loading');
+                siac.Simulado.adicionarEventoNoFormulario();
             }
         })
     }
@@ -254,6 +258,8 @@ siac.Simulado.Provas = (function () {
         $form.modal({
             closable: false
         }).modal('show').data('dia', codDia);
+
+        siac.Simulado.adicionarEventoNoFormulario();
     }
 
     function removerProva(codDia, $button) {
@@ -278,6 +284,7 @@ siac.Simulado.Provas = (function () {
             },
             complete: function () {
                 $button.removeClass('loading');
+                siac.Simulado.adicionarEventoNoFormulario();
             }
         })
     }
@@ -308,6 +315,7 @@ siac.Simulado.Provas = (function () {
             },
             complete: function () {
                 $button.removeClass('loading');
+                siac.Simulado.adicionarEventoNoFormulario();
             }
         })
     }

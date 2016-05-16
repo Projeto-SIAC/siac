@@ -10,7 +10,7 @@
 
 @Html.Partial("_SimuladoInformacoes")
 
-@Html.Partial("_PassoAPasso", new ViewDataDictionary() {{ "Passo", 3 }, { "Simulado", Model } })
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() {{ "Passo", 2 }, { "Simulado", Model } })
 
 <div class="ui confirmar modal">
     <div class="header">
@@ -39,10 +39,6 @@
             <label data-ajuda="Defina abaixo a data de término do prazo de abertura das inscrições deste simulado.">Defina a data de término das inscrições</label>
             <input id="txtTerminoInscricao" value="@(Model.DtTerminoInscricao?.ToString("ddMMyyyy"))" name="txtTerminoInscricao" type="text" autocomplete="off" data-mask="00/00/0000" placeholder="Data de Término" required />
         </div>
-        @*<div class="field required">
-            <label data-ajuda="Forneça abaixo a quantidade limite de vagas para as inscrições.">Forneça a quantidade de vagas</label>
-            <input id="txtQteVagas" value="@Model.QteVagas" name="txtQteVagas" type="number" autocomplete="off" placeholder="Quantidade de Vagas" required />
-        </div>*@
     </div>
     <a href="@Url.Action("Detalhe", new { codigo = Model.Codigo })" class="ui cancelar button">Voltar para Detalhe</a>
     <button class="ui right floated confirmar button" tabindex="0">Avançar</button>

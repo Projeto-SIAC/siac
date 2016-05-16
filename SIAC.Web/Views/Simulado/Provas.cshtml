@@ -10,7 +10,7 @@
 
 @Html.Partial("_SimuladoInformacoes", Model.Simulado)
 
-@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 2 }, { "Simulado", Model.Simulado } })
+@Html.Partial("_PassoAPasso", new ViewDataDictionary() { { "Passo", 4 }, { "Simulado", Model.Simulado } })
 
 <h3 class="header">
     Dias de Realização
@@ -117,13 +117,13 @@
     </div>
     <div class="actions">
         <input type="reset" value="Cancelar" class="ui cancel button" />
-        <input type="submit" value="Cadastrar" class="ui approve button" />
+        <button type="submit" class="ui button">Cadastrar</button>
     </div>
 </form>
 
 
 <a href="@Url.Action("Detalhe", new { codigo = Model.Simulado.Codigo })" class="ui cancelar button">Voltar para Detalhe</a>
-<a href="@Url.Action("Datas", new { codigo = Model.Simulado.Codigo })" class="ui right floated button" tabindex="0">Avançar</a>
+<a href="@Url.Action("Detalhe", new { codigo = Model.Simulado.Codigo })" class="ui right floated button" tabindex="0">Avançar</a>
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/simulado")

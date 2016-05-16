@@ -42,10 +42,6 @@
                     <i class="edit icon"></i>
                     Editar Dados
                 </div>
-                <a href="@Url.Action("Provas", new { codigo = Model.Codigo })" class="item">
-                    <i class="copy icon"></i>
-                    Gerenciar Provas
-                </a>
                 <a href="@Url.Action("Datas", new { codigo = Model.Codigo })" class="item">
                     <i class="wait icon"></i>
                     Gerenciar Datas
@@ -53,6 +49,10 @@
                 <a href="@Url.Action("Salas", new { codigo = Model.Codigo })" class="item">
                     <i class="marker icon"></i>
                     Selecionar Salas
+                </a>
+                <a href="@Url.Action("Provas", new { codigo = Model.Codigo })" class="item">
+                    <i class="copy icon"></i>
+                    Gerenciar Provas
                 </a>
                 @if (Model.FlagInscricaoAberta)
                 {

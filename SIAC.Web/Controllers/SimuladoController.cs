@@ -46,7 +46,7 @@ namespace SIAC.Controllers
 
                 Simulado.Inserir(sim);
                 Lembrete.AdicionarNotificacao("Simulado cadastrado com sucesso.", Lembrete.POSITIVO);
-                return RedirectToAction("Provas", new { codigo = sim.Codigo });
+                return RedirectToAction("Datas", new { codigo = sim.Codigo });
             }
             Lembrete.AdicionarNotificacao("Ocorreu um erro na operação.", Lembrete.NEGATIVO);
             return RedirectToAction("Novo");
