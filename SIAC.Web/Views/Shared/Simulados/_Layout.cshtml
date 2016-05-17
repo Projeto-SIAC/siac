@@ -2,7 +2,7 @@
 
 @{ 
     string path = Request.Url.PathAndQuery.ToLower();
-    bool acessarOuCadastrar = path.Contains("acessar") || path.Contains("cadastrar");
+    bool acessarOuCadastrar = path.Contains("acessar") || path.Contains("cadastrar") || path.Contains("senha");
     bool conectado = Sessao.Candidato != null;
 }
 

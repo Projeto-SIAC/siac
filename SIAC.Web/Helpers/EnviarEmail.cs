@@ -101,5 +101,15 @@ namespace SIAC.Helpers
             var viewname = "CartaoDeInscricaoDisponivel";
             await Task.Run(() => EnviarParaMuitos(candidatos.Select(c => c.Email).ToArray(), assunto, viewname, model));
         }
+
+        public static async Task SolicitarSenha(string email, string nome, string url)
+        {
+            var model = new
+            {
+                Nome = nome,
+                Url = url
+            };
+            await Task.Run(() => Enviar(email, "Alterar senha no SIAC Simulados", "Senha", model));
+        }
     }
 }

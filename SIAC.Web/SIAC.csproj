@@ -624,6 +624,8 @@
     <Compile Include="ViewModels\AvaliacaoGerarViewModel.cs" />
     <Compile Include="ViewModels\AvaliacaoIndexViewModel.cs" />
     <Compile Include="ViewModels\AvaliacaoResultadoViewModel.cs" />
+    <Compile Include="ViewModels\CandidatoAlterarSenhaViewModel.cs" />
+    <Compile Include="ViewModels\CandidatoEsqueceuSenhaViewModel.cs" />
     <Compile Include="ViewModels\CandidatoCadastrarViewModel.cs" />
     <Compile Include="ViewModels\CandidatoAcessarViewModel.cs" />
     <Compile Include="ViewModels\CandidatoIndexViewModel.cs" />
@@ -860,6 +862,9 @@
     <Content Include="Views\Simulado\Partials\_SimuladoSalaCandidatos.cshtml" />
     <Content Include="Views\Shared\Email\__CartaoDeInscricaoDisponivel.cshtml" />
     <Content Include="Views\Shared\Email\__Mensagem.cshtml" />
+    <Content Include="Views\Shared\Email\__Senha.cshtml" />
+    <Content Include="Views\Candidato\EsqueceuSenha.cshtml" />
+    <Content Include="Views\Candidato\AlterarSenha.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

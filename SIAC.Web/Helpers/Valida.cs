@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace SIAC.Helpers
@@ -9,6 +10,8 @@ namespace SIAC.Helpers
     {
         public static bool CPF(string cpf)
         {
+            cpf = Formate.DeCPF(cpf);
+
             int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
             int[] multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
             string tempCpf;
@@ -51,6 +54,12 @@ namespace SIAC.Helpers
             digito = digito + resto.ToString();
 
             return cpf.EndsWith(digito);
+        }
+
+        public static bool Email(string email)
+        {
+            Regex rgx = new Regex(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$");
+            return rgx.IsMatch(email);
         }
     }
 }

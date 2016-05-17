@@ -123,7 +123,7 @@ namespace SIAC.Controllers
         [CandidatoFilter]
         public ActionResult Perfil() => View(new CandidatoPerfilViewModel()
         {
-            Mensagem = (string)TempData["Mensagem"],
+            Mensagem = (String)TempData["Mensagem"],
             Paises = Municipio.ListarPaisesOrdenadamente(),
             Estados = Municipio.ListarEstadosOrdenadamente(),
             Municipios = Municipio.ListarOrdenadamente()
@@ -207,10 +207,10 @@ namespace SIAC.Controllers
             });
         }
 
-        // POST: simulado/candidato/alterarsenha
+        // POST: simulado/candidato/atualizarsenha
         [HttpPost]
         [CandidatoFilter]
-        public ActionResult AlterarSenha(string senhaAtual, string senhaNova, string senhaConfirmacao)
+        public ActionResult AtualizarSenha(string senhaAtual, string senhaNova, string senhaConfirmacao)
         {
             string mensagem = "Ocorreu um erro ao tentar alterar a senha.";
             if (!StringExt.IsNullOrWhiteSpace(senhaAtual, senhaNova, senhaConfirmacao))
@@ -296,6 +296,102 @@ namespace SIAC.Controllers
                 }
             }
             return null;
+        }
+
+        // GET: simulado/candidato/esqueceusenha
+        public ActionResult EsqueceuSenha() => View(new CandidatoEsqueceuSenhaViewModel
+        {
+            Mensagem = (String)TempData["EsqueceuSenhaMensagem"]
+        });
+
+        // POST: simulado/candidato/esqueceusenha
+        [HttpPost]
+        public ActionResult EsqueceuSenha(CandidatoEsqueceuSenhaViewModel model)
+        {
+            if (!StringExt.IsNullOrWhiteSpace(model.Cpf, model.Email) && Valida.CPF(model.Cpf) && Valida.Email(model.Email))
+            {
+                Candidato c = Candidato.ListarPorCPF(Formate.DeCPF(model.Cpf));
+
+                if (c != null && c.Email.ToLower() == model.Email.ToLower())
+                {
+                    string token = Candidato.GerarTokenParaAlterarSenha(c.Cpf, c.Email);
+                    string url = Request.Url.ToString();
+                    url = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("AlterarSenha", "Candidato", new { codigo = "" }) + $"/{token}";
+                    EnviarEmail.SolicitarSenha(c.Email, c.Nome, url);
+                    TempData["EsqueceuSenhaMensagem"] = $"Um email com instruções foi enviado para {model.Email}.";
+                    return RedirectToAction("EsqueceuSenha");
+                }
+                else
+                {
+                    model.Mensagem = "Não foi encontrado nenhum candidato para os dados informados.";
+                }
+            }
+            else
+            {
+                model.Mensagem = "Todos os campos devem serem preenchidos com valores válidos.";
+            }
+            return View(model);
+        }
+
+        // GET: simulado/candidato/alterarsenha/{token}
+        public ActionResult AlterarSenha(string codigo)
+        {
+            string token = Uri.UnescapeDataString(codigo);
+            var valores = Candidato.LerTokenParaAlterarSenha(token);
+            if (!valores.Expirado)
+            {
+                return View(new CandidatoAlterarSenhaViewModel
+                {
+                    Cpf = valores.Cpf,
+                    Email = valores.Email
+                });
+            }
+            return RedirectToAction("Index");
+        }
+
+        // POST: simulado/candidato/alterarsenha/{token}
+        [HttpPost]
+        public ActionResult AlterarSenha(string codigo, CandidatoAlterarSenhaViewModel model)
+        {
+            string token = Uri.UnescapeDataString(codigo);
+            var valores = Candidato.LerTokenParaAlterarSenha(token);
+            if (!valores.Expirado)
+            {
+                if (!StringExt.IsNullOrWhiteSpace(model.Cpf, model.Email, model.Senha, model.Confirmacao)
+                    && Valida.CPF(model.Cpf) 
+                    && Valida.Email(model.Email) 
+                    && model.Senha == model.Confirmacao)
+                {
+                    using (var contexto = new dbSIACEntities())
+                    {
+                        string cpf = Formate.DeCPF(model.Cpf);
+                        Candidato c = contexto.Candidato.FirstOrDefault(cand => cand.Cpf == cpf);
+
+                        if (c != null && c.Email.ToLower() == model.Email.ToLower())
+                        {
+                            if (c.Cpf == valores.Cpf && c.Email.ToLower() == valores.Email.ToLower())
+                            {
+                                c.Senha = Criptografia.RetornarHash(model.Senha);
+                                model.Mensagem = "Senha alterada com sucesso.";
+                                model.Ok = true;
+                                contexto.SaveChanges();
+                                return View(model);
+                            }
+                        }
+                        else
+                        {
+                            model.Mensagem = "Não foi encontrado nenhum candidato para os dados informados.";
+                        }
+                    }                    
+                }
+                else
+                {
+                    model.Mensagem = "Todos os campos devem serem preenchidos com valores válidos.";
+                }
+
+                return View(model);
+            }
+            return RedirectToAction("Index");
         }
     }
 }

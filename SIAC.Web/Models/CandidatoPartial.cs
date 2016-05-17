@@ -61,5 +61,29 @@ namespace SIAC.Models
             contexto.SaveChanges();
             return candidato.CodCandidato;
         }
+
+        public static string GerarTokenParaAlterarSenha(string cpf, string email)
+        {
+            string token = $"{Criptografia.Base64Encode(cpf)}.{Criptografia.Base64Encode(email)}.{Criptografia.Base64Encode(DateTime.Now.AddDays(7).ToUnixTime().ToString())}";
+            return token;
+        }
+
+        public static dynamic LerTokenParaAlterarSenha(string token)
+        {
+            string[] valores = token.Split('.');
+
+            string cpf = Criptografia.Base64Decode(valores[0]);
+            string email = Criptografia.Base64Decode(valores[1]);
+            string unixTime = Criptografia.Base64Decode(valores[2]);
+            long expiracao = Convert.ToInt64(unixTime);
+            bool expirado = DateTime.Now.ToUnixTime() > expiracao; 
+
+            return new
+            {
+                Cpf = cpf,
+                Email = email,
+                Expirado = expirado
+            };
+        }
     }
 }

@@ -1,0 +1,33 @@
+﻿@model CandidatoEsqueceuSenhaViewModel
+
+@{
+    ViewBag.Title = "Esqueceu a senha?";
+    Layout = "~/Views/Shared/Simulados/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>Solicite uma alteração de senha.</p>
+
+@if (Model.TemMensagem)
+{
+    <div class="ui message">
+        <p>@Model.Mensagem</p>
+    </div>
+}
+<form method="post" class="ui form">
+    <div class="field required">
+        <label>CPF</label>
+        <input type="text" name="Cpf" placeholder="CPF" autocomplete="off" data-mask="000.000.000-00" value="@Model.Cpf" required />
+    </div>
+    <div class="field required">
+        <label>Email</label>
+        <input type="email" name="Email" placeholder="Email" autocomplete="off" value="@Model.Email" required />
+    </div>
+    <input type="submit" value="Solicitar" class="ui primary button" />
+    <a href="@Url.Action("Acessar")" class="ui right floated basic button">Tenho cadastro</a>
+    <a href="@Url.Action("Cadastrar")" class="ui right floated basic button">Não sou cadastrado</a>
+</form>
+
+
+

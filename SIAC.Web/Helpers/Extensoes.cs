@@ -320,6 +320,12 @@ namespace SIAC
         {
             return dt.ToString("dd/MM/yyyy' às 'HH'h'mm");
         }
+
+        public static long ToUnixTime(this DateTime dt)
+        {
+            var timeSpan = (dt - new DateTime(1970, 1, 1, 0, 0, 0));
+            return (long)timeSpan.TotalSeconds;
+        }
         #endregion
 
         // List<AvaliacaoTema>
