@@ -1054,5 +1054,31 @@ namespace SIAC.Controllers
             }
             return null;
         }
+
+        [HttpPost]
+        public ActionResult FinalizarProvas(string codigo)
+        {
+            string mensagem = "Ocorreu um erro na operação.";
+            string estilo = Lembrete.NEGATIVO;
+
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
+                    
+                    sim.FlagProvaEncerrada = true;
+                    mensagem = "As provas foram finalizadas com sucesso.";
+                    estilo = Lembrete.POSITIVO;
+
+                    Repositorio.Commit();
+
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
+            return RedirectToAction("Detalhe", new { codigo = codigo });
+        }
     }
 }

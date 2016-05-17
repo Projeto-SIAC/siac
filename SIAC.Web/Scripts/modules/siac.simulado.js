@@ -686,6 +686,21 @@ siac.Simulado.Detalhe = (function () {
                 }
             });
         });
+
+        $('.finalizar.provas.item').click(function () {
+            $('.finalizar.provas.modal').modal({
+                onApprove: function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/simulado/finalizarprovas/' + _codigo,
+                        complete: function () {
+                            location.reload();
+                        }
+                    })
+                }
+            }).modal('show');
+        });
+
         siac.Simulado.adicionarEventoNoFormulario();
     }
 
