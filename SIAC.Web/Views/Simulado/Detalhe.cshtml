@@ -83,6 +83,10 @@
                             <i class="edit icon"></i>
                             Inserir Respostas
                         </a>
+                        <div class="calcular resultados item">
+                            <i class="calculator icon"></i>
+                            Calcular Resultados
+                        </div>
                     }
                 }
                 <div class="divider"></div>
@@ -94,7 +98,7 @@
                         Liberar Inscrições
                     </div>
                     <div class="mapear item">
-                        <i class="building outline green icon"></i>
+                        <i class="building outline icon"></i>
                         Mapear Salas
                     </div>
                 }
@@ -103,6 +107,13 @@
                     <div class="bloquear item">
                         <i class="ban red icon"></i>
                         Bloquear Inscrições
+                    </div>
+                }
+                @if (!Model.FlagProvaEncerrada && Model.SimDiaRealizacao.Last().DtRealizacao < DateTime.Now)
+                {
+                    <div class="finalizar provas item">
+                        <i class="file red icon"></i>
+                        Indicar provas encerradas
                     </div>
                 }
                 <div class="encerrar item">
@@ -284,6 +295,38 @@
 
 <div class="ui sala candidato modal">
     @* Espaço para listagem de candidato por sala *@
+</div>
+
+<div class="ui finalizar provas small modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Indicar o encerramento das provas?
+    </div>
+    <div class="content">
+        <div class="description">
+            <p>Esta função finalizará as provas, permitindo a inserção das respostas e divulgação final do resultado do simulado.</p>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Cancelar</div>
+        <div class="ui red approve button">Finalizar Provas</div>
+    </div>
+</div>
+
+<div class="ui calcular resultados small modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Calcular resultados finais do simulado?
+    </div>
+    <div class="content">
+        <div class="description">
+            <p>Esta função irá calcular os escores finais dos candidatos que tiveram suas repostas fornecidas.</p>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Cancelar</div>
+        <div class="ui red approve button">Calcular Resultados</div>
+    </div>
 </div>
 
 <div class="ui basic segment">

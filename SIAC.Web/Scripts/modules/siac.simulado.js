@@ -686,6 +686,36 @@ siac.Simulado.Detalhe = (function () {
                 }
             });
         });
+
+        $('.finalizar.provas.item').click(function () {
+            $('.finalizar.provas.modal').modal({
+                onApprove: function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/simulado/finalizarprovas/' + _codigo,
+                        complete: function () {
+                            location.reload();
+                        }
+                    })
+                }
+            }).modal('show');
+        });
+
+        $('.calcular.resultados.item').click(function () {
+            $('.calcular.resultados.modal').modal({
+                onApprove: function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/simulado/calcularresultados/' + _codigo,
+                        complete: function () {
+                            location.reload();
+                        }
+                    })
+                }
+            }).modal('show');
+        });
+
+
         siac.Simulado.adicionarEventoNoFormulario();
     }
 
