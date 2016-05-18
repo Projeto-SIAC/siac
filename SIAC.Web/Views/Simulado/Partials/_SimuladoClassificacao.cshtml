@@ -1,0 +1,38 @@
+﻿@model Simulado
+@{ 
+    int classificacao = 1;
+}
+<i class="close icon"></i>
+<div class="header">
+    Classificação do Simulado @Model.Titulo
+</div>
+<div class="content">
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Nome</th>
+                <th>Inscrição</th>
+                <th>CPF</th>
+                <th>Escore Final</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (SimCandidato candidato in Model.SimCandidato.OrderByDescending(c => c.EscorePadronizadoFinal))
+            {
+                <tr>
+                    <td>@(classificacao++)</td>
+                    <td>@candidato.Candidato.Nome</td>
+                    <td>@candidato.NumInscricaoRepresentacao</td>
+                    <td>@Formate.ParaCPF(candidato.Candidato.Cpf)</td>
+                    <td>@candidato.EscorePadronizadoFinal</td>
+                    <td><div  data-candidato="@candidato.CodCandidato" class="ui icon button"><i class="search icon"></i></div></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="actions">
+    <div class="ui cancel button">Fechar</div>
+</div>

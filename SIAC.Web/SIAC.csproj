@@ -865,6 +865,8 @@
     <Content Include="Views\Shared\Email\__Senha.cshtml" />
     <Content Include="Views\Candidato\EsqueceuSenha.cshtml" />
     <Content Include="Views\Candidato\AlterarSenha.cshtml" />
+    <Content Include="Views\Simulado\Partials\_SimuladoClassificacao.cshtml" />
+    <Content Include="Views\Simulado\Partials\_SimuladoClassificacaoCandidato.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

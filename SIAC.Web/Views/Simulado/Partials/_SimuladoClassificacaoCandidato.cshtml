@@ -1,0 +1,34 @@
+﻿@model SimCandidato
+
+<i class="close icon"></i>
+<div class="header">
+    @Model.Candidato.Nome
+</div>
+<div class="content">
+
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th>Dia</th>
+                <th>Prova</th>
+                <th>Qte. Acertos</th>
+                <th>Escore Padronizado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (SimCandidatoProva prova in Model.SimCandidatoProva.OrderBy(c => c.CodDiaRealizacao).ThenBy(c => c.CodProva))
+            {
+                <tr>
+                    <td>@(prova.CodDiaRealizacao)°</td>
+                    <td>@prova.SimProva.Titulo</td>
+                    <td>@($"{prova.QteAcertos}/{prova.SimProva.QteQuestoes}")</td>
+                    <td><b>@prova.EscorePadronizado</b></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="actions">
+    <div class="ui voltar button">Voltar</div>
+    <div class="ui cancel button">Fechar</div>
+</div>

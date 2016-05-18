@@ -721,8 +721,65 @@ siac.Simulado.Detalhe = (function () {
             }).modal('show');
         });
 
+        $('.classificacao.button').click(function () {
+
+            var $button = $(this),
+                $modal = $('.classificacao.modal');
+
+            $.ajax({
+                type: 'POST',
+                url: '/simulado/classificacao/' + _codigo,
+                beforeSend: function () {
+                    $button.addClass('loading');
+                },
+                success: function (data) {
+                    $modal.html(data);
+                    $modal.find('[data-candidato]').click(function () {
+                        abrirCandidatoDetalhe($(this));
+                    });
+                    $modal.modal('show');
+                },
+                error: function () {
+                    siac.mensagem('Ocorreu um erro na operação.');
+                },
+                complete: function () {
+                    $button.removeClass('loading');
+                }
+            });
+        });
 
         siac.Simulado.adicionarEventoNoFormulario();
+    }
+
+    function abrirCandidatoDetalhe($button) {
+        var $modal = $('.candidato.resultado.modal'),
+            codCandidato = $button.data('candidato');
+
+        $.ajax({
+            type: 'POST',
+            url: '/simulado/classificacaocandidato/' + _codigo,
+            data: {
+                codCandidato: codCandidato
+            },
+            beforeSend: function () {
+                $button.addClass('loading');
+            },
+            success: function (data) {
+                $modal.html(data);
+
+                $modal.find('.voltar.button').click(function () {
+                    $('.classificacao.modal').modal('show');
+                });
+
+                $modal.modal('show');
+            },
+            error: function () {
+                siac.mensagem('Ocorreu um erro na operação.');
+            },
+            complete: function () {
+                $button.removeClass('loading');
+            }
+        });
     }
 
     return {

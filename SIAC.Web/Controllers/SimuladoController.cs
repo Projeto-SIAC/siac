@@ -1141,5 +1141,37 @@ namespace SIAC.Controllers
             Lembrete.AdicionarNotificacao(mensagem, estilo);
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
+
+        [HttpPost]
+        public ActionResult Classificacao(string codigo)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
+                    return PartialView("_SimuladoClassificacao", sim);
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        public ActionResult ClassificacaoCandidato(string codigo, int codCandidato)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                {
+                    SimCandidato candidato = sim.SimCandidato.FirstOrDefault(c => c.CodCandidato == codCandidato);
+
+                    return PartialView("_SimuladoClassificacaoCandidato", candidato);
+                }
+            }
+            return null;
+        }
     }
 }
