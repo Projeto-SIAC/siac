@@ -704,13 +704,19 @@ siac.Simulado.Detalhe = (function () {
         $('.calcular.resultados.item').click(function () {
             $('.calcular.resultados.modal').modal({
                 onApprove: function () {
+                    var $modal = $(this);
                     $.ajax({
                         type: 'POST',
                         url: '/simulado/calcularresultados/' + _codigo,
+                        beforeSend: function(){
+                            $modal.find('.approve.button').addClass('loading');
+                        },
                         complete: function () {
+                            $modal.modal('hide');
                             location.reload();
                         }
-                    })
+                    });
+                    return false;
                 }
             }).modal('show');
         });

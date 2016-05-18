@@ -1105,17 +1105,17 @@ namespace SIAC.Controllers
                     {
                         List<SimCandidatoProva> candidatos = prova.SimCandidatoProva.Where(c => c.FlagPresente.HasValue && c.FlagPresente.Value).ToList();
 
-                        int qcpp = candidatos.Count; //QCPP = Quantidade de Candidatos Presentes à Prova
+                        double qcpp = candidatos.Count; //QCPP = Quantidade de Candidatos Presentes à Prova
                         double maap = candidatos.Sum(c => c.QteAcertos.Value) / qcpp; //MAAP = Média Aritmética dos Acertos da Prova
-                        double Eqac = candidatos.Select(c => Math.Pow(c.QteAcertos.Value, 2)).Sum(); //EQAC = Soma da Quantidade de Acertos dos Candidatos da Prova
-                        double dpap = Math.Sqrt((Eqac / qcpp) - Math.Pow(maap, 2));
+                        double Eqac = candidatos.Select(c => Math.Pow(c.QteAcertos.Value, 2.0)).Sum(); //EQAC = Soma da Quantidade de Acertos dos Candidatos da Prova
+                        double dpap = Math.Sqrt((Eqac / qcpp) - Math.Pow(maap, 2.0)); //DPAP = Desvio Padrão dos Acertos da Prova
 
                         prova.MediaAritmeticaAcerto = Convert.ToDecimal(maap);
                         prova.DesvioPadraoAcerto = Convert.ToDecimal(dpap);
 
                         foreach(SimCandidatoProva candidato in candidatos)
                         {
-                            candidato.EscorePadronizado = Convert.ToDecimal(((candidato.QteAcertos - maap) / dpap) * 100 + 500);
+                            candidato.EscorePadronizado = Convert.ToDecimal(((candidato.QteAcertos - maap) / dpap) * 100.0 + 500.0);
                         }
                     }
 
