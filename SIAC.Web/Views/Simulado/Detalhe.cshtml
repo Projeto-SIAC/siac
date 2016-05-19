@@ -9,31 +9,31 @@
     @ViewBag.Title
     @if (Model.FlagSimuladoEncerrado)
     {
-        <span class="ui label"><i class="lock icon"></i>Encerrado</span>
+        <span data-title="Encerrado" data-content="Não se pode mais realizar nenhuma operação neste simulado." class="ui label"><i class="lock icon"></i>Encerrado</span>
     }
     else if (Model.FlagProvaEncerrada)
     {
-        <span class="ui label"><i class="checkmark box icon"></i>Provas Encerradas</span>
+        <span data-title="Provas Encerradas" data-content="Agora você pode inserir as respostas dos candidatos e calcular os escores finais de cada um." class="ui label"><i class="checkmark box icon"></i>Provas Encerradas</span>
     }
     else if (Model.FlagAguardaPrazoInscricao)
     {
-        <span class="ui label"><i class="calendar icon"></i>Aguardando Prazo de Inscrições </span>
+        <span data-title="Aguardando Prazo de Inscrições" data-content="O simulado já foi completamente cadastrado. Agora tem que se aguardar o prazo de inscrição iniciar para os candidatos se cadastrarem" class="ui label"><i class="calendar icon"></i>Aguardando Prazo de Inscrições </span>
     }
     else if (Model.FlagInscricaoNaoLiberada)
     {
-        <span class="ui label"><i class="wait icon"></i>Inscrições Não Liberadas</span>
+        <span data-title="Inscrições Não Liberadas" data-content="O prazo de inscrição está em vigor, mas é necessário que você libere as inscrições no Atalho de Gerenciamento" class="ui label"><i class="wait icon"></i>Inscrições Não Liberadas</span>
     }
     else if (Model.FlagInscricaoEncerrado || Model.DtTerminoInscricao < DateTime.Now)
     {
-        <span class="ui label"><i class="remove user icon"></i>Inscrições Encerradas</span>
+        <span data-title="Inscrições Encerradas" data-content="Aguarde o início do prazo das provas para voltar a gerenciar o simulado" class="ui label"><i class="remove user icon"></i>Inscrições Encerradas</span>
     }
     else if (Model.FlagInscricaoAberta)
     {
-        <span class="ui label"><i class="add user icon"></i>Inscrições Abertas</span>
+        <span data-title="Inscrições Abertas" data-content="Os candidatos já podem realizar a inscrições neste simulado" class="ui label"><i class="add user icon"></i>Inscrições Abertas</span>
     }
     else
     {
-        <span class="ui label"><i class="certificate icon"></i>Gerado</span>
+        <span data-title="Gerado" data-content="Configure os detalhes do simulado, como: Prazos, Salas, Provas..." class="ui label"><i class="certificate icon"></i>Gerado</span>
     }
     @if (!Model.FlagSimuladoEncerrado)
     {
@@ -93,14 +93,20 @@
                 <div class="header">Configuração</div>
                 @if (Model.FlagInscricaoEncerrado)
                 {
-                    <div class="liberar item">
-                        <i class="unlock alternate green icon"></i>
-                        Liberar Inscrições
-                    </div>
-                    <div class="mapear item">
-                        <i class="building outline icon"></i>
-                        Mapear Salas
-                    </div>
+                    if (Model.DtTerminoInscricao >= DateTime.Now)
+                    {
+                        <div class="liberar item">
+                            <i class="unlock alternate green icon"></i>
+                            Liberar Inscrições
+                        </div>
+                    }
+                    if (DateTime.Now > Model.DtInicioInscricao && Model.SimCandidato.Count > 0)
+                    {
+                        <div class="mapear item">
+                            <i class="building outline icon"></i>
+                            Mapear Salas
+                        </div>
+                    }
                 }
                 else if (Model.DtTerminoInscricao > DateTime.Now)
                 {
@@ -149,11 +155,11 @@
             <tbody>
                 @foreach (SimCandidato candidato in Model.SimCandidato.OrderBy(c => c.NumInscricao))
                 {
-                    <tr>
-                        <td>@candidato.NumInscricaoRepresentacao</td>
-                        <td>@candidato.Candidato.Nome</td>
-                        <td>@Formate.ParaCPF(candidato.Candidato.Cpf)</td>
-                    </tr>
+                <tr>
+                    <td>@candidato.NumInscricaoRepresentacao</td>
+                    <td>@candidato.Candidato.Nome</td>
+                    <td>@Formate.ParaCPF(candidato.Candidato.Cpf)</td>
+                </tr>
                 }
             </tbody>
         </table>
@@ -189,7 +195,7 @@
         <div class="ui form">
             <div class="field required">
                 <label data-ajuda="Forneça na caixa abaixo o título">Forneça o título</label>
-                <input id="txtTitulo" name="txtTitulo" value="@Model.Titulo" maxlength="250" placeholder="Título" required/>
+                <input id="txtTitulo" name="txtTitulo" value="@Model.Titulo" maxlength="250" placeholder="Título" required />
             </div>
             <div class="field">
                 <label data-ajuda="Descreva no espaço abaixo uma descrição para este simulado">Insira uma descrição</label>
@@ -255,7 +261,7 @@
     </div>
 </div>
 
-<form action="@Url.Action("AlterarPrazo", new { codigo = Model.Codigo })" method="post"  class="ui alterar prazo small modal">
+<form action="@Url.Action("AlterarPrazo", new { codigo = Model.Codigo })" method="post" class="ui alterar prazo small modal">
     <i class="close icon"></i>
     <div class="header">
         Expandir prazo das inscrições
@@ -265,11 +271,11 @@
             <div class="two fields required">
                 <div class="field">
                     <label>Data de início das inscrições</label>
-                    <input value="@Model.DtInicioInscricao" data-mask="00/00/0000" readonly/>
+                    <input value="@Model.DtInicioInscricao" data-mask="00/00/0000" readonly />
                 </div>
                 <div class="field">
                     <label>Data de término das inscrições</label>
-                    <input value="@Model.DtTerminoInscricao" data-mask="00/00/0000" readonly/>
+                    <input value="@Model.DtTerminoInscricao" data-mask="00/00/0000" readonly />
                 </div>
             </div>
             <div class="field required">
@@ -356,10 +362,10 @@
             </tr>
             @if (!String.IsNullOrWhiteSpace(Model.Descricao))
             {
-                <tr>
-                    <td><b>Descrição</b></td>
-                    <td>@Model.Descricao</td>
-                </tr>
+            <tr>
+                <td><b>Descrição</b></td>
+                <td>@Model.Descricao</td>
+            </tr>
             }
             <tr>
                 <td><b>Coordenador</b></td>
@@ -407,38 +413,38 @@
         <div class="ui fluid accordion">
             @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao.OrderBy(d => d.DtRealizacao))
             {
-                <div class="title">
-                    <i class="dropdown icon"></i>
-                    <b>@dia.DtRealizacao.DiaRealizacaoRepresentacao()</b>
-                </div>
-                <div class="content">
-                    <table class="ui striped table">
-                        <thead>
-                            <tr>
-                                <th>Título</th>
-                                <th>Disciplina</th>
-                                <th>Prof. Responsável</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (SimProva prova in dia.SimProva)
+            <div class="title">
+                <i class="dropdown icon"></i>
+                <b>@dia.DtRealizacao.DiaRealizacaoRepresentacao()</b>
+            </div>
+            <div class="content">
+                <table class="ui striped table">
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Disciplina</th>
+                            <th>Prof. Responsável</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (SimProva prova in dia.SimProva)
                             {
-                                <tr>
-                                    <td>@prova.Titulo <div class="ui small label">@prova.QteQuestoes Questões</div></td>
-                                    <td>@prova.Disciplina.Descricao</td>
-                                    @if (prova.Professor != null)
+                            <tr>
+                                <td>@prova.Titulo <div class="ui small label">@prova.QteQuestoes Questões</div></td>
+                                <td>@prova.Disciplina.Descricao</td>
+                                @if (prova.Professor != null)
                                     {
-                                        <td>provas[i].Professor.Usuario.PessoaFisica.PrimeiroNome</td>
+                                    <td>provas[i].Professor.Usuario.PessoaFisica.PrimeiroNome</td>
                                     }
                                     else
                                     {
-                                        <td>Nâo Definido</td>
+                                    <td>Nâo Definido</td>
                                     }
-                                </tr>
+                            </tr>
                             }
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
+            </div>
             }
         </div>
     </div>
@@ -466,14 +472,14 @@
             <tbody>
                 @foreach (SimSala simSala in Model.SimSala)
                 {
-                    <tr>
-                        <td data-content="@simSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia">@simSala.Sala.Bloco.Campus.Sigla</td>
-                        <td data-content="@simSala.Sala.Bloco.Descricao">@simSala.Sala.Bloco.Sigla</td>
-                        <td>@simSala.Sala.Descricao</td>
-                        <td>@simSala.Sala.Sigla</td>
-                        <td>@simSala.Sala.Capacidade</td>
-                        <td><div data-sala="@simSala.CodSala" class="ui icon button"><i class="search icon"></i></div></td>
-                    </tr>
+                <tr>
+                    <td data-content="@simSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia">@simSala.Sala.Bloco.Campus.Sigla</td>
+                    <td data-content="@simSala.Sala.Bloco.Descricao">@simSala.Sala.Bloco.Sigla</td>
+                    <td>@simSala.Sala.Descricao</td>
+                    <td>@simSala.Sala.Sigla</td>
+                    <td>@simSala.Sala.Capacidade</td>
+                    <td><div data-sala="@simSala.CodSala" class="ui icon button"><i class="search icon"></i></div></td>
+                </tr>
                 }
             </tbody>
         </table>
