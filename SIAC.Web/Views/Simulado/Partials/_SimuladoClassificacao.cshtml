@@ -1,6 +1,7 @@
 ﻿@model Simulado
 @{ 
-    int classificacao = 1;
+    int classificacao = 0;
+    decimal? ultimo = -1;
 }
 <i class="close icon"></i>
 <div class="header">
@@ -19,16 +20,17 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (SimCandidato candidato in Model.SimCandidato.OrderByDescending(c => c.EscorePadronizadoFinal))
+            @foreach (SimCandidato candidato in Model.Classificacao)
             {
                 <tr>
-                    <td>@(classificacao++)</td>
+                    <td>@(candidato.EscorePadronizadoFinal == ultimo ? classificacao : ++classificacao)</td>
                     <td>@candidato.Candidato.Nome</td>
                     <td>@candidato.NumInscricaoRepresentacao</td>
                     <td>@Formate.ParaCPF(candidato.Candidato.Cpf)</td>
                     <td>@candidato.EscorePadronizadoFinal</td>
-                    <td><div  data-candidato="@candidato.CodCandidato" class="ui icon button"><i class="search icon"></i></div></td>
+                    <td><div data-candidato="@candidato.CodCandidato" class="ui icon button"><i class="search icon"></i></div></td>
                 </tr>
+                ultimo = candidato.EscorePadronizadoFinal;
             }
         </tbody>
     </table>

@@ -32,6 +32,9 @@ namespace SIAC.Models
             }
         }
 
+        public List<SimCandidato> Classificacao => 
+            this.SimCandidato.OrderByDescending(c => c.EscorePadronizadoFinal).ToList();
+
         public SimDiaRealizacao PrimeiroDiaRealizacao =>
             this.SimDiaRealizacao.OrderBy(d => d.DtRealizacao).FirstOrDefault();
 
