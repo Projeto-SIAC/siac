@@ -9,6 +9,8 @@ namespace SIAC.Models
     {
         public string NumInscricaoRepresentacao => this.NumInscricao.ToString("d4");
 
+        public string EscorePadronizadoFinalString => this.EscorePadronizadoFinal?.ToString(".000");
+
         public int? ClassificacaoPosicao
         {
             get

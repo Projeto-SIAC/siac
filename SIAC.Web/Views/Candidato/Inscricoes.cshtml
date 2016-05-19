@@ -207,7 +207,7 @@
                             <td>@(prova.CodDiaRealizacao)°</td>
                             <td>@prova.SimProva.Titulo</td>
                             <td>@($"{prova.QteAcertos}/{prova.SimProva.QteQuestoes}")</td>
-                            <td><b>@prova.EscorePadronizado</b></td>
+                            <td><b>@prova.EscorePadronizadoString</b></td>
                         </tr>
                     }
                 </tbody>
@@ -218,7 +218,7 @@
                     </tr>
                     <tr>
                         <th colspan="3"><b>Escore Padronizado Final</b></th>
-                        <th><b>@Model.EscorePadronizadoFinal</b></th>
+                        <th><b>@Model.EscorePadronizadoFinalString</b></th>
                     </tr>
                 </tfoot>
             </table>

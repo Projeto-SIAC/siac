@@ -541,6 +541,7 @@
     <Compile Include="Models\SimCandidatoProva.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SimCandidatoProvaPartial.cs" />
     <Compile Include="Models\SimCandidatoQuestao.cs">
       <DependentUpon>dbSIAC.tt</DependentUpon>
     </Compile>
