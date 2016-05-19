@@ -109,7 +109,7 @@
                         Bloquear Inscrições
                     </div>
                 }
-                @if (!Model.FlagProvaEncerrada && Model.SimDiaRealizacao.Last().DtRealizacao < DateTime.Now)
+                @if (!Model.FlagProvaEncerrada && Model.UltimoDiaRealizacao?.DtRealizacao < DateTime.Now)
                 {
                     <div class="finalizar provas item">
                         <i class="file red icon"></i>
