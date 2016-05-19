@@ -22,11 +22,14 @@
                     <i class="marker icon"></i>
                     Ver Sala de Realização
                 </a>
+                if (!Model.Simulado.FlagProvaEncerrada && Model.Simulado.FlagInscricaoEncerrado)
+                {
                 <div class="divider"></div>
                 <a data-url="@Url.Action("CartaoInscricao", "Candidato", new { codigo = Model.Simulado.Codigo })" class="cartao item">
                     <i class="print icon"></i>
                     Imprimir Cartão de Inscrição
                 </a>
+                }
             }
             @if (Model.Simulado.FlagSimuladoEncerrado)
             {
@@ -210,12 +213,12 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3"><b>Classificação</b></td>
-                        <td>@Model.ClassificacaoPosicao</td>
+                        <th colspan="3"><b>Classificação</b></th>
+                        <th><b>@Model.ClassificacaoPosicao</b></th>
                     </tr>
                     <tr>
-                        <td colspan="3"><b>Escore Padronizado Final</b></td>
-                        <td>@Model.EscorePadronizadoFinal</td>
+                        <th class="single line" colspan="3"><b>Escore Padronizado Final</b></th>
+                        <th><b>@Model.EscorePadronizadoFinal</b></th>
                     </tr>
                 </tfoot>
             </table>
