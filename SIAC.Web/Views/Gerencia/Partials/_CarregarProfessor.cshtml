@@ -7,11 +7,11 @@
 <div class="content">
     <div class="ui form">
         <div class="field required">
-            <label>Nome Completo</label>
+            <label data-ajuda="">Informe o nome completo</label>
             <input type="text" name="txtNome" placeholder="Nome" maxlength="100" required value="@Model.Professor.Usuario.PessoaFisica.Nome" />
         </div>
         <div class="field required">
-            <label>Disciplinas Lecionadas</label>
+            <label data-ajuda="">Selecione as disciplinas que este professor leciona</label>
             <select name="ddlDisciplina" class="ui fluid search dropdown" multiple required">
                 <option value="">Disciplina</option>
                 @foreach (Disciplina d in Model.Disciplinas)
