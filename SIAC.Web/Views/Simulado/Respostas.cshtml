@@ -36,9 +36,12 @@
     <div class="ui right floated candidato button">Corrigir por Candidato</div>
 </div>
 
-<div class="lista respostas">
+<div class="ui basic segment lista respostas">
 
 </div>
+
+<div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Os valores preenchidos serão perdidos</p><a href='@Url.Action("Detalhe", new { codigo = Model.Simulado.Codigo })' class='ui mini button'>Confirmar</a></div>" class="ui voltar button">Voltar</div>
+<div class="ui right floated icon button topo"><i class="icon angle up"></i></div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/simulado")
