@@ -8,7 +8,7 @@
 <div class="content">
     <div class="ui form">
         <div class="field required">
-            <label>Campus</label>
+            <label data-ajuda="">Selecione o Campus</label>
             <select name="ddlCampus" class="ui fluid search dropdown" required">
                 <option value="">Campus</option>
                 @foreach (Campus c in Model.Campi)
@@ -18,19 +18,19 @@
             </select>
         </div>
         <div class="field required">
-            <label>Descrição</label>
+            <label data-ajuda="">Digite a descrição</label>
             <input type="text" name="txtDescricao" placeholder="Descrição" maxlength="50" value="@Model.Bloco.Descricao" required />
         </div>
         <div class="field required">
-            <label>Sigla</label>
+            <label data-ajuda="">Insira a sigla</label>
             <input type="text" name="txtSigla" placeholder="Sigla" maxlength="15" value="@Model.Bloco.Sigla" required />
         </div>
         <div class="field">
-            <label>Referência da Localização</label>
+            <label data-ajuda="">Escreva uma referência da localização</label>
             <input type="text" name="txtRefLocal" placeholder="Referência da Localização" maxlength="255" value="@Model.Bloco.RefLocal" />
         </div>
         <div class="field">
-            <label>Observação</label>
+            <label data-ajuda="">Se necessário, registre uma observação</label>
             <input type="text" name="txtObservacao" placeholder="Observação" maxlength="140" value="@Model.Bloco.Observacao" />
         </div>
     </div>

@@ -17,15 +17,15 @@
     <div class="content">
         <div class="ui form">
             <div class="field required">
-                <label>Nome Completo</label>
+                <label data-ajuda="">Informe o nome completo</label>
                 <input type="text" name="txtNome" placeholder="Nome" maxlength="100" required />
             </div>
             <div class="field required">
-                <label>Matrícula</label>
+                <label data-ajuda="">Digite a matrícula</label>
                 <input type="text" name="txtMatricula" placeholder="Matrícula" maxlength="20" required />
             </div>
             <div class="field required">
-                <label>Senha</label>
+                <label data-ajuda="">Insira uma senha</label>
                 <div class="two fields">
                     <div class="field">
                         <input type="password" name="txtSenha" placeholder="Senha" required />
@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="field required">
-                <label>Disciplinas Lecionadas</label>
+                <label data-ajuda="">Selecione as disciplinas que este professor leciona</label>
                 <select name="ddlDisciplina" class="ui fluid search dropdown" multiple required">
                     <option value="">Disciplina</option>
                     @foreach (Disciplina d in Model.Disciplinas)

@@ -10,26 +10,26 @@
     <h4 class="ui dividing header">Envio de Email</h4>
     <form action="@Url.Action("Configuracoes")" method="post" class="ui form">
         <div class="field required">
-            <label>Endereço do Host</label>
+            <label data-ajuda="">Endereço do Host</label>
             <input type="text" name="SmtpEnderecoHost" placeholder="Endereço do Host" maxlength="200" value="@Model.SmtpEnderecoHost" required />
         </div>
         <div class="field required">
-            <label>Porta</label>
+            <label data-ajuda="">Porta</label>
             <input type="text" name="SmtpPorta" data-mask="0#" placeholder="Porta" value="@Model.SmtpPorta" required />
         </div>
         <div class="field required">
-            <label>Usuário da Credencial</label>
+            <label data-ajuda="">Usuário da Credencial</label>
             <input type="text" name="SmtpUsuario" placeholder="Usuário da Credencial" maxlength="150" value="@Model.SmtpUsuario" required />
         </div>
         <div class="field required">
-            <label>Senha da Credencial</label>
+            <label data-ajuda="">Senha da Credencial</label>
             <input type="password" name="SmtpSenha" placeholder="Senha da Credencial" maxlength="150" value="@Model.SmtpSenha" required />
         </div>
         <div class="ui segment">
             <div class="inline field">
                 <div class="ui slider checkbox">
                     @Html.CheckBox("SmptFlagSSL", Model.SmptFlagSSL)
-                    <label>Utilizar SSL</label>
+                    <label data-ajuda="">Utilizar SSL</label>
                 </div>
             </div>
         </div>

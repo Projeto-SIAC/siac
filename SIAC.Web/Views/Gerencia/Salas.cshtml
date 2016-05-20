@@ -17,7 +17,7 @@
     <div class="content">
         <div class="ui form">
             <div class="field required">
-                <label>Campus</label>
+                <label data-ajuda="">Selecione o Campus</label>
                 <select name="ddlCampus" class="ui fluid search dropdown" required">
                     <option value="">Campus</option>
                     @foreach (Campus c in Model.Campi)
@@ -27,7 +27,7 @@
                 </select>
             </div>
             <div class="field required">
-                <label>Bloco</label>
+                <label data-ajuda="">Selecione o Bloco</label>
                 <select name="ddlBloco" class="ui fluid search dropdown" required">
                     <option value="">Bloco</option>
                     @foreach (Bloco b in Model.Blocos)
@@ -37,23 +37,23 @@
                 </select>
             </div>
             <div class="field required">
-                <label>Descrição</label>
+                <label data-ajuda="">Digite a descrição</label>
                 <input type="text" name="txtDescricao" placeholder="Descrição" maxlength="50" required />
             </div>
             <div class="field required">
-                <label>Sigla</label>
+                <label data-ajuda="">Insira a sigla</label>
                 <input type="text" name="txtSigla" placeholder="Sigla" maxlength="15" required />
             </div>
             <div class="field required">
-                <label>Capacidade</label>
+                <label data-ajuda="">Informe a capacidade</label>
                 <input type="text" data-mask="0#" name="txtCapacidade" placeholder="Capacidade" required />
             </div>
             <div class="field">
-                <label>Referência da Localização</label>
+                <label data-ajuda="">Escreva uma referência da localização</label>
                 <input type="text" name="txtRefLocal" placeholder="Referência da Localização" maxlength="255" />
             </div>
             <div class="field">
-                <label>Observação</label>
+                <label data-ajuda="">Se necessário, informe uma observação</label>
                 <input type="text" name="txtObservacao" placeholder="Observação" maxlength="140" />
             </div>
         </div>
