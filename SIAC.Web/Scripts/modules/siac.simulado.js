@@ -928,3 +928,18 @@ siac.Simulado.Respostas = (function () {
         iniciar: iniciar
     }
 })()
+
+siac.Simulado.Imprimir = (function () {
+    function iniciar() {
+        $('.informacoes.button').click(function () {
+            $('.ui.accordion').accordion({
+                animateChildren: false
+            });
+            $('.ui.informacoes.modal').modal('show');
+        });
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();

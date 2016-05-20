@@ -1,0 +1,47 @@
+﻿@model Simulado
+
+@{
+    ViewBag.Title = "Imprimir Provas e Gabaritos";
+}
+
+<h2>
+    @ViewBag.Title
+    <div class="ui right floated informacoes button">Informações</div>
+</h2>
+
+@Html.Partial("_SimuladoInformacoes", Model)
+
+@foreach (var item in Model.SimDiaRealizacao.OrderBy(d => d.DtRealizacao).Select((dia, i) => new { i, dia}))
+{
+    <div class="ui dividing header">
+        @(item.i+1)º Dia de Realização: @item.dia.DtRealizacao.DiaRealizacaoRepresentacao()
+    </div>
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Disciplina</th>
+                <th>Quant. de Questões</th>
+                <th>Imprimir</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (SimProva prova in item.dia.SimProva)
+            {
+                <tr>
+                    <td>@prova.Titulo</td>
+                    <td>@prova.Disciplina.Descricao</td>
+                    <td>@prova.QteQuestoes Questões</td>
+                    <td>
+                        <a href="#" class="ui icon small button"><i class="file text icon"></i> Prova</a>
+                        <a href="#" class="ui icon small button"><i class="grid layout icon"></i> Gabarito</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/simulado")
+}

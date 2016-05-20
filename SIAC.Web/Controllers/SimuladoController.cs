@@ -1173,5 +1173,19 @@ namespace SIAC.Controllers
             }
             return null;
         }
+
+        public ActionResult Imprimir(string codigo)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                {
+                    return View(sim);
+                }
+            }
+            return RedirectToAction("Detalhe", new { codigo = codigo });
+        }
     }
 }

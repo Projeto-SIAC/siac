@@ -17,7 +17,7 @@
                 <option value="">Selecione a prova</option>
                 @foreach(SimProva prova in Model.Provas)
                 {
-                    <option value="@($"{prova.CodDiaRealizacao}.{prova.CodProva}")">@($"{prova.CodDiaRealizacao}° dia - {prova.Titulo}")</option>
+                    <option value="@($"{prova.CodDiaRealizacao}.{prova.CodProva}")">@($"{prova.CodDiaRealizacao}º dia - {prova.Titulo}")</option>
                 }
             </select>
         </div>

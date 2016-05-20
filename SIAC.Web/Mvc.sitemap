@@ -132,6 +132,7 @@
       <mvcSiteMapNode title="Salas" controller="Simulado" action="Salas" preservedRouteParameters="codigo" />
       <mvcSiteMapNode title="Detalhe" controller="Simulado" action="Detalhe" preservedRouteParameters="codigo" />
       <mvcSiteMapNode title="Respostas" controller="Simulado" action="Respostas" preservedRouteParameters="codigo" />
+      <mvcSiteMapNode title="Imprimir Provas e Gabaritos" controller="Simulado" action="Imprimir" preservedRouteParameters="codigo" />
       <mvcSiteMapNode title="Arquivo" controller="Arquivo" action="Index">
         <mvcSiteMapNode title="Simulados Abertos" controller="Arquivo" action="Abertos" />
         <mvcSiteMapNode title="Simulados Encerrados" controller="Arquivo" action="Encerrados" />
