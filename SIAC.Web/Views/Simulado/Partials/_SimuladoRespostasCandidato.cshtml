@@ -3,7 +3,7 @@
     int questaoIndice = 1;
 }
 
-<form method="post" class="ui form segment" action="@Url.Action("InserirRespostasCandidato", new { codigo = Model.Simulado.Codigo, codDia = Model.Prova.CodDiaRealizacao, codProva = Model.Prova.CodProva, codCandidato = Model.Candidato.CodCandidato})">
+<form method="post" class="ui form" action="@Url.Action("InserirRespostasCandidato", new { codigo = Model.Simulado.Codigo, codDia = Model.Prova.CodDiaRealizacao, codProva = Model.Prova.CodProva, codCandidato = Model.Candidato.CodCandidato})">
     <h3 class="header">@($"Prova: {Model.Prova.Titulo} || Candidato: {Model.Candidato.Nome}")</h3>
     <table class="ui striped table">
         <thead>

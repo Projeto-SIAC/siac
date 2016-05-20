@@ -797,6 +797,12 @@ siac.Simulado.Respostas = (function () {
         $listaRespostas = $('.lista.respostas');
         $('.ui.dropdown').dropdown();
 
+        $('.voltar.button').popup({
+            on: 'click'
+        });
+
+        $('.topo.button').click(function () { topo(); });
+
         $('.prova.button').click(function () {
             var $provaButton = $(this);
 
@@ -922,6 +928,13 @@ siac.Simulado.Respostas = (function () {
             valido = false;
         }
         return valido;
+    }
+
+    function topo() {
+        $("html, body").animate({
+            scrollTop: 0
+        }, 500);
+        return false;
     }
 
     return {
