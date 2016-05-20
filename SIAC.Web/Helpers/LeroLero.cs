@@ -6,7 +6,7 @@ using System.Web;
 
 namespace SIAC.Helpers
 {
-    public class LeroLero
+    public class LeroLero : IDisposable
     {
         private WebClient wc;
 
@@ -63,6 +63,11 @@ namespace SIAC.Helpers
             RemainingText = workText.Substring(foundPos + afterText.Length);
 
             return result;
+        }
+
+        public void Dispose()
+        {
+            this.wc.Dispose();
         }
     }
 }
