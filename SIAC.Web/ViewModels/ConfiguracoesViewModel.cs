@@ -22,4 +22,10 @@ namespace SIAC.ViewModels
         public List<MatrizCurricular> Matrizes { get; set; }
         public List<Horario> Horarios { get; set; }
     }
+
+    public class ConfiguracoesInstitucionalViewModel
+    {
+        public List<Ocupacao> Ocupacoes { get; set; }
+        public List<PessoaFisica> Coordenadores { get; set; }
+    }
 }

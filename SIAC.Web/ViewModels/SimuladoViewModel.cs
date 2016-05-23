@@ -7,6 +7,13 @@ using Newtonsoft.Json;
 
 namespace SIAC.ViewModels
 {
+    public class SimuladoProvaViewModel
+    {
+        public Simulado Simulado { get; set; }
+        public SimProva Prova { get; set; } = new SimProva();
+        public List<Disciplina> Disciplinas { get; set; }
+    }
+
     public class SimuladoSalasViewModel
     {
         public Simulado Simulado { get; set; }
@@ -34,5 +41,21 @@ namespace SIAC.ViewModels
             Observacao = s.Observacao,
             Capacidade = s.Capacidade
         }));
+    }
+
+    public class SimuladoRespostasViewModel
+    {
+        public Simulado Simulado { get; set; }
+        public List<SimProva> Provas { get; set; }
+        public List<SimCandidato> Candidatos { get; set; }
+    }
+
+    public class SimuladoRespostasCandidatoViewModel
+    {
+        public Simulado Simulado { get; set; }
+        public Candidato Candidato { get; set; }
+        public SimProva Prova { get; set; }
+        public List<SimProvaQuestao> Questoes { get; set; }
+        public List<SimCandidatoQuestao> Respostas { get; set; }
     }
 }
