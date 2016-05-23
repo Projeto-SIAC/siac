@@ -20,6 +20,7 @@
             carregar();
             siac.Lembrete.iniciar();
             siac.Ajuda.iniciar();
+            ajustarModal();
         });
     }
 
@@ -348,6 +349,14 @@
     }
 
 
+    function ajustarModal() {
+        $('.ui.modal .ui.accordion').accordion({
+            animateChildren: false,
+            onChange: function () {
+                $(this).closest('.modal').modal('refresh');
+            }
+        });
+    }
 
     return {
         iniciar: iniciar,
