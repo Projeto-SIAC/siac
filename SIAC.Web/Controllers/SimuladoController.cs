@@ -1201,7 +1201,32 @@ namespace SIAC.Controllers
                 {
                     if (sim.Provas.Count > 0 && !sim.FlagProvaEncerrada)
                     {
-                        return PartialView("_ImprimirProva");
+                        SimProva model = sim.Provas.FirstOrDefault(p=>p.CodDiaRealizacao == dia && p.CodProva == prova);
+                        if (model != null)
+                        {
+                            return PartialView("_ImprimirGabarito", model);
+                        }
+                    }
+                }
+            }
+            return RedirectToAction("Detalhe", new { codigo = codigo });
+        }
+
+        public ActionResult ImprimirCartaoResposta(string codigo, int dia, int prova)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                {
+                    if (sim.Provas.Count > 0 && !sim.FlagProvaEncerrada)
+                    {
+                        SimProva model = sim.Provas.FirstOrDefault(p => p.CodDiaRealizacao == dia && p.CodProva == prova);
+                        if (model != null)
+                        {
+                            return PartialView("_ImprimirCartaoResposta", model);
+                        }
                     }
                 }
             }
@@ -1218,7 +1243,11 @@ namespace SIAC.Controllers
                 {
                     if (sim.Provas.Count > 0 && !sim.FlagProvaEncerrada)
                     {
-                        return PartialView("_ImprimirGabarito");
+                        SimProva model = sim.Provas.FirstOrDefault(p => p.CodDiaRealizacao == dia && p.CodProva == prova);
+                        if (model != null)
+                        {
+                            return PartialView("_ImprimirGabarito", model);
+                        }
                     }
                 }
             }

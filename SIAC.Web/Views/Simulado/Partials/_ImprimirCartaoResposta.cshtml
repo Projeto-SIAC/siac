@@ -11,7 +11,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Gabarito - SIAC Simulados</title>
+    <title>Cartão Resposta - SIAC Simulados</title>
     <link href="~/Resources/images/layout/logo-black.png" rel="shortcut icon" />
     @Styles.Render("~/bundles/css")
     <style>
@@ -24,16 +24,16 @@
         }
 
         table td {
-            padding: 0.5em 0.2em!important;
+            padding: 0.5em 0.2em !important;
         }
 
-        table td .circular .label {
-            margin-bottom: 0!important;
-        }
-        
-        table td.collapsing {
-            font-weight: bolder;
-        }
+            table td .circular .label {
+                margin-bottom: 0 !important;
+            }
+
+            table td.collapsing {
+                font-weight: bolder;
+            }
     </style>
 </head>
 <body>
@@ -70,7 +70,7 @@
                                     <div class="ui circular small labels">
                                         @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
                                         {
-                                            <div class="ui @(alternativa.FlagGabarito ? "black" : "") label">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
+                                            <div class="ui label">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
                                         }
                                     </div>
                                 </td>
@@ -99,7 +99,7 @@
                                     <div class="ui circular small labels">
                                         @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
                                         {
-                                            <div class="ui @(alternativa.FlagGabarito ? "black" : "") label">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
+                                            <div class="ui label">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
                                         }
                                     </div>
                                 </td>
@@ -128,7 +128,7 @@
                                     <div class="ui circular small labels">
                                         @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
                                         {
-                                            <div class="ui @(alternativa.FlagGabarito ? "black" : "") label">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
+                                            <div class="ui label">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
                                         }
                                     </div>
                                 </td>
@@ -157,7 +157,7 @@
                                     <div class="ui circular small labels">
                                         @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
                                         {
-                                            <div class="ui @(alternativa.FlagGabarito ? "black" : "") label">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
+                                            <div class="ui label">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
                                         }
                                     </div>
                                 </td>

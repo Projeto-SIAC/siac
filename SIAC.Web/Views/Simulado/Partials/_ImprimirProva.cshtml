@@ -1,4 +1,10 @@
-﻿<h1>Imprimir prova</h1>
+﻿@model SimProva
+
+@{
+    List<Questao> questoes = Model.SimProvaQuestao.Select(p => p.Questao).OrderBy(q => q.CodQuestao).ToList();
+}
+
+<h1>Imprimir prova</h1>
 
 <script>
         var focused = false;
