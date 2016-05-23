@@ -339,9 +339,6 @@ siac.Simulado.Datas = (function () {
         });
 
         $('.informacoes.button').click(function () {
-            $('.ui.accordion').accordion({
-                animateChildren: false
-            });
             $('.ui.informacoes.modal').modal('show');
         });
 
@@ -453,9 +450,6 @@ siac.Simulado.Salas = (function () {
         });
 
         $('.informacoes.button').click(function () {
-            $('.ui.accordion').accordion({
-                animateChildren: false
-            });
             $('.ui.informacoes.modal').modal('show');
         });
 
