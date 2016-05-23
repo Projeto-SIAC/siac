@@ -1,0 +1,13 @@
+﻿<h1>Imprimir prova</h1>
+
+<script>
+        var focused = false;
+        window.print();
+        focused = true;
+        var interval = setInterval(function () {
+            if (focused === true) {
+                clearInterval(interval);
+                window.close();
+            }
+        }, 300);
+</script>
