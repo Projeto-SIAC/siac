@@ -857,6 +857,8 @@
     <Content Include="Views\Simulado\Partials\_SimuladoClassificacao.cshtml" />
     <Content Include="Views\Simulado\Partials\_SimuladoClassificacaoCandidato.cshtml" />
     <Content Include="Views\Simulado\Imprimir.cshtml" />
+    <Content Include="Views\Simulado\Partials\_ImprimirProva.cshtml" />
+    <Content Include="Views\Simulado\Partials\_ImprimirGabarito.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

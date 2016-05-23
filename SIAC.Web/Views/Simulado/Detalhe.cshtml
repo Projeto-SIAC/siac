@@ -65,6 +65,13 @@
                         Alterar prazo
                     </div>
                 }
+                @if (Model.Provas.Count > 0 && !Model.FlagProvaEncerrada)
+                {
+                    <a href="@Url.Action("Imprimir", new { codigo = Model.Codigo })" class="item">
+                        <i class="print icon"></i>
+                        Imprimir Provas e Gabaritos
+                    </a>
+                }
                 @if (Model.SimCandidato.Count > 0)
                 {
                     <div class="divider"></div>
@@ -93,7 +100,7 @@
                 <div class="header">Configuração</div>
                 @if (Model.FlagInscricaoEncerrado)
                 {
-                    if (Model.DtTerminoInscricao >= DateTime.Now)
+                    if (Model.DtTerminoInscricao >= DateTime.Now && Model.DtInicioInscricao <= DateTime.Now)
                     {
                         <div class="liberar item">
                             <i class="unlock alternate green icon"></i>
@@ -108,7 +115,7 @@
                         </div>
                     }
                 }
-                else if (Model.DtTerminoInscricao > DateTime.Now)
+                else if (Model.DtInicioInscricao < DateTime.Now && Model.DtTerminoInscricao >= DateTime.Now)
                 {
                     <div class="bloquear item">
                         <i class="ban red icon"></i>

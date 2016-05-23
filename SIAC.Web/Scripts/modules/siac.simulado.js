@@ -950,6 +950,11 @@ siac.Simulado.Imprimir = (function () {
             });
             $('.ui.informacoes.modal').modal('show');
         });
+
+        $('.imprimir.button').click(function () {
+            var url = $(this).data('url');
+            window.open(url);
+        });
     }
 
     return {

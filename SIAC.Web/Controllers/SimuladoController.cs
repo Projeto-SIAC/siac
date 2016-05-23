@@ -1,4 +1,4 @@
-﻿using SIAC.Helpers;
+using SIAC.Helpers;
 using SIAC.Models;
 using SIAC.ViewModels;
 using System;
@@ -1182,7 +1182,44 @@ namespace SIAC.Controllers
 
                 if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
-                    return View(sim);
+                    if (sim.Provas.Count > 0 && !sim.FlagProvaEncerrada)
+                    {
+                        return View(sim);
+                    }
+                }
+            }
+            return RedirectToAction("Detalhe", new { codigo = codigo });
+        }
+
+        public ActionResult ImprimirProva(string codigo, int dia, int prova)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                {
+                    if (sim.Provas.Count > 0 && !sim.FlagProvaEncerrada)
+                    {
+                        return PartialView("_ImprimirProva");
+                    }
+                }
+            }
+            return RedirectToAction("Detalhe", new { codigo = codigo });
+        }
+
+        public ActionResult ImprimirGabarito(string codigo, int dia, int prova)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                {
+                    if (sim.Provas.Count > 0 && !sim.FlagProvaEncerrada)
+                    {
+                        return PartialView("_ImprimirGabarito");
+                    }
                 }
             }
             return RedirectToAction("Detalhe", new { codigo = codigo });

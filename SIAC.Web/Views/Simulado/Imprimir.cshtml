@@ -33,14 +33,16 @@
                     <td>@prova.Disciplina.Descricao</td>
                     <td>@prova.QteQuestoes Questões</td>
                     <td>
-                        <a href="#" class="ui icon small button"><i class="file text icon"></i> Prova</a>
-                        <a href="#" class="ui icon small button"><i class="grid layout icon"></i> Gabarito</a>
+                        <a data-url="@Url.Action("ImprimirProva", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small button"><i class="file text icon"></i> Prova</a>
+                        <a data-url="@Url.Action("ImprimirGabarito", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })"  class="ui imprimir icon small button"><i class="grid layout icon"></i> Gabarito</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 }
+
+<a href="@Url.Action("Detalhe", new { codigo = Model.Codigo })" class="ui button">Voltar para Detalhe</a>
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/simulado")
