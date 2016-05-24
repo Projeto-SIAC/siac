@@ -33,8 +33,8 @@
                     <td>@prova.Disciplina.Descricao</td>
                     <td>@prova.QteQuestoes Questões</td>
                     <td>
-                        <a data-url="@Url.Action("ImprimirProva", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small button"><i class="file text icon"></i> Prova</a>
-                        <a data-url="@Url.Action("ImprimirCartaoResposta", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small button"><i class="file text outline icon"></i> Cartão Resposta</a>
+                        <a data-url="@Url.Action("ImprimirProva", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small button"><i class="file text icon"></i> Caderno</a>
+                        <a data-url="@Url.Action("ImprimirCartaoResposta", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small button"><i class="file text outline icon"></i> Cartão-Resposta</a>
                         <a data-url="@Url.Action("ImprimirGabarito", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })"  class="ui imprimir icon small button"><i class="grid layout icon"></i> Gabarito</a>
                     </td>
                 </tr>

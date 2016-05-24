@@ -1204,7 +1204,7 @@ namespace SIAC.Controllers
                         SimProva model = sim.Provas.FirstOrDefault(p=>p.CodDiaRealizacao == dia && p.CodProva == prova);
                         if (model != null)
                         {
-                            return PartialView("_ImprimirGabarito", model);
+                            return PartialView("_ImprimirProva", model);
                         }
                     }
                 }

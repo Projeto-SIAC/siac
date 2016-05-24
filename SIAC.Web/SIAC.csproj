@@ -762,9 +762,9 @@
     <Content Include="Views\Shared\Partials\_Menu.cshtml" />
     <Content Include="Views\Institucional\Historico.cshtml" />
     <Content Include="Views\Institucional\Partials\_ListaInstitucional.cshtml" />
-    <Content Include="Views\Impressao\Partials\_AnexoImpressao.cshtml" />
+    <Content Include="Views\Shared\Partials\_AnexoImpressao.cshtml" />
     <Content Include="Views\Impressao\Avaliacao.cshtml" />
-    <Content Include="Views\Impressao\Partials\_Questoes.cshtml" />
+    <Content Include="Views\Shared\Partials\_QuestoesImpressao.cshtml" />
     <Content Include="Views\Institucional\Andamento.cshtml" />
     <Content Include="Views\Institucional\Resultado.cshtml" />
     <Content Include="Scripts\modules\siac.utilitario.js" />

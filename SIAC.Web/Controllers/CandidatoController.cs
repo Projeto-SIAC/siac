@@ -290,7 +290,7 @@ namespace SIAC.Controllers
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 Simulado s = Simulado.ListarPorCodigo(codigo);
-                if (s != null && s.CandidatoInscrito(Sessao.Candidato.CodCandidato))
+                if (s != null && s.FlagInscricaoEncerrado && s.CandidatoInscrito(Sessao.Candidato.CodCandidato))
                 {
                     return View(s.SimCandidato.First(sc => sc.CodCandidato == Sessao.Candidato.CodCandidato));
                 }

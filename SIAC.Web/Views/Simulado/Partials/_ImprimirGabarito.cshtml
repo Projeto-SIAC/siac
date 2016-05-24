@@ -20,34 +20,44 @@
         }
 
         table > thead > tr > th {
-            text-transform: capitalize;
+            text-transform: uppercase;
         }
 
-        table td {
-            padding: 0.5em 0.2em!important;
+        table td, table th {
+            padding: 0.35em 0.2em !important;
         }
 
-        table td .circular .label {
-            margin-bottom: 0!important;
+            table td.collapsing {
+                font-weight: bolder;
+            }
+
+        .gabarito.list .item {
+            height: 18px;
+            width: 18px;
+            font-size: 10px !important;
+            /*line-height: 12px;*/
+            margin-left: 0.2em !important;
+            text-align: center !important;
+            border-radius: 50%;
+            border: 1px black solid;
         }
-        
-        table td.collapsing {
-            font-weight: bolder;
-        }
+
+            .gabarito.list .item.correta {
+                color: white !important;
+                background-color: black !important;
+            }
     </style>
 </head>
 <body>
-    <div class="ui center aligned inverted segment">
-        <h2>
-            @Model.SimDiaRealizacao.Simulado.Titulo
-            <br>
-            <small>
-                Dia: @Model.SimDiaRealizacao.DtRealizacao.DiaRealizacaoRepresentacao()
-                &nbsp;|&nbsp;
-                Prova: @Model.Titulo
-            </small>
-        </h2>
-    </div>
+    <h2>
+        GABARITO
+        <small style="float:right">
+            Dia: @Model.SimDiaRealizacao.DtRealizacao.DiaRealizacaoRepresentacao()
+            &nbsp;|&nbsp;
+            Prova: @Model.Titulo
+        </small>
+    </h2>
+    <div class="ui divider"></div>
     <div class="ui grid">
         <div class="doubling four column row">
             <div class="column">
@@ -67,10 +77,10 @@
                                     @item.i.GetIndiceQuestao()
                                 </td>
                                 <td>
-                                    <div class="ui circular small labels">
+                                    <div class="ui gabarito horizontal list">
                                         @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
                                         {
-                                            <div class="ui @(alternativa.FlagGabarito ? "black" : "") label">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
+                                            <div class="@(alternativa.FlagGabarito ? "correta" : "") item">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
                                         }
                                     </div>
                                 </td>
@@ -96,10 +106,10 @@
                                     @item.i.GetIndiceQuestao()
                                 </td>
                                 <td>
-                                    <div class="ui circular small labels">
+                                    <div class="ui gabarito horizontal list">
                                         @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
                                         {
-                                            <div class="ui @(alternativa.FlagGabarito ? "black" : "") label">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
+                                            <div class="@(alternativa.FlagGabarito ? "correta" : "") item">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
                                         }
                                     </div>
                                 </td>
@@ -125,10 +135,10 @@
                                     @item.i.GetIndiceQuestao()
                                 </td>
                                 <td>
-                                    <div class="ui circular small labels">
+                                    <div class="ui gabarito horizontal list">
                                         @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
                                         {
-                                            <div class="ui @(alternativa.FlagGabarito ? "black" : "") label">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
+                                            <div class="@(alternativa.FlagGabarito ? "correta" : "") item">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
                                         }
                                     </div>
                                 </td>
@@ -154,10 +164,10 @@
                                     @item.i.GetIndiceQuestao()
                                 </td>
                                 <td>
-                                    <div class="ui circular small labels">
+                                    <div class="ui gabarito horizontal list">
                                         @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
                                         {
-                                            <div class="ui @(alternativa.FlagGabarito ? "black" : "") label">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
+                                            <div class="@(alternativa.FlagGabarito ? "correta" : "") item">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
                                         }
                                     </div>
                                 </td>

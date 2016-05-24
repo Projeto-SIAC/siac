@@ -4,9 +4,92 @@
     List<Questao> questoes = Model.SimProvaQuestao.Select(p => p.Questao).OrderBy(q => q.CodQuestao).ToList();
 }
 
-<h1>Imprimir prova</h1>
+<!DOCTYPE html>
 
-<script>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Caderno de Questões - SIAC Simulados</title>
+    <link href="~/Resources/images/layout/logo-black.png" rel="shortcut icon" />
+    @Styles.Render("~/bundles/css")
+    <style>
+        html, body {
+            font-size: 12px;
+        }
+
+        table > thead > tr > th {
+            text-transform: uppercase;
+        }
+
+        table td, table th {
+            padding: 0.35em 0.2em !important;
+        }
+
+        .break-page {
+            -webkit-break-before: always;
+            break-before: always;
+            page-break-before: always;
+        }
+
+        div.questao {
+            padding-top: 2.5em;
+            -webkit-break-inside: avoid;
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        div.form > :first-child {
+            padding-top: unset;
+            -webkit-break-inside: avoid;
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        div.questao .ui.header {
+            font-size: 1em;
+        }
+
+        .parentQuestao > .header {
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>
+        CADERNO DE QUESTÕES
+        <br />
+        <small>
+            Dia: @Model.SimDiaRealizacao.DtRealizacao.DiaRealizacaoRepresentacao()
+            &nbsp;|&nbsp;
+            Prova: @Model.Titulo
+        </small>
+    </h2>
+
+    <div class="ui divider"></div>
+
+    <h3>LEIA ATENTAMENTE AS INSTRUÇÕES SEGUINTES</h3>
+
+    <ol class="ui list">
+        <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla eget odio non augue ultrices consectetur. Maecenas porta urna ante, ornare congue turpis facilisis id. Integer dui libero, vestibulum vel purus nec, auctor fermentum ligula.</li>
+        <li>Etiam eu scelerisque lectus. Curabitur interdum ipsum neque. Nunc scelerisque consequat vehicula. Etiam in ultrices turpis. Vestibulum tristique nunc vel massa euismod finibus. Aliquam erat volutpat. Etiam nisi augue, tempor vitae tempus ut, elementum sed orci. Proin accumsan enim eu imperdiet placerat. Curabitur quis lobortis dui, fringilla ullamcorper metus.</li>
+        <li>
+            Pellentesque ultricies arcu erat, ac commodo dui rutrum vitae. In ullamcorper libero at orci hendrerit, eu vehicula sapien ultrices.
+            <ol>
+                <li>Duis tristique nulla in justo rutrum tincidunt.</li>
+                <li>Donec eros nulla, pharetra eu fermentum ac, dignissim eget metus.</li>
+                <li>Proin eget felis venenatis, molestie dolor nec, dictum urna.</li>
+            </ol>
+        </li>
+        <li>Cras sit amet leo ut lectus bibendum iaculis quis at nisl. Nunc ac lorem non ante ornare gravida. Aliquam tincidunt congue elit sodales tristique. Duis facilisis lectus eros, at congue sapien efficitur in. Suspendisse pulvinar pretium placerat. Nulla facilisi. Suspendisse ac venenatis turpis. Aenean tempor est ut enim congue commodo. In id viverra nulla.</li>
+    </ol>
+
+    <div class="break-page"></div>
+
+    @Html.Partial("_QuestoesImpressao", questoes)
+
+    <script>
         var focused = false;
         window.print();
         focused = true;
@@ -16,4 +99,6 @@
                 window.close();
             }
         }, 300);
-</script>
+    </script>
+</body>
+</html>

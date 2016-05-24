@@ -11,7 +11,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Cartão Resposta - SIAC Simulados</title>
+    <title>Cartão-Resposta - SIAC Simulados</title>
     <link href="~/Resources/images/layout/logo-black.png" rel="shortcut icon" />
     @Styles.Render("~/bundles/css")
     <style>
@@ -20,34 +20,55 @@
         }
 
         table > thead > tr > th {
-            text-transform: capitalize;
+            text-transform: uppercase;
         }
 
-        table td {
-            padding: 0.5em 0.2em !important;
+        table td, table th {
+            padding: 0.35em 0.2em !important;
         }
-
-            table td .circular .label {
-                margin-bottom: 0 !important;
-            }
 
             table td.collapsing {
                 font-weight: bolder;
             }
+
+        .gabarito.list .item {
+            height: 18px;
+            width: 18px;
+            font-size: 10px !important;
+            /*line-height: 12px;*/
+            margin-left: 0.2em !important;
+            text-align: center !important;
+            border-radius: 50%;
+            border: 1px black solid;
+        }
     </style>
 </head>
 <body>
-    <div class="ui center aligned inverted segment">
-        <h2>
-            @Model.SimDiaRealizacao.Simulado.Titulo
-            <br>
-            <small>
-                Dia: @Model.SimDiaRealizacao.DtRealizacao.DiaRealizacaoRepresentacao()
-                &nbsp;|&nbsp;
-                Prova: @Model.Titulo
-            </small>
-        </h2>
-    </div>
+    <h2>
+        CARTÃO-RESPOSTA
+        <small style="float:right">
+            Dia: @Model.SimDiaRealizacao.DtRealizacao.DiaRealizacaoRepresentacao()
+            &nbsp;|&nbsp;
+            Prova: @Model.Titulo
+        </small>
+    </h2>
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th class="">Nome Completo</th>
+                <th class="collapsing">Número do CPF</th>
+                <th class="collapsing">Número de Inscrição</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.SimDiaRealizacao.Simulado.SimCandidato.First().Candidato.Nome</td>
+                <td>@Formate.ParaCPF(Model.SimDiaRealizacao.Simulado.SimCandidato.First().Candidato.Cpf)</td>
+                <td class="right aligned">@Model.SimDiaRealizacao.Simulado.SimCandidato.First().NumInscricaoRepresentacao</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="ui divider"></div>
     <div class="ui grid">
         <div class="doubling four column row">
             <div class="column">
@@ -67,10 +88,10 @@
                                     @item.i.GetIndiceQuestao()
                                 </td>
                                 <td>
-                                    <div class="ui circular small labels">
+                                    <div class="ui gabarito horizontal list">
                                         @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
                                         {
-                                            <div class="ui label">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
+                                            <div class="item">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
                                         }
                                     </div>
                                 </td>
@@ -96,10 +117,10 @@
                                     @item.i.GetIndiceQuestao()
                                 </td>
                                 <td>
-                                    <div class="ui circular small labels">
+                                    <div class="ui gabarito horizontal list">
                                         @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
                                         {
-                                            <div class="ui label">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
+                                            <div class="item">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
                                         }
                                     </div>
                                 </td>
@@ -125,10 +146,10 @@
                                     @item.i.GetIndiceQuestao()
                                 </td>
                                 <td>
-                                    <div class="ui circular small labels">
+                                    <div class="ui gabarito horizontal list">
                                         @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
                                         {
-                                            <div class="ui label">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
+                                            <div class="item">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
                                         }
                                     </div>
                                 </td>
@@ -154,10 +175,10 @@
                                     @item.i.GetIndiceQuestao()
                                 </td>
                                 <td>
-                                    <div class="ui circular small labels">
+                                    <div class="ui gabarito horizontal list">
                                         @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
                                         {
-                                            <div class="ui label">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
+                                            <div class="item">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
                                         }
                                     </div>
                                 </td>
@@ -166,6 +187,13 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+    <div class="ui divider"></div>
+    <div class="ui form">
+        <div class="field">
+            <label>Assinatura</label>
+            <input />
         </div>
     </div>
     <script>
