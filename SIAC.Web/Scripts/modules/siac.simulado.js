@@ -586,13 +586,19 @@ siac.Simulado.Detalhe = (function () {
         $('.encerrar.item').click(function () {
             $('.encerrar.modal').modal({
                 onApprove: function () {
+                    var $modal = $(this);
                     $.ajax({
                         type: 'POST',
                         url: '/simulado/encerrar/' + _codigo,
+                        beforeSend: function () {
+                            $modal.find('.approve.button').addClass('loading');
+                        },
                         complete: function () {
+                            $modal.modal('hide');
                             location.reload();
                         }
-                    })
+                    });
+                    return false;
                 }
             }).modal('show');
         });
@@ -642,13 +648,19 @@ siac.Simulado.Detalhe = (function () {
         $('.mapear.item').click(function () {
             $('.mapear.modal').modal({
                 onApprove: function () {
+                    var $modal = $(this);
                     $.ajax({
                         type: 'POST',
                         url: '/simulado/mapearsalas/' + _codigo,
+                        beforeSend: function () {
+                            $modal.find('.approve.button').addClass('loading');
+                        },
                         complete: function () {
+                            $modal.modal('hide');
                             location.reload();
                         }
-                    })
+                    });
+                    return false;
                 }
             }).modal('show');
         });
@@ -684,13 +696,18 @@ siac.Simulado.Detalhe = (function () {
         $('.finalizar.provas.item').click(function () {
             $('.finalizar.provas.modal').modal({
                 onApprove: function () {
+                    var $modal = $(this);
                     $.ajax({
                         type: 'POST',
                         url: '/simulado/finalizarprovas/' + _codigo,
-                        complete: function () {
+                        beforeSend: function () {
+                            $modal.find('.approve.button').addClass('loading');
+                        }, complete: function () {
+                            $modal.modal('hide');
                             location.reload();
                         }
-                    })
+                    });
+                    return false;
                 }
             }).modal('show');
         });
