@@ -2,7 +2,7 @@
 
 @{
     List<Questao> questoes = Model.SimProvaQuestao.Select(p => p.Questao).OrderBy(q => q.CodQuestao).ToList();
-    int pontoDeQuebra = questoes.Count <= 15 ? 15 : questoes.Count / 2 <= 15 ? questoes.Count / 2 : questoes.Count / 4;
+    var gabaritoPartial = Html.Partial("_ImprimirCartaoRespostaGabarito", questoes);
 }
 
 <!DOCTYPE html>
@@ -41,161 +41,52 @@
             border-radius: 50%;
             border: 1px black solid;
         }
+
+        .break-page {
+            -webkit-break-before: always;
+            break-before: always;
+            page-break-before: always;
+        }
     </style>
 </head>
 <body>
-    <h2>
-        CARTÃO-RESPOSTA
-        <small style="float:right">
-            Dia: @Model.SimDiaRealizacao.DtRealizacao.DiaRealizacaoRepresentacao()
-            &nbsp;|&nbsp;
-            Prova: @Model.Titulo
-        </small>
-    </h2>
-    <table class="ui celled table">
-        <thead>
-            <tr>
-                <th class="">Nome Completo</th>
-                <th class="collapsing">Número do CPF</th>
-                <th class="collapsing">Número de Inscrição</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>@Model.SimDiaRealizacao.Simulado.SimCandidato.First().Candidato.Nome</td>
-                <td>@Formate.ParaCPF(Model.SimDiaRealizacao.Simulado.SimCandidato.First().Candidato.Cpf)</td>
-                <td class="right aligned">@Model.SimDiaRealizacao.Simulado.SimCandidato.First().NumInscricaoRepresentacao</td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="ui divider"></div>
-    <div class="ui grid">
-        <div class="doubling four column row">
-            <div class="column">
-                <table class="ui striped celled table">
-                    <thead>
-                        <tr>
-                            <th colspan="2">
-                                Questão/Alternativas
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in questoes.Take(pontoDeQuebra).Select((questao, i) => new { i, questao }))
-                        {
-                            <tr>
-                                <td class="right aligned collapsing">
-                                    @item.i.GetIndiceQuestao()
-                                </td>
-                                <td>
-                                    <div class="ui gabarito horizontal list">
-                                        @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
-                                        {
-                                            <div class="item">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
-                                        }
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <div class="column">
-                <table class="ui celled table">
-                    <thead>
-                        <tr>
-                            <th colspan="2">
-                                Questão/Alternativas
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in questoes.Skip(pontoDeQuebra).Take(pontoDeQuebra).Select((questao, i) => new { i = i + pontoDeQuebra, questao }))
-                        {
-                            <tr>
-                                <td class="right aligned collapsing">
-                                    @item.i.GetIndiceQuestao()
-                                </td>
-                                <td>
-                                    <div class="ui gabarito horizontal list">
-                                        @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
-                                        {
-                                            <div class="item">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
-                                        }
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <div class="column">
-                <table class="ui celled table">
-                    <thead>
-                        <tr>
-                            <th colspan="2">
-                                Questão/Alternativas
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in questoes.Skip(pontoDeQuebra * 2).Take(pontoDeQuebra).Select((questao, i) => new { i = i + (pontoDeQuebra * 2), questao }))
-                        {
-                            <tr>
-                                <td class="right aligned collapsing">
-                                    @item.i.GetIndiceQuestao()
-                                </td>
-                                <td>
-                                    <div class="ui gabarito horizontal list">
-                                        @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
-                                        {
-                                            <div class="item">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
-                                        }
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            <div class="column">
-                <table class="ui celled table">
-                    <thead>
-                        <tr>
-                            <th colspan="2">
-                                Questão/Alternativas
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in questoes.Skip(pontoDeQuebra * 3).Take(pontoDeQuebra).Select((questao, i) => new { i = i + (pontoDeQuebra * 3), questao }))
-                        {
-                            <tr>
-                                <td class="right aligned collapsing">
-                                    @item.i.GetIndiceQuestao()
-                                </td>
-                                <td>
-                                    <div class="ui gabarito horizontal list">
-                                        @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
-                                        {
-                                            <div class="item">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
-                                        }
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+    @foreach (var candidato in Model.SimDiaRealizacao.Simulado.SimCandidato)
+    {
+        <h2>
+            CARTÃO-RESPOSTA
+            <small style="float:right">
+                Dia: @Model.SimDiaRealizacao.DtRealizacao.DiaRealizacaoRepresentacao()
+                &nbsp;|&nbsp;
+                Prova: @Model.Titulo
+            </small>
+        </h2>
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th class="">Nome Completo</th>
+                    <th class="collapsing">Número do CPF</th>
+                    <th class="collapsing">Número de Inscrição</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@candidato.Candidato.Nome</td>
+                    <td>@Formate.ParaCPF(candidato.Candidato.Cpf)</td>
+                    <td class="right aligned">@candidato.NumInscricaoRepresentacao</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="ui divider"></div>
+        @gabaritoPartial
+        <div class="ui divider"></div>
+        <div class="ui form">
+            <div class="field">
+                <label>Assinatura</label>
+                <input />
             </div>
         </div>
-    </div>
-    <div class="ui divider"></div>
-    <div class="ui form">
-        <div class="field">
-            <label>Assinatura</label>
-            <input />
-        </div>
-    </div>
+        <span class="break-page"></span>
+    }    
     <script>
         var focused = false;
         window.print();
