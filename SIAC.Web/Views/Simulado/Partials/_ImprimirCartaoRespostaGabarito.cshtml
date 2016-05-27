@@ -1,0 +1,127 @@
+﻿@model List<Questao>
+
+@{ 
+    int pontoDeQuebra = Model.Count <= 15 ? 15 : Model.Count / 2 <= 15 ? Model.Count / 2 : Model.Count / 4;
+}
+
+<div class="ui grid">
+    <div class="doubling four column row">
+        <div class="column">
+            <table class="ui striped celled table">
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            Questão/Alternativas
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Take(pontoDeQuebra).Select((questao, i) => new { i, questao }))
+                    {
+                        <tr>
+                            <td class="right aligned collapsing">
+                                @item.i.GetIndiceQuestao()
+                            </td>
+                            <td>
+                                <div class="ui gabarito horizontal list">
+                                    @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
+                                    {
+                                        <div class="item">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="column">
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            Questão/Alternativas
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Skip(pontoDeQuebra).Take(pontoDeQuebra).Select((questao, i) => new { i = i + pontoDeQuebra, questao }))
+                    {
+                        <tr>
+                            <td class="right aligned collapsing">
+                                @item.i.GetIndiceQuestao()
+                            </td>
+                            <td>
+                                <div class="ui gabarito horizontal list">
+                                    @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
+                                    {
+                                        <div class="item">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="column">
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            Questão/Alternativas
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Skip(pontoDeQuebra * 2).Take(pontoDeQuebra).Select((questao, i) => new { i = i + (pontoDeQuebra * 2), questao }))
+                    {
+                        <tr>
+                            <td class="right aligned collapsing">
+                                @item.i.GetIndiceQuestao()
+                            </td>
+                            <td>
+                                <div class="ui gabarito horizontal list">
+                                    @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
+                                    {
+                                        <div class="item">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="column">
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            Questão/Alternativas
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Skip(pontoDeQuebra * 3).Take(pontoDeQuebra).Select((questao, i) => new { i = i + (pontoDeQuebra * 3), questao }))
+                    {
+                        <tr>
+                            <td class="right aligned collapsing">
+                                @item.i.GetIndiceQuestao()
+                            </td>
+                            <td>
+                                <div class="ui gabarito horizontal list">
+                                    @foreach (var alternativa in item.questao.Alternativa.OrderBy(a => a.CodOrdem))
+                                    {
+                                        <div class="item">@alternativa.CodOrdem.GetIndiceAlternativa()</div>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

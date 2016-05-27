@@ -9,9 +9,19 @@
     <div class="ui right floated informacoes button">Informações</div>
 </h2>
 
+
+<div only-browser-message="chrome" class="ui message">
+    <div class="header">
+        Seu navegador não permite a impressão
+    </div>
+    <p>
+        Realize a instalação do <a href="//google.com/chrome" target="_blank">Google Chrome</a> para utilizar esta funcionalidade.
+    </p>
+</div>
+
 @Html.Partial("_SimuladoInformacoes", Model)
 
-@foreach (var item in Model.SimDiaRealizacao.OrderBy(d => d.DtRealizacao).Select((dia, i) => new { i, dia}))
+@foreach (var item in Model.SimDiaRealizacao.OrderBy(d => d.DtRealizacao).Select((dia, i) => new { i, dia }))
 {
     <div class="ui dividing header">
         @(item.i+1)º Dia de Realização: @item.dia.DtRealizacao.DiaRealizacaoRepresentacao()
@@ -28,16 +38,16 @@
         <tbody>
             @foreach (SimProva prova in item.dia.SimProva)
             {
-                <tr>
-                    <td>@prova.Titulo</td>
-                    <td>@prova.Disciplina.Descricao</td>
-                    <td>@prova.QteQuestoes Questões</td>
-                    <td>
-                        <a data-url="@Url.Action("ImprimirProva", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small button"><i class="file text icon"></i> Prova</a>
-                        <a data-url="@Url.Action("ImprimirCartaoResposta", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small button"><i class="file text outline icon"></i> Cartão Resposta</a>
-                        <a data-url="@Url.Action("ImprimirGabarito", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })"  class="ui imprimir icon small button"><i class="grid layout icon"></i> Gabarito</a>
-                    </td>
-                </tr>
+            <tr>
+                <td>@prova.Titulo</td>
+                <td>@prova.Disciplina.Descricao</td>
+                <td>@prova.QteQuestoes Questões</td>
+                <td>
+                    <a only-browser="chrome" data-url="@Url.Action("ImprimirProva", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small disabled button"><i class="file text icon"></i> Caderno</a>
+                    <a only-browser="chrome" data-url="@Url.Action("ImprimirCartaoResposta", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small disabled button"><i class="file text outline icon"></i> Cartão-Resposta</a>
+                    <a only-browser="chrome" data-url="@Url.Action("ImprimirGabarito", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small disabled button"><i class="grid layout icon"></i> Gabarito</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

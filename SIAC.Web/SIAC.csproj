@@ -762,9 +762,9 @@
     <Content Include="Views\Shared\Partials\_Menu.cshtml" />
     <Content Include="Views\Institucional\Historico.cshtml" />
     <Content Include="Views\Institucional\Partials\_ListaInstitucional.cshtml" />
-    <Content Include="Views\Impressao\Partials\_AnexoImpressao.cshtml" />
+    <Content Include="Views\Shared\Partials\_AnexoImpressao.cshtml" />
     <Content Include="Views\Impressao\Avaliacao.cshtml" />
-    <Content Include="Views\Impressao\Partials\_Questoes.cshtml" />
+    <Content Include="Views\Shared\Partials\_QuestoesImpressao.cshtml" />
     <Content Include="Views\Institucional\Andamento.cshtml" />
     <Content Include="Views\Institucional\Resultado.cshtml" />
     <Content Include="Scripts\modules\siac.utilitario.js" />
@@ -836,6 +836,7 @@
     <Content Include="Views\Simulado\Partials\_ImprimirProva.cshtml" />
     <Content Include="Views\Simulado\Partials\_ImprimirGabarito.cshtml" />
     <Content Include="Views\Simulado\Partials\_ImprimirCartaoResposta.cshtml" />
+    <Content Include="Views\Simulado\Partials\_ImprimirCartaoRespostaGabarito.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -989,7 +989,7 @@ siac.Simulado.Respostas = (function () {
     return {
         iniciar: iniciar
     }
-})()
+})();
 
 siac.Simulado.Imprimir = (function () {
     function iniciar() {
@@ -1004,6 +1004,11 @@ siac.Simulado.Imprimir = (function () {
             var url = $(this).data('url');
             window.open(url);
         });
+
+        if (siac.Utilitario.eChrome || siac.Utilitario.eBlink) {
+            $('[only-browser-message=chrome]').hide();
+            $('[only-browser=chrome]').removeClass('disabled');
+        }
     }
 
     return {
