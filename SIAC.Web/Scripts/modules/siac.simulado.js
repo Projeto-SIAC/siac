@@ -835,6 +835,7 @@ siac.Simulado.Respostas = (function () {
                     success: function (data) {
                         if (data) {
                             $listaRespostas.html(data);
+                            alterarCheckBox();
                         }
                     },
                     error: function () {
@@ -870,6 +871,7 @@ siac.Simulado.Respostas = (function () {
                     success: function (data) {
                         if (data) {
                             $listaRespostas.html(data);
+                            alterarCheckBox();
                         }
                     },
                     error: function () {
@@ -946,6 +948,25 @@ siac.Simulado.Respostas = (function () {
             scrollTop: 0
         }, 500);
         return false;
+    }
+
+    function alterarCheckBox() {
+        $('.ui.checkbox').checkbox();
+        $('input[type=checkbox]').change(function () {
+            var $checkbox = $(this),
+                checked = $checkbox.is(':checked'),
+                $tr = $checkbox.closest('tr'),
+                trClass = 'error',
+                inputClass = 'disabled';
+
+            if (checked) {
+                $tr.addClass(trClass);
+                $tr.find('.field').addClass(inputClass);
+            } else {
+                $tr.removeClass(trClass);
+                $tr.find('.field').removeClass(inputClass);
+            }
+        });
     }
 
     return {

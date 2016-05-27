@@ -880,21 +880,26 @@ namespace SIAC.Controllers
 
                         foreach (SimCandidatoProva candidato in prova.SimCandidatoProva)
                         {
-                            int qteAcerto = -1;
-                            string qteAcertoForm = form[candidato.CodCandidato.ToString()];
-                            if (!String.IsNullOrEmpty(qteAcertoForm) && qteAcertoForm.IsNumber())
-                            {
-                                int.TryParse(qteAcertoForm, out qteAcerto);
-                            }
-                            if (qteAcerto > -1)
-                            {
-                                candidato.QteAcertos = qteAcerto;
-                                candidato.FlagPresente = true;
-                            }
-                            else
+                            string flagAusente = form[candidato.CodCandidato + "ausente"];
+
+                            if (flagAusente != null && flagAusente == "on")
                             {
                                 candidato.QteAcertos = null;
                                 candidato.FlagPresente = false;
+                            }
+                            else
+                            {
+                                int qteAcerto = -1;
+                                string qteAcertoForm = form[candidato.CodCandidato.ToString()];
+                                if (!String.IsNullOrEmpty(qteAcertoForm) && qteAcertoForm.IsNumber())
+                                {
+                                    int.TryParse(qteAcertoForm, out qteAcerto);
+                                }
+                                if (qteAcerto > -1)
+                                {
+                                    candidato.QteAcertos = qteAcerto;
+                                    candidato.FlagPresente = true;
+                                }
                             }
                         }
 
