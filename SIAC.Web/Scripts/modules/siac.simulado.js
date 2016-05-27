@@ -586,13 +586,19 @@ siac.Simulado.Detalhe = (function () {
         $('.encerrar.item').click(function () {
             $('.encerrar.modal').modal({
                 onApprove: function () {
+                    var $modal = $(this);
                     $.ajax({
                         type: 'POST',
                         url: '/simulado/encerrar/' + _codigo,
+                        beforeSend: function () {
+                            $modal.find('.approve.button').addClass('loading');
+                        },
                         complete: function () {
+                            $modal.modal('hide');
                             location.reload();
                         }
-                    })
+                    });
+                    return false;
                 }
             }).modal('show');
         });
@@ -642,13 +648,19 @@ siac.Simulado.Detalhe = (function () {
         $('.mapear.item').click(function () {
             $('.mapear.modal').modal({
                 onApprove: function () {
+                    var $modal = $(this);
                     $.ajax({
                         type: 'POST',
                         url: '/simulado/mapearsalas/' + _codigo,
+                        beforeSend: function () {
+                            $modal.find('.approve.button').addClass('loading');
+                        },
                         complete: function () {
+                            $modal.modal('hide');
                             location.reload();
                         }
-                    })
+                    });
+                    return false;
                 }
             }).modal('show');
         });
@@ -684,13 +696,18 @@ siac.Simulado.Detalhe = (function () {
         $('.finalizar.provas.item').click(function () {
             $('.finalizar.provas.modal').modal({
                 onApprove: function () {
+                    var $modal = $(this);
                     $.ajax({
                         type: 'POST',
                         url: '/simulado/finalizarprovas/' + _codigo,
-                        complete: function () {
+                        beforeSend: function () {
+                            $modal.find('.approve.button').addClass('loading');
+                        }, complete: function () {
+                            $modal.modal('hide');
                             location.reload();
                         }
-                    })
+                    });
+                    return false;
                 }
             }).modal('show');
         });
@@ -818,6 +835,7 @@ siac.Simulado.Respostas = (function () {
                     success: function (data) {
                         if (data) {
                             $listaRespostas.html(data);
+                            alterarCheckBoxProva();
                         }
                     },
                     error: function () {
@@ -853,6 +871,7 @@ siac.Simulado.Respostas = (function () {
                     success: function (data) {
                         if (data) {
                             $listaRespostas.html(data);
+                            alterarCheckBoxCandidato();
                         }
                     },
                     error: function () {
@@ -929,6 +948,42 @@ siac.Simulado.Respostas = (function () {
             scrollTop: 0
         }, 500);
         return false;
+    }
+
+    function alterarCheckBoxProva() {
+        $('.ui.checkbox').checkbox();
+        $('input[type=checkbox]').change(function () {
+            var $checkbox = $(this),
+                checked = $checkbox.is(':checked'),
+                $tr = $checkbox.closest('tr'),
+                trClass = 'error',
+                inputClass = 'disabled';
+
+            if (checked) {
+                $tr.addClass(trClass);
+                $tr.find('.field').addClass(inputClass);
+            } else {
+                $tr.removeClass(trClass);
+                $tr.find('.field').removeClass(inputClass);
+            }
+        });
+    }
+
+    function alterarCheckBoxCandidato() {
+        $('.ui.checkbox').checkbox();
+        $('input[type=checkbox]').change(function () {
+            var $checkbox = $(this),
+                checked = $checkbox.is(':checked'),
+                $content = $checkbox.closest('form').find('.segment');
+
+            if (checked) {
+                $content.dimmer({
+                    closable: false
+                }).dimmer('show');
+            } else {
+                $content.dimmer('hide');
+            }
+        });
     }
 
     return {

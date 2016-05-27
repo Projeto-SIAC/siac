@@ -851,6 +851,7 @@ namespace SIAC.Controllers
                         model.Candidato = candidato.SimCandidato.Candidato;
                         model.Questoes = prova.SimProvaQuestao.OrderBy(q => q.CodQuestao).ToList();
                         model.Respostas = candidato.SimCandidatoQuestao.OrderBy(q => q.CodQuestao).ToList();
+                        model.CandidatoProva = candidato;
 
                         return PartialView("_SimuladoRespostasCandidato", model);
                     }
@@ -880,21 +881,26 @@ namespace SIAC.Controllers
 
                         foreach (SimCandidatoProva candidato in prova.SimCandidatoProva)
                         {
-                            int qteAcerto = -1;
-                            string qteAcertoForm = form[candidato.CodCandidato.ToString()];
-                            if (!String.IsNullOrEmpty(qteAcertoForm) && qteAcertoForm.IsNumber())
-                            {
-                                int.TryParse(qteAcertoForm, out qteAcerto);
-                            }
-                            if (qteAcerto > -1)
-                            {
-                                candidato.QteAcertos = qteAcerto;
-                                candidato.FlagPresente = true;
-                            }
-                            else
+                            string flagAusente = form[candidato.CodCandidato + "ausente"];
+
+                            if (flagAusente != null && flagAusente == "on")
                             {
                                 candidato.QteAcertos = null;
                                 candidato.FlagPresente = false;
+                            }
+                            else
+                            {
+                                int qteAcerto = -1;
+                                string qteAcertoForm = form[candidato.CodCandidato.ToString()];
+                                if (!String.IsNullOrEmpty(qteAcertoForm) && qteAcertoForm.IsNumber())
+                                {
+                                    int.TryParse(qteAcertoForm, out qteAcerto);
+                                }
+                                if (qteAcerto > -1)
+                                {
+                                    candidato.QteAcertos = qteAcerto;
+                                    candidato.FlagPresente = true;
+                                }
                             }
                         }
 
@@ -935,27 +941,36 @@ namespace SIAC.Controllers
 
                         candidato.SimCandidatoQuestao.Clear();
                         int acertos = 0;
-                        foreach (SimProvaQuestao questao in prova.SimProvaQuestao)
+                        string flagAusente = form["ausente"];
+
+                        if (flagAusente != null && flagAusente == "on")
                         {
-                            string strQuestao = "questao" + questao.CodQuestao;
-
-                            if (form[strQuestao] != null)
-                            {
-                                int alternativa = int.Parse(form[strQuestao]);
-
-                                candidato.SimCandidatoQuestao.Add(new SimCandidatoQuestao()
-                                {
-                                    SimProvaQuestao = questao,
-                                    RespAlternativa = alternativa
-                                });
-
-                                if(questao.Questao.Alternativa.First(a=>a.FlagGabarito).CodOrdem == alternativa)
-                                    acertos++;
-                            }
+                            candidato.FlagPresente = false;
+                            candidato.QteAcertos = null;
                         }
-                        candidato.FlagPresente = true;
-                        candidato.QteAcertos = acertos;
+                        else
+                        {
+                            foreach (SimProvaQuestao questao in prova.SimProvaQuestao)
+                            {
+                                string strQuestao = "questao" + questao.CodQuestao;
+                                
+                                if (form[strQuestao] != null)
+                                {
+                                    int alternativa = int.Parse(form[strQuestao]);
 
+                                    candidato.SimCandidatoQuestao.Add(new SimCandidatoQuestao()
+                                    {
+                                        SimProvaQuestao = questao,
+                                        RespAlternativa = alternativa
+                                    });
+
+                                    if (questao.Questao.Alternativa.First(a => a.FlagGabarito).CodOrdem == alternativa)
+                                        acertos++;
+                                }
+                            }
+                            candidato.FlagPresente = true;
+                            candidato.QteAcertos = acertos;
+                        }
                         Repositorio.Commit();
 
                         mensagem = "O preenchimento ocorreu com sucesso.";
