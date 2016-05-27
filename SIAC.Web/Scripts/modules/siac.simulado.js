@@ -835,7 +835,7 @@ siac.Simulado.Respostas = (function () {
                     success: function (data) {
                         if (data) {
                             $listaRespostas.html(data);
-                            alterarCheckBox();
+                            alterarCheckBoxProva();
                         }
                     },
                     error: function () {
@@ -871,7 +871,7 @@ siac.Simulado.Respostas = (function () {
                     success: function (data) {
                         if (data) {
                             $listaRespostas.html(data);
-                            alterarCheckBox();
+                            alterarCheckBoxCandidato();
                         }
                     },
                     error: function () {
@@ -950,7 +950,7 @@ siac.Simulado.Respostas = (function () {
         return false;
     }
 
-    function alterarCheckBox() {
+    function alterarCheckBoxProva() {
         $('.ui.checkbox').checkbox();
         $('input[type=checkbox]').change(function () {
             var $checkbox = $(this),
@@ -965,6 +965,23 @@ siac.Simulado.Respostas = (function () {
             } else {
                 $tr.removeClass(trClass);
                 $tr.find('.field').removeClass(inputClass);
+            }
+        });
+    }
+
+    function alterarCheckBoxCandidato() {
+        $('.ui.checkbox').checkbox();
+        $('input[type=checkbox]').change(function () {
+            var $checkbox = $(this),
+                checked = $checkbox.is(':checked'),
+                $content = $checkbox.closest('form').find('.segment');
+
+            if (checked) {
+                $content.dimmer({
+                    closable: false
+                }).dimmer('show');
+            } else {
+                $content.dimmer('hide');
             }
         });
     }

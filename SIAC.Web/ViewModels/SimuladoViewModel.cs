@@ -57,5 +57,6 @@ namespace SIAC.ViewModels
         public SimProva Prova { get; set; }
         public List<SimProvaQuestao> Questoes { get; set; }
         public List<SimCandidatoQuestao> Respostas { get; set; }
+        public SimCandidatoProva CandidatoProva { get; set; }
     }
 }

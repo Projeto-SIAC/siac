@@ -1,43 +1,60 @@
 ﻿@model SimuladoRespostasCandidatoViewModel
 @{
     int questaoIndice = 1;
+    bool flagAusente = !Model.CandidatoProva.FlagPresente.Value;
 }
 
 <form method="post" class="ui form" action="@Url.Action("InserirRespostasCandidato", new { codigo = Model.Simulado.Codigo, codDia = Model.Prova.CodDiaRealizacao, codProva = Model.Prova.CodProva, codCandidato = Model.Candidato.CodCandidato})">
     <h3 class="header">@($"Prova: {Model.Prova.Titulo} || Candidato: {Model.Candidato.Nome}")</h3>
-    <table class="ui striped table">
-        <thead>
-            <tr>
-                <th>Indíce da Questão</th>
-                <th>Alternativa Marcada </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (SimProvaQuestao questao in Model.Questoes)
-            {
-                SimCandidatoQuestao resposta = Model.Respostas.FirstOrDefault(q => q.CodQuestao == questao.CodQuestao);
-                
+    <div class="ui basic segment">
+        <div class="ui @(flagAusente ? "active" : "" ) dimmer">
+            <div class="content">
+                <div class="center">
+                    <h2 class="ui inverted icon header">
+                        <i class="ban icon"></i>
+                        Candidato Ausente
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <table class="ui striped table">
+            <thead>
                 <tr>
-                    <td>@(questaoIndice++)</td>
-                    <td>
-                        <div class="inline fields">
-                            @foreach (Alternativa alternativa in questao.Questao.Alternativa)
-                            {
-                                <div class="field">
-                                    <div class="ui radio checkbox">
-                                        <input type="radio" name="@($"questao{questao.CodQuestao}")" value="@alternativa.CodOrdem"
-                                            @(resposta != null && resposta.RespAlternativa == alternativa.CodOrdem ? "checked" : "")>
-                                        <label>@alternativa.CodOrdem.GetIndiceAlternativa()</label>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    </td>
+                    <th>Indíce da Questão</th>
+                    <th>Alternativa Marcada </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (SimProvaQuestao questao in Model.Questoes)
+                {
+                    SimCandidatoQuestao resposta = Model.Respostas.FirstOrDefault(q => q.CodQuestao == questao.CodQuestao);
+
+                    <tr>
+                        <td>@(questaoIndice++)</td>
+                        <td>
+                            <div class="inline fields">
+                                @foreach (Alternativa alternativa in questao.Questao.Alternativa)
+                                {
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" name="@($"questao{questao.CodQuestao}")" value="@alternativa.CodOrdem"
+                                                   @(resposta != null && resposta.RespAlternativa == alternativa.CodOrdem ? "checked" : "")>
+                                            <label>@alternativa.CodOrdem.GetIndiceAlternativa()</label>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
     <div class="ui actions">
         <input type="submit" class="ui button" value="Enviar respostas" />
+        <div class="ui floated right toggle checkbox">
+            <label>Candidato Ausente?</label>
+            <input type="checkbox" name="ausente" @(flagAusente ? "checked" : "") />
+        </div> 
     </div>
 </form>
