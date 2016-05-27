@@ -7,6 +7,7 @@
 <h2>
     @ViewBag.Title
     <div class="ui right floated informacoes button">Informações</div>
+    <div only-browser="chrome" data-url="@Url.Action("ImprimirListaPresenca", new { codigo = Model.Codigo })" class="ui right floated imprimir button"><i class="icon print"></i>Imprimir Lista de Presença</div>
 </h2>
 
 

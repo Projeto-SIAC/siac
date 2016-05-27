@@ -43,6 +43,11 @@
         }
 
         .break-page {
+            margin:0;
+            border:0;
+            padding:0;
+            width:0;
+            height:0;
             -webkit-break-before: always;
             break-before: always;
             page-break-before: always;
@@ -85,7 +90,7 @@
                 <input />
             </div>
         </div>
-        <span class="break-page"></span>
+        <div class="break-page"></div>
     }    
     <script>
         var focused = false;

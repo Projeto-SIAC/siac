@@ -1,0 +1,99 @@
+﻿@model Simulado
+
+<!DOCTYPE html>
+
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Lista de Presença - SIAC Simulados</title>
+    <link href="~/Resources/images/layout/logo-black.png" rel="shortcut icon" />
+    @Styles.Render("~/bundles/css")
+    <style>
+        html, body {
+            font-size: 12px;
+        }
+
+        table > thead > tr > th {
+            text-transform: uppercase;
+        }
+
+        table td, table th {
+            padding: 0.75em 0.5em !important;
+        }
+
+            table td.collapsing {
+                font-weight: bolder;
+            }
+
+        tr, td, th {
+            -webkit-break-inside: avoid;
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        .break-page {
+            margin:0;
+            border:0;
+            padding:0;
+            width:0;
+            height:0;
+            -webkit-break-before: always;
+            break-before: always;
+            page-break-before: always;
+        }
+
+        .reduce.text {
+            font-size:10px!important;
+            white-space:normal!important;
+        }
+    </style>
+</head>
+<body>
+    @foreach (var sala in Model.SimSala)
+    {
+        List<Candidato> candidados = sala.SimCandidato.Select(sc => sc.Candidato).OrderBy(c => c.Nome).ToList();
+        <h2>
+            LISTA DE PRESENÇA (@(candidados.FirstOrDefault()?.Nome[0])-@(candidados.LastOrDefault()?.Nome[0]))
+            <small style="float:right">
+                Sala: @sala.Sala.Sigla
+                &nbsp;|&nbsp;
+                Bloco: @sala.Sala.Bloco.Sigla
+            </small>
+        </h2>
+        <table class="ui celled striped single line table">
+            <thead>
+                <tr>
+                    <th class="collapsing">#</th>
+                    <th class="collapsing">Nome Completo</th>
+                    <th class="collapsing">Número do CPF</th>
+                    <th class="">Assinatura</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in candidados.Select((candidato, i) => new { i, candidato }))
+                {
+                    <tr>
+                        <td class="right aligned">@(item.i+1)</td>
+                        <td class="@(item.candidato.Nome.Length > 35 ? "reduce text" : "")">@item.candidato.Nome</td>
+                        <td>@Formate.ParaCPF(item.candidato.Cpf)</td>
+                        <td></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="break-page"></div>
+    }    
+    <script>
+        var focused = false;
+        window.print();
+        focused = true;
+        var interval = setInterval(function () {
+            if (focused === true) {
+                clearInterval(interval);
+                window.close();
+            }
+        }, 300);
+    </script>
+</body>
+</html>

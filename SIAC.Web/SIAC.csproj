@@ -837,6 +837,7 @@
     <Content Include="Views\Simulado\Partials\_ImprimirGabarito.cshtml" />
     <Content Include="Views\Simulado\Partials\_ImprimirCartaoResposta.cshtml" />
     <Content Include="Views\Simulado\Partials\_ImprimirCartaoRespostaGabarito.cshtml" />
+    <Content Include="Views\Simulado\Partials\_ImprimirListaPresenca.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

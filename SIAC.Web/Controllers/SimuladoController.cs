@@ -1253,5 +1253,19 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
+
+        public ActionResult ImprimirListaPresenca(string codigo)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                {
+                    return PartialView("_ImprimirListaPresenca", sim);
+                }
+            }
+            return RedirectToAction("Detalhe", new { codigo = codigo });
+        }
     }
 }
