@@ -642,6 +642,7 @@
     <Content Include="Models\dbSIAC.edmx.diagram">
       <DependentUpon>dbSIAC.edmx</DependentUpon>
     </Content>
+    <Content Include="sql.json" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>

@@ -966,6 +966,7 @@
           <Property Name="DtInscricao" Type="datetime" Nullable="false" />
           <Property Name="CodSala" Type="int" />
           <Property Name="EscorePadronizadoFinal" Type="decimal" Precision="8" Scale="3" />
+          <Property Name="NumeroMascara" Type="varchar" MaxLength="10" Nullable="false" />
         </EntityType>
         <EntityType Name="SimCandidatoProva">
           <Key>
@@ -1251,7 +1252,7 @@
           <Property Name="MatrVisitante" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="DtValidade" Type="datetime" />
         </EntityType>
-        <Association Name="FK__Alternati__CodQu__603D47BB">
+        <Association Name="FK__Alternati__CodQu__51BA1E3A">
           <End Role="Questao" Type="Self.Questao" Multiplicity="1" />
           <End Role="Alternativa" Type="Self.Alternativa" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1263,7 +1264,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Aluno__CodCurso__51BA1E3A">
+        <Association Name="FK__Aluno__CodCurso__7D98A078">
           <End Role="Curso" Type="Self.Curso" Multiplicity="1" />
           <End Role="Aluno" Type="Self.Aluno" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1275,7 +1276,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Aluno__MatrAluno__52AE4273">
+        <Association Name="FK__Aluno__MatrAluno__7E8CC4B1">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="Aluno" Type="Self.Aluno" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1287,7 +1288,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcade__CodDi__025D5595">
+        <Association Name="FK__AvalAcade__CodDi__0BE6BFCF">
           <End Role="Disciplina" Type="Self.Disciplina" Multiplicity="1" />
           <End Role="AvalAcademica" Type="Self.AvalAcademica" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1299,7 +1300,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcade__CodPr__0169315C">
+        <Association Name="FK__AvalAcade__CodPr__0CDAE408">
           <End Role="Professor" Type="Self.Professor" Multiplicity="1" />
           <End Role="AvalAcademica" Type="Self.AvalAcademica" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1311,7 +1312,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcade__CodSa__04459E07">
+        <Association Name="FK__AvalAcade__CodSa__0DCF0841">
           <End Role="Sala" Type="Self.Sala" Multiplicity="1" />
           <End Role="AvalAcademica" Type="Self.AvalAcademica" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1323,7 +1324,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcademica__00750D23">
+        <Association Name="FK__AvalAcademica__0EC32C7A">
           <End Role="Avaliacao" Type="Self.Avaliacao" Multiplicity="1" />
           <End Role="AvalAcademica" Type="Self.AvalAcademica" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1341,7 +1342,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcademica__035179CE">
+        <Association Name="FK__AvalAcademica__0FB750B3">
           <End Role="Turma" Type="Self.Turma" Multiplicity="1" />
           <End Role="AvalAcademica" Type="Self.AvalAcademica" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1359,7 +1360,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcadR__CodSa__4183B671">
+        <Association Name="FK__AvalAcadR__CodSa__7F80E8EA">
           <End Role="Sala" Type="Self.Sala" Multiplicity="1" />
           <End Role="AvalAcadReposicao" Type="Self.AvalAcadReposicao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1371,7 +1372,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcadRepoJust__5772F790">
+        <Association Name="FK__AvalAcadRepoJust__09FE775D">
           <End Role="AvalAcadReposicao" Type="Self.AvalAcadReposicao" Multiplicity="1" />
           <End Role="AvalAcadRepoJustificacao" Type="Self.AvalAcadRepoJustificacao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1389,7 +1390,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcadRepoJust__58671BC9">
+        <Association Name="FK__AvalAcadRepoJust__0AF29B96">
           <End Role="Justificacao" Type="Self.Justificacao" Multiplicity="1" />
           <End Role="AvalAcadRepoJustificacao" Type="Self.AvalAcadRepoJustificacao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1403,7 +1404,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAcadReposica__408F9238">
+        <Association Name="FK__AvalAcadReposica__00750D23">
           <End Role="Avaliacao" Type="Self.Avaliacao" Multiplicity="1" />
           <End Role="AvalAcadReposicao" Type="Self.AvalAcadReposicao" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1421,7 +1422,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAuto__3F115E1A">
+        <Association Name="FK__AvalAuto__1D4655FB">
           <End Role="Avaliacao" Type="Self.Avaliacao" Multiplicity="1" />
           <End Role="AvalAuto" Type="Self.AvalAuto" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1439,7 +1440,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAuto__CodDif__40058253">
+        <Association Name="FK__AvalAuto__CodDif__1E3A7A34">
           <End Role="Dificuldade" Type="Self.Dificuldade" Multiplicity="1" />
           <End Role="AvalAuto" Type="Self.AvalAuto" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1451,7 +1452,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAuto__CodPes__40F9A68C">
+        <Association Name="FK__AvalAuto__CodPes__1F2E9E6D">
           <End Role="PessoaFisica" Type="Self.PessoaFisica" Multiplicity="1" />
           <End Role="AvalAuto" Type="Self.AvalAuto" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1463,7 +1464,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAvi__00DF2177">
+        <Association Name="FK__AvalAvi__3429BB53">
           <End Role="Avaliacao" Type="Self.Avaliacao" Multiplicity="1" />
           <End Role="AvalAvi" Type="Self.AvalAvi" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1481,7 +1482,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalAvi__CodCola__01D345B0">
+        <Association Name="FK__AvalAvi__CodCola__351DDF8C">
           <End Role="Colaborador" Type="Self.Colaborador" Multiplicity="1" />
           <End Role="AvalAvi" Type="Self.AvalAvi" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1493,7 +1494,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalCerti__CodDi__78D3EB5B">
+        <Association Name="FK__AvalCerti__CodDi__79C80F94">
           <End Role="Disciplina" Type="Self.Disciplina" Multiplicity="1" />
           <End Role="AvalCertificacao" Type="Self.AvalCertificacao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1505,7 +1506,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalCerti__CodPr__77DFC722">
+        <Association Name="FK__AvalCerti__CodPr__7ABC33CD">
           <End Role="Professor" Type="Self.Professor" Multiplicity="1" />
           <End Role="AvalCertificacao" Type="Self.AvalCertificacao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1517,7 +1518,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalCerti__CodSa__7ABC33CD">
+        <Association Name="FK__AvalCerti__CodSa__7BB05806">
           <End Role="Sala" Type="Self.Sala" Multiplicity="1" />
           <End Role="AvalCertificacao" Type="Self.AvalCertificacao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1529,7 +1530,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalCertificacao__79C80F94">
+        <Association Name="FK__AvalCertificacao__7CA47C3F">
           <End Role="Avaliacao" Type="Self.Avaliacao" Multiplicity="1" />
           <End Role="AvalCertificacao" Type="Self.AvalCertificacao" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1547,7 +1548,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalCertP__CodPe__1387E197">
+        <Association Name="FK__AvalCertP__CodPe__08162EEB">
           <End Role="PessoaFisica" Type="Self.PessoaFisica" Multiplicity="1" />
           <End Role="AvalCertPessoa" Type="Self.AvalCertPessoa" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1559,7 +1560,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalCertPessoa__1293BD5E">
+        <Association Name="FK__AvalCertPessoa__090A5324">
           <End Role="AvalCertificacao" Type="Self.AvalCertificacao" Multiplicity="1" />
           <End Role="AvalCertPessoa" Type="Self.AvalCertPessoa" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1577,7 +1578,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Avaliacao__CodTi__02FC7413">
+        <Association Name="FK__Avaliacao__CodTi__11D4A34F">
           <End Role="TipoAvaliacao" Type="Self.TipoAvaliacao" Multiplicity="1" />
           <End Role="Avaliacao" Type="Self.Avaliacao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1589,7 +1590,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvaliacaoProrrog__76619304">
+        <Association Name="FK__AvaliacaoProrrog__23F3538A">
           <End Role="Avaliacao" Type="Self.Avaliacao" Multiplicity="1" />
           <End Role="AvaliacaoProrrogacao" Type="Self.AvaliacaoProrrogacao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1607,7 +1608,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvaliacaoTema__1AD3FDA4">
+        <Association Name="FK__AvaliacaoTema__220B0B18">
           <End Role="Avaliacao" Type="Self.Avaliacao" Multiplicity="1" />
           <End Role="AvaliacaoTema" Type="Self.AvaliacaoTema" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1625,7 +1626,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvaliacaoTema__1BC821DD">
+        <Association Name="FK__AvaliacaoTema__22FF2F51">
           <End Role="Tema" Type="Self.Tema" Multiplicity="1" />
           <End Role="AvaliacaoTema" Type="Self.AvaliacaoTema" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1639,7 +1640,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalPesso__CodPe__08B54D69">
+        <Association Name="FK__AvalPesso__CodPe__2022C2A6">
           <End Role="PessoaFisica" Type="Self.PessoaFisica" Multiplicity="1" />
           <End Role="AvalPessoaResultado" Type="Self.AvalPessoaResultado" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1651,7 +1652,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalPessoaResult__07C12930">
+        <Association Name="FK__AvalPessoaResult__2116E6DF">
           <End Role="Avaliacao" Type="Self.Avaliacao" Multiplicity="1" />
           <End Role="AvalPessoaResultado" Type="Self.AvalPessoaResultado" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1669,7 +1670,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalQuesP__CodPe__7720AD13">
+        <Association Name="FK__AvalQuesP__CodPe__77DFC722">
           <End Role="PessoaFisica" Type="Self.PessoaFisica" Multiplicity="1" />
           <End Role="AvalQuesPessoaResposta" Type="Self.AvalQuesPessoaResposta" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1681,7 +1682,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalQuesPessoaRe__762C88DA">
+        <Association Name="FK__AvalQuesPessoaRe__78D3EB5B">
           <End Role="AvalTemaQuestao" Type="Self.AvalTemaQuestao" Multiplicity="1" />
           <End Role="AvalQuesPessoaResposta" Type="Self.AvalQuesPessoaResposta" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1705,7 +1706,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalTemaQuestao__7073AF84">
+        <Association Name="FK__AvalTemaQuestao__66B53B20">
           <End Role="AvaliacaoTema" Type="Self.AvaliacaoTema" Multiplicity="1" />
           <End Role="AvalTemaQuestao" Type="Self.AvalTemaQuestao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1727,7 +1728,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AvalTemaQuestao__7167D3BD">
+        <Association Name="FK__AvalTemaQuestao__67A95F59">
           <End Role="QuestaoTema" Type="Self.QuestaoTema" Multiplicity="1" />
           <End Role="AvalTemaQuestao" Type="Self.AvalTemaQuestao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1743,7 +1744,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublic__CodAv__12FDD1B2">
+        <Association Name="FK__AviPublic__CodAv__4B0D20AB">
           <End Role="AviTipoPublico" Type="Self.AviTipoPublico" Multiplicity="1" />
           <End Role="AviPublico" Type="Self.AviPublico" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1755,7 +1756,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublic__CodCu__63D8CE75">
+        <Association Name="FK__AviPublic__CodCu__0169315C">
           <End Role="Curso" Type="Self.Curso" Multiplicity="1" />
           <End Role="AviPublicoCurso" Type="Self.AviPublicoCurso" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1767,7 +1768,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublic__CodIn__18B6AB08">
+        <Association Name="FK__AviPublic__CodIn__62E4AA3C">
           <End Role="Instituicao" Type="Self.Instituicao" Multiplicity="1" />
           <End Role="AviPublicoInstituicao" Type="Self.AviPublicoInstituicao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1779,7 +1780,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublic__CodPe__1E6F845E">
+        <Association Name="FK__AviPublic__CodPe__60FC61CA">
           <End Role="PessoaFisica" Type="Self.PessoaFisica" Multiplicity="1" />
           <End Role="AviPublicoPessoa" Type="Self.AviPublicoPessoa" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1791,7 +1792,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublico__1209AD79">
+        <Association Name="FK__AviPublico__4C0144E4">
           <End Role="AvalAvi" Type="Self.AvalAvi" Multiplicity="1" />
           <End Role="AviPublico" Type="Self.AviPublico" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1809,7 +1810,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublicoCampus__14B10FFA">
+        <Association Name="FK__AviPublicoCampus__58671BC9">
           <End Role="AviPublico" Type="Self.AviPublico" Multiplicity="1" />
           <End Role="AviPublicoCampus" Type="Self.AviPublicoCampus" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1831,7 +1832,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublicoCampus__15A53433">
+        <Association Name="FK__AviPublicoCampus__595B4002">
           <End Role="Campus" Type="Self.Campus" Multiplicity="1" />
           <End Role="AviPublicoCampus" Type="Self.AviPublicoCampus" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1845,7 +1846,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublicoCurso__62E4AA3C">
+        <Association Name="FK__AviPublicoCurso__025D5595">
           <End Role="AviPublico" Type="Self.AviPublico" Multiplicity="1" />
           <End Role="AviPublicoCurso" Type="Self.AviPublicoCurso" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1867,7 +1868,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublicoDireto__0EF836A4">
+        <Association Name="FK__AviPublicoDireto__64CCF2AE">
           <End Role="AviPublico" Type="Self.AviPublico" Multiplicity="1" />
           <End Role="AviPublicoDiretoria" Type="Self.AviPublicoDiretoria" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1889,7 +1890,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublicoDireto__0FEC5ADD">
+        <Association Name="FK__AviPublicoDireto__65C116E7">
           <End Role="Diretoria" Type="Self.Diretoria" Multiplicity="1" />
           <End Role="AviPublicoDiretoria" Type="Self.AviPublicoDiretoria" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1905,7 +1906,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublicoInstit__17C286CF">
+        <Association Name="FK__AviPublicoInstit__63D8CE75">
           <End Role="AviPublico" Type="Self.AviPublico" Multiplicity="1" />
           <End Role="AviPublicoInstituicao" Type="Self.AviPublicoInstituicao" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1927,7 +1928,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublicoPessoa__1D7B6025">
+        <Association Name="FK__AviPublicoPessoa__61F08603">
           <End Role="AviPublico" Type="Self.AviPublico" Multiplicity="1" />
           <End Role="AviPublicoPessoa" Type="Self.AviPublicoPessoa" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1949,7 +1950,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublicoProRei__1A69E950">
+        <Association Name="FK__AviPublicoProRei__5F141958">
           <End Role="AviPublico" Type="Self.AviPublico" Multiplicity="1" />
           <End Role="AviPublicoProReitoria" Type="Self.AviPublicoProReitoria" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -1971,7 +1972,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublicoProRei__1B5E0D89">
+        <Association Name="FK__AviPublicoProRei__60083D91">
           <End Role="ProReitoria" Type="Self.ProReitoria" Multiplicity="1" />
           <End Role="AviPublicoProReitoria" Type="Self.AviPublicoProReitoria" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1985,7 +1986,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublicoReitor__019E3B86">
+        <Association Name="FK__AviPublicoReitor__5D2BD0E6">
           <End Role="AviPublico" Type="Self.AviPublico" Multiplicity="1" />
           <End Role="AviPublicoReitoria" Type="Self.AviPublicoReitoria" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -2007,7 +2008,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublicoReitor__02925FBF">
+        <Association Name="FK__AviPublicoReitor__5E1FF51F">
           <End Role="Reitoria" Type="Self.Reitoria" Multiplicity="1" />
           <End Role="AviPublicoReitoria" Type="Self.AviPublicoReitoria" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2021,7 +2022,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublicoTurma__4C0144E4">
+        <Association Name="FK__AviPublicoTurma__062DE679">
           <End Role="AviPublico" Type="Self.AviPublico" Multiplicity="1" />
           <End Role="AviPublicoTurma" Type="Self.AviPublicoTurma" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -2043,7 +2044,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviPublicoTurma__4CF5691D">
+        <Association Name="FK__AviPublicoTurma__07220AB2">
           <End Role="Turma" Type="Self.Turma" Multiplicity="1" />
           <End Role="AviPublicoTurma" Type="Self.AviPublicoTurma" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2061,7 +2062,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviQuesta__CodAv__4F12BBB9">
+        <Association Name="FK__AviQuesta__CodAv__4CF5691D">
           <End Role="AviModulo" Type="Self.AviModulo" Multiplicity="1" />
           <End Role="AviQuestao" Type="Self.AviQuestao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2073,7 +2074,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviQuesta__CodAv__5006DFF2">
+        <Association Name="FK__AviQuesta__CodAv__4DE98D56">
           <End Role="AviCategoria" Type="Self.AviCategoria" Multiplicity="1" />
           <End Role="AviQuestao" Type="Self.AviQuestao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2085,7 +2086,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviQuesta__CodAv__50FB042B">
+        <Association Name="FK__AviQuesta__CodAv__4EDDB18F">
           <End Role="AviIndicador" Type="Self.AviIndicador" Multiplicity="1" />
           <End Role="AviQuestao" Type="Self.AviQuestao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2097,7 +2098,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviQuesta__CodPe__0A338187">
+        <Association Name="FK__AviQuesta__CodPe__5A4F643B">
           <End Role="PessoaFisica" Type="Self.PessoaFisica" Multiplicity="1" />
           <End Role="AviQuestaoPessoaResposta" Type="Self.AviQuestaoPessoaResposta" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2109,7 +2110,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviQuestao__4E1E9780">
+        <Association Name="FK__AviQuestao__4FD1D5C8">
           <End Role="AvalAvi" Type="Self.AvalAvi" Multiplicity="1" />
           <End Role="AviQuestao" Type="Self.AviQuestao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2127,7 +2128,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviQuestaoAltern__5A846E65">
+        <Association Name="FK__AviQuestaoAltern__5C37ACAD">
           <End Role="AviQuestao" Type="Self.AviQuestao" Multiplicity="1" />
           <End Role="AviQuestaoAlternativa" Type="Self.AviQuestaoAlternativa" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2153,7 +2154,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__AviQuestaoPessoa__093F5D4E">
+        <Association Name="FK__AviQuestaoPessoa__5B438874">
           <End Role="AviQuestao" Type="Self.AviQuestao" Multiplicity="1" />
           <End Role="AviQuestaoPessoaResposta" Type="Self.AviQuestaoPessoaResposta" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2179,7 +2180,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Bairro__7B5B524B">
+        <Association Name="FK__Bairro__2C88998B">
           <End Role="Municipio" Type="Self.Municipio" Multiplicity="1" />
           <End Role="Bairro" Type="Self.Bairro" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2195,7 +2196,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Bloco__55BFB948">
+        <Association Name="FK__Bloco__50C5FA01">
           <End Role="Campus" Type="Self.Campus" Multiplicity="0..1" />
           <End Role="Bloco" Type="Self.Bloco" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2209,7 +2210,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Campus__CodColab__2334397B">
+        <Association Name="FK__Campus__CodColab__361203C5">
           <End Role="Colaborador" Type="Self.Colaborador" Multiplicity="1" />
           <End Role="Campus" Type="Self.Campus" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2221,7 +2222,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Campus__CodInsti__24285DB4">
+        <Association Name="FK__Campus__CodInsti__370627FE">
           <End Role="Instituicao" Type="Self.Instituicao" Multiplicity="1" />
           <End Role="Campus" Type="Self.Campus" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2233,7 +2234,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Campus__CodPesso__251C81ED">
+        <Association Name="FK__Campus__CodPesso__37FA4C37">
           <End Role="PessoaJuridica" Type="Self.PessoaJuridica" Multiplicity="1" />
           <End Role="Campus" Type="Self.Campus" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2245,7 +2246,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Candidato__2EDAF651">
+        <Association Name="FK__Candidato__2D7CBDC4">
           <End Role="Municipio" Type="Self.Municipio" Multiplicity="0..1" />
           <End Role="Candidato" Type="Self.Candidato" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2261,7 +2262,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Candidato__Matri__2DE6D218">
+        <Association Name="FK__Candidato__Matri__2E70E1FD">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
           <End Role="Candidato" Type="Self.Candidato" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2273,7 +2274,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Colaborad__MatrC__57DD0BE4">
+        <Association Name="FK__Colaborad__MatrC__2F650636">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="Colaborador" Type="Self.Colaborador" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2285,7 +2286,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Curso__2022C2A6">
+        <Association Name="FK__Curso__558AAF1E">
           <End Role="Diretoria" Type="Self.Diretoria" Multiplicity="1" />
           <End Role="Curso" Type="Self.Curso" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2301,7 +2302,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Curso__CodColabC__220B0B18">
+        <Association Name="FK__Curso__CodColabC__567ED357">
           <End Role="Colaborador" Type="Self.Colaborador" Multiplicity="1" />
           <End Role="Curso" Type="Self.Curso" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2313,7 +2314,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Curso__CodNivelE__2116E6DF">
+        <Association Name="FK__Curso__CodNivelE__5772F790">
           <End Role="NivelEnsino" Type="Self.NivelEnsino" Multiplicity="1" />
           <End Role="Curso" Type="Self.Curso" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2325,7 +2326,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Diretoria__308E3499">
+        <Association Name="FK__Diretoria__52AE4273">
           <End Role="Campus" Type="Self.Campus" Multiplicity="1" />
           <End Role="Diretoria" Type="Self.Diretoria" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2339,7 +2340,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Diretoria__CodCo__318258D2">
+        <Association Name="FK__Diretoria__CodCo__53A266AC">
           <End Role="Colaborador" Type="Self.Colaborador" Multiplicity="1" />
           <End Role="Diretoria" Type="Self.Diretoria" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2351,7 +2352,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Diretoria__CodPe__32767D0B">
+        <Association Name="FK__Diretoria__CodPe__54968AE5">
           <End Role="PessoaJuridica" Type="Self.PessoaJuridica" Multiplicity="1" />
           <End Role="Diretoria" Type="Self.Diretoria" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2363,7 +2364,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Email__CodPessoa__3493CFA7">
+        <Association Name="FK__Email__CodPessoa__0D0FEE32">
           <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="1" />
           <End Role="Email" Type="Self.Email" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2375,7 +2376,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Email__CodTipoCo__339FAB6E">
+        <Association Name="FK__Email__CodTipoCo__0E04126B">
           <End Role="TipoContato" Type="Self.TipoContato" Multiplicity="1" />
           <End Role="Email" Type="Self.Email" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2387,7 +2388,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Endereco__2739D489">
+        <Association Name="FK__Endereco__324172E1">
           <End Role="Bairro" Type="Self.Bairro" Multiplicity="1" />
           <End Role="Endereco" Type="Self.Endereco" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2405,7 +2406,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Endereco__CodPes__282DF8C2">
+        <Association Name="FK__Endereco__CodPes__3335971A">
           <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="1" />
           <End Role="Endereco" Type="Self.Endereco" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2417,7 +2418,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Estado__CodPais__628FA481">
+        <Association Name="FK__Estado__CodPais__13BCEBC1">
           <End Role="Pais" Type="Self.Pais" Multiplicity="1" />
           <End Role="Estado" Type="Self.Estado" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2429,7 +2430,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Horario__CodTurn__5DCAEF64">
+        <Association Name="FK__Horario__CodTurn__12C8C788">
           <End Role="Turno" Type="Self.Turno" Multiplicity="1" />
           <End Role="Horario" Type="Self.Horario" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2441,7 +2442,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Instituic__CodPe__719CDDE7">
+        <Association Name="FK__Instituic__CodPe__1C5231C2">
           <End Role="PessoaJuridica" Type="Self.PessoaJuridica" Multiplicity="1" />
           <End Role="Instituicao" Type="Self.Instituicao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2453,7 +2454,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Justifica__CodPr__0D44F85C">
+        <Association Name="FK__Justifica__CodPr__30592A6F">
           <End Role="Professor" Type="Self.Professor" Multiplicity="1" />
           <End Role="Justificacao" Type="Self.Justificacao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2465,7 +2466,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Justificacao__0C50D423">
+        <Association Name="FK__Justificacao__314D4EA8">
           <End Role="AvalPessoaResultado" Type="Self.AvalPessoaResultado" Multiplicity="1" />
           <End Role="Justificacao" Type="Self.Justificacao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2485,7 +2486,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__MatrizCur__CodCu__351DDF8C">
+        <Association Name="FK__MatrizCur__CodCu__035179CE">
           <End Role="Curso" Type="Self.Curso" Multiplicity="1" />
           <End Role="MatrizCurricular" Type="Self.MatrizCurricular" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2497,7 +2498,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__MatrizCur__CodDi__5E1FF51F">
+        <Association Name="FK__MatrizCur__CodDi__04459E07">
           <End Role="Disciplina" Type="Self.Disciplina" Multiplicity="1" />
           <End Role="MatrizCurricularDisciplina" Type="Self.MatrizCurricularDisciplina" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2509,7 +2510,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__MatrizCurricular__5D2BD0E6">
+        <Association Name="FK__MatrizCurricular__0539C240">
           <End Role="MatrizCurricular" Type="Self.MatrizCurricular" Multiplicity="1" />
           <End Role="MatrizCurricularDisciplina" Type="Self.MatrizCurricularDisciplina" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2523,7 +2524,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Municipio__76969D2E">
+        <Association Name="FK__Municipio__1699586C">
           <End Role="Estado" Type="Self.Estado" Multiplicity="1" />
           <End Role="Municipio" Type="Self.Municipio" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2537,7 +2538,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PessoaCat__CodCa__395884C4">
+        <Association Name="FK__PessoaCat__CodCa__178D7CA5">
           <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
           <End Role="PessoaCategoria" Type="Self.PessoaCategoria" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2549,7 +2550,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PessoaCat__CodPe__3A4CA8FD">
+        <Association Name="FK__PessoaCat__CodPe__1881A0DE">
           <End Role="PessoaFisica" Type="Self.PessoaFisica" Multiplicity="1" />
           <End Role="PessoaCategoria" Type="Self.PessoaCategoria" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2561,7 +2562,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PessoaFis__CodPe__68487DD7">
+        <Association Name="FK__PessoaFis__CodPe__15A53433">
           <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="1" />
           <End Role="PessoaFisica" Type="Self.PessoaFisica" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -2573,7 +2574,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PessoaFor__CodAr__45BE5BA9">
+        <Association Name="FK__PessoaFor__CodAr__1975C517">
           <End Role="Area" Type="Self.Area" Multiplicity="1" />
           <End Role="PessoaFormacao" Type="Self.PessoaFormacao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2585,7 +2586,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PessoaFor__CodNi__46B27FE2">
+        <Association Name="FK__PessoaFor__CodNi__1A69E950">
           <End Role="NivelEnsino" Type="Self.NivelEnsino" Multiplicity="1" />
           <End Role="PessoaFormacao" Type="Self.PessoaFormacao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2597,7 +2598,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PessoaFor__CodPe__47A6A41B">
+        <Association Name="FK__PessoaFor__CodPe__1B5E0D89">
           <End Role="PessoaFisica" Type="Self.PessoaFisica" Multiplicity="1" />
           <End Role="PessoaFormacao" Type="Self.PessoaFormacao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2609,7 +2610,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PessoaJur__CodPe__71D1E811">
+        <Association Name="FK__PessoaJur__CodPe__14B10FFA">
           <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="1" />
           <End Role="PessoaJuridica" Type="Self.PessoaJuridica" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -2621,7 +2622,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PessoaLoc__CodIn__27C3E46E">
+        <Association Name="FK__PessoaLoc__CodIn__6C6E1476">
           <End Role="Instituicao" Type="Self.Instituicao" Multiplicity="0..1" />
           <End Role="PessoaLocalTrabalho" Type="Self.PessoaLocalTrabalho" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2633,7 +2634,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PessoaLoc__CodPe__26CFC035">
+        <Association Name="FK__PessoaLoc__CodPe__6D6238AF">
           <End Role="PessoaFisica" Type="Self.PessoaFisica" Multiplicity="1" />
           <End Role="PessoaLocalTrabalho" Type="Self.PessoaLocalTrabalho" Multiplicity="0..1" />
           <ReferentialConstraint>
@@ -2645,7 +2646,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PessoaLocalTraba__28B808A7">
+        <Association Name="FK__PessoaLocalTraba__6E565CE8">
           <End Role="Campus" Type="Self.Campus" Multiplicity="0..1" />
           <End Role="PessoaLocalTrabalho" Type="Self.PessoaLocalTrabalho" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2659,7 +2660,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PessoaLocalTraba__29AC2CE0">
+        <Association Name="FK__PessoaLocalTraba__6F4A8121">
           <End Role="Diretoria" Type="Self.Diretoria" Multiplicity="0..1" />
           <End Role="PessoaLocalTrabalho" Type="Self.PessoaLocalTrabalho" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2675,7 +2676,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PessoaLocalTraba__2AA05119">
+        <Association Name="FK__PessoaLocalTraba__703EA55A">
           <End Role="Reitoria" Type="Self.Reitoria" Multiplicity="0..1" />
           <End Role="PessoaLocalTrabalho" Type="Self.PessoaLocalTrabalho" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2689,7 +2690,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PessoaLocalTraba__2B947552">
+        <Association Name="FK__PessoaLocalTraba__7132C993">
           <End Role="ProReitoria" Type="Self.ProReitoria" Multiplicity="0..1" />
           <End Role="PessoaLocalTrabalho" Type="Self.PessoaLocalTrabalho" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2703,7 +2704,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PessoaOcu__CodOc__0D7A0286">
+        <Association Name="FK__PessoaOcu__CodOc__26CFC035">
           <End Role="Ocupacao" Type="Self.Ocupacao" Multiplicity="1" />
           <End Role="PessoaOcupacao" Type="Self.PessoaOcupacao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2715,7 +2716,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__PessoaOcu__CodPe__0E6E26BF">
+        <Association Name="FK__PessoaOcu__CodPe__27C3E46E">
           <End Role="PessoaFisica" Type="Self.PessoaFisica" Multiplicity="1" />
           <End Role="PessoaOcupacao" Type="Self.PessoaOcupacao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2727,7 +2728,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Professor__CodDi__7C1A6C5A">
+        <Association Name="FK__Professor__CodDi__408F9238">
           <End Role="Disciplina" Type="Self.Disciplina" Multiplicity="1" />
           <End Role="ProfessorDisciplina" Type="Self.ProfessorDisciplina" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2739,7 +2740,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Professor__CodPr__7B264821">
+        <Association Name="FK__Professor__CodPr__4183B671">
           <End Role="Professor" Type="Self.Professor" Multiplicity="1" />
           <End Role="ProfessorDisciplina" Type="Self.ProfessorDisciplina" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2751,7 +2752,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Professor__MatrP__6166761E">
+        <Association Name="FK__Professor__MatrP__28B808A7">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="Professor" Type="Self.Professor" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2763,7 +2764,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProReitor__CodCo__29E1370A">
+        <Association Name="FK__ProReitor__CodCo__3DB3258D">
           <End Role="Colaborador" Type="Self.Colaborador" Multiplicity="1" />
           <End Role="ProReitoria" Type="Self.ProReitoria" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2775,7 +2776,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProReitor__CodIn__2AD55B43">
+        <Association Name="FK__ProReitor__CodIn__3EA749C6">
           <End Role="Instituicao" Type="Self.Instituicao" Multiplicity="1" />
           <End Role="ProReitoria" Type="Self.ProReitoria" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2787,7 +2788,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProReitor__CodPe__2BC97F7C">
+        <Association Name="FK__ProReitor__CodPe__3F9B6DFF">
           <End Role="PessoaJuridica" Type="Self.PessoaJuridica" Multiplicity="1" />
           <End Role="ProReitoria" Type="Self.ProReitoria" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2799,7 +2800,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Questao__CodDifi__3FD07829">
+        <Association Name="FK__Questao__CodDifi__3AD6B8E2">
           <End Role="Dificuldade" Type="Self.Dificuldade" Multiplicity="1" />
           <End Role="Questao" Type="Self.Questao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2811,7 +2812,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Questao__CodProf__41B8C09B">
+        <Association Name="FK__Questao__CodProf__3BCADD1B">
           <End Role="Professor" Type="Self.Professor" Multiplicity="1" />
           <End Role="Questao" Type="Self.Questao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2823,7 +2824,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Questao__CodTipo__40C49C62">
+        <Association Name="FK__Questao__CodTipo__3CBF0154">
           <End Role="TipoQuestao" Type="Self.TipoQuestao" Multiplicity="1" />
           <End Role="Questao" Type="Self.Questao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2835,7 +2836,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__QuestaoAn__CodQu__65F62111">
+        <Association Name="FK__QuestaoAn__CodQu__4924D839">
           <End Role="Questao" Type="Self.Questao" Multiplicity="1" />
           <End Role="QuestaoAnexo" Type="Self.QuestaoAnexo" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2847,7 +2848,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__QuestaoAn__CodTi__6501FCD8">
+        <Association Name="FK__QuestaoAn__CodTi__4A18FC72">
           <End Role="TipoAnexo" Type="Self.TipoAnexo" Multiplicity="1" />
           <End Role="QuestaoAnexo" Type="Self.QuestaoAnexo" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2859,7 +2860,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__QuestaoTe__CodQu__6BAEFA67">
+        <Association Name="FK__QuestaoTe__CodQu__473C8FC7">
           <End Role="Questao" Type="Self.Questao" Multiplicity="1" />
           <End Role="QuestaoTema" Type="Self.QuestaoTema" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2871,7 +2872,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__QuestaoTema__6ABAD62E">
+        <Association Name="FK__QuestaoTema__4830B400">
           <End Role="Tema" Type="Self.Tema" Multiplicity="1" />
           <End Role="QuestaoTema" Type="Self.QuestaoTema" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2885,7 +2886,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Reitoria__CodCol__477199F1">
+        <Association Name="FK__Reitoria__CodCol__4277DAAA">
           <End Role="Colaborador" Type="Self.Colaborador" Multiplicity="1" />
           <End Role="Reitoria" Type="Self.Reitoria" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2897,7 +2898,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Reitoria__CodIns__467D75B8">
+        <Association Name="FK__Reitoria__CodIns__436BFEE3">
           <End Role="Instituicao" Type="Self.Instituicao" Multiplicity="1" />
           <End Role="Reitoria" Type="Self.Reitoria" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2909,7 +2910,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Reitoria__CodPes__4865BE2A">
+        <Association Name="FK__Reitoria__CodPes__4460231C">
           <End Role="PessoaJuridica" Type="Self.PessoaJuridica" Multiplicity="1" />
           <End Role="Reitoria" Type="Self.Reitoria" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2921,7 +2922,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Sala__CodBloco__30592A6F">
+        <Association Name="FK__Sala__CodBloco__6B79F03D">
           <End Role="Bloco" Type="Self.Bloco" Multiplicity="1" />
           <End Role="Sala" Type="Self.Sala" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2933,7 +2934,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SimCandid__CodCa__7132C993">
+        <Association Name="FK__SimCandid__CodCa__1940BAED">
           <End Role="Candidato" Type="Self.Candidato" Multiplicity="1" />
           <End Role="SimCandidato" Type="Self.SimCandidato" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2945,7 +2946,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SimCandidato__703EA55A">
+        <Association Name="FK__SimCandidato__1A34DF26">
           <End Role="Simulado" Type="Self.Simulado" Multiplicity="1" />
           <End Role="SimCandidato" Type="Self.SimCandidato" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2959,7 +2960,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SimCandidato__7226EDCC">
+        <Association Name="FK__SimCandidato__1B29035F">
           <End Role="SimSala" Type="Self.SimSala" Multiplicity="0..1" />
           <End Role="SimCandidato" Type="Self.SimCandidato" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2975,7 +2976,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SimCandidatoProv__184C96B4">
+        <Association Name="FK__SimCandidatoProv__1C1D2798">
           <End Role="SimCandidato" Type="Self.SimCandidato" Multiplicity="1" />
           <End Role="SimCandidatoProva" Type="Self.SimCandidatoProva" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2991,7 +2992,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SimCandidatoProv__1940BAED">
+        <Association Name="FK__SimCandidatoProv__1D114BD1">
           <End Role="SimProva" Type="Self.SimProva" Multiplicity="1" />
           <End Role="SimCandidatoProva" Type="Self.SimCandidatoProva" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3049,7 +3050,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SimDiaRea__CodTu__0697FACD">
+        <Association Name="FK__SimDiaRea__CodTu__45544755">
           <End Role="Turno" Type="Self.Turno" Multiplicity="1" />
           <End Role="SimDiaRealizacao" Type="Self.SimDiaRealizacao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3061,7 +3062,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SimDiaRealizacao__078C1F06">
+        <Association Name="FK__SimDiaRealizacao__46486B8E">
           <End Role="Simulado" Type="Self.Simulado" Multiplicity="1" />
           <End Role="SimDiaRealizacao" Type="Self.SimDiaRealizacao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3075,7 +3076,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SimProva__373B3228">
+        <Association Name="FK__SimProva__689D8392">
           <End Role="SimDiaRealizacao" Type="Self.SimDiaRealizacao" Multiplicity="1" />
           <End Role="SimProva" Type="Self.SimProva" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3091,7 +3092,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SimProva__CodDis__382F5661">
+        <Association Name="FK__SimProva__CodDis__6991A7CB">
           <End Role="Disciplina" Type="Self.Disciplina" Multiplicity="1" />
           <End Role="SimProva" Type="Self.SimProva" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3103,7 +3104,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SimProva__CodPro__39237A9A">
+        <Association Name="FK__SimProva__CodPro__6A85CC04">
           <End Role="Professor" Type="Self.Professor" Multiplicity="0..1" />
           <End Role="SimProva" Type="Self.SimProva" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3115,7 +3116,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SimProvaQ__CodQu__7CD98669">
+        <Association Name="FK__SimProvaQ__CodQu__740F363E">
           <End Role="Questao" Type="Self.Questao" Multiplicity="1" />
           <End Role="SimProvaQuestao" Type="Self.SimProvaQuestao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3127,7 +3128,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SimProvaQuestao__7BE56230">
+        <Association Name="FK__SimProvaQuestao__75035A77">
           <End Role="SimProva" Type="Self.SimProva" Multiplicity="1" />
           <End Role="SimProvaQuestao" Type="Self.SimProvaQuestao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3145,7 +3146,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SimSala__46486B8E">
+        <Association Name="FK__SimSala__7226EDCC">
           <End Role="Simulado" Type="Self.Simulado" Multiplicity="1" />
           <End Role="SimSala" Type="Self.SimSala" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3159,7 +3160,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__SimSala__CodSala__473C8FC7">
+        <Association Name="FK__SimSala__CodSala__731B1205">
           <End Role="Sala" Type="Self.Sala" Multiplicity="1" />
           <End Role="SimSala" Type="Self.SimSala" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3171,7 +3172,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Simulado__CodCol__6CD828CA">
+        <Association Name="FK__Simulado__CodCol__39E294A9">
           <End Role="Colaborador" Type="Self.Colaborador" Multiplicity="1" />
           <End Role="Simulado" Type="Self.Simulado" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3183,7 +3184,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Telefone__CodPes__160F4887">
+        <Association Name="FK__Telefone__CodPes__0FEC5ADD">
           <End Role="Pessoa" Type="Self.Pessoa" Multiplicity="1" />
           <End Role="Telefone" Type="Self.Telefone" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3195,7 +3196,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Telefone__CodTip__151B244E">
+        <Association Name="FK__Telefone__CodTip__10E07F16">
           <End Role="TipoContato" Type="Self.TipoContato" Multiplicity="1" />
           <End Role="Telefone" Type="Self.Telefone" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3207,7 +3208,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Tema__CodDiscipl__6D0D32F4">
+        <Association Name="FK__Tema__CodDiscipl__0EF836A4">
           <End Role="Disciplina" Type="Self.Disciplina" Multiplicity="1" />
           <End Role="Tema" Type="Self.Tema" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3219,7 +3220,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Turma__CodCurso__39E294A9">
+        <Association Name="FK__Turma__CodCurso__75F77EB0">
           <End Role="Curso" Type="Self.Curso" Multiplicity="1" />
           <End Role="Turma" Type="Self.Turma" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3231,7 +3232,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Turma__CodTurno__3AD6B8E2">
+        <Association Name="FK__Turma__CodTurno__76EBA2E9">
           <End Role="Turno" Type="Self.Turno" Multiplicity="1" />
           <End Role="Turma" Type="Self.Turma" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3243,7 +3244,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TurmaDisc__CodAl__689D8392">
+        <Association Name="FK__TurmaDisc__CodAl__16644E42">
           <End Role="Aluno" Type="Self.Aluno" Multiplicity="1" />
           <End Role="TurmaDiscAluno" Type="Self.TurmaDiscAluno" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3255,7 +3256,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TurmaDisc__CodDi__0AF29B96">
+        <Association Name="FK__TurmaDisc__CodDi__10AB74EC">
           <End Role="Disciplina" Type="Self.Disciplina" Multiplicity="1" />
           <End Role="TurmaDiscProfHorario" Type="Self.TurmaDiscProfHorario" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3267,7 +3268,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TurmaDisc__CodDi__0BE6BFCF">
+        <Association Name="FK__TurmaDisc__CodDi__119F9925">
           <End Role="DiaSemana" Type="Self.DiaSemana" Multiplicity="1" />
           <End Role="TurmaDiscProfHorario" Type="Self.TurmaDiscProfHorario" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3279,7 +3280,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TurmaDisc__CodDi__6A85CC04">
+        <Association Name="FK__TurmaDisc__CodDi__1758727B">
           <End Role="Disciplina" Type="Self.Disciplina" Multiplicity="1" />
           <End Role="TurmaDiscAluno" Type="Self.TurmaDiscAluno" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3291,7 +3292,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TurmaDisc__CodPr__090A5324">
+        <Association Name="FK__TurmaDisc__CodPr__1293BD5E">
           <End Role="Professor" Type="Self.Professor" Multiplicity="1" />
           <End Role="TurmaDiscProfHorario" Type="Self.TurmaDiscProfHorario" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3303,7 +3304,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TurmaDisc__CodSa__0DCF0841">
+        <Association Name="FK__TurmaDisc__CodSa__1387E197">
           <End Role="Sala" Type="Self.Sala" Multiplicity="1" />
           <End Role="TurmaDiscProfHorario" Type="Self.TurmaDiscProfHorario" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3315,7 +3316,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TurmaDiscAluno__6991A7CB">
+        <Association Name="FK__TurmaDiscAluno__184C96B4">
           <End Role="Turma" Type="Self.Turma" Multiplicity="1" />
           <End Role="TurmaDiscAluno" Type="Self.TurmaDiscAluno" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3333,7 +3334,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TurmaDiscProfHor__09FE775D">
+        <Association Name="FK__TurmaDiscProfHor__147C05D0">
           <End Role="Turma" Type="Self.Turma" Multiplicity="1" />
           <End Role="TurmaDiscProfHorario" Type="Self.TurmaDiscProfHorario" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3351,7 +3352,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__TurmaDiscProfHor__0CDAE408">
+        <Association Name="FK__TurmaDiscProfHor__15702A09">
           <End Role="Horario" Type="Self.Horario" Multiplicity="1" />
           <End Role="TurmaDiscProfHorario" Type="Self.TurmaDiscProfHorario" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3367,7 +3368,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Usuario__CodCate__2180FB33">
+        <Association Name="FK__Usuario__CodCate__24E777C3">
           <End Role="Categoria" Type="Self.Categoria" Multiplicity="1" />
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3379,7 +3380,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Usuario__CodPess__22751F6C">
+        <Association Name="FK__Usuario__CodPess__25DB9BFC">
           <End Role="PessoaFisica" Type="Self.PessoaFisica" Multiplicity="1" />
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3391,7 +3392,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__UsuarioAc__Matri__4D5F7D71">
+        <Association Name="FK__UsuarioAc__Matri__29AC2CE0">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="UsuarioAcesso" Type="Self.UsuarioAcesso" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3403,7 +3404,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__UsuarioAcessoPag__531856C7">
+        <Association Name="FK__UsuarioAcessoPag__38EE7070">
           <End Role="UsuarioAcesso" Type="Self.UsuarioAcesso" Multiplicity="1" />
           <End Role="UsuarioAcessoPagina" Type="Self.UsuarioAcessoPagina" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3417,7 +3418,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__UsuarioOp__Matri__671F4F74">
+        <Association Name="FK__UsuarioOp__Matri__2B947552">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="UsuarioOpiniao" Type="Self.UsuarioOpiniao" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3429,7 +3430,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Visitante__MatrV__5CA1C101">
+        <Association Name="FK__Visitante__MatrV__2AA05119">
           <End Role="Usuario" Type="Self.Usuario" Multiplicity="1" />
           <End Role="Visitante" Type="Self.Visitante" Multiplicity="*" />
           <ReferentialConstraint>
@@ -3536,491 +3537,491 @@
           <EntitySet Name="UsuarioAcessoPagina" EntityType="Self.UsuarioAcessoPagina" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsuarioOpiniao" EntityType="Self.UsuarioOpiniao" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Visitante" EntityType="Self.Visitante" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Alternati__CodQu__603D47BB" Association="Self.FK__Alternati__CodQu__603D47BB">
+          <AssociationSet Name="FK__Alternati__CodQu__51BA1E3A" Association="Self.FK__Alternati__CodQu__51BA1E3A">
             <End Role="Questao" EntitySet="Questao" />
             <End Role="Alternativa" EntitySet="Alternativa" />
           </AssociationSet>
-          <AssociationSet Name="FK__Aluno__CodCurso__51BA1E3A" Association="Self.FK__Aluno__CodCurso__51BA1E3A">
+          <AssociationSet Name="FK__Aluno__CodCurso__7D98A078" Association="Self.FK__Aluno__CodCurso__7D98A078">
             <End Role="Curso" EntitySet="Curso" />
             <End Role="Aluno" EntitySet="Aluno" />
           </AssociationSet>
-          <AssociationSet Name="FK__Aluno__MatrAluno__52AE4273" Association="Self.FK__Aluno__MatrAluno__52AE4273">
+          <AssociationSet Name="FK__Aluno__MatrAluno__7E8CC4B1" Association="Self.FK__Aluno__MatrAluno__7E8CC4B1">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Aluno" EntitySet="Aluno" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcade__CodDi__025D5595" Association="Self.FK__AvalAcade__CodDi__025D5595">
+          <AssociationSet Name="FK__AvalAcade__CodDi__0BE6BFCF" Association="Self.FK__AvalAcade__CodDi__0BE6BFCF">
             <End Role="Disciplina" EntitySet="Disciplina" />
             <End Role="AvalAcademica" EntitySet="AvalAcademica" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcade__CodPr__0169315C" Association="Self.FK__AvalAcade__CodPr__0169315C">
+          <AssociationSet Name="FK__AvalAcade__CodPr__0CDAE408" Association="Self.FK__AvalAcade__CodPr__0CDAE408">
             <End Role="Professor" EntitySet="Professor" />
             <End Role="AvalAcademica" EntitySet="AvalAcademica" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcade__CodSa__04459E07" Association="Self.FK__AvalAcade__CodSa__04459E07">
+          <AssociationSet Name="FK__AvalAcade__CodSa__0DCF0841" Association="Self.FK__AvalAcade__CodSa__0DCF0841">
             <End Role="Sala" EntitySet="Sala" />
             <End Role="AvalAcademica" EntitySet="AvalAcademica" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcademica__00750D23" Association="Self.FK__AvalAcademica__00750D23">
+          <AssociationSet Name="FK__AvalAcademica__0EC32C7A" Association="Self.FK__AvalAcademica__0EC32C7A">
             <End Role="Avaliacao" EntitySet="Avaliacao" />
             <End Role="AvalAcademica" EntitySet="AvalAcademica" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcademica__035179CE" Association="Self.FK__AvalAcademica__035179CE">
+          <AssociationSet Name="FK__AvalAcademica__0FB750B3" Association="Self.FK__AvalAcademica__0FB750B3">
             <End Role="Turma" EntitySet="Turma" />
             <End Role="AvalAcademica" EntitySet="AvalAcademica" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcadR__CodSa__4183B671" Association="Self.FK__AvalAcadR__CodSa__4183B671">
+          <AssociationSet Name="FK__AvalAcadR__CodSa__7F80E8EA" Association="Self.FK__AvalAcadR__CodSa__7F80E8EA">
             <End Role="Sala" EntitySet="Sala" />
             <End Role="AvalAcadReposicao" EntitySet="AvalAcadReposicao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcadRepoJust__5772F790" Association="Self.FK__AvalAcadRepoJust__5772F790">
+          <AssociationSet Name="FK__AvalAcadRepoJust__09FE775D" Association="Self.FK__AvalAcadRepoJust__09FE775D">
             <End Role="AvalAcadReposicao" EntitySet="AvalAcadReposicao" />
             <End Role="AvalAcadRepoJustificacao" EntitySet="AvalAcadRepoJustificacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcadRepoJust__58671BC9" Association="Self.FK__AvalAcadRepoJust__58671BC9">
+          <AssociationSet Name="FK__AvalAcadRepoJust__0AF29B96" Association="Self.FK__AvalAcadRepoJust__0AF29B96">
             <End Role="Justificacao" EntitySet="Justificacao" />
             <End Role="AvalAcadRepoJustificacao" EntitySet="AvalAcadRepoJustificacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAcadReposica__408F9238" Association="Self.FK__AvalAcadReposica__408F9238">
+          <AssociationSet Name="FK__AvalAcadReposica__00750D23" Association="Self.FK__AvalAcadReposica__00750D23">
             <End Role="Avaliacao" EntitySet="Avaliacao" />
             <End Role="AvalAcadReposicao" EntitySet="AvalAcadReposicao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAuto__3F115E1A" Association="Self.FK__AvalAuto__3F115E1A">
+          <AssociationSet Name="FK__AvalAuto__1D4655FB" Association="Self.FK__AvalAuto__1D4655FB">
             <End Role="Avaliacao" EntitySet="Avaliacao" />
             <End Role="AvalAuto" EntitySet="AvalAuto" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAuto__CodDif__40058253" Association="Self.FK__AvalAuto__CodDif__40058253">
+          <AssociationSet Name="FK__AvalAuto__CodDif__1E3A7A34" Association="Self.FK__AvalAuto__CodDif__1E3A7A34">
             <End Role="Dificuldade" EntitySet="Dificuldade" />
             <End Role="AvalAuto" EntitySet="AvalAuto" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAuto__CodPes__40F9A68C" Association="Self.FK__AvalAuto__CodPes__40F9A68C">
+          <AssociationSet Name="FK__AvalAuto__CodPes__1F2E9E6D" Association="Self.FK__AvalAuto__CodPes__1F2E9E6D">
             <End Role="PessoaFisica" EntitySet="PessoaFisica" />
             <End Role="AvalAuto" EntitySet="AvalAuto" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAvi__00DF2177" Association="Self.FK__AvalAvi__00DF2177">
+          <AssociationSet Name="FK__AvalAvi__3429BB53" Association="Self.FK__AvalAvi__3429BB53">
             <End Role="Avaliacao" EntitySet="Avaliacao" />
             <End Role="AvalAvi" EntitySet="AvalAvi" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalAvi__CodCola__01D345B0" Association="Self.FK__AvalAvi__CodCola__01D345B0">
+          <AssociationSet Name="FK__AvalAvi__CodCola__351DDF8C" Association="Self.FK__AvalAvi__CodCola__351DDF8C">
             <End Role="Colaborador" EntitySet="Colaborador" />
             <End Role="AvalAvi" EntitySet="AvalAvi" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalCerti__CodDi__78D3EB5B" Association="Self.FK__AvalCerti__CodDi__78D3EB5B">
+          <AssociationSet Name="FK__AvalCerti__CodDi__79C80F94" Association="Self.FK__AvalCerti__CodDi__79C80F94">
             <End Role="Disciplina" EntitySet="Disciplina" />
             <End Role="AvalCertificacao" EntitySet="AvalCertificacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalCerti__CodPr__77DFC722" Association="Self.FK__AvalCerti__CodPr__77DFC722">
+          <AssociationSet Name="FK__AvalCerti__CodPr__7ABC33CD" Association="Self.FK__AvalCerti__CodPr__7ABC33CD">
             <End Role="Professor" EntitySet="Professor" />
             <End Role="AvalCertificacao" EntitySet="AvalCertificacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalCerti__CodSa__7ABC33CD" Association="Self.FK__AvalCerti__CodSa__7ABC33CD">
+          <AssociationSet Name="FK__AvalCerti__CodSa__7BB05806" Association="Self.FK__AvalCerti__CodSa__7BB05806">
             <End Role="Sala" EntitySet="Sala" />
             <End Role="AvalCertificacao" EntitySet="AvalCertificacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalCertificacao__79C80F94" Association="Self.FK__AvalCertificacao__79C80F94">
+          <AssociationSet Name="FK__AvalCertificacao__7CA47C3F" Association="Self.FK__AvalCertificacao__7CA47C3F">
             <End Role="Avaliacao" EntitySet="Avaliacao" />
             <End Role="AvalCertificacao" EntitySet="AvalCertificacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalCertP__CodPe__1387E197" Association="Self.FK__AvalCertP__CodPe__1387E197">
+          <AssociationSet Name="FK__AvalCertP__CodPe__08162EEB" Association="Self.FK__AvalCertP__CodPe__08162EEB">
             <End Role="PessoaFisica" EntitySet="PessoaFisica" />
             <End Role="AvalCertPessoa" EntitySet="AvalCertPessoa" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalCertPessoa__1293BD5E" Association="Self.FK__AvalCertPessoa__1293BD5E">
+          <AssociationSet Name="FK__AvalCertPessoa__090A5324" Association="Self.FK__AvalCertPessoa__090A5324">
             <End Role="AvalCertificacao" EntitySet="AvalCertificacao" />
             <End Role="AvalCertPessoa" EntitySet="AvalCertPessoa" />
           </AssociationSet>
-          <AssociationSet Name="FK__Avaliacao__CodTi__02FC7413" Association="Self.FK__Avaliacao__CodTi__02FC7413">
+          <AssociationSet Name="FK__Avaliacao__CodTi__11D4A34F" Association="Self.FK__Avaliacao__CodTi__11D4A34F">
             <End Role="TipoAvaliacao" EntitySet="TipoAvaliacao" />
             <End Role="Avaliacao" EntitySet="Avaliacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvaliacaoProrrog__76619304" Association="Self.FK__AvaliacaoProrrog__76619304">
+          <AssociationSet Name="FK__AvaliacaoProrrog__23F3538A" Association="Self.FK__AvaliacaoProrrog__23F3538A">
             <End Role="Avaliacao" EntitySet="Avaliacao" />
             <End Role="AvaliacaoProrrogacao" EntitySet="AvaliacaoProrrogacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvaliacaoTema__1AD3FDA4" Association="Self.FK__AvaliacaoTema__1AD3FDA4">
+          <AssociationSet Name="FK__AvaliacaoTema__220B0B18" Association="Self.FK__AvaliacaoTema__220B0B18">
             <End Role="Avaliacao" EntitySet="Avaliacao" />
             <End Role="AvaliacaoTema" EntitySet="AvaliacaoTema" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvaliacaoTema__1BC821DD" Association="Self.FK__AvaliacaoTema__1BC821DD">
+          <AssociationSet Name="FK__AvaliacaoTema__22FF2F51" Association="Self.FK__AvaliacaoTema__22FF2F51">
             <End Role="Tema" EntitySet="Tema" />
             <End Role="AvaliacaoTema" EntitySet="AvaliacaoTema" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalPesso__CodPe__08B54D69" Association="Self.FK__AvalPesso__CodPe__08B54D69">
+          <AssociationSet Name="FK__AvalPesso__CodPe__2022C2A6" Association="Self.FK__AvalPesso__CodPe__2022C2A6">
             <End Role="PessoaFisica" EntitySet="PessoaFisica" />
             <End Role="AvalPessoaResultado" EntitySet="AvalPessoaResultado" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalPessoaResult__07C12930" Association="Self.FK__AvalPessoaResult__07C12930">
+          <AssociationSet Name="FK__AvalPessoaResult__2116E6DF" Association="Self.FK__AvalPessoaResult__2116E6DF">
             <End Role="Avaliacao" EntitySet="Avaliacao" />
             <End Role="AvalPessoaResultado" EntitySet="AvalPessoaResultado" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalQuesP__CodPe__7720AD13" Association="Self.FK__AvalQuesP__CodPe__7720AD13">
+          <AssociationSet Name="FK__AvalQuesP__CodPe__77DFC722" Association="Self.FK__AvalQuesP__CodPe__77DFC722">
             <End Role="PessoaFisica" EntitySet="PessoaFisica" />
             <End Role="AvalQuesPessoaResposta" EntitySet="AvalQuesPessoaResposta" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalQuesPessoaRe__762C88DA" Association="Self.FK__AvalQuesPessoaRe__762C88DA">
+          <AssociationSet Name="FK__AvalQuesPessoaRe__78D3EB5B" Association="Self.FK__AvalQuesPessoaRe__78D3EB5B">
             <End Role="AvalTemaQuestao" EntitySet="AvalTemaQuestao" />
             <End Role="AvalQuesPessoaResposta" EntitySet="AvalQuesPessoaResposta" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalTemaQuestao__7073AF84" Association="Self.FK__AvalTemaQuestao__7073AF84">
+          <AssociationSet Name="FK__AvalTemaQuestao__66B53B20" Association="Self.FK__AvalTemaQuestao__66B53B20">
             <End Role="AvaliacaoTema" EntitySet="AvaliacaoTema" />
             <End Role="AvalTemaQuestao" EntitySet="AvalTemaQuestao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AvalTemaQuestao__7167D3BD" Association="Self.FK__AvalTemaQuestao__7167D3BD">
+          <AssociationSet Name="FK__AvalTemaQuestao__67A95F59" Association="Self.FK__AvalTemaQuestao__67A95F59">
             <End Role="QuestaoTema" EntitySet="QuestaoTema" />
             <End Role="AvalTemaQuestao" EntitySet="AvalTemaQuestao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublic__CodAv__12FDD1B2" Association="Self.FK__AviPublic__CodAv__12FDD1B2">
+          <AssociationSet Name="FK__AviPublic__CodAv__4B0D20AB" Association="Self.FK__AviPublic__CodAv__4B0D20AB">
             <End Role="AviTipoPublico" EntitySet="AviTipoPublico" />
             <End Role="AviPublico" EntitySet="AviPublico" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublic__CodCu__63D8CE75" Association="Self.FK__AviPublic__CodCu__63D8CE75">
+          <AssociationSet Name="FK__AviPublic__CodCu__0169315C" Association="Self.FK__AviPublic__CodCu__0169315C">
             <End Role="Curso" EntitySet="Curso" />
             <End Role="AviPublicoCurso" EntitySet="AviPublicoCurso" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublic__CodIn__18B6AB08" Association="Self.FK__AviPublic__CodIn__18B6AB08">
+          <AssociationSet Name="FK__AviPublic__CodIn__62E4AA3C" Association="Self.FK__AviPublic__CodIn__62E4AA3C">
             <End Role="Instituicao" EntitySet="Instituicao" />
             <End Role="AviPublicoInstituicao" EntitySet="AviPublicoInstituicao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublic__CodPe__1E6F845E" Association="Self.FK__AviPublic__CodPe__1E6F845E">
+          <AssociationSet Name="FK__AviPublic__CodPe__60FC61CA" Association="Self.FK__AviPublic__CodPe__60FC61CA">
             <End Role="PessoaFisica" EntitySet="PessoaFisica" />
             <End Role="AviPublicoPessoa" EntitySet="AviPublicoPessoa" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublico__1209AD79" Association="Self.FK__AviPublico__1209AD79">
+          <AssociationSet Name="FK__AviPublico__4C0144E4" Association="Self.FK__AviPublico__4C0144E4">
             <End Role="AvalAvi" EntitySet="AvalAvi" />
             <End Role="AviPublico" EntitySet="AviPublico" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublicoCampus__14B10FFA" Association="Self.FK__AviPublicoCampus__14B10FFA">
+          <AssociationSet Name="FK__AviPublicoCampus__58671BC9" Association="Self.FK__AviPublicoCampus__58671BC9">
             <End Role="AviPublico" EntitySet="AviPublico" />
             <End Role="AviPublicoCampus" EntitySet="AviPublicoCampus" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublicoCampus__15A53433" Association="Self.FK__AviPublicoCampus__15A53433">
+          <AssociationSet Name="FK__AviPublicoCampus__595B4002" Association="Self.FK__AviPublicoCampus__595B4002">
             <End Role="Campus" EntitySet="Campus" />
             <End Role="AviPublicoCampus" EntitySet="AviPublicoCampus" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublicoCurso__62E4AA3C" Association="Self.FK__AviPublicoCurso__62E4AA3C">
+          <AssociationSet Name="FK__AviPublicoCurso__025D5595" Association="Self.FK__AviPublicoCurso__025D5595">
             <End Role="AviPublico" EntitySet="AviPublico" />
             <End Role="AviPublicoCurso" EntitySet="AviPublicoCurso" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublicoDireto__0EF836A4" Association="Self.FK__AviPublicoDireto__0EF836A4">
+          <AssociationSet Name="FK__AviPublicoDireto__64CCF2AE" Association="Self.FK__AviPublicoDireto__64CCF2AE">
             <End Role="AviPublico" EntitySet="AviPublico" />
             <End Role="AviPublicoDiretoria" EntitySet="AviPublicoDiretoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublicoDireto__0FEC5ADD" Association="Self.FK__AviPublicoDireto__0FEC5ADD">
+          <AssociationSet Name="FK__AviPublicoDireto__65C116E7" Association="Self.FK__AviPublicoDireto__65C116E7">
             <End Role="Diretoria" EntitySet="Diretoria" />
             <End Role="AviPublicoDiretoria" EntitySet="AviPublicoDiretoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublicoInstit__17C286CF" Association="Self.FK__AviPublicoInstit__17C286CF">
+          <AssociationSet Name="FK__AviPublicoInstit__63D8CE75" Association="Self.FK__AviPublicoInstit__63D8CE75">
             <End Role="AviPublico" EntitySet="AviPublico" />
             <End Role="AviPublicoInstituicao" EntitySet="AviPublicoInstituicao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublicoPessoa__1D7B6025" Association="Self.FK__AviPublicoPessoa__1D7B6025">
+          <AssociationSet Name="FK__AviPublicoPessoa__61F08603" Association="Self.FK__AviPublicoPessoa__61F08603">
             <End Role="AviPublico" EntitySet="AviPublico" />
             <End Role="AviPublicoPessoa" EntitySet="AviPublicoPessoa" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublicoProRei__1A69E950" Association="Self.FK__AviPublicoProRei__1A69E950">
+          <AssociationSet Name="FK__AviPublicoProRei__5F141958" Association="Self.FK__AviPublicoProRei__5F141958">
             <End Role="AviPublico" EntitySet="AviPublico" />
             <End Role="AviPublicoProReitoria" EntitySet="AviPublicoProReitoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublicoProRei__1B5E0D89" Association="Self.FK__AviPublicoProRei__1B5E0D89">
+          <AssociationSet Name="FK__AviPublicoProRei__60083D91" Association="Self.FK__AviPublicoProRei__60083D91">
             <End Role="ProReitoria" EntitySet="ProReitoria" />
             <End Role="AviPublicoProReitoria" EntitySet="AviPublicoProReitoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublicoReitor__019E3B86" Association="Self.FK__AviPublicoReitor__019E3B86">
+          <AssociationSet Name="FK__AviPublicoReitor__5D2BD0E6" Association="Self.FK__AviPublicoReitor__5D2BD0E6">
             <End Role="AviPublico" EntitySet="AviPublico" />
             <End Role="AviPublicoReitoria" EntitySet="AviPublicoReitoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublicoReitor__02925FBF" Association="Self.FK__AviPublicoReitor__02925FBF">
+          <AssociationSet Name="FK__AviPublicoReitor__5E1FF51F" Association="Self.FK__AviPublicoReitor__5E1FF51F">
             <End Role="Reitoria" EntitySet="Reitoria" />
             <End Role="AviPublicoReitoria" EntitySet="AviPublicoReitoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublicoTurma__4C0144E4" Association="Self.FK__AviPublicoTurma__4C0144E4">
+          <AssociationSet Name="FK__AviPublicoTurma__062DE679" Association="Self.FK__AviPublicoTurma__062DE679">
             <End Role="AviPublico" EntitySet="AviPublico" />
             <End Role="AviPublicoTurma" EntitySet="AviPublicoTurma" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviPublicoTurma__4CF5691D" Association="Self.FK__AviPublicoTurma__4CF5691D">
+          <AssociationSet Name="FK__AviPublicoTurma__07220AB2" Association="Self.FK__AviPublicoTurma__07220AB2">
             <End Role="Turma" EntitySet="Turma" />
             <End Role="AviPublicoTurma" EntitySet="AviPublicoTurma" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviQuesta__CodAv__4F12BBB9" Association="Self.FK__AviQuesta__CodAv__4F12BBB9">
+          <AssociationSet Name="FK__AviQuesta__CodAv__4CF5691D" Association="Self.FK__AviQuesta__CodAv__4CF5691D">
             <End Role="AviModulo" EntitySet="AviModulo" />
             <End Role="AviQuestao" EntitySet="AviQuestao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviQuesta__CodAv__5006DFF2" Association="Self.FK__AviQuesta__CodAv__5006DFF2">
+          <AssociationSet Name="FK__AviQuesta__CodAv__4DE98D56" Association="Self.FK__AviQuesta__CodAv__4DE98D56">
             <End Role="AviCategoria" EntitySet="AviCategoria" />
             <End Role="AviQuestao" EntitySet="AviQuestao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviQuesta__CodAv__50FB042B" Association="Self.FK__AviQuesta__CodAv__50FB042B">
+          <AssociationSet Name="FK__AviQuesta__CodAv__4EDDB18F" Association="Self.FK__AviQuesta__CodAv__4EDDB18F">
             <End Role="AviIndicador" EntitySet="AviIndicador" />
             <End Role="AviQuestao" EntitySet="AviQuestao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviQuesta__CodPe__0A338187" Association="Self.FK__AviQuesta__CodPe__0A338187">
+          <AssociationSet Name="FK__AviQuesta__CodPe__5A4F643B" Association="Self.FK__AviQuesta__CodPe__5A4F643B">
             <End Role="PessoaFisica" EntitySet="PessoaFisica" />
             <End Role="AviQuestaoPessoaResposta" EntitySet="AviQuestaoPessoaResposta" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviQuestao__4E1E9780" Association="Self.FK__AviQuestao__4E1E9780">
+          <AssociationSet Name="FK__AviQuestao__4FD1D5C8" Association="Self.FK__AviQuestao__4FD1D5C8">
             <End Role="AvalAvi" EntitySet="AvalAvi" />
             <End Role="AviQuestao" EntitySet="AviQuestao" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviQuestaoAltern__5A846E65" Association="Self.FK__AviQuestaoAltern__5A846E65">
+          <AssociationSet Name="FK__AviQuestaoAltern__5C37ACAD" Association="Self.FK__AviQuestaoAltern__5C37ACAD">
             <End Role="AviQuestao" EntitySet="AviQuestao" />
             <End Role="AviQuestaoAlternativa" EntitySet="AviQuestaoAlternativa" />
           </AssociationSet>
-          <AssociationSet Name="FK__AviQuestaoPessoa__093F5D4E" Association="Self.FK__AviQuestaoPessoa__093F5D4E">
+          <AssociationSet Name="FK__AviQuestaoPessoa__5B438874" Association="Self.FK__AviQuestaoPessoa__5B438874">
             <End Role="AviQuestao" EntitySet="AviQuestao" />
             <End Role="AviQuestaoPessoaResposta" EntitySet="AviQuestaoPessoaResposta" />
           </AssociationSet>
-          <AssociationSet Name="FK__Bairro__7B5B524B" Association="Self.FK__Bairro__7B5B524B">
+          <AssociationSet Name="FK__Bairro__2C88998B" Association="Self.FK__Bairro__2C88998B">
             <End Role="Municipio" EntitySet="Municipio" />
             <End Role="Bairro" EntitySet="Bairro" />
           </AssociationSet>
-          <AssociationSet Name="FK__Bloco__55BFB948" Association="Self.FK__Bloco__55BFB948">
+          <AssociationSet Name="FK__Bloco__50C5FA01" Association="Self.FK__Bloco__50C5FA01">
             <End Role="Campus" EntitySet="Campus" />
             <End Role="Bloco" EntitySet="Bloco" />
           </AssociationSet>
-          <AssociationSet Name="FK__Campus__CodColab__2334397B" Association="Self.FK__Campus__CodColab__2334397B">
+          <AssociationSet Name="FK__Campus__CodColab__361203C5" Association="Self.FK__Campus__CodColab__361203C5">
             <End Role="Colaborador" EntitySet="Colaborador" />
             <End Role="Campus" EntitySet="Campus" />
           </AssociationSet>
-          <AssociationSet Name="FK__Campus__CodInsti__24285DB4" Association="Self.FK__Campus__CodInsti__24285DB4">
+          <AssociationSet Name="FK__Campus__CodInsti__370627FE" Association="Self.FK__Campus__CodInsti__370627FE">
             <End Role="Instituicao" EntitySet="Instituicao" />
             <End Role="Campus" EntitySet="Campus" />
           </AssociationSet>
-          <AssociationSet Name="FK__Campus__CodPesso__251C81ED" Association="Self.FK__Campus__CodPesso__251C81ED">
+          <AssociationSet Name="FK__Campus__CodPesso__37FA4C37" Association="Self.FK__Campus__CodPesso__37FA4C37">
             <End Role="PessoaJuridica" EntitySet="PessoaJuridica" />
             <End Role="Campus" EntitySet="Campus" />
           </AssociationSet>
-          <AssociationSet Name="FK__Candidato__2EDAF651" Association="Self.FK__Candidato__2EDAF651">
+          <AssociationSet Name="FK__Candidato__2D7CBDC4" Association="Self.FK__Candidato__2D7CBDC4">
             <End Role="Municipio" EntitySet="Municipio" />
             <End Role="Candidato" EntitySet="Candidato" />
           </AssociationSet>
-          <AssociationSet Name="FK__Candidato__Matri__2DE6D218" Association="Self.FK__Candidato__Matri__2DE6D218">
+          <AssociationSet Name="FK__Candidato__Matri__2E70E1FD" Association="Self.FK__Candidato__Matri__2E70E1FD">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Candidato" EntitySet="Candidato" />
           </AssociationSet>
-          <AssociationSet Name="FK__Colaborad__MatrC__57DD0BE4" Association="Self.FK__Colaborad__MatrC__57DD0BE4">
+          <AssociationSet Name="FK__Colaborad__MatrC__2F650636" Association="Self.FK__Colaborad__MatrC__2F650636">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Colaborador" EntitySet="Colaborador" />
           </AssociationSet>
-          <AssociationSet Name="FK__Curso__2022C2A6" Association="Self.FK__Curso__2022C2A6">
+          <AssociationSet Name="FK__Curso__558AAF1E" Association="Self.FK__Curso__558AAF1E">
             <End Role="Diretoria" EntitySet="Diretoria" />
             <End Role="Curso" EntitySet="Curso" />
           </AssociationSet>
-          <AssociationSet Name="FK__Curso__CodColabC__220B0B18" Association="Self.FK__Curso__CodColabC__220B0B18">
+          <AssociationSet Name="FK__Curso__CodColabC__567ED357" Association="Self.FK__Curso__CodColabC__567ED357">
             <End Role="Colaborador" EntitySet="Colaborador" />
             <End Role="Curso" EntitySet="Curso" />
           </AssociationSet>
-          <AssociationSet Name="FK__Curso__CodNivelE__2116E6DF" Association="Self.FK__Curso__CodNivelE__2116E6DF">
+          <AssociationSet Name="FK__Curso__CodNivelE__5772F790" Association="Self.FK__Curso__CodNivelE__5772F790">
             <End Role="NivelEnsino" EntitySet="NivelEnsino" />
             <End Role="Curso" EntitySet="Curso" />
           </AssociationSet>
-          <AssociationSet Name="FK__Diretoria__308E3499" Association="Self.FK__Diretoria__308E3499">
+          <AssociationSet Name="FK__Diretoria__52AE4273" Association="Self.FK__Diretoria__52AE4273">
             <End Role="Campus" EntitySet="Campus" />
             <End Role="Diretoria" EntitySet="Diretoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__Diretoria__CodCo__318258D2" Association="Self.FK__Diretoria__CodCo__318258D2">
+          <AssociationSet Name="FK__Diretoria__CodCo__53A266AC" Association="Self.FK__Diretoria__CodCo__53A266AC">
             <End Role="Colaborador" EntitySet="Colaborador" />
             <End Role="Diretoria" EntitySet="Diretoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__Diretoria__CodPe__32767D0B" Association="Self.FK__Diretoria__CodPe__32767D0B">
+          <AssociationSet Name="FK__Diretoria__CodPe__54968AE5" Association="Self.FK__Diretoria__CodPe__54968AE5">
             <End Role="PessoaJuridica" EntitySet="PessoaJuridica" />
             <End Role="Diretoria" EntitySet="Diretoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__Email__CodPessoa__3493CFA7" Association="Self.FK__Email__CodPessoa__3493CFA7">
+          <AssociationSet Name="FK__Email__CodPessoa__0D0FEE32" Association="Self.FK__Email__CodPessoa__0D0FEE32">
             <End Role="Pessoa" EntitySet="Pessoa" />
             <End Role="Email" EntitySet="Email" />
           </AssociationSet>
-          <AssociationSet Name="FK__Email__CodTipoCo__339FAB6E" Association="Self.FK__Email__CodTipoCo__339FAB6E">
+          <AssociationSet Name="FK__Email__CodTipoCo__0E04126B" Association="Self.FK__Email__CodTipoCo__0E04126B">
             <End Role="TipoContato" EntitySet="TipoContato" />
             <End Role="Email" EntitySet="Email" />
           </AssociationSet>
-          <AssociationSet Name="FK__Endereco__2739D489" Association="Self.FK__Endereco__2739D489">
+          <AssociationSet Name="FK__Endereco__324172E1" Association="Self.FK__Endereco__324172E1">
             <End Role="Bairro" EntitySet="Bairro" />
             <End Role="Endereco" EntitySet="Endereco" />
           </AssociationSet>
-          <AssociationSet Name="FK__Endereco__CodPes__282DF8C2" Association="Self.FK__Endereco__CodPes__282DF8C2">
+          <AssociationSet Name="FK__Endereco__CodPes__3335971A" Association="Self.FK__Endereco__CodPes__3335971A">
             <End Role="Pessoa" EntitySet="Pessoa" />
             <End Role="Endereco" EntitySet="Endereco" />
           </AssociationSet>
-          <AssociationSet Name="FK__Estado__CodPais__628FA481" Association="Self.FK__Estado__CodPais__628FA481">
+          <AssociationSet Name="FK__Estado__CodPais__13BCEBC1" Association="Self.FK__Estado__CodPais__13BCEBC1">
             <End Role="Pais" EntitySet="Pais" />
             <End Role="Estado" EntitySet="Estado" />
           </AssociationSet>
-          <AssociationSet Name="FK__Horario__CodTurn__5DCAEF64" Association="Self.FK__Horario__CodTurn__5DCAEF64">
+          <AssociationSet Name="FK__Horario__CodTurn__12C8C788" Association="Self.FK__Horario__CodTurn__12C8C788">
             <End Role="Turno" EntitySet="Turno" />
             <End Role="Horario" EntitySet="Horario" />
           </AssociationSet>
-          <AssociationSet Name="FK__Instituic__CodPe__719CDDE7" Association="Self.FK__Instituic__CodPe__719CDDE7">
+          <AssociationSet Name="FK__Instituic__CodPe__1C5231C2" Association="Self.FK__Instituic__CodPe__1C5231C2">
             <End Role="PessoaJuridica" EntitySet="PessoaJuridica" />
             <End Role="Instituicao" EntitySet="Instituicao" />
           </AssociationSet>
-          <AssociationSet Name="FK__Justifica__CodPr__0D44F85C" Association="Self.FK__Justifica__CodPr__0D44F85C">
+          <AssociationSet Name="FK__Justifica__CodPr__30592A6F" Association="Self.FK__Justifica__CodPr__30592A6F">
             <End Role="Professor" EntitySet="Professor" />
             <End Role="Justificacao" EntitySet="Justificacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__Justificacao__0C50D423" Association="Self.FK__Justificacao__0C50D423">
+          <AssociationSet Name="FK__Justificacao__314D4EA8" Association="Self.FK__Justificacao__314D4EA8">
             <End Role="AvalPessoaResultado" EntitySet="AvalPessoaResultado" />
             <End Role="Justificacao" EntitySet="Justificacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__MatrizCur__CodCu__351DDF8C" Association="Self.FK__MatrizCur__CodCu__351DDF8C">
+          <AssociationSet Name="FK__MatrizCur__CodCu__035179CE" Association="Self.FK__MatrizCur__CodCu__035179CE">
             <End Role="Curso" EntitySet="Curso" />
             <End Role="MatrizCurricular" EntitySet="MatrizCurricular" />
           </AssociationSet>
-          <AssociationSet Name="FK__MatrizCur__CodDi__5E1FF51F" Association="Self.FK__MatrizCur__CodDi__5E1FF51F">
+          <AssociationSet Name="FK__MatrizCur__CodDi__04459E07" Association="Self.FK__MatrizCur__CodDi__04459E07">
             <End Role="Disciplina" EntitySet="Disciplina" />
             <End Role="MatrizCurricularDisciplina" EntitySet="MatrizCurricularDisciplina" />
           </AssociationSet>
-          <AssociationSet Name="FK__MatrizCurricular__5D2BD0E6" Association="Self.FK__MatrizCurricular__5D2BD0E6">
+          <AssociationSet Name="FK__MatrizCurricular__0539C240" Association="Self.FK__MatrizCurricular__0539C240">
             <End Role="MatrizCurricular" EntitySet="MatrizCurricular" />
             <End Role="MatrizCurricularDisciplina" EntitySet="MatrizCurricularDisciplina" />
           </AssociationSet>
-          <AssociationSet Name="FK__Municipio__76969D2E" Association="Self.FK__Municipio__76969D2E">
+          <AssociationSet Name="FK__Municipio__1699586C" Association="Self.FK__Municipio__1699586C">
             <End Role="Estado" EntitySet="Estado" />
             <End Role="Municipio" EntitySet="Municipio" />
           </AssociationSet>
-          <AssociationSet Name="FK__PessoaCat__CodCa__395884C4" Association="Self.FK__PessoaCat__CodCa__395884C4">
+          <AssociationSet Name="FK__PessoaCat__CodCa__178D7CA5" Association="Self.FK__PessoaCat__CodCa__178D7CA5">
             <End Role="Categoria" EntitySet="Categoria" />
             <End Role="PessoaCategoria" EntitySet="PessoaCategoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__PessoaCat__CodPe__3A4CA8FD" Association="Self.FK__PessoaCat__CodPe__3A4CA8FD">
+          <AssociationSet Name="FK__PessoaCat__CodPe__1881A0DE" Association="Self.FK__PessoaCat__CodPe__1881A0DE">
             <End Role="PessoaFisica" EntitySet="PessoaFisica" />
             <End Role="PessoaCategoria" EntitySet="PessoaCategoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__PessoaFis__CodPe__68487DD7" Association="Self.FK__PessoaFis__CodPe__68487DD7">
+          <AssociationSet Name="FK__PessoaFis__CodPe__15A53433" Association="Self.FK__PessoaFis__CodPe__15A53433">
             <End Role="Pessoa" EntitySet="Pessoa" />
             <End Role="PessoaFisica" EntitySet="PessoaFisica" />
           </AssociationSet>
-          <AssociationSet Name="FK__PessoaFor__CodAr__45BE5BA9" Association="Self.FK__PessoaFor__CodAr__45BE5BA9">
+          <AssociationSet Name="FK__PessoaFor__CodAr__1975C517" Association="Self.FK__PessoaFor__CodAr__1975C517">
             <End Role="Area" EntitySet="Area" />
             <End Role="PessoaFormacao" EntitySet="PessoaFormacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__PessoaFor__CodNi__46B27FE2" Association="Self.FK__PessoaFor__CodNi__46B27FE2">
+          <AssociationSet Name="FK__PessoaFor__CodNi__1A69E950" Association="Self.FK__PessoaFor__CodNi__1A69E950">
             <End Role="NivelEnsino" EntitySet="NivelEnsino" />
             <End Role="PessoaFormacao" EntitySet="PessoaFormacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__PessoaFor__CodPe__47A6A41B" Association="Self.FK__PessoaFor__CodPe__47A6A41B">
+          <AssociationSet Name="FK__PessoaFor__CodPe__1B5E0D89" Association="Self.FK__PessoaFor__CodPe__1B5E0D89">
             <End Role="PessoaFisica" EntitySet="PessoaFisica" />
             <End Role="PessoaFormacao" EntitySet="PessoaFormacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__PessoaJur__CodPe__71D1E811" Association="Self.FK__PessoaJur__CodPe__71D1E811">
+          <AssociationSet Name="FK__PessoaJur__CodPe__14B10FFA" Association="Self.FK__PessoaJur__CodPe__14B10FFA">
             <End Role="Pessoa" EntitySet="Pessoa" />
             <End Role="PessoaJuridica" EntitySet="PessoaJuridica" />
           </AssociationSet>
-          <AssociationSet Name="FK__PessoaLoc__CodIn__27C3E46E" Association="Self.FK__PessoaLoc__CodIn__27C3E46E">
+          <AssociationSet Name="FK__PessoaLoc__CodIn__6C6E1476" Association="Self.FK__PessoaLoc__CodIn__6C6E1476">
             <End Role="Instituicao" EntitySet="Instituicao" />
             <End Role="PessoaLocalTrabalho" EntitySet="PessoaLocalTrabalho" />
           </AssociationSet>
-          <AssociationSet Name="FK__PessoaLoc__CodPe__26CFC035" Association="Self.FK__PessoaLoc__CodPe__26CFC035">
+          <AssociationSet Name="FK__PessoaLoc__CodPe__6D6238AF" Association="Self.FK__PessoaLoc__CodPe__6D6238AF">
             <End Role="PessoaFisica" EntitySet="PessoaFisica" />
             <End Role="PessoaLocalTrabalho" EntitySet="PessoaLocalTrabalho" />
           </AssociationSet>
-          <AssociationSet Name="FK__PessoaLocalTraba__28B808A7" Association="Self.FK__PessoaLocalTraba__28B808A7">
+          <AssociationSet Name="FK__PessoaLocalTraba__6E565CE8" Association="Self.FK__PessoaLocalTraba__6E565CE8">
             <End Role="Campus" EntitySet="Campus" />
             <End Role="PessoaLocalTrabalho" EntitySet="PessoaLocalTrabalho" />
           </AssociationSet>
-          <AssociationSet Name="FK__PessoaLocalTraba__29AC2CE0" Association="Self.FK__PessoaLocalTraba__29AC2CE0">
+          <AssociationSet Name="FK__PessoaLocalTraba__6F4A8121" Association="Self.FK__PessoaLocalTraba__6F4A8121">
             <End Role="Diretoria" EntitySet="Diretoria" />
             <End Role="PessoaLocalTrabalho" EntitySet="PessoaLocalTrabalho" />
           </AssociationSet>
-          <AssociationSet Name="FK__PessoaLocalTraba__2AA05119" Association="Self.FK__PessoaLocalTraba__2AA05119">
+          <AssociationSet Name="FK__PessoaLocalTraba__703EA55A" Association="Self.FK__PessoaLocalTraba__703EA55A">
             <End Role="Reitoria" EntitySet="Reitoria" />
             <End Role="PessoaLocalTrabalho" EntitySet="PessoaLocalTrabalho" />
           </AssociationSet>
-          <AssociationSet Name="FK__PessoaLocalTraba__2B947552" Association="Self.FK__PessoaLocalTraba__2B947552">
+          <AssociationSet Name="FK__PessoaLocalTraba__7132C993" Association="Self.FK__PessoaLocalTraba__7132C993">
             <End Role="ProReitoria" EntitySet="ProReitoria" />
             <End Role="PessoaLocalTrabalho" EntitySet="PessoaLocalTrabalho" />
           </AssociationSet>
-          <AssociationSet Name="FK__PessoaOcu__CodOc__0D7A0286" Association="Self.FK__PessoaOcu__CodOc__0D7A0286">
+          <AssociationSet Name="FK__PessoaOcu__CodOc__26CFC035" Association="Self.FK__PessoaOcu__CodOc__26CFC035">
             <End Role="Ocupacao" EntitySet="Ocupacao" />
             <End Role="PessoaOcupacao" EntitySet="PessoaOcupacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__PessoaOcu__CodPe__0E6E26BF" Association="Self.FK__PessoaOcu__CodPe__0E6E26BF">
+          <AssociationSet Name="FK__PessoaOcu__CodPe__27C3E46E" Association="Self.FK__PessoaOcu__CodPe__27C3E46E">
             <End Role="PessoaFisica" EntitySet="PessoaFisica" />
             <End Role="PessoaOcupacao" EntitySet="PessoaOcupacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__Professor__CodDi__7C1A6C5A" Association="Self.FK__Professor__CodDi__7C1A6C5A">
+          <AssociationSet Name="FK__Professor__CodDi__408F9238" Association="Self.FK__Professor__CodDi__408F9238">
             <End Role="Disciplina" EntitySet="Disciplina" />
             <End Role="ProfessorDisciplina" EntitySet="ProfessorDisciplina" />
           </AssociationSet>
-          <AssociationSet Name="FK__Professor__CodPr__7B264821" Association="Self.FK__Professor__CodPr__7B264821">
+          <AssociationSet Name="FK__Professor__CodPr__4183B671" Association="Self.FK__Professor__CodPr__4183B671">
             <End Role="Professor" EntitySet="Professor" />
             <End Role="ProfessorDisciplina" EntitySet="ProfessorDisciplina" />
           </AssociationSet>
-          <AssociationSet Name="FK__Professor__MatrP__6166761E" Association="Self.FK__Professor__MatrP__6166761E">
+          <AssociationSet Name="FK__Professor__MatrP__28B808A7" Association="Self.FK__Professor__MatrP__28B808A7">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Professor" EntitySet="Professor" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProReitor__CodCo__29E1370A" Association="Self.FK__ProReitor__CodCo__29E1370A">
+          <AssociationSet Name="FK__ProReitor__CodCo__3DB3258D" Association="Self.FK__ProReitor__CodCo__3DB3258D">
             <End Role="Colaborador" EntitySet="Colaborador" />
             <End Role="ProReitoria" EntitySet="ProReitoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProReitor__CodIn__2AD55B43" Association="Self.FK__ProReitor__CodIn__2AD55B43">
+          <AssociationSet Name="FK__ProReitor__CodIn__3EA749C6" Association="Self.FK__ProReitor__CodIn__3EA749C6">
             <End Role="Instituicao" EntitySet="Instituicao" />
             <End Role="ProReitoria" EntitySet="ProReitoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProReitor__CodPe__2BC97F7C" Association="Self.FK__ProReitor__CodPe__2BC97F7C">
+          <AssociationSet Name="FK__ProReitor__CodPe__3F9B6DFF" Association="Self.FK__ProReitor__CodPe__3F9B6DFF">
             <End Role="PessoaJuridica" EntitySet="PessoaJuridica" />
             <End Role="ProReitoria" EntitySet="ProReitoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__Questao__CodDifi__3FD07829" Association="Self.FK__Questao__CodDifi__3FD07829">
+          <AssociationSet Name="FK__Questao__CodDifi__3AD6B8E2" Association="Self.FK__Questao__CodDifi__3AD6B8E2">
             <End Role="Dificuldade" EntitySet="Dificuldade" />
             <End Role="Questao" EntitySet="Questao" />
           </AssociationSet>
-          <AssociationSet Name="FK__Questao__CodProf__41B8C09B" Association="Self.FK__Questao__CodProf__41B8C09B">
+          <AssociationSet Name="FK__Questao__CodProf__3BCADD1B" Association="Self.FK__Questao__CodProf__3BCADD1B">
             <End Role="Professor" EntitySet="Professor" />
             <End Role="Questao" EntitySet="Questao" />
           </AssociationSet>
-          <AssociationSet Name="FK__Questao__CodTipo__40C49C62" Association="Self.FK__Questao__CodTipo__40C49C62">
+          <AssociationSet Name="FK__Questao__CodTipo__3CBF0154" Association="Self.FK__Questao__CodTipo__3CBF0154">
             <End Role="TipoQuestao" EntitySet="TipoQuestao" />
             <End Role="Questao" EntitySet="Questao" />
           </AssociationSet>
-          <AssociationSet Name="FK__QuestaoAn__CodQu__65F62111" Association="Self.FK__QuestaoAn__CodQu__65F62111">
+          <AssociationSet Name="FK__QuestaoAn__CodQu__4924D839" Association="Self.FK__QuestaoAn__CodQu__4924D839">
             <End Role="Questao" EntitySet="Questao" />
             <End Role="QuestaoAnexo" EntitySet="QuestaoAnexo" />
           </AssociationSet>
-          <AssociationSet Name="FK__QuestaoAn__CodTi__6501FCD8" Association="Self.FK__QuestaoAn__CodTi__6501FCD8">
+          <AssociationSet Name="FK__QuestaoAn__CodTi__4A18FC72" Association="Self.FK__QuestaoAn__CodTi__4A18FC72">
             <End Role="TipoAnexo" EntitySet="TipoAnexo" />
             <End Role="QuestaoAnexo" EntitySet="QuestaoAnexo" />
           </AssociationSet>
-          <AssociationSet Name="FK__QuestaoTe__CodQu__6BAEFA67" Association="Self.FK__QuestaoTe__CodQu__6BAEFA67">
+          <AssociationSet Name="FK__QuestaoTe__CodQu__473C8FC7" Association="Self.FK__QuestaoTe__CodQu__473C8FC7">
             <End Role="Questao" EntitySet="Questao" />
             <End Role="QuestaoTema" EntitySet="QuestaoTema" />
           </AssociationSet>
-          <AssociationSet Name="FK__QuestaoTema__6ABAD62E" Association="Self.FK__QuestaoTema__6ABAD62E">
+          <AssociationSet Name="FK__QuestaoTema__4830B400" Association="Self.FK__QuestaoTema__4830B400">
             <End Role="Tema" EntitySet="Tema" />
             <End Role="QuestaoTema" EntitySet="QuestaoTema" />
           </AssociationSet>
-          <AssociationSet Name="FK__Reitoria__CodCol__477199F1" Association="Self.FK__Reitoria__CodCol__477199F1">
+          <AssociationSet Name="FK__Reitoria__CodCol__4277DAAA" Association="Self.FK__Reitoria__CodCol__4277DAAA">
             <End Role="Colaborador" EntitySet="Colaborador" />
             <End Role="Reitoria" EntitySet="Reitoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__Reitoria__CodIns__467D75B8" Association="Self.FK__Reitoria__CodIns__467D75B8">
+          <AssociationSet Name="FK__Reitoria__CodIns__436BFEE3" Association="Self.FK__Reitoria__CodIns__436BFEE3">
             <End Role="Instituicao" EntitySet="Instituicao" />
             <End Role="Reitoria" EntitySet="Reitoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__Reitoria__CodPes__4865BE2A" Association="Self.FK__Reitoria__CodPes__4865BE2A">
+          <AssociationSet Name="FK__Reitoria__CodPes__4460231C" Association="Self.FK__Reitoria__CodPes__4460231C">
             <End Role="PessoaJuridica" EntitySet="PessoaJuridica" />
             <End Role="Reitoria" EntitySet="Reitoria" />
           </AssociationSet>
-          <AssociationSet Name="FK__Sala__CodBloco__30592A6F" Association="Self.FK__Sala__CodBloco__30592A6F">
+          <AssociationSet Name="FK__Sala__CodBloco__6B79F03D" Association="Self.FK__Sala__CodBloco__6B79F03D">
             <End Role="Bloco" EntitySet="Bloco" />
             <End Role="Sala" EntitySet="Sala" />
           </AssociationSet>
-          <AssociationSet Name="FK__SimCandid__CodCa__7132C993" Association="Self.FK__SimCandid__CodCa__7132C993">
+          <AssociationSet Name="FK__SimCandid__CodCa__1940BAED" Association="Self.FK__SimCandid__CodCa__1940BAED">
             <End Role="Candidato" EntitySet="Candidato" />
             <End Role="SimCandidato" EntitySet="SimCandidato" />
           </AssociationSet>
-          <AssociationSet Name="FK__SimCandidato__703EA55A" Association="Self.FK__SimCandidato__703EA55A">
+          <AssociationSet Name="FK__SimCandidato__1A34DF26" Association="Self.FK__SimCandidato__1A34DF26">
             <End Role="Simulado" EntitySet="Simulado" />
             <End Role="SimCandidato" EntitySet="SimCandidato" />
           </AssociationSet>
-          <AssociationSet Name="FK__SimCandidato__7226EDCC" Association="Self.FK__SimCandidato__7226EDCC">
+          <AssociationSet Name="FK__SimCandidato__1B29035F" Association="Self.FK__SimCandidato__1B29035F">
             <End Role="SimSala" EntitySet="SimSala" />
             <End Role="SimCandidato" EntitySet="SimCandidato" />
           </AssociationSet>
-          <AssociationSet Name="FK__SimCandidatoProv__184C96B4" Association="Self.FK__SimCandidatoProv__184C96B4">
+          <AssociationSet Name="FK__SimCandidatoProv__1C1D2798" Association="Self.FK__SimCandidatoProv__1C1D2798">
             <End Role="SimCandidato" EntitySet="SimCandidato" />
             <End Role="SimCandidatoProva" EntitySet="SimCandidatoProva" />
           </AssociationSet>
-          <AssociationSet Name="FK__SimCandidatoProv__1940BAED" Association="Self.FK__SimCandidatoProv__1940BAED">
+          <AssociationSet Name="FK__SimCandidatoProv__1D114BD1" Association="Self.FK__SimCandidatoProv__1D114BD1">
             <End Role="SimProva" EntitySet="SimProva" />
             <End Role="SimCandidatoProva" EntitySet="SimCandidatoProva" />
           </AssociationSet>
@@ -4032,123 +4033,123 @@
             <End Role="SimProvaQuestao" EntitySet="SimProvaQuestao" />
             <End Role="SimCandidatoQuestao" EntitySet="SimCandidatoQuestao" />
           </AssociationSet>
-          <AssociationSet Name="FK__SimDiaRea__CodTu__0697FACD" Association="Self.FK__SimDiaRea__CodTu__0697FACD">
+          <AssociationSet Name="FK__SimDiaRea__CodTu__45544755" Association="Self.FK__SimDiaRea__CodTu__45544755">
             <End Role="Turno" EntitySet="Turno" />
             <End Role="SimDiaRealizacao" EntitySet="SimDiaRealizacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__SimDiaRealizacao__078C1F06" Association="Self.FK__SimDiaRealizacao__078C1F06">
+          <AssociationSet Name="FK__SimDiaRealizacao__46486B8E" Association="Self.FK__SimDiaRealizacao__46486B8E">
             <End Role="Simulado" EntitySet="Simulado" />
             <End Role="SimDiaRealizacao" EntitySet="SimDiaRealizacao" />
           </AssociationSet>
-          <AssociationSet Name="FK__SimProva__373B3228" Association="Self.FK__SimProva__373B3228">
+          <AssociationSet Name="FK__SimProva__689D8392" Association="Self.FK__SimProva__689D8392">
             <End Role="SimDiaRealizacao" EntitySet="SimDiaRealizacao" />
             <End Role="SimProva" EntitySet="SimProva" />
           </AssociationSet>
-          <AssociationSet Name="FK__SimProva__CodDis__382F5661" Association="Self.FK__SimProva__CodDis__382F5661">
+          <AssociationSet Name="FK__SimProva__CodDis__6991A7CB" Association="Self.FK__SimProva__CodDis__6991A7CB">
             <End Role="Disciplina" EntitySet="Disciplina" />
             <End Role="SimProva" EntitySet="SimProva" />
           </AssociationSet>
-          <AssociationSet Name="FK__SimProva__CodPro__39237A9A" Association="Self.FK__SimProva__CodPro__39237A9A">
+          <AssociationSet Name="FK__SimProva__CodPro__6A85CC04" Association="Self.FK__SimProva__CodPro__6A85CC04">
             <End Role="Professor" EntitySet="Professor" />
             <End Role="SimProva" EntitySet="SimProva" />
           </AssociationSet>
-          <AssociationSet Name="FK__SimProvaQ__CodQu__7CD98669" Association="Self.FK__SimProvaQ__CodQu__7CD98669">
+          <AssociationSet Name="FK__SimProvaQ__CodQu__740F363E" Association="Self.FK__SimProvaQ__CodQu__740F363E">
             <End Role="Questao" EntitySet="Questao" />
             <End Role="SimProvaQuestao" EntitySet="SimProvaQuestao" />
           </AssociationSet>
-          <AssociationSet Name="FK__SimProvaQuestao__7BE56230" Association="Self.FK__SimProvaQuestao__7BE56230">
+          <AssociationSet Name="FK__SimProvaQuestao__75035A77" Association="Self.FK__SimProvaQuestao__75035A77">
             <End Role="SimProva" EntitySet="SimProva" />
             <End Role="SimProvaQuestao" EntitySet="SimProvaQuestao" />
           </AssociationSet>
-          <AssociationSet Name="FK__SimSala__46486B8E" Association="Self.FK__SimSala__46486B8E">
+          <AssociationSet Name="FK__SimSala__7226EDCC" Association="Self.FK__SimSala__7226EDCC">
             <End Role="Simulado" EntitySet="Simulado" />
             <End Role="SimSala" EntitySet="SimSala" />
           </AssociationSet>
-          <AssociationSet Name="FK__SimSala__CodSala__473C8FC7" Association="Self.FK__SimSala__CodSala__473C8FC7">
+          <AssociationSet Name="FK__SimSala__CodSala__731B1205" Association="Self.FK__SimSala__CodSala__731B1205">
             <End Role="Sala" EntitySet="Sala" />
             <End Role="SimSala" EntitySet="SimSala" />
           </AssociationSet>
-          <AssociationSet Name="FK__Simulado__CodCol__6CD828CA" Association="Self.FK__Simulado__CodCol__6CD828CA">
+          <AssociationSet Name="FK__Simulado__CodCol__39E294A9" Association="Self.FK__Simulado__CodCol__39E294A9">
             <End Role="Colaborador" EntitySet="Colaborador" />
             <End Role="Simulado" EntitySet="Simulado" />
           </AssociationSet>
-          <AssociationSet Name="FK__Telefone__CodPes__160F4887" Association="Self.FK__Telefone__CodPes__160F4887">
+          <AssociationSet Name="FK__Telefone__CodPes__0FEC5ADD" Association="Self.FK__Telefone__CodPes__0FEC5ADD">
             <End Role="Pessoa" EntitySet="Pessoa" />
             <End Role="Telefone" EntitySet="Telefone" />
           </AssociationSet>
-          <AssociationSet Name="FK__Telefone__CodTip__151B244E" Association="Self.FK__Telefone__CodTip__151B244E">
+          <AssociationSet Name="FK__Telefone__CodTip__10E07F16" Association="Self.FK__Telefone__CodTip__10E07F16">
             <End Role="TipoContato" EntitySet="TipoContato" />
             <End Role="Telefone" EntitySet="Telefone" />
           </AssociationSet>
-          <AssociationSet Name="FK__Tema__CodDiscipl__6D0D32F4" Association="Self.FK__Tema__CodDiscipl__6D0D32F4">
+          <AssociationSet Name="FK__Tema__CodDiscipl__0EF836A4" Association="Self.FK__Tema__CodDiscipl__0EF836A4">
             <End Role="Disciplina" EntitySet="Disciplina" />
             <End Role="Tema" EntitySet="Tema" />
           </AssociationSet>
-          <AssociationSet Name="FK__Turma__CodCurso__39E294A9" Association="Self.FK__Turma__CodCurso__39E294A9">
+          <AssociationSet Name="FK__Turma__CodCurso__75F77EB0" Association="Self.FK__Turma__CodCurso__75F77EB0">
             <End Role="Curso" EntitySet="Curso" />
             <End Role="Turma" EntitySet="Turma" />
           </AssociationSet>
-          <AssociationSet Name="FK__Turma__CodTurno__3AD6B8E2" Association="Self.FK__Turma__CodTurno__3AD6B8E2">
+          <AssociationSet Name="FK__Turma__CodTurno__76EBA2E9" Association="Self.FK__Turma__CodTurno__76EBA2E9">
             <End Role="Turno" EntitySet="Turno" />
             <End Role="Turma" EntitySet="Turma" />
           </AssociationSet>
-          <AssociationSet Name="FK__TurmaDisc__CodAl__689D8392" Association="Self.FK__TurmaDisc__CodAl__689D8392">
+          <AssociationSet Name="FK__TurmaDisc__CodAl__16644E42" Association="Self.FK__TurmaDisc__CodAl__16644E42">
             <End Role="Aluno" EntitySet="Aluno" />
             <End Role="TurmaDiscAluno" EntitySet="TurmaDiscAluno" />
           </AssociationSet>
-          <AssociationSet Name="FK__TurmaDisc__CodDi__0AF29B96" Association="Self.FK__TurmaDisc__CodDi__0AF29B96">
+          <AssociationSet Name="FK__TurmaDisc__CodDi__10AB74EC" Association="Self.FK__TurmaDisc__CodDi__10AB74EC">
             <End Role="Disciplina" EntitySet="Disciplina" />
             <End Role="TurmaDiscProfHorario" EntitySet="TurmaDiscProfHorario" />
           </AssociationSet>
-          <AssociationSet Name="FK__TurmaDisc__CodDi__0BE6BFCF" Association="Self.FK__TurmaDisc__CodDi__0BE6BFCF">
+          <AssociationSet Name="FK__TurmaDisc__CodDi__119F9925" Association="Self.FK__TurmaDisc__CodDi__119F9925">
             <End Role="DiaSemana" EntitySet="DiaSemana" />
             <End Role="TurmaDiscProfHorario" EntitySet="TurmaDiscProfHorario" />
           </AssociationSet>
-          <AssociationSet Name="FK__TurmaDisc__CodDi__6A85CC04" Association="Self.FK__TurmaDisc__CodDi__6A85CC04">
+          <AssociationSet Name="FK__TurmaDisc__CodDi__1758727B" Association="Self.FK__TurmaDisc__CodDi__1758727B">
             <End Role="Disciplina" EntitySet="Disciplina" />
             <End Role="TurmaDiscAluno" EntitySet="TurmaDiscAluno" />
           </AssociationSet>
-          <AssociationSet Name="FK__TurmaDisc__CodPr__090A5324" Association="Self.FK__TurmaDisc__CodPr__090A5324">
+          <AssociationSet Name="FK__TurmaDisc__CodPr__1293BD5E" Association="Self.FK__TurmaDisc__CodPr__1293BD5E">
             <End Role="Professor" EntitySet="Professor" />
             <End Role="TurmaDiscProfHorario" EntitySet="TurmaDiscProfHorario" />
           </AssociationSet>
-          <AssociationSet Name="FK__TurmaDisc__CodSa__0DCF0841" Association="Self.FK__TurmaDisc__CodSa__0DCF0841">
+          <AssociationSet Name="FK__TurmaDisc__CodSa__1387E197" Association="Self.FK__TurmaDisc__CodSa__1387E197">
             <End Role="Sala" EntitySet="Sala" />
             <End Role="TurmaDiscProfHorario" EntitySet="TurmaDiscProfHorario" />
           </AssociationSet>
-          <AssociationSet Name="FK__TurmaDiscAluno__6991A7CB" Association="Self.FK__TurmaDiscAluno__6991A7CB">
+          <AssociationSet Name="FK__TurmaDiscAluno__184C96B4" Association="Self.FK__TurmaDiscAluno__184C96B4">
             <End Role="Turma" EntitySet="Turma" />
             <End Role="TurmaDiscAluno" EntitySet="TurmaDiscAluno" />
           </AssociationSet>
-          <AssociationSet Name="FK__TurmaDiscProfHor__09FE775D" Association="Self.FK__TurmaDiscProfHor__09FE775D">
+          <AssociationSet Name="FK__TurmaDiscProfHor__147C05D0" Association="Self.FK__TurmaDiscProfHor__147C05D0">
             <End Role="Turma" EntitySet="Turma" />
             <End Role="TurmaDiscProfHorario" EntitySet="TurmaDiscProfHorario" />
           </AssociationSet>
-          <AssociationSet Name="FK__TurmaDiscProfHor__0CDAE408" Association="Self.FK__TurmaDiscProfHor__0CDAE408">
+          <AssociationSet Name="FK__TurmaDiscProfHor__15702A09" Association="Self.FK__TurmaDiscProfHor__15702A09">
             <End Role="Horario" EntitySet="Horario" />
             <End Role="TurmaDiscProfHorario" EntitySet="TurmaDiscProfHorario" />
           </AssociationSet>
-          <AssociationSet Name="FK__Usuario__CodCate__2180FB33" Association="Self.FK__Usuario__CodCate__2180FB33">
+          <AssociationSet Name="FK__Usuario__CodCate__24E777C3" Association="Self.FK__Usuario__CodCate__24E777C3">
             <End Role="Categoria" EntitySet="Categoria" />
             <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
-          <AssociationSet Name="FK__Usuario__CodPess__22751F6C" Association="Self.FK__Usuario__CodPess__22751F6C">
+          <AssociationSet Name="FK__Usuario__CodPess__25DB9BFC" Association="Self.FK__Usuario__CodPess__25DB9BFC">
             <End Role="PessoaFisica" EntitySet="PessoaFisica" />
             <End Role="Usuario" EntitySet="Usuario" />
           </AssociationSet>
-          <AssociationSet Name="FK__UsuarioAc__Matri__4D5F7D71" Association="Self.FK__UsuarioAc__Matri__4D5F7D71">
+          <AssociationSet Name="FK__UsuarioAc__Matri__29AC2CE0" Association="Self.FK__UsuarioAc__Matri__29AC2CE0">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="UsuarioAcesso" EntitySet="UsuarioAcesso" />
           </AssociationSet>
-          <AssociationSet Name="FK__UsuarioAcessoPag__531856C7" Association="Self.FK__UsuarioAcessoPag__531856C7">
+          <AssociationSet Name="FK__UsuarioAcessoPag__38EE7070" Association="Self.FK__UsuarioAcessoPag__38EE7070">
             <End Role="UsuarioAcesso" EntitySet="UsuarioAcesso" />
             <End Role="UsuarioAcessoPagina" EntitySet="UsuarioAcessoPagina" />
           </AssociationSet>
-          <AssociationSet Name="FK__UsuarioOp__Matri__671F4F74" Association="Self.FK__UsuarioOp__Matri__671F4F74">
+          <AssociationSet Name="FK__UsuarioOp__Matri__2B947552" Association="Self.FK__UsuarioOp__Matri__2B947552">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="UsuarioOpiniao" EntitySet="UsuarioOpiniao" />
           </AssociationSet>
-          <AssociationSet Name="FK__Visitante__MatrV__5CA1C101" Association="Self.FK__Visitante__MatrV__5CA1C101">
+          <AssociationSet Name="FK__Visitante__MatrV__2AA05119" Association="Self.FK__Visitante__MatrV__2AA05119">
             <End Role="Usuario" EntitySet="Usuario" />
             <End Role="Visitante" EntitySet="Visitante" />
           </AssociationSet>
@@ -5137,6 +5138,7 @@
           <NavigationProperty Name="Simulado" Relationship="Self.FK__SimCandidato__6A85CC04" FromRole="SimCandidato" ToRole="Simulado" />
           <NavigationProperty Name="SimSala" Relationship="Self.FK__SimCandidato__6C6E1476" FromRole="SimCandidato" ToRole="SimSala" />
           <NavigationProperty Name="SimCandidatoProva" Relationship="Self.FK__SimCandidatoProv__1293BD5E" FromRole="SimCandidato" ToRole="SimCandidatoProva" />
+          <Property Name="NumeroMascara" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="SimCandidatoProva">
           <Key>
@@ -8670,6 +8672,7 @@
           <EntitySetMapping Name="SimCandidato">
             <EntityTypeMapping TypeName="dbSIACModel.SimCandidato">
               <MappingFragment StoreEntitySet="SimCandidato">
+                <ScalarProperty Name="NumeroMascara" ColumnName="NumeroMascara" />
                 <ScalarProperty Name="Ano" ColumnName="Ano" />
                 <ScalarProperty Name="NumIdentificador" ColumnName="NumIdentificador" />
                 <ScalarProperty Name="CodCandidato" ColumnName="CodCandidato" />

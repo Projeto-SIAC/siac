@@ -27,6 +27,7 @@ namespace SIAC.Models
         public System.DateTime DtInscricao { get; set; }
         public Nullable<int> CodSala { get; set; }
         public Nullable<decimal> EscorePadronizadoFinal { get; set; }
+        public string NumeroMascara { get; set; }
     
         public virtual Candidato Candidato { get; set; }
         public virtual Simulado Simulado { get; set; }
