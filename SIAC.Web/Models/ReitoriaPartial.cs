@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class Reitoria
     {
+        [NotMapped]
         public string CodComposto => $"{CodInstituicao}.{CodReitoria}";
-        
+
+        [NotMapped]
         public List<PessoaFisica> Pessoas
         {
             get

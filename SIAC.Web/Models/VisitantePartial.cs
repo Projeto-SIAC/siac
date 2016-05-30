@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace SIAC.Models
@@ -8,6 +9,7 @@ namespace SIAC.Models
     {
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 
+        [NotMapped]
         public bool FlagAtivo => this.DtValidade.HasValue ? (this.DtValidade.Value > DateTime.Now) : true;
 
         public static int ProxCodigo

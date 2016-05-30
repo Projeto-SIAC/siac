@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class PessoaFisica
     {
+        [NotMapped]
         public string PrimeiroNome => this.Nome.Split(' ').First();
+        [NotMapped]
         public string UltimoNome => this.Nome.Split(' ').Last();
 
         private static dbSIACEntities contexto => Repositorio.GetInstance();

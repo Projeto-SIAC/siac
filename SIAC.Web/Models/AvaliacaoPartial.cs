@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class Avaliacao
     {
+        [NotMapped]
         public string CodAvaliacao => $"{TipoAvaliacao.Sigla.ToUpper()}{Ano}{Semestre}{NumIdentificador.ToString("0000")}";
 
+        [NotMapped]
         public DateTime? DtTermino => this.DtAplicacao.HasValue && this.Duracao.HasValue ? this.DtAplicacao.Value.AddMinutes(this.Duracao.Value) : new Nullable<DateTime>();
 
+        [NotMapped]
         public Professor Professor
         {
             get
@@ -28,8 +32,10 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public List<Tema> Temas => this.AvaliacaoTema.Select(at => at.Tema).Distinct().ToList();
-        
+
+        [NotMapped]
         public List<Questao> Questao
         {
             get
@@ -42,6 +48,7 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public List<QuestaoTema> QuestaoTema
         {
             get
@@ -54,6 +61,7 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public List<AvalQuesPessoaResposta> PessoaResposta
         {
             get
@@ -66,10 +74,13 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public int CodDificuldade => Questao.Max(q => q.CodDificuldade);
 
+        [NotMapped]
         public Dificuldade Dificuldade => Questao.Count > 0 ? contexto.Dificuldade.Find(this.Questao.Max(q => q.CodDificuldade)) : null;
 
+        [NotMapped]
         public int TipoQuestoes
         {
             get
@@ -94,12 +105,16 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public bool FlagPendente => this.AvalPessoaResultado.Count > 0 || this.FlagArquivo ? false : true;
 
+        [NotMapped]
         public bool FlagRealizada => this.AvalPessoaResultado.Count > 0;
 
+        [NotMapped]
         public bool FlagAgendada => this.DtAplicacao.HasValue && this.FlagPendente;
 
+        [NotMapped]
         public bool FlagAgora
         {
             get
@@ -109,8 +124,10 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public bool FlagVencida => (DateTime.Now - DtAplicacao.Value).TotalMinutes > (Duracao / 2);
 
+        [NotMapped]
         public bool FlagCorrecaoPendente => this.FlagRealizada && this.PessoaResposta.Where(pr => !pr.RespNota.HasValue).Count() > 0;
 
         private static dbSIACEntities contexto => Repositorio.GetInstance();

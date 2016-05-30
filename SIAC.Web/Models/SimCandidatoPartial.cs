@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -7,10 +8,13 @@ namespace SIAC.Models
 {
     public partial class SimCandidato
     {
+        [NotMapped]
         public string NumInscricaoRepresentacao => this.NumInscricao.ToString("d4");
 
+        [NotMapped]
         public string EscorePadronizadoFinalString => this.EscorePadronizadoFinal?.ToString(".000");
 
+        [NotMapped]
         public int? ClassificacaoPosicao
         {
             get

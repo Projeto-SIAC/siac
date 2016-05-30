@@ -1,16 +1,21 @@
 ﻿using SIAC.Helpers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class AvalAcadReposicao
     {
+        [NotMapped]
         public AvalAcademica Academica => this.Justificacao.FirstOrDefault()?.AvalPessoaResultado.Avaliacao.AvalAcademica;
+        [NotMapped]
         public Disciplina Disciplina => this.Justificacao.FirstOrDefault()?.AvalPessoaResultado.Avaliacao.AvalAcademica.Disciplina;
+        [NotMapped]
         public Professor Professor => this.Justificacao.FirstOrDefault()?.Professor;
 
+        [NotMapped]
         public List<Aluno> Alunos
         {
             get
@@ -28,6 +33,7 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public List<Aluno> AlunosRealizaram
         {
             get

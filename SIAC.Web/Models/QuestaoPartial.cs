@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class Questao
     {
+        [NotMapped]
         public Disciplina Disciplina => this.QuestaoTema.FirstOrDefault()?.Tema.Disciplina;
 
+        [NotMapped]
         public List<AvalQuesPessoaResposta> Respostas => contexto.AvalQuesPessoaResposta.Where(r => r.CodQuestao == this.CodQuestao).ToList();
 
         private static dbSIACEntities contexto => Repositorio.GetInstance();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -7,19 +8,25 @@ namespace SIAC.Models
 {
     public partial class Simulado
     {
+        [NotMapped]
         public string Codigo => $"SIMUL{Ano}{NumIdentificador.ToString("d5")}";
 
         public bool CandidatoInscrito(int codCandidato) =>
            this.SimCandidato.FirstOrDefault(sc => sc.CodCandidato == codCandidato) != null;
 
+        [NotMapped]
         public bool FlagTemVaga => this.QteVagas > this.SimCandidato.Count;
 
+        [NotMapped]
         public bool FlagInscricaoAberta => !this.FlagInscricaoEncerrado && this.DtInicioInscricao <= DateTime.Now && this.DtTerminoInscricao > DateTime.Now;
 
+        [NotMapped]
         public bool FlagInscricaoNaoLiberada => this.FlagInscricaoEncerrado && this.DtInicioInscricao <= DateTime.Now && this.DtTerminoInscricao > DateTime.Now;
 
+        [NotMapped]
         public bool FlagAguardaPrazoInscricao => this.DtInicioInscricao > DateTime.Now;
 
+        [NotMapped]
         public List<SimProva> Provas {
             get
             {
@@ -32,12 +39,15 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public List<SimCandidato> Classificacao => 
             this.SimCandidato.OrderByDescending(c => c.EscorePadronizadoFinal).ToList();
 
+        [NotMapped]
         public SimDiaRealizacao PrimeiroDiaRealizacao =>
             this.SimDiaRealizacao.OrderBy(d => d.DtRealizacao).FirstOrDefault();
 
+        [NotMapped]
         public SimDiaRealizacao UltimoDiaRealizacao =>
             this.SimDiaRealizacao.OrderBy(d => d.DtRealizacao).LastOrDefault();
 
@@ -62,6 +72,7 @@ namespace SIAC.Models
             return this.SimSala.FirstOrDefault();
         }
 
+        [NotMapped]
         public bool CadastroCompleto =>
             !this.FlagSimuladoEncerrado
             && !this.FlagProvaEncerrada

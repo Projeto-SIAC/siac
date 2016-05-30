@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace SIAC.Models
@@ -7,6 +8,7 @@ namespace SIAC.Models
     {
         private static dbSIACEntities contexto => Repositorio.GetInstance();
 
+        [NotMapped]
         public List<PessoaFisica> Pessoas
         {
             get
