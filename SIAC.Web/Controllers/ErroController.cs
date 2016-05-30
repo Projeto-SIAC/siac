@@ -16,6 +16,9 @@ namespace SIAC.Controllers
                     return View(new ErroIndexViewModel(code.ToString(), "Acesso proibido", "A página solicitada é proibida para seu usuário"));
                 case 404:
                     return View(new ErroIndexViewModel(code.ToString(), "Não encontrado", "A página solicitada não foi encontrada"));
+                case 2699:
+                    // developer tools run here
+                    return RedirectToAction("Index", "Acesso");
             }
             return View(new ErroIndexViewModel());
         }

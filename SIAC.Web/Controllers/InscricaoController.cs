@@ -70,11 +70,15 @@ namespace SIAC.Controllers
                 {
                     if (Sessao.Candidato.PerfilCompleto)
                     {
+                        string numeroMascara = new HashidsNet.Hashids(s.Codigo, 6)
+                            .Encode(s.Ano, s.NumIdentificador, Sessao.Candidato.CodCandidato);
+
                         SimCandidato candidato = new SimCandidato()
                         {
                             NumInscricao = s.ObterNumInscricao(),
                             Candidato = Sessao.Candidato,
-                            DtInscricao = DateTime.Now
+                            DtInscricao = DateTime.Now,
+                            NumeroMascara = numeroMascara
                         };
 
                         s.SimCandidato.Add(candidato);

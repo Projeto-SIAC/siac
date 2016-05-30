@@ -966,7 +966,7 @@
           <Property Name="DtInscricao" Type="datetime" Nullable="false" />
           <Property Name="CodSala" Type="int" />
           <Property Name="EscorePadronizadoFinal" Type="decimal" Precision="8" Scale="3" />
-          <Property Name="NumeroMascara" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="NumeroMascara" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="SimCandidatoProva">
           <Key>
@@ -5138,7 +5138,7 @@
           <NavigationProperty Name="Simulado" Relationship="Self.FK__SimCandidato__6A85CC04" FromRole="SimCandidato" ToRole="Simulado" />
           <NavigationProperty Name="SimSala" Relationship="Self.FK__SimCandidato__6C6E1476" FromRole="SimCandidato" ToRole="SimSala" />
           <NavigationProperty Name="SimCandidatoProva" Relationship="Self.FK__SimCandidatoProv__1293BD5E" FromRole="SimCandidato" ToRole="SimCandidatoProva" />
-          <Property Name="NumeroMascara" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="NumeroMascara" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="SimCandidatoProva">
           <Key>
