@@ -5,7 +5,7 @@
         public const string FISICA = "F";
         public const string JURIDICA = "J";
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static int Inserir(Pessoa pessoa)
         {

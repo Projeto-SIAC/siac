@@ -1,12 +1,14 @@
 ﻿using SIAC.Helpers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class AvalCertificacao
     {
+        [NotMapped]
         public List<PessoaFisica> PessoasRealizaram
         {
             get
@@ -22,7 +24,7 @@ namespace SIAC.Models
             }
         }
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static void Inserir(AvalCertificacao avalCertificacao)
         {

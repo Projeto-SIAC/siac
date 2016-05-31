@@ -14,7 +14,7 @@ namespace SIAC.Models
         public const int TURMA = 7;
         public const int PESSOA = 8;
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<AviTipoPublico> ListarOrdenadamente() => contexto.AviTipoPublico.OrderBy(p => p.CodAviTipoPublico).ToList();
     }

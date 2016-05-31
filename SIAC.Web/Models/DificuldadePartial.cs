@@ -5,7 +5,7 @@ namespace SIAC.Models
 {
     public partial class Dificuldade
     {
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<Dificuldade> ListarOrdenadamente() => contexto.Dificuldade.OrderBy(d => d.CodDificuldade).ToList();
 

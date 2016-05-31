@@ -5,7 +5,7 @@ namespace SIAC.Models
 {
     public partial class PessoaLocalTrabalho
     {
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<PessoaFisica> ListarPorInstituicao(int codInstituicao)=>
             contexto.PessoaLocalTrabalho

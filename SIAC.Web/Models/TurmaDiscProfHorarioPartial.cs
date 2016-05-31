@@ -6,7 +6,7 @@ namespace SIAC.Models
 {
     public partial class TurmaDiscProfHorario
     {
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<TurmaDiscProfHorario> ListarPorUsuario(Usuario usuario)
         {

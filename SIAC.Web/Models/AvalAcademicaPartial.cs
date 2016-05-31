@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using SIAC.Helpers;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SIAC.Models
 {
     public partial class AvalAcademica
     {
+        [NotMapped]
         public List<Aluno> Alunos => this.Turma?.TurmaDiscAluno.Select(t => t.Aluno).ToList();
 
+        [NotMapped]
         public List<Aluno> AlunosRealizaram
         {
             get
@@ -24,6 +27,7 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public List<Aluno> AlunoAusente
         {
             get
@@ -39,6 +43,7 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public List<Aluno> AlunoSemJustificacao
         {
             get
@@ -57,6 +62,7 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public List<Justificacao> Justificacoes
         {
             get
@@ -70,6 +76,7 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public List<AvalAcadReposicao> Reposicoes
         {
             get
@@ -88,7 +95,7 @@ namespace SIAC.Models
             }
         }
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static void Inserir(AvalAcademica avalAcademica)
         {

@@ -1,6 +1,7 @@
 ﻿using SIAC.Helpers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -15,9 +16,12 @@ namespace SIAC.Models
             NaoInformado = 'N'
         };
 
+        [NotMapped]
         public string PrimeiroNome => this.Nome.Split(' ').First();
+        [NotMapped]
         public string UltimoNome => this.Nome.Split(' ').Last();
 
+        [NotMapped]
         public bool PerfilCompleto
         {
             get
@@ -39,7 +43,7 @@ namespace SIAC.Models
             }
         }
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static Candidato ListarPorCPF(string cpf) => 
             contexto.Candidato.FirstOrDefault(c => c.Cpf == cpf);

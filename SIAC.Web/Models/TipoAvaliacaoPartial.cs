@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace SIAC.Models
 {
@@ -10,9 +11,10 @@ namespace SIAC.Models
         public const int AVI = 4;
         public const int REPOSICAO = 5;
 
+        [NotMapped]
         public string DescricaoCurta => CodTipoAvaliacao == 4 ? Descricao : Descricao.Split(' ').Last();
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static TipoAvaliacao ListarPorCodigo(int codTipoAvaliacao) => contexto.TipoAvaliacao.Find(codTipoAvaliacao);
 

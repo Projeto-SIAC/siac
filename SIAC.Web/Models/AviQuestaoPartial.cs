@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class AviQuestao
     {
+        [NotMapped]
         public List<AviQuestaoPessoaResposta> Respostas
         {
             get
@@ -28,7 +30,7 @@ namespace SIAC.Models
             }
         }
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static void Inserir(AviQuestao questao)
         {

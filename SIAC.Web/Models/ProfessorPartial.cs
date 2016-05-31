@@ -1,17 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class Professor
     {
+        [NotMapped]
         public Instituicao Instituicao => this.TurmaDiscProfHorario.OrderBy(t => t.AnoLetivo).LastOrDefault()?.Turma.Curso.Diretoria.Campus.Instituicao;
 
+        [NotMapped]
         public Campus Campus => this.TurmaDiscProfHorario.OrderBy(t => t.AnoLetivo).LastOrDefault()?.Turma.Curso.Diretoria.Campus;
 
         public bool Leciona(int codDisciplina) => this.Disciplina.FirstOrDefault(d => d.CodDisciplina == codDisciplina) != null;
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static Professor ListarPorMatricula(string matricula) => contexto.Professor.FirstOrDefault(p => p.MatrProfessor == matricula);
 

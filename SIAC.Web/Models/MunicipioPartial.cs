@@ -7,7 +7,7 @@ namespace SIAC.Models
 {
     public partial class Municipio
     {
-        public static dbSIACEntities contexto => Repositorio.GetInstance();
+        public static Contexto contexto => Repositorio.GetInstance();
 
         public static List<Municipio> ListarOrdenadamente()
         {

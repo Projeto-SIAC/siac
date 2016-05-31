@@ -9,7 +9,7 @@ namespace SIAC.Models
         public const int COLABORADOR = 3;
         public const int VISITANTE = 4;
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static Categoria ListarPorCodigo(int codCategoria) => contexto.Categoria.FirstOrDefault(c => c.CodCategoria == codCategoria);
     }

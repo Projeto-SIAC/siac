@@ -5,7 +5,7 @@ namespace SIAC.Models
 {
     public partial class AviModulo
     {
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<AviModulo> ListarOrdenadamente() => contexto.AviModulo.OrderBy(m => m.Descricao).ToList();
 

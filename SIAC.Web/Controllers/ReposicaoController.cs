@@ -382,7 +382,7 @@ namespace SIAC.Controllers
 
             if (antigas.Count != 0 && novas.Count != 0)
             {
-                dbSIACEntities contexto = Repositorio.GetInstance();
+                Contexto contexto = Repositorio.GetInstance();
                 for (int i = 0; i < antigas.Count && i < novas.Count; i++)
                 {
                     contexto.AvalTemaQuestao.Remove(antigas.ElementAtOrDefault(i));

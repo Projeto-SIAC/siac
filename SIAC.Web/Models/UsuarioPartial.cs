@@ -1,6 +1,7 @@
 ﻿using SIAC.Helpers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -8,8 +9,10 @@ namespace SIAC.Models
 {
     public partial class Usuario
     {
+        [NotMapped]
         public List<Ocupacao> Ocupacao => this.PessoaFisica.Ocupacao.ToList();
 
+        [NotMapped]
         public Dictionary<Disciplina, double?> DisciplinaMedia
         {
             get
@@ -24,13 +27,16 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public Disciplina MelhorDisciplina => DisciplinaMedia.FirstOrDefault(d => d.Value == DisciplinaMedia.Values.Max()).Key;
 
+        [NotMapped]
         public Disciplina PiorDisciplina => DisciplinaMedia.FirstOrDefault(d => d.Value == DisciplinaMedia.Values.Min()).Key;
 
+        [NotMapped]
         public bool FlagCoordenadorAvi => this.Ocupacao.Count > 0 ? this.Ocupacao.Select(a => a.CodOcupacao).ToArray().ContainsOne(Parametro.Obter().OcupacaoCoordenadorAvi) : false;
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static Usuario Autenticar(string matricula, string senha)
         {

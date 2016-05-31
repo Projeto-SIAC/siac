@@ -5,7 +5,7 @@ namespace SIAC.Models
 {
     public partial class MatrizCurricular
     {
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<MatrizCurricular> ListarOrdenadamente() => contexto.MatrizCurricular.OrderBy(m => m.Curso.Descricao).ToList();
 

@@ -6,7 +6,7 @@ namespace SIAC.Models
 {
     public partial class AviQuestaoPessoaResposta
     {
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static void InserirResposta(AviQuestao questao, PessoaFisica pessoa, int alternativa)
         {

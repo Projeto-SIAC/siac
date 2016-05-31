@@ -13,7 +13,7 @@ namespace SIAC.Controllers
     [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
     public class SimuladoController : Controller
     {
-        private dbSIACEntities contexto => Repositorio.GetInstance();
+        private Contexto contexto => Repositorio.GetInstance();
 
         public ActionResult Novo() => View();
 

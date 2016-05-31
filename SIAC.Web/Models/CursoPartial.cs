@@ -5,7 +5,7 @@ namespace SIAC.Models
 {
     public partial class Curso
     {
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<Curso> ListarOrdenadamente() => contexto.Curso.OrderBy(c => c.Descricao).ToList();
 

@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class AvalAuto
     {
+        [NotMapped]
         public List<Disciplina> Disciplina => this.Avaliacao.AvaliacaoTema.Select(at => at.Tema.Disciplina).Distinct().ToList();
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static void Inserir(AvalAuto AvalAuto)
         {
@@ -25,6 +27,7 @@ namespace SIAC.Models
             return autoavaliacoes.Where(a => a.Avaliacao.FlagPendente).ToList();
         }
 
+        [NotMapped]
         public Dictionary<string,List<Questao>> DicionarioDisciplinaQuestao
         {
             get

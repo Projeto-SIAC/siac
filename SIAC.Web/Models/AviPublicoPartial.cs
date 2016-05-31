@@ -1,9 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SIAC.Models
 {
     public partial class AviPublico
     {
+        [NotMapped]
         public string CodPublico
         {
             get
@@ -32,6 +34,7 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public string Descricao
         {
             get

@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class Turma
     {
+        [NotMapped]
         public string CodTurma => $"{Periodo}.{CodCurso.ToString("00000")}.{NumTurma}{CodTurno}";
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<Turma> ListarOrdenadamente() => contexto.Turma.OrderBy(t => t.Nome).ToList();
 

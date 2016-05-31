@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class AvalAvi
     {
+        [NotMapped]
         public List<AviQuestao> Questoes
         {
             get
@@ -24,6 +26,7 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public List<PessoaFisica> Pessoas
         {
             get
@@ -67,6 +70,7 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public List<MapAviModulo> MapQuestoes
         {
             get
@@ -106,24 +110,32 @@ namespace SIAC.Models
             }
         }
 
+        [NotMapped]
         public List<AviPublico> Publico => this.FlagPublico ? this.AviPublico.ToList() : null;
 
+        [NotMapped]
         public bool FlagQuestionario => this.Questoes.Count > 0;
 
+        [NotMapped]
         public bool FlagPublico => this.AviPublico.Count > 0;
 
+        [NotMapped]
         public bool FlagAgendada => this.Avaliacao.DtAplicacao.HasValue && this.DtTermino.HasValue;
 
+        [NotMapped]
         public bool FlagRealizada => this.Questoes.FirstOrDefault(a => a.AviQuestaoPessoaResposta.Count > 0) != null;
 
+        [NotMapped]
         public bool FlagAndamento => this.FlagAgendada && this.Avaliacao.DtAplicacao.Value <= DateTime.Now && this.DtTermino.Value >= DateTime.Now;
 
+        [NotMapped]
         public bool FlagConcluida => this.DtTermino < DateTime.Now;
 
+        [NotMapped]
         public int QteQuestoes => this.Questoes.Count;
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
-
+        private static Contexto contexto => Repositorio.GetInstance();
+        
         public AviQuestao ObterQuestao(int modulo, int categoria, int indicador, int ordem) =>
             this.AviQuestao.FirstOrDefault(q => q.CodAviModulo == modulo
                 && q.CodAviCategoria == categoria

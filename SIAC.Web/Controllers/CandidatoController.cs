@@ -362,7 +362,7 @@ namespace SIAC.Controllers
                     && Valida.Email(model.Email) 
                     && model.Senha == model.Confirmacao)
                 {
-                    using (var contexto = new dbSIACEntities())
+                    using (var contexto = new Contexto())
                     {
                         string cpf = Formate.DeCPF(model.Cpf);
                         Candidato c = contexto.Candidato.FirstOrDefault(cand => cand.Cpf == cpf);

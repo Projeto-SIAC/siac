@@ -271,7 +271,7 @@ namespace SIAC.Hubs
             if (duracao > 0)
             {
                 var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
-                using (var e = new Models.dbSIACEntities())
+                using (var e = new Models.Contexto())
                 {
                     int numIdentificador = 0;
                     int semestre = 0;
@@ -323,7 +323,7 @@ namespace SIAC.Hubs
                 if (!certificacoes.ContainsKey(codAvaliacao))
                 {
                     certificacoes.Add(codAvaliacao, new Avaliacao());
-                    using (var e = new Models.dbSIACEntities())
+                    using (var e = new Models.Contexto())
                     {
                         int numIdentificador = 0;
                         int semestre = 0;
