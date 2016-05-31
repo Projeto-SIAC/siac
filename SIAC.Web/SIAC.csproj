@@ -279,6 +279,15 @@
     <Compile Include="Hubs\AcademicaHub.cs" />
     <Compile Include="Hubs\CertificacaoHub.cs" />
     <Compile Include="Hubs\Models.cs" />
+    <Compile Include="Migrations\201605311759069_InitialMigration.cs" />
+    <Compile Include="Migrations\201605311759069_InitialMigration.Designer.cs">
+      <DependentUpon>201605311759069_InitialMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201605311958334_SetUnicode.cs" />
+    <Compile Include="Migrations\201605311958334_SetUnicode.Designer.cs">
+      <DependentUpon>201605311958334_SetUnicode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Alternativa.cs" />
     <Compile Include="Models\Aluno.cs" />
     <Compile Include="Models\AlunoPartial.cs" />
@@ -331,7 +340,7 @@
     <Compile Include="Models\ColaboradorPartial.cs" />
     <Compile Include="Models\Curso.cs" />
     <Compile Include="Models\CursoPartial.cs" />
-    <Compile Include="Models\dbSIACEntities.cs" />
+    <Compile Include="Models\Contexto.cs" />
     <Compile Include="Models\DiaSemana.cs" />
     <Compile Include="Models\Dificuldade.cs" />
     <Compile Include="Models\DificuldadePartial.cs" />
@@ -452,7 +461,6 @@
     <Content Include="Views\Acesso\Index.cshtml" />
     <Content Include="Resources\videos\background.webm" />
     <None Include="bundleconfig.json" />
-    <Content Include="sql.json" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -665,6 +673,14 @@
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201605311759069_InitialMigration.resx">
+      <DependentUpon>201605311759069_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605311958334_SetUnicode.resx">
+      <DependentUpon>201605311958334_SetUnicode.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

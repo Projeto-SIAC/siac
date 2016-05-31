@@ -13,7 +13,7 @@ namespace SIAC.Models
         [NotMapped]
         public List<AvalQuesPessoaResposta> Respostas => contexto.AvalQuesPessoaResposta.Where(r => r.CodQuestao == this.CodQuestao).ToList();
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static void Inserir(Questao questao)
         {

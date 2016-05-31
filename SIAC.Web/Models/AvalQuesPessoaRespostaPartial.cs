@@ -5,7 +5,7 @@ namespace SIAC.Models
 {
     public partial class AvalQuesPessoaResposta
     {
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static void SalvarResposta(Avaliacao avaliacao, Questao questao, PessoaFisica pessoa, string resposta, string comentario)
         {

@@ -9,7 +9,7 @@ namespace SIAC.Models
         [NotMapped]
         public string CodTurma => $"{Periodo}.{CodCurso.ToString("00000")}.{NumTurma}{CodTurno}";
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<Turma> ListarOrdenadamente() => contexto.Turma.OrderBy(t => t.Nome).ToList();
 

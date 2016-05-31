@@ -9,7 +9,7 @@ namespace SIAC.Models
         [NotMapped]
         public List<Disciplina> Disciplina => this.Avaliacao.AvaliacaoTema.Select(at => at.Tema.Disciplina).Distinct().ToList();
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static void Inserir(AvalAuto AvalAuto)
         {

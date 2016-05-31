@@ -81,7 +81,7 @@ namespace SIAC.Models
             && this.SimDiaRealizacao.First().SimProva.Count > 0
             && this.SimSala.Count > 0;
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static void Inserir(Simulado simulado)
         {

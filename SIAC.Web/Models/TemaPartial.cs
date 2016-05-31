@@ -5,7 +5,7 @@ namespace SIAC.Models
 {
     public partial class Tema
     {
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static Tema ListarPorCodigo(int CodDisciplina, int CodTema) => contexto.Tema.SingleOrDefault(t => t.CodDisciplina == CodDisciplina && t.CodTema == CodTema);
 

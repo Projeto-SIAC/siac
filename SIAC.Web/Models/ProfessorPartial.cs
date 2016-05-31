@@ -14,7 +14,7 @@ namespace SIAC.Models
 
         public bool Leciona(int codDisciplina) => this.Disciplina.FirstOrDefault(d => d.CodDisciplina == codDisciplina) != null;
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static Professor ListarPorMatricula(string matricula) => contexto.Professor.FirstOrDefault(p => p.MatrProfessor == matricula);
 

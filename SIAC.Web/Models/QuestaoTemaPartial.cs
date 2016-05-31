@@ -6,7 +6,7 @@ namespace SIAC.Models
 {
     public partial class QuestaoTema
     {
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         private static int ParamTempoInatividade = Parametro.Obter().TempoInatividade;
 

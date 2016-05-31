@@ -43,7 +43,7 @@ namespace SIAC.Models
             }
         }
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static Candidato ListarPorCPF(string cpf) => 
             contexto.Candidato.FirstOrDefault(c => c.Cpf == cpf);

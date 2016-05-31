@@ -130,7 +130,7 @@ namespace SIAC.Models
         [NotMapped]
         public bool FlagCorrecaoPendente => this.FlagRealizada && this.PessoaResposta.Where(pr => !pr.RespNota.HasValue).Count() > 0;
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static int ObterNumIdentificador(int codTipoAvaliacao)
         {

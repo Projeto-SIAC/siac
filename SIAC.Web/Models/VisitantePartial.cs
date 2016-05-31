@@ -7,7 +7,7 @@ namespace SIAC.Models
 {
     public partial class Visitante
     {
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         [NotMapped]
         public bool FlagAtivo => this.DtValidade.HasValue ? (this.DtValidade.Value > DateTime.Now) : true;

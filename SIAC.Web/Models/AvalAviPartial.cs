@@ -134,7 +134,7 @@ namespace SIAC.Models
         [NotMapped]
         public int QteQuestoes => this.Questoes.Count;
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
         
         public AviQuestao ObterQuestao(int modulo, int categoria, int indicador, int ordem) =>
             this.AviQuestao.FirstOrDefault(q => q.CodAviModulo == modulo

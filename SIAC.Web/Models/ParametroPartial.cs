@@ -17,7 +17,7 @@ namespace SIAC.Models
         [NotMapped]
         public int[] OcupacaoCoordenadorAvi => JsonConvert.DeserializeObject<int[]>(parametro.CoordenadorAVI).Union(new int[] { Ocupacao.COORDENADOR_AVI }).ToArray();
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         private static Parametro parametro;
 
@@ -27,7 +27,7 @@ namespace SIAC.Models
         {
             if (parametro == null)
             {
-                using (var e = new dbSIACEntities())
+                using (var e = new Contexto())
                 {
                     parametro = e.Parametro.FirstOrDefault();
                 }

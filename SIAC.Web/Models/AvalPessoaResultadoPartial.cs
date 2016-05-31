@@ -8,7 +8,7 @@ namespace SIAC.Models
         [NotMapped]
         public bool FlagParcial => Avaliacao.PessoaResposta.Where(r=>!r.RespNota.HasValue && r.CodPessoaFisica == CodPessoaFisica).Count() > 0;
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static void Inserir(AvalPessoaResultado avalPessoaResultado)
         {

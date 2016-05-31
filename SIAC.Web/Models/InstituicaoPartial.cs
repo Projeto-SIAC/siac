@@ -6,7 +6,7 @@ namespace SIAC.Models
 {
     public partial class Instituicao
     {
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         [NotMapped]
         public List<PessoaFisica> Pessoas

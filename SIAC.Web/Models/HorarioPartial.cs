@@ -5,7 +5,7 @@ namespace SIAC.Models
 {
     public partial class Horario
     {
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<Horario> ListarOrdenadamente() => contexto.Horario.OrderBy(h => h.CodTurno).OrderBy(h => h.CodGrupo).ToList();
 

@@ -1,6 +1,0 @@
-﻿[
-  {
-    "data": "2016-05-30",
-    "sql": "alter table SimCandidato add NumeroMascara varchar(10) not null default '"
-  }
-]

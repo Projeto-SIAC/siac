@@ -1,16 +1,13 @@
 namespace SIAC.Models
 {
-    using System;
     using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
-    public partial class dbSIACEntities : DbContext
+    public partial class Contexto : DbContext
     {
-        public dbSIACEntities()
+        public Contexto()
             : base("name=SIACEntities")
         {
-            Database.SetInitializer(new SIACInitializer());
         }
 
         public int SaveChanges(bool alertar = true)
@@ -117,26 +114,10 @@ namespace SIAC.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Alternativa>()
-                .Property(e => e.Enunciado)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Alternativa>()
-                .Property(e => e.Comentario)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Aluno>()
-                .Property(e => e.MatrAluno)
-                .IsUnicode(false);
-
             modelBuilder.Entity<Aluno>()
                 .HasMany(e => e.TurmaDiscAluno)
                 .WithRequired(e => e.Aluno)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Area>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
 
             modelBuilder.Entity<Area>()
                 .HasMany(e => e.PessoaFormacao)
@@ -145,21 +126,12 @@ namespace SIAC.Models
 
             modelBuilder.Entity<AvalAcademica>()
                 .Property(e => e.CodTurno)
-                .IsFixedLength()
-                .IsUnicode(false);
+                .IsFixedLength();
 
             modelBuilder.Entity<AvalAcadReposicao>()
                 .HasMany(e => e.Justificacao)
                 .WithMany(e => e.AvalAcadReposicao)
                 .Map(m => m.ToTable("AvalAcadRepoJustificacao").MapLeftKey(new[] { "Ano", "Semestre", "CodTipoAvaliacao", "NumIdentificador" }).MapRightKey(new[] { "CodProfessor", "CodJustificacao" }));
-
-            modelBuilder.Entity<AvalAvi>()
-                .Property(e => e.Titulo)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<AvalAvi>()
-                .Property(e => e.Objetivo)
-                .IsUnicode(false);
 
             modelBuilder.Entity<AvalAvi>()
                 .HasMany(e => e.AviPublico)
@@ -211,10 +183,6 @@ namespace SIAC.Models
                 .HasForeignKey(e => new { e.Ano, e.Semestre, e.CodTipoAvaliacao, e.NumIdentificador })
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<AvaliacaoProrrogacao>()
-                .Property(e => e.Observacao)
-                .IsUnicode(false);
-
             modelBuilder.Entity<AvaliacaoTema>()
                 .HasMany(e => e.AvalTemaQuestao)
                 .WithRequired(e => e.AvaliacaoTema)
@@ -227,18 +195,6 @@ namespace SIAC.Models
                 .HasForeignKey(e => new { e.Ano, e.Semestre, e.CodTipoAvaliacao, e.NumIdentificador, e.CodPessoaFisica })
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<AvalQuesPessoaResposta>()
-                .Property(e => e.RespDiscursiva)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<AvalQuesPessoaResposta>()
-                .Property(e => e.RespComentario)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<AvalQuesPessoaResposta>()
-                .Property(e => e.ProfObservacao)
-                .IsUnicode(false);
-
             modelBuilder.Entity<AvalTemaQuestao>()
                 .HasMany(e => e.AvalQuesPessoaResposta)
                 .WithRequired(e => e.AvalTemaQuestao)
@@ -246,25 +202,9 @@ namespace SIAC.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<AviCategoria>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<AviCategoria>()
-                .Property(e => e.Observacao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<AviCategoria>()
                 .HasMany(e => e.AviQuestao)
                 .WithRequired(e => e.AviCategoria)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<AviIndicador>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<AviIndicador>()
-                .Property(e => e.Observacao)
-                .IsUnicode(false);
 
             modelBuilder.Entity<AviIndicador>()
                 .HasMany(e => e.AviQuestao)
@@ -272,29 +212,9 @@ namespace SIAC.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<AviModulo>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<AviModulo>()
-                .Property(e => e.Objetivo)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<AviModulo>()
-                .Property(e => e.Observacao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<AviModulo>()
                 .HasMany(e => e.AviQuestao)
                 .WithRequired(e => e.AviModulo)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<AviQuestao>()
-                .Property(e => e.Enunciado)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<AviQuestao>()
-                .Property(e => e.Observacao)
-                .IsUnicode(false);
 
             modelBuilder.Entity<AviQuestao>()
                 .HasMany(e => e.AviQuestaoAlternativa)
@@ -308,26 +228,10 @@ namespace SIAC.Models
                 .HasForeignKey(e => new { e.Ano, e.Semestre, e.CodTipoAvaliacao, e.NumIdentificador, e.CodAviModulo, e.CodAviCategoria, e.CodAviIndicador, e.CodOrdem })
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<AviQuestaoAlternativa>()
-                .Property(e => e.Enunciado)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<AviQuestaoPessoaResposta>()
-                .Property(e => e.RespDiscursiva)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<AviTipoPublico>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
             modelBuilder.Entity<AviTipoPublico>()
                 .HasMany(e => e.AviPublico)
                 .WithRequired(e => e.AviTipoPublico)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Bairro>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
 
             modelBuilder.Entity<Bairro>()
                 .HasMany(e => e.Endereco)
@@ -336,29 +240,9 @@ namespace SIAC.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Bloco>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Bloco>()
-                .Property(e => e.Sigla)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Bloco>()
-                .Property(e => e.RefLocal)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Bloco>()
-                .Property(e => e.Observacao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Bloco>()
                 .HasMany(e => e.Sala)
                 .WithRequired(e => e.Bloco)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Campus>()
-                .Property(e => e.Sigla)
-                .IsUnicode(false);
 
             modelBuilder.Entity<Campus>()
                 .HasMany(e => e.Bloco)
@@ -377,56 +261,21 @@ namespace SIAC.Models
                 .HasForeignKey(e => new { e.CodInstituicao, e.CodCampus });
 
             modelBuilder.Entity<Candidato>()
-                .Property(e => e.Nome)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Candidato>()
                 .Property(e => e.Cpf)
-                .IsFixedLength()
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Candidato>()
-                .Property(e => e.RgOrgao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Candidato>()
-                .Property(e => e.Email)
-                .IsUnicode(false);
+                .IsFixedLength();
 
             modelBuilder.Entity<Candidato>()
                 .Property(e => e.Senha)
-                .IsFixedLength()
-                .IsUnicode(false);
+                .IsFixedLength();
 
             modelBuilder.Entity<Candidato>()
                 .Property(e => e.Sexo)
-                .IsFixedLength()
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Candidato>()
-                .Property(e => e.Matricula)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Candidato>()
-                .Property(e => e.TelefoneFixo)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Candidato>()
-                .Property(e => e.TelefoneCelular)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Candidato>()
-                .Property(e => e.DescricaoNecessidadeEspecial)
-                .IsUnicode(false);
+                .IsFixedLength();
 
             modelBuilder.Entity<Candidato>()
                 .HasMany(e => e.SimCandidato)
                 .WithRequired(e => e.Candidato)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Categoria>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
 
             modelBuilder.Entity<Categoria>()
                 .HasMany(e => e.Usuario)
@@ -437,10 +286,6 @@ namespace SIAC.Models
                 .HasMany(e => e.PessoaFisica)
                 .WithMany(e => e.Categoria)
                 .Map(m => m.ToTable("PessoaCategoria").MapLeftKey("CodCategoria").MapRightKey("CodPessoaFisica"));
-
-            modelBuilder.Entity<Colaborador>()
-                .Property(e => e.MatrColaborador)
-                .IsUnicode(false);
 
             modelBuilder.Entity<Colaborador>()
                 .HasMany(e => e.AvalAvi)
@@ -484,14 +329,6 @@ namespace SIAC.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Curso>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Curso>()
-                .Property(e => e.Sigla)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Curso>()
                 .HasMany(e => e.Aluno)
                 .WithRequired(e => e.Curso)
                 .WillCascadeOnDelete(false);
@@ -507,21 +344,9 @@ namespace SIAC.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<DiaSemana>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<DiaSemana>()
                 .HasMany(e => e.TurmaDiscProfHorario)
                 .WithRequired(e => e.DiaSemana)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Dificuldade>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Dificuldade>()
-                .Property(e => e.Comentario)
-                .IsUnicode(false);
 
             modelBuilder.Entity<Dificuldade>()
                 .HasMany(e => e.AvalAuto)
@@ -534,10 +359,6 @@ namespace SIAC.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Diretoria>()
-                .Property(e => e.Sigla)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Diretoria>()
                 .HasMany(e => e.Curso)
                 .WithRequired(e => e.Diretoria)
                 .HasForeignKey(e => new { e.CodInstituicao, e.CodCampus, e.CodDiretoria })
@@ -547,14 +368,6 @@ namespace SIAC.Models
                 .HasMany(e => e.PessoaLocalTrabalho)
                 .WithOptional(e => e.Diretoria)
                 .HasForeignKey(e => new { e.CodInstituicao, e.CodCampus, e.CodDiretoria });
-
-            modelBuilder.Entity<Disciplina>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Disciplina>()
-                .Property(e => e.Sigla)
-                .IsUnicode(false);
 
             modelBuilder.Entity<Disciplina>()
                 .HasMany(e => e.AvalAcademica)
@@ -596,30 +409,6 @@ namespace SIAC.Models
                 .WithMany(e => e.Disciplina)
                 .Map(m => m.ToTable("ProfessorDisciplina").MapLeftKey("CodDisciplina").MapRightKey("CodProfessor"));
 
-            modelBuilder.Entity<Email>()
-                .Property(e => e.Email1)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Endereco>()
-                .Property(e => e.Logradouro)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Endereco>()
-                .Property(e => e.Numero)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Endereco>()
-                .Property(e => e.Complemento)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Estado>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Estado>()
-                .Property(e => e.Sigla)
-                .IsUnicode(false);
-
             modelBuilder.Entity<Estado>()
                 .HasMany(e => e.Municipio)
                 .WithRequired(e => e.Estado)
@@ -628,18 +417,13 @@ namespace SIAC.Models
 
             modelBuilder.Entity<Horario>()
                 .Property(e => e.CodTurno)
-                .IsFixedLength()
-                .IsUnicode(false);
+                .IsFixedLength();
 
             modelBuilder.Entity<Horario>()
                 .HasMany(e => e.TurmaDiscProfHorario)
                 .WithRequired(e => e.Horario)
                 .HasForeignKey(e => new { e.CodGrupo, e.CodTurno, e.CodHorario })
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Instituicao>()
-                .Property(e => e.Sigla)
-                .IsUnicode(false);
 
             modelBuilder.Entity<Instituicao>()
                 .HasMany(e => e.Campus)
@@ -656,19 +440,11 @@ namespace SIAC.Models
                 .WithRequired(e => e.Instituicao)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Justificacao>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
             modelBuilder.Entity<MatrizCurricular>()
                 .HasMany(e => e.MatrizCurricularDisciplina)
                 .WithRequired(e => e.MatrizCurricular)
                 .HasForeignKey(e => new { e.CodCurso, e.CodMatriz })
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Municipio>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
 
             modelBuilder.Entity<Municipio>()
                 .HasMany(e => e.Bairro)
@@ -682,14 +458,6 @@ namespace SIAC.Models
                 .HasForeignKey(e => new { e.CodPais, e.CodEstado, e.CodMunicipio });
 
             modelBuilder.Entity<NivelEnsino>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<NivelEnsino>()
-                .Property(e => e.Sigla)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<NivelEnsino>()
                 .HasMany(e => e.Curso)
                 .WithRequired(e => e.NivelEnsino)
                 .WillCascadeOnDelete(false);
@@ -700,66 +468,14 @@ namespace SIAC.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Ocupacao>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Ocupacao>()
                 .HasMany(e => e.PessoaFisica)
                 .WithMany(e => e.Ocupacao)
                 .Map(m => m.ToTable("PessoaOcupacao").MapLeftKey("CodOcupacao").MapRightKey("CodPessoaFisica"));
 
             modelBuilder.Entity<Pais>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Pais>()
-                .Property(e => e.Sigla)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Pais>()
                 .HasMany(e => e.Estado)
                 .WithRequired(e => e.Pais)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Parametro>()
-                .Property(e => e.TermoResponsabilidade)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Parametro>()
-                .Property(e => e.NotaUsoAcademica)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Parametro>()
-                .Property(e => e.NotaUsoReposicao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Parametro>()
-                .Property(e => e.NotaUsoCertificacao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Parametro>()
-                .Property(e => e.NotaUsoInstitucional)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Parametro>()
-                .Property(e => e.CoordenadorAVI)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Parametro>()
-                .Property(e => e.NotaUsoSimulado)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Parametro>()
-                .Property(e => e.SmtpEnderecoHost)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Parametro>()
-                .Property(e => e.SmtpUsuario)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Parametro>()
-                .Property(e => e.SmtpSenha)
-                .IsUnicode(false);
 
             modelBuilder.Entity<Pessoa>()
                 .Property(e => e.TipoPessoa)
@@ -788,10 +504,6 @@ namespace SIAC.Models
                 .HasMany(e => e.Telefone)
                 .WithRequired(e => e.Pessoa)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<PessoaFisica>()
-                .Property(e => e.Nome)
-                .IsUnicode(false);
 
             modelBuilder.Entity<PessoaFisica>()
                 .Property(e => e.Cpf)
@@ -848,25 +560,9 @@ namespace SIAC.Models
                 .WithMany(e => e.PessoaFisica)
                 .Map(m => m.ToTable("AvalCertPessoa").MapLeftKey("CodPessoaFisica").MapRightKey(new[] { "Ano", "Semestre", "CodTipoAvaliacao", "NumIdentificador" }));
 
-            modelBuilder.Entity<PessoaFormacao>()
-                .Property(e => e.Curso)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<PessoaJuridica>()
-                .Property(e => e.RazaoSocial)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<PessoaJuridica>()
-                .Property(e => e.NomeFantasia)
-                .IsUnicode(false);
-
             modelBuilder.Entity<PessoaJuridica>()
                 .Property(e => e.Cnpj)
                 .IsFixedLength()
-                .IsUnicode(false);
-
-            modelBuilder.Entity<PessoaJuridica>()
-                .Property(e => e.Portal)
                 .IsUnicode(false);
 
             modelBuilder.Entity<PessoaJuridica>()
@@ -900,10 +596,6 @@ namespace SIAC.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Professor>()
-                .Property(e => e.MatrProfessor)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Professor>()
                 .HasMany(e => e.AvalAcademica)
                 .WithRequired(e => e.Professor)
                 .WillCascadeOnDelete(false);
@@ -929,29 +621,9 @@ namespace SIAC.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ProReitoria>()
-                .Property(e => e.Sigla)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<ProReitoria>()
                 .HasMany(e => e.PessoaLocalTrabalho)
                 .WithOptional(e => e.ProReitoria)
                 .HasForeignKey(e => new { e.CodInstituicao, e.CodProReitoria });
-
-            modelBuilder.Entity<Questao>()
-                .Property(e => e.Enunciado)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Questao>()
-                .Property(e => e.Objetivo)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Questao>()
-                .Property(e => e.Comentario)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Questao>()
-                .Property(e => e.ChaveDeResposta)
-                .IsUnicode(false);
 
             modelBuilder.Entity<Questao>()
                 .HasMany(e => e.Alternativa)
@@ -973,14 +645,6 @@ namespace SIAC.Models
                 .WithRequired(e => e.Questao)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<QuestaoAnexo>()
-                .Property(e => e.Legenda)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<QuestaoAnexo>()
-                .Property(e => e.Fonte)
-                .IsUnicode(false);
-
             modelBuilder.Entity<QuestaoTema>()
                 .HasMany(e => e.AvalTemaQuestao)
                 .WithRequired(e => e.QuestaoTema)
@@ -988,29 +652,9 @@ namespace SIAC.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Reitoria>()
-                .Property(e => e.Sigla)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Reitoria>()
                 .HasMany(e => e.PessoaLocalTrabalho)
                 .WithOptional(e => e.Reitoria)
                 .HasForeignKey(e => new { e.CodInstituicao, e.CodReitoria });
-
-            modelBuilder.Entity<Sala>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Sala>()
-                .Property(e => e.Sigla)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Sala>()
-                .Property(e => e.RefLocal)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Sala>()
-                .Property(e => e.Observacao)
-                .IsUnicode(false);
 
             modelBuilder.Entity<Sala>()
                 .HasMany(e => e.AvalAcademica)
@@ -1022,28 +666,28 @@ namespace SIAC.Models
                 .WithRequired(e => e.Sala)
                 .WillCascadeOnDelete(false);
 
+
             modelBuilder.Entity<Sala>()
                 .HasMany(e => e.AvalCertificacao)
                 .WithRequired(e => e.Sala)
                 .WillCascadeOnDelete(false);
+
 
             modelBuilder.Entity<Sala>()
                 .HasMany(e => e.SimSala)
                 .WithRequired(e => e.Sala)
                 .WillCascadeOnDelete(false);
 
+
             modelBuilder.Entity<Sala>()
                 .HasMany(e => e.TurmaDiscProfHorario)
                 .WithRequired(e => e.Sala)
                 .WillCascadeOnDelete(false);
 
+
             modelBuilder.Entity<SimCandidato>()
                 .Property(e => e.EscorePadronizadoFinal)
                 .HasPrecision(8, 3);
-
-            modelBuilder.Entity<SimCandidato>()
-                .Property(e => e.NumeroMascara)
-                .IsUnicode(false);
 
             modelBuilder.Entity<SimCandidato>()
                 .HasMany(e => e.SimCandidatoProva)
@@ -1060,18 +704,10 @@ namespace SIAC.Models
                 .HasPrecision(8, 3);
 
             modelBuilder.Entity<SimCandidatoProva>()
-                .Property(e => e.Observacoes)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<SimCandidatoProva>()
                 .HasMany(e => e.SimCandidatoQuestao)
                 .WithRequired(e => e.SimCandidatoProva)
                 .HasForeignKey(e => new { e.Ano, e.NumIdentificador, e.CodCandidato, e.CodDiaRealizacao, e.CodProva })
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<SimCandidatoQuestao>()
-                .Property(e => e.RespDiscursiva)
-                .IsUnicode(false);
 
             modelBuilder.Entity<SimCandidatoQuestao>()
                 .Property(e => e.NotaDiscursiva)
@@ -1087,14 +723,6 @@ namespace SIAC.Models
                 .WithRequired(e => e.SimDiaRealizacao)
                 .HasForeignKey(e => new { e.Ano, e.NumIdentificador, e.CodDiaRealizacao })
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<SimProva>()
-                .Property(e => e.Titulo)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<SimProva>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
 
             modelBuilder.Entity<SimProva>()
                 .Property(e => e.MediaAritmeticaAcerto)
@@ -1128,14 +756,6 @@ namespace SIAC.Models
                 .HasForeignKey(e => new { e.Ano, e.NumIdentificador, e.CodSala });
 
             modelBuilder.Entity<Simulado>()
-                .Property(e => e.Titulo)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Simulado>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Simulado>()
                 .HasMany(e => e.SimCandidato)
                 .WithRequired(e => e.Simulado)
                 .HasForeignKey(e => new { e.Ano, e.NumIdentificador })
@@ -1153,18 +773,6 @@ namespace SIAC.Models
                 .HasForeignKey(e => new { e.Ano, e.NumIdentificador })
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Telefone>()
-                .Property(e => e.Numero)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Tema>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Tema>()
-                .Property(e => e.Comentario)
-                .IsUnicode(false);
-
             modelBuilder.Entity<Tema>()
                 .HasMany(e => e.AvaliacaoTema)
                 .WithRequired(e => e.Tema)
@@ -1178,30 +786,14 @@ namespace SIAC.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TipoAnexo>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TipoAnexo>()
                 .HasMany(e => e.QuestaoAnexo)
                 .WithRequired(e => e.TipoAnexo)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TipoAvaliacao>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TipoAvaliacao>()
-                .Property(e => e.Sigla)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TipoAvaliacao>()
                 .HasMany(e => e.Avaliacao)
                 .WithRequired(e => e.TipoAvaliacao)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<TipoContato>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
 
             modelBuilder.Entity<TipoContato>()
                 .HasMany(e => e.Email)
@@ -1214,14 +806,6 @@ namespace SIAC.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<TipoQuestao>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TipoQuestao>()
-                .Property(e => e.Sigla)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<TipoQuestao>()
                 .HasMany(e => e.Questao)
                 .WithRequired(e => e.TipoQuestao)
                 .WillCascadeOnDelete(false);
@@ -1229,10 +813,6 @@ namespace SIAC.Models
             modelBuilder.Entity<Turma>()
                 .Property(e => e.CodTurno)
                 .IsFixedLength()
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Turma>()
-                .Property(e => e.Nome)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Turma>()
@@ -1269,10 +849,6 @@ namespace SIAC.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Turno>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Turno>()
                 .HasMany(e => e.Horario)
                 .WithRequired(e => e.Turno)
                 .WillCascadeOnDelete(false);
@@ -1286,10 +862,6 @@ namespace SIAC.Models
                 .HasMany(e => e.Turma)
                 .WithRequired(e => e.Turno)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Usuario>()
-                .Property(e => e.Matricula)
-                .IsUnicode(false);
 
             modelBuilder.Entity<Usuario>()
                 .Property(e => e.Senha)
@@ -1331,54 +903,10 @@ namespace SIAC.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<UsuarioAcesso>()
-                .Property(e => e.Matricula)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<UsuarioAcesso>()
-                .Property(e => e.IpAcesso)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<UsuarioAcesso>()
                 .HasMany(e => e.UsuarioAcessoPagina)
                 .WithRequired(e => e.UsuarioAcesso)
                 .HasForeignKey(e => new { e.Matricula, e.CodOrdem })
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<UsuarioAcessoPagina>()
-                .Property(e => e.Matricula)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<UsuarioAcessoPagina>()
-                .Property(e => e.Pagina)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<UsuarioAcessoPagina>()
-                .Property(e => e.PaginaReferencia)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<UsuarioAcessoPagina>()
-                .Property(e => e.Dados)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<UsuarioOpiniao>()
-                .Property(e => e.Matricula)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<UsuarioOpiniao>()
-                .Property(e => e.Opiniao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Visitante>()
-                .Property(e => e.MatrVisitante)
-                .IsUnicode(false);
-        }
-    }
-
-    public class SIACInitializer : CreateDatabaseIfNotExists<dbSIACEntities>
-    {
-        protected override void Seed(dbSIACEntities context)
-        {
-            base.Seed(context);
         }
     }
 }

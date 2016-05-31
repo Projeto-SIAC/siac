@@ -29,7 +29,7 @@ namespace SIAC.Models
             }
         }
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<Campus> ListarOrdenadamente() => contexto.Campus.OrderBy(c => c.Sigla).ToList();
 

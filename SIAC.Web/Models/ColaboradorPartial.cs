@@ -5,7 +5,7 @@ namespace SIAC.Models
 {
     public partial class Colaborador
     {
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static void Inserir(Colaborador colaborador)
         {

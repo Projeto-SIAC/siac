@@ -4,7 +4,7 @@ namespace SIAC.Models
 {
     public class Repositorio
     {
-        public static dbSIACEntities GetInstance()
+        public static Contexto GetInstance()
         {
             if (Sistema.AlertarMudanca.Contains(Helpers.Sessao.UsuarioMatricula))
             {
@@ -12,29 +12,29 @@ namespace SIAC.Models
                 Dispose();
                 Sistema.AlertarMudanca.Remove(Helpers.Sessao.UsuarioMatricula);
             }
-            dbSIACEntities contexto = Helpers.Sessao.Retornar("dbSIACEntities") as dbSIACEntities;
+            Contexto contexto = Helpers.Sessao.Retornar("dbSIACEntities") as Contexto;
             if (contexto == null)
             {
-                Helpers.Sessao.Inserir("dbSIACEntities", new dbSIACEntities());
+                Helpers.Sessao.Inserir("dbSIACEntities", new Contexto());
             }
-            return (dbSIACEntities)Helpers.Sessao.Retornar("dbSIACEntities") ?? new dbSIACEntities();
+            return (Contexto)Helpers.Sessao.Retornar("dbSIACEntities") ?? new Contexto();
         }
 
         public static void Commit()
         {
-            dbSIACEntities contexto = Helpers.Sessao.Retornar("dbSIACEntities") as dbSIACEntities;
+            Contexto contexto = Helpers.Sessao.Retornar("dbSIACEntities") as Contexto;
             if (contexto != null && contexto.ChangeTracker.HasChanges())
             {
-                ((dbSIACEntities)Helpers.Sessao.Retornar("dbSIACEntities")).SaveChanges();
+                ((Contexto)Helpers.Sessao.Retornar("dbSIACEntities")).SaveChanges();
             }
         }
 
         public static void Dispose()
         {
-            dbSIACEntities contexto = Helpers.Sessao.Retornar("dbSIACEntities") as dbSIACEntities;
+            Contexto contexto = Helpers.Sessao.Retornar("dbSIACEntities") as Contexto;
             if (contexto != null)
             {
-                ((dbSIACEntities)Helpers.Sessao.Retornar("dbSIACEntities")).Dispose();
+                ((Contexto)Helpers.Sessao.Retornar("dbSIACEntities")).Dispose();
                 HttpContext.Current.Session["dbSIACEntities"] = null;
                 HttpContext.Current.Session.Remove("dbSIACEntities");
             }

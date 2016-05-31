@@ -8,7 +8,7 @@ namespace SIAC.Models
         public const int OBJETIVA = 1;
         public const int DISCURSIVA = 2;
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<TipoQuestao> ListarOrdenadamente() => contexto.TipoQuestao.OrderBy(tq => tq.Descricao).ToList();
 

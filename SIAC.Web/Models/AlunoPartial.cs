@@ -20,7 +20,7 @@ namespace SIAC.Models
                     tdph.Professor
             ).Distinct().ToList();
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static void Inserir(Aluno aluno)
         {

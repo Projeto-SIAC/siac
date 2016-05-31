@@ -14,7 +14,7 @@ namespace SIAC.Models
         public const int COORDENADOR_AVI = 5;
         public const int ADMINISTRADOR_SIAC = 6;
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<Ocupacao> Listar() => contexto.Ocupacao.ToList();
 

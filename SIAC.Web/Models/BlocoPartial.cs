@@ -5,7 +5,7 @@ namespace SIAC.Models
 {
     public partial class Bloco
     {
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<Bloco> ListarOrdenadamente() => contexto.Bloco.OrderBy(b => b.Descricao).OrderBy(b => b.Campus.Sigla).ToList();
 

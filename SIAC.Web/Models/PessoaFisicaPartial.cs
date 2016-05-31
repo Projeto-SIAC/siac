@@ -12,7 +12,7 @@ namespace SIAC.Models
         [NotMapped]
         public string UltimoNome => this.Nome.Split(' ').Last();
 
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static int Inserir(PessoaFisica pessoaFisica)
         {

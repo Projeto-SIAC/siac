@@ -38,7 +38,7 @@ namespace SIAC.Tests
         {
             string matricula = "20150002";
             MockHelper.FakeLoginUsuario(matricula, "/perfil/enviaropiniao");
-            dbSIACEntities c = Repositorio.GetInstance();
+            Contexto c = Repositorio.GetInstance();
             Usuario usuario = c.Usuario.Find(matricula);
             int quantidade = usuario.UsuarioOpiniao.Count;
             controller.EnviarOpiniao("");
@@ -52,7 +52,7 @@ namespace SIAC.Tests
         {
             string matricula = "20150002";
             MockHelper.FakeLoginUsuario(matricula, "/perfil/enviaropiniao");
-            dbSIACEntities c = Repositorio.GetInstance();
+            Contexto c = Repositorio.GetInstance();
             Usuario usuario = c.Usuario.Find(matricula);
             int quantidade = usuario.UsuarioOpiniao.Count;
             controller.EnviarOpiniao("Oi, minha opinião.");

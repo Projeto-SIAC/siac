@@ -5,7 +5,7 @@ namespace SIAC.Models
 {
     public partial class Disciplina
     {
-        private static dbSIACEntities contexto => Repositorio.GetInstance();
+        private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<Disciplina> ListarOrdenadamente() => contexto.Disciplina.OrderBy(d => d.Descricao).ToList();
 
