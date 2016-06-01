@@ -72,10 +72,13 @@ siac.Simulado.Novo = (function () {
 })();
 
 siac.Simulado.Provas = (function () {
-    var _codigo = '';
+    var _codigo = '',
+        _disciplinaProfessores = {};
 
     function iniciar() {
         _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+$/)[0];
+        _disciplinaProfessores = JSON.parse($('#disciplinaProfessores').html());
+        $('#disciplinaProfessores').remove();
 
         $('.ui.informacoes.modal').modal();
         $('.ui.accordion').accordion({
@@ -117,6 +120,7 @@ siac.Simulado.Provas = (function () {
         });
 
         siac.Simulado.adicionarEventoNoFormulario();
+        listarProfessoresPorDisciplina();
     }
 
     function validarNovoDia() {
@@ -247,17 +251,12 @@ siac.Simulado.Provas = (function () {
         var $form = $('form.novo.prova'),
             url = $form.prop('action');
 
-        if (url.indexOf('=') > -1) {
-            url = url.replace(/=[0-9]+/, '=' + codDia);
-        } else {
-            url = url + '?codDia=' + codDia;
-        }
+        if (url.indexOf('=') > -1) { url = url.replace(/=[0-9]+/, '=' + codDia); }
+        else { url = url + '?codDia=' + codDia; }
 
         $form.prop('action', url);
 
-        $form.modal({
-            closable: false
-        }).modal('show').data('dia', codDia);
+        $form.modal({ closable: false }).modal('show').data('dia', codDia);
 
         siac.Simulado.adicionarEventoNoFormulario();
     }
@@ -303,11 +302,11 @@ siac.Simulado.Provas = (function () {
                 $button.addClass('loading');
             },
             success: function (data) {
+                // Remove da página o modal existente
                 $('.editar.prova.modal').remove();
+                // Adiciona e exibe modal retornado na página
                 $('body').append($(data))
-
-                $('.editar.prova.modal')
-                    .modal('show');
+                $('.editar.prova.modal').modal('show');
                 $('.editar.prova.modal .dropdown').dropdown();
             },
             error: function () {
@@ -316,8 +315,29 @@ siac.Simulado.Provas = (function () {
             complete: function () {
                 $button.removeClass('loading');
                 siac.Simulado.adicionarEventoNoFormulario();
+                listarProfessoresPorDisciplina();
             }
         })
+    }
+
+    function listarProfessoresPorDisciplina() {
+        $('[name=ddlDisciplina]').off('change').on('change', function () {
+            var $this = $(this),
+                $form = $this.closest('form'),
+                $ddlProfessor = $form.find('[name=ddlProfessor]'),
+                codDisciplina = $this.val();
+
+            $ddlProfessor.html('<option value="">Professor</option>');
+
+            _disciplinaProfessores[codDisciplina].forEach(function (professor) {
+                $ddlProfessor.append('<option value="' + professor.CodProfessor + '">' + professor.Nome + '</option>');
+            });
+
+            $ddlProfessor
+                .dropdown('refresh')
+                .dropdown('set placeholder text', 'Professor')
+                .dropdown('set value', '');
+        });
     }
 
     return {
@@ -326,7 +346,6 @@ siac.Simulado.Provas = (function () {
 })();
 
 siac.Simulado.Datas = (function () {
-
     function iniciar() {
         $('.ui.informacoes.modal').modal();
 
@@ -666,7 +685,6 @@ siac.Simulado.Detalhe = (function () {
         });
 
         $('[data-sala]').click(function () {
-
             var $button = $(this),
                 codSala = $button.data('sala'),
                 $modal = $('.sala.candidato.modal');
@@ -677,14 +695,14 @@ siac.Simulado.Detalhe = (function () {
                 data: {
                     codSala: codSala
                 },
-                beforeSend: function(){
+                beforeSend: function () {
                     $button.addClass('loading');
                 },
-                success: function(data){
+                success: function (data) {
                     $modal.html(data);
                     $modal.modal('show');
                 },
-                error: function(){
+                error: function () {
                     siac.mensagem('Ocorreu um erro na operação.');
                 },
                 complete: function () {
@@ -719,7 +737,7 @@ siac.Simulado.Detalhe = (function () {
                     $.ajax({
                         type: 'POST',
                         url: '/simulado/calcularresultados/' + _codigo,
-                        beforeSend: function(){
+                        beforeSend: function () {
                             $modal.find('.approve.button').addClass('loading');
                         },
                         complete: function () {
@@ -733,7 +751,6 @@ siac.Simulado.Detalhe = (function () {
         });
 
         $('.classificacao.button').click(function () {
-
             var $button = $(this),
                 $modal = $('.classificacao.modal');
 
@@ -801,7 +818,6 @@ siac.Simulado.Detalhe = (function () {
 siac.Simulado.Respostas = (function () {
     var _codigo = '',
         $listaRespostas = '';
-
 
     function iniciar() {
         _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+$/)[0];

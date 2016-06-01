@@ -488,6 +488,7 @@ namespace SIAC.Controllers
                 {
                     string ddlDisciplina = form["ddlDisciplina"];
                     string txtQteQuestoes = form["txtQteQuestoes"];
+                    string ddlProfessor = form["ddlProfessor"];
                     string txtTitulo = form["txtTitulo"];
                     string txtDescricao = form["txtDescricao"];
 
@@ -502,6 +503,16 @@ namespace SIAC.Controllers
                         prova.Descricao = String.IsNullOrWhiteSpace(txtDescricao) ? String.Empty : txtDescricao;
                         prova.QteQuestoes = int.Parse(txtQteQuestoes);
                         prova.CodDisciplina = int.Parse(ddlDisciplina);
+
+                        if (!String.IsNullOrWhiteSpace(ddlProfessor))
+                        {
+                            int codProfessor;
+                            if (int.TryParse(ddlProfessor, out codProfessor))
+                                prova.CodProfessor = codProfessor;
+                        }
+
+                        if (prova.CodProfessor.HasValue && !Professor.ProfessorLeciona((int)prova.CodProfessor, prova.CodDisciplina))
+                            prova.CodProfessor = null;
 
                         List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, prova.QteQuestoes);
 
@@ -519,7 +530,6 @@ namespace SIAC.Controllers
                         {
                             mensagem = "Prova cadastrada com sucesso neste simulado.";
                             estilo = Lembrete.POSITIVO;
-
                         }
                         else
                         {
@@ -551,6 +561,7 @@ namespace SIAC.Controllers
                 {
                     string ddlDisciplina = form["ddlDisciplina"];
                     string txtQteQuestoes = form["txtQteQuestoes"];
+                    string ddlProfessor = form["ddlProfessor"];
                     string txtTitulo = form["txtTitulo"];
                     string txtDescricao = form["txtDescricao"];
 
@@ -564,6 +575,16 @@ namespace SIAC.Controllers
                         prova.Descricao = String.IsNullOrWhiteSpace(txtDescricao) ? String.Empty : txtDescricao;
                         prova.QteQuestoes = int.Parse(txtQteQuestoes);
                         prova.CodDisciplina = int.Parse(ddlDisciplina);
+
+                        if (!String.IsNullOrWhiteSpace(ddlProfessor))
+                        {
+                            int codProfessor;
+                            if (int.TryParse(ddlProfessor, out codProfessor))
+                                prova.CodProfessor = codProfessor;
+                        }
+
+                        if (prova.CodProfessor.HasValue && !Professor.ProfessorLeciona((int)prova.CodProfessor, prova.CodDisciplina))
+                            prova.CodProfessor = null;
 
                         List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, prova.QteQuestoes);
 
@@ -686,15 +707,16 @@ namespace SIAC.Controllers
                             mensagem = "As inscrições foram bloqueadas com sucesso.";
                             estilo = Lembrete.NEGATIVO;
                             break;
+
                         case "Liberar":
                             if (sim.CadastroCompleto)
                             {
                                 if (sim.QteVagas <= sim.SimSala.Sum(s => s.Sala.Capacidade))
                                 {
                                     bool valido = true;
-                                    foreach(SimProva prova in sim.Provas)
+                                    foreach (SimProva prova in sim.Provas)
                                     {
-                                        if(prova.QteQuestoes != prova.SimProvaQuestao.Count)
+                                        if (prova.QteQuestoes != prova.SimProvaQuestao.Count)
                                         {
                                             valido = false;
                                             Lembrete.AdicionarNotificacao($"A prova de {prova.Titulo} não tem questões suficientes para realização.", Lembrete.NEGATIVO);
@@ -723,11 +745,11 @@ namespace SIAC.Controllers
                                 estilo = Lembrete.NEGATIVO;
                             }
                             break;
+
                         default:
                             break;
                     }
                     Repositorio.Commit();
-
                 }
             }
 
@@ -760,7 +782,6 @@ namespace SIAC.Controllers
                         mensagem = "A data de termino de inscrição tem que ser antes do primeiro dia de prova do simulado.";
                         estilo = Lembrete.NEGATIVO;
                     }
-
                     else
                     {
                         mensagem = "O prazo foi alterado com sucesso.";
@@ -818,7 +839,6 @@ namespace SIAC.Controllers
                         return PartialView("_SimuladoRespostasProva", prova.SimCandidatoProva.OrderBy(p => p.SimCandidato.Candidato.Nome).ToList());
                     }
                 }
-
             }
             return null;
         }
@@ -856,7 +876,6 @@ namespace SIAC.Controllers
                         return PartialView("_SimuladoRespostasCandidato", model);
                     }
                 }
-
             }
             return null;
         }
@@ -953,7 +972,7 @@ namespace SIAC.Controllers
                             foreach (SimProvaQuestao questao in prova.SimProvaQuestao)
                             {
                                 string strQuestao = "questao" + questao.CodQuestao;
-                                
+
                                 if (form[strQuestao] != null)
                                 {
                                     int alternativa = int.Parse(form[strQuestao]);
@@ -977,7 +996,6 @@ namespace SIAC.Controllers
                         estilo = Lembrete.POSITIVO;
                     }
                 }
-
             }
             Lembrete.AdicionarNotificacao(mensagem, estilo);
             return RedirectToAction("Respostas", new { codigo = codigo });
@@ -995,7 +1013,6 @@ namespace SIAC.Controllers
 
                 if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
                 {
-
                     List<SimCandidato> candidatos = sim.SimCandidato.OrderBy(c => c.Candidato.Nome).ToList();
                     List<SimSala> salas = sim.SimSala.ToList();
 
@@ -1003,7 +1020,7 @@ namespace SIAC.Controllers
                     int salaIndex = 0;
                     SimSala sala = salas[salaIndex];
 
-                    foreach(SimCandidato candidato in candidatos)
+                    foreach (SimCandidato candidato in candidatos)
                     {
                         if (indice > sala.Sala.Capacidade)
                         {
@@ -1089,13 +1106,11 @@ namespace SIAC.Controllers
 
                 if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
                 {
-                    
                     sim.FlagProvaEncerrada = true;
                     mensagem = "As provas foram finalizadas com sucesso.";
                     estilo = Lembrete.POSITIVO;
 
                     Repositorio.Commit();
-
                 }
             }
 
@@ -1115,7 +1130,6 @@ namespace SIAC.Controllers
 
                 if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
                 {
-
                     foreach (SimProva prova in sim.Provas)
                     {
                         List<SimCandidatoProva> candidatos = prova.SimCandidatoProva.Where(c => c.FlagPresente.HasValue && c.FlagPresente.Value).ToList();
@@ -1128,7 +1142,7 @@ namespace SIAC.Controllers
                         prova.MediaAritmeticaAcerto = Convert.ToDecimal(maap);
                         prova.DesvioPadraoAcerto = Convert.ToDecimal(dpap);
 
-                        foreach(SimCandidatoProva candidato in candidatos)
+                        foreach (SimCandidatoProva candidato in candidatos)
                         {
                             candidato.EscorePadronizado = Convert.ToDecimal(((candidato.QteAcertos - maap) / dpap) * 100.0 + 500.0);
                         }
@@ -1149,7 +1163,6 @@ namespace SIAC.Controllers
                     estilo = Lembrete.POSITIVO;
 
                     Repositorio.Commit();
-
                 }
             }
 
@@ -1216,7 +1229,7 @@ namespace SIAC.Controllers
                 {
                     if (sim.Provas.Count > 0 && !sim.FlagProvaEncerrada)
                     {
-                        SimProva model = sim.Provas.FirstOrDefault(p=>p.CodDiaRealizacao == dia && p.CodProva == prova);
+                        SimProva model = sim.Provas.FirstOrDefault(p => p.CodDiaRealizacao == dia && p.CodProva == prova);
                         if (model != null)
                         {
                             return PartialView("_ImprimirProva", model);

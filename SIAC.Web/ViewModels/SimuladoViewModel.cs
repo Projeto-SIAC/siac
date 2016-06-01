@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using SIAC.Models;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using SIAC.Models;
-using Newtonsoft.Json;
 
 namespace SIAC.ViewModels
 {
@@ -12,6 +13,24 @@ namespace SIAC.ViewModels
         public Simulado Simulado { get; set; }
         public SimProva Prova { get; set; } = new SimProva();
         public List<Disciplina> Disciplinas { get; set; }
+
+        public string DisciplinaProfessoresEmJson
+        {
+            get
+            {
+                Dictionary<int, IEnumerable> dict = new Dictionary<int, IEnumerable>();
+                foreach (Disciplina disc in this.Disciplinas)
+                {
+                    dict[disc.CodDisciplina] = disc.Professor.Select(p => new
+                    {
+                        p.CodProfessor,
+                        p.MatrProfessor,
+                        p.Usuario.PessoaFisica.Nome
+                    });
+                }
+                return JsonConvert.SerializeObject(dict);
+            }
+        }
     }
 
     public class SimuladoSalasViewModel
