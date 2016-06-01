@@ -28,7 +28,7 @@
                     <td>@candidato.SimProva.QteQuestoes</td>
                     <td>
                         <div class="field @(flagAusente ? "disabled" : "")">
-                            <input type="number" max="@candidato.SimProva.QteQuestoes" min="0" name="@candidato.CodCandidato" value="@(candidato.QteAcertos.HasValue ? candidato.QteAcertos.ToString() : "" )" placeholder="Informe a quantidade de acertos do candidato" />
+                            <input type="number" @(candidato.FlagPresente.Value ? "required" : "") max="@candidato.SimProva.QteQuestoes" min="0" name="@candidato.CodCandidato" value="@(candidato.QteAcertos.HasValue ? candidato.QteAcertos.ToString() : "" )" placeholder="Informe a quantidade de acertos do candidato" />
                         </div>
                     </td>
                     <td>

@@ -38,7 +38,7 @@
                                     <div class="field">
                                         <div class="ui radio checkbox">
                                             <input type="radio" name="@($"questao{questao.CodQuestao}")" value="@alternativa.CodOrdem"
-                                                   @(resposta != null && resposta.RespAlternativa == alternativa.CodOrdem ? "checked" : "")>
+                                                   required @(resposta != null && resposta.RespAlternativa == alternativa.CodOrdem ? "checked" : "")>
                                             <label>@alternativa.CodOrdem.GetIndiceAlternativa()</label>
                                         </div>
                                     </div>

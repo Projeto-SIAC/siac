@@ -957,14 +957,20 @@ siac.Simulado.Respostas = (function () {
                 checked = $checkbox.is(':checked'),
                 $tr = $checkbox.closest('tr'),
                 trClass = 'error',
-                inputClass = 'disabled';
+                inputClass = 'disabled',
+                $input = $tr.find('input[type=number]');
+
+            $input.val('');
 
             if (checked) {
                 $tr.addClass(trClass);
                 $tr.find('.field').addClass(inputClass);
+                $input.prop('required', false);
+                
             } else {
                 $tr.removeClass(trClass);
                 $tr.find('.field').removeClass(inputClass);
+                $input.prop('required', true);
             }
         });
     }
