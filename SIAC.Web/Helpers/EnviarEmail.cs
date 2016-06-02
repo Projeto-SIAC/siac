@@ -26,7 +26,7 @@ namespace SIAC.Helpers
 
         private static string LerView(string viewname)
         {
-            string caminho = AppDomain.CurrentDomain.BaseDirectory + "\\Views\\Shared\\Email\\__" + viewname + ".cshtml";
+            string caminho = AppDomain.CurrentDomain.BaseDirectory + "\\Templates\\Email\\__" + viewname + ".cshtml";
             return File.ReadAllText(caminho);
         }
 
