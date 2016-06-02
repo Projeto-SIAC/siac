@@ -31,9 +31,9 @@ namespace SIAC.Models
         [Column(Order = 4)]
         public DateTime DtProrrogacao { get; set; }
 
-        public int? DuracaoAnterior { get; set; }
+        public int DuracaoAnterior { get; set; }
 
-        public int? DuracaoNova { get; set; }
+        public int DuracaoNova { get; set; }
 
         [StringLength(255)]
         public string Observacao { get; set; }

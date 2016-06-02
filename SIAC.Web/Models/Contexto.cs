@@ -657,21 +657,6 @@ namespace SIAC.Models
                 .HasForeignKey(e => new { e.CodInstituicao, e.CodReitoria });
 
             modelBuilder.Entity<Sala>()
-                .HasMany(e => e.AvalAcademica)
-                .WithRequired(e => e.Sala)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Sala>()
-                .HasMany(e => e.AvalAcadReposicao)
-                .WithRequired(e => e.Sala)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Sala>()
-                .HasMany(e => e.AvalCertificacao)
-                .WithRequired(e => e.Sala)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Sala>()
                 .HasMany(e => e.SimSala)
                 .WithRequired(e => e.Sala)
                 .WillCascadeOnDelete(false);
@@ -810,12 +795,6 @@ namespace SIAC.Models
                 .Property(e => e.CodTurno)
                 .IsFixedLength()
                 .IsUnicode(false);
-
-            modelBuilder.Entity<Turma>()
-                .HasMany(e => e.AvalAcademica)
-                .WithRequired(e => e.Turma)
-                .HasForeignKey(e => new { e.CodCurso, e.Periodo, e.CodTurno, e.NumTurma })
-                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Turma>()
                 .HasMany(e => e.TurmaDiscAluno)

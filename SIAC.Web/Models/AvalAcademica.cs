@@ -26,17 +26,16 @@ namespace SIAC.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int NumIdentificador { get; set; }
 
-        [Required]
         [StringLength(1)]
         public string CodTurno { get; set; }
 
-        public int NumTurma { get; set; }
+        public int? NumTurma { get; set; }
 
-        public int Periodo { get; set; }
+        public int? Periodo { get; set; }
 
-        public int CodCurso { get; set; }
+        public int? CodCurso { get; set; }
 
-        public int CodSala { get; set; }
+        public int? CodSala { get; set; }
 
         public int CodProfessor { get; set; }
 

@@ -33,7 +33,7 @@ namespace SIAC.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int NumIdentificador { get; set; }
 
-        public int CodSala { get; set; }
+        public int? CodSala { get; set; }
 
         public int CodProfessor { get; set; }
 

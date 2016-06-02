@@ -285,6 +285,10 @@
     <Compile Include="Migrations\201605311958334_SetUnicode.Designer.cs">
       <DependentUpon>201605311958334_SetUnicode.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606021931158_UpdateRequiredFields.cs" />
+    <Compile Include="Migrations\201606021931158_UpdateRequiredFields.Designer.cs">
+      <DependentUpon>201606021931158_UpdateRequiredFields.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Alternativa.cs" />
     <Compile Include="Models\Aluno.cs" />
@@ -350,7 +354,7 @@
     <Compile Include="Models\Endereco.cs" />
     <Compile Include="Models\Estado.cs" />
     <Compile Include="Models\Evento.cs" />
-    <Compile Include="Models\AviMapping.cs" />
+    <Compile Include="Models\AviMapeamento.cs" />
     <Compile Include="Models\Horario.cs" />
     <Compile Include="Models\HorarioPartial.cs" />
     <Compile Include="Models\Instituicao.cs" />
@@ -675,6 +679,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605311958334_SetUnicode.resx">
       <DependentUpon>201605311958334_SetUnicode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606021931158_UpdateRequiredFields.resx">
+      <DependentUpon>201606021931158_UpdateRequiredFields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
