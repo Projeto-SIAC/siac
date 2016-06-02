@@ -8,7 +8,7 @@ namespace SIAC.Models
     public partial class Aluno
     {
         [NotMapped]
-        public Turma Turma => this.TurmaDiscAluno.OrderBy(t => t.AnoLetivo).Last().Turma;
+        public Turma Turma => this.TurmaDiscAluno.OrderBy(t => t.AnoLetivo).Last()?.Turma;
 
         [NotMapped]
         public List<Disciplina> Disciplinas => this.TurmaDiscAluno.Where(t => t.AnoLetivo == DateTime.Today.Year).Select(t => t.Disciplina).Distinct().ToList();
