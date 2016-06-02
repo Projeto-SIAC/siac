@@ -133,7 +133,7 @@ namespace SIAC.Controllers
                     visitante.DtValidade = DateTime.Parse(form["txtDtValidade"] + " 23:59:59", new CultureInfo("pt-BR"));
                 }
 
-                Repositorio.GetInstance().SaveChanges();
+                Repositorio.Commit();
 
                 return View(visitante);
             }
@@ -188,7 +188,7 @@ namespace SIAC.Controllers
                 {
                     visitante.DtValidade = null;
                 }
-                Repositorio.GetInstance().SaveChanges();
+                Repositorio.Commit();
             }
         }
     }

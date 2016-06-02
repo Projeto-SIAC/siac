@@ -337,7 +337,7 @@ namespace SIAC.Controllers
 
                     aval.Avaliacao.FlagLiberada = false;
 
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
                 }
             }
 
@@ -403,7 +403,7 @@ namespace SIAC.Controllers
                     }
 
                     cert.PessoaFisica = lstPessoaFisica.Distinct().ToList();
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
                 }
             }
             return Json("/historico/avaliacao/certificacao/detalhe/" + codigo);
@@ -624,7 +624,7 @@ namespace SIAC.Controllers
 
                     aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
                     Sessao.Inserir("RealizandoAvaliacao", false);
                 }
             }
@@ -688,7 +688,7 @@ namespace SIAC.Controllers
                     avalPessoaResultado.Nota = lstAvalQuesPessoaResposta.Average(r => r.RespNota);
                     aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
 
                     AvaliacaoResultadoViewModel model = new AvaliacaoResultadoViewModel();
                     model.Avaliacao = aval.Avaliacao;

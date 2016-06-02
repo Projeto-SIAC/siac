@@ -419,7 +419,7 @@ namespace SIAC.Controllers
                     avalPessoaResultado.Nota = lstAvalQuesPessoaResposta.Average(r => r.RespNota);
                     auto.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
 
                     AvaliacaoResultadoViewModel model = new AvaliacaoResultadoViewModel();
                     model.Avaliacao = auto.Avaliacao;

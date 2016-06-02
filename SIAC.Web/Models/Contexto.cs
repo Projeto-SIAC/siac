@@ -6,7 +6,7 @@ namespace SIAC.Models
     public partial class Contexto : DbContext
     {
         public Contexto()
-            : base("name=SIACEntities")
+            : base((string)Helpers.Configuracoes.Recuperar("SIAC_DB"))
         {
         }
 

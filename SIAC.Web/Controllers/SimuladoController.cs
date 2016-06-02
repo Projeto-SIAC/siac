@@ -106,7 +106,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado && !sim.FlagProvaEncerrada)
                 {
                     return View(new SimuladoProvaViewModel()
                     {
@@ -127,7 +127,7 @@ namespace SIAC.Controllers
 
                 if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
-                    if (sim.DtInicioInscricao <= DateTime.Now)
+                    if (sim.DtInicioInscricao <= DateTime.Now && !sim.FlagNenhumInscritoAposPrazo)
                     {
                         Lembrete.AdicionarNotificacao("Não é possível gerenciar a data após o início do período de inscrições", Lembrete.NEGATIVO);
                         return RedirectToAction("Detalhe", new { codigo = codigo });
@@ -157,7 +157,7 @@ namespace SIAC.Controllers
                         DateTime inicio = DateTime.Parse(inicioInscricao, new CultureInfo("pt-BR"));
                         DateTime termino = DateTime.Parse($"{terminoInscricao} 23:59:59", new CultureInfo("pt-BR"));
 
-                        if (sim.DtInicioInscricao <= DateTime.Now)
+                        if (sim.DtInicioInscricao <= DateTime.Now && !sim.FlagNenhumInscritoAposPrazo)
                         {
                             Lembrete.AdicionarNotificacao("As incrições já foram iniciadas, você não pode mais alterar o início.", Lembrete.NEGATIVO);
                             return View(sim);
@@ -173,7 +173,7 @@ namespace SIAC.Controllers
                         sim.DtInicioInscricao = inicio;
                         sim.DtTerminoInscricao = termino;
 
-                        Repositorio.GetInstance().SaveChanges();
+                        Repositorio.Commit();
 
                         Lembrete.AdicionarNotificacao("As datas foram atualizadas.", Lembrete.POSITIVO);
 
@@ -332,7 +332,7 @@ namespace SIAC.Controllers
                             diaRealizacao.Duracao = int.Parse((termino - dataRealizacao.TimeOfDay).TotalMinutes.ToString());
 
                             sim.SimDiaRealizacao.Add(diaRealizacao);
-                            Repositorio.GetInstance().SaveChanges();
+                            Repositorio.Commit();
 
                             mensagem = "O dia foi adicionado com sucesso.";
                             estilo = Lembrete.POSITIVO;
@@ -416,7 +416,7 @@ namespace SIAC.Controllers
                     SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
                     sim.SimDiaRealizacao.Remove(diaRealizacao);
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
 
                     mensagem = "O dia foi removido com sucesso.";
                     estilo = Lembrete.POSITIVO;

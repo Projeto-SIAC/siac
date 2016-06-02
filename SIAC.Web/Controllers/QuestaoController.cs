@@ -370,7 +370,7 @@ namespace SIAC.Controllers
             {
                 List<Questao> lstQuestao = (List<Questao>)TempData["lstQuestao"];
                 Repositorio.GetInstance().Questao.AddRange(lstQuestao);
-                Repositorio.GetInstance().SaveChanges();
+                Repositorio.Commit();
             }
             return RedirectToAction("Index");
         }

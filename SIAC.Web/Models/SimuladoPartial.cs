@@ -10,8 +10,8 @@ namespace SIAC.Models
         [NotMapped]
         public string Codigo => $"SIMUL{Ano}{NumIdentificador.ToString("d5")}";
 
-        public bool CandidatoInscrito(int codCandidato) =>
-           this.SimCandidato.FirstOrDefault(sc => sc.CodCandidato == codCandidato) != null;
+        [NotMapped]
+        public bool FlagNenhumInscritoAposPrazo => this.SimCandidato.Count == 0 && this.DtTerminoInscricao < DateTime.Now;
 
         [NotMapped]
         public bool FlagTemVaga => this.QteVagas > this.SimCandidato.Count;
@@ -50,6 +50,9 @@ namespace SIAC.Models
         [NotMapped]
         public SimDiaRealizacao UltimoDiaRealizacao =>
             this.SimDiaRealizacao.OrderBy(d => d.DtRealizacao).LastOrDefault();
+
+        public bool CandidatoInscrito(int codCandidato) =>
+           this.SimCandidato.FirstOrDefault(sc => sc.CodCandidato == codCandidato) != null;
 
         public int ObterNumInscricao()
         {

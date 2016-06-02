@@ -281,7 +281,7 @@ namespace SIAC.Controllers
 
                     acad.Avaliacao.FlagLiberada = false;
 
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
                 }
             }
 
@@ -694,7 +694,7 @@ namespace SIAC.Controllers
                     avalPessoaResultado.Nota = lstAvalQuesPessoaResposta.Average(r => r.RespNota);
                     aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
 
                     AvaliacaoResultadoViewModel model = new AvaliacaoResultadoViewModel();
                     model.Avaliacao = aval.Avaliacao;
@@ -740,7 +740,7 @@ namespace SIAC.Controllers
 
                     aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
                     Sessao.Inserir("RealizandoAvaliacao", false);
                 }
             }

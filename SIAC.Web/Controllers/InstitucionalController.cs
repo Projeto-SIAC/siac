@@ -451,7 +451,7 @@ namespace SIAC.Controllers
                         avi.Avaliacao.DtAplicacao = DateTime.Parse(form["txtDataInicio"] + " 00:00", new CultureInfo("pt-BR"));
                         avi.DtTermino = DateTime.Parse(form["txtDataTermino"] + " 23:59", new CultureInfo("pt-BR"));
 
-                        Repositorio.GetInstance().SaveChanges();
+                        Repositorio.Commit();
                         Lembrete.AdicionarNotificacao($"Avaliação Institucional agendada com sucesso.", Lembrete.POSITIVO);
                         return RedirectToAction("Historico");
                     }
