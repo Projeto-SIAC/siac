@@ -208,9 +208,6 @@
     <Content Include="Scripts\libs\modernizr.js" />
     <Content Include="Scripts\modules\siac.configuracoes.js" />
     <Content Include="Scripts\modules\siac.questao.js" />
-    <Content Include="Scripts\siac.min.js">
-      <DependentUpon>siac.js</DependentUpon>
-    </Content>
     <Content Include="Styles\alertify.min.css" />
     <Content Include="Styles\fullcalendar.css" />
     <Content Include="Styles\fullcalendar.print.css" />
