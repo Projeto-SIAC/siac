@@ -1,13 +1,12 @@
-﻿using System;
+﻿using SIAC.Helpers;
+using SIAC.Models;
+using SIAC.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
-using SIAC.Models;
-using SIAC.ViewModels;
-using SIAC.Helpers;
-using System.Globalization;
 
 namespace SIAC.Controllers
 {
@@ -52,9 +51,11 @@ namespace SIAC.Controllers
                 case "data_desc":
                     visitantes = visitantes.OrderByDescending(q => q.FlagAtivo).ThenByDescending(q => q.Usuario.DtCadastro).ToList();
                     break;
+
                 case "data":
                     visitantes = visitantes.OrderByDescending(q => q.FlagAtivo).ThenBy(q => q.Usuario.DtCadastro).ToList();
                     break;
+
                 default:
                     visitantes = visitantes.OrderByDescending(q => q.FlagAtivo).ThenByDescending(q => q.Usuario.DtCadastro).ToList();
                     break;
@@ -159,7 +160,7 @@ namespace SIAC.Controllers
             }
             return null;
         }
-        
+
         public ActionResult Detalhe(string codigo)
         {
             if (!String.IsNullOrEmpty(codigo))

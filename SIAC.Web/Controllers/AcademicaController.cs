@@ -52,9 +52,11 @@ namespace SIAC.Controllers
                 case "agendada":
                     academicas = academicas.Where(a => a.Avaliacao.FlagAgendada).ToList();
                     break;
+
                 case "realizada":
                     academicas = academicas.Where(a => a.Avaliacao.FlagRealizada).ToList();
                     break;
+
                 case "arquivo":
                     academicas = academicas.Where(a => a.Avaliacao.FlagArquivo).ToList();
                     break;
@@ -65,9 +67,11 @@ namespace SIAC.Controllers
                 case "data_desc":
                     academicas = academicas.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
                     break;
+
                 case "data":
                     academicas = academicas.OrderBy(a => a.Avaliacao.DtCadastro).ToList();
                     break;
+
                 default:
                     academicas = academicas.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
                     break;
@@ -117,7 +121,6 @@ namespace SIAC.Controllers
             AvalAcademica acad = new AvalAcademica();
             if (formCollection.HasKeys())
             {
-                
                 DateTime hoje = DateTime.Now;
 
                 /* Chave */
@@ -188,9 +191,9 @@ namespace SIAC.Controllers
 
                 AvalAcademica.Inserir(acad);
                 Lembrete.AdicionarNotificacao($"Avaliação Acadêmica {acad.Avaliacao.CodAvaliacao} gerada com sucesso.", Lembrete.POSITIVO);
-                if(quantidadeObjetiva + quantidadeDiscursiva > acad.Avaliacao.Questao.Count)
+                if (quantidadeObjetiva + quantidadeDiscursiva > acad.Avaliacao.Questao.Count)
                 {
-                    Lembrete.AdicionarNotificacao("Avaliação Acadêmica gerada com quantidade de questões inferior ao requisitado", Lembrete.NEGATIVO,0);
+                    Lembrete.AdicionarNotificacao("Avaliação Acadêmica gerada com quantidade de questões inferior ao requisitado", Lembrete.NEGATIVO, 0);
                 }
             }
 
@@ -241,7 +244,7 @@ namespace SIAC.Controllers
             string data = form["txtData"];
             string horaInicio = form["txtHoraInicio"];
             string horaTermino = form["txtHoraTermino"];
-            if (!StringExt.IsNullOrWhiteSpace(codTurma, strCodSala, data,horaInicio,horaTermino))
+            if (!StringExt.IsNullOrWhiteSpace(codTurma, strCodSala, data, horaInicio, horaTermino))
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
 
@@ -357,7 +360,7 @@ namespace SIAC.Controllers
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 Usuario usuario = Usuario.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula);
-                AvalAcademica acad = AvalAcademica.ListarAgendadaPorUsuario(usuario).FirstOrDefault(a=>a.Avaliacao.CodAvaliacao.ToLower() == codigo.ToLower());
+                AvalAcademica acad = AvalAcademica.ListarAgendadaPorUsuario(usuario).FirstOrDefault(a => a.Avaliacao.CodAvaliacao.ToLower() == codigo.ToLower());
                 if (acad != null)
                 {
                     return View(acad);
@@ -546,15 +549,19 @@ namespace SIAC.Controllers
                     case 'd':
                         quantidadeMilissegundo = 0;
                         break;
+
                     case 'h':
                         quantidadeMilissegundo = 1 * 60 * 60 * 1000;
                         break;
+
                     case 'm':
                         quantidadeMilissegundo = 1 * 60 * 1000;
                         break;
+
                     case 's':
                         quantidadeMilissegundo = 1 * 1000;
                         break;
+
                     default:
                         break;
                 }
@@ -617,10 +624,10 @@ namespace SIAC.Controllers
             if (Helpers.Sessao.UsuarioCategoriaCodigo == Categoria.ESTUDANTE && !String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAcademica avalAcad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (avalAcad.Avaliacao.FlagPendente 
-                    && avalAcad.Avaliacao.FlagLiberada 
+                if (avalAcad.Avaliacao.FlagPendente
+                    && avalAcad.Avaliacao.FlagLiberada
                     && avalAcad.Avaliacao.FlagAgora
-                    && avalAcad.Alunos.FirstOrDefault(a=>a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null)
+                    && avalAcad.Alunos.FirstOrDefault(a => a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null)
                 {
                     Helpers.Sessao.Inserir("RealizandoAvaliacao", true);
                     return View(avalAcad);
@@ -787,12 +794,12 @@ namespace SIAC.Controllers
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                 var retorno = from alunos in acad.AlunosRealizaram
-                             select new
-                             {
-                                 Matricula = alunos.MatrAluno,
-                                 Nome = alunos.Usuario.PessoaFisica.Nome,
-                                 FlagCorrecaoPendente = acad.Avaliacao.AvalPessoaResultado.Single(r => r.CodPessoaFisica == alunos.Usuario.CodPessoaFisica).FlagParcial
-                             };
+                              select new
+                              {
+                                  Matricula = alunos.MatrAluno,
+                                  Nome = alunos.Usuario.PessoaFisica.Nome,
+                                  FlagCorrecaoPendente = acad.Avaliacao.AvalPessoaResultado.Single(r => r.CodPessoaFisica == alunos.Usuario.CodPessoaFisica).FlagParcial
+                              };
                 return Json(retorno);
             }
             return Json(null);
@@ -800,22 +807,22 @@ namespace SIAC.Controllers
 
         // POST: principal/academica/avaliacao/carregarquestoesdiscursivas/ACAD201520016
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR})]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult CarregarQuestoesDiscursivas(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                 var retorno = from questao in acad.Avaliacao.Questao
-                             where questao.CodTipoQuestao == TipoQuestao.DISCURSIVA
-                             orderby questao.CodQuestao
-                             select new
-                             {
-                                 codQuestao = questao.CodQuestao,
-                                 questaoEnunciado = questao.Enunciado,
-                                 questaoChaveResposta = questao.ChaveDeResposta,
-                                 flagCorrecaoPendente = acad.Avaliacao.PessoaResposta.Where(r => r.CodQuestao == questao.CodQuestao && !r.RespNota.HasValue).Count() > 0
-                             };
+                              where questao.CodTipoQuestao == TipoQuestao.DISCURSIVA
+                              orderby questao.CodQuestao
+                              select new
+                              {
+                                  codQuestao = questao.CodQuestao,
+                                  questaoEnunciado = questao.Enunciado,
+                                  questaoChaveResposta = questao.ChaveDeResposta,
+                                  flagCorrecaoPendente = acad.Avaliacao.PessoaResposta.Where(r => r.CodQuestao == questao.CodQuestao && !r.RespNota.HasValue).Count() > 0
+                              };
                 return Json(retorno);
             }
             return Json(null);
@@ -833,19 +840,19 @@ namespace SIAC.Controllers
                 int codPessoaFisica = aluno.Usuario.PessoaFisica.CodPessoa;
 
                 var retorno = from alunoResposta in acad.Avaliacao.PessoaResposta
-                             orderby alunoResposta.CodQuestao
-                             where alunoResposta.CodPessoaFisica == codPessoaFisica
-                                && alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.DISCURSIVA
-                             select new
-                             {
-                                 codQuestao = alunoResposta.CodQuestao,
-                                 questaoEnunciado = alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.Enunciado,
-                                 questaoChaveResposta = alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.ChaveDeResposta,
-                                 alunoResposta = alunoResposta.RespDiscursiva,
-                                 notaObtida = alunoResposta.RespNota.HasValue ? alunoResposta.RespNota.Value.ToValueHtml() : "",
-                                 correcaoComentario = alunoResposta.ProfObservacao != null ? alunoResposta.ProfObservacao : "",
-                                 flagCorrigida = alunoResposta.RespNota != null ? true : false
-                             };
+                              orderby alunoResposta.CodQuestao
+                              where alunoResposta.CodPessoaFisica == codPessoaFisica
+                                 && alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.DISCURSIVA
+                              select new
+                              {
+                                  codQuestao = alunoResposta.CodQuestao,
+                                  questaoEnunciado = alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.Enunciado,
+                                  questaoChaveResposta = alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.ChaveDeResposta,
+                                  alunoResposta = alunoResposta.RespDiscursiva,
+                                  notaObtida = alunoResposta.RespNota.HasValue ? alunoResposta.RespNota.Value.ToValueHtml() : "",
+                                  correcaoComentario = alunoResposta.ProfObservacao != null ? alunoResposta.ProfObservacao : "",
+                                  flagCorrigida = alunoResposta.RespNota != null ? true : false
+                              };
                 return Json(retorno);
             }
             return Json(null);
@@ -853,30 +860,30 @@ namespace SIAC.Controllers
 
         // POST: principal/academica/avaliacao/carregarrespostasporquestao/ACAD201520016/2699
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR})]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult CarregarRespostasPorQuestao(string codigo, string codQuestao)
         {
-            if (!StringExt.IsNullOrWhiteSpace(codigo,codQuestao))
+            if (!StringExt.IsNullOrWhiteSpace(codigo, codQuestao))
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                 int codQuestaoTemp = int.Parse(codQuestao);
 
                 var retorno = from questao in acad.Avaliacao.PessoaResposta
-                             orderby questao.PessoaFisica.Nome
-                             where questao.CodQuestao == codQuestaoTemp
-                                && questao.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.DISCURSIVA
-                             select new
-                             {
-                                 alunoMatricula = acad.AlunosRealizaram.FirstOrDefault(a => a.Usuario.CodPessoaFisica == questao.CodPessoaFisica).Usuario.Matricula,
-                                 alunoNome = questao.PessoaFisica.Nome,
-                                 codQuestao = questao.CodQuestao,
-                                 questaoEnunciado = questao.AvalTemaQuestao.QuestaoTema.Questao.Enunciado,
-                                 questaoChaveResposta = questao.AvalTemaQuestao.QuestaoTema.Questao.ChaveDeResposta,
-                                 alunoResposta = questao.RespDiscursiva,
-                                 notaObtida = questao.RespNota.HasValue ? questao.RespNota.Value.ToValueHtml() : "",
-                                 correcaoComentario = questao.ProfObservacao != null ? questao.ProfObservacao : "",
-                                 flagCorrigida = questao.RespNota != null ? true : false
-                             };
+                              orderby questao.PessoaFisica.Nome
+                              where questao.CodQuestao == codQuestaoTemp
+                                 && questao.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.DISCURSIVA
+                              select new
+                              {
+                                  alunoMatricula = acad.AlunosRealizaram.FirstOrDefault(a => a.Usuario.CodPessoaFisica == questao.CodPessoaFisica).Usuario.Matricula,
+                                  alunoNome = questao.PessoaFisica.Nome,
+                                  codQuestao = questao.CodQuestao,
+                                  questaoEnunciado = questao.AvalTemaQuestao.QuestaoTema.Questao.Enunciado,
+                                  questaoChaveResposta = questao.AvalTemaQuestao.QuestaoTema.Questao.ChaveDeResposta,
+                                  alunoResposta = questao.RespDiscursiva,
+                                  notaObtida = questao.RespNota.HasValue ? questao.RespNota.Value.ToValueHtml() : "",
+                                  correcaoComentario = questao.ProfObservacao != null ? questao.ProfObservacao : "",
+                                  flagCorrigida = questao.RespNota != null ? true : false
+                              };
                 return Json(retorno);
             }
             return Json(null);
@@ -887,7 +894,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult CorrigirQuestaoAluno(string codigo, string matrAluno, string codQuestao, string notaObtida, string profObservacao)
         {
-            if (!StringExt.IsNullOrWhiteSpace(codigo,matrAluno,codQuestao))
+            if (!StringExt.IsNullOrWhiteSpace(codigo, matrAluno, codQuestao))
             {
                 int codQuesTemp = int.Parse(codQuestao);
                 double nota = Double.Parse(notaObtida.Replace('.', ','));

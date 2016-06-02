@@ -50,7 +50,7 @@ namespace SIAC.Models
         public static List<AvalCertificacao> ListarPorProfessor(int codProfessor) =>
             contexto.AvalCertificacao.Where(ac => ac.CodProfessor == codProfessor)
                                          .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
-                                         .ToList();            
+                                         .ToList();
 
         public static List<AvalCertificacao> ListarAgendadaPorUsuario(Usuario usuario)
         {
@@ -65,6 +65,7 @@ namespace SIAC.Models
                             && !a.Avaliacao.FlagArquivo)
                         .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
                         .ToList();
+
                 case Categoria.PROFESSOR:
                     int codProfessor = usuario.Professor.Last().CodProfessor;
                     return contexto.AvalCertificacao
@@ -74,6 +75,7 @@ namespace SIAC.Models
                             && !a.Avaliacao.FlagArquivo)
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
+
                 case Categoria.COLABORADOR:
                     int codColaborador = usuario.Colaborador.Last().CodColaborador;
                     return contexto.AvalCertificacao
@@ -82,15 +84,16 @@ namespace SIAC.Models
                             && a.Avaliacao.AvalPessoaResultado.Count == 0
                             && !a.Avaliacao.FlagArquivo &&
                             (
-                                (a.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica) != null) 
+                                (a.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica) != null)
                              || (a.Professor.TurmaDiscProfHorario.Where(t => t.Turma.Curso.CodColabCoordenador == codColaborador
-                             ||  t.Turma.Curso.Diretoria.CodColaboradorDiretor == codColaborador
-                             ||  t.Turma.Curso.Diretoria.Campus.CodColaboradorDiretor == codColaborador
-                             ||  t.Turma.Curso.Diretoria.Campus.Instituicao.Reitoria.Where(r => r.CodColaboradorReitor == codColaborador).Count() > 0).Count() > 0)
+                             || t.Turma.Curso.Diretoria.CodColaboradorDiretor == codColaborador
+                             || t.Turma.Curso.Diretoria.Campus.CodColaboradorDiretor == codColaborador
+                             || t.Turma.Curso.Diretoria.Campus.Instituicao.Reitoria.Where(r => r.CodColaboradorReitor == codColaborador).Count() > 0).Count() > 0)
                             )
                         )
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
+
                 default:
                     return new List<AvalCertificacao>();
             }
@@ -109,6 +112,7 @@ namespace SIAC.Models
                             && !a.Avaliacao.FlagArquivo)
                         .OrderByDescending(ac => ac.Avaliacao.DtCadastro)
                         .ToList();
+
                 case Categoria.PROFESSOR:
                     int codProfessor = usuario.Professor.LastOrDefault()?.CodProfessor ?? 0;
                     return contexto.AvalCertificacao
@@ -118,6 +122,7 @@ namespace SIAC.Models
                             && !a.Avaliacao.FlagArquivo)
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
+
                 case Categoria.COLABORADOR:
                     int codColaborador = usuario.Colaborador.LastOrDefault()?.CodColaborador ?? 0;
                     return contexto.AvalCertificacao
@@ -136,6 +141,7 @@ namespace SIAC.Models
                         )
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
+
                 default:
                     return new List<AvalCertificacao>();
             }
@@ -143,7 +149,7 @@ namespace SIAC.Models
 
         public static bool CorrigirQuestaoAluno(string codAvaliacao, string matrAluno, int codQuestao, double notaObtida, string profObservacao)
         {
-            if (!StringExt.IsNullOrWhiteSpace(codAvaliacao,matrAluno) && codQuestao != 0)
+            if (!StringExt.IsNullOrWhiteSpace(codAvaliacao, matrAluno) && codQuestao != 0)
             {
                 AvalCertificacao cert = ListarPorCodigoAvaliacao(codAvaliacao);
 

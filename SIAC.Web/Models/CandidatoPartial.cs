@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
@@ -18,6 +17,7 @@ namespace SIAC.Models
 
         [NotMapped]
         public string PrimeiroNome => this.Nome.Split(' ').First();
+
         [NotMapped]
         public string UltimoNome => this.Nome.Split(' ').Last();
 
@@ -45,7 +45,7 @@ namespace SIAC.Models
 
         private static Contexto contexto => Repositorio.GetInstance();
 
-        public static Candidato ListarPorCPF(string cpf) => 
+        public static Candidato ListarPorCPF(string cpf) =>
             contexto.Candidato.FirstOrDefault(c => c.Cpf == cpf);
 
         public static List<Candidato> Listar() => contexto.Candidato.ToList();
@@ -80,7 +80,7 @@ namespace SIAC.Models
             string email = Criptografia.Base64Decode(valores[1]);
             string unixTime = Criptografia.Base64Decode(valores[2]);
             long expiracao = Convert.ToInt64(unixTime);
-            bool expirado = DateTime.Now.ToUnixTime() > expiracao; 
+            bool expirado = DateTime.Now.ToUnixTime() > expiracao;
 
             return new
             {

@@ -72,7 +72,7 @@ namespace SIAC
             bundles.Add(new ScriptBundle("~/bundles/js/reposicao").Include(
                 "~/scripts/modules/siac.reposicao.js"
             ));
-            
+
             bundles.Add(new ScriptBundle("~/bundles/js/visitante").Include(
                 "~/scripts/modules/siac.visitante.js"
             ));

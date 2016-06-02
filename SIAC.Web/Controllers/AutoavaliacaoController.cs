@@ -11,7 +11,7 @@ namespace SIAC.Controllers
     [Filters.AutenticacaoFilter]
     public class AutoavaliacaoController : Controller
     {
-        public List<AvalAuto> Autoavaliacoes => 
+        public List<AvalAuto> Autoavaliacoes =>
             AvalAuto.ListarPorPessoa(Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula));
 
         // GET: historico/autoavaliacao
@@ -55,9 +55,11 @@ namespace SIAC.Controllers
                 case "pendente":
                     autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.FlagPendente).ToList();
                     break;
+
                 case "realizada":
                     autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.FlagRealizada).ToList();
                     break;
+
                 case "arquivo":
                     autoavaliacoes = autoavaliacoes.Where(a => a.Avaliacao.FlagArquivo).ToList();
                     break;
@@ -68,9 +70,11 @@ namespace SIAC.Controllers
                 case "data_desc":
                     autoavaliacoes = autoavaliacoes.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
                     break;
+
                 case "data":
                     autoavaliacoes = autoavaliacoes.OrderBy(a => a.Avaliacao.DtCadastro).ToList();
                     break;
+
                 default:
                     autoavaliacoes = autoavaliacoes.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
                     break;
@@ -115,7 +119,7 @@ namespace SIAC.Controllers
 
                     /* Dados */
                     List<int> dificuldades = new List<int>();
-                    
+
                     /* Dificuldade */
                     int codDificuldade = int.Parse(formCollection["ddlDificuldade" + disciplina]);
                     dificuldades.Add(codDificuldade);
@@ -169,7 +173,7 @@ namespace SIAC.Controllers
                     Lembrete.AdicionarNotificacao($"Autoavaliação {auto.Avaliacao.CodAvaliacao} gerada com sucesso.", Lembrete.POSITIVO);
                     if (qteObjetiva + qteDiscursiva > auto.Avaliacao.Questao.Count)
                     {
-                        Lembrete.AdicionarNotificacao("Autoavaliação de "+auto.Disciplina.First().Descricao+" gerada com quantidade de questões inferior ao requisitado", Lembrete.NEGATIVO, 0);
+                        Lembrete.AdicionarNotificacao("Autoavaliação de " + auto.Disciplina.First().Descricao + " gerada com quantidade de questões inferior ao requisitado", Lembrete.NEGATIVO, 0);
                     }
                 }
                 return RedirectToAction("Realizar");
@@ -253,7 +257,7 @@ namespace SIAC.Controllers
 
                 AvalAuto.Inserir(auto);
                 Lembrete.AdicionarNotificacao($"Autoavaliação {auto.Avaliacao.CodAvaliacao} gerada com sucesso.", Lembrete.POSITIVO);
-                if(quantidadeTotalDiscursivas + quantidadeTotalObjetivas > auto.Avaliacao.Questao.Count)
+                if (quantidadeTotalDiscursivas + quantidadeTotalObjetivas > auto.Avaliacao.Questao.Count)
                 {
                     Lembrete.AdicionarNotificacao("Autoavaliação gerada com quantidade de questões inferior ao requisitado", Lembrete.NEGATIVO, 0);
                 }
@@ -433,17 +437,17 @@ namespace SIAC.Controllers
 
         // POST: principal/autoavaliacao/arquivar/AUTO201520001
         [HttpPost]
-        public ActionResult Arquivar(string codigo) => 
+        public ActionResult Arquivar(string codigo) =>
             !String.IsNullOrWhiteSpace(codigo) ? Json(Avaliacao.AlternarFlagArquivo(codigo)) : Json(false);
 
         // POST: principal/autoavaliacao/salvarresposta/AUTO201520001
         [HttpPost]
         public void SalvarResposta(string codigo, int questao, string resposta, string comentario) =>
             AvalQuesPessoaResposta.SalvarResposta(
-                Avaliacao.ListarPorCodigoAvaliacao(codigo), 
-                Questao.ListarPorCodigo(questao), 
-                Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.PessoaFisica, 
-                resposta, 
+                Avaliacao.ListarPorCodigoAvaliacao(codigo),
+                Questao.ListarPorCodigo(questao),
+                Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.PessoaFisica,
+                resposta,
                 comentario);
     }
 }

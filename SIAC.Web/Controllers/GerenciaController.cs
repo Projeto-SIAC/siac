@@ -154,7 +154,7 @@ namespace SIAC.Controllers
             Lembrete.AdicionarNotificacao(mensagem, lembrete);
         }
 
-        #endregion
+        #endregion Blocos
 
         #region Salas
 
@@ -288,7 +288,7 @@ namespace SIAC.Controllers
             Lembrete.AdicionarNotificacao(mensagem, lembrete);
         }
 
-        #endregion
+        #endregion Salas
 
         #region Disciplinas
 
@@ -411,7 +411,7 @@ namespace SIAC.Controllers
             Lembrete.AdicionarNotificacao(mensagem, lembrete);
         }
 
-        #endregion
+        #endregion Disciplinas
 
         #region Professores
 
@@ -575,11 +575,13 @@ namespace SIAC.Controllers
             Lembrete.AdicionarNotificacao(mensagem, lembrete);
         }
 
-        #endregion
+        #endregion Professores
 
         #region Configuracoes
+
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
-        public ActionResult Configuracoes() => View(new GerenciaConfiguracoesViewModel() {
+        public ActionResult Configuracoes() => View(new GerenciaConfiguracoesViewModel()
+        {
             SmtpEnderecoHost = Parametro.Obter().SmtpEnderecoHost,
             SmtpPorta = Parametro.Obter().SmtpPorta,
             SmptFlagSSL = Parametro.Obter().SmtpFlagSSL,
@@ -603,6 +605,7 @@ namespace SIAC.Controllers
 
             return RedirectToAction("Configuracoes");
         }
-        #endregion
+
+        #endregion Configuracoes
     }
 }

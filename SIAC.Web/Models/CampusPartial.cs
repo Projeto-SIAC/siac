@@ -24,7 +24,7 @@ namespace SIAC.Models
 
                 /*Professores e Colaboradores*/
                 pessoas.AddRange(Models.PessoaLocalTrabalho.ListarPorCampus(this.CodComposto));
-                
+
                 return pessoas;
             }
         }

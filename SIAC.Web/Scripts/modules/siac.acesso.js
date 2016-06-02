@@ -5,7 +5,7 @@ siac.Acesso.Visitante = (function () {
         $('.atualizar.button').click(function () {
             verificar();
         });
-	}
+    }
 
     function verificar() {
         $('.ui.error.message .list').html('');
@@ -29,11 +29,11 @@ siac.Acesso.Visitante = (function () {
         else {
             $('form').addClass('error');
         }
-	}
+    }
 
-	function atualizarSenha() {
-	    $('form').submit();
-	}
+    function atualizarSenha() {
+        $('form').submit();
+    }
 
     return {
         iniciar: iniciar

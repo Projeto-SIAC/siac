@@ -6,7 +6,7 @@ siac.Academica.Agendar = (function () {
     function iniciar() {
         $('.ui.informacoes.modal').modal();
 
-        $('#txtData, #txtHoraInicio, #txtHoraTermino').change(function () {            
+        $('#txtData, #txtHoraInicio, #txtHoraTermino').change(function () {
             var $data = $('#txtData');
             var $horaInicio = $('#txtHoraInicio');
             var $horaTermino = $('#txtHoraTermino');
@@ -51,10 +51,10 @@ siac.Academica.Agendar = (function () {
         $('.cancelar.button').popup({ on: 'click' });
 
         $('.ui.confirmar.modal').modal({
-                onApprove: function () {
-                    $('form').addClass('loading').submit();
-                }
-            });
+            onApprove: function () {
+                $('form').addClass('loading').submit();
+            }
+        });
 
         $('.informacoes.button').click(function () {
             $('.ui.informacoes.modal').modal('show');
@@ -118,7 +118,7 @@ siac.Academica.Agendar = (function () {
             var splitedVal = $('#txtHoraTermino').val().split(':');
             var hora = splitedVal[0],
                 minuto = splitedVal[1];
-            if(hora < 0 || hora > 23 || minuto > 59 || minuto < 0) {
+            if (hora < 0 || hora > 23 || minuto > 59 || minuto < 0) {
                 lstErro.append('<li>Especifique a hora de término válida</li>');
                 retorno = false;
             }
@@ -389,7 +389,6 @@ siac.Academica.Gerar = (function () {
             valido = false;
         }
 
-
         if (valido) {
             confirmar();
         }
@@ -500,7 +499,7 @@ siac.Academica.Configurar = (function () {
         $('.informacoes.button').click(function () {
             $('.informacoes.modal').modal('show');
         });
-        
+
         $('.salvar.button').click(function () {
             salvar();
         });
@@ -712,7 +711,6 @@ siac.Academica.Agendada = (function () {
                 });
             };
             acadHub.client.bloquear = function (strCodigo) {
-                
                 $.ajax({
                     type: 'POST',
                     url: '/principal/avaliacao/academica/contagemregressiva',
@@ -1031,7 +1029,6 @@ siac.Academica.Realizar = (function () {
                 };
                 acadHub.server.avaliadoFinalizou(avalAcad, usrMatr);
                 $('form').submit();
-
             };
 
             $('.ui.continuar.modal')
@@ -1221,7 +1218,6 @@ siac.Academica.Realizar = (function () {
             $(this).removeClass('blue').html('<i class="icon comments outline"></i>');
             document.title = 'Realizar ' + _codAvaliacao;
         });
-
     }
 
     return {
@@ -1274,7 +1270,6 @@ siac.Academica.Acompanhar = (function () {
         var acadHub = $.connection.academicaHub;
 
         $.connection.hub.start().done(function () {
-
             enviarMsg = function enviarMsg(_this) {
                 var $content = $(_this).parents('.content[id]');
                 var matr = $content.attr('id');
@@ -1348,7 +1343,6 @@ siac.Academica.Acompanhar = (function () {
                     return false;
                 }
             });
-
 
             setInterval(function () {
                 lstMatr = $('.accordion')
@@ -1650,7 +1644,7 @@ siac.Academica.Index = (function () {
 siac.Academica.Corrigir = (function () {
     var _dicQuestoes = {};
     var _codAvaliacao;
-    
+
     var labelClidada = false;
     var labelMatricula = "";
 
@@ -1800,7 +1794,6 @@ siac.Academica.Corrigir = (function () {
                             $('.modal.corrigir form').removeClass('loading');
                             $(_this).dropdown('set selected', valor);
                         }
-
                     });
                 }
                 else if (modo == 'questao') {
@@ -1858,7 +1851,7 @@ siac.Academica.Corrigir = (function () {
                         },
                         complete: function () {
                             $('.modal.corrigir form').removeClass('loading');
-                            $(_this).dropdown('set selected',valor);
+                            $(_this).dropdown('set selected', valor);
                         }
                     });
                 }

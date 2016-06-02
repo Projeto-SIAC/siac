@@ -15,21 +15,22 @@ namespace SIAC.Helpers
             wc = new WebClient();
             wc.Encoding = System.Text.Encoding.UTF8;
         }
-        
+
         public string Paragrafo()
         {
             string p = String.Empty;
-            try {
-                    string html = wc.DownloadString("http://www.lerolero.com/");
-                    p = TextBetween(html, "id=\"frase_aqui\">", "</blockquote>");
-                    p = p.Trim();
-            } 
-            catch (Exception ex) {
-                    p=ex.Message;             
+            try
+            {
+                string html = wc.DownloadString("http://www.lerolero.com/");
+                p = TextBetween(html, "id=\"frase_aqui\">", "</blockquote>");
+                p = p.Trim();
+            }
+            catch (Exception ex)
+            {
+                p = ex.Message;
             }
             return p;
         }
-
 
         // StringUtils
 

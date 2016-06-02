@@ -7,7 +7,7 @@ namespace SIAC.Models
     {
         private static Contexto contexto => Repositorio.GetInstance();
 
-        public static List<PessoaFisica> ListarPorInstituicao(int codInstituicao)=>
+        public static List<PessoaFisica> ListarPorInstituicao(int codInstituicao) =>
             contexto.PessoaLocalTrabalho
                 .Where(plt => plt.CodInstituicao == codInstituicao)
                 .Select(plt => plt.PessoaFisica)
@@ -23,7 +23,6 @@ namespace SIAC.Models
                 .Where(plt => plt.CodInstituicao == codInstituicao && plt.CodCampus == codCampus)
                 .Select(plt => plt.PessoaFisica)
                 .ToList();
-
         }
     }
 }

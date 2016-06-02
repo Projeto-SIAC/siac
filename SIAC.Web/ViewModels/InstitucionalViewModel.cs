@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using SIAC.Models;
+﻿using SIAC.Models;
+using System.Collections.Generic;
 
 namespace SIAC.ViewModels
 {

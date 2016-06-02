@@ -67,7 +67,6 @@
             SEPARADOR_DATA = '-',
             SEPARADOR_HORA = ':';
 
-
         var agora = new Date();
         var data = {};
 

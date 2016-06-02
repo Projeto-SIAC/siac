@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
@@ -27,7 +26,8 @@ namespace SIAC.Models
         public bool FlagAguardaPrazoInscricao => this.DtInicioInscricao > DateTime.Now;
 
         [NotMapped]
-        public List<SimProva> Provas {
+        public List<SimProva> Provas
+        {
             get
             {
                 List<SimProva> provas = new List<SimProva>();
@@ -40,7 +40,7 @@ namespace SIAC.Models
         }
 
         [NotMapped]
-        public List<SimCandidato> Classificacao => 
+        public List<SimCandidato> Classificacao =>
             this.SimCandidato.OrderByDescending(c => c.EscorePadronizadoFinal).ToList();
 
         [NotMapped]

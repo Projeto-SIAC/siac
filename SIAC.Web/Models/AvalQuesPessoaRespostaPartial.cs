@@ -40,9 +40,11 @@ namespace SIAC.Models
                     case TipoQuestao.OBJETIVA:
                         corrente.RespAlternativa = int.Parse(resposta);
                         break;
+
                     case TipoQuestao.DISCURSIVA:
                         corrente.RespDiscursiva = resposta;
                         break;
+
                     default:
                         break;
                 }

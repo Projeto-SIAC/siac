@@ -982,7 +982,6 @@ siac.Simulado.Respostas = (function () {
                 $tr.addClass(trClass);
                 $tr.find('.field').addClass(inputClass);
                 $input.prop('required', false);
-                
             } else {
                 $tr.removeClass(trClass);
                 $tr.find('.field').removeClass(inputClass);

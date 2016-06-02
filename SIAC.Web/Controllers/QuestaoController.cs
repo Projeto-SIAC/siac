@@ -58,6 +58,7 @@ namespace SIAC.Controllers
                 case "objetiva":
                     questoes = questoes.Where(q => q.CodTipoQuestao == TipoQuestao.OBJETIVA).ToList();
                     break;
+
                 case "discursiva":
                     questoes = questoes.Where(q => q.CodTipoQuestao == TipoQuestao.DISCURSIVA).ToList();
                     break;
@@ -68,9 +69,11 @@ namespace SIAC.Controllers
                 case "data_desc":
                     questoes = questoes.OrderByDescending(q => q.DtCadastro).ToList();
                     break;
+
                 case "data":
                     questoes = questoes.OrderBy(q => q.DtCadastro).ToList();
                     break;
+
                 default:
                     questoes = questoes.OrderByDescending(q => q.DtCadastro).ToList();
                     break;
@@ -85,7 +88,8 @@ namespace SIAC.Controllers
             if (palavras.Length == 0)
                 return Json(new List<Questao>());
             List<Questao> resultado = Questao.ListarPorPalavraChave(palavras);
-            var retorno = resultado.Select(q => new {
+            var retorno = resultado.Select(q => new
+            {
                 CodQuestao = q.CodQuestao,
                 Dificuldade = q.Dificuldade.Descricao,
                 Disciplina = q.QuestaoTema.First().Tema.Disciplina.Descricao,
@@ -201,6 +205,7 @@ namespace SIAC.Controllers
                             });
                             iAnexoImage++;
                             break;
+
                         case TipoAnexo.CODIGO:
                             questao.QuestaoAnexo.Add(new QuestaoAnexo
                             {
@@ -211,11 +216,12 @@ namespace SIAC.Controllers
                                 Anexo = formCollection["txtAnexo" + (i + 1)].ToString().GetBytes()
                             });
                             break;
+
                         default:
                             break;
                     }
                 }
-            }            
+            }
 
             Questao.Inserir(questao);
             Lembrete.AdicionarNotificacao($"Questão {questao.CodQuestao} cadastrada com sucesso.", Lembrete.POSITIVO);
@@ -326,6 +332,7 @@ namespace SIAC.Controllers
         }
 
         #region Desenvolvedor
+
         [HttpGet]
         public ActionResult Gerar(string strQte)
         {
@@ -367,6 +374,7 @@ namespace SIAC.Controllers
             }
             return RedirectToAction("Index");
         }
-        #endregion
+
+        #endregion Desenvolvedor
     }
 }

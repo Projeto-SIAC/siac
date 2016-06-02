@@ -9,8 +9,10 @@ namespace SIAC.Models
     {
         [NotMapped]
         public Turma Turma => this.TurmaDiscAluno.OrderBy(t => t.AnoLetivo).Last().Turma;
+
         [NotMapped]
         public List<Disciplina> Disciplinas => this.TurmaDiscAluno.Where(t => t.AnoLetivo == DateTime.Today.Year).Select(t => t.Disciplina).Distinct().ToList();
+
         [NotMapped]
         public List<Professor> Professores => this.TurmaDiscAluno.Where(t => t.AnoLetivo == DateTime.Today.Year).Join(
                 contexto.TurmaDiscProfHorario,

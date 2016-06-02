@@ -15,7 +15,7 @@ namespace SIAC.Models
             get
             {
                 List<PessoaFisica> pessoas = new List<PessoaFisica>();
-                
+
                 /*Alunos*/
                 pessoas.AddRange(PessoaFisica.ListarPorDiretoria(this.CodComposto));
 
@@ -39,7 +39,7 @@ namespace SIAC.Models
             //Realizando um "IDENTITY Manual"
             Campus campus = diretoria.Campus;
             List<Diretoria> diretorias = contexto.Diretoria
-                .Where(d => d.CodInstituicao == campus.CodInstituicao 
+                .Where(d => d.CodInstituicao == campus.CodInstituicao
                     && d.CodCampus == campus.CodCampus).ToList();
             int id = diretorias.Count > 0 ? diretorias.Max(d => d.CodDiretoria) + 1 : 1;
 
@@ -62,6 +62,5 @@ namespace SIAC.Models
                     && d.CodCampus == codCampus
                     && d.CodDiretoria == codDiretoria);
         }
-        
     }
 }

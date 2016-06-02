@@ -26,7 +26,6 @@ namespace SIAC.Helpers
             return Convert.ToBase64String(plainTextBytes);
         }
 
-
         public static string Base64Decode(string base64EncodedData)
         {
             // Thanks, Kevin Driedger

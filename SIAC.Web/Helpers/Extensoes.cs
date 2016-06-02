@@ -9,22 +9,27 @@ namespace SIAC
     public static class Extensoes
     {
         #region byte[]
+
         public static string GetString(this byte[] bytes)
         {
             char[] chars = new char[bytes.Length / sizeof(char)];
             Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
             return new string(chars);
         }
+
         public static string GetImageSource(this byte[] bytes)
         {
             string src = "data:image/png;base64,";
             src += Convert.ToBase64String(bytes, 0, bytes.Length);
             return src;
         }
-        #endregion
+
+        #endregion byte[]
 
         // String
+
         #region String
+
         public static byte[] GetBytes(this string str)
         {
             byte[] bytes = new byte[str.Length * sizeof(char)];
@@ -131,10 +136,12 @@ namespace SIAC
             return true;
         }
 
-        #endregion
+        #endregion String
 
         // Int
+
         #region Int
+
         public static string GetIndiceAlternativa(this int i)
         {
             i++;
@@ -143,12 +150,16 @@ namespace SIAC
             {
                 case 1:
                     return i.ToString();
+
                 case 2:
                     return paraRomano(i);
+
                 case 3:
                     return paraCaixaBaixa(i);
+
                 case 4:
                     return paraCaixaAlta(i);
+
                 default:
                     return paraCaixaBaixa(i);
             }
@@ -163,12 +174,16 @@ namespace SIAC
             {
                 case 1:
                     return i.ToString();
+
                 case 2:
                     return paraRomano(i);
+
                 case 3:
                     return paraCaixaBaixa(i);
+
                 case 4:
                     return paraCaixaAlta(i);
+
                 default:
                     return paraCaixaBaixa(i);
             }
@@ -224,10 +239,13 @@ namespace SIAC
         {
             return TimeSpan.FromMinutes(Convert.ToDouble(minutos)).ToString(@"hh'h'mm'min'");
         }
-        #endregion
+
+        #endregion Int
 
         // DateTime
+
         #region DateTime
+
         public static string ToBrazilianString(this DateTime dateTime)
         {
             return dateTime.ToString("dddd, dd 'de' MMMM 'de' yyyy 'às' HH'h'mm", new System.Globalization.CultureInfo("pt-BR"));
@@ -326,10 +344,13 @@ namespace SIAC
             var timeSpan = (dt - new DateTime(1970, 1, 1, 0, 0, 0));
             return (long)timeSpan.TotalSeconds;
         }
-        #endregion
+
+        #endregion DateTime
 
         // List<AvaliacaoTema>
+
         #region List<AvaliacaoTema>
+
         public static int QteQuestoesPorTipo(this List<AvaliacaoTema> lstAvaliacaoTema, int codDisciplina, int codTipoQuestao)
         {
             int qteQuestoes = 0;
@@ -371,10 +392,13 @@ namespace SIAC
 
             return dificuldade.Descricao;
         }
-        #endregion
+
+        #endregion List<AvaliacaoTema>
 
         // Avaliacao
+
         #region Avaliacao
+
         public static int QteQuestoes(this Avaliacao avaliacao)
         {
             int qte = 0;
@@ -401,10 +425,13 @@ namespace SIAC
 
             return lstQuestaoEmbalharada.OrderBy(q => q.CodTipoQuestao).ToList();
         }
-        #endregion
+
+        #endregion Avaliacao
 
         // Questao
+
         #region Questao
+
         public static bool TemUmaCorreta(this Questao questao)
         {
             bool unica = false;
@@ -498,7 +525,7 @@ namespace SIAC
 
                 json += ",";
 
-                json += $"\"label\":\"Alternativa {(i-1).GetIndiceAlternativa()}\"";
+                json += $"\"label\":\"Alternativa {(i - 1).GetIndiceAlternativa()}\"";
 
                 json += ",";
 
@@ -521,13 +548,15 @@ namespace SIAC
             return json;
         }
 
-
-        #endregion
+        #endregion Questao
 
         //Double
+
         #region Double
+
         public static string ToValueHtml(this double value) => value.ToString().Replace(',', '.');
-        #endregion
+
+        #endregion Double
 
         public static string RecuperarIp(this HttpContext contexto)
         {

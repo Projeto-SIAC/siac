@@ -251,7 +251,7 @@ siac.Gerencia.Professores = (function () {
         $('.ui.modal').modal();
 
         $('.ui.dropdown').dropdown();
-        
+
         $('.novo.button').click(function () { $('.ui.novo.modal').modal('show') });
 
         $('.disciplinas.button').click(function () {
@@ -281,7 +281,7 @@ siac.Gerencia.Professores = (function () {
 
         $('.editar.button').click(function () {
             var _this = $(this)
-                _professor = _this.data('professor');;
+            _professor = _this.data('professor');;
             $.ajax({
                 url: '/simulado/gerencia/carregarprofessor',
                 method: 'POST',

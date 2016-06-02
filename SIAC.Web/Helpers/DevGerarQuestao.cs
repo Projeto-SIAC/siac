@@ -1,13 +1,13 @@
-﻿using System;
+﻿using SIAC.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using SIAC.Models;
 
 namespace SIAC.Helpers
 {
     public class DevGerarQuestao
-    {    
+    {
         public static List<Questao> GerarQuestao(int qte)
         {
             List<Questao> lstQuestao = new List<Questao>();
@@ -48,8 +48,8 @@ namespace SIAC.Helpers
                     questao.QuestaoTema.Add(
                         new QuestaoTema
                         {
-                            Tema = lstTema.ElementAt(index)                            
-                        }    
+                            Tema = lstTema.ElementAt(index)
+                        }
                     );
                     lstTema.Remove(lstTema.ElementAt(index));
                 }
@@ -63,8 +63,8 @@ namespace SIAC.Helpers
                             {
                                 CodOrdem = j,
                                 Enunciado = leroLero.Paragrafo(),
-                                Comentario = r.Next(2) == 1 ? leroLero.Paragrafo() : null                                
-                            }    
+                                Comentario = r.Next(2) == 1 ? leroLero.Paragrafo() : null
+                            }
                         );
                     }
                     questao.Alternativa.ElementAt(r.Next(questao.Alternativa.Count)).FlagGabarito = true;

@@ -25,7 +25,6 @@ namespace SIAC.Controllers
                 return RedirectToAction("Andamento");
         }
 
-
         // GET: institucional/historico
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
         public ActionResult Historico() => View();
@@ -57,15 +56,17 @@ namespace SIAC.Controllers
                     .Where(a => a.Avaliacao.CodAvaliacao.ToLower().Contains(pesquisa.ToLower())
                     || a.Titulo.ToLower().Contains(pesquisa.ToLower()))
                     .ToList();
-            
+
             switch (categoria)
             {
                 case "gerada":
                     institucionais = institucionais.Where(a => !a.FlagAndamento && !a.FlagConcluida).ToList();
                     break;
+
                 case "andamento":
                     institucionais = institucionais.Where(a => a.FlagAndamento && !a.FlagConcluida).ToList();
                     break;
+
                 case "concluida":
                     institucionais = institucionais.Where(a => a.FlagConcluida).ToList();
                     break;
@@ -76,9 +77,11 @@ namespace SIAC.Controllers
                 case "data_desc":
                     institucionais = institucionais.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
                     break;
+
                 case "data":
                     institucionais = institucionais.OrderBy(a => a.Avaliacao.DtCadastro).ToList();
                     break;
+
                 default:
                     institucionais = institucionais.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
                     break;
@@ -275,7 +278,6 @@ namespace SIAC.Controllers
                             FlagAlternativaDiscursiva = true
                         });
                     }
-
                 }
                 else if (int.Parse(form["ddlTipo"]) == TipoQuestao.DISCURSIVA)
                 {
@@ -348,7 +350,6 @@ namespace SIAC.Controllers
                     }
 
                     AviQuestao.Atualizar(questao);
-
                 }
                 return Json(form);
             }
@@ -478,6 +479,7 @@ namespace SIAC.Controllers
                         category = "Pessoa"
                     });
                     break;
+
                 case AviTipoPublico.TURMA:
                     lstResultado = Turma.ListarOrdenadamente().Select(a => new Selecao
                     {
@@ -487,6 +489,7 @@ namespace SIAC.Controllers
                         category = "Turma"
                     });
                     break;
+
                 case AviTipoPublico.CURSO:
                     lstResultado = Curso.ListarOrdenadamente().Select(a => new Selecao
                     {
@@ -496,6 +499,7 @@ namespace SIAC.Controllers
                         category = "Curso"
                     });
                     break;
+
                 case AviTipoPublico.DIRETORIA:
                     lstResultado = Diretoria.ListarOrdenadamente().Select(a => new Selecao
                     {
@@ -505,6 +509,7 @@ namespace SIAC.Controllers
                         category = "Diretoria"
                     });
                     break;
+
                 case AviTipoPublico.CAMPUS:
                     lstResultado = Campus.ListarOrdenadamente().Select(a => new Selecao
                     {
@@ -514,6 +519,7 @@ namespace SIAC.Controllers
                         category = "Campus"
                     });
                     break;
+
                 case AviTipoPublico.PRO_REITORIA:
                     lstResultado = ProReitoria.ListarOrdenadamente().Select(a => new Selecao
                     {
@@ -523,6 +529,7 @@ namespace SIAC.Controllers
                         category = "Pró-Reitoria"
                     });
                     break;
+
                 case AviTipoPublico.REITORIA:
                     lstResultado = Reitoria.ListarOrdenadamente().Select(a => new Selecao
                     {
@@ -532,6 +539,7 @@ namespace SIAC.Controllers
                         category = "Reitoria"
                     });
                     break;
+
                 case AviTipoPublico.INSTITUICAO:
                     lstResultado = Instituicao.ListarOrdenadamente().Select(a => new Selecao
                     {
@@ -541,6 +549,7 @@ namespace SIAC.Controllers
                         category = "Instituição"
                     });
                     break;
+
                 default:
                     break;
             }

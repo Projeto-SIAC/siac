@@ -121,7 +121,7 @@ siac.Reposicao.Justificar = (function () {
     }
 
     function prosseguir() {
-        var $lstChkSelecionado =  $('input[name^="chkSelecionado"]:checked');
+        var $lstChkSelecionado = $('input[name^="chkSelecionado"]:checked');
         if ($lstChkSelecionado.length == 0) {
             siac.mensagem('Selecione os alunos que realizarão esta reposição.')
         }
@@ -159,7 +159,6 @@ siac.Reposicao.Justificar = (function () {
     return {
         iniciar: iniciar
     }
-
 })();
 
 siac.Reposicao.Configurar = (function () {
@@ -338,16 +337,16 @@ siac.Reposicao.Agendar = (function () {
         });
 
         $('.ui.dropdown').dropdown();
-        
+
         $('.ui.accordion').accordion({ animateChildren: false });
 
         $('.cancelar.button').popup({ on: 'click' });
 
         $('.ui.confirmar.modal').modal({
-                onApprove: function () {
-                    $('form').addClass('loading').submit();
-                }
-            });
+            onApprove: function () {
+                $('form').addClass('loading').submit();
+            }
+        });
 
         $('.informacoes.button').click(function () {
             $('.ui.informacoes.modal').modal('show');
@@ -370,7 +369,7 @@ siac.Reposicao.Agendar = (function () {
         lstErro.html('');
 
         $('form').removeClass('error');
-        
+
         if (!$('#txtData').val()) {
             lstErro.append('<li>Especifique a data de aplicação</li>');
             retorno = false;
@@ -811,39 +810,39 @@ siac.Reposicao.Realizar = (function () {
         });
 
         $('.ui.confirmar.modal').modal({
-                onApprove: function () {
-                    desistir($('.ui.confirmar.modal #txtRef').val());
-                },
-                onDeny: function () {
-                    $('.ui.segment.loading').removeClass('loading');
-                }
-            });
+            onApprove: function () {
+                desistir($('.ui.confirmar.modal #txtRef').val());
+            },
+            onDeny: function () {
+                $('.ui.segment.loading').removeClass('loading');
+            }
+        });
 
         $('.ui.accordion').accordion({
-                animateChildren: false
-            });
+            animateChildren: false
+        });
 
         $('.trigger.button').popup({
-                inline: true,
-                on: 'click'
-            });
+            inline: true,
+            on: 'click'
+        });
 
         $('.ui.gabarito.modal').modal({
-                onApprove: function () {
-                    $.ajax({
-                        type: 'GET',
-                        url: "/acesso/conectado",
-                        success: function () {
-                            finalizar();
-                            $(this).modal('hide');
-                        },
-                        error: function () {
-                            siac.mensagem('Conecte-se à internet antes de confirmar.');
-                        }
-                    });
-                    return false;
-                }
-            });
+            onApprove: function () {
+                $.ajax({
+                    type: 'GET',
+                    url: "/acesso/conectado",
+                    success: function () {
+                        finalizar();
+                        $(this).modal('hide');
+                    },
+                    error: function () {
+                        siac.mensagem('Conecte-se à internet antes de confirmar.');
+                    }
+                });
+                return false;
+            }
+        });
 
         siac.Anexo.iniciar();
 
@@ -986,7 +985,6 @@ siac.Reposicao.Realizar = (function () {
                 };
                 hub.server.avaliadoFinalizou(aval, usrMatr);
                 $('form').submit();
-
             };
 
             $('.ui.continuar.modal')
@@ -1176,7 +1174,6 @@ siac.Reposicao.Realizar = (function () {
             $(this).removeClass('blue').html('<i class="icon comments outline"></i>');
             document.title = 'Realizar ' + _codAvaliacao;
         });
-
     }
 
     return {
@@ -1201,19 +1198,19 @@ siac.Reposicao.Acompanhar = (function () {
         conectarHub(_codAvaliacao, _matriculaUsuario);
 
         $('.ui.accordion').accordion({
-                animateChildren: false
-            });
+            animateChildren: false
+        });
 
         $('.ui.progress').progress({
-                label: 'ratio',
-                text: {
-                    ratio: '{value} de {total}'
-                }
-            });
+            label: 'ratio',
+            text: {
+                ratio: '{value} de {total}'
+            }
+        });
 
         $('.trigger.button').popup({
-                inline: true,
-                on: 'click'
+            inline: true,
+            on: 'click'
         });
 
         $('.modal').modal();
@@ -1222,7 +1219,6 @@ siac.Reposicao.Acompanhar = (function () {
     function conectarHub(aval, usrMatr) {
         var hub = $.connection.reposicaoHub;
         $.connection.hub.start().done(function () {
-
             var enviarMsg = function enviarMsg(_this) {
                 var $content = $(_this).parents('.content[id]');
                 var matr = $content.attr('id');
@@ -1296,7 +1292,6 @@ siac.Reposicao.Acompanhar = (function () {
                     return false;
                 }
             });
-
 
             setInterval(function () {
                 lstMatr = $('.accordion')
@@ -1427,12 +1422,12 @@ siac.Reposicao.Acompanhar = (function () {
         hub.client.atualizarProgresso = function (alnMatricula, value) {
             if (value > 0) {
                 $('#' + alnMatricula + '.content .progress').progress({
-                        value: value,
-                        label: 'ratio',
-                        text: {
-                            ratio: '{value} de {total}'
-                        }
-                    });
+                    value: value,
+                    label: 'ratio',
+                    text: {
+                        ratio: '{value} de {total}'
+                    }
+                });
             }
         }
 
@@ -1629,7 +1624,6 @@ siac.Reposicao.Corrigir = (function () {
                         complete: function () {
                             $('.modal.corrigir form').removeClass('loading');
                         }
-
                     });
                 }
                 else if (modo == 'questao') {

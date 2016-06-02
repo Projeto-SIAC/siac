@@ -666,24 +666,20 @@ namespace SIAC.Models
                 .WithRequired(e => e.Sala)
                 .WillCascadeOnDelete(false);
 
-
             modelBuilder.Entity<Sala>()
                 .HasMany(e => e.AvalCertificacao)
                 .WithRequired(e => e.Sala)
                 .WillCascadeOnDelete(false);
-
 
             modelBuilder.Entity<Sala>()
                 .HasMany(e => e.SimSala)
                 .WithRequired(e => e.Sala)
                 .WillCascadeOnDelete(false);
 
-
             modelBuilder.Entity<Sala>()
                 .HasMany(e => e.TurmaDiscProfHorario)
                 .WithRequired(e => e.Sala)
                 .WillCascadeOnDelete(false);
-
 
             modelBuilder.Entity<SimCandidato>()
                 .Property(e => e.EscorePadronizadoFinal)

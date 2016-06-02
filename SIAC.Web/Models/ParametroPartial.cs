@@ -7,7 +7,8 @@ namespace SIAC.Models
 {
     public partial class Parametro
     {
-        public enum NumeracaoPadrao {
+        public enum NumeracaoPadrao
+        {
             INDO_ARABICO = 1,
             ROMANOS = 2,
             CAIXA_ALTA = 3,
@@ -21,7 +22,9 @@ namespace SIAC.Models
 
         private static Parametro parametro;
 
-        private Parametro() { }
+        private Parametro()
+        {
+        }
 
         public static Parametro Obter()
         {

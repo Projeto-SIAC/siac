@@ -15,7 +15,7 @@ namespace SIAC.Models
             get
             {
                 List<PessoaFisica> pessoas = new List<PessoaFisica>();
-                
+
                 /*Pro-reitor*/
                 pessoas.Add(this.Colaborador.Usuario.PessoaFisica);
 

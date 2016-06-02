@@ -23,22 +23,22 @@
     }
 
     function verificar() {
-            var $form = $('.opiniao.modal .form');
-            $form.removeClass('error');
-            $form.find('.message').remove();
-            var $message = $('<div class="ui error message"></div>');
-            $message.append($('<div class="header"></div>').text('Verifique os seguintes erros'));
-            var $list = $('<ul class="list"></ul>');
+        var $form = $('.opiniao.modal .form');
+        $form.removeClass('error');
+        $form.find('.message').remove();
+        var $message = $('<div class="ui error message"></div>');
+        $message.append($('<div class="header"></div>').text('Verifique os seguintes erros'));
+        var $list = $('<ul class="list"></ul>');
 
-            if (!$('#txtOpiniao').val().trim()) {
-                $list.append($('<li></li>').html('Insira uma <b>opinião</b>'));
-            }
+        if (!$('#txtOpiniao').val().trim()) {
+            $list.append($('<li></li>').html('Insira uma <b>opinião</b>'));
+        }
 
-            $message.append($list);
+        $message.append($list);
 
-            $form.prepend($message);
+        $form.prepend($message);
 
-            return $list.children().length == 0;
+        return $list.children().length == 0;
     }
 
     function enviarOpiniao() {

@@ -1,7 +1,6 @@
 ﻿siac.Certificacao = siac.Certificacao || {};
 
 siac.Certificacao.Gerar = (function () {
-
     function iniciar() {
         $('.ui.dropdown').dropdown();
         $('.ui.modal').modal();
@@ -25,8 +24,6 @@ siac.Certificacao.Gerar = (function () {
         $('#ddlTipo').change(function () {
             mostrarOpcoesPorTipo(this.value);
         })
-
-
     }
 
     function prosseguir() {
@@ -66,7 +63,6 @@ siac.Certificacao.Gerar = (function () {
             valido = false;
         }
 
-
         if (valido) {
             confirmar();
         }
@@ -89,7 +85,7 @@ siac.Certificacao.Gerar = (function () {
         var $tdTemas = $('<td class="ui labels"></td>');
 
         var $ddlTemas = $('#ddlTemas :selected');
-        
+
         for (var i = 0; i < $ddlTemas.length; i++) {
             $tdTemas.append($('<div class="ui tag label"></div>').text($ddlTemas.eq(i).text()));
         }
@@ -155,7 +151,6 @@ siac.Certificacao.Gerar = (function () {
     return {
         iniciar: iniciar
     }
-
 })();
 
 siac.Certificacao.Configurar = (function () {
@@ -261,7 +256,6 @@ siac.Certificacao.Configurar = (function () {
         });
 
         atualizarQuantidadeView();
-
     }
 
     function carregarQuestoes() {
@@ -331,7 +325,6 @@ siac.Certificacao.Configurar = (function () {
             }
             else
                 siac.aviso('Você não pode adicionar mais questões objetivas', 'red');
-
         } else if (tipo == _DISC) {
             if (_qteDiscursiva < _qteMaxDiscursiva) {
                 podeAdicionar = true;
@@ -447,7 +440,7 @@ siac.Certificacao.Configurar = (function () {
         $obj.find('.detail').text(_qteObjetiva);
 
         if (_qteObjetiva == _qteMaxObjetiva) {
-                $obj.addClass('green');
+            $obj.addClass('green');
         }
         else $obj.removeClass('green');
 
@@ -462,7 +455,6 @@ siac.Certificacao.Configurar = (function () {
     return {
         iniciar: iniciar
     }
-
 })();
 
 siac.Certificacao.Agendar = (function () {
@@ -602,7 +594,7 @@ siac.Certificacao.Agendar = (function () {
     }
 
     function confirmar() {
-        var  $form = $('form');
+        var $form = $('form');
         if (validar()) {
             var $div = $('<div class="ui form"></div>');
             $div.append($form.html());
@@ -1541,7 +1533,6 @@ siac.Certificacao.Realizar = (function () {
             $(this).removeClass('blue').html('<i class="icon comments outline"></i>');
             document.title = 'Realizar ' + _codAvaliacao;
         });
-
     }
 
     return {
@@ -1561,7 +1552,7 @@ siac.Certificacao.Acompanhar = (function () {
         $elemento = $('[data-termino]');
         _dtTermino = $elemento.attr('data-termino').toString().toDateObject();
         $elemento.removeAttr('data-termino');
-        
+
         conectarHub(_codAvaliacao, _matriculaUsuario);
 
         $('.ui.accordion')
@@ -1592,7 +1583,6 @@ siac.Certificacao.Acompanhar = (function () {
     function conectarHub(codAval, usrMatr) {
         var certHub = $.connection.certificacaoHub;
         $.connection.hub.start().done(function () {
-
             var enviarMsg = function enviarMsg(_this) {
                 var $content = $(_this).parents('.content[id]');
                 var matr = $content.attr('id');
@@ -1667,7 +1657,6 @@ siac.Certificacao.Acompanhar = (function () {
                     return false;
                 }
             });
-
 
             setInterval(function () {
                 lstMatr = $('.accordion')
@@ -1998,7 +1987,6 @@ siac.Certificacao.Corrigir = (function () {
                         complete: function () {
                             $('.modal.corrigir form').removeClass('loading');
                         }
-
                     });
                 }
                 else if (modo == 'questao') {
@@ -2149,7 +2137,6 @@ siac.Certificacao.Detalhe = (function () {
     var _codAvaliacao, _controleAjax;
 
     function iniciar() {
-
         _codAvaliacao = window.location.pathname.toLowerCase().match(/cert[0-9]+$/)[0];
 
         $('.ui.accordion').accordion({

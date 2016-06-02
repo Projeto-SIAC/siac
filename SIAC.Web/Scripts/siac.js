@@ -268,7 +268,7 @@
                 else if (pathname.indexOf('/encerrados') >= 0) {
                     siac.Arquivo.Encerrados.iniciar();
                 }
-			}
+            }
             else if (pathname.indexOf('/novo') >= 0) {
                 siac.Simulado.Novo.iniciar();
             }
@@ -347,7 +347,6 @@
             ;
         }
     }
-
 
     function ajustarModal() {
         $('.ui.modal .ui.accordion').accordion({

@@ -39,9 +39,11 @@ namespace SIAC.Controllers
                 case "data_desc":
                     lstOpinioes = lstOpinioes.OrderByDescending(q => q.DtEnvio).ToList();
                     break;
+
                 case "data":
                     lstOpinioes = lstOpinioes.OrderBy(q => q.DtEnvio).ToList();
                     break;
+
                 default:
                     lstOpinioes = lstOpinioes.OrderByDescending(q => q.DtEnvio).ToList();
                     break;
@@ -87,14 +89,14 @@ namespace SIAC.Controllers
             ConfiguracoesInstitucionalViewModel model = new ConfiguracoesInstitucionalViewModel();
             model.Ocupacoes = Repositorio.GetInstance()
                 .Ocupacao
-                .Where(o=>o.CodOcupacao != Ocupacao.COORDENADOR_AVI 
+                .Where(o => o.CodOcupacao != Ocupacao.COORDENADOR_AVI
                     && o.CodOcupacao != Ocupacao.ADMINISTRADOR_SIAC)
                 .ToList();
             model.Coordenadores = Repositorio.GetInstance()
                 .Ocupacao
                 .FirstOrDefault(o => o.CodOcupacao == Ocupacao.COORDENADOR_AVI)?
                 .PessoaFisica
-                .Where(p=> p.Usuario.FirstOrDefault(u=>u.Matricula == Sessao.UsuarioMatricula) == null)
+                .Where(p => p.Usuario.FirstOrDefault(u => u.Matricula == Sessao.UsuarioMatricula) == null)
                 .ToList();
             return View(model);
         }
@@ -112,7 +114,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(CoordenadoresAvi = true)]
         public void AdicionarOcupacaoCoordenador(int codPessoaFisica)
         {
-            PessoaFisica.AdicionarOcupacao(codPessoaFisica, Ocupacao.COORDENADOR_AVI);            
+            PessoaFisica.AdicionarOcupacao(codPessoaFisica, Ocupacao.COORDENADOR_AVI);
         }
 
         // POST: configuracoes/removerocupacaocoordenador/
@@ -134,8 +136,8 @@ namespace SIAC.Controllers
             if (!String.IsNullOrWhiteSpace(pesquisa))
             {
                 string strPesquisa = pesquisa.Trim().ToLower();
-                var lstPessoas = PessoaFisica.Listar().Where(p => 
-                    (p.Usuario.FirstOrDefault(u=> u.Colaborador.Count > 0) != null) &&
+                var lstPessoas = PessoaFisica.Listar().Where(p =>
+                    (p.Usuario.FirstOrDefault(u => u.Colaborador.Count > 0) != null) &&
                     (p.Nome.ToLower().Contains(strPesquisa) ||
                     (!String.IsNullOrEmpty(p.Cpf) && p.Cpf.Contains(strPesquisa)) ||
                     p.Usuario.FirstOrDefault(u => u.Matricula.ToLower().Contains(strPesquisa)) != null)
@@ -173,7 +175,7 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult CadastrarProfessor(FormCollection formCollection)
         {
-            if(formCollection.HasKeys())
+            if (formCollection.HasKeys())
             {
                 string professorNome = formCollection["txtProfessorNome"];
                 string professorMatricula = formCollection["txtProfessorMatricula"];
@@ -219,7 +221,6 @@ namespace SIAC.Controllers
                 colaborador.Usuario = new Usuario();
                 colaborador.Usuario.PessoaFisica = new PessoaFisica();
                 colaborador.Usuario.PessoaFisica.Pessoa = new Pessoa();
-
 
                 //Pessoa
                 colaborador.Usuario.PessoaFisica.Pessoa.TipoPessoa = Pessoa.FISICA;
@@ -481,7 +482,8 @@ namespace SIAC.Controllers
 
                 for (int i = 1; i <= qteDisc; i++)
                 {
-                    matrizCurricular.MatrizCurricularDisciplina.Add(new MatrizCurricularDisciplina() {
+                    matrizCurricular.MatrizCurricularDisciplina.Add(new MatrizCurricularDisciplina()
+                    {
                         Periodo = int.Parse(formCollection["txtPeriodo" + i]),
                         CodDisciplina = int.Parse(formCollection["ddlDisciplina" + i]),
                         DiscCargaHoraria = int.Parse(formCollection["txtCH" + i])

@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using SIAC.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using SIAC.Models;
-using Newtonsoft.Json;
 
 namespace SIAC.ViewModels
 {
