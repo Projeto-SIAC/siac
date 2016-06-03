@@ -34,6 +34,9 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult Acessar(CandidatoAcessarViewModel model)
         {
+            if (Sessao.Candidato != null)
+                return RedirectToAction("");
+
             if (!StringExt.IsNullOrWhiteSpace(model.Cpf, model.Senha))
             {
                 Candidato c = Candidato.Autenticar(model.Cpf, model.Senha);
@@ -51,7 +54,8 @@ namespace SIAC.Controllers
         }
 
         // GET: simulado/candidato/cadastrar
-        public ActionResult Cadastrar() => View(new CandidatoCadastrarViewModel());
+        public ActionResult Cadastrar() =>
+            Sessao.Candidato != null ? (ActionResult)RedirectToAction("") : (ActionResult)View(new CandidatoCadastrarViewModel());
 
         // POST: simulado/candidato/cadastrar
         [HttpPost]
@@ -61,7 +65,7 @@ namespace SIAC.Controllers
             {
                 if (model.SenhaConfirmacao == model.Senha)
                 {
-                    if (model.Email.Contains("@"))
+                    if (Valida.Email(model.Email))
                     {
                         model.Cpf = Formate.DeCPF(model.Cpf);
                         if (Candidato.ListarPorCPF(model.Cpf) == null)

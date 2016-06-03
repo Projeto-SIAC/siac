@@ -9,14 +9,13 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR, Categoria.PROFESSOR })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
     public class GerenciaController : Controller
     {
         // GET: simulado/gerencia
         public ActionResult Index() => View();
 
         // GET: simulado/gerencia/dados
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Dados() => View();
 
         #region Blocos
@@ -34,7 +33,6 @@ namespace SIAC.Controllers
 
         // POST: simulado/gerencia/novobloco
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult NovoBloco(FormCollection form)
         {
             string lembrete = Lembrete.NEGATIVO;
@@ -73,7 +71,6 @@ namespace SIAC.Controllers
 
         // POST: simulado/gerencia/carregarbloco
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult CarregarBloco(int bloco)
         {
             GerenciaEditarBlocoViewModel viewModel = new GerenciaEditarBlocoViewModel();
@@ -85,7 +82,6 @@ namespace SIAC.Controllers
 
         // POST: simulado/gerencia/editarbloco
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult EditarBloco(int codigo, FormCollection form)
         {
             string lembrete = Lembrete.NEGATIVO;
@@ -126,7 +122,6 @@ namespace SIAC.Controllers
 
         // POST: simulado/gerencia/excluirbloco
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public void ExcluirBloco(int codigo)
         {
             string lembrete = Lembrete.NEGATIVO;
@@ -159,7 +154,6 @@ namespace SIAC.Controllers
         #region Salas
 
         // GET: simulado/gerencia/salas
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Salas()
         {
             GerenciaSalasViewModel viewModel = new GerenciaSalasViewModel();
@@ -172,7 +166,6 @@ namespace SIAC.Controllers
 
         // POST: simulado/gerencia/novasala
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult NovaSala(FormCollection form)
         {
             string lembrete = Lembrete.NEGATIVO;
@@ -213,7 +206,6 @@ namespace SIAC.Controllers
 
         // POST: simulado/gerencia/carregarsala
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult CarregarSala(int sala)
         {
             GerenciaEditarSalaViewModel viewModel = new GerenciaEditarSalaViewModel();
@@ -268,7 +260,6 @@ namespace SIAC.Controllers
 
         // POST: simulado/gerencia/excluirsala
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public void ExcluirSala(int codigo)
         {
             string lembrete = Lembrete.NEGATIVO;
@@ -293,7 +284,6 @@ namespace SIAC.Controllers
         #region Disciplinas
 
         // GET: simulado/gerencia/disciplinas
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Disciplinas() => View(new GerenciaDisciplinasViewModel()
         {
             Disciplinas = Disciplina.ListarOrdenadamente()
@@ -343,12 +333,10 @@ namespace SIAC.Controllers
 
         // POST: simulado/gerencia/carregardisciplina
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult CarregarDisciplina(int disciplina) => PartialView("_CarregarDisciplina", Disciplina.ListarPorCodigo(disciplina));
 
         // POST: simulado/gerencia/editardisciplina
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult EditarDisciplina(int codigo, FormCollection form)
         {
             string lembrete = Lembrete.NEGATIVO;
@@ -383,7 +371,6 @@ namespace SIAC.Controllers
 
         // POST: simulado/gerencia/excluirdisciplina
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public void ExcluirDisciplina(int codigo)
         {
             string lembrete = Lembrete.NEGATIVO;
@@ -416,7 +403,6 @@ namespace SIAC.Controllers
         #region Professores
 
         // GET: simulado/gerencia/professores
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Professores() => View(new GerenciaProfessoresViewModel()
         {
             Professores = Professor.ListarOrdenadamente(),
@@ -425,7 +411,6 @@ namespace SIAC.Controllers
 
         // POST: simulado/gerencia/novoprofessor
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult NovoProfessor(FormCollection form)
         {
             string lembrete = Lembrete.NEGATIVO;
@@ -489,7 +474,6 @@ namespace SIAC.Controllers
 
         // POST: gerencia/carregarprofessor
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult CarregarProfessor(string professor) => PartialView("_CarregarProfessor", new GerenciaEditarProfessorViewModel()
         {
             Professor = Professor.ListarPorMatricula(professor),
@@ -498,12 +482,10 @@ namespace SIAC.Controllers
 
         // POST: simulado/gerencia/carregarprofessordisciplinas
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult CarregarProfessorDisciplinas(string professor) => PartialView("_CarregarProfessorDisciplinas", Professor.ListarPorMatricula(professor));
 
         // POST: simulado/gerencia/editarprofessor
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult EditarProfessor(string codigo, FormCollection form)
         {
             string lembrete = Lembrete.NEGATIVO;
@@ -544,7 +526,6 @@ namespace SIAC.Controllers
 
         // POST: simulado/gerencia/excluirprofessor
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public void ExcluirProfessor(string codigo)
         {
             string lembrete = Lembrete.NEGATIVO;
@@ -579,7 +560,6 @@ namespace SIAC.Controllers
 
         #region Configuracoes
 
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Configuracoes() => View(new GerenciaConfiguracoesViewModel()
         {
             SmtpEnderecoHost = Parametro.Obter().SmtpEnderecoHost,
@@ -590,7 +570,6 @@ namespace SIAC.Controllers
         });
 
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
         public ActionResult Configuracoes(GerenciaConfiguracoesViewModel model)
         {
             Parametro p = Parametro.Obter();
