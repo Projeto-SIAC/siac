@@ -5,7 +5,6 @@ siac.Configuracoes.Parametros = (function () {
     var HorarioCount = 2;
 
     function iniciar() {
-
         $('.ui.dropdown').dropdown();
         $('.ui.accordion').accordion({ animateChildren: false });
 
@@ -351,7 +350,7 @@ siac.Configuracoes.Institucional = (function () {
             success: function () { window.location.reload(); },
             error: function () { siac.mensagem('Ocorreu um erro com sua solicitação. Por favor, tente novamente mais tarde.'); },
             complete: function () { $btnRemover.removeClass('loading'); }
-        });        
+        });
     }
 
     return { iniciar: iniciar }

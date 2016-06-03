@@ -13,7 +13,7 @@ namespace SIAC.Controllers
         {
             Helpers.LeroLero obj = new Helpers.LeroLero();
             string paragrafo = obj.Paragrafo();
-            return Json(paragrafo,JsonRequestBehavior.AllowGet);
+            return Json(paragrafo, JsonRequestBehavior.AllowGet);
         }
     }
 }

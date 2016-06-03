@@ -9,7 +9,7 @@ namespace SIAC
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.LowercaseUrls = true;
-            
+
             routes.MapRoute(
                 name: "AreaDeSimulados",
                 url: "Simulado/{controller}/{action}/{codigo}",
@@ -25,7 +25,7 @@ namespace SIAC
 
             routes.MapRoute(
                 name: "Institucional",
-                url:"Institucional/{action}/{codigo}",
+                url: "Institucional/{action}/{codigo}",
                 defaults: new { controller = "Institucional", action = "Index", codigo = UrlParameter.Optional },
                 constraints: new { controller = @"^(Institucional)$" }
             );
@@ -44,7 +44,6 @@ namespace SIAC
                 constraints: new { controller = @"^(Questao|Autoavaliacao)$", action = @"^(Index|Detalhe|Editar|Listar)$" }
             );
 
-
             routes.MapRoute(
                 name: "PrincipalAvaliacao",
                 url: "Principal/Avaliacao/{controller}/{action}/{codigo}",
@@ -58,7 +57,6 @@ namespace SIAC
                 defaults: new { controller = "Principal", action = "Index", codigo = UrlParameter.Optional },
                 constraints: new { controller = @"^(Questao|Autoavaliacao|Agenda|Impressao)$" }
             );
-
 
             routes.MapRoute(
                 name: "Configuracoes",
@@ -84,7 +82,7 @@ namespace SIAC
                 url: "{controller}/{action}/{tab}",
                 defaults: new { controller = "Acesso", action = "Index", tab = UrlParameter.Optional },
                 constraints: new { controller = @"^(Principal|Historico|Institucional|Perfil|Acesso|Erro|Configuracoes|Tema)$" }
-            );           
+            );
 
             routes.MapRoute(
                 name: "LeroLero",

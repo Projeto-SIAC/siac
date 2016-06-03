@@ -1,15 +1,15 @@
-﻿using SIAC.Models;
+﻿using RazorEngine;
+using RazorEngine.Templating;
+using SIAC.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using RazorEngine;
-using RazorEngine.Templating;
-using System.Threading.Tasks;
 
 namespace SIAC.Helpers
 {
@@ -26,7 +26,7 @@ namespace SIAC.Helpers
 
         private static string LerView(string viewname)
         {
-            string caminho = AppDomain.CurrentDomain.BaseDirectory + "\\Views\\Shared\\Email\\__" + viewname + ".cshtml";
+            string caminho = AppDomain.CurrentDomain.BaseDirectory + "\\Templates\\Email\\__" + viewname + ".cshtml";
             return File.ReadAllText(caminho);
         }
 
@@ -50,7 +50,7 @@ namespace SIAC.Helpers
 
             FluentEmail.Email
                 .From(Criptografia.Base64Decode(Parametro.Obter().SmtpUsuario))
-                .To(para.Select(p=> new MailAddress(p)).ToList())
+                .To(para.Select(p => new MailAddress(p)).ToList())
                 .Subject(assunto)
                 .Body(corpo)
                 .BodyAsHtml()
@@ -83,7 +83,7 @@ namespace SIAC.Helpers
             var model = new { SimuladoUrl = simuladoUrl, SimuladoTitulo = simuladoTitulo };
             var assunto = "Novo simulado disponível no SIAC Simulados";
             var viewname = "SimuladoDisponivel";
-            await Task.Run(() => EnviarParaMuitos(candidatos.Select(c=>c.Email).ToArray(), assunto, viewname, model));
+            await Task.Run(() => EnviarParaMuitos(candidatos.Select(c => c.Email).ToArray(), assunto, viewname, model));
         }
 
         public static async Task MensagemParaCandidatos(List<Candidato> candidatos, string mensagem, string simuladoUrl, string simuladoTitulo)

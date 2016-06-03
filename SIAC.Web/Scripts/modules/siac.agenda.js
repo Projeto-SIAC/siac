@@ -6,7 +6,7 @@
                 center: '',
                 right: 'today agendaDay,agendaWeek,month prev,next'
             },
-            loading: function (isLoading,view){
+            loading: function (isLoading, view) {
                 if (isLoading) {
                     $('.agenda.segment').dimmer({
                         closable: false

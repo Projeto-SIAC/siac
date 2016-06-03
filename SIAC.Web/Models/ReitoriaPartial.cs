@@ -26,7 +26,7 @@ namespace SIAC.Models
                 return pessoas;
             }
         }
-        
+
         private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<Reitoria> ListarOrdenadamente() => contexto.Reitoria.OrderBy(c => c.Sigla).ToList();

@@ -28,7 +28,7 @@ namespace SIAC.Models
         }
 
         [NotMapped]
-        public Dictionary<string,List<Questao>> DicionarioDisciplinaQuestao
+        public Dictionary<string, List<Questao>> DicionarioDisciplinaQuestao
         {
             get
             {

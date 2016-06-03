@@ -20,11 +20,12 @@ namespace SIAC.Models
                 case Categoria.ESTUDANTE:
                     int codAluno = usuario.Aluno.Last().CodAluno;
                     retorno = contexto.TurmaDiscProfHorario
-                        .Where(h=> h.Turma.TurmaDiscAluno.FirstOrDefault(t=>t.CodAluno == codAluno) != null
+                        .Where(h => h.Turma.TurmaDiscAluno.FirstOrDefault(t => t.CodAluno == codAluno) != null
                             && h.AnoLetivo == ano
                             && h.SemestreLetivo == semestre)
                         .ToList();
                     break;
+
                 case Categoria.PROFESSOR:
                     int codProfessor = usuario.Professor.Last().CodProfessor;
                     retorno = contexto.TurmaDiscProfHorario
@@ -33,6 +34,7 @@ namespace SIAC.Models
                             && h.SemestreLetivo == semestre)
                         .ToList();
                     break;
+
                 default:
                     break;
             }

@@ -208,9 +208,6 @@
     <Content Include="Scripts\libs\modernizr.js" />
     <Content Include="Scripts\modules\siac.configuracoes.js" />
     <Content Include="Scripts\modules\siac.questao.js" />
-    <Content Include="Scripts\siac.min.js">
-      <DependentUpon>siac.js</DependentUpon>
-    </Content>
     <Content Include="Styles\alertify.min.css" />
     <Content Include="Styles\fullcalendar.css" />
     <Content Include="Styles\fullcalendar.print.css" />
@@ -263,6 +260,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Captcha.cs" />
+    <Compile Include="Helpers\Configuracoes.cs" />
     <Compile Include="Helpers\CorDinamica.cs" />
     <Compile Include="Helpers\Criptografia.cs" />
     <Compile Include="Helpers\DevGerarQuestao.cs" />
@@ -286,6 +284,10 @@
     <Compile Include="Migrations\201605311958334_SetUnicode.cs" />
     <Compile Include="Migrations\201605311958334_SetUnicode.Designer.cs">
       <DependentUpon>201605311958334_SetUnicode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606021931158_UpdateRequiredFields.cs" />
+    <Compile Include="Migrations\201606021931158_UpdateRequiredFields.Designer.cs">
+      <DependentUpon>201606021931158_UpdateRequiredFields.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Alternativa.cs" />
@@ -352,7 +354,7 @@
     <Compile Include="Models\Endereco.cs" />
     <Compile Include="Models\Estado.cs" />
     <Compile Include="Models\Evento.cs" />
-    <Compile Include="Models\AviMapping.cs" />
+    <Compile Include="Models\AviMapeamento.cs" />
     <Compile Include="Models\Horario.cs" />
     <Compile Include="Models\HorarioPartial.cs" />
     <Compile Include="Models\Instituicao.cs" />
@@ -640,13 +642,13 @@
     <Content Include="Views\Simulado\Partials\_SimuladoRespostasProva.cshtml" />
     <Content Include="Views\Candidato\CartaoInscricao.cshtml" />
     <Content Include="Views\Simulado\Partials\_SimuladoRespostasCandidato.cshtml" />
-    <Content Include="Views\Shared\Email\__Cadastro.cshtml" />
-    <Content Include="Views\Shared\Email\__Inscricao.cshtml" />
-    <Content Include="Views\Shared\Email\__SimuladoDisponivel.cshtml" />
+    <Content Include="Templates\Email\__Cadastro.html" />
+    <Content Include="Templates\Email\__Inscricao.html" />
+    <Content Include="Templates\Email\__SimuladoDisponivel.html" />
     <Content Include="Views\Simulado\Partials\_SimuladoSalaCandidatos.cshtml" />
-    <Content Include="Views\Shared\Email\__CartaoDeInscricaoDisponivel.cshtml" />
-    <Content Include="Views\Shared\Email\__Mensagem.cshtml" />
-    <Content Include="Views\Shared\Email\__Senha.cshtml" />
+    <Content Include="Templates\Email\__CartaoDeInscricaoDisponivel.html" />
+    <Content Include="Templates\Email\__Mensagem.html" />
+    <Content Include="Templates\Email\__Senha.html" />
     <Content Include="Views\Candidato\EsqueceuSenha.cshtml" />
     <Content Include="Views\Candidato\AlterarSenha.cshtml" />
     <Content Include="Views\Simulado\Partials\_SimuladoClassificacao.cshtml" />
@@ -666,9 +668,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Lembrete\" />
-    <Folder Include="Views\LeroLero\" />
-    <Folder Include="Views\Tema\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
@@ -680,6 +679,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201605311958334_SetUnicode.resx">
       <DependentUpon>201605311958334_SetUnicode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606021931158_UpdateRequiredFields.resx">
+      <DependentUpon>201606021931158_UpdateRequiredFields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

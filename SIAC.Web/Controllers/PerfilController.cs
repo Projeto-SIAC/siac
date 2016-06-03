@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE, Categoria.PROFESSOR, Categoria.COLABORADOR})]
+    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE, Categoria.PROFESSOR, Categoria.COLABORADOR })]
     public class PerfilController : Controller
     {
         // GET: perfil
@@ -14,7 +14,7 @@ namespace SIAC.Controllers
         {
             return View(Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario);
         }
-        
+
         // GET: perfil/estatisticas
         [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Estatisticas()
@@ -49,7 +49,7 @@ namespace SIAC.Controllers
             if (!StringExt.IsNullOrWhiteSpace(senhaAtual, senhaNova, senhaConfirmacao))
             {
                 Usuario usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
-                
+
                 string hashSenhaAtual = Criptografia.RetornarHash(senhaAtual);
                 if (hashSenhaAtual == usuario.Senha)
                 {

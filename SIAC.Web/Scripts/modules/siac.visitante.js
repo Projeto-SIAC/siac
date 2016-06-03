@@ -188,7 +188,7 @@ siac.Visitante.Index = (function () {
             $_this.addClass('active');
         });
 
-        $('.carregar.button').click(function () {            
+        $('.carregar.button').click(function () {
             if ($('.table tbody tr').length == (_controleQte * pagina)) {
                 pagina++;
                 listar();
@@ -303,7 +303,7 @@ siac.Visitante.Detalhe = (function () {
                 chkDtValidade: chkDtValidade,
                 txtDtValidade: txtDtValidade
             },
-            success: function(){
+            success: function () {
                 window.location.reload();
             },
             error: function () {

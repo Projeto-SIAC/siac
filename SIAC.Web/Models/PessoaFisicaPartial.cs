@@ -9,6 +9,7 @@ namespace SIAC.Models
     {
         [NotMapped]
         public string PrimeiroNome => this.Nome.Split(' ').First();
+
         [NotMapped]
         public string UltimoNome => this.Nome.Split(' ').Last();
 

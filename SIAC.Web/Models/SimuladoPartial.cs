@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Web;
 
 namespace SIAC.Models
 {
@@ -11,8 +10,8 @@ namespace SIAC.Models
         [NotMapped]
         public string Codigo => $"SIMUL{Ano}{NumIdentificador.ToString("d5")}";
 
-        public bool CandidatoInscrito(int codCandidato) =>
-           this.SimCandidato.FirstOrDefault(sc => sc.CodCandidato == codCandidato) != null;
+        [NotMapped]
+        public bool FlagNenhumInscritoAposPrazo => this.SimCandidato.Count == 0 && this.DtTerminoInscricao < DateTime.Now;
 
         [NotMapped]
         public bool FlagTemVaga => this.QteVagas > this.SimCandidato.Count;
@@ -27,7 +26,8 @@ namespace SIAC.Models
         public bool FlagAguardaPrazoInscricao => this.DtInicioInscricao > DateTime.Now;
 
         [NotMapped]
-        public List<SimProva> Provas {
+        public List<SimProva> Provas
+        {
             get
             {
                 List<SimProva> provas = new List<SimProva>();
@@ -40,7 +40,7 @@ namespace SIAC.Models
         }
 
         [NotMapped]
-        public List<SimCandidato> Classificacao => 
+        public List<SimCandidato> Classificacao =>
             this.SimCandidato.OrderByDescending(c => c.EscorePadronizadoFinal).ToList();
 
         [NotMapped]
@@ -50,6 +50,9 @@ namespace SIAC.Models
         [NotMapped]
         public SimDiaRealizacao UltimoDiaRealizacao =>
             this.SimDiaRealizacao.OrderBy(d => d.DtRealizacao).LastOrDefault();
+
+        public bool CandidatoInscrito(int codCandidato) =>
+           this.SimCandidato.FirstOrDefault(sc => sc.CodCandidato == codCandidato) != null;
 
         public int ObterNumInscricao()
         {

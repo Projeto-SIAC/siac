@@ -6,7 +6,9 @@
         public string Titulo { get; set; } = "Volte ao início";
         public string Mensagem { get; set; } = "Ocorreu um erro inesperado";
 
-        public ErroIndexViewModel() { }
+        public ErroIndexViewModel()
+        {
+        }
 
         public ErroIndexViewModel(string codigo, string titulo, string mensagem)
         {

@@ -25,7 +25,7 @@ namespace SIAC.Controllers
             {
                 simulados = simulados
                     .Where(a =>
-                        a.Codigo.IndexOf(pesquisa, StringComparison.OrdinalIgnoreCase) > -1 || 
+                        a.Codigo.IndexOf(pesquisa, StringComparison.OrdinalIgnoreCase) > -1 ||
                         a.Titulo.IndexOf(pesquisa, StringComparison.OrdinalIgnoreCase) > -1 ||
                         a.Descricao.IndexOf(pesquisa, StringComparison.OrdinalIgnoreCase) > -1)
                     .ToList();
@@ -36,9 +36,11 @@ namespace SIAC.Controllers
                 case "data_desc":
                     simulados = simulados.OrderByDescending(a => a.DtCadastro).ToList();
                     break;
+
                 case "data":
                     simulados = simulados.OrderBy(a => a.DtCadastro).ToList();
                     break;
+
                 default:
                     simulados = simulados.OrderByDescending(a => a.DtCadastro).ToList();
                     break;
@@ -59,6 +61,7 @@ namespace SIAC.Controllers
 
         // TODO: método para ser utilizado ajax para atualizar as listas em Abertos e Encerrados
         public ActionResult Abertos() => View();
+
         public ActionResult Encerrados() => View();
     }
 }

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNet.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using Microsoft.AspNet.SignalR;
 
 namespace SIAC.Hubs
 {
@@ -34,7 +34,6 @@ namespace SIAC.Hubs
             }
             if (!String.IsNullOrEmpty(aval))
             {
-
                 var mapping = avaliacoes.SelecionarAcademica(aval);
                 mapping.DesconectarPorConnectionId(connId);
 
@@ -75,7 +74,7 @@ namespace SIAC.Hubs
             return base.OnDisconnected(stopCalled);
         }
 
-        #endregion
+        #endregion Override
 
         private readonly static AcademicaMapping avaliacoes = new AcademicaMapping();
 
@@ -101,7 +100,7 @@ namespace SIAC.Hubs
             avaliacoes.InserirAcademica(codAvaliacao);
             var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
             mapping.InserirProfessor(usrMatricula, Context.ConnectionId);
-            
+
             foreach (var alnMatricula in mapping.ListarMatriculaAvaliados())
             {
                 foreach (var codQuestao in mapping.ListarQuestaoRespondidasPorAvaliado(alnMatricula))
@@ -109,7 +108,7 @@ namespace SIAC.Hubs
                     Clients.Client(mapping.SelecionarConnectionIdProfessor()).respondeuQuestao(alnMatricula, codQuestao, true);
                 }
                 Clients.Client(mapping.SelecionarConnectionIdProfessor()).listarChat(alnMatricula, mapping.ListarChat(alnMatricula));
-                
+
                 Clients.Client(mapping.SelecionarConnectionIdProfessor()).atualizarProgresso(alnMatricula, mapping.ListarQuestaoRespondidasPorAvaliado(alnMatricula).Count);
                 Clients.Client(mapping.SelecionarConnectionIdProfessor()).conectarAvaliado(alnMatricula);
                 if (mapping.SeAvaliadoFinalizou(alnMatricula))
@@ -141,7 +140,6 @@ namespace SIAC.Hubs
                 mapping.InserirEvento(usrMatricula, "green sign in", "Conectou");
             }
 
-
             if (!String.IsNullOrEmpty(mapping.SelecionarConnectionIdProfessor()))
             {
                 foreach (var codQuestao in mapping.ListarQuestoes())
@@ -153,7 +151,7 @@ namespace SIAC.Hubs
             }
         }
 
-        public void RequererAval(string codAvaliacao,string usrMatricula)
+        public void RequererAval(string codAvaliacao, string usrMatricula)
         {
             Clients.Client(avaliacoes.SelecionarAcademica(codAvaliacao).SelecionarConnectionIdPorAvaliado(usrMatricula)).enviarAval(codAvaliacao);
         }
@@ -167,8 +165,8 @@ namespace SIAC.Hubs
 
         public void ResponderQuestao(string codAvaliacao, string usrMatricula, int questao, bool flag)
         {
-            var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);        
-                        
+            var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
+
             if (flag)
             {
                 if (mapping.ListarQuestaoRespondidasPorAvaliado(usrMatricula).Contains(questao))
@@ -182,7 +180,7 @@ namespace SIAC.Hubs
             }
             else
             {
-               mapping.InserirEvento(usrMatricula, "erase", "Retirou resposta da questão " + mapping.SelecionarIndiceQuestao(questao));
+                mapping.InserirEvento(usrMatricula, "erase", "Retirou resposta da questão " + mapping.SelecionarIndiceQuestao(questao));
             }
 
             mapping.AlterarAvaliadoQuestao(usrMatricula, questao, flag);
@@ -268,7 +266,8 @@ namespace SIAC.Hubs
             }
         }
 
-        public void Prorrogar(string codAvaliacao, int duracao, string observacao) {
+        public void Prorrogar(string codAvaliacao, int duracao, string observacao)
+        {
             if (duracao > 0)
             {
                 var mapping = avaliacoes.SelecionarAcademica(codAvaliacao);
@@ -324,7 +323,8 @@ namespace SIAC.Hubs
                 if (!academicas.ContainsKey(codAvaliacao))
                 {
                     academicas.Add(codAvaliacao, new Avaliacao());
-                    using (var e = new Models.Contexto()) {
+                    using (var e = new Models.Contexto())
+                    {
                         int numIdentificador = 0;
                         int semestre = 0;
                         int ano = 0;
@@ -338,10 +338,10 @@ namespace SIAC.Hubs
                             codigo = codigo.Remove(codigo.Length - 1);
                             int.TryParse(codigo.Substring(codigo.Length - 4), out ano);
                             codigo = codigo.Remove(codigo.Length - 4);
-                            int codTipoAvaliacao = e.TipoAvaliacao.FirstOrDefault(t=>t.Sigla == codigo).CodTipoAvaliacao;
+                            int codTipoAvaliacao = e.TipoAvaliacao.FirstOrDefault(t => t.Sigla == codigo).CodTipoAvaliacao;
 
                             Models.AvalAcademica avalAcademica = e.AvalAcademica.FirstOrDefault(acad => acad.Ano == ano && acad.Semestre == semestre && acad.NumIdentificador == numIdentificador && acad.CodTipoAvaliacao == codTipoAvaliacao);
-                            
+
                             academicas[codAvaliacao].MapearQuestao(avalAcademica.Avaliacao.Questao.Select(q => q.CodQuestao).ToList());
                         }
                     }
@@ -351,7 +351,7 @@ namespace SIAC.Hubs
 
         public void RemoverAcademica(string codAvaliacao)
         {
-            lock(academicas)
+            lock (academicas)
             {
                 if (academicas.ContainsKey(codAvaliacao))
                 {
@@ -368,5 +368,5 @@ namespace SIAC.Hubs
             }
             return null;
         }
-    }    
+    }
 }

@@ -1,8 +1,8 @@
-﻿using System;
+﻿using SIAC.Helpers;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using SIAC.Helpers;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace SIAC.Models
 {
@@ -100,7 +100,7 @@ namespace SIAC.Models
         public static void Inserir(AvalAcademica avalAcademica)
         {
             contexto.AvalAcademica.Add(avalAcademica);
-            
+
             Questao.AtualizarDtUltimoUso(avalAcademica.Avaliacao.Questao);
 
             contexto.SaveChanges();
@@ -150,6 +150,7 @@ namespace SIAC.Models
                             && !a.Avaliacao.FlagArquivo)
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
+
                 case Categoria.PROFESSOR:
                     int codProfessor = usuario.Professor.First().CodProfessor;
                     return contexto.AvalAcademica
@@ -159,6 +160,7 @@ namespace SIAC.Models
                             && !a.Avaliacao.FlagArquivo)
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
+
                 case Categoria.COLABORADOR:
                     int codColaborador = usuario.Colaborador.First().CodColaborador;
                     return contexto.AvalAcademica
@@ -175,6 +177,7 @@ namespace SIAC.Models
                             ))
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
+
                 default:
                     return new List<AvalAcademica>();
             }
@@ -194,6 +197,7 @@ namespace SIAC.Models
                             && !a.Avaliacao.FlagArquivo)
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
+
                 case Categoria.PROFESSOR:
                     int codProfessor = usuario.Professor.LastOrDefault()?.CodProfessor ?? 0;
                     return contexto.AvalAcademica
@@ -203,6 +207,7 @@ namespace SIAC.Models
                             && !a.Avaliacao.FlagArquivo)
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
+
                 case Categoria.COLABORADOR:
                     int codColaborador = usuario.Colaborador.LastOrDefault()?.CodColaborador ?? 0;
                     return contexto.AvalAcademica
@@ -219,18 +224,19 @@ namespace SIAC.Models
                             ))
                         .OrderBy(a => a.Avaliacao.DtAplicacao)
                         .ToList();
+
                 default:
                     return new List<AvalAcademica>();
             }
         }
 
-        public static AvalAcademica ListarPorCodigoAvaliacao(string codigo) => Avaliacao.ListarPorCodigoAvaliacao(codigo)?.AvalAcademica; 
+        public static AvalAcademica ListarPorCodigoAvaliacao(string codigo) => Avaliacao.ListarPorCodigoAvaliacao(codigo)?.AvalAcademica;
 
         public static void Persistir() => contexto.SaveChanges();
 
         public static bool CorrigirQuestaoAluno(string codAvaliacao, string matrAluno, int codQuestao, double notaObtida, string profObservacao)
         {
-            if (!StringExt.IsNullOrWhiteSpace(codAvaliacao,matrAluno) && codQuestao != 0)
+            if (!StringExt.IsNullOrWhiteSpace(codAvaliacao, matrAluno) && codQuestao != 0)
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codAvaliacao);
                 Aluno aluno = Aluno.ListarPorMatricula(matrAluno);

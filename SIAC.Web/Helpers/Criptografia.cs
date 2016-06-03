@@ -8,7 +8,7 @@ namespace SIAC.Helpers
     {
         public static string RetornarHash(string senha)
         {
-            string strSenha = (Environment.GetEnvironmentVariable("SIAC_SALT") ?? ConfigurationManager.AppSettings["SIAC_SALT"]) + senha;
+            string strSenha = Helpers.Configuracoes.Recuperar("SIAC_SALT") + senha;
             System.Security.Cryptography.SHA256 sha = new System.Security.Cryptography.SHA256CryptoServiceProvider();
             System.Text.StringBuilder sb = new StringBuilder();
             sha.ComputeHash(System.Text.ASCIIEncoding.ASCII.GetBytes(strSenha));
@@ -25,7 +25,6 @@ namespace SIAC.Helpers
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
             return Convert.ToBase64String(plainTextBytes);
         }
-
 
         public static string Base64Decode(string base64EncodedData)
         {

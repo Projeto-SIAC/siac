@@ -38,6 +38,5 @@ namespace SIAC.Filters
 
             base.OnActionExecuting(filterContext);
         }
-
     }
 }

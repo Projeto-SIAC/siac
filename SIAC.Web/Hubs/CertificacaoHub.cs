@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNet.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using Microsoft.AspNet.SignalR;
 
 namespace SIAC.Hubs
 {
@@ -73,7 +73,7 @@ namespace SIAC.Hubs
             return base.OnDisconnected(stopCalled);
         }
 
-        #endregion
+        #endregion Override
 
         private readonly static CertificacaoMapping avaliacoes = new CertificacaoMapping();
 
@@ -138,7 +138,6 @@ namespace SIAC.Hubs
                 mapping.InserirAvaliado(usrMatricula, Context.ConnectionId);
                 mapping.InserirEvento(usrMatricula, "green sign in", "Conectou");
             }
-
 
             if (!String.IsNullOrEmpty(mapping.SelecionarConnectionIdProfessor()))
             {

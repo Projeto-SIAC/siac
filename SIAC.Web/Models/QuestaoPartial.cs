@@ -144,7 +144,6 @@ namespace SIAC.Models
                     }
                 }
 
-
                 if (quantidadeQuestoes > questoesTemas.Count)
                 {
                     questoesAtual = (from qt in questoesTotal
@@ -209,9 +208,7 @@ namespace SIAC.Models
                                             }
                                             questoesAtual.RemoveAt(random);
                                             questoesTotal.Remove(questoesAtual.ElementAtOrDefault(random));
-
                                         }
-
                                     } while (questoesTemas.Count != quantidadeQuestoes);
                                 }
                                 else

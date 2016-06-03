@@ -109,7 +109,7 @@ namespace SIAC.Controllers
                     bloco.RefLocal = String.IsNullOrWhiteSpace(refLocal) ? null : refLocal;
                     bloco.Observacao = String.IsNullOrWhiteSpace(observacao) ? null : observacao;
 
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
 
                     lembrete = Lembrete.POSITIVO;
                     mensagem = $"Bloco \"{bloco.Descricao}\" editado com sucesso.";
@@ -139,7 +139,7 @@ namespace SIAC.Controllers
                 if (bloco.Sala.Count == 0)
                 {
                     Repositorio.GetInstance().Bloco.Remove(bloco);
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
 
                     lembrete = Lembrete.POSITIVO;
                     mensagem = $"Bloco \"{bloco.Descricao}\" excluído com sucesso.";
@@ -154,7 +154,7 @@ namespace SIAC.Controllers
             Lembrete.AdicionarNotificacao(mensagem, lembrete);
         }
 
-        #endregion
+        #endregion Blocos
 
         #region Salas
 
@@ -251,7 +251,7 @@ namespace SIAC.Controllers
                     sala.RefLocal = String.IsNullOrWhiteSpace(refLocal) ? null : refLocal;
                     sala.Observacao = String.IsNullOrWhiteSpace(observacao) ? null : observacao;
 
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
 
                     lembrete = Lembrete.POSITIVO;
                     mensagem = $"Sala \"{sala.Descricao}\" editada com sucesso.";
@@ -279,7 +279,7 @@ namespace SIAC.Controllers
             if (sala != null)
             {
                 Repositorio.GetInstance().Sala.Remove(sala);
-                Repositorio.GetInstance().SaveChanges();
+                Repositorio.Commit();
 
                 lembrete = Lembrete.POSITIVO;
                 mensagem = $"Sala \"{sala.Descricao}\" excluída com sucesso.";
@@ -288,7 +288,7 @@ namespace SIAC.Controllers
             Lembrete.AdicionarNotificacao(mensagem, lembrete);
         }
 
-        #endregion
+        #endregion Salas
 
         #region Disciplinas
 
@@ -366,7 +366,7 @@ namespace SIAC.Controllers
                     disciplina.Descricao = descricao;
                     disciplina.Sigla = sigla;
 
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
 
                     lembrete = Lembrete.POSITIVO;
                     mensagem = $"Disciplina \"{disciplina.Descricao}\" editada com sucesso.";
@@ -396,7 +396,7 @@ namespace SIAC.Controllers
                 if (disciplina.Tema.Count == 0 || (disciplina.Tema.Count == 1 && disciplina.Tema.First().Descricao.ToLower() == "simulado"))
                 {
                     Repositorio.GetInstance().Disciplina.Remove(disciplina);
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
 
                     lembrete = Lembrete.POSITIVO;
                     mensagem = $"Disciplina \"{disciplina.Descricao}\" excluída com sucesso.";
@@ -411,7 +411,7 @@ namespace SIAC.Controllers
             Lembrete.AdicionarNotificacao(mensagem, lembrete);
         }
 
-        #endregion
+        #endregion Disciplinas
 
         #region Professores
 
@@ -527,7 +527,7 @@ namespace SIAC.Controllers
                         professor.Disciplina.Add(Disciplina.ListarPorCodigo(int.Parse(disciplina)));
                     }
 
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
 
                     lembrete = Lembrete.POSITIVO;
                     mensagem = $"Professor(a) \"{nome}\" editado(a) com sucesso.";
@@ -557,7 +557,7 @@ namespace SIAC.Controllers
                 try
                 {
                     Repositorio.GetInstance().Professor.Remove(professor);
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
 
                     lembrete = Lembrete.POSITIVO;
                     mensagem = $"Professor(a) \"{professor.Usuario.PessoaFisica.Nome}\" excluído(a) com sucesso.";
@@ -575,11 +575,13 @@ namespace SIAC.Controllers
             Lembrete.AdicionarNotificacao(mensagem, lembrete);
         }
 
-        #endregion
+        #endregion Professores
 
         #region Configuracoes
+
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
-        public ActionResult Configuracoes() => View(new GerenciaConfiguracoesViewModel() {
+        public ActionResult Configuracoes() => View(new GerenciaConfiguracoesViewModel()
+        {
             SmtpEnderecoHost = Parametro.Obter().SmtpEnderecoHost,
             SmtpPorta = Parametro.Obter().SmtpPorta,
             SmptFlagSSL = Parametro.Obter().SmtpFlagSSL,
@@ -603,6 +605,7 @@ namespace SIAC.Controllers
 
             return RedirectToAction("Configuracoes");
         }
-        #endregion
+
+        #endregion Configuracoes
     }
 }

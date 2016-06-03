@@ -1,12 +1,11 @@
-﻿using System;
+﻿using SIAC.Helpers;
+using SIAC.Models;
+using SIAC.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
-using SIAC.Models;
-using SIAC.ViewModels;
-using SIAC.Helpers;
 
 namespace SIAC.Controllers
 {
@@ -39,9 +38,11 @@ namespace SIAC.Controllers
                 case "data_desc":
                     usuarios = usuarios.OrderByDescending(a => a.UsuarioAcesso.LastOrDefault()?.DtAcesso).ToList();
                     break;
+
                 case "data":
                     usuarios = usuarios.OrderBy(a => a.UsuarioAcesso.LastOrDefault()?.DtAcesso).ToList();
                     break;
+
                 default:
                     usuarios = usuarios.OrderByDescending(a => a.UsuarioAcesso.LastOrDefault()?.DtAcesso).ToList();
                     break;
@@ -88,7 +89,7 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult ListarAcesso(string matricula, int? pagina)
         {
-            var lista = Usuario.ListarPorMatricula(matricula)?.UsuarioAcesso.OrderByDescending(a=>a.DtAcesso);
+            var lista = Usuario.ListarPorMatricula(matricula)?.UsuarioAcesso.OrderByDescending(a => a.DtAcesso);
 
             var qte = 10;
 

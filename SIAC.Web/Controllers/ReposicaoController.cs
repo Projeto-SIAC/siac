@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE,Categoria.PROFESSOR })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE, Categoria.PROFESSOR })]
     public class ReposicaoController : Controller
     {
         public List<AvalAcadReposicao> Reposicoes
@@ -29,7 +29,7 @@ namespace SIAC.Controllers
             }
         }
 
-        // POST: principal/avaliacao/reposicao/listar            
+        // POST: principal/avaliacao/reposicao/listar
         [HttpPost]
         public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string categoria, string disciplina)
         {
@@ -51,9 +51,11 @@ namespace SIAC.Controllers
                 case "agendada":
                     reposicoes = reposicoes.Where(a => a.Avaliacao.FlagAgendada).ToList();
                     break;
+
                 case "realizada":
                     reposicoes = reposicoes.Where(a => a.Avaliacao.FlagRealizada).ToList();
                     break;
+
                 case "arquivo":
                     reposicoes = reposicoes.Where(a => a.Avaliacao.FlagArquivo).ToList();
                     break;
@@ -64,9 +66,11 @@ namespace SIAC.Controllers
                 case "data_desc":
                     reposicoes = reposicoes.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
                     break;
+
                 case "data":
                     reposicoes = reposicoes.OrderBy(a => a.Avaliacao.DtCadastro).ToList();
                     break;
+
                 default:
                     reposicoes = reposicoes.OrderByDescending(a => a.Avaliacao.DtCadastro).ToList();
                     break;
@@ -130,13 +134,13 @@ namespace SIAC.Controllers
 
                         aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
-                        Repositorio.GetInstance().SaveChanges();
+                        Repositorio.Commit();
                     }
                 }
             }
             return null;
         }
-        
+
         // POST: principal/avaliacao/reposicao/gerar/REPO201520001
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
@@ -204,7 +208,7 @@ namespace SIAC.Controllers
             }
 
             Repositorio.GetInstance().AvalAcadReposicao.Add(aval);
-            Repositorio.GetInstance().SaveChanges();
+            Repositorio.Commit();
 
             return nova ? Url.Action("Configurar", new { codigo = aval.Avaliacao.CodAvaliacao }) : Url.Action("Agendar", new { codigo = aval.Avaliacao.CodAvaliacao });
         }
@@ -444,7 +448,7 @@ namespace SIAC.Controllers
                     }
 
                     // Data de Aplicacao
-                    DateTime dtAplicacao = DateTime.Parse(data+ " " + horaInicio, new CultureInfo("pt-BR"));
+                    DateTime dtAplicacao = DateTime.Parse(data + " " + horaInicio, new CultureInfo("pt-BR"));
                     DateTime dtAplicacaoTermino = DateTime.Parse(data + " " + horaTermino, new CultureInfo("pt-BR"));
 
                     if (dtAplicacao.IsFuture() && dtAplicacaoTermino.IsFuture() && dtAplicacaoTermino > dtAplicacao)
@@ -455,7 +459,7 @@ namespace SIAC.Controllers
 
                     aval.Avaliacao.FlagLiberada = false;
 
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
                 }
             }
 
@@ -506,15 +510,19 @@ namespace SIAC.Controllers
                     case 'd':
                         quantidadeMilissegundo = 0;
                         break;
+
                     case 'h':
                         quantidadeMilissegundo = 1 * 60 * 60 * 1000;
                         break;
+
                     case 'm':
                         quantidadeMilissegundo = 1 * 60 * 1000;
                         break;
+
                     case 's':
                         quantidadeMilissegundo = 1 * 1000;
                         break;
+
                     default:
                         break;
                 }
@@ -602,7 +610,7 @@ namespace SIAC.Controllers
 
                     aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
                     Sessao.Inserir("RealizandoAvaliacao", false);
                 }
             }
@@ -692,7 +700,6 @@ namespace SIAC.Controllers
                             avalQuesPessoaResposta.RespComentario = !String.IsNullOrWhiteSpace(form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao]) ? form["txtComentario" + avalTemaQuestao.QuestaoTema.Questao.CodQuestao].Trim() : null;
                             avalTemaQuestao.AvalQuesPessoaResposta.Add(avalQuesPessoaResposta);
                         }
-
                     }
 
                     IEnumerable<AvalQuesPessoaResposta> lstAvalQuesPessoaResposta = aval.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == codPessoaFisica);
@@ -700,7 +707,7 @@ namespace SIAC.Controllers
                     avalPessoaResultado.Nota = lstAvalQuesPessoaResposta.Average(r => r.RespNota);
                     aval.Avaliacao.AvalPessoaResultado.Add(avalPessoaResultado);
 
-                    Repositorio.GetInstance().SaveChanges();
+                    Repositorio.Commit();
 
                     AvaliacaoResultadoViewModel model = new AvaliacaoResultadoViewModel();
                     model.Avaliacao = aval.Avaliacao;
@@ -779,26 +786,26 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult CarregarRespostasDiscursivas(string codigo, string matrAluno)
         {
-            if (!StringExt.IsNullOrWhiteSpace(codigo,matrAluno))
+            if (!StringExt.IsNullOrWhiteSpace(codigo, matrAluno))
             {
                 AvalAcadReposicao aval = AvalAcadReposicao.ListarPorCodigoAvaliacao(codigo);
                 Aluno aluno = Aluno.ListarPorMatricula(matrAluno);
                 int codPessoaFisica = aluno.Usuario.PessoaFisica.CodPessoa;
 
                 var retorno = from alunoResposta in aval.Avaliacao.PessoaResposta
-                             orderby alunoResposta.CodQuestao
-                             where alunoResposta.CodPessoaFisica == codPessoaFisica
-                                && alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.DISCURSIVA
-                             select new
-                             {
-                                 codQuestao = alunoResposta.CodQuestao,
-                                 questaoEnunciado = alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.Enunciado,
-                                 questaoChaveResposta = alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.ChaveDeResposta,
-                                 alunoResposta = alunoResposta.RespDiscursiva,
-                                 notaObtida = alunoResposta.RespNota.HasValue ? alunoResposta.RespNota.Value.ToValueHtml() : "",
-                                 correcaoComentario = alunoResposta.ProfObservacao != null ? alunoResposta.ProfObservacao : "",
-                                 flagCorrigida = alunoResposta.RespNota != null ? true : false
-                             };
+                              orderby alunoResposta.CodQuestao
+                              where alunoResposta.CodPessoaFisica == codPessoaFisica
+                                 && alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.DISCURSIVA
+                              select new
+                              {
+                                  codQuestao = alunoResposta.CodQuestao,
+                                  questaoEnunciado = alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.Enunciado,
+                                  questaoChaveResposta = alunoResposta.AvalTemaQuestao.QuestaoTema.Questao.ChaveDeResposta,
+                                  alunoResposta = alunoResposta.RespDiscursiva,
+                                  notaObtida = alunoResposta.RespNota.HasValue ? alunoResposta.RespNota.Value.ToValueHtml() : "",
+                                  correcaoComentario = alunoResposta.ProfObservacao != null ? alunoResposta.ProfObservacao : "",
+                                  flagCorrigida = alunoResposta.RespNota != null ? true : false
+                              };
                 return Json(retorno);
             }
             return Json(null);
@@ -809,27 +816,27 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult CarregarRespostasPorQuestao(string codigo, string codQuestao)
         {
-            if (!StringExt.IsNullOrWhiteSpace(codigo,codQuestao))
+            if (!StringExt.IsNullOrWhiteSpace(codigo, codQuestao))
             {
                 AvalAcadReposicao aval = AvalAcadReposicao.ListarPorCodigoAvaliacao(codigo);
                 int codQuestaoTemp = int.Parse(codQuestao);
 
                 var retorno = from questao in aval.Avaliacao.PessoaResposta
-                             orderby questao.PessoaFisica.Nome
-                             where questao.CodQuestao == codQuestaoTemp
-                                && questao.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.DISCURSIVA
-                             select new
-                             {
-                                 alunoMatricula = aval.AlunosRealizaram.FirstOrDefault(a => a.Usuario.CodPessoaFisica == questao.CodPessoaFisica).Usuario.Matricula,
-                                 alunoNome = questao.PessoaFisica.Nome,
-                                 codQuestao = questao.CodQuestao,
-                                 questaoEnunciado = questao.AvalTemaQuestao.QuestaoTema.Questao.Enunciado,
-                                 questaoChaveResposta = questao.AvalTemaQuestao.QuestaoTema.Questao.ChaveDeResposta,
-                                 alunoResposta = questao.RespDiscursiva,
-                                 notaObtida = questao.RespNota.HasValue ? questao.RespNota.Value.ToValueHtml() : "",
-                                 correcaoComentario = questao.ProfObservacao != null ? questao.ProfObservacao : "",
-                                 flagCorrigida = questao.RespNota != null ? true : false
-                             };
+                              orderby questao.PessoaFisica.Nome
+                              where questao.CodQuestao == codQuestaoTemp
+                                 && questao.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.DISCURSIVA
+                              select new
+                              {
+                                  alunoMatricula = aval.AlunosRealizaram.FirstOrDefault(a => a.Usuario.CodPessoaFisica == questao.CodPessoaFisica).Usuario.Matricula,
+                                  alunoNome = questao.PessoaFisica.Nome,
+                                  codQuestao = questao.CodQuestao,
+                                  questaoEnunciado = questao.AvalTemaQuestao.QuestaoTema.Questao.Enunciado,
+                                  questaoChaveResposta = questao.AvalTemaQuestao.QuestaoTema.Questao.ChaveDeResposta,
+                                  alunoResposta = questao.RespDiscursiva,
+                                  notaObtida = questao.RespNota.HasValue ? questao.RespNota.Value.ToValueHtml() : "",
+                                  correcaoComentario = questao.ProfObservacao != null ? questao.ProfObservacao : "",
+                                  flagCorrigida = questao.RespNota != null ? true : false
+                              };
                 return Json(retorno);
             }
             return Json(null);

@@ -22,10 +22,13 @@ namespace SIAC.Models
                 {
                     case TipoAvaliacao.ACADEMICA:
                         return this.AvalAcademica.Professor;
+
                     case TipoAvaliacao.CERTIFICACAO:
                         return this.AvalCertificacao.Professor;
+
                     case TipoAvaliacao.REPOSICAO:
                         return this.AvalAcadReposicao.Professor;
+
                     default:
                         return null;
                 }

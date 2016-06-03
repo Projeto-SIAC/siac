@@ -1,10 +1,8 @@
 namespace SIAC.Models
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("AvaliacaoProrrogacao")]
     public partial class AvaliacaoProrrogacao
@@ -33,9 +31,9 @@ namespace SIAC.Models
         [Column(Order = 4)]
         public DateTime DtProrrogacao { get; set; }
 
-        public int? DuracaoAnterior { get; set; }
+        public int DuracaoAnterior { get; set; }
 
-        public int? DuracaoNova { get; set; }
+        public int DuracaoNova { get; set; }
 
         [StringLength(255)]
         public string Observacao { get; set; }

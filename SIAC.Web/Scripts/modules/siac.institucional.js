@@ -2,7 +2,6 @@
 
 siac.Institucional.Configuracao = (function () {
     function iniciar() {
-
         $('.ui.dropdown').dropdown();
         $('.ui.accordion').accordion({ animateChildren: false });
 
@@ -99,7 +98,6 @@ siac.Institucional.Questionario = (function () {
                 var checked = $(this).is(':checked');
                 if (checked) {
                     $('#txtAlternativaDiscursiva').prop('readonly', false).parent().removeClass('disabled');
-
                 } else {
                     $('#txtAlternativaDiscursiva').prop('readonly', true).parent().addClass('disabled');
                 }
@@ -156,7 +154,6 @@ siac.Institucional.Questionario = (function () {
         });
         $('.ui.alternativas.accordion .button').popup({ inline: true, on: 'click', position: 'right center' });
         $('.ui.alternativas.accordion').accordion({ animateChildren: false });
-
     }
 
     function renomearAlternativas() {
@@ -544,7 +541,6 @@ siac.Institucional.Questionario = (function () {
                         indice++;
                     });
                 }
-
             },
             error: function (erro) {
                 siac.mensagem('Erro na edição de questão');
@@ -629,7 +625,6 @@ siac.Institucional.Configurar = (function () {
 
         $title.insertBefore($title.prev().prev());
         $content.insertBefore($content.prev().prev());
-
     }
 
     function descerElemento(button) {
@@ -638,7 +633,6 @@ siac.Institucional.Configurar = (function () {
 
         $title.insertAfter($title.next().next().next());
         $content.insertAfter($content.next().next().next());
-
     }
 
     function obterQuestoesOrdem() {

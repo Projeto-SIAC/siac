@@ -24,10 +24,18 @@ namespace SIAC.Models
             contexto.SaveChanges();
         }
 
+        public static bool ProfessorLeciona(int codProfessor, int codDisciplina) =>
+            (bool)contexto.Professor.FirstOrDefault(p => p.CodProfessor == codProfessor)?.Leciona(codDisciplina);
+
         public static List<Disciplina> ObterDisciplinas(int codProfessor) => contexto.Professor.FirstOrDefault(p => p.CodProfessor == codProfessor)?.Disciplina.OrderBy(d => d.Descricao).ToList();
 
         public static List<Disciplina> ObterDisciplinas(string matrProfessor) => contexto.Professor.FirstOrDefault(p => p.MatrProfessor == matrProfessor)?.Disciplina.OrderBy(d => d.Descricao).ToList();
 
         public static List<Professor> ListarOrdenadamente() => contexto.Professor.OrderBy(p => p.Usuario.PessoaFisica.Nome).ToList();
+
+        public override string ToString()
+        {
+            return this.Usuario.PessoaFisica.Nome;
+        }
     }
 }

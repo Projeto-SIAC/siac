@@ -1,10 +1,7 @@
 namespace SIAC.Models
 {
-    using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("TurmaDiscProfHorario")]
     public partial class TurmaDiscProfHorario
@@ -45,7 +42,7 @@ namespace SIAC.Models
         public int NumTurma { get; set; }
 
         [Key]
-        [Column(Order =7)]
+        [Column(Order = 7)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CodDisciplina { get; set; }
 

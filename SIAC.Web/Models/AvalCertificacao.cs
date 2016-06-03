@@ -1,10 +1,8 @@
 namespace SIAC.Models
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("AvalCertificacao")]
     public partial class AvalCertificacao
@@ -35,7 +33,7 @@ namespace SIAC.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int NumIdentificador { get; set; }
 
-        public int CodSala { get; set; }
+        public int? CodSala { get; set; }
 
         public int CodProfessor { get; set; }
 

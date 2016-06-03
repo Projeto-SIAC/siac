@@ -40,27 +40,35 @@ namespace SIAC.Models
                         case AviTipoPublico.INSTITUICAO:
                             pessoas.AddRange(publico.Instituicao.Pessoas);
                             break;
+
                         case AviTipoPublico.REITORIA:
                             pessoas.AddRange(publico.Reitoria.Pessoas);
                             break;
+
                         case AviTipoPublico.PRO_REITORIA:
                             pessoas.AddRange(publico.ProReitoria.Pessoas);
                             break;
+
                         case AviTipoPublico.CAMPUS:
                             pessoas.AddRange(publico.Campus.Pessoas);
                             break;
+
                         case AviTipoPublico.DIRETORIA:
                             pessoas.AddRange(publico.Diretoria.Pessoas);
                             break;
+
                         case AviTipoPublico.CURSO:
                             pessoas.AddRange(PessoaFisica.ListarPorCurso(publico.Curso.CodCurso));
                             break;
+
                         case AviTipoPublico.TURMA:
                             pessoas.AddRange(PessoaFisica.ListarPorTurma(publico.Turma.CodTurma));
                             break;
+
                         case AviTipoPublico.PESSOA:
                             pessoas.Add(publico.PessoaFisica);
                             break;
+
                         default:
                             break;
                     }
@@ -135,7 +143,7 @@ namespace SIAC.Models
         public int QteQuestoes => this.Questoes.Count;
 
         private static Contexto contexto => Repositorio.GetInstance();
-        
+
         public AviQuestao ObterQuestao(int modulo, int categoria, int indicador, int ordem) =>
             this.AviQuestao.FirstOrDefault(q => q.CodAviModulo == modulo
                 && q.CodAviCategoria == categoria
@@ -172,7 +180,7 @@ namespace SIAC.Models
                 List<AvalAvi> retorno = new List<AvalAvi>();
 
                 foreach (AvalAvi avi in institucionais)
-                    if (avi.Pessoas.FirstOrDefault(p=>p.CodPessoa == pessoa.CodPessoa) != null)
+                    if (avi.Pessoas.FirstOrDefault(p => p.CodPessoa == pessoa.CodPessoa) != null)
                         retorno.Add(avi);
                 return retorno;
             }
@@ -245,6 +253,7 @@ namespace SIAC.Models
                         };
                         this.AviPublico.Add(pessoa);
                         break;
+
                     case "Turma":
                         AviPublico turma = new AviPublico
                         {
@@ -254,6 +263,7 @@ namespace SIAC.Models
                         };
                         this.AviPublico.Add(turma);
                         break;
+
                     case "Curso":
                         AviPublico curso = new AviPublico
                         {
@@ -263,6 +273,7 @@ namespace SIAC.Models
                         };
                         this.AviPublico.Add(curso);
                         break;
+
                     case "Diretoria":
                         AviPublico diretoria = new AviPublico
                         {
@@ -272,6 +283,7 @@ namespace SIAC.Models
                         };
                         this.AviPublico.Add(diretoria);
                         break;
+
                     case "Campus":
                         AviPublico campus = new AviPublico
                         {
@@ -281,6 +293,7 @@ namespace SIAC.Models
                         };
                         this.AviPublico.Add(campus);
                         break;
+
                     case "Pró-Reitoria":
                         AviPublico proReitoria = new AviPublico
                         {
@@ -290,6 +303,7 @@ namespace SIAC.Models
                         };
                         this.AviPublico.Add(proReitoria);
                         break;
+
                     case "Reitoria":
                         AviPublico reitoria = new AviPublico
                         {
@@ -299,6 +313,7 @@ namespace SIAC.Models
                         };
                         this.AviPublico.Add(reitoria);
                         break;
+
                     case "Instituição":
                         AviPublico instituicao = new AviPublico
                         {
@@ -308,6 +323,7 @@ namespace SIAC.Models
                         };
                         this.AviPublico.Add(instituicao);
                         break;
+
                     default:
                         break;
                 }

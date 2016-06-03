@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-using SIAC.ViewModels;
+﻿using SIAC.Filters;
 using SIAC.Helpers;
 using SIAC.Models;
-using SIAC.Filters;
+using SIAC.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Web;
+using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
@@ -358,8 +357,8 @@ namespace SIAC.Controllers
             if (!valores.Expirado)
             {
                 if (!StringExt.IsNullOrWhiteSpace(model.Cpf, model.Email, model.Senha, model.Confirmacao)
-                    && Valida.CPF(model.Cpf) 
-                    && Valida.Email(model.Email) 
+                    && Valida.CPF(model.Cpf)
+                    && Valida.Email(model.Email)
                     && model.Senha == model.Confirmacao)
                 {
                     using (var contexto = new Contexto())
@@ -382,7 +381,7 @@ namespace SIAC.Controllers
                         {
                             model.Mensagem = "Não foi encontrado nenhum candidato para os dados informados.";
                         }
-                    }                    
+                    }
                 }
                 else
                 {

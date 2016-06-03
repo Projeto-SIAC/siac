@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNet.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using Microsoft.AspNet.SignalR;
 
 namespace SIAC.Hubs
 {
@@ -73,7 +73,7 @@ namespace SIAC.Hubs
             return base.OnDisconnected(stopCalled);
         }
 
-        #endregion
+        #endregion Override
 
         private readonly static ReposicaoMapping avaliacoes = new ReposicaoMapping();
 
@@ -99,7 +99,7 @@ namespace SIAC.Hubs
             avaliacoes.InserirReposicao(codAvaliacao);
             var mapping = avaliacoes.SelecionarReposicao(codAvaliacao);
             mapping.InserirProfessor(usrMatricula, Context.ConnectionId);
-            
+
             foreach (var alnMatricula in mapping.ListarMatriculaAvaliados())
             {
                 foreach (var codQuestao in mapping.ListarQuestaoRespondidasPorAvaliado(alnMatricula))
@@ -107,7 +107,7 @@ namespace SIAC.Hubs
                     Clients.Client(mapping.SelecionarConnectionIdProfessor()).respondeuQuestao(alnMatricula, codQuestao, true);
                 }
                 Clients.Client(mapping.SelecionarConnectionIdProfessor()).listarChat(alnMatricula, mapping.ListarChat(alnMatricula));
-                
+
                 Clients.Client(mapping.SelecionarConnectionIdProfessor()).atualizarProgresso(alnMatricula, mapping.ListarQuestaoRespondidasPorAvaliado(alnMatricula).Count);
                 Clients.Client(mapping.SelecionarConnectionIdProfessor()).conectarAvaliado(alnMatricula);
                 if (mapping.SeAvaliadoFinalizou(alnMatricula))
@@ -139,7 +139,6 @@ namespace SIAC.Hubs
                 mapping.InserirEvento(usrMatricula, "green sign in", "Conectou");
             }
 
-
             if (!String.IsNullOrEmpty(mapping.SelecionarConnectionIdProfessor()))
             {
                 foreach (var codQuestao in mapping.ListarQuestoes())
@@ -151,7 +150,7 @@ namespace SIAC.Hubs
             }
         }
 
-        public void RequererAval(string codAvaliacao,string usrMatricula)
+        public void RequererAval(string codAvaliacao, string usrMatricula)
         {
             Clients.Client(avaliacoes.SelecionarReposicao(codAvaliacao).SelecionarConnectionIdPorAvaliado(usrMatricula)).enviarAval(codAvaliacao);
         }
@@ -165,8 +164,8 @@ namespace SIAC.Hubs
 
         public void ResponderQuestao(string codAvaliacao, string usrMatricula, int questao, bool flag)
         {
-            var mapping = avaliacoes.SelecionarReposicao(codAvaliacao);        
-                        
+            var mapping = avaliacoes.SelecionarReposicao(codAvaliacao);
+
             if (flag)
             {
                 if (mapping.ListarQuestaoRespondidasPorAvaliado(usrMatricula).Contains(questao))
@@ -180,7 +179,7 @@ namespace SIAC.Hubs
             }
             else
             {
-               mapping.InserirEvento(usrMatricula, "erase", "Retirou resposta da questão " + mapping.SelecionarIndiceQuestao(questao));
+                mapping.InserirEvento(usrMatricula, "erase", "Retirou resposta da questão " + mapping.SelecionarIndiceQuestao(questao));
             }
 
             mapping.AlterarAvaliadoQuestao(usrMatricula, questao, flag);
@@ -323,7 +322,8 @@ namespace SIAC.Hubs
                 if (!reposicoes.ContainsKey(codAvaliacao))
                 {
                     reposicoes.Add(codAvaliacao, new Avaliacao());
-                    using (var e = new Models.Contexto()) {
+                    using (var e = new Models.Contexto())
+                    {
                         int numIdentificador = 0;
                         int semestre = 0;
                         int ano = 0;
@@ -337,7 +337,7 @@ namespace SIAC.Hubs
                             codigo = codigo.Remove(codigo.Length - 1);
                             int.TryParse(codigo.Substring(codigo.Length - 4), out ano);
                             codigo = codigo.Remove(codigo.Length - 4);
-                            int codTipoAvaliacao = e.TipoAvaliacao.FirstOrDefault(t=>t.Sigla == codigo).CodTipoAvaliacao;
+                            int codTipoAvaliacao = e.TipoAvaliacao.FirstOrDefault(t => t.Sigla == codigo).CodTipoAvaliacao;
 
                             Models.AvalAcadReposicao avalReposicao = e.AvalAcadReposicao.FirstOrDefault(acad => acad.Ano == ano && acad.Semestre == semestre && acad.NumIdentificador == numIdentificador && acad.CodTipoAvaliacao == codTipoAvaliacao);
 
@@ -350,7 +350,7 @@ namespace SIAC.Hubs
 
         public void RemoverReposicao(string codAvaliacao)
         {
-            lock(reposicoes)
+            lock (reposicoes)
             {
                 if (reposicoes.ContainsKey(codAvaliacao))
                 {
@@ -367,5 +367,5 @@ namespace SIAC.Hubs
             }
             return null;
         }
-    }    
+    }
 }

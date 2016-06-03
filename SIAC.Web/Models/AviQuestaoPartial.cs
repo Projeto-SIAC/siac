@@ -12,12 +12,12 @@ namespace SIAC.Models
             get
             {
                 List<PessoaFisica> pessoas = this.AviQuestaoPessoaResposta.Select(pr => pr.PessoaFisica).Distinct().ToList();
-                
+
                 List<AviQuestaoPessoaResposta> retorno = new List<AviQuestaoPessoaResposta>();
                 if (pessoas.Count > 0)
                 {
                     foreach (PessoaFisica pessoa in pessoas)
-                    { 
+                    {
                         AviQuestaoPessoaResposta resposta = this.AviQuestaoPessoaResposta
                             .Where(pr => pr.CodOrdem == this.CodOrdem && pr.CodPessoaFisica == pessoa.CodPessoa)
                             .OrderByDescending(pr => pr.CodRespostaOrdem)

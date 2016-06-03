@@ -7,7 +7,7 @@
     </div>
     <div class="content">
         <div class="ui form">
-            <div class="two fields">
+            <div class="three fields">
                 <div class="field required">
                     <label>Disciplina</label>
                     <select name="ddlDisciplina" class="ui fluid search dropdown" required">
@@ -21,6 +21,16 @@
                 <div class="field required">
                     <label>Quantidade de Questões</label>
                     <input type="number" name="txtQteQuestoes" placeholder="Quantidade de Questões" value="@Model.Prova.QteQuestoes" required />
+                </div>
+                <div class="field">
+                    <label>Prof. Responsável</label>
+                    <select name="ddlProfessor" class="ui fluid search dropdown" required">
+                        <option value="">Professor</option>
+                        @foreach (var professor in Model.Prova.Disciplina.Professor)
+                        {
+                            <option @(professor.CodProfessor == Model.Prova.CodProfessor ? "selected" : "") value="@professor.CodProfessor">@professor</option>
+                        }
+                    </select>
                 </div>
             </div>
             <div class="field required">

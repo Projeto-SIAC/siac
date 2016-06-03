@@ -5,7 +5,7 @@ siac.Autoavaliacao.Index = (function () {
 
     var pagina = 1;
     var ordenar = "data_desc";
-    var categoria ="";
+    var categoria = "";
     var dificuldade = "";
     var disciplina = "";
     var pesquisa = "";
@@ -18,7 +18,7 @@ siac.Autoavaliacao.Index = (function () {
                     listar();
                 }
             }
-        });        
+        });
 
         $('.ui.dropdown').dropdown();
 
@@ -382,7 +382,7 @@ siac.Autoavaliacao.Realizar = (function () {
                     $.ajax({
                         type: 'GET',
                         url: "/acesso/conectado",
-                        beforeSend: function(){
+                        beforeSend: function () {
                             $('.ui.gabarito.modal .approve.button').addClass('loading');
                         },
                         success: function () {
@@ -558,11 +558,11 @@ siac.Autoavaliacao.Gerar = (function () {
         $('.ui.accordion').accordion({
             animateChildren: false
         });
-        
+
         $('.prosseguir.button').click(function () {
             prosseguir();
         });
-        
+
         $('.ui.confirmar.modal')
           .modal({
               onApprove: function () {
@@ -580,7 +580,7 @@ siac.Autoavaliacao.Gerar = (function () {
         });
 
         $('#ddlDisciplinas').change(function () {
-            ajustarFormulario();            
+            ajustarFormulario();
         });
 
         $('.cancelar.button').popup({
@@ -617,7 +617,7 @@ siac.Autoavaliacao.Gerar = (function () {
                     }
 
                     else if ($('#ddlTipo').val() == '1') {
-                        if (!qteObjetiva || qteObjetiva <= 0 ) {
+                        if (!qteObjetiva || qteObjetiva <= 0) {
                             validado = false;
                             usarPadrao = true;
                             $list.append('<li>Preencha a quantidade das questões para ' + $('#ddlDisciplinas option[value="' + discs[i] + '"]').text());
@@ -655,7 +655,6 @@ siac.Autoavaliacao.Gerar = (function () {
                                             '<li>Quantidade das Questões: <b>10</b></li>' +
                                         '</ul>' +
                                       '</div>');
-            
 
             if (!$('#ddlTipo').val()) {
                 $btnUsarPadraoPopUp.find('ul').prepend('<li>Tipo das Questões: <b>Somente objetivas</b></li>');
@@ -721,36 +720,36 @@ siac.Autoavaliacao.Gerar = (function () {
         }
         for (var i = 0; i < discs.length; i++) {
             var disciplina = $('#ddlDisciplinas option[value="' + discs[i] + '"]').text();
-            temAccordion.append('<div class="title"><i class="icon dropdown"></i>' + disciplina + '</div>'+
-                                '<div class="content">'+
-                                    '<div class="field">'+
-                                        '<select required name="ddlTemas' + discs[i] + '" id="ddlTemas' + discs[i] + '" class="ui search dropdown" multiple>'+
-                                            '<option value="">Tema</option>'+
-                                        '</select>'+
-                                    '</div>'+
-                                '</div>');
-            recuperarTemasPorDisciplina(discs[i]);
-            
-            difAccordion.append('<div class="title">'+
-                                    '<i class="icon dropdown"></i>' + disciplina +
-                                '</div>' +
-                                '<div class="content">'+
-                                    '<div class="field">'+
-                                        '<select required id="ddlDificuldade' + discs[i] + '" name="ddlDificuldade' + discs[i] + '" class="ui search dropdown">'+
-                                            '<option value="">Índice de Dificuldade</option>'+dificuldades+
+            temAccordion.append('<div class="title"><i class="icon dropdown"></i>' + disciplina + '</div>' +
+                                '<div class="content">' +
+                                    '<div class="field">' +
+                                        '<select required name="ddlTemas' + discs[i] + '" id="ddlTemas' + discs[i] + '" class="ui search dropdown" multiple>' +
+                                            '<option value="">Tema</option>' +
                                         '</select>' +
                                     '</div>' +
                                 '</div>');
-            qteAccordion.append('<div class="title"><i class="icon dropdown"></i>' + disciplina + '</div>'+
-                                '<div class="content">'+
-                                    '<div class="two fields">'+
-                                        '<div class="field objetiva"><label>Objetivas</label>'+
-                                            '<input data-padrao="10" required id="txtQteObjetiva' + discs[i] + '" name="txtQteObjetiva' + discs[i] + '" data-mask="0#" type="number" placeholder="Quantidade de objetivas" min="1" />'+
-                                        '</div>'+
-                                        '<div class="field discursiva"><label>Discursivas</label>'+
-                                            '<input data-padrao="10" required id="txtQteDiscursiva' + discs[i] + '" name="txtQteDiscursiva' + discs[i] + '" data-mask="0#" type="number" placeholder="Quantidade de discursivas" min="1" />'+
-                                        '</div>'+
-                                    '</div>'+
+            recuperarTemasPorDisciplina(discs[i]);
+
+            difAccordion.append('<div class="title">' +
+                                    '<i class="icon dropdown"></i>' + disciplina +
+                                '</div>' +
+                                '<div class="content">' +
+                                    '<div class="field">' +
+                                        '<select required id="ddlDificuldade' + discs[i] + '" name="ddlDificuldade' + discs[i] + '" class="ui search dropdown">' +
+                                            '<option value="">Índice de Dificuldade</option>' + dificuldades +
+                                        '</select>' +
+                                    '</div>' +
+                                '</div>');
+            qteAccordion.append('<div class="title"><i class="icon dropdown"></i>' + disciplina + '</div>' +
+                                '<div class="content">' +
+                                    '<div class="two fields">' +
+                                        '<div class="field objetiva"><label>Objetivas</label>' +
+                                            '<input data-padrao="10" required id="txtQteObjetiva' + discs[i] + '" name="txtQteObjetiva' + discs[i] + '" data-mask="0#" type="number" placeholder="Quantidade de objetivas" min="1" />' +
+                                        '</div>' +
+                                        '<div class="field discursiva"><label>Discursivas</label>' +
+                                            '<input data-padrao="10" required id="txtQteDiscursiva' + discs[i] + '" name="txtQteDiscursiva' + discs[i] + '" data-mask="0#" type="number" placeholder="Quantidade de discursivas" min="1" />' +
+                                        '</div>' +
+                                    '</div>' +
                                 '</div>');
         };
         mostrarOpcoesPorTipo();
@@ -790,7 +789,6 @@ siac.Autoavaliacao.Gerar = (function () {
                 $elemento.dropdown('set selected', $elemento.val());
         }
         prosseguir();
-
     }
 
     function confirmar() {

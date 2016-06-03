@@ -12,7 +12,7 @@ namespace SIAC.Controllers
 {
     public class InscricaoController : Controller
     {
-        private Simulado ListarSimuladoAbertoPorCodigo(string codigo) => 
+        private Simulado ListarSimuladoAbertoPorCodigo(string codigo) =>
             Simulado.ListarParaInscricoes().FirstOrDefault(sim => sim.Codigo.ToLower() == codigo.ToLower());
 
         // GET: simulado/inscricao
@@ -83,7 +83,7 @@ namespace SIAC.Controllers
 
                         s.SimCandidato.Add(candidato);
 
-                        foreach(SimProva prova in s.Provas)
+                        foreach (SimProva prova in s.Provas)
                         {
                             prova.SimCandidatoProva.Add(new SimCandidatoProva()
                             {

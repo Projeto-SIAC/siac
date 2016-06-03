@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNet.SignalR;
+using SIAC.Helpers;
+using SIAC.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.SignalR;
-using SIAC.Helpers;
-using SIAC.Models;
 
 namespace SIAC.Hubs
 {
@@ -203,7 +203,6 @@ namespace SIAC.Hubs
                 {
                     return false;
                 }
-                
             });
         }
 
