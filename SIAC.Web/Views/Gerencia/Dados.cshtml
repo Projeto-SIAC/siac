@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Dados Gerais";
 }
 
@@ -16,32 +15,11 @@
 
 <div class="ui stackable grid dashmenu">
     <div class="stackable doubling four columns centered row">
-        @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Disciplinas", "Gerencia") },
-            { "Icone", "cube" },
-            { "Descricao", "Disciplinas" },
-            { "Mensagem", "" }
-        })
-        @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Professores", "Gerencia") },
-            { "Icone", "user" },
-            { "Descricao", "Professores" },
-            { "Mensagem", "" }
-        })
-        @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Blocos", "Gerencia") },
-            { "Icone", "building outline" },
-            { "Descricao", "Blocos" },
-            { "Mensagem", "" }
-        })
-        @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Salas", "Gerencia") },
-            { "Icone", "marker" },
-            { "Descricao", "Salas" },
-            { "Mensagem", "" }
-        })
+        @Html.Partial("_Atalho", new AtalhoViewModel("Disciplinas", "cube", Url.Action("Disciplinas", "Gerencia")))
+        @Html.Partial("_Atalho", new AtalhoViewModel("Professores", "user", Url.Action("Professores", "Gerencia")))
+        @Html.Partial("_Atalho", new AtalhoViewModel("Blocos", "building outline", Url.Action("Blocos", "Gerencia")))
+        @Html.Partial("_Atalho", new AtalhoViewModel("Salas", "marker", Url.Action("Salas", "Gerencia")))
     </div>
 </div>
-
 
 <a class="ui button" href="@Url.Action("Index", "Gerencia")">Voltar para Gerência de Simulados</a>

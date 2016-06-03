@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Configurações";
 }
 
@@ -9,35 +8,15 @@
     <div class="stackable doubling four columns centered row">
         @if (Sessao.UsuarioCategoriaCodigo == Categoria.COLABORADOR)
         {
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Index", "Usuario") },
-                { "Icone", "users" },
-                { "Descricao", "Usuários" }
-            });
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Parametros") },
-                { "Icone", "options" },
-                { "Descricao", "Parâmetros" }
-            });
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Index", "Visitante") },
-                { "Icone", "spy" },
-                { "Descricao", "Visitantes" }
-            });
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Opinioes") },
-                { "Icone", "bookmark" },
-                { "Descricao", "Abrir Opiniões" }
-            });
+            @Html.Partial("_Atalho", new AtalhoViewModel("Usuários", "users", Url.Action("Index", "Usuario")))
+            @Html.Partial("_Atalho", new AtalhoViewModel("Parâmetros", "options", Url.Action("Parametros")))
+            @Html.Partial("_Atalho", new AtalhoViewModel("Visitantes", "spy", Url.Action("Index", "Visitante")))
+            @Html.Partial("_Atalho", new AtalhoViewModel("Abrir Opiniões", "bookmark", Url.Action("Opinioes")))
         }
 
         @if (Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.FlagCoordenadorAvi)
         {
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Institucional", new { tab = "Coordenadores" }) },
-                { "Icone", "doctor" },
-                { "Descricao", "Coordenadores de Av. Institucional" }
-            });
-        }        
+            @Html.Partial("_Atalho", new AtalhoViewModel("Coordenadores de Av. Institucional", "doctor", Url.Action("Institucional", new { tab = "Coordenadores" })))
+        }
     </div>
 </div>

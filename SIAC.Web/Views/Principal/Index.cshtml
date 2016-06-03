@@ -16,61 +16,19 @@
 
 <div class="ui stackable grid dashmenu">
     <div class="stackable doubling four columns centered row">
-        @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Realizar", "Autoavaliacao") },
-            { "Icone", "file outline" },
-            { "Descricao", "Realizar Autoavaliação" },
-            { "Mensagem", "Ir para Realizar Autoavaliação" },
-            { "Lembrete", "autoavaliacao" }
-        })
+        @Html.Partial("_Atalho", new AtalhoViewModel("Realizar Autoavaliação", "file outline", Url.Action("Realizar", "Autoavaliacao"), "Ir para Realizar Autoavaliação", "autoavaliacao"))
         @if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
         {
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Gerar", "Academica") },
-                { "Icone", "file" },
-                { "Descricao", "Gerar Avaliação Acadêmica" },
-                { "Mensagem", "Ir para Gerar Avaliação Acadêmica" }   
-            })        
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Gerar", "Certificacao") },
-                { "Icone", "file text" },
-                { "Descricao", "Gerar Avaliação de Certificação" },
-                { "Mensagem", "Ir para Gerar Avaliação de Certificação" }
-            })
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Cadastrar", "Questao") },
-                { "Icone", "add circle" },
-                { "Descricao", "Cadastrar Questão" },
-                { "Mensagem", "Ir para Cadastrar Questão" }
-            })
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Pendente") },
-                { "Icone", "edit" },
-                { "Descricao", "Correções Pendentes" },
-                { "Mensagem", "Ir para Correções Pendentes" },
-                { "Lembrete", "correcao" }
-            })
+            @Html.Partial("_Atalho", new AtalhoViewModel("Gerar Avaliação Acadêmica", "file", Url.Action("Gerar", "Academica"), "Ir para Gerar Avaliação Acadêmica"))
+            @Html.Partial("_Atalho", new AtalhoViewModel("Gerar Avaliação de Certificação", "file text", Url.Action("Gerar", "Certificacao"), "Ir para Gerar Avaliação de Certificação"))
+            @Html.Partial("_Atalho", new AtalhoViewModel("Cadastrar Questão", "add circle", Url.Action("Cadastrar", "Questao"), "Ir para Cadastrar Questão"))
+            @Html.Partial("_Atalho", new AtalhoViewModel("Correções Pendentes", "edit", Url.Action("Pendente"), "Ir para Correções Pendentes", "correcao"))
         }
         @if (Sessao.UsuarioCategoriaCodigo <= Categoria.COLABORADOR)
         {
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Index", "Agenda") },
-                { "Icone", "calendar" },
-                { "Descricao", "Visualizar Agendamentos" },
-                { "Mensagem", "Ir para Agenda" }
-            })
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Index", "Perfil") },
-                { "Icone", "user" },
-                { "Descricao", "Visualizar Meu Perfil" },
-                { "Mensagem", "Ir para Perfil" }
-            })
+            @Html.Partial("_Atalho", new AtalhoViewModel("Visualizar Agendamentos", "calendar", Url.Action("Index", "Agenda"), "Ir para Agenda"))
+            @Html.Partial("_Atalho", new AtalhoViewModel("Visualizar Meu Perfil", "user", Url.Action("Index", "Perfil"), "Ir para Perfil"))
         }
-        @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Index", "Historico") },
-            { "Icone", "wait" },
-            { "Descricao", "Histórico das Atividades" },
-            { "Mensagem", "Ir para Histórico" }
-        })
+        @Html.Partial("_Atalho", new AtalhoViewModel("Histórico das Atividades", "wait", Url.Action("Index", "Historico"), "Ir para Histórico"))
     </div>
 </div>

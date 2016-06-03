@@ -21,38 +21,13 @@
         @switch (Sessao.UsuarioCategoriaCodigo)
         {
             case Categoria.COLABORADOR:
-                @Html.Partial("_Atalho", new ViewDataDictionary() {
-                    { "Url", Url.Action("Novo", "Simulado") },
-                    { "Icone", "plus" },
-                    { "Descricao", "Novo Simulado" },
-                    { "Mensagem", "" }
-                })
-                @Html.Partial("_Atalho", new ViewDataDictionary() {
-                    { "Url", Url.Action("Index", "Arquivo") },
-                    { "Icone", "list" },
-                    { "Descricao", "Arquivo de Simulados" },
-                    { "Mensagem", "" }
-                })
-                @Html.Partial("_Atalho", new ViewDataDictionary() {
-                    { "Url", Url.Action("Dados", "Gerencia") },
-                    { "Icone", "cogs" },
-                    { "Descricao", "Dados Gerais" },
-                    { "Mensagem", "" }
-                })
-                @Html.Partial("_Atalho", new ViewDataDictionary() {
-                    { "Url", Url.Action("Configuracoes", "Gerencia") },
-                    { "Icone", "configure" },
-                    { "Descricao", "Configurações" },
-                    { "Mensagem", "" }
-                })
+                @Html.Partial("_Atalho", new AtalhoViewModel("Novo Simulado", "plus", Url.Action("Novo", "Simulado")))
+                @Html.Partial("_Atalho", new AtalhoViewModel("Arquivo de Simulados", "list", Url.Action("Index", "Arquivo")))
+                @Html.Partial("_Atalho", new AtalhoViewModel("Dados Gerais", "cogs", Url.Action("Dados", "Gerencia")))
+                @Html.Partial("_Atalho", new AtalhoViewModel("Configurações", "configure", Url.Action("Configuracoes", "Gerencia")))
                 break;
             case Categoria.PROFESSOR:
-                @Html.Partial("_Atalho", new ViewDataDictionary() {
-                    { "Url", Url.Action("Provas", "Gerencia") },
-                    { "Icone", "copy" },
-                    { "Descricao", "Provas Designadas" },
-                    { "Mensagem", "" }
-                })
+                @Html.Partial("_Atalho", new AtalhoViewModel("Provas Designadas", "copy", Url.Action("Provas", "Gerencia")))
                 break;
             default:
                 break;

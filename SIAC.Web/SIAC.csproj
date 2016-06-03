@@ -435,6 +435,7 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="ViewModels\AcessoViewModel.cs" />
     <Compile Include="ViewModels\ArquivoViewModel.cs" />
+    <Compile Include="ViewModels\AtalhoViewModel.cs" />
     <Compile Include="ViewModels\AutoavaliacaoViewModel.cs" />
     <Compile Include="ViewModels\AvaliacaoViewModel.cs" />
     <Compile Include="ViewModels\CandidatoViewModel.cs" />

@@ -8,35 +8,13 @@
 
 <div class="ui stackable grid dashmenu">
     <div class="stackable doubling four columns centered row">
-        
-        @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Andamento") },
-            { "Icone", "wait" },
-            { "Descricao", "Av. Institucional em Andamento" },
-            { "Lembrete", "andamento" }
-        })
 
+        @Html.Partial("_Atalho", new AtalhoViewModel("Av. Institucional em Andamento", "wait", Url.Action("Andamento"), lembrete: "andamento"))
         @if (Model.FlagCoordenadorAvi)
         {
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Gerar") },
-                { "Icone", "add circle" },
-                { "Descricao", "Gerar Nova" }
-            })
-            
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Historico", "Institucional") },
-                { "Icone", "file text outline" },
-                { "Descricao", "Histórico de Av. Institucional" }
-            })
-
-
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Configuracao") },
-                { "Icone", "settings" },
-                { "Descricao", "Configurar" }
-            })
-        }        
-
+            @Html.Partial("_Atalho", new AtalhoViewModel("Gerar Nova", "add circle", Url.Action("Gerar")))
+            @Html.Partial("_Atalho", new AtalhoViewModel("Histórico de Av. Institucional", "file text outline", Url.Action("Historico", "Institucional")))
+            @Html.Partial("_Atalho", new AtalhoViewModel("Configurar", "settings", Url.Action("Configuracao")))
+        }
     </div>
 </div>

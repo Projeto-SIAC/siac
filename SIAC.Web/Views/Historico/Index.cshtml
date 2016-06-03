@@ -8,42 +8,17 @@
     <div class="stackable doubling four columns centered row">
         @if (Sessao.UsuarioCategoriaCodigo <= Categoria.PROFESSOR)
         {
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Index", "Academica") },
-                { "Icone", "file" },
-                { "Descricao", "Histórico de Av. Acadêmicas" },
-                { "Mensagem", "Ir para Histórico de Avaliações Acadêmicas" }
-            })
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Index", "Reposicao") },
-                { "Icone", "file archive outline" },
-                { "Descricao", "Histórico de Reposições" },
-                { "Mensagem", "Ir para Histórico de Avaliações de Reposição" }
-            })
+            @Html.Partial("_Atalho", new AtalhoViewModel("Histórico de Av. Acadêmicas", "file", Url.Action("Index", "Academica"), "Ir para Histórico de Avaliações Acadêmicas"))
+            @Html.Partial("_Atalho", new AtalhoViewModel("Histórico de Reposições", "file archive outline", Url.Action("Index", "Reposicao"), "Ir para Histórico de Avaliações de Reposição"))
         }
         @if (Sessao.UsuarioCategoriaCodigo <= Categoria.COLABORADOR)
         {
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Index", "Certificacao") },
-                { "Icone", "file text" },
-                { "Descricao", "Histórico de Certificações" },
-                { "Mensagem", "Ir para Histórico de Avaliações de Certificação" }
-            })
+            @Html.Partial("_Atalho", new AtalhoViewModel("Histórico de Certificações", "file text", Url.Action("Index", "Certificacao"), "Ir para Histórico de Avaliações de Certificação"))
         }
-        @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Index", "Autoavaliacao") },
-            { "Icone", "folder" },
-            { "Descricao", "Histórico de Autoavaliações" },
-            { "Mensagem", "Ir para Autoavaliações Salvas" }
-        })
+        @Html.Partial("_Atalho", new AtalhoViewModel("Histórico de Autoavaliações", "folder", Url.Action("Index", "Autoavaliacao"), "Ir para Autoavaliações Salvas"))
         @if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
         {
-            @Html.Partial("_Atalho", new ViewDataDictionary() {
-                { "Url", Url.Action("Index", "Questao") },
-                { "Icone", "book" },
-                { "Descricao", "Minhas Questões" },
-                { "Mensagem", "Ir para Minhas Questões" }
-            })
+            @Html.Partial("_Atalho", new AtalhoViewModel("Minhas Questões", "book", Url.Action("Index", "Questao"), "Ir para Minhas Questões"))
         }
     </div>
 </div>
