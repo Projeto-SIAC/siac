@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Gerência de Simulados";
 }
 
@@ -19,29 +18,44 @@
 
 <div class="ui stackable grid dashmenu">
     <div class="stackable doubling four columns centered row">
-        @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Novo", "Simulado") },
-            { "Icone", "plus" },
-            { "Descricao", "Novo Simulado" },
-            { "Mensagem", "" }
-        })
-        @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Index", "Arquivo") },
-            { "Icone", "list" },
-            { "Descricao", "Arquivo de Simulados" },
-            { "Mensagem", "" }
-        })
-        @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Dados", "Gerencia") },
-            { "Icone", "cogs" },
-            { "Descricao", "Dados Gerais" },
-            { "Mensagem", "" }
-        })
-        @Html.Partial("_Atalho", new ViewDataDictionary() {
-            { "Url", Url.Action("Configuracoes", "Gerencia") },
-            { "Icone", "configure" },
-            { "Descricao", "Configurações" },
-            { "Mensagem", "" }
-        })
+        @switch (Sessao.UsuarioCategoriaCodigo)
+        {
+            case Categoria.COLABORADOR:
+                @Html.Partial("_Atalho", new ViewDataDictionary() {
+                    { "Url", Url.Action("Novo", "Simulado") },
+                    { "Icone", "plus" },
+                    { "Descricao", "Novo Simulado" },
+                    { "Mensagem", "" }
+                })
+                @Html.Partial("_Atalho", new ViewDataDictionary() {
+                    { "Url", Url.Action("Index", "Arquivo") },
+                    { "Icone", "list" },
+                    { "Descricao", "Arquivo de Simulados" },
+                    { "Mensagem", "" }
+                })
+                @Html.Partial("_Atalho", new ViewDataDictionary() {
+                    { "Url", Url.Action("Dados", "Gerencia") },
+                    { "Icone", "cogs" },
+                    { "Descricao", "Dados Gerais" },
+                    { "Mensagem", "" }
+                })
+                @Html.Partial("_Atalho", new ViewDataDictionary() {
+                    { "Url", Url.Action("Configuracoes", "Gerencia") },
+                    { "Icone", "configure" },
+                    { "Descricao", "Configurações" },
+                    { "Mensagem", "" }
+                })
+                break;
+            case Categoria.PROFESSOR:
+                @Html.Partial("_Atalho", new ViewDataDictionary() {
+                    { "Url", Url.Action("Provas", "Gerencia") },
+                    { "Icone", "copy" },
+                    { "Descricao", "Provas Designadas" },
+                    { "Mensagem", "" }
+                })
+                break;
+            default:
+                break;
+        }
     </div>
 </div>

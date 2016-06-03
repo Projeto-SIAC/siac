@@ -10,9 +10,12 @@
     <a href="@Url.Action("Index", "Historico")" class="@(path.StartsWith("/historico")? "active blue" : "") item" title="Navegar para Histórico das Atividades">
         <i class="time icon"></i><span class="content">Histórico</span>
     </a>
-    <a href="@Url.Action("Index", "Gerencia")" class="@(path.StartsWith("/simulado") ? "active blue" : "") item" title="Navegar para Simulados">
-        <i class="copy icon"></i><span class="content">Simulados</span>
-    </a>
+    @if (Sessao.UsuarioCategoriaCodigo == Categoria.COLABORADOR || Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
+    {
+        <a href="@Url.Action("Index", "Gerencia")" class="@(path.StartsWith("/simulado") ? "active blue" : "") item" title="Navegar para Simulados">
+            <i class="suitcase icon"></i><span class="content">Simulados</span>
+        </a>
+    }    
     @if (Sessao.UsuarioCategoriaCodigo <= Categoria.COLABORADOR)
     {
         <a href="@Url.Action("Index", "Institucional")" class="@(path.StartsWith("/institucional") ? "active blue" : "") item" data-lembrete="avi" title="Navegar para Av. Institucional">

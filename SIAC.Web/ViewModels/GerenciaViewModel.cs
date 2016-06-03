@@ -66,4 +66,9 @@ namespace SIAC.ViewModels
             Observacao = b.Observacao
         }));
     }
+
+    public class GerenciaProvasViewModel
+    {
+        public Dictionary<Simulado, SimProva> Provas { get; set; }
+    }
 }
