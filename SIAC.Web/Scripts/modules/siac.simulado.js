@@ -872,6 +872,7 @@ siac.Simulado.Respostas = (function () {
                         if (data) {
                             $listaRespostas.html(data);
                             alterarCheckBoxCandidato();
+                            sobreporCandidatoEmDimmer();
                         }
                     },
                     error: function () {
@@ -990,6 +991,11 @@ siac.Simulado.Respostas = (function () {
                 $content.dimmer('hide');
             }
         });
+    }
+
+    function sobreporCandidatoEmDimmer() {
+        var $dimmer = $('.segment.lista.respostas .dimmer');
+        $dimmer.css('z-index', 5);
     }
 
     return {
