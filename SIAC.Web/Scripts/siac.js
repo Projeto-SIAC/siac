@@ -260,6 +260,9 @@
                 else if (pathname.indexOf('/professores') >= 0) {
                     siac.Gerencia.Professores.iniciar();
                 }
+                else if (pathname.indexOf('/provas') >= 0) {
+                    siac.Gerencia.Provas.iniciar();
+                }
             }
             else if (pathname.indexOf('/arquivo/') >= 0) {
                 if (pathname.indexOf('/abertos') >= 0) {

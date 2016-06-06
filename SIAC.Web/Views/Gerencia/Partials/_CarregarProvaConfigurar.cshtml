@@ -1,0 +1,42 @@
+﻿@model SimProva
+<i class="icon close"></i>
+<div class="header">
+    Configurar Questões da Prova
+</div>
+<div class="content">
+    <div class="ui info message @(Sessao.AjudaEstado ? "" : "hidden")" data-ajuda-mensagem>
+        <div class="header">
+            Ajuda
+        </div>
+        <ul class="list">
+            <li>Aqui em configuração você poderá trocar as atuais questões de sua avaliação por alguma outra equivalente aleatória do sistema.</li>
+            <li>O botão <i class="refresh icon"></i> serve para obter uma nova questão do sistema.</li>
+            <li>O botão <i class="undo icon"></i> serve para desfazer a sua última alteração, caso tenha feito alguma.</li>
+            <li>Não esqueça de confirmar as alterações clicando no botão <b>Salvar</b> ao fim desta página.</li>
+        </ul>
+    </div>
+
+    <!-- TODO: mostrar detalhes da prova -->
+
+    <div class="ui basic segment">
+        <h3 class="ui dividing header">Questões</h3>
+        <div class="ui one cards">
+            @foreach (var item in Model.SimProvaQuestao.Select((simProvaQuestao, i) => new { i, simProvaQuestao.Questao }))
+            {
+                <div id="cardQuestao@(item.i)" class="card">
+                    @Html.Partial("_QuestaoConfigurar", item.Questao, new ViewDataDictionary { { "Index", item.i } })
+                </div>
+            }
+        </div>
+    </div>
+    @*
+        <form method="post" action="@Url.Action("Salvar", new { codigo = Model.SimDiaRealizacao.Simulado.Codigo })">
+             <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
+             <div class="ui button salvar">Salvar</div>
+        </form>
+    *@
+</div>
+<div class="actions">
+    <input type="reset" value="Cancelar" class="ui cancel button" />
+    <button type="submit" class="ui button">Salvar</button>
+</div>

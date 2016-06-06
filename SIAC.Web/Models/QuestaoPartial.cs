@@ -347,5 +347,22 @@ namespace SIAC.Models
 
             return questoes;
         }
+
+        public static Questao RetornarAleatoria(int codDisciplina, int codDificuldade = 0, int codTipoQuestao = 0)
+        {
+            Random random = new Random();
+            IQueryable<Questao> questoes = contexto.Questao.Where(q => q.QuestaoTema.FirstOrDefault(t => t.CodDisciplina == codDisciplina) != null);
+            if (codDificuldade > 0)
+            {
+                questoes = questoes.Where(q => q.CodDificuldade <= codDificuldade);
+            }
+            if (codTipoQuestao > 0)
+            {
+                questoes = questoes.Where(q => q.CodTipoQuestao == codTipoQuestao);
+            }
+            List<Questao> finalQuestoes = questoes.ToList();
+            int i = random.Next(finalQuestoes.Count);
+            return finalQuestoes.ElementAt(i);
+        }
     }
 }

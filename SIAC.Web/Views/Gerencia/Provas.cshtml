@@ -29,7 +29,7 @@
                         <td>@prova.SimDiaRealizacao.DtRealizacao.DiaRealizacaoRepresentacao()</td>
                         <td>@prova.Disciplina.Descricao</td>
                         <td>@prova.QteQuestoes</td>
-                        <td><a href="#" class="ui small button"><i class="icon open folder"></i> Abrir</a></td>
+                        <td><a data-simulado="@par.Key.Codigo" data-dia="@prova.CodDiaRealizacao" data-prova="@prova.CodProva" class="ui small abrir button"><i class="icon open folder"></i> Abrir</a></td>
                     </tr>
                 }
             </tbody>
@@ -46,3 +46,7 @@ else
     </div>
 }
 <a class="ui button" href="@Url.Action("Index", "Gerencia")">Voltar para Gerência de Simulados</a>
+<div class="ui prova large modal"></div>
+@section Scripts {
+    @Scripts.Render("~/bundles/js/gerencia")
+}

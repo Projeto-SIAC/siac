@@ -19,7 +19,7 @@
             for (int i = 0; i < Model.Questao.Count; i++)
             {
                 <div id="CardQuestao@(i)" class="card">
-                    @Html.Partial("_Questao", Model.Questao[i], new ViewDataDictionary { { "Index", i } })
+                    @Html.Partial("_QuestaoConfigurar", Model.Questao[i], new ViewDataDictionary { { "Index", i } })
                 </div>
             }
         }

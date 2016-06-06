@@ -490,7 +490,7 @@
     <Content Include="Views\Academica\Detalhe.cshtml" />
     <Content Include="Views\Academica\Configurar.cshtml" />
     <Content Include="Views\Academica\Agendada.cshtml" />
-    <Content Include="Views\Academica\Partials\_Questao.cshtml" />
+    <Content Include="Views\Shared\Partials\_QuestaoConfigurar.cshtml" />
     <Content Include="Views\Academica\Acompanhar.cshtml" />
     <Content Include="Views\Academica\Realizar.cshtml" />
     <Content Include="Views\Academica\Resultado.cshtml" />
@@ -543,7 +543,6 @@
     <Content Include="Views\Reposicao\Justificar.cshtml" />
     <Content Include="Views\Reposicao\Partials\_PassoAPasso.cshtml" />
     <Content Include="Views\Reposicao\Configurar.cshtml" />
-    <Content Include="Views\Reposicao\Partials\_Questao.cshtml" />
     <Content Include="Views\Reposicao\Agendar.cshtml" />
     <Content Include="Views\Reposicao\Partials\_ListaReposicao.cshtml" />
     <Content Include="Views\Reposicao\Index.cshtml" />
@@ -661,6 +660,7 @@
     <Content Include="Views\Simulado\Partials\_ImprimirCartaoRespostaGabarito.cshtml" />
     <Content Include="Views\Simulado\Partials\_ImprimirListaPresenca.cshtml" />
     <Content Include="Views\Gerencia\Provas.cshtml" />
+    <Content Include="Views\Gerencia\Partials\_CarregarProvaConfigurar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -453,7 +453,7 @@ namespace SIAC.Controllers
                         recentes.Insert(index, codQuestao);
 
                         ViewData["Index"] = indice;
-                        return PartialView("_Questao", questao.Questao);
+                        return PartialView("_QuestaoConfigurar", questao.Questao);
                     }
                 }
             }
@@ -526,7 +526,7 @@ namespace SIAC.Controllers
                     novas[indices.IndexOf(indice)].QuestaoTema = questao;
 
                     ViewData["Index"] = indice;
-                    return PartialView("_Questao", questao.Questao);
+                    return PartialView("_QuestaoConfigurar", questao.Questao);
                 }
             }
 

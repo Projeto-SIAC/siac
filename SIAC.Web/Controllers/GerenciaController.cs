@@ -4,6 +4,7 @@ using SIAC.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.Mvc;
 
 namespace SIAC.Controllers
@@ -633,6 +634,99 @@ namespace SIAC.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
+        public ActionResult CarregarProvaConfigurar(string simulado, int dia, int prova)
+        {
+            if (!String.IsNullOrWhiteSpace(simulado))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(simulado);
+                if (sim != null)
+                {
+                    SimProva simProva = sim.SimDiaRealizacao.FirstOrDefault(d => d.CodDiaRealizacao == dia)?.SimProva.FirstOrDefault(p => p.CodProva == prova);
+                    if (simProva != null)
+                    {
+                        return PartialView("_CarregarProvaConfigurar", simProva);
+                    }
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Bad Request");
+        }
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
+        public ActionResult TrocarProvaConfigurar(string simulado, int dia, int prova, int questao, int indice)
+        {
+            if (!String.IsNullOrWhiteSpace(simulado))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(simulado);
+                if (sim != null)
+                {
+                    SimProva simProva = sim.SimDiaRealizacao.FirstOrDefault(d => d.CodDiaRealizacao == dia)?.SimProva.FirstOrDefault(p => p.CodProva == prova);
+                    if (simProva != null)
+                    {
+                        Questao questaoTrocada = simProva.SimProvaQuestao.FirstOrDefault(q => q.CodQuestao == questao)?.Questao;
+                        if (questaoTrocada != null)
+                        {
+                            Questao novaQuestao = Questao.RetornarAleatoria(simProva.CodDisciplina, codTipoQuestao: questaoTrocada.CodTipoQuestao);
+
+                            int tentativas = 0;
+                            while (novaQuestao.CodQuestao == questao && tentativas < 3)
+                            {
+                                novaQuestao = Questao.RetornarAleatoria(simProva.CodDisciplina, codTipoQuestao: questaoTrocada.CodTipoQuestao);
+                                tentativas++;
+                            }
+
+                            if (novaQuestao.CodQuestao != questao)
+                            {
+                                TempData["SimuladoTrocarQuestaoCodigo"] = questao;
+                                TempData["SimuladoTrocarQuestaoIndice"] = indice;
+                                simProva.RemoverQuestao(questao);
+                                simProva.AdicionarQuestao(novaQuestao.CodQuestao);
+                                TempData.Keep();
+                                ViewData["Index"] = indice;
+                                return PartialView("_QuestaoConfigurar", novaQuestao);
+                            }
+                        }
+                    }
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Bad Request");
+        }
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
+        public ActionResult DesfazerProvaConfigurar(string simulado, int dia, int prova, int questao, int indice)
+        {
+            if (!String.IsNullOrWhiteSpace(simulado))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(simulado);
+                if (sim != null)
+                {
+                    SimProva simProva = sim.SimDiaRealizacao.FirstOrDefault(d => d.CodDiaRealizacao == dia)?.SimProva.FirstOrDefault(p => p.CodProva == prova);
+                    if (simProva != null)
+                    {
+                        Questao questaoDesfazer = simProva.SimProvaQuestao.FirstOrDefault(q => q.CodQuestao == questao)?.Questao;
+                        if (questaoDesfazer != null)
+                        {
+                            Questao questaoTrocada = Questao.ListarPorCodigo((int)TempData["SimuladoTrocarQuestaoCodigo"]);
+                            if (questaoTrocada.CodQuestao != questao)
+                            {
+                                TempData["SimuladoTrocarQuestaoCodigo"] = questao;
+                                TempData["SimuladoTrocarQuestaoIndice"] = indice;
+                                simProva.RemoverQuestao(questao);
+                                simProva.AdicionarQuestao(questaoTrocada.CodQuestao);
+                                TempData.Keep();
+                                ViewData["Index"] = indice;
+                                return PartialView("_QuestaoConfigurar", questaoTrocada);
+                            }
+                        }
+                    }
+                }
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Bad Request");
         }
 
         #endregion Provas

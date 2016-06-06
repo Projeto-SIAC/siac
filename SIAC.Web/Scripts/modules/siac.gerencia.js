@@ -339,3 +339,136 @@ siac.Gerencia.Professores = (function () {
         iniciar: iniciar
     }
 })();
+
+siac.Gerencia.Provas = (function () {
+    function iniciar() {
+        $('.ui.modal').modal();
+
+        $('.abrir.button').off('click').on('click', function () {
+            var $this = $(this),
+                simulado = $this.data('simulado'),
+                dia = $this.data('dia'),
+                prova = $this.data('prova');
+
+            $this.addClass('loading');
+
+            $.ajax({
+                url: '/simulado/gerencia/carregarprovaconfigurar',
+                method: 'POST',
+                data: {
+                    'simulado': simulado,
+                    'dia': dia,
+                    'prova': prova
+                },
+                success: function (data) {
+                    $('.ui.prova.modal').html(data).modal('show');
+                    adicionarEventos(simulado, dia, prova);
+                    $('[data-content], [data-html]').popup();
+                    $('.ui.accordion').accordion({ animateChildren: false });
+                    $('.right.floated.button').popup({
+                        inline: true,
+                        on: 'click'
+                    });
+                },
+                error: function () {
+                    siac.mensagem('Falha ao recuperar o Prova para Configuração. Atualize a página para tentar novamente.');
+                },
+                complete: function () {
+                    $this.removeClass('loading');
+                    siac.Gerencia.adicionarEventoNoFormulario();
+                }
+            });
+        });
+    }
+
+    function adicionarEventos(simulado, dia, prova) {
+        siac.Anexo.iniciar();
+
+        $('.trocar.button').off().click(function () {
+            var $_this = $(this);
+            var questao = $_this.parents('[data-questao]').attr('data-questao');
+            var indice = $_this.parents('[data-indice]').attr('data-indice');
+
+            trocar(simulado, dia, prova, questao, indice);
+        });
+
+        $('.desfazer.button').off().click(function () {
+            var $_this = $(this);
+            var questao = $_this.parents('[data-questao]').attr('data-questao');
+            var indice = $_this.parents('[data-indice]').attr('data-indice');
+
+            desfazer(simulado, dia, prova, questao, indice);
+        });
+    }
+
+    function trocar(simulado, dia, prova, questao, indice) {
+        var card = $('#cardQuestao' + indice);
+        card.addClass('ui form loading');
+        $('#cardQuestao' + indice + ' div').popup('hide');
+        $.ajax({
+            type: "POST",
+            url: '/simulado/gerencia/trocarprovaconfigurar',
+            data: {
+                'indice': indice,
+                'questao': questao,
+                'simulado': simulado,
+                'dia': dia,
+                'prova': prova
+            },
+            success: function (data) {
+                if (data) {
+                    card.html(data);
+                    $('.ui.accordion').accordion({ animateChildren: false });
+                    $('.right.floated.button').popup({ on: 'click' });
+                    $('.ui.button.disabled').removeClass('disabled');
+                    $('#cardQuestao' + indice + ' .ui.desfazer.button').parents('.popup').prev().show();
+                }
+                card.removeClass('ui form loading');
+            },
+            error: function () {
+                card.removeClass('ui form loading');
+                siac.mensagem('Ocorreu um erro não esperado.');
+            },
+            complete: function () {
+                adicionarEventos(simulado, dia, prova, questao, indice);
+            }
+        });
+    }
+
+    function desfazer(simulado, dia, prova, questao, indice) {
+        var card = $('#cardQuestao' + indice);
+        card.addClass('ui form loading');
+        $('#cardQuestao' + indice + ' div').popup('hide');
+        $.ajax({
+            type: 'POST',
+            url: '/simulado/gerencia/desfazerprovaconfigurar',
+            data: {
+                'indice': indice,
+                'questao': questao,
+                'simulado': simulado,
+                'dia': dia,
+                'prova': prova
+            },
+            success: function (data) {
+                if (data) {
+                    card.html(data);
+                    $('.ui.accordion').accordion({ animateChildren: false });
+                    $('.right.floated.button').popup({ on: 'click' });
+                    $('#cardQuestao' + indice + ' .ui.desfazer.button').parents('.popup').prev().hide();
+                }
+                card.removeClass('ui form loading');
+            },
+            error: function () {
+                card.removeClass('ui form loading');
+                siac.mensagem('Ocorreu um erro não esperado.');
+            },
+            complete: function () {
+                adicionarEventos(simulado, dia, prova, questao, indice);
+            }
+        });
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();

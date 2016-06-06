@@ -1,38 +1,31 @@
-﻿@using SIAC.Models
-@model Questao
+﻿@model Questao
 <div class="content" data-questao="@Model.CodQuestao" data-tipo="@Model.CodTipoQuestao" data-indice="@ViewData["Index"]">
     <div class="header" data-html="@( !String.IsNullOrEmpty(Model.Objetivo) ? "<b>Objetivo</b>: " + Model.Objetivo : "")">
         <div class="ui icon right floated button"><i class="refresh icon"></i></div>
         <div class="ui popup">
             <div class='header'>
-                Deseja substituir essa questão?
+                Deseja substituir esta questão?
             </div>
             <div class='content'>
-                <p>Você não poderá desfazer essa troca</p>
-                <a class='ui small trocar button'>Sim, Continuar</a>
+                <a class='ui small trocar button'>Sim, continuar</a>
             </div>
         </div>
         <div data-html="" class="ui icon right floated button" style="display:none;"><i class="undo icon"></i></div>
         <div class="ui popup">
-            <div class='header'>Deseja desfazer substituição?</div><div class='content'><p>Você perderá a questão atual</p><a class='ui small desfazer button'>Sim, Continuar</a></div>
+            <div class='header'>Deseja desfazer a substituição?</div>
+            <div class='content'>
+                <p>Só será desfeito a última substituição realizada</p>
+                <a class='ui small desfazer button'>Sim, continuar</a>
+            </div>
         </div>
-        @{
-            var enunciado = (((int)ViewData["Index"]).GetIndiceQuestao() + ". " + Model.Enunciado).Split('\n', '\r');
-            foreach (var strEnunciado in enunciado)
-            {
-                if (!String.IsNullOrWhiteSpace(strEnunciado))
-                {
-                    <p>@strEnunciado</p>
-                }
-            }
-        }
+        @Html.Raw((((int)ViewData["Index"]).GetIndiceQuestao() + ". " + Model.Enunciado).ToHtml("p"))
     </div>
 </div>
 <div class="content">
-    @if (Model.CodTipoQuestao == 1)
+    @if (Model.CodTipoQuestao == TipoQuestao.OBJETIVA)
     {
         <div class="ui very relaxed list">
-            @foreach (var alternativa in Model.Alternativa)
+            @foreach (Alternativa alternativa in Model.Alternativa)
             {
                 <div class="item" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
                     <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
@@ -46,20 +39,11 @@
     }
     else
     {
-        <div data-html="@(!String.IsNullOrEmpty(Model.Comentario) ? "<b>Comentário</b>: " + Model.Comentario : "")">
+        <div data-html="@(!String.IsNullOrWhiteSpace(Model.Comentario) ? "<b>Comentário</b>: " + Model.Comentario : "")">
             <a class="ui tiny green ribbon label">Chave de Resposta</a>
-            @{
-                var chaveDeResposta = Model.ChaveDeResposta.Split('\n', '\r');
-                foreach (var strChaveDeResposta in chaveDeResposta)
-                {
-                    if (!String.IsNullOrWhiteSpace(strChaveDeResposta))
-                    {
-                        <p><i>@strChaveDeResposta</i></p>
-                    }
-                }
-            }
+            @Html.Raw(Model.ChaveDeResposta.ToHtml("p", "i"))
         </div>
-                }
+    }
 </div>
 @if (Model.QuestaoAnexo.Count > 0)
 {
@@ -67,7 +51,7 @@
         <div class="ui styled fluid accordion">
             <div class="title"><i class="icon dropdown"></i>Anexos</div>
             <div class="content">
-                @foreach (var anexo in Model.QuestaoAnexo)
+                @foreach (QuestaoAnexo anexo in Model.QuestaoAnexo)
                 {
                     @Html.Partial("_Anexo", anexo)
                 }

@@ -5,6 +5,25 @@ namespace SIAC.Models
 {
     public partial class SimProva
     {
+        public void AdicionarQuestao(int codQuestao)
+        {
+            this.SimProvaQuestao.Add(new SimProvaQuestao()
+            {
+                Questao = Questao.ListarPorCodigo(codQuestao),
+            });
+            contexto.SaveChanges();
+        }
+
+        public void RemoverQuestao(int codQuestao)
+        {
+            SimProvaQuestao simProvaQuestao = this.SimProvaQuestao.FirstOrDefault(q => q.CodQuestao == codQuestao);
+            if (simProvaQuestao != null)
+            {
+                this.SimProvaQuestao.Remove(simProvaQuestao);
+                contexto.SaveChanges();
+            }
+        }
+
         private static Contexto contexto => Repositorio.GetInstance();
 
         public static List<SimProva> ListarPorProfessor(int codProfessor) =>
