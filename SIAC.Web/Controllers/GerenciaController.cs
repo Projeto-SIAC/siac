@@ -4,7 +4,6 @@ using SIAC.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SIAC.Controllers
@@ -611,7 +610,30 @@ namespace SIAC.Controllers
 
         // GET: simulado/gerencia/provas
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
-        public ActionResult Provas() => View();
+        public ActionResult Provas()
+        {
+            GerenciaProvasViewModel model = new GerenciaProvasViewModel();
+
+            List<SimProva> provas = SimProva.ListarPorProfessor(Sessao.UsuarioMatricula);
+
+            foreach (SimProva prova in provas)
+            {
+                Simulado sim = prova.SimDiaRealizacao.Simulado;
+                if (!sim.FlagSimuladoEncerrado && !sim.FlagProvaEncerrada && prova.SimDiaRealizacao.DtRealizacao > DateTime.Now)
+                {
+                    if (model.Provas.Keys.Count == 0 || model.Provas.Keys.FirstOrDefault(s => s.Ano == sim.Ano && s.NumIdentificador == sim.NumIdentificador) == null)
+                    {
+                        model.Provas[sim] = new List<SimProva>() { prova };
+                    }
+                    else
+                    {
+                        model.Provas[sim].Add(prova);
+                    }
+                }
+            }
+
+            return View(model);
+        }
 
         #endregion Provas
     }

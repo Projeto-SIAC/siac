@@ -69,6 +69,7 @@ namespace SIAC.ViewModels
 
     public class GerenciaProvasViewModel
     {
-        public Dictionary<Simulado, SimProva> Provas { get; set; }
+        public Dictionary<Simulado, List<SimProva>> Provas { get; set; }
+            = new Dictionary<Simulado, List<SimProva>>();
     }
 }

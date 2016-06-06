@@ -5,3 +5,44 @@
 }
 
 <h2>@ViewBag.Title</h2>
+
+@if (Model.Provas.Keys.Count > 0)
+{
+    foreach (var par in Model.Provas)
+    {
+        <h3 class="ui dividing header">@par.Key.Titulo</h3>
+        <table class="ui striped table">
+            <thead>
+                <tr>
+                    <th class="eight wide">Prova</th>
+                    <th class="two wide">Data da Realização</th>
+                    <th class="two wide">Disciplina</th>
+                    <th class="two wide">Quant. Questões</th>
+                    <th class="two wide"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var prova in par.Value)
+                {
+                    <tr>
+                        <td>@prova.Titulo</td>
+                        <td>@prova.SimDiaRealizacao.DtRealizacao.DiaRealizacaoRepresentacao()</td>
+                        <td>@prova.Disciplina.Descricao</td>
+                        <td>@prova.QteQuestoes</td>
+                        <td><a href="#" class="ui small button"><i class="icon open folder"></i> Abrir</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+else
+{
+    <div class="ui message">
+        <div class="header">
+            Nenhuma prova foi designada para você
+        </div>
+        <p>Não há provas designadas para você e não realizadas.</p>
+    </div>
+}
+<a class="ui button" href="@Url.Action("Index", "Gerencia")">Voltar para Gerência de Simulados</a>
