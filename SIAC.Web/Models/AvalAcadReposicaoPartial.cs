@@ -74,7 +74,7 @@ namespace SIAC.Models
         {
             switch (usuario.CodCategoria)
             {
-                case Categoria.ESTUDANTE:
+                case Categoria.ALUNO:
                     return contexto.AvalAcadReposicao
                         .Where(a => a.Justificacao.FirstOrDefault(j => j.CodPessoaFisica == usuario.CodPessoaFisica) != null
                             && a.Avaliacao.DtAplicacao.HasValue
@@ -119,7 +119,7 @@ namespace SIAC.Models
         {
             switch (usuario.CodCategoria)
             {
-                case Categoria.ESTUDANTE:
+                case Categoria.ALUNO:
                     return contexto.AvalAcadReposicao
                         .Where(a => a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino
                             && a.Justificacao.FirstOrDefault(j => j.CodPessoaFisica == usuario.CodPessoaFisica) != null

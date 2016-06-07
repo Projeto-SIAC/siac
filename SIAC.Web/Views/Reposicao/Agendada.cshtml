@@ -205,12 +205,11 @@
                         </div>
                         contador++;
                     }
-
                 </div>
             </div>
         }
     </div>
-    @if (codCategoria == Categoria.ESTUDANTE)
+    @if (codCategoria == Categoria.ALUNO)
     {
         if (!flagVencida && !Model.Avaliacao.FlagLiberada)
         {
@@ -262,7 +261,7 @@
         <div onclick="window.location.href= '@Url.Action("Acompanhar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui @(!flagAgora || (flagAgora && !Model.Avaliacao.FlagLiberada) ? "disabled" : "") acompanhar button">Acompanhar</div>
     }
 }
-else if (codCategoria == Categoria.ESTUDANTE)
+else if (codCategoria == Categoria.ALUNO)
 {
     if (flagAgora)
     {

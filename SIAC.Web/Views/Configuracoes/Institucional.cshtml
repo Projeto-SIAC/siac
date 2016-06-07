@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Coordenadores de Av. Institucional";
-    bool flagProfessorCoordAvi = Sessao.UsuarioCategoriaCodigo != Categoria.COLABORADOR && Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.FlagCoordenadorAvi;
+    bool flagProfessorCoordAvi = Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR && Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.FlagCoordenadorAvi;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -18,7 +18,7 @@
                 {
                     <div class="@(flagProfessorCoordAvi ? "disabled" : "") field">
                         <div class="ui toggle checkbox">
-                            <input type="checkbox" name="chkOcupacao@(ocupacao.CodOcupacao)" @( Parametro.Obter().OcupacaoCoordenadorAvi.Contains(ocupacao.CodOcupacao) ? "checked" : ""  ) @(flagProfessorCoordAvi ? "disabled" : "") >
+                            <input type="checkbox" name="chkOcupacao@(ocupacao.CodOcupacao)" @( Parametro.Obter().OcupacaoCoordenadorAvi.Contains(ocupacao.CodOcupacao) ? "checked" : ""  ) @(flagProfessorCoordAvi ? "disabled" : "")>
                             <label>@ocupacao.Descricao</label>
                         </div>
                     </div>
@@ -32,14 +32,14 @@
     <div class="eight wide column">
         <div class="ui dividing header">
             Coordenadores
-        </div> 
+        </div>
         <div class="ui form">
             <div class="grouped fields">
                 @foreach (PessoaFisica coordenador in Model.Coordenadores)
                 {
                     <div class="field">
                         <div class="ui checkbox">
-                            <input @(flagProfessorCoordAvi && coordenador.Usuario.FirstOrDefault(u=>u.Matricula == Sessao.UsuarioMatricula) == null ? "disabled" : "")  type="checkbox" name="chkCoordenador@(coordenador.CodPessoa)">
+                            <input @(flagProfessorCoordAvi && coordenador.Usuario.FirstOrDefault(u => u.Matricula == Sessao.UsuarioMatricula) == null ? "disabled" : "") type="checkbox" name="chkCoordenador@(coordenador.CodPessoa)">
                             <label>@coordenador.PrimeiroNome @coordenador.UltimoNome</label>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                 </div>
                 <div class="ui @(flagProfessorCoordAvi ? "disabled" : "")  coordenador button">Novo</div>
             </div>
-        </div>         
+        </div>
     </div>
 </div>
 
@@ -90,8 +90,3 @@
 @section Scripts {
     @Scripts.Render("~/bundles/js/configuracoes")
 }
-
-
-
-
-

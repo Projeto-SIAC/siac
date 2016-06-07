@@ -57,7 +57,7 @@ namespace SIAC.Models
             int codPessoaFisica = usuario.CodPessoaFisica;
             switch (usuario.CodCategoria)
             {
-                case Categoria.ESTUDANTE:
+                case Categoria.ALUNO:
                     return contexto.AvalCertificacao
                         .Where(a => a.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica) != null
                             && a.Avaliacao.DtAplicacao.HasValue
@@ -104,7 +104,7 @@ namespace SIAC.Models
             int codPessoaFisica = usuario.CodPessoaFisica;
             switch (usuario.CodCategoria)
             {
-                case Categoria.ESTUDANTE:
+                case Categoria.ALUNO:
                     return contexto.AvalCertificacao
                         .Where(a => a.PessoaFisica.FirstOrDefault(p => p.CodPessoa == codPessoaFisica) != null
                             && a.Avaliacao.DtAplicacao >= inicio && a.Avaliacao.DtAplicacao <= termino

@@ -63,7 +63,9 @@ namespace SIAC.Models
 
         public static void AtualizarOcupacoesCoordenadores(int[] ocupacoes)
         {
-            parametro.CoordenadorAVI = JsonConvert.SerializeObject(ocupacoes);
+            var coordenadoresAVI = ocupacoes.ToList();
+            coordenadoresAVI.Add(Ocupacao.SUPERUSUARIO);
+            parametro.CoordenadorAVI = JsonConvert.SerializeObject(coordenadoresAVI);
             contexto.Parametro.FirstOrDefault().CoordenadorAVI = parametro.CoordenadorAVI;
             contexto.SaveChanges();
         }

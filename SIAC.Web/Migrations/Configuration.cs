@@ -25,27 +25,27 @@ namespace SIAC.Migrations
                 c => c.CodCategoria,
                 new Categoria
                 {
-                    CodCategoria = 0,
+                    CodCategoria = Categoria.SUPERUSUARIO,
                     Descricao = "Superusuário"
                 },
                 new Categoria
                 {
-                    CodCategoria = 1,
+                    CodCategoria = Categoria.ALUNO,
                     Descricao = "Aluno"
                 },
                 new Categoria
                 {
-                    CodCategoria = 2,
+                    CodCategoria = Categoria.PROFESSOR,
                     Descricao = "Professor"
                 },
                 new Categoria
                 {
-                    CodCategoria = 3,
+                    CodCategoria = Categoria.COLABORADOR,
                     Descricao = "Colaborador"
                 },
                 new Categoria
                 {
-                    CodCategoria = 4,
+                    CodCategoria = Categoria.VISITANTE,
                     Descricao = "Visitante"
                 }
             );
@@ -54,47 +54,47 @@ namespace SIAC.Migrations
                 o => o.CodOcupacao,
                 new Ocupacao
                 {
-                    CodOcupacao = 0,
+                    CodOcupacao = Ocupacao.SUPERUSUARIO,
                     Descricao = "Superusuário"
                 },
                 new Ocupacao
                 {
-                    CodOcupacao = 1,
+                    CodOcupacao = Ocupacao.REITOR,
                     Descricao = "Reitor"
                 },
                 new Ocupacao
                 {
-                    CodOcupacao = 2,
+                    CodOcupacao = Ocupacao.PRO_REITOR,
                     Descricao = "Pró-Reitor"
                 },
                 new Ocupacao
                 {
-                    CodOcupacao = 3,
+                    CodOcupacao = Ocupacao.DIRETOR_GERAL,
                     Descricao = "Diretor-Geral"
                 },
                 new Ocupacao
                 {
-                    CodOcupacao = 4,
+                    CodOcupacao = Ocupacao.DIRETOR,
                     Descricao = "Diretor"
                 },
                 new Ocupacao
                 {
-                    CodOcupacao = 5,
+                    CodOcupacao = Ocupacao.COORDENADOR,
                     Descricao = "Coordenador"
                 },
                 new Ocupacao
                 {
-                    CodOcupacao = 6,
+                    CodOcupacao = Ocupacao.COORDENADOR_AVI,
                     Descricao = "Coordenador de Avaliação Institucional"
                 },
                 new Ocupacao
                 {
-                    CodOcupacao = 7,
+                    CodOcupacao = Ocupacao.COORDENADOR_SIMULADO,
                     Descricao = "Coordenador de Simulado"
                 },
                 new Ocupacao
                 {
-                    CodOcupacao = 8,
+                    CodOcupacao = Ocupacao.COLABORADOR_SIMULADO,
                     Descricao = "Colaborador de Simulado"
                 }
             );
@@ -216,42 +216,42 @@ namespace SIAC.Migrations
                 p => p.CodAviTipoPublico,
                 new AviTipoPublico
                 {
-                    CodAviTipoPublico = 1,
+                    CodAviTipoPublico = AviTipoPublico.INSTITUICAO,
                     Descricao = "Instituição"
                 },
                 new AviTipoPublico
                 {
-                    CodAviTipoPublico = 2,
+                    CodAviTipoPublico = AviTipoPublico.REITORIA,
                     Descricao = "Reitoria"
                 },
                 new AviTipoPublico
                 {
-                    CodAviTipoPublico = 3,
+                    CodAviTipoPublico = AviTipoPublico.PRO_REITORIA,
                     Descricao = "Pró-Reitoria"
                 },
                 new AviTipoPublico
                 {
-                    CodAviTipoPublico = 4,
+                    CodAviTipoPublico = AviTipoPublico.CAMPUS,
                     Descricao = "Campus"
                 },
                 new AviTipoPublico
                 {
-                    CodAviTipoPublico = 5,
+                    CodAviTipoPublico = AviTipoPublico.DIRETORIA,
                     Descricao = "Diretoria"
                 },
                 new AviTipoPublico
                 {
-                    CodAviTipoPublico = 6,
+                    CodAviTipoPublico = AviTipoPublico.CURSO,
                     Descricao = "Curso"
                 },
                 new AviTipoPublico
                 {
-                    CodAviTipoPublico = 7,
+                    CodAviTipoPublico = AviTipoPublico.TURMA,
                     Descricao = "Turma"
                 },
                 new AviTipoPublico
                 {
-                    CodAviTipoPublico = 8,
+                    CodAviTipoPublico = AviTipoPublico.PESSOA,
                     Descricao = "Pessoa"
                 }
             );
@@ -358,31 +358,31 @@ namespace SIAC.Migrations
                 t => t.CodTipoAvaliacao,
                 new TipoAvaliacao
                 {
-                    CodTipoAvaliacao = 1,
+                    CodTipoAvaliacao = TipoAvaliacao.AUTOAVALIACAO,
                     Descricao = "Autoavaliação",
                     Sigla = "AUTO"
                 },
                 new TipoAvaliacao
                 {
-                    CodTipoAvaliacao = 2,
+                    CodTipoAvaliacao = TipoAvaliacao.ACADEMICA,
                     Descricao = "Avaliação Acadêmica",
                     Sigla = "ACAD"
                 },
                 new TipoAvaliacao
                 {
-                    CodTipoAvaliacao = 3,
+                    CodTipoAvaliacao = TipoAvaliacao.CERTIFICACAO,
                     Descricao = "Avaliação de Certificação",
                     Sigla = "CERT"
                 },
                 new TipoAvaliacao
                 {
-                    CodTipoAvaliacao = 4,
+                    CodTipoAvaliacao = TipoAvaliacao.REPOSICAO,
                     Descricao = "Avaliação de Reposição",
                     Sigla = "REPO"
                 },
                 new TipoAvaliacao
                 {
-                    CodTipoAvaliacao = 5,
+                    CodTipoAvaliacao = TipoAvaliacao.AVI,
                     Descricao = "Avaliação Institucional",
                     Sigla = "AVI"
                 }
@@ -392,12 +392,12 @@ namespace SIAC.Migrations
                 t => t.CodTipoAnexo,
                 new TipoAnexo
                 {
-                    CodTipoAnexo = 1,
+                    CodTipoAnexo = TipoAnexo.IMAGEM,
                     Descricao = "Imagem"
                 },
                 new TipoAnexo
                 {
-                    CodTipoAnexo = 2,
+                    CodTipoAnexo = TipoAnexo.CODIGO,
                     Descricao = "Código"
                 }
             );
@@ -424,8 +424,14 @@ namespace SIAC.Migrations
                     NotaUsoCertificacao = "Nota de Uso para Avaliação de Certificação.\nNão esqueça de atualizar.",
                     NotaUsoInstitucional = "Nota de Uso para Avaliação Institucional.\nNão esqueça de atualizar.",
                     NotaUsoSimulado = "Nota de Uso para Simulado.\nNão esqueça de atualizar.",
-                    CoordenadorAVI = Newtonsoft.Json.JsonConvert.SerializeObject(new int[] { 0, 1, 2, 3, 4 }), // ocupações que são coordenadores de avaliação institucional
-                    SmtpEnderecoHost = "voce.precisa.de.um.smpt", // ex.: smpt.live.com
+                    CoordenadorAVI = Newtonsoft.Json.JsonConvert.SerializeObject(new int[] {
+                        Ocupacao.SUPERUSUARIO,
+                        Ocupacao.REITOR,
+                        Ocupacao.PRO_REITOR,
+                        Ocupacao.DIRETOR_GERAL,
+                        Ocupacao.DIRETOR
+                    }),
+                    SmtpEnderecoHost = "nao.esqueca.de.atualizar", // ex.: smpt.live.com
                     SmtpFlagSSL = false,
                     SmtpPorta = 25,
                     SmtpUsuario = Helpers.Criptografia.Base64Encode("usuario"),
@@ -466,8 +472,8 @@ namespace SIAC.Migrations
                 );
             }
 
-            context.PessoaFisica.Find(1).Ocupacao.Add(context.Ocupacao.Find(0));
-            context.PessoaFisica.Find(1).Categoria.Add(context.Categoria.Find(0));
+            context.PessoaFisica.Find(1).Ocupacao.Add(context.Ocupacao.Find(Ocupacao.SUPERUSUARIO));
+            context.PessoaFisica.Find(1).Categoria.Add(context.Categoria.Find(Categoria.SUPERUSUARIO));
 
             if (!(context.PessoaJuridica.Find(2)?.Cnpj == InstituicaoCNPJ))
             {
@@ -504,7 +510,7 @@ namespace SIAC.Migrations
                     Matricula = "superusuario",
                     Senha = Helpers.Criptografia.RetornarHash("senha"),
                     CodPessoaFisica = 1,
-                    CodCategoria = 0,
+                    CodCategoria = Categoria.SUPERUSUARIO,
                     DtCadastro = System.DateTime.Now
                 }
             );

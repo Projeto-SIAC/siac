@@ -13,7 +13,7 @@
             </div>
             @if (aval.Avaliacao.FlagRealizada)
             {
-                if (Sessao.UsuarioCategoriaCodigo == 1)
+                if (Sessao.UsuarioCategoriaCodigo == Categoria.ALUNO)
                 {
                     if (aval.AlunosRealizaram.Where(a => a.MatrAluno == Sessao.UsuarioMatricula).Count() > 0)
                     {
@@ -42,9 +42,9 @@
             }
             <div class="description">
                 @*@if (aval.Avaliacao.FlagAgendada)
-                {
-                    <p><b>Aplicação</b>: @aval.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy HH'h'mm'min'")</p>
-                }*@
+                    {
+                        <p><b>Aplicação</b>: @aval.Avaliacao.DtAplicacao.Value.ToString("dd/MM/yyyy HH'h'mm'min'")</p>
+                    }*@
                 @if (aval.Avaliacao.Dificuldade != null)
                 {
                     <p title="@aval.Avaliacao.Dificuldade.Comentario"><b>Índ. de Dificuldade</b>: @aval.Avaliacao.Dificuldade.Descricao</p>
@@ -60,7 +60,7 @@
         </div>
         @if (aval.Avaliacao.FlagRealizada)
         {
-            if (Sessao.UsuarioCategoriaCodigo == 1)
+            if (Sessao.UsuarioCategoriaCodigo == Categoria.ALUNO)
             {
                 if (aval.AlunosRealizaram.Where(a => a.MatrAluno == Sessao.UsuarioMatricula).Count() > 0)
                 {
@@ -80,19 +80,19 @@
         {
             if (aval.Avaliacao.FlagArquivo)
             {
-                if (Sessao.UsuarioCategoriaCodigo == 2)
+                if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
                 {
                     <a href="@Url.Action("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
                 }
             }
             else if (aval.Avaliacao.FlagAgendada)
             {
-                if (Sessao.UsuarioCategoriaCodigo == 2)
+                if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
                 {
                     <a href="@Url.Action("Agendada", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Aplicar</a>
                 }
             }
-            else if (Sessao.UsuarioCategoriaCodigo == 2)
+            else if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
             {
                 <div class="ui buttons">
                     <a href="@Url.Action("Configurar", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Configurar</a>
@@ -100,7 +100,7 @@
                 </div>
             }
 
-            if (Sessao.UsuarioCategoriaCodigo == 1)
+            if (Sessao.UsuarioCategoriaCodigo == Categoria.ALUNO)
             {
                 <a href="@Url.Action("Detalhe", new { codigo = aval.Avaliacao.CodAvaliacao })" class="ui button">Detalhe</a>
             }

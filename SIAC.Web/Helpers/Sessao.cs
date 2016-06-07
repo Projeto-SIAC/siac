@@ -1,6 +1,6 @@
-﻿using System;
+﻿using SIAC.Models;
+using System;
 using System.Web;
-using SIAC.Models;
 
 namespace SIAC.Helpers
 {
@@ -35,7 +35,10 @@ namespace SIAC.Helpers
 
         public static Candidato Candidato => (Candidato)Retornar("SimuladoCandidato") ?? null;
 
-        public static void Inserir(string chave, object valor) { if (context?.Session != null) context.Session[chave] = valor; }
+        public static void Inserir(string chave, object valor)
+        {
+            if (context?.Session != null) context.Session[chave] = valor;
+        }
 
         public static object Retornar(string chave)
         {

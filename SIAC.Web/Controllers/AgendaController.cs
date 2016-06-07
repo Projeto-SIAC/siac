@@ -81,7 +81,7 @@ namespace SIAC.Controllers
 
         // POST: principal/agenda/horarios?start=2013-12-01&end=2014-01-12
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE, Categoria.PROFESSOR })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO, Categoria.PROFESSOR })]
         public ActionResult Horarios(string start, string end)
         {
             DateTime inicio = DateTime.Parse(start);

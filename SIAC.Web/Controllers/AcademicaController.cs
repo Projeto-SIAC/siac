@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE, Categoria.PROFESSOR })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO, Categoria.PROFESSOR })]
     public class AcademicaController : Controller
     {
         public List<AvalAcademica> Academicas
@@ -603,7 +603,7 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult Printar(string codAvaliacao, string imageData)
         {
-            if (Helpers.Sessao.UsuarioCategoriaCodigo == Categoria.ESTUDANTE)
+            if (Helpers.Sessao.UsuarioCategoriaCodigo == Categoria.ALUNO)
             {
                 Sistema.TempDataUrlImage[codAvaliacao] = imageData;
                 return Json(true);
@@ -618,10 +618,10 @@ namespace SIAC.Controllers
         }
 
         // GET: principal/academica/realizar/ACAD2015200007
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO })]
         public ActionResult Realizar(string codigo)
         {
-            if (Helpers.Sessao.UsuarioCategoriaCodigo == Categoria.ESTUDANTE && !String.IsNullOrWhiteSpace(codigo))
+            if (Helpers.Sessao.UsuarioCategoriaCodigo == Categoria.ALUNO && !String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAcademica avalAcad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                 if (avalAcad.Avaliacao.FlagPendente
@@ -638,7 +638,7 @@ namespace SIAC.Controllers
 
         // POST: principal/academica/resultado/ACAD201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO })]
         public ActionResult Resultado(string codigo, FormCollection form)
         {
             int codPessoaFisica = Usuario.ObterPessoaFisica(Helpers.Sessao.UsuarioMatricula);
@@ -711,7 +711,7 @@ namespace SIAC.Controllers
 
         // POST: principal/academica/desistir/ACAD201520016
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO })]
         public void Desistir(string codigo)
         {
             int codPessoaFisica = Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula);

@@ -90,7 +90,9 @@ namespace SIAC.Controllers
             model.Ocupacoes = Repositorio.GetInstance()
                 .Ocupacao
                 .Where(o => o.CodOcupacao != Ocupacao.COORDENADOR_AVI
-                    && o.CodOcupacao != Ocupacao.ADMINISTRADOR_SIAC)
+                    && o.CodOcupacao != Ocupacao.SUPERUSUARIO
+                    && o.CodOcupacao != Ocupacao.COLABORADOR_SIMULADO
+                    && o.CodOcupacao != Ocupacao.COORDENADOR_SIMULADO)
                 .ToList();
             model.Coordenadores = Repositorio.GetInstance()
                 .Ocupacao

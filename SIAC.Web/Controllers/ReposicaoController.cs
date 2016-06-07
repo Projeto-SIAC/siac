@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE, Categoria.PROFESSOR })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO, Categoria.PROFESSOR })]
     public class ReposicaoController : Controller
     {
         public List<AvalAcadReposicao> Reposicoes
@@ -561,7 +561,7 @@ namespace SIAC.Controllers
         }
 
         // GET: principal/avaliacao/reposicao/realizar/REPO201520001
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO })]
         public ActionResult Realizar(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -581,7 +581,7 @@ namespace SIAC.Controllers
 
         // POST: principal/avaliacao/reposicao/desistir/REPO201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO })]
         public void Desistir(string codigo)
         {
             int codPessoaFisica = Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula);
@@ -620,7 +620,7 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult Printar(string codAvaliacao, string imageData)
         {
-            if (Sessao.UsuarioCategoriaCodigo == Categoria.ESTUDANTE)
+            if (Sessao.UsuarioCategoriaCodigo == Categoria.ALUNO)
             {
                 Sistema.TempDataUrlImage[codAvaliacao] = imageData;
                 return Json(true);
@@ -651,7 +651,7 @@ namespace SIAC.Controllers
 
         // POST: principal/avaliacao/reposicao/resultado/REPO201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO })]
         public ActionResult Resultado(string codigo, FormCollection form)
         {
             int codPessoaFisica = Usuario.ObterPessoaFisica(Sessao.UsuarioMatricula);

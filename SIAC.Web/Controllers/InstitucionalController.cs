@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE, Categoria.PROFESSOR, Categoria.COLABORADOR })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO, Categoria.PROFESSOR, Categoria.COLABORADOR })]
     public class InstitucionalController : Controller
     {
         public List<AvalAvi> Institucionais =>

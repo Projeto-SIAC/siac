@@ -6,7 +6,7 @@
 
 <div class="ui stackable grid dashmenu">
     <div class="stackable doubling four columns centered row">
-        @if (Sessao.UsuarioCategoriaCodigo == Categoria.COLABORADOR)
+        @if (Sessao.UsuarioCategoriaCodigo == Categoria.COLABORADOR || Sessao.UsuarioCategoriaCodigo == Categoria.SUPERUSUARIO)
         {
             @Html.Partial("_Atalho", new AtalhoViewModel("Usuários", "users", Url.Action("Index", "Usuario")))
             @Html.Partial("_Atalho", new AtalhoViewModel("Parâmetros", "options", Url.Action("Parametros")))

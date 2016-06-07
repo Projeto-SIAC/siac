@@ -36,7 +36,11 @@ namespace SIAC.Filters
             {
                 filterContext.Result = Redirecionar(filterContext);
             }
-            else if (Helpers.Sessao.UsuarioCategoriaCodigo == 4 && Helpers.Sessao.UsuarioSenhaPadrao)
+            else if (Helpers.Sessao.UsuarioCategoriaCodigo == Models.Categoria.SUPERUSUARIO)
+            {
+                // faça nada
+            }
+            else if (Helpers.Sessao.UsuarioCategoriaCodigo == Models.Categoria.VISITANTE && Helpers.Sessao.UsuarioSenhaPadrao)
             {
                 filterContext.Result = Redirecionar(filterContext, "~/acesso/visitante");
             }
@@ -68,9 +72,8 @@ namespace SIAC.Filters
                             }
                         }
                     }
-                    else if (filterContext.HttpContext.Request.HttpMethod == "GET"/*(!paths.Contains("printar") && !paths.Contains("desistir") && !paths.Contains("resultado") && !paths.Contains("realizar"))*/)
+                    else if (filterContext.HttpContext.Request.HttpMethod == "GET")
                     {
-                        // como sei se é acadêmica ou certificacao ou reposicao? '-'
                         filterContext.Result = new RedirectResult("~/erro/1");
                     }
                 }

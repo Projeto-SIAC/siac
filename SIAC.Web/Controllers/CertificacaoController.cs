@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE, Categoria.PROFESSOR, Categoria.COLABORADOR })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO, Categoria.PROFESSOR, Categoria.COLABORADOR })]
     public class CertificacaoController : Controller
     {
         public List<AvalCertificacao> Certificacoes
@@ -476,7 +476,7 @@ namespace SIAC.Controllers
         }
 
         // GET: historico/avaliacao/certificacao/agendada/CERT201520001
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE, Categoria.PROFESSOR })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO, Categoria.PROFESSOR })]
         public ActionResult Agendada(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -540,7 +540,7 @@ namespace SIAC.Controllers
         }
 
         // GET: principal/avaliacao/certificacao/realizar/CERT201520001
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ESTUDANTE })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO })]
         public ActionResult Realizar(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))

@@ -4,7 +4,8 @@ namespace SIAC.Models
 {
     public partial class Categoria
     {
-        public const int ESTUDANTE = 1;
+        public const int SUPERUSUARIO = 0;
+        public const int ALUNO = 1;
         public const int PROFESSOR = 2;
         public const int COLABORADOR = 3;
         public const int VISITANTE = 4;

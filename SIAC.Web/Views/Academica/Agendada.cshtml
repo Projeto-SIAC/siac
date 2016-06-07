@@ -41,7 +41,7 @@
                 <li>O botão <b>Configurar Questões</b> serve para abrir a tela de configuração de avaliação na qual você poderá substituir as questões desta avaliação acadêmica.</li>
                 if (!Model.Avaliacao.FlagLiberada)
                 {
-                    <li>O botão <b>Liberar</b> serve para você liberar esta avaliação pros seus alunos.</li>
+                <li>O botão <b>Liberar</b> serve para você liberar esta avaliação pros seus alunos.</li>
                 }
                 <li>O botão <b>Acompanhar</b> serve para abrir a tela de acompanhando onde você poderá ver, em tempo real, a situaçõo de todos os alunos que estão realizando essa avaliação no momento</li>
             }
@@ -179,27 +179,27 @@
             </div>
         }
     </div>
-    @if (codCategoria == Categoria.ESTUDANTE)
+    @if (codCategoria == Categoria.ALUNO)
     {
         if (!flagVencida && !Model.Avaliacao.FlagLiberada)
         {
-            <div id="mensagem" class="ui header">
-                <i class="clock icon"></i>
-                <div class="content">
-                    Seu professor não liberou a prova ainda
-                    <div class="sub header">Aguarde a liberação da avaliação para iniciar</div>
-                </div>
+        <div id="mensagem" class="ui header">
+            <i class="clock icon"></i>
+            <div class="content">
+                Seu professor não liberou a prova ainda
+                <div class="sub header">Aguarde a liberação da avaliação para iniciar</div>
             </div>
+        </div>
         }
         else if (!flagVencida && Model.Avaliacao.FlagLiberada)
         {
-            <div id="mensagem" class="ui header">
-                <i class="checkmark icon"></i>
-                <div class="content">
-                    Seu professor liberou a prova
-                    <div class="sub header">Você já pode iniciar assim que chegar a hora de aplicação</div>
-                </div>
+        <div id="mensagem" class="ui header">
+            <i class="checkmark icon"></i>
+            <div class="content">
+                Seu professor liberou a prova
+                <div class="sub header">Você já pode iniciar assim que chegar a hora de aplicação</div>
             </div>
+        </div>
         }
     }
 </div>
@@ -208,9 +208,9 @@
 {
     if (!Sistema.AvaliacaoUsuario.ContainsKey(Model.Avaliacao.CodAvaliacao.ToLower()))
     {
-        <a href="@Url.Action("Avaliacao", "Impressao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Imprimir</a>
-        <div class="ui arquivar button">Arquivar</div>
-        <div onclick="window.location.href='@Url.Action("Agendar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui reagendar button" @(!Model.Avaliacao.FlagLiberada || !flagAgora ? "" : "style=\"display:none\"")>Reagendar</div>
+    <a href="@Url.Action("Avaliacao", "Impressao", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui button">Imprimir</a>
+    <div class="ui arquivar button">Arquivar</div>
+    <div onclick="window.location.href='@Url.Action("Agendar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui reagendar button" @(!Model.Avaliacao.FlagLiberada || !flagAgora ? "" : "style=\"display:none\"")>Reagendar</div>
     }
 
     if (!flagVencida)
@@ -219,26 +219,26 @@
         {
             if (!Sistema.AvaliacaoUsuario.ContainsKey(Model.Avaliacao.CodAvaliacao.ToLower()))
             {
-                <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui configurar button" @(!flagAgora ? "" : "style=\"display:none\"")>Configurar Questões</a>
-                <div class="ui toggle liberar button">Liberar</div>
+    <a href="@Url.Action("Configurar", new { codigo = Model.Avaliacao.CodAvaliacao })" class="ui configurar button" @(!flagAgora ? "" : "style=\"display:none\"")>Configurar Questões</a>
+    <div class="ui toggle liberar button">Liberar</div>
             }
         }
         else
         {
-            <div class="ui toggle active liberar button">Liberada</div>
+    <div class="ui toggle active liberar button">Liberada</div>
         }
-        <div onclick="window.location.href= '@Url.Action("Acompanhar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui @(!flagAgora || (flagAgora && !Model.Avaliacao.FlagLiberada) ? "disabled" : "") acompanhar button">Acompanhar</div>
+    <div onclick="window.location.href= '@Url.Action("Acompanhar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui @(!flagAgora || (flagAgora && !Model.Avaliacao.FlagLiberada) ? "disabled" : "") acompanhar button">Acompanhar</div>
     }
 }
-else if (codCategoria == Categoria.ESTUDANTE)
+else if (codCategoria == Categoria.ALUNO)
 {
     if (flagAgora)
     {
-        <div onclick="window.location.href='@Url.Action("Realizar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui iniciar button">Iniciar</div>
+    <div onclick="window.location.href='@Url.Action("Realizar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui iniciar button">Iniciar</div>
     }
     else if (!flagVencida)
     {
-        <div onclick="window.location.href ='@Url.Action("Realizar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui iniciar disabled button">Iniciar</div>
+    <div onclick="window.location.href ='@Url.Action("Realizar", new { codigo = Model.Avaliacao.CodAvaliacao })'" class="ui iniciar disabled button">Iniciar</div>
     }
 }
 

@@ -141,7 +141,7 @@ namespace SIAC.Models
         {
             switch (usuario.CodCategoria)
             {
-                case Categoria.ESTUDANTE:
+                case Categoria.ALUNO:
                     int codAluno = usuario.Aluno.First().CodAluno;
                     return contexto.AvalAcademica
                         .Where(a => a.Turma.TurmaDiscAluno.FirstOrDefault(t => t.CodAluno == codAluno) != null
@@ -187,7 +187,7 @@ namespace SIAC.Models
         {
             switch (usuario.CodCategoria)
             {
-                case Categoria.ESTUDANTE:
+                case Categoria.ALUNO:
                     int codAluno = usuario.Aluno.LastOrDefault()?.CodAluno ?? 0;
                     return contexto.AvalAcademica
                         .Where(a =>

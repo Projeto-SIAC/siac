@@ -26,6 +26,10 @@
                 @Html.Partial("_Atalho", new AtalhoViewModel("Dados Gerais", "cogs", Url.Action("Dados", "Gerencia")))
                 @Html.Partial("_Atalho", new AtalhoViewModel("Configurações", "configure", Url.Action("Configuracoes", "Gerencia")))
                 break;
+            case Categoria.SUPERUSUARIO:
+                @Html.Partial("_Atalho", new AtalhoViewModel("Dados Gerais", "cogs", Url.Action("Dados", "Gerencia")))
+                @Html.Partial("_Atalho", new AtalhoViewModel("Configurações", "configure", Url.Action("Configuracoes", "Gerencia")))
+                break;
             case Categoria.PROFESSOR:
                 @Html.Partial("_Atalho", new AtalhoViewModel("Provas Designadas", "copy", Url.Action("Provas", "Gerencia")))
                 break;

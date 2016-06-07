@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        @if (Model.CodCategoria < 3)
+        @if (Model.CodCategoria < Categoria.COLABORADOR)
         {
             <h3 class="ui dividing header" data-html="Ano de referência: <b>@(DateTime.Today.Year)</b>.">
                 Informações Acadêmicas
@@ -34,7 +34,7 @@
             <div class="ui relaxed list">
                 @switch (Model.CodCategoria)
                 {
-                    case Categoria.ESTUDANTE:
+                    case Categoria.ALUNO:
                         <div class="item">
                             <div class="header">Instituição</div>
                             @Model.Aluno.Last().Turma.Curso.Diretoria.Campus.Instituicao.PessoaJuridica.NomeFantasia
@@ -104,7 +104,7 @@
             </div>
         }
     </div>
-    <div id="estatisticas" class="eight wide column">        
+    <div id="estatisticas" class="eight wide column">
         <div class="ui active centered text loader">Carregando estatísticas...</div>
     </div>
 </div>
@@ -157,6 +157,5 @@
 <div class="ui right floated senha button"><i class="lock icon"></i> Alterar senha</div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/js/perfil")  
+    @Scripts.Render("~/bundles/js/perfil")
 }
-

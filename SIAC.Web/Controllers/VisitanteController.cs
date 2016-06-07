@@ -103,7 +103,7 @@ namespace SIAC.Controllers
                     Usuario usuario = new Usuario();
                     usuario.Matricula = matricula;
                     usuario.PessoaFisica = pf;
-                    usuario.CodCategoria = 4;
+                    usuario.CodCategoria = Categoria.VISITANTE;
                     string senha = Sistema.GerarSenhaPadrao(usuario);
                     usuario.Senha = Criptografia.RetornarHash(senha);
 

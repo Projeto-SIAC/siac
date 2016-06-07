@@ -17,7 +17,7 @@ namespace SIAC.Models
 
             switch (usuario.CodCategoria)
             {
-                case Categoria.ESTUDANTE:
+                case Categoria.ALUNO:
                     int codAluno = usuario.Aluno.Last().CodAluno;
                     retorno = contexto.TurmaDiscProfHorario
                         .Where(h => h.Turma.TurmaDiscAluno.FirstOrDefault(t => t.CodAluno == codAluno) != null
