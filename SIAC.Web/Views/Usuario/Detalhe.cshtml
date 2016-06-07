@@ -2,6 +2,22 @@
 
 @{
     ViewBag.Title = $"{Model.Categoria.Descricao} {Model.PessoaFisica.PrimeiroNome}";
+    var qteEstatisticas = "";
+    switch (Model.CodCategoria)
+    {
+        case Categoria.ALUNO:
+            qteEstatisticas = "three";
+            break;
+        case Categoria.PROFESSOR:
+            qteEstatisticas = "four";
+            break;
+        case Categoria.COLABORADOR:
+            qteEstatisticas = "three";
+            break;
+        case Categoria.VISITANTE:
+            qteEstatisticas = "two";
+            break;
+    }
 }
 
 @section Scripts { @Scripts.Render("~/bundles/js/usuario") }
@@ -147,52 +163,38 @@
     <div class="ui dividing header">
         Estatísticas
     </div>
-    <div class="ui
-    @switch (Model.CodCategoria)
-    {
-        case Categoria.ALUNO:
-            @:three
-                 break;
-        case Categoria.PROFESSOR:
-            @:four
-                 break;
-        case Categoria.COLABORADOR:
-            @:three
-                 break;
-        case Categoria.VISITANTE:
-            @:two
-                 break;>
-                <div class="statistic">
-                <div class="value">
+    <div class="ui @qteEstatisticas statistics">
+        <div class="statistic">
+            <div class="value">
                 @Model.UsuarioAcesso.Count
-                </div>
-                <div class="label">
+            </div>
+            <div class="label">
                 Acessos
-                </div>
-                </div>
-                @if (Model.CodCategoria == Categoria.PROFESSOR)
-                {
-                    <div class="statistic">
-                    <div class="value">
-                    @Model.Professor.Sum(a => a.Questao.Count)
-                    </div>
-                    <div class="label">
-                    Questões
-                    </div>
-                    </div>
-                }
-                <div class="statistic">
+            </div>
+        </div>
+        @if (Model.CodCategoria == Categoria.PROFESSOR)
+        {
+            <div class="statistic">
                 <div class="value">
-                @Model.PessoaFisica.AvalAuto.Count
+                    @Model.Professor.Sum(a => a.Questao.Count)
                 </div>
                 <div class="label">
+                    Questões
+                </div>
+            </div>
+        }
+        <div class="statistic">
+            <div class="value">
+                @Model.PessoaFisica.AvalAuto.Count
+            </div>
+            <div class="label">
                 Autoavaliações
-                </div>
-                </div>
-                @if (Model.CodCategoria <= Categoria.COLABORADOR)
-                {
-                    <div class="statistic">
-                    <div class="value">
+            </div>
+        </div>
+        @if (Model.CodCategoria <= Categoria.COLABORADOR)
+        {
+            <div class="statistic">
+                <div class="value">
                     @switch (Model.CodCategoria)
                     {
                         case Categoria.PROFESSOR:
@@ -202,44 +204,44 @@
                             @Model.PessoaFisica.AvalPessoaResultado.Where(a => a.CodTipoAvaliacao > TipoAvaliacao.AUTOAVALIACAO).Count()
                             break;
                     }
-                    </div>
-                    <div class="label">
+                </div>
+                <div class="label">
                     Avaliações
-                    </div>
-                    </div>
-                }
+                </div>
+            </div>
+        }
     </div>
-            </div>
+</div>
 
-            <div class="ui basic segment">
-                <div class="ui dividing header">Acessos</div>
-                <table class="ui acesso selectable table">
-                    <thead>
-                        <tr>
-                            <th>Endereço IP</th>
-                            <th>Data</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                    <tfoot>
-                        <tr>
-                            <td><a class="ui carregar small button">Carregar mais</a></td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+<div class="ui basic segment">
+    <div class="ui dividing header">Acessos</div>
+    <table class="ui acesso selectable table">
+        <thead>
+            <tr>
+                <th>Endereço IP</th>
+                <th>Data</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+            <tr>
+                <td><a class="ui carregar small button">Carregar mais</a></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
 
-            <div class="ui acesso modal">
-                <i class="icon close"></i>
-                <div class="header">
-                </div>
-                <div class="content">
-                </div>
-                <div class="actions">
-                    <div class="ui cancel button">Fechar</div>
-                </div>
-            </div>
+<div class="ui acesso modal">
+    <i class="icon close"></i>
+    <div class="header">
+    </div>
+    <div class="content">
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Fechar</div>
+    </div>
+</div>
 
-            <a href="@Url.Action("Index")" class="ui button">Voltar</a>
-            <a href="@Url.Action("Opinioes","Configuracoes", new { tab = Model.Matricula })" class="ui button">Abrir Opiniões</a>
+<a href="@Url.Action("Index")" class="ui button">Voltar</a>
+<a href="@Url.Action("Opinioes","Configuracoes", new { tab = Model.Matricula })" class="ui button">Abrir Opiniões</a>
