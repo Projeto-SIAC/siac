@@ -15,6 +15,7 @@ namespace SIAC.Models
         }
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CodNivelEnsino { get; set; }
 
         [Required]

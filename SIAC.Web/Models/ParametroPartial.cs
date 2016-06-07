@@ -22,10 +22,6 @@ namespace SIAC.Models
 
         private static Parametro parametro;
 
-        private Parametro()
-        {
-        }
-
         public static Parametro Obter()
         {
             if (parametro == null)

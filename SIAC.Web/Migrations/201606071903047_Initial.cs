@@ -3,7 +3,7 @@ namespace SIAC.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialMigration : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -13,8 +13,8 @@ namespace SIAC.Migrations
                     {
                         CodQuestao = c.Int(nullable: false),
                         CodOrdem = c.Int(nullable: false),
-                        Enunciado = c.String(nullable: false, maxLength: 250, unicode: false),
-                        Comentario = c.String(maxLength: 250, unicode: false),
+                        Enunciado = c.String(nullable: false, maxLength: 250),
+                        Comentario = c.String(maxLength: 250),
                         FlagGabarito = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => new { t.CodQuestao, t.CodOrdem })
@@ -29,9 +29,9 @@ namespace SIAC.Migrations
                         CodProfessor = c.Int(nullable: false),
                         CodDificuldade = c.Int(nullable: false),
                         CodTipoQuestao = c.Int(nullable: false),
-                        Enunciado = c.String(nullable: false, maxLength: 250, unicode: false),
-                        Objetivo = c.String(maxLength: 250, unicode: false),
-                        Comentario = c.String(maxLength: 250, unicode: false),
+                        Enunciado = c.String(nullable: false, maxLength: 250),
+                        Objetivo = c.String(maxLength: 250),
+                        Comentario = c.String(maxLength: 250),
                         ChaveDeResposta = c.String(unicode: false, storeType: "text"),
                         DtCadastro = c.DateTime(nullable: false),
                         DtUltimoUso = c.DateTime(),
@@ -50,8 +50,8 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodDificuldade = c.Int(nullable: false),
-                        Descricao = c.String(nullable: false, maxLength: 20, unicode: false),
-                        Comentario = c.String(maxLength: 255, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 20),
+                        Comentario = c.String(maxLength: 255),
                     })
                 .PrimaryKey(t => t.CodDificuldade);
             
@@ -100,11 +100,11 @@ namespace SIAC.Migrations
                         Semestre = c.Int(nullable: false),
                         CodTipoAvaliacao = c.Int(nullable: false),
                         NumIdentificador = c.Int(nullable: false),
-                        CodTurno = c.String(nullable: false, maxLength: 1, fixedLength: true, unicode: false),
-                        NumTurma = c.Int(nullable: false),
-                        Periodo = c.Int(nullable: false),
-                        CodCurso = c.Int(nullable: false),
-                        CodSala = c.Int(nullable: false),
+                        CodTurno = c.String(maxLength: 1, fixedLength: true, unicode: false),
+                        NumTurma = c.Int(),
+                        Periodo = c.Int(),
+                        CodCurso = c.Int(),
+                        CodSala = c.Int(),
                         CodProfessor = c.Int(nullable: false),
                         CodDisciplina = c.Int(nullable: false),
                         Valor = c.Double(),
@@ -126,8 +126,8 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodDisciplina = c.Int(nullable: false, identity: true),
-                        Descricao = c.String(nullable: false, maxLength: 50, unicode: false),
-                        Sigla = c.String(maxLength: 10, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 50),
+                        Sigla = c.String(maxLength: 10),
                         FlagEletivaOptativa = c.Boolean(),
                         FlagFlexivel = c.Boolean(),
                         CodDiscIFRN = c.Int(),
@@ -142,7 +142,7 @@ namespace SIAC.Migrations
                         Semestre = c.Int(nullable: false),
                         CodTipoAvaliacao = c.Int(nullable: false),
                         NumIdentificador = c.Int(nullable: false),
-                        CodSala = c.Int(nullable: false),
+                        CodSala = c.Int(),
                         CodProfessor = c.Int(nullable: false),
                         CodDisciplina = c.Int(nullable: false),
                         Valor = c.Double(),
@@ -162,7 +162,7 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodPessoa = c.Int(nullable: false),
-                        Nome = c.String(nullable: false, maxLength: 100, unicode: false),
+                        Nome = c.String(nullable: false, maxLength: 100),
                         DtNascimento = c.DateTime(storeType: "date"),
                         Cpf = c.String(maxLength: 11, fixedLength: true, unicode: false),
                         Sexo = c.String(maxLength: 1, fixedLength: true, unicode: false),
@@ -219,7 +219,7 @@ namespace SIAC.Migrations
                         Semestre = c.Int(nullable: false),
                         CodTipoAvaliacao = c.Int(nullable: false),
                         NumIdentificador = c.Int(nullable: false),
-                        CodSala = c.Int(nullable: false),
+                        CodSala = c.Int(),
                         Valor = c.Double(),
                     })
                 .PrimaryKey(t => new { t.Ano, t.Semestre, t.CodTipoAvaliacao, t.NumIdentificador })
@@ -234,10 +234,10 @@ namespace SIAC.Migrations
                     {
                         CodSala = c.Int(nullable: false, identity: true),
                         CodBloco = c.Int(nullable: false),
-                        Descricao = c.String(nullable: false, maxLength: 50, unicode: false),
-                        Sigla = c.String(maxLength: 15, unicode: false),
-                        RefLocal = c.String(maxLength: 255, unicode: false),
-                        Observacao = c.String(maxLength: 140, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 50),
+                        Sigla = c.String(maxLength: 15),
+                        RefLocal = c.String(maxLength: 255),
+                        Observacao = c.String(maxLength: 140),
                         Capacidade = c.Int(),
                     })
                 .PrimaryKey(t => t.CodSala)
@@ -251,10 +251,10 @@ namespace SIAC.Migrations
                         CodBloco = c.Int(nullable: false, identity: true),
                         CodInstituicao = c.Int(),
                         CodCampus = c.Int(),
-                        Descricao = c.String(maxLength: 100, unicode: false),
-                        Sigla = c.String(maxLength: 15, unicode: false),
-                        RefLocal = c.String(maxLength: 255, unicode: false),
-                        Observacao = c.String(maxLength: 140, unicode: false),
+                        Descricao = c.String(maxLength: 100),
+                        Sigla = c.String(maxLength: 15),
+                        RefLocal = c.String(maxLength: 255),
+                        Observacao = c.String(maxLength: 140),
                     })
                 .PrimaryKey(t => t.CodBloco)
                 .ForeignKey("dbo.Campus", t => new { t.CodInstituicao, t.CodCampus })
@@ -268,7 +268,7 @@ namespace SIAC.Migrations
                         CodCampus = c.Int(nullable: false),
                         CodPessoaJuridica = c.Int(nullable: false),
                         CodColaboradorDiretor = c.Int(nullable: false),
-                        Sigla = c.String(maxLength: 10, unicode: false),
+                        Sigla = c.String(maxLength: 10),
                     })
                 .PrimaryKey(t => new { t.CodInstituicao, t.CodCampus })
                 .ForeignKey("dbo.Colaborador", t => t.CodColaboradorDiretor)
@@ -336,7 +336,7 @@ namespace SIAC.Migrations
                         CodTipoAvaliacao = c.Int(nullable: false),
                         NumIdentificador = c.Int(nullable: false),
                         CodColabCoordenador = c.Int(nullable: false),
-                        Titulo = c.String(nullable: false, maxLength: 250, unicode: false),
+                        Titulo = c.String(nullable: false, maxLength: 250),
                         Objetivo = c.String(nullable: false, unicode: false, storeType: "text"),
                         DtTermino = c.DateTime(),
                     })
@@ -358,8 +358,8 @@ namespace SIAC.Migrations
                         CodAviCategoria = c.Int(nullable: false),
                         CodAviIndicador = c.Int(nullable: false),
                         CodOrdem = c.Int(nullable: false),
-                        Enunciado = c.String(nullable: false, maxLength: 255, unicode: false),
-                        Observacao = c.String(maxLength: 255, unicode: false),
+                        Enunciado = c.String(nullable: false, maxLength: 255),
+                        Observacao = c.String(maxLength: 255),
                         FlagDiscursiva = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => new { t.Ano, t.Semestre, t.CodTipoAvaliacao, t.NumIdentificador, t.CodAviModulo, t.CodAviCategoria, t.CodAviIndicador, t.CodOrdem })
@@ -377,8 +377,8 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodAviCategoria = c.Int(nullable: false, identity: true),
-                        Descricao = c.String(nullable: false, maxLength: 100, unicode: false),
-                        Observacao = c.String(maxLength: 255, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 100),
+                        Observacao = c.String(maxLength: 255),
                     })
                 .PrimaryKey(t => t.CodAviCategoria);
             
@@ -387,8 +387,8 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodAviIndicador = c.Int(nullable: false, identity: true),
-                        Descricao = c.String(nullable: false, maxLength: 100, unicode: false),
-                        Observacao = c.String(maxLength: 255, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 100),
+                        Observacao = c.String(maxLength: 255),
                     })
                 .PrimaryKey(t => t.CodAviIndicador);
             
@@ -397,9 +397,9 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodAviModulo = c.Int(nullable: false, identity: true),
-                        Descricao = c.String(nullable: false, maxLength: 100, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 100),
                         Objetivo = c.String(unicode: false, storeType: "text"),
-                        Observacao = c.String(maxLength: 255, unicode: false),
+                        Observacao = c.String(maxLength: 255),
                     })
                 .PrimaryKey(t => t.CodAviModulo);
             
@@ -416,7 +416,7 @@ namespace SIAC.Migrations
                         CodAviIndicador = c.Int(nullable: false),
                         CodOrdem = c.Int(nullable: false),
                         CodAlternativa = c.Int(nullable: false),
-                        Enunciado = c.String(nullable: false, maxLength: 255, unicode: false),
+                        Enunciado = c.String(nullable: false, maxLength: 255),
                         FlagAlternativaDiscursiva = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => new { t.Ano, t.Semestre, t.CodTipoAvaliacao, t.NumIdentificador, t.CodAviModulo, t.CodAviCategoria, t.CodAviIndicador, t.CodOrdem, t.CodAlternativa })
@@ -452,7 +452,7 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodColaborador = c.Int(nullable: false, identity: true),
-                        MatrColaborador = c.String(nullable: false, maxLength: 20, unicode: false),
+                        MatrColaborador = c.String(nullable: false, maxLength: 20),
                     })
                 .PrimaryKey(t => t.CodColaborador)
                 .ForeignKey("dbo.Usuario", t => t.MatrColaborador)
@@ -468,8 +468,8 @@ namespace SIAC.Migrations
                         CodDiretoria = c.Int(nullable: false),
                         CodCampus = c.Int(nullable: false),
                         CodInstituicao = c.Int(nullable: false),
-                        Descricao = c.String(nullable: false, maxLength: 100, unicode: false),
-                        Sigla = c.String(maxLength: 30, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 100),
+                        Sigla = c.String(maxLength: 30),
                     })
                 .PrimaryKey(t => t.CodCurso)
                 .ForeignKey("dbo.Diretoria", t => new { t.CodInstituicao, t.CodCampus, t.CodDiretoria })
@@ -485,7 +485,7 @@ namespace SIAC.Migrations
                     {
                         CodAluno = c.Int(nullable: false, identity: true),
                         CodCurso = c.Int(nullable: false),
-                        MatrAluno = c.String(nullable: false, maxLength: 20, unicode: false),
+                        MatrAluno = c.String(nullable: false, maxLength: 20),
                     })
                 .PrimaryKey(t => t.CodAluno)
                 .ForeignKey("dbo.Usuario", t => t.MatrAluno)
@@ -522,7 +522,7 @@ namespace SIAC.Migrations
                         Periodo = c.Int(nullable: false),
                         CodTurno = c.String(nullable: false, maxLength: 1, fixedLength: true, unicode: false),
                         NumTurma = c.Int(nullable: false),
-                        Nome = c.String(nullable: false, maxLength: 30, unicode: false),
+                        Nome = c.String(nullable: false, maxLength: 30),
                     })
                 .PrimaryKey(t => new { t.CodCurso, t.Periodo, t.CodTurno, t.NumTurma })
                 .ForeignKey("dbo.Turno", t => t.CodTurno)
@@ -566,7 +566,7 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodDia = c.Int(nullable: false),
-                        Descricao = c.String(nullable: false, maxLength: 15, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 15),
                     })
                 .PrimaryKey(t => t.CodDia);
             
@@ -589,7 +589,7 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodTurno = c.String(nullable: false, maxLength: 1, fixedLength: true, unicode: false),
-                        Descricao = c.String(nullable: false, maxLength: 15, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 15),
                     })
                 .PrimaryKey(t => t.CodTurno);
             
@@ -621,8 +621,8 @@ namespace SIAC.Migrations
                         CodProfessor = c.Int(),
                         CodDisciplina = c.Int(nullable: false),
                         QteQuestoes = c.Int(nullable: false),
-                        Titulo = c.String(maxLength: 200, unicode: false),
-                        Descricao = c.String(maxLength: 500, unicode: false),
+                        Titulo = c.String(maxLength: 200),
+                        Descricao = c.String(maxLength: 500),
                         MediaAritmeticaAcerto = c.Decimal(precision: 8, scale: 3),
                         DesvioPadraoAcerto = c.Decimal(precision: 8, scale: 3),
                         Peso = c.Int(),
@@ -640,7 +640,7 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodProfessor = c.Int(nullable: false, identity: true),
-                        MatrProfessor = c.String(nullable: false, maxLength: 20, unicode: false),
+                        MatrProfessor = c.String(nullable: false, maxLength: 20),
                     })
                 .PrimaryKey(t => t.CodProfessor)
                 .ForeignKey("dbo.Usuario", t => t.MatrProfessor)
@@ -650,7 +650,7 @@ namespace SIAC.Migrations
                 "dbo.Usuario",
                 c => new
                     {
-                        Matricula = c.String(nullable: false, maxLength: 20, unicode: false),
+                        Matricula = c.String(nullable: false, maxLength: 20),
                         CodPessoaFisica = c.Int(nullable: false),
                         CodCategoria = c.Int(nullable: false),
                         Senha = c.String(nullable: false, maxLength: 64, fixedLength: true, unicode: false),
@@ -667,25 +667,25 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodCandidato = c.Int(nullable: false, identity: true),
-                        Nome = c.String(nullable: false, maxLength: 255, unicode: false),
-                        Cpf = c.String(nullable: false, maxLength: 11, fixedLength: true, unicode: false),
+                        Nome = c.String(nullable: false, maxLength: 255),
+                        Cpf = c.String(nullable: false, maxLength: 11, fixedLength: true),
                         RgNumero = c.Int(),
-                        RgOrgao = c.String(maxLength: 20, unicode: false),
+                        RgOrgao = c.String(maxLength: 20),
                         RgDtExpedicao = c.DateTime(storeType: "date"),
-                        Email = c.String(nullable: false, maxLength: 200, unicode: false),
-                        Senha = c.String(nullable: false, maxLength: 64, fixedLength: true, unicode: false),
+                        Email = c.String(nullable: false, maxLength: 200),
+                        Senha = c.String(nullable: false, maxLength: 64, fixedLength: true),
                         DtCadastro = c.DateTime(nullable: false),
                         DtNascimento = c.DateTime(storeType: "date"),
-                        Sexo = c.String(maxLength: 1, fixedLength: true, unicode: false),
-                        Matricula = c.String(maxLength: 20, unicode: false),
-                        TelefoneFixo = c.String(maxLength: 20, unicode: false),
-                        TelefoneCelular = c.String(maxLength: 20, unicode: false),
+                        Sexo = c.String(maxLength: 1, fixedLength: true),
+                        Matricula = c.String(maxLength: 20),
+                        TelefoneFixo = c.String(maxLength: 20),
+                        TelefoneCelular = c.String(maxLength: 20),
                         CodPais = c.Int(),
                         CodEstado = c.Int(),
                         CodMunicipio = c.Int(),
                         FlagAdventista = c.Boolean(),
                         FlagNecessidadeEspecial = c.Boolean(),
-                        DescricaoNecessidadeEspecial = c.String(maxLength: 255, unicode: false),
+                        DescricaoNecessidadeEspecial = c.String(maxLength: 255),
                     })
                 .PrimaryKey(t => t.CodCandidato)
                 .ForeignKey("dbo.Municipio", t => new { t.CodPais, t.CodEstado, t.CodMunicipio })
@@ -700,7 +700,7 @@ namespace SIAC.Migrations
                         CodPais = c.Int(nullable: false),
                         CodEstado = c.Int(nullable: false),
                         CodMunicipio = c.Int(nullable: false),
-                        Descricao = c.String(nullable: false, maxLength: 50, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 50),
                     })
                 .PrimaryKey(t => new { t.CodPais, t.CodEstado, t.CodMunicipio })
                 .ForeignKey("dbo.Estado", t => new { t.CodPais, t.CodEstado })
@@ -714,7 +714,7 @@ namespace SIAC.Migrations
                         CodEstado = c.Int(nullable: false),
                         CodMunicipio = c.Int(nullable: false),
                         CodBairro = c.Int(nullable: false),
-                        Descricao = c.String(nullable: false, maxLength: 50, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 50),
                     })
                 .PrimaryKey(t => new { t.CodPais, t.CodEstado, t.CodMunicipio, t.CodBairro })
                 .ForeignKey("dbo.Municipio", t => new { t.CodPais, t.CodEstado, t.CodMunicipio })
@@ -730,9 +730,9 @@ namespace SIAC.Migrations
                         CodBairro = c.Int(nullable: false),
                         CodPais = c.Int(nullable: false),
                         CodEstado = c.Int(nullable: false),
-                        Logradouro = c.String(nullable: false, maxLength: 100, unicode: false),
-                        Numero = c.String(nullable: false, maxLength: 10, unicode: false),
-                        Complemento = c.String(maxLength: 140, unicode: false),
+                        Logradouro = c.String(nullable: false, maxLength: 100),
+                        Numero = c.String(nullable: false, maxLength: 10),
+                        Complemento = c.String(maxLength: 140),
                         Cep = c.Int(),
                     })
                 .PrimaryKey(t => new { t.CodPessoa, t.CodOrdem })
@@ -757,7 +757,7 @@ namespace SIAC.Migrations
                         CodPessoa = c.Int(nullable: false),
                         CodOrdem = c.Int(nullable: false),
                         CodTipoContato = c.Int(nullable: false),
-                        Email = c.String(nullable: false, maxLength: 100, unicode: false),
+                        Email = c.String(nullable: false, maxLength: 100),
                     })
                 .PrimaryKey(t => new { t.CodPessoa, t.CodOrdem })
                 .ForeignKey("dbo.TipoContato", t => t.CodTipoContato)
@@ -770,7 +770,7 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodTipoContato = c.Int(nullable: false),
-                        Descricao = c.String(nullable: false, maxLength: 20, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 20),
                     })
                 .PrimaryKey(t => t.CodTipoContato);
             
@@ -783,7 +783,7 @@ namespace SIAC.Migrations
                         CodTipoContato = c.Int(nullable: false),
                         CodDDI = c.Int(),
                         CodDDD = c.Int(),
-                        Numero = c.String(nullable: false, maxLength: 15, unicode: false),
+                        Numero = c.String(nullable: false, maxLength: 15),
                     })
                 .PrimaryKey(t => new { t.CodPessoa, t.CodOrdem })
                 .ForeignKey("dbo.TipoContato", t => t.CodTipoContato)
@@ -796,10 +796,10 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodPessoa = c.Int(nullable: false),
-                        RazaoSocial = c.String(maxLength: 255, unicode: false),
-                        NomeFantasia = c.String(nullable: false, maxLength: 100, unicode: false),
+                        RazaoSocial = c.String(maxLength: 255),
+                        NomeFantasia = c.String(nullable: false, maxLength: 100),
                         Cnpj = c.String(maxLength: 15, fixedLength: true, unicode: false),
-                        Portal = c.String(maxLength: 100, unicode: false),
+                        Portal = c.String(maxLength: 100),
                     })
                 .PrimaryKey(t => t.CodPessoa)
                 .ForeignKey("dbo.Pessoa", t => t.CodPessoa)
@@ -814,7 +814,7 @@ namespace SIAC.Migrations
                         CodDiretoria = c.Int(nullable: false),
                         CodPessoaJuridica = c.Int(nullable: false),
                         CodColaboradorDiretor = c.Int(nullable: false),
-                        Sigla = c.String(maxLength: 10, unicode: false),
+                        Sigla = c.String(maxLength: 10),
                     })
                 .PrimaryKey(t => new { t.CodInstituicao, t.CodCampus, t.CodDiretoria })
                 .ForeignKey("dbo.PessoaJuridica", t => t.CodPessoaJuridica)
@@ -854,7 +854,7 @@ namespace SIAC.Migrations
                     {
                         CodInstituicao = c.Int(nullable: false, identity: true),
                         CodPessoaJuridica = c.Int(nullable: false),
-                        Sigla = c.String(nullable: false, maxLength: 10, unicode: false),
+                        Sigla = c.String(nullable: false, maxLength: 10),
                     })
                 .PrimaryKey(t => t.CodInstituicao)
                 .ForeignKey("dbo.PessoaJuridica", t => t.CodPessoaJuridica)
@@ -868,7 +868,7 @@ namespace SIAC.Migrations
                         CodProReitoria = c.Int(nullable: false),
                         CodPessoaJuridica = c.Int(nullable: false),
                         CodColaboradorProReitor = c.Int(nullable: false),
-                        Sigla = c.String(maxLength: 10, unicode: false),
+                        Sigla = c.String(maxLength: 10),
                     })
                 .PrimaryKey(t => new { t.CodInstituicao, t.CodProReitoria })
                 .ForeignKey("dbo.Instituicao", t => t.CodInstituicao)
@@ -886,7 +886,7 @@ namespace SIAC.Migrations
                         CodReitoria = c.Int(nullable: false),
                         CodPessoaJuridica = c.Int(nullable: false),
                         CodColaboradorReitor = c.Int(nullable: false),
-                        Sigla = c.String(maxLength: 10, unicode: false),
+                        Sigla = c.String(maxLength: 10),
                     })
                 .PrimaryKey(t => new { t.CodInstituicao, t.CodReitoria })
                 .ForeignKey("dbo.Instituicao", t => t.CodInstituicao)
@@ -902,8 +902,8 @@ namespace SIAC.Migrations
                     {
                         CodPais = c.Int(nullable: false),
                         CodEstado = c.Int(nullable: false),
-                        Descricao = c.String(nullable: false, maxLength: 100, unicode: false),
-                        Sigla = c.String(maxLength: 2, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 100),
+                        Sigla = c.String(maxLength: 2),
                     })
                 .PrimaryKey(t => new { t.CodPais, t.CodEstado })
                 .ForeignKey("dbo.Pais", t => t.CodPais)
@@ -914,8 +914,8 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodPais = c.Int(nullable: false),
-                        Descricao = c.String(nullable: false, maxLength: 50, unicode: false),
-                        Sigla = c.String(maxLength: 5, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 50),
+                        Sigla = c.String(maxLength: 5),
                     })
                 .PrimaryKey(t => t.CodPais);
             
@@ -930,7 +930,7 @@ namespace SIAC.Migrations
                         DtInscricao = c.DateTime(nullable: false),
                         CodSala = c.Int(),
                         EscorePadronizadoFinal = c.Decimal(precision: 8, scale: 3),
-                        NumeroMascara = c.String(maxLength: 50, unicode: false),
+                        NumeroMascara = c.String(maxLength: 50),
                     })
                 .PrimaryKey(t => new { t.Ano, t.NumIdentificador, t.CodCandidato })
                 .ForeignKey("dbo.SimSala", t => new { t.Ano, t.NumIdentificador, t.CodSala })
@@ -1016,7 +1016,7 @@ namespace SIAC.Migrations
                     {
                         Ano = c.Int(nullable: false),
                         NumIdentificador = c.Int(nullable: false),
-                        Titulo = c.String(nullable: false, maxLength: 250, unicode: false),
+                        Titulo = c.String(nullable: false, maxLength: 250),
                         Descricao = c.String(unicode: false, storeType: "text"),
                         CodColaborador = c.Int(nullable: false),
                         DtInicioInscricao = c.DateTime(),
@@ -1036,7 +1036,7 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodCategoria = c.Int(nullable: false),
-                        Descricao = c.String(nullable: false, maxLength: 40, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 40),
                     })
                 .PrimaryKey(t => t.CodCategoria);
             
@@ -1044,10 +1044,10 @@ namespace SIAC.Migrations
                 "dbo.UsuarioAcesso",
                 c => new
                     {
-                        Matricula = c.String(nullable: false, maxLength: 20, unicode: false),
+                        Matricula = c.String(nullable: false, maxLength: 20),
                         CodOrdem = c.Int(nullable: false),
                         DtAcesso = c.DateTime(nullable: false),
-                        IpAcesso = c.String(maxLength: 50, unicode: false),
+                        IpAcesso = c.String(maxLength: 50),
                     })
                 .PrimaryKey(t => new { t.Matricula, t.CodOrdem })
                 .ForeignKey("dbo.Usuario", t => t.Matricula)
@@ -1057,12 +1057,12 @@ namespace SIAC.Migrations
                 "dbo.UsuarioAcessoPagina",
                 c => new
                     {
-                        Matricula = c.String(nullable: false, maxLength: 20, unicode: false),
+                        Matricula = c.String(nullable: false, maxLength: 20),
                         CodOrdem = c.Int(nullable: false),
                         NumIdentificador = c.Int(nullable: false),
-                        Pagina = c.String(nullable: false, maxLength: 200, unicode: false),
+                        Pagina = c.String(nullable: false, maxLength: 200),
                         DtAbertura = c.DateTime(nullable: false),
-                        PaginaReferencia = c.String(maxLength: 200, unicode: false),
+                        PaginaReferencia = c.String(maxLength: 200),
                         Dados = c.String(unicode: false, storeType: "text"),
                     })
                 .PrimaryKey(t => new { t.Matricula, t.CodOrdem, t.NumIdentificador })
@@ -1073,7 +1073,7 @@ namespace SIAC.Migrations
                 "dbo.UsuarioOpiniao",
                 c => new
                     {
-                        Matricula = c.String(nullable: false, maxLength: 20, unicode: false),
+                        Matricula = c.String(nullable: false, maxLength: 20),
                         CodOrdem = c.Int(nullable: false),
                         Opiniao = c.String(nullable: false, unicode: false, storeType: "text"),
                         DtEnvio = c.DateTime(),
@@ -1087,7 +1087,7 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodVisitante = c.Int(nullable: false),
-                        MatrVisitante = c.String(nullable: false, maxLength: 20, unicode: false),
+                        MatrVisitante = c.String(nullable: false, maxLength: 20),
                         DtValidade = c.DateTime(),
                     })
                 .PrimaryKey(t => t.CodVisitante)
@@ -1126,9 +1126,9 @@ namespace SIAC.Migrations
                 "dbo.NivelEnsino",
                 c => new
                     {
-                        CodNivelEnsino = c.Int(nullable: false, identity: true),
-                        Descricao = c.String(nullable: false, maxLength: 40, unicode: false),
-                        Sigla = c.String(maxLength: 5, unicode: false),
+                        CodNivelEnsino = c.Int(nullable: false),
+                        Descricao = c.String(nullable: false, maxLength: 40),
+                        Sigla = c.String(maxLength: 5),
                     })
                 .PrimaryKey(t => t.CodNivelEnsino);
             
@@ -1140,7 +1140,7 @@ namespace SIAC.Migrations
                         CodArea = c.Int(nullable: false),
                         CodNivelEnsino = c.Int(nullable: false),
                         CodOrdem = c.Int(nullable: false),
-                        Curso = c.String(nullable: false, maxLength: 50, unicode: false),
+                        Curso = c.String(nullable: false, maxLength: 50),
                         Ano = c.Int(),
                     })
                 .PrimaryKey(t => new { t.CodPessoaFisica, t.CodArea, t.CodNivelEnsino, t.CodOrdem })
@@ -1155,8 +1155,8 @@ namespace SIAC.Migrations
                 "dbo.Area",
                 c => new
                     {
-                        CodArea = c.Int(nullable: false, identity: true),
-                        Descricao = c.String(nullable: false, maxLength: 100, unicode: false),
+                        CodArea = c.Int(nullable: false),
+                        Descricao = c.String(nullable: false, maxLength: 100),
                     })
                 .PrimaryKey(t => t.CodArea);
             
@@ -1165,7 +1165,7 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodAviTipoPublico = c.Int(nullable: false),
-                        Descricao = c.String(nullable: false, maxLength: 35, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 35),
                     })
                 .PrimaryKey(t => t.CodAviTipoPublico);
             
@@ -1183,9 +1183,9 @@ namespace SIAC.Migrations
                         CodPessoaFisica = c.Int(nullable: false),
                         RespAlternativa = c.Int(),
                         RespDiscursiva = c.String(unicode: false, storeType: "text"),
-                        RespComentario = c.String(maxLength: 250, unicode: false),
+                        RespComentario = c.String(maxLength: 250),
                         RespNota = c.Double(),
-                        ProfObservacao = c.String(maxLength: 250, unicode: false),
+                        ProfObservacao = c.String(maxLength: 250),
                     })
                 .PrimaryKey(t => new { t.Ano, t.Semestre, t.CodTipoAvaliacao, t.NumIdentificador, t.CodDisciplina, t.CodTema, t.CodQuestao, t.CodPessoaFisica })
                 .ForeignKey("dbo.AvalTemaQuestao", t => new { t.Ano, t.Semestre, t.CodTipoAvaliacao, t.NumIdentificador, t.CodDisciplina, t.CodTema, t.CodQuestao })
@@ -1234,8 +1234,8 @@ namespace SIAC.Migrations
                     {
                         CodDisciplina = c.Int(nullable: false),
                         CodTema = c.Int(nullable: false),
-                        Descricao = c.String(nullable: false, maxLength: 100, unicode: false),
-                        Comentario = c.String(maxLength: 250, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 100),
+                        Comentario = c.String(maxLength: 250),
                     })
                 .PrimaryKey(t => new { t.CodDisciplina, t.CodTema })
                 .ForeignKey("dbo.Disciplina", t => t.CodDisciplina)
@@ -1259,8 +1259,8 @@ namespace SIAC.Migrations
                 "dbo.Ocupacao",
                 c => new
                     {
-                        CodOcupacao = c.Int(nullable: false, identity: true),
-                        Descricao = c.String(maxLength: 40, unicode: false),
+                        CodOcupacao = c.Int(nullable: false),
+                        Descricao = c.String(maxLength: 40),
                     })
                 .PrimaryKey(t => t.CodOcupacao);
             
@@ -1273,9 +1273,9 @@ namespace SIAC.Migrations
                         CodTipoAvaliacao = c.Int(nullable: false),
                         NumIdentificador = c.Int(nullable: false),
                         DtProrrogacao = c.DateTime(nullable: false),
-                        DuracaoAnterior = c.Int(),
-                        DuracaoNova = c.Int(),
-                        Observacao = c.String(maxLength: 255, unicode: false),
+                        DuracaoAnterior = c.Int(nullable: false),
+                        DuracaoNova = c.Int(nullable: false),
+                        Observacao = c.String(maxLength: 255),
                     })
                 .PrimaryKey(t => new { t.Ano, t.Semestre, t.CodTipoAvaliacao, t.NumIdentificador, t.DtProrrogacao })
                 .ForeignKey("dbo.Avaliacao", t => new { t.Ano, t.Semestre, t.CodTipoAvaliacao, t.NumIdentificador })
@@ -1286,8 +1286,8 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodTipoAvaliacao = c.Int(nullable: false),
-                        Descricao = c.String(nullable: false, maxLength: 30, unicode: false),
-                        Sigla = c.String(maxLength: 4, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 30),
+                        Sigla = c.String(maxLength: 4),
                     })
                 .PrimaryKey(t => t.CodTipoAvaliacao);
             
@@ -1299,8 +1299,8 @@ namespace SIAC.Migrations
                         CodOrdem = c.Int(nullable: false),
                         CodTipoAnexo = c.Int(nullable: false),
                         Anexo = c.Binary(nullable: false, storeType: "image"),
-                        Legenda = c.String(maxLength: 250, unicode: false),
-                        Fonte = c.String(maxLength: 250, unicode: false),
+                        Legenda = c.String(maxLength: 250),
+                        Fonte = c.String(maxLength: 250),
                     })
                 .PrimaryKey(t => new { t.CodQuestao, t.CodOrdem, t.CodTipoAnexo })
                 .ForeignKey("dbo.TipoAnexo", t => t.CodTipoAnexo)
@@ -1313,7 +1313,7 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodTipoAnexo = c.Int(nullable: false),
-                        Descricao = c.String(nullable: false, maxLength: 30, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 30),
                     })
                 .PrimaryKey(t => t.CodTipoAnexo);
             
@@ -1322,8 +1322,8 @@ namespace SIAC.Migrations
                 c => new
                     {
                         CodTipoQuestao = c.Int(nullable: false),
-                        Descricao = c.String(nullable: false, maxLength: 15, unicode: false),
-                        Sigla = c.String(maxLength: 4, unicode: false),
+                        Descricao = c.String(nullable: false, maxLength: 15),
+                        Sigla = c.String(maxLength: 4),
                     })
                 .PrimaryKey(t => t.CodTipoQuestao);
             
@@ -1346,10 +1346,10 @@ namespace SIAC.Migrations
                         NotaUsoInstitucional = c.String(nullable: false, unicode: false, storeType: "text"),
                         CoordenadorAVI = c.String(nullable: false, unicode: false, storeType: "text"),
                         NotaUsoSimulado = c.String(nullable: false, unicode: false, storeType: "text"),
-                        SmtpEnderecoHost = c.String(nullable: false, maxLength: 200, unicode: false),
+                        SmtpEnderecoHost = c.String(nullable: false, maxLength: 200),
                         SmtpPorta = c.Int(nullable: false),
-                        SmtpUsuario = c.String(nullable: false, maxLength: 200, unicode: false),
-                        SmtpSenha = c.String(nullable: false, maxLength: 200, unicode: false),
+                        SmtpUsuario = c.String(nullable: false, maxLength: 200),
+                        SmtpSenha = c.String(nullable: false, maxLength: 200),
                         SmtpFlagSSL = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.CodParametro);

@@ -276,17 +276,9 @@
     <Compile Include="Hubs\AcademicaHub.cs" />
     <Compile Include="Hubs\CertificacaoHub.cs" />
     <Compile Include="Hubs\Models.cs" />
-    <Compile Include="Migrations\201605311759069_InitialMigration.cs" />
-    <Compile Include="Migrations\201605311759069_InitialMigration.Designer.cs">
-      <DependentUpon>201605311759069_InitialMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605311958334_SetUnicode.cs" />
-    <Compile Include="Migrations\201605311958334_SetUnicode.Designer.cs">
-      <DependentUpon>201605311958334_SetUnicode.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606021931158_UpdateRequiredFields.cs" />
-    <Compile Include="Migrations\201606021931158_UpdateRequiredFields.Designer.cs">
-      <DependentUpon>201606021931158_UpdateRequiredFields.cs</DependentUpon>
+    <Compile Include="Migrations\201606071903047_Initial.cs" />
+    <Compile Include="Migrations\201606071903047_Initial.Designer.cs">
+      <DependentUpon>201606071903047_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Alternativa.cs" />
@@ -676,14 +668,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201605311759069_InitialMigration.resx">
-      <DependentUpon>201605311759069_InitialMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605311958334_SetUnicode.resx">
-      <DependentUpon>201605311958334_SetUnicode.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606021931158_UpdateRequiredFields.resx">
-      <DependentUpon>201606021931158_UpdateRequiredFields.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606071903047_Initial.resx">
+      <DependentUpon>201606071903047_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

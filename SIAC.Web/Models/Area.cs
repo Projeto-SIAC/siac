@@ -14,6 +14,7 @@ namespace SIAC.Models
         }
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CodArea { get; set; }
 
         [Required]
