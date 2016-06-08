@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR, Categoria.PROFESSOR })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR, Categoria.PROFESSOR })]
     public class ConfiguracoesController : Controller
     {
         public List<UsuarioOpiniao> opinioes => Repositorio.GetInstance().UsuarioOpiniao.ToList();
@@ -17,11 +17,12 @@ namespace SIAC.Controllers
         public ActionResult Index() => View();
 
         // GET: configuracoes/opinioes/
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.DIRETOR })]
         public ActionResult Opinioes(string tab) => View((object)tab);
 
         // POST: configuracoes/listaropinioes/
         [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.DIRETOR })]
         public ActionResult ListarOpinioes(int? pagina, string pesquisa, string ordenar)
         {
             var quantidade = 10;
@@ -53,7 +54,7 @@ namespace SIAC.Controllers
         }
 
         // GET: configuracoes/parametros/
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.DIRETOR })]
         public ActionResult Parametros()
         {
             ConfiguracoesParametrosViewModel model = new ConfiguracoesParametrosViewModel();
@@ -79,7 +80,7 @@ namespace SIAC.Controllers
         }
 
         // GET: configuracoes/institucional/
-        [Filters.AutenticacaoFilter(CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(SomenteOcupacaoAvi = true)]
         public ActionResult Institucional(string tab)
         {
             if (String.IsNullOrWhiteSpace(tab) || tab.ToLower() != "coordenadores")
@@ -105,7 +106,7 @@ namespace SIAC.Controllers
 
         // POST: configuracoes/alterarocupacoescoordenadores/
         [HttpPost]
-        [Filters.AutenticacaoFilter(CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(SomenteOcupacaoAvi = true)]
         public void AlterarOcupacoesCoordenadores(int[] ocupacoes)
         {
             Parametro.AtualizarOcupacoesCoordenadores(ocupacoes);
@@ -113,7 +114,7 @@ namespace SIAC.Controllers
 
         // POST: configuracoes/adicionarocupacaocoordenador/
         [HttpPost]
-        [Filters.AutenticacaoFilter(CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(SomenteOcupacaoAvi = true)]
         public void AdicionarOcupacaoCoordenador(int codPessoaFisica)
         {
             PessoaFisica.AdicionarOcupacao(codPessoaFisica, Ocupacao.COORDENADOR_AVI);
@@ -121,7 +122,7 @@ namespace SIAC.Controllers
 
         // POST: configuracoes/removerocupacaocoordenador/
         [HttpPost]
-        [Filters.AutenticacaoFilter(CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(SomenteOcupacaoAvi = true)]
         public void RemoverOcupacaoCoordenador(int[] codPessoaFisica)
         {
             foreach (int codPessoa in codPessoaFisica)
@@ -132,7 +133,7 @@ namespace SIAC.Controllers
 
         // POST: configuracoes/listarpessoa/
         [HttpPost]
-        [Filters.AutenticacaoFilter(CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(SomenteOcupacaoAvi = true)]
         public ActionResult ListarPessoa(string pesquisa)
         {
             if (!String.IsNullOrWhiteSpace(pesquisa))
@@ -151,6 +152,7 @@ namespace SIAC.Controllers
 
         // POST: configuracoes/parametros/
         [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult Parametros(FormCollection formCollection)
         {
             if (formCollection.HasKeys())
@@ -175,6 +177,7 @@ namespace SIAC.Controllers
 
         // POST: configuracoes/cadastrarprofessor
         [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult CadastrarProfessor(FormCollection formCollection)
         {
             if (formCollection.HasKeys())
@@ -215,6 +218,7 @@ namespace SIAC.Controllers
 
         // POST: configuracoes/cadastrarcolaborador
         [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult CadastrarColaborador(FormCollection formCollection)
         {
             if (formCollection.HasKeys())
@@ -228,16 +232,16 @@ namespace SIAC.Controllers
                 colaborador.Usuario.PessoaFisica.Pessoa.TipoPessoa = Pessoa.FISICA;
 
                 //PessoaFisica
-                colaborador.Usuario.PessoaFisica.Nome = formCollection["txtColaboradorNome"];
+                colaborador.Usuario.PessoaFisica.Nome = formCollection["txtColaboradorNome"].Trim();
                 colaborador.Usuario.PessoaFisica.Categoria.Add(Categoria.ListarPorCodigo(Categoria.COLABORADOR));
 
                 //Usuario
                 colaborador.Usuario.Categoria = Categoria.ListarPorCodigo(3);
-                colaborador.Usuario.Matricula = formCollection["txtColaboradorMatricula"];
+                colaborador.Usuario.Matricula = formCollection["txtColaboradorMatricula"].Trim();
                 colaborador.Usuario.Senha = Criptografia.RetornarHash("senha");
                 colaborador.Usuario.DtCadastro = DateTime.Now;
 
-                colaborador.MatrColaborador = formCollection["txtColaboradorMatricula"];
+                colaborador.MatrColaborador = formCollection["txtColaboradorMatricula"].Trim();
 
                 Colaborador.Inserir(colaborador);
             }
@@ -246,6 +250,7 @@ namespace SIAC.Controllers
 
         // POST: configuracoes/cadastrarcampus
         [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult CadastrarCampus(FormCollection formCollection)
         {
             if (formCollection.HasKeys())
@@ -258,22 +263,24 @@ namespace SIAC.Controllers
                 campus.PessoaJuridica.Pessoa.TipoPessoa = Pessoa.JURIDICA;
 
                 //PessoaJuridica
-                campus.PessoaJuridica.RazaoSocial = formCollection["txtCampusRazaoSocial"];
-                campus.PessoaJuridica.NomeFantasia = formCollection["txtCampusNomeFantasia"];
-                campus.PessoaJuridica.Portal = formCollection["txtCampusPortal"];
+                campus.PessoaJuridica.RazaoSocial = formCollection["txtCampusRazaoSocial"].Trim();
+                campus.PessoaJuridica.NomeFantasia = formCollection["txtCampusNomeFantasia"].Trim();
+                campus.PessoaJuridica.Portal = formCollection["txtCampusPortal"].Trim();
 
                 //Campus
                 campus.CodInstituicao = int.Parse(formCollection["ddlCampusInstituicao"]);
-                campus.CodColaboradorDiretor = int.Parse(formCollection["ddlCampusDiretor"]);
+                campus.Colaborador = Colaborador.ListarPorCodigo(int.Parse(formCollection["ddlCampusDiretor"]));
                 campus.Sigla = formCollection["txtCampusSigla"];
 
                 Campus.Inserir(campus);
+                PessoaFisica.AdicionarOcupacao(campus.Colaborador.Usuario.CodPessoaFisica, Ocupacao.DIRETOR_GERAL);
             }
             return RedirectToAction("Index");
         }
 
         // POST: configuracoes/cadastrardiretoria
         [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult CadastrarDiretoria(FormCollection formCollection)
         {
             if (formCollection.HasKeys())
@@ -303,6 +310,7 @@ namespace SIAC.Controllers
 
         // POST: configuracoes/cadastrarcurso
         [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult CadastrarCurso(FormCollection formCollection)
         {
             if (formCollection.HasKeys())
@@ -330,6 +338,7 @@ namespace SIAC.Controllers
 
         // POST: configuracoes/cadastrarturma
         [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult CadastrarTurma(FormCollection formCollection)
         {
             if (formCollection.HasKeys())
@@ -349,6 +358,7 @@ namespace SIAC.Controllers
 
         // POST: configuracoes/cadastrardisciplina
         [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult CadastrarDisciplina(FormCollection formCollection)
         {
             if (formCollection.HasKeys())
@@ -385,6 +395,7 @@ namespace SIAC.Controllers
 
         // POST: configuracoes/cadastrartema
         [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult CadastrarTema(FormCollection formCollection)
         {
             if (formCollection.HasKeys())
@@ -417,6 +428,7 @@ namespace SIAC.Controllers
 
         // POST: configuracoes/cadastraraluno
         [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult CadastrarAluno(FormCollection formCollection)
         {
             if (formCollection.HasKeys())
@@ -450,6 +462,7 @@ namespace SIAC.Controllers
 
         // POST: configuracoes/cadastrarsala
         [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult CadastrarSala(FormCollection formCollection)
         {
             if (formCollection.HasKeys())
@@ -470,6 +483,7 @@ namespace SIAC.Controllers
 
         // POST: configuracoes/cadastrarmatriz
         [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult CadastrarMatriz(FormCollection formCollection)
         {
             if (formCollection.HasKeys())
@@ -500,6 +514,7 @@ namespace SIAC.Controllers
 
         // POST: configuracoes/cadastrarhorario
         [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult CadastrarHorario(FormCollection formCollection)
         {
             if (formCollection.HasKeys())

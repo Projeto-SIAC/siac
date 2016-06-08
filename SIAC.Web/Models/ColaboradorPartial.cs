@@ -16,5 +16,7 @@ namespace SIAC.Models
         public static List<Colaborador> ListarOrdenadamente() => contexto.Colaborador.OrderBy(c => c.Usuario.PessoaFisica.Nome).ToList();
 
         public static Colaborador ListarPorMatricula(string matricula) => contexto.Colaborador.FirstOrDefault(c => c.MatrColaborador == matricula);
+
+        public static Colaborador ListarPorCodigo(int codigo) => contexto.Colaborador.Find(codigo);
     }
 }

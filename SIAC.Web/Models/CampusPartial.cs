@@ -35,12 +35,10 @@ namespace SIAC.Models
 
         public static void Inserir(Campus campus)
         {
-            //Realizando um "IDENTITY Manual"
-            Instituicao instituicao = campus.Instituicao;
-            List<Campus> campi = contexto.Campus.Where(c => c.CodInstituicao == instituicao.CodInstituicao).ToList();
-            int id = campi.Count > 0 ? campi.Max(c => c.CodCampus) + 1 : 1;
+            List<Campus> campi = contexto.Instituicao.Find(campus.CodInstituicao).Campus.ToList();
+            int codCampus = campi.Count > 0 ? campi.Max(c => c.CodCampus) + 1 : 1;
 
-            campus.CodCampus = id;
+            campus.CodCampus = codCampus;
 
             contexto.Campus.Add(campus);
             contexto.SaveChanges();

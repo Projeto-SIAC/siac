@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { 1, 2, 3 })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO, Categoria.PROFESSOR, Categoria.COLABORADOR })]
     public class AgendaController : Controller
     {
         // GET: principal/agenda

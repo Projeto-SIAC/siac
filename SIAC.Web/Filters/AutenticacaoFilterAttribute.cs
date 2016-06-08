@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using SIAC.Helpers;
+using SIAC.Models;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace SIAC.Filters
@@ -7,12 +9,26 @@ namespace SIAC.Filters
     {
         public int[] Categorias { get; set; }
         public int[] Ocupacoes { get; set; }
-        public bool CoordenadoresAvi { get; set; } = false;
+        public bool SomenteOcupacaoAvi { get; set; } = false;
+        public bool SomenteOcupacaoSimulado { get; set; } = false;
+
+        private int[] SimuladoOcupacoesPermitidas = {
+            Ocupacao.SUPERUSUARIO,
+            Ocupacao.REITOR,
+            Ocupacao.COORDENADOR_SIMULADO,
+            Ocupacao.COLABORADOR_SIMULADO
+        };
+
+        private int[] AviOcupacoesPermitidas => Parametro.Obter().OcupacaoCoordenadorAvi;
 
         private ActionResult Redirecionar(ActionExecutingContext filterContext, string url = null)
         {
             if (filterContext.HttpContext.Request.HttpMethod == "GET")
             {
+                if (!string.IsNullOrEmpty(Sessao.UsuarioMatricula))
+                {
+                    Lembrete.AdicionarNotificacao("Você tentou acessar uma área sem permissão.", Lembrete.INFO);
+                }
                 if (string.IsNullOrEmpty(url))
                 {
                     return new RedirectResult("~/?continuar=" + filterContext.HttpContext.Request.Path);
@@ -24,39 +40,39 @@ namespace SIAC.Filters
             }
             else
             {
-                return new JsonResult();
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.Unauthorized, "Unauthorized");
             }
         }
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            var autenticado = Models.Sistema.Autenticado(Helpers.Sessao.UsuarioMatricula);
+            bool autenticado = Sistema.Autenticado(Sessao.UsuarioMatricula);
 
             if (!autenticado)
             {
                 filterContext.Result = Redirecionar(filterContext);
             }
-            else if (Helpers.Sessao.UsuarioCategoriaCodigo == Models.Categoria.SUPERUSUARIO)
-            {
-                // faça nada
-            }
-            else if (Helpers.Sessao.UsuarioCategoriaCodigo == Models.Categoria.VISITANTE && Helpers.Sessao.UsuarioSenhaPadrao)
+            else if (Sessao.UsuarioCategoriaCodigo == Categoria.VISITANTE && Sessao.UsuarioSenhaPadrao)
             {
                 filterContext.Result = Redirecionar(filterContext, "~/acesso/visitante");
             }
-            else if (Categorias != null && !Categorias.Contains(Helpers.Sessao.UsuarioCategoriaCodigo))
+            else if (Categorias != null && !Categorias.Contains(Sessao.UsuarioCategoriaCodigo))
             {
                 filterContext.Result = Redirecionar(filterContext);
             }
-            else if (Ocupacoes != null && !Ocupacoes.ContainsOne(Models.Sistema.UsuarioAtivo[Helpers.Sessao.UsuarioMatricula].Usuario.Ocupacao.Select(a => a.CodOcupacao).ToArray()))
+            else if (Ocupacoes != null && !Ocupacoes.ContainsOne(Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.CodOcupacao))
             {
                 filterContext.Result = Redirecionar(filterContext);
             }
-            else if (CoordenadoresAvi && !Models.Parametro.Obter().OcupacaoCoordenadorAvi.ContainsOne(Models.Sistema.UsuarioAtivo[Helpers.Sessao.UsuarioMatricula].Usuario.Ocupacao.Select(a => a.CodOcupacao).ToArray()))
+            else if (SomenteOcupacaoAvi && !AviOcupacoesPermitidas.ContainsOne(Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.CodOcupacao))
             {
                 filterContext.Result = Redirecionar(filterContext);
             }
-            else if (Helpers.Sessao.RealizandoAvaliacao)
+            else if (SomenteOcupacaoSimulado && !SimuladoOcupacoesPermitidas.ContainsOne(Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.CodOcupacao))
+            {
+                filterContext.Result = Redirecionar(filterContext);
+            }
+            else if (Sessao.RealizandoAvaliacao)
             {
                 string[] paths = filterContext.HttpContext.Request.Path.ToLower().Split('/');
                 if (paths.Length > 0)
@@ -64,9 +80,9 @@ namespace SIAC.Filters
                     string codigo = paths[paths.Length - 1];
                     if (paths.Contains("realizar"))
                     {
-                        if (Models.Sistema.AvaliacaoUsuario.ContainsKey(codigo))
+                        if (Sistema.AvaliacaoUsuario.ContainsKey(codigo))
                         {
-                            if (Models.Sistema.AvaliacaoUsuario[codigo].Contains(Helpers.Sessao.UsuarioMatricula))
+                            if (Sistema.AvaliacaoUsuario[codigo].Contains(Sessao.UsuarioMatricula))
                             {
                                 filterContext.Result = new RedirectResult("~/erro/1");
                             }
@@ -82,6 +98,8 @@ namespace SIAC.Filters
                     filterContext.Result = new RedirectResult("~/erro/1");
                 }
             }
+
+            // usuario autorizado
             base.OnActionExecuting(filterContext);
         }
     }

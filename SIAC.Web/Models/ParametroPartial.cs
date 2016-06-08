@@ -27,9 +27,7 @@ namespace SIAC.Models
             if (parametro == null)
             {
                 using (var e = new Contexto())
-                {
                     parametro = e.Parametro.FirstOrDefault();
-                }
             }
             return parametro;
         }
@@ -63,9 +61,9 @@ namespace SIAC.Models
 
         public static void AtualizarOcupacoesCoordenadores(int[] ocupacoes)
         {
-            var coordenadoresAVI = ocupacoes.ToList();
-            coordenadoresAVI.Add(Ocupacao.SUPERUSUARIO);
-            parametro.CoordenadorAVI = JsonConvert.SerializeObject(coordenadoresAVI);
+            var ocupacoesAvi = ocupacoes.ToList();
+            ocupacoesAvi.Add(Ocupacao.SUPERUSUARIO);
+            parametro.CoordenadorAVI = JsonConvert.SerializeObject(ocupacoesAvi);
             contexto.Parametro.FirstOrDefault().CoordenadorAVI = parametro.CoordenadorAVI;
             contexto.SaveChanges();
         }

@@ -10,6 +10,9 @@ namespace SIAC.Models
     public partial class Usuario
     {
         [NotMapped]
+        public int[] CodOcupacao => this.Ocupacao.Select(o => o.CodOcupacao).ToArray();
+
+        [NotMapped]
         public List<Ocupacao> Ocupacao => this.PessoaFisica.Ocupacao.ToList();
 
         [NotMapped]

@@ -9,7 +9,6 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO, Categoria.PROFESSOR, Categoria.COLABORADOR })]
     public class InstitucionalController : Controller
     {
         public List<AvalAvi> Institucionais =>
@@ -19,21 +18,21 @@ namespace SIAC.Controllers
         public ActionResult Index()
         {
             Usuario usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
-            if (usuario.CodCategoria == Categoria.COLABORADOR && usuario.FlagCoordenadorAvi)
+            if ((usuario.CodCategoria == Categoria.COLABORADOR || usuario.CodCategoria == Categoria.SUPERUSUARIO) && usuario.FlagCoordenadorAvi)
                 return View(usuario);
             else
                 return RedirectToAction("Andamento");
         }
 
         // GET: institucional/historico
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult Historico() => View();
 
         // GET: institucional/andamento
         public ActionResult Andamento() => View(AvalAvi.ListarPorUsuario(Sessao.UsuarioMatricula));
 
         // GET: institucional/configuracao
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult Configuracao()
         {
             InstitucionalGerarQuestaoViewModel model = new InstitucionalGerarQuestaoViewModel();
@@ -105,7 +104,7 @@ namespace SIAC.Controllers
 
         // POST: institucional/cadastrarmodulo
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult CadastrarModulo(FormCollection form)
         {
             if (!StringExt.IsNullOrWhiteSpace(form["txtTitulo"], form["txtObjetivo"]))
@@ -122,7 +121,7 @@ namespace SIAC.Controllers
 
         // POST: institucional/cadastrarcategoria
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult CadastrarCategoria(FormCollection form)
         {
             if (!String.IsNullOrWhiteSpace(form["txtTitulo"]))
@@ -138,7 +137,7 @@ namespace SIAC.Controllers
 
         // POST: institucional/cadastrarindicador
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult CadastrarIndicador(FormCollection form)
         {
             if (!String.IsNullOrWhiteSpace(form["txtTitulo"]))
@@ -153,11 +152,11 @@ namespace SIAC.Controllers
         }
 
         // GET: institucional/gerar
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult Gerar() => View();
 
         // POST: institucional/gerar
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         [HttpPost]
         public ActionResult Gerar(FormCollection form)
         {
@@ -209,7 +208,7 @@ namespace SIAC.Controllers
         }
 
         // GET: institucional/questionario
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult Questionario(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -232,7 +231,7 @@ namespace SIAC.Controllers
 
         // POST: institucional/cadastrarquestao/AVI201520002
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult CadastrarQuestao(string codigo, FormCollection form)
         {
             AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
@@ -291,7 +290,7 @@ namespace SIAC.Controllers
 
         // POST: institucional/removerquestao/AVI201520002
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult RemoverQuestao(string codigo, int modulo, int categoria, int indicador, int ordem)
         {
             AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
@@ -317,7 +316,7 @@ namespace SIAC.Controllers
 
         // POST: institucional/editarquestao/AVI201520002
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult EditarQuestao(string codigo, FormCollection form)
         {
             AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
@@ -357,7 +356,7 @@ namespace SIAC.Controllers
         }
 
         // GET: institucional/configurar/AVI201520002
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult Configurar(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -377,7 +376,7 @@ namespace SIAC.Controllers
 
         // POST: institucional/configurar/AVI201520002
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult Configurar(string codigo, string[] questoes)
         {
             if (!String.IsNullOrWhiteSpace(codigo) && questoes.Length > 0)
@@ -394,7 +393,7 @@ namespace SIAC.Controllers
         }
 
         // GET: institucional/publico/AVI201520002
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult Publico(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -418,7 +417,7 @@ namespace SIAC.Controllers
         }
 
         // GET: institucional/agendar/AVI201520002
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult Agendar(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -437,7 +436,7 @@ namespace SIAC.Controllers
 
         // POST: institucional/agendar/AVI201520002
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult Agendar(string codigo, FormCollection form)
         {
             if (!StringExt.IsNullOrWhiteSpace(codigo, form["txtDataInicio"], form["txtDataTermino"]))
@@ -463,7 +462,7 @@ namespace SIAC.Controllers
 
         // POST: institucional/filtrarpublico/AVI201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult FiltrarPublico(int codigo)
         {
             object lstResultado = null;
@@ -559,7 +558,7 @@ namespace SIAC.Controllers
 
         // POST: institucional/salvarpublico/AVI201520001
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult SalvarPublico(string codigo, List<Selecao> selecao)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -643,7 +642,7 @@ namespace SIAC.Controllers
         }
 
         // GET: institucional/resultado/AVI201520002
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, CoordenadoresAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult Resultado(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))

@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { 3 })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR_GERAL })]
     public class UsuarioController : Controller
     {
         private List<Usuario> Usuarios => Usuario.Listar();

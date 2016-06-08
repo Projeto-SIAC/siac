@@ -1,3 +1,4 @@
+using SIAC.Filters;
 using SIAC.Helpers;
 using SIAC.Models;
 using SIAC.ViewModels;
@@ -10,14 +11,16 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR })]
+    [AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoSimulado = true)]
     public class SimuladoController : Controller
     {
         private Contexto contexto => Repositorio.GetInstance();
 
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Novo() => View();
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Novo(FormCollection form)
         {
             string titulo = form["txtTitulo"];
@@ -53,6 +56,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Editar(string codigo, FormCollection form)
         {
             string mensagem = "Ocorreu um erro na operação.";
@@ -100,6 +104,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Provas(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -119,6 +124,7 @@ namespace SIAC.Controllers
             return RedirectToAction("", "Arquivo");
         }
 
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Datas(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -141,6 +147,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Datas(string codigo, FormCollection form)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -185,6 +192,7 @@ namespace SIAC.Controllers
             return RedirectToAction("", "Arquivo");
         }
 
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Salas(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -207,6 +215,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Salas(string codigo, FormCollection form)
         {
             string ddlCampus = form["ddlCampus"];
@@ -242,6 +251,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult RemoverSala(string codigo, int codSala)
         {
             if (!StringExt.IsNullOrWhiteSpace(codigo, codSala.ToString()))
@@ -266,6 +276,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult CarregarDia(string codigo, int codDia)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -286,6 +297,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult NovoDia(string codigo, FormCollection form)
         {
             string mensagem = "Ocorreu um erro na operação.";
@@ -345,6 +357,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult EditarDia(string codigo, int codDia, FormCollection form)
         {
             string mensagem = "Ocorreu um erro na operação.";
@@ -402,6 +415,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult RemoverDia(string codigo, int codDia)
         {
             string mensagem = "Ocorreu um erro na operação.";
@@ -428,6 +442,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult CarregarProvas(string codigo, int codDia)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -446,6 +461,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult CarregarProva(string codigo, int codDia, int codProva)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -475,6 +491,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult NovaProva(string codigo, int codDia, FormCollection form)
         {
             string mensagem = "Ocorreu um erro na operação.";
@@ -548,6 +565,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult EditarProva(string codigo, int codDia, int codProva, FormCollection form)
         {
             string mensagem = "Ocorreu um erro na operação.";
@@ -620,6 +638,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult RemoverProva(string codigo, int codDia, int codProva)
         {
             string mensagem = "Ocorreu um erro na operação.";
@@ -656,7 +675,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null)
                 {
                     return View(sim);
                 }
@@ -666,6 +685,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Encerrar(string codigo)
         {
             string mensagem = "Ocorreu um erro na operação.";
@@ -689,6 +709,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult AlterarPermissaoInscricao(string codigo, string acao)
         {
             string mensagem = "Ocorreu um erro na operação.";
@@ -758,6 +779,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult AlterarPrazo(string codigo, FormCollection form)
         {
             string mensagem = "Ocorreu um erro na operação.";
@@ -807,7 +829,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                if (sim != null && !sim.FlagSimuladoEncerrado)
                 {
                     SimuladoRespostasViewModel model = new SimuladoRespostasViewModel();
                     model.Simulado = sim;
@@ -828,7 +850,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                if (sim != null && !sim.FlagSimuladoEncerrado)
                 {
                     SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
@@ -850,7 +872,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                if (sim != null && !sim.FlagSimuladoEncerrado)
                 {
                     SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
@@ -890,7 +912,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                if (sim != null && !sim.FlagSimuladoEncerrado)
                 {
                     SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
@@ -944,7 +966,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                if (sim != null && !sim.FlagSimuladoEncerrado)
                 {
                     SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
@@ -952,11 +974,13 @@ namespace SIAC.Controllers
                     {
                         SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
                         SimCandidatoProva candidato = contexto.SimCandidatoProva
-                                                        .FirstOrDefault(p => p.Ano == sim.Ano
-                                                        && p.NumIdentificador == sim.NumIdentificador
-                                                        && p.CodProva == codProva
-                                                        && p.CodDiaRealizacao == codDia
-                                                        && p.CodCandidato == codCandidato);
+                            .FirstOrDefault(p =>
+                                p.Ano == sim.Ano
+                                && p.NumIdentificador == sim.NumIdentificador
+                                && p.CodProva == codProva
+                                && p.CodDiaRealizacao == codDia
+                                && p.CodCandidato == codCandidato
+                            );
 
                         candidato.SimCandidatoQuestao.Clear();
                         int acertos = 0;
@@ -1002,6 +1026,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult MapearSalas(string codigo)
         {
             string mensagem = "Ocorreu um erro na operação.";
@@ -1048,6 +1073,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult EnviarEmail(string codigo, string mensagemEmail)
         {
             string mensagem = "Um erro ocorreu na operação.";
@@ -1084,7 +1110,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                if (sim != null && !sim.FlagSimuladoEncerrado)
                 {
                     SimSala sala = sim.SimSala.FirstOrDefault(s => s.CodSala == codSala);
 
@@ -1095,6 +1121,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult FinalizarProvas(string codigo)
         {
             string mensagem = "Ocorreu um erro na operação.";
@@ -1119,6 +1146,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult CalcularResultados(string codigo)
         {
             string mensagem = "Ocorreu um erro na operação.";
@@ -1177,7 +1205,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null)
                 {
                     return PartialView("_SimuladoClassificacao", sim);
                 }
@@ -1208,7 +1236,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                if (sim != null && !sim.FlagSimuladoEncerrado)
                 {
                     if (sim.Provas.Count > 0 && !sim.FlagProvaEncerrada)
                     {
@@ -1225,7 +1253,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                if (sim != null && !sim.FlagSimuladoEncerrado)
                 {
                     if (sim.Provas.Count > 0 && !sim.FlagProvaEncerrada)
                     {
@@ -1246,7 +1274,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                if (sim != null && !sim.FlagSimuladoEncerrado)
                 {
                     if (sim.Provas.Count > 0 && !sim.FlagProvaEncerrada)
                     {
@@ -1261,6 +1289,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult ImprimirGabarito(string codigo, int dia, int prova)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -1288,7 +1317,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                if (sim != null && !sim.FlagSimuladoEncerrado)
                 {
                     return PartialView("_ImprimirListaPresenca", sim);
                 }

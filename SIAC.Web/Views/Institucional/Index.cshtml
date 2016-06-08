@@ -12,8 +12,11 @@
         @Html.Partial("_Atalho", new AtalhoViewModel("Av. Institucional em Andamento", "wait", Url.Action("Andamento"), lembrete: "andamento"))
         @if (Model.FlagCoordenadorAvi)
         {
-            @Html.Partial("_Atalho", new AtalhoViewModel("Gerar Nova", "add circle", Url.Action("Gerar")))
-            @Html.Partial("_Atalho", new AtalhoViewModel("Histórico de Av. Institucional", "file text outline", Url.Action("Historico", "Institucional")))
+            if (Model.CodCategoria == Categoria.COLABORADOR)
+            {
+                @Html.Partial("_Atalho", new AtalhoViewModel("Gerar Nova", "add circle", Url.Action("Gerar")))
+                @Html.Partial("_Atalho", new AtalhoViewModel("Histórico de Av. Institucional", "file text outline", Url.Action("Historico", "Institucional")))
+            }
             @Html.Partial("_Atalho", new AtalhoViewModel("Configurar", "settings", Url.Action("Configuracao")))
         }
     </div>
