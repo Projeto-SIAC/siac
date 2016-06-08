@@ -16,9 +16,24 @@
         </ul>
     </div>
 
+    @if (Model.QteQuestoes > Model.SimProvaQuestao.Count)
+    {
+        <div class="ui negative message">
+            <div class="header">
+                Quantidade de questões insuficiente!
+            </div>
+            <p>
+                Esta prova não tem quantidade de questões suficientes para suprir o pedido do simulado. <a href="@Url.Action("Cadastrar", "Questao")"> Clique aqui</a> para cadastrar novas questões.
+            </p>
+        </div>
+    }
+
     <!-- TODO: mostrar detalhes da prova -->
 
     <div class="ui basic segment">
+        <form method="post" action="@Url.Action("RecarregarQuestoesProvaConfigurar", new { simulado = Model.SimDiaRealizacao.Simulado.Codigo, dia = Model.CodDiaRealizacao, prova = Model.CodProva })">
+            <input type="submit" class="ui button right floated button" value="Recarregar Questões " />
+        </form>
         <h3 class="ui dividing header">Questões</h3>
         <div class="ui one cards">
             @foreach (var item in Model.SimProvaQuestao.Select((simProvaQuestao, i) => new { i, simProvaQuestao.Questao }))

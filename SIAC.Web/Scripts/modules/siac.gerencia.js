@@ -379,6 +379,33 @@ siac.Gerencia.Provas = (function () {
                 }
             });
         });
+
+        //$('.recarregar.button').off('click').on('click', function () {
+        //    var $this = $(this),
+        //        simulado = $this.data('simulado'),
+        //        dia = $this.data('dia'),
+        //        prova = $this.data('prova');
+
+        //    $this.addClass('loading');
+
+        //    $.ajax({
+        //        url: '/simulado/gerencia/recarregarquestoesprovaconfigurar',
+        //        method: 'POST',
+        //        data: {
+        //            'simulado': simulado,
+        //            'dia': dia,
+        //            'prova': prova
+        //        },
+        //        error: function () {
+        //            siac.mensagem('Falha ao recarregar as questões. Atualize a página para tentar novamente.');
+        //        },
+        //        complete: function () {
+        //            $this.removeClass('loading');
+        //            $('.modal').modal('hide');
+        //            document.location.reload();
+        //        }
+        //    });
+        //});
     }
 
     function adicionarEventos(simulado, dia, prova) {

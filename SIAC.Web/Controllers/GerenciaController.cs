@@ -729,6 +729,47 @@ namespace SIAC.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Bad Request");
         }
 
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
+        public ActionResult RecarregarQuestoesProvaConfigurar(string simulado, int dia, int prova)
+        {
+            if (!String.IsNullOrWhiteSpace(simulado))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(simulado);
+                if (sim != null)
+                {
+                    SimProva simProva = sim.SimDiaRealizacao.FirstOrDefault(d => d.CodDiaRealizacao == dia)?.SimProva.FirstOrDefault(p => p.CodProva == prova);
+                    if (simProva != null)
+                    {
+                        List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(simProva.CodDisciplina, simProva.QteQuestoes);
+
+                        simProva.SimProvaQuestao.Clear();
+
+                        foreach (int codQuestao in questoesCodigos)
+                        {
+                            simProva.SimProvaQuestao.Add(new SimProvaQuestao()
+                            {
+                                Questao = Questao.ListarPorCodigo(codQuestao)
+                                //CodQuestao = codQuestao
+                            });
+                        }
+
+                        if (questoesCodigos.Count < simProva.QteQuestoes)
+                        {
+                            Lembrete.AdicionarNotificacao("Foi gerada uma quantidade menor de questões para a prova deste simulado.",Lembrete.NEGATIVO);
+                        }
+                        else
+                        {
+                            Lembrete.AdicionarNotificacao("As questões para esta prova foram recarregadas com sucesso.", Lembrete.POSITIVO);
+                        }
+
+                        Repositorio.Commit();
+                    }
+                }
+            }
+            return RedirectToAction("Provas");
+        }
+
         #endregion Provas
     }
 }
