@@ -499,3 +499,197 @@ siac.Gerencia.Provas = (function () {
         iniciar: iniciar
     }
 })();
+
+siac.Gerencia.Permissoes = (function () {
+    function iniciar() {
+        $('.ui.checkbox').checkbox();
+        $('[id^=chkCoordenador]').change(function () {
+            console.log('[id^=chkCoordenador] change()');
+            if ($('[id^=chkCoordenador]:checked').length) {
+                $('.coordenadores .trigger.button').removeClass('disabled');
+            }
+            else {
+                $('.coordenadores .trigger.button').addClass('disabled');
+            }
+        });
+        $('[id^=chkColaborador]').change(function () {
+            console.log('[id^=chkColaborador] change()');
+            if ($('[id^=chkColaborador]:checked').length) {
+                $('.colaboradores .trigger.button').removeClass('disabled');
+            }
+            else {
+                $('.colaboradores .trigger.button').addClass('disabled');
+            }
+        });
+
+        $('.trigger.button').popup({ inline: true, on: 'click', position: 'right center' });
+
+        $('.coordenadores .adicionar.button').click(function () {
+            $('.pessoas.modal .header').text('Adicionar Coordenador de Simulado');
+            $('.pessoas.modal').modal({
+                onApprove: function () {
+                    if ($('[name=rdoPessoa]:checked').length) {
+                        var codPessoa = $('[name=rdoPessoa]:checked').val();
+                        adicionarCoordenador(codPessoa);
+                        $('.approve.button').addClass('loading');
+                    }
+                    else {
+                        siac.mensagem('Ops... Você ainda não selecionou nenhuma pessoa!');
+                    }
+                    return false;
+                },
+                onDeny: function () {
+                    $('.coordenador.modal #txtPesquisa').val('');
+                    $('.coordenador.modal .ui.list').html('');
+                }
+            }).modal('show');
+        });
+
+        $('.colaboradores .adicionar.button').click(function () {
+            $('.pessoas.modal .header').text('Adicionar Colaborador de Simulado');
+            $('.pessoas.modal').modal({
+                onApprove: function () {
+                    if ($('[name=rdoPessoa]:checked').length) {
+                        var codPessoa = $('[name=rdoPessoa]:checked').val();
+                        adicionarColaborador(codPessoa);
+                        $('.approve.button').addClass('loading');
+                    }
+                    else {
+                        siac.mensagem('Ops... Você ainda não selecionou nenhuma pessoa!');
+                    }
+                    return false;
+                },
+                onDeny: function () {
+                    $('.pessoas.modal #txtPesquisa').val('');
+                    $('.pessoas.modal .ui.list').html('');
+                }
+            }).modal('show');
+        });
+
+        $('.pesquisar.button').click(function () {
+            var pesquisa = $('#txtPesquisa').val();
+            console.log('.pesquisar.button click()', pesquisa);
+            if (pesquisa && pesquisa.length >= 3) {
+                $(this).parents('.form').addClass('loading');
+                pesquisar(pesquisa);
+            }
+        });
+
+        $('.ui.modal').modal();
+
+        $('.colaboradores .remover.button').click(function () {
+            removerColaborador();
+        });
+        $('.coordenadores .remover.button').click(function () {
+            removerCoordenador();
+        });
+    }
+
+    function adicionarCoordenador(codPessoa) {
+        if (codPessoa) {
+            $.ajax({
+                url: '/simulado/gerencia/adicionarcoordenador',
+                type: 'post',
+                data: { codPessoaFisica: codPessoa },
+                success: function () { window.location.reload(); $('.ui.modal').modal('hide'); },
+                error: function () { siac.mensagem('Ocorreu um erro com sua solicitação. Por favor, tente novamente mais tarde.'); }
+            });
+        }
+    }
+
+    function adicionarColaborador(codPessoa) {
+        if (codPessoa) {
+            $.ajax({
+                url: '/simulado/gerencia/adicionarcolaborador',
+                type: 'post',
+                data: { codPessoaFisica: codPessoa },
+                success: function () { window.location.reload(); $('.ui.modal').modal('hide'); },
+                error: function () { siac.mensagem('Ocorreu um erro com sua solicitação. Por favor, tente novamente mais tarde.'); }
+            });
+        }
+    }
+
+    function pesquisar(pesquisa) {
+        console.log('on pesquisar()', pesquisa);
+        if (pesquisa && pesquisa.length >= 3) {
+            var $modal = $('.pessoas.modal');
+            $.ajax({
+                url: '/simulado/gerencia/listarpessoas',
+                type: 'post',
+                data: {
+                    pesquisa: pesquisa
+                },
+                success: function (data) {
+                    console.log('on success()', data);
+                    if (data) {
+                        var $list = $modal.find('.ui.list');
+                        $list.html('');
+                        for (var i = 0, length = data.length; i < length; i++) {
+                            var $item = $('<div class="item"></div>')
+                                .html(' <div class="ui slider checkbox">' +
+                                          '<input type="radio" name="rdoPessoa" value="' + data[i].CodPessoa + '">' +
+                                          '<label>' + data[i].Nome + '</label>' +
+                                        '</div>');
+                            $list.append($item);
+                        }
+                        $modal.find('.ui.checkbox').checkbox();
+                    }
+                },
+                error: function () {
+                    siac.mensagem('Ocorreu um erro com sua solicitação. Por favor, tente novamente mais tarde.');
+                },
+                complete: function () {
+                    $modal.find('.form').removeClass('loading');
+                }
+            });
+        }
+    }
+
+    function removerCoordenador() {
+        var $btnRemover = $('.coordenadores .remover.button');
+        $btnRemover.addClass('loading');
+        var arrPessoas = [];
+        var $chkCoordenadores = $('[id^=chkCoordenador]');
+
+        for (var i = 0, length = $chkCoordenadores.length; i < length; i++) {
+            if ($chkCoordenadores.eq(i).is(':checked')) {
+                var codPessoa = $chkCoordenadores.eq(i).attr('id').replace(/^\D+/g, '');
+                arrPessoas.push(parseInt(codPessoa));
+            }
+        }
+
+        $.ajax({
+            url: '/simulado/gerencia/removercoordenador',
+            type: 'post',
+            data: { codPessoaFisica: arrPessoas },
+            success: function () { window.location.reload(); },
+            error: function () { siac.mensagem('Ocorreu um erro com sua solicitação. Por favor, tente novamente mais tarde.'); },
+            complete: function () { $btnRemover.removeClass('loading'); }
+        });
+    }
+
+    function removerColaborador() {
+        var $btnRemover = $('.colaboradores .remover.button');
+        $btnRemover.addClass('loading');
+        var arrPessoas = [];
+        var $chkCoordenadores = $('[id^=chkColaborador]');
+
+        for (var i = 0, length = $chkCoordenadores.length; i < length; i++) {
+            if ($chkCoordenadores.eq(i).is(':checked')) {
+                var codPessoa = $chkCoordenadores.eq(i).attr('id').replace(/^\D+/g, '');
+                arrPessoas.push(parseInt(codPessoa));
+            }
+        }
+
+        $.ajax({
+            url: '/simulado/gerencia/removercolaborador',
+            type: 'post',
+            data: { codPessoaFisica: arrPessoas },
+            success: function () { window.location.reload(); },
+            error: function () { siac.mensagem('Ocorreu um erro com sua solicitação. Por favor, tente novamente mais tarde.'); },
+            complete: function () { $btnRemover.removeClass('loading'); }
+        });
+    }
+
+    return { iniciar: iniciar }
+})();

@@ -4,87 +4,87 @@
             xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-4.0 MvcSiteMapSchema.xsd">
 
   <mvcSiteMapNode title="Acesso" controller="Acesso" action="Index">
-    <mvcSiteMapNode title="Entrar" controller="Acesso" action="Entrar"/>
-    <mvcSiteMapNode title="Sair" controller="Acesso" action="Sair"/>
-    <mvcSiteMapNode title="Visitante" controller="Acesso" action="Visitante"/>
+    <mvcSiteMapNode title="Entrar" controller="Acesso" action="Entrar" />
+    <mvcSiteMapNode title="Sair" controller="Acesso" action="Sair" />
+    <mvcSiteMapNode title="Visitante" controller="Acesso" action="Visitante" />
     <mvcSiteMapNode title="Principal" controller="Principal" action="Index">
       <mvcSiteMapNode title="Questão" url="~/Historico/Questao">
         <mvcSiteMapNode title="Cadastrar" controller="Questao" action="Cadastrar" preservedRouteParameters="codigo">
-          <mvcSiteMapNode title="Confirmação" controller="Questao" action="Confirmar"/>
+          <mvcSiteMapNode title="Confirmação" controller="Questao" action="Confirmar" />
         </mvcSiteMapNode>
-        <mvcSiteMapNode title="Gerar" controller="Questao" action="Gerar"/>
+        <mvcSiteMapNode title="Gerar" controller="Questao" action="Gerar" />
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Autoavaliação" url="~/Historico/Autoavaliacao">
         <mvcSiteMapNode title="Gerar" controller="Autoavaliacao" action="Gerar">
-          <mvcSiteMapNode title="Confirmação" controller="Autoavaliacao" action="Confirmar"/>
+          <mvcSiteMapNode title="Confirmação" controller="Autoavaliacao" action="Confirmar" />
         </mvcSiteMapNode>
         <mvcSiteMapNode title="Realizar" controller="Autoavaliacao" action="Realizar" preservedRouteParameters="codigo">
-          <mvcSiteMapNode title="Resultado" controller="Autoavaliacao" action="Resultado" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Resultado" controller="Autoavaliacao" action="Resultado" preservedRouteParameters="codigo" />
         </mvcSiteMapNode>
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Avaliação" controller="Principal" action="Avaliacao">
         <mvcSiteMapNode title="Acadêmica" url="~/historico/avaliacao/academica">
           <mvcSiteMapNode title="Gerar" controller="Academica" action="Gerar">
-            <mvcSiteMapNode title="Confirmação" controller="Academica" action="Confirmar"/>
+            <mvcSiteMapNode title="Confirmação" controller="Academica" action="Confirmar" />
           </mvcSiteMapNode>
-          <mvcSiteMapNode title="Agendar" controller="Academica" action="Agendar" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Configurar" controller="Academica" action="Configurar" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Acompanhar" controller="Academica" action="Acompanhar" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Agendar" controller="Academica" action="Agendar" preservedRouteParameters="codigo" />
+          <mvcSiteMapNode title="Configurar" controller="Academica" action="Configurar" preservedRouteParameters="codigo" />
+          <mvcSiteMapNode title="Acompanhar" controller="Academica" action="Acompanhar" preservedRouteParameters="codigo" />
           <mvcSiteMapNode title="Realizar" controller="Academica" action="Realizar" preservedRouteParameters="codigo">
-            <mvcSiteMapNode title="Resultado" controller="Academica" action="Resultado" preservedRouteParameters="codigo"/>
+            <mvcSiteMapNode title="Resultado" controller="Academica" action="Resultado" preservedRouteParameters="codigo" />
           </mvcSiteMapNode>
         </mvcSiteMapNode>
         <mvcSiteMapNode title="Certificação" url="~/historico/avaliacao/certificacao">
           <mvcSiteMapNode title="Gerar" controller="Certificacao" action="Gerar">
-            <mvcSiteMapNode title="Confirmação" controller="Certificacao" action="Confirmar"/>
+            <mvcSiteMapNode title="Confirmação" controller="Certificacao" action="Confirmar" />
           </mvcSiteMapNode>
-          <mvcSiteMapNode title="Configurar" controller="Certificacao" action="Configurar" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Agendar" controller="Certificacao" action="Agendar" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Acompanhar" controller="Certificacao" action="Acompanhar" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Selecionar Avaliados" controller="Certificacao" action="Avaliados" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Configurar" controller="Certificacao" action="Configurar" preservedRouteParameters="codigo" />
+          <mvcSiteMapNode title="Agendar" controller="Certificacao" action="Agendar" preservedRouteParameters="codigo" />
+          <mvcSiteMapNode title="Acompanhar" controller="Certificacao" action="Acompanhar" preservedRouteParameters="codigo" />
+          <mvcSiteMapNode title="Selecionar Avaliados" controller="Certificacao" action="Avaliados" preservedRouteParameters="codigo" />
           <mvcSiteMapNode title="Realizar" controller="Certificacao" action="Realizar" preservedRouteParameters="codigo">
-            <mvcSiteMapNode title="Resultado" controller="Certificacao" action="Resultado" preservedRouteParameters="codigo"/>
+            <mvcSiteMapNode title="Resultado" controller="Certificacao" action="Resultado" preservedRouteParameters="codigo" />
           </mvcSiteMapNode>
         </mvcSiteMapNode>
         <mvcSiteMapNode title="Reposição" url="~/historico/avaliacao/reposicao">
-          <mvcSiteMapNode title="Justificar Ausências" controller="Reposicao" action="Justificar" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Agendar" controller="Reposicao" action="Agendar" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Configurar" controller="Reposicao" action="Configurar" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Acompanhar" controller="Reposicao" action="Acompanhar" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Justificar Ausências" controller="Reposicao" action="Justificar" preservedRouteParameters="codigo" />
+          <mvcSiteMapNode title="Agendar" controller="Reposicao" action="Agendar" preservedRouteParameters="codigo" />
+          <mvcSiteMapNode title="Configurar" controller="Reposicao" action="Configurar" preservedRouteParameters="codigo" />
+          <mvcSiteMapNode title="Acompanhar" controller="Reposicao" action="Acompanhar" preservedRouteParameters="codigo" />
           <mvcSiteMapNode title="Realizar" controller="Reposicao" action="Realizar" preservedRouteParameters="codigo">
-            <mvcSiteMapNode title="Resultado" controller="Reposicao" action="Resultado" preservedRouteParameters="codigo"/>
+            <mvcSiteMapNode title="Resultado" controller="Reposicao" action="Resultado" preservedRouteParameters="codigo" />
           </mvcSiteMapNode>
         </mvcSiteMapNode>
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Agenda" controller="Agenda" action="Index" />
       <mvcSiteMapNode title="Impressão" controller="Impressao" action="Avaliacao" preservedRouteParameters="codigo">
-        <mvcSiteMapNode title="Impressão" controller="Impressao" action="Institucional" preservedRouteParameters="codigo"/>
+        <mvcSiteMapNode title="Impressão" controller="Impressao" action="Institucional" preservedRouteParameters="codigo" />
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Correções Pendentes" controller="Principal" action="Pendente" />
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Histórico" controller="Historico" action="Index">
       <mvcSiteMapNode title="Questão" controller="Questao" action="Index">
-        <mvcSiteMapNode title="Detalhes" controller="Questao" action="Detalhe" preservedRouteParameters="codigo"/>
-        <mvcSiteMapNode title="Editar" controller="Questao" action="Editar" preservedRouteParameters="codigo"/>
+        <mvcSiteMapNode title="Detalhes" controller="Questao" action="Detalhe" preservedRouteParameters="codigo" />
+        <mvcSiteMapNode title="Editar" controller="Questao" action="Editar" preservedRouteParameters="codigo" />
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Autoavaliação" controller="Autoavaliacao" action="Index">
-        <mvcSiteMapNode title="Detalhes" controller="Autoavaliacao" action="Detalhe" preservedRouteParameters="codigo"/>
+        <mvcSiteMapNode title="Detalhes" controller="Autoavaliacao" action="Detalhe" preservedRouteParameters="codigo" />
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Avaliação" controller="Historico" action="Avaliacao">
         <mvcSiteMapNode title="Acadêmica" controller="Academica" action="Index">
-          <mvcSiteMapNode title="Agendada" controller="Academica" action="Agendada" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Detalhes" controller="Academica" action="Detalhe" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Corrigir" controller="Academica" action="Corrigir" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Agendada" controller="Academica" action="Agendada" preservedRouteParameters="codigo" />
+          <mvcSiteMapNode title="Detalhes" controller="Academica" action="Detalhe" preservedRouteParameters="codigo" />
+          <mvcSiteMapNode title="Corrigir" controller="Academica" action="Corrigir" preservedRouteParameters="codigo" />
         </mvcSiteMapNode>
         <mvcSiteMapNode title="Certificação" controller="Certificacao" action="Index">
-          <mvcSiteMapNode title="Detalhes" controller="Certificacao" action="Detalhe" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Agendada" controller="Certificacao" action="Agendada" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Corrigir" controller="Certificacao" action="Corrigir" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Detalhes" controller="Certificacao" action="Detalhe" preservedRouteParameters="codigo" />
+          <mvcSiteMapNode title="Agendada" controller="Certificacao" action="Agendada" preservedRouteParameters="codigo" />
+          <mvcSiteMapNode title="Corrigir" controller="Certificacao" action="Corrigir" preservedRouteParameters="codigo" />
         </mvcSiteMapNode>
         <mvcSiteMapNode title="Reposição" controller="Reposicao" action="Index">
-          <mvcSiteMapNode title="Detalhes" controller="Reposicao" action="Detalhe" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Agendada" controller="Reposicao" action="Agendada" preservedRouteParameters="codigo"/>
-          <mvcSiteMapNode title="Corrigir" controller="Reposicao" action="Corrigir" preservedRouteParameters="codigo"/>
+          <mvcSiteMapNode title="Detalhes" controller="Reposicao" action="Detalhe" preservedRouteParameters="codigo" />
+          <mvcSiteMapNode title="Agendada" controller="Reposicao" action="Agendada" preservedRouteParameters="codigo" />
+          <mvcSiteMapNode title="Corrigir" controller="Reposicao" action="Corrigir" preservedRouteParameters="codigo" />
         </mvcSiteMapNode>
       </mvcSiteMapNode>
     </mvcSiteMapNode>
@@ -96,25 +96,25 @@
         <mvcSiteMapNode title="Cadastrar Visitante" controller="Visitante" action="Cadastrar">
           <mvcSiteMapNode title="Confirmação de Cadastro" controller="Visitante" action="Confirmar" />
         </mvcSiteMapNode>
-        <mvcSiteMapNode title="Detalhes" controller="Visitante" action="Detalhe" preservedRouteParameters="codigo"/>
+        <mvcSiteMapNode title="Detalhes" controller="Visitante" action="Detalhe" preservedRouteParameters="codigo" />
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Usuários" controller="Usuario" action="Index">
-        <mvcSiteMapNode title="Detalhes" controller="Usuario" action="Detalhe" preservedRouteParameters="codigo"/>
+        <mvcSiteMapNode title="Detalhes" controller="Usuario" action="Detalhe" preservedRouteParameters="codigo" />
       </mvcSiteMapNode>
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Av. Institucional" controller="Institucional" action="Index">
-      <mvcSiteMapNode title="Gerar" controller="Institucional" action="Gerar"/>
-      <mvcSiteMapNode title="Questionário" controller="Institucional" action="Questionario" preservedRouteParameters="codigo"/>
-      <mvcSiteMapNode title="Configurar" controller="Institucional" action="Configurar" preservedRouteParameters="codigo"/>
-      <mvcSiteMapNode title="Público" controller="Institucional" action="Publico" preservedRouteParameters="codigo"/>
-      <mvcSiteMapNode title="Agendar" controller="Institucional" action="Agendar" preservedRouteParameters="codigo"/>
-      <mvcSiteMapNode title="Realizar" controller="Institucional" action="Realizar" preservedRouteParameters="codigo"/>
-      <mvcSiteMapNode title="Configuração" controller="Institucional" action="Configuracao"/>
-      <mvcSiteMapNode title="Detalhe" controller="Institucional" action="Detalhe" preservedRouteParameters="codigo"/>
+      <mvcSiteMapNode title="Gerar" controller="Institucional" action="Gerar" />
+      <mvcSiteMapNode title="Questionário" controller="Institucional" action="Questionario" preservedRouteParameters="codigo" />
+      <mvcSiteMapNode title="Configurar" controller="Institucional" action="Configurar" preservedRouteParameters="codigo" />
+      <mvcSiteMapNode title="Público" controller="Institucional" action="Publico" preservedRouteParameters="codigo" />
+      <mvcSiteMapNode title="Agendar" controller="Institucional" action="Agendar" preservedRouteParameters="codigo" />
+      <mvcSiteMapNode title="Realizar" controller="Institucional" action="Realizar" preservedRouteParameters="codigo" />
+      <mvcSiteMapNode title="Configuração" controller="Institucional" action="Configuracao" />
+      <mvcSiteMapNode title="Detalhe" controller="Institucional" action="Detalhe" preservedRouteParameters="codigo" />
       <mvcSiteMapNode title="Histórico" controller="Institucional" action="Historico">
-        <mvcSiteMapNode title="Resultado" controller="Institucional" action="Resultado" preservedRouteParameters="codigo"/>
+        <mvcSiteMapNode title="Resultado" controller="Institucional" action="Resultado" preservedRouteParameters="codigo" />
       </mvcSiteMapNode>
-      <mvcSiteMapNode title="Andamento" controller="Institucional" action="Andamento"/>
+      <mvcSiteMapNode title="Andamento" controller="Institucional" action="Andamento" />
     </mvcSiteMapNode>
     <mvcSiteMapNode title="Simulados" url="~/simulado/gerencia">
       <mvcSiteMapNode title="Gerência" controller="Gerencia" action="Index">
@@ -125,6 +125,7 @@
           <mvcSiteMapNode title="Professores" controller="Gerencia" action="Professores" />
         </mvcSiteMapNode>
         <mvcSiteMapNode title="Configurações" controller="Gerencia" action="Configuracoes" />
+        <mvcSiteMapNode title="Permissões" controller="Gerencia" action="Permissoes" />
         <mvcSiteMapNode title="Provas Designadas" controller="Gerencia" action="Provas" />
       </mvcSiteMapNode>
       <mvcSiteMapNode title="Novo Simulado" controller="Simulado" action="Novo" />

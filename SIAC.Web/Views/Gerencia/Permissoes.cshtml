@@ -1,0 +1,148 @@
+﻿@model GerenciaPermissoesViewModel
+
+@{
+    ViewBag.Title = "Permissões";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div class="ui stackable grid" style="clear:both">
+    <div class="eight wide column">
+        <div class="ui dividing header">
+            Coordenadores
+            <div class="sub header">
+                Podem iniciar e gerenciar todos os detalhes de um simulado, assim como adicionar outros Colaboradores.
+            </div>
+        </div>
+        <div class="ui basic segment">
+            <table class="ui compact celled definition coordenadores table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nome</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var coordenador in Model.Coordenadores)
+                    {
+                        <tr>
+                            <td class="collapsing">
+                                <div class="ui fitted slider checkbox">
+                                    <input type="checkbox" id="chkCoordenador@(coordenador.CodPessoa)"><label></label>
+                                </div>
+                            </td>
+                            <td>@coordenador.Nome</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th>
+                            <div class="ui right floated small primary labeled icon adicionar button">
+                                <i class="plus icon"></i> Adicionar
+                            </div>
+                            <div class="ui small disabled trigger button">
+                                Remover
+                            </div>
+                            <div class="ui popup">
+                                <div class="header">
+                                    Tem certeza?
+                                </div>
+                                <div class="content">
+                                    Confirme sua decisão de remover este(s) usuário(s) selecionado(s) da lista de Coordenadores de Simulado.
+                                    <br />
+                                    <div class="ui remover small button">Sim, remover</div>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="eight wide column">
+        <div class="ui dividing header">
+            Colaboradores
+            <div class="sub header">
+                Podem apenas acessar as listagens, impressões e enviar respostas dos candidatos.
+            </div>
+        </div>
+        <div class="ui basic segment">
+            <table class="ui compact celled definition colaboradores table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nome</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var colaborador in Model.Colaboradores)
+                    {
+                        <tr>
+                            <td class="collapsing">
+                                <div class="ui fitted slider checkbox">
+                                    <input type="checkbox" id="chkColaborador@(colaborador.CodPessoa)"><label></label>
+                                </div>
+                            </td>
+                            <td>@colaborador.Nome</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th>
+                            <div class="ui right floated small primary labeled icon adicionar button">
+                                <i class="plus icon"></i> Adicionar
+                            </div>
+                            <div class="ui small disabled trigger button">
+                                Remover
+                            </div>
+                            <div class="ui popup">
+                                <div class="header">
+                                    Tem certeza?
+                                </div>
+                                <div class="content">
+                                    Confirme sua decisão de remover este(s) usuário(s) selecionado(s) da lista de Colaboradores de Simulado.
+                                    <br />
+                                    <div class="ui remover small button">Sim, remover</div>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="ui pessoas modal">
+    <i class="close icon"></i>
+    <div class="header">Adicionar #{0} de Simulado</div>
+    <div class="content">
+        <div class="ui form">
+            <div class="field">
+                <label for="txtPesquisa">Pesquisa</label>
+                <input type="text" id="txtPesquisa" placeholder="Pesquisar por Nome, Matrícula ou CPF..." />
+            </div>
+            <div class="field">
+                <div class="ui pesquisar button">Pesquisar</div>
+            </div>
+        </div>
+        <div class="ui segment">
+            <div class="ui relaxed list">
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Cancelar</div>
+        <div class="ui approve button">Adicionar</div>
+    </div>
+</div>
+
+<a class="ui button" href="@Url.Action("Index", "Gerencia")">Voltar para Gerência de Simulados</a>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/gerencia")
+}

@@ -757,7 +757,7 @@ namespace SIAC.Controllers
 
                         if (questoesCodigos.Count < simProva.QteQuestoes)
                         {
-                            Lembrete.AdicionarNotificacao("Foi gerada uma quantidade menor de questões para a prova deste simulado.",Lembrete.NEGATIVO);
+                            Lembrete.AdicionarNotificacao("Foi gerada uma quantidade menor de questões para a prova deste simulado.", Lembrete.NEGATIVO);
                         }
                         else
                         {
@@ -772,5 +772,81 @@ namespace SIAC.Controllers
         }
 
         #endregion Provas
+
+        #region Permissoes
+
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR, Ocupacao.COORDENADOR_SIMULADO })]
+        public ActionResult Permissoes()
+        {
+            var model = new GerenciaPermissoesViewModel();
+            var contexto = Repositorio.GetInstance();
+
+            model.Coordenadores = contexto.Ocupacao
+                .Find(Ocupacao.COORDENADOR_SIMULADO)
+                .PessoaFisica
+                .Where(p => p.Usuario.FirstOrDefault(u => u.Matricula == Sessao.UsuarioMatricula) == null)
+                .ToList();
+
+            model.Colaboradores = contexto.Ocupacao
+                .Find(Ocupacao.COLABORADOR_SIMULADO)
+                .PessoaFisica
+                .ToList();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR, Ocupacao.COORDENADOR_SIMULADO })]
+        public ActionResult ListarPessoas(string pesquisa)
+        {
+            if (!String.IsNullOrWhiteSpace(pesquisa))
+            {
+                pesquisa = pesquisa.Trim().ToLower();
+                var lstPessoas = PessoaFisica.Listar().Where(p =>
+                    (p.Usuario.FirstOrDefault(u => u.Colaborador.Count > 0) != null) &&
+                    (p.Nome.ToLower().Contains(pesquisa) ||
+                    (!String.IsNullOrEmpty(p.Cpf) && p.Cpf.Contains(pesquisa)) ||
+                    p.Usuario.FirstOrDefault(u => u.Matricula.ToLower().Contains(pesquisa)) != null)
+                );
+                return Json(lstPessoas.Select(p => new { CodPessoa = p.CodPessoa, Nome = p.Nome }));
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR, Ocupacao.COORDENADOR_SIMULADO })]
+        public void AdicionarCoordenador(int codPessoaFisica)
+        {
+            PessoaFisica.AdicionarOcupacao(codPessoaFisica, Ocupacao.COORDENADOR_SIMULADO);
+        }
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR, Ocupacao.COORDENADOR_SIMULADO })]
+        public void AdicionarColaborador(int codPessoaFisica)
+        {
+            PessoaFisica.AdicionarOcupacao(codPessoaFisica, Ocupacao.COLABORADOR_SIMULADO);
+        }
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(SomenteOcupacaoAvi = true)]
+        public void RemoverCoordenador(int[] codPessoaFisica)
+        {
+            foreach (int codPessoa in codPessoaFisica)
+            {
+                PessoaFisica.RemoverOcupacao(codPessoa, Ocupacao.COORDENADOR_SIMULADO);
+            }
+        }
+
+        [HttpPost]
+        [Filters.AutenticacaoFilter(SomenteOcupacaoAvi = true)]
+        public void RemoverColaborador(int[] codPessoaFisica)
+        {
+            foreach (int codPessoa in codPessoaFisica)
+            {
+                PessoaFisica.RemoverOcupacao(codPessoa, Ocupacao.COLABORADOR_SIMULADO);
+            }
+        }
+
+        #endregion Permissoes
     }
 }

@@ -248,7 +248,10 @@
         }
         else if (pathname.indexOf('/simulado') == 0) {
             if (pathname.indexOf('/gerencia/') >= 0) {
-                if (pathname.indexOf('/blocos') >= 0) {
+                if (pathname.indexOf('/permissoes') >= 0) {
+                    siac.Gerencia.Permissoes.iniciar();
+                }
+                else if (pathname.indexOf('/blocos') >= 0) {
                     siac.Gerencia.Blocos.iniciar();
                 }
                 else if (pathname.indexOf('/salas') >= 0) {

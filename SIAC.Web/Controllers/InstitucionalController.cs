@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
+    [Filters.AutenticacaoFilter]
     public class InstitucionalController : Controller
     {
         public List<AvalAvi> Institucionais =>

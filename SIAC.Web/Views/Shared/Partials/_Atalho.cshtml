@@ -1,6 +1,6 @@
 ﻿@model AtalhoViewModel
 
-<div class="column aligned center" onmouseenter="$(this).transition('pulse')">
+<div class="column aligned center hover-opacity-7" @*onmouseenter="$(this).transition('pulse')"*@>
     <a href="@Model.Url" class="ui basic segment" title="@Model.Mensagem">
         <div class="ui icon header" data-lembrete="@Model.Lembrete">
             <i class="@Model.Icone icon"></i>

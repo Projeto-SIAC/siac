@@ -236,7 +236,7 @@ siac.Configuracoes.Institucional = (function () {
         });
         $('.pesquisar.button').click(function () {
             var strPesquisa = $('#txtPesquisa').val();
-            if (strPesquisa && strPesquisa.length > 3) {
+            if (strPesquisa && strPesquisa.length >= 3) {
                 $(this).parents('.form').addClass('loading');
                 pesquisar(strPesquisa);
             }
@@ -299,7 +299,7 @@ siac.Configuracoes.Institucional = (function () {
     }
 
     function pesquisar(pesquisa) {
-        if (pesquisa && pesquisa.length > 3) {
+        if (pesquisa && pesquisa.length >= 3) {
             var $modal = $('.coordenador.modal');
             $.ajax({
                 url: '/configuracoes/listarpessoa',
@@ -314,7 +314,7 @@ siac.Configuracoes.Institucional = (function () {
                         for (var i = 0, length = data.length; i < length; i++) {
                             var $item = $('<div class="item"></div>')
                                 .html(' <div class="ui slider checkbox">' +
-                                          '<input type="radio" name="rdoPessoa" value="'+ data[i].CodPessoa +'">'+
+                                          '<input type="radio" name="rdoPessoa" value="' + data[i].CodPessoa + '">' +
                                           '<label>' + data[i].Nome + '</label>' +
                                         '</div>');
                             $list.append($item);

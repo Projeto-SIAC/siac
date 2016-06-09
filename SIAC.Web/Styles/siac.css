@@ -27,7 +27,6 @@
             text-align: center !important;
         }
 
-
             .vertical.menu .item .icon {
                 margin: 0 !important;
             }
@@ -46,9 +45,9 @@
     clear: both;
 }
 
-.dashmenu > div.row > div.column {
-    padding: 1.5em 0.5em;
-}
+    .dashmenu > div.row > div.column {
+        padding: 1.5em 0.5em;
+    }
 
 /* scrollbar */
 ::-webkit-scrollbar {
@@ -63,9 +62,20 @@
 
 /* helpers */
 .no-padding-top {
-    padding-top: 0!important;
+    padding-top: 0 !important;
 }
 
 .no-padding-bottom {
-    padding-bottom: 0!important;
+    padding-bottom: 0 !important;
 }
+
+.hover-opacity-7 {
+    -webkit-transition: opacity 0.3s ease-in-out;
+    -moz-transition: opacity 0.3s ease-in-out;
+    -o-transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
+}
+
+    .hover-opacity-7:hover {
+        opacity: 0.7;
+    }

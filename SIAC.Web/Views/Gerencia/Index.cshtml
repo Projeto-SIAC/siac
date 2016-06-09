@@ -25,10 +25,15 @@
                 @Html.Partial("_Atalho", new AtalhoViewModel("Arquivo de Simulados", "list", Url.Action("Index", "Arquivo")))
                 @Html.Partial("_Atalho", new AtalhoViewModel("Dados Gerais", "cogs", Url.Action("Dados", "Gerencia")))
                 @Html.Partial("_Atalho", new AtalhoViewModel("Configurações", "configure", Url.Action("Configuracoes", "Gerencia")))
+                if (Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.CodOcupacao.Contains(Ocupacao.COORDENADOR_SIMULADO))
+                {
+                    @Html.Partial("_Atalho", new AtalhoViewModel("Permissões", "users", Url.Action("Permissoes", "Gerencia")))
+                }
                 break;
             case Categoria.SUPERUSUARIO:
                 @Html.Partial("_Atalho", new AtalhoViewModel("Dados Gerais", "cogs", Url.Action("Dados", "Gerencia")))
                 @Html.Partial("_Atalho", new AtalhoViewModel("Configurações", "configure", Url.Action("Configuracoes", "Gerencia")))
+                @Html.Partial("_Atalho", new AtalhoViewModel("Permissões", "users", Url.Action("Permissoes", "Gerencia")))
                 break;
             case Categoria.PROFESSOR:
                 @Html.Partial("_Atalho", new AtalhoViewModel("Provas Designadas", "copy", Url.Action("Provas", "Gerencia")))

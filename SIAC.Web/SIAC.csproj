@@ -653,6 +653,7 @@
     <Content Include="Views\Simulado\Partials\_ImprimirListaPresenca.cshtml" />
     <Content Include="Views\Gerencia\Provas.cshtml" />
     <Content Include="Views\Gerencia\Partials\_CarregarProvaConfigurar.cshtml" />
+    <Content Include="Views\Gerencia\Permissoes.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
