@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR, Categoria.PROFESSOR })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, SomenteOcupacaoSimulado = true)]
     public class ArquivoController : Controller
     {
         private List<Simulado> SimNaoEncerrados => Simulado.ListarNaoEncerradoOrdenadamente();
@@ -59,7 +59,6 @@ namespace SIAC.Controllers
                 Encerrados = SimEncerrados.Take(3).ToList()
             });
 
-        // TODO: método para ser utilizado ajax para atualizar as listas em Abertos e Encerrados
         public ActionResult Abertos() => View();
 
         public ActionResult Encerrados() => View();

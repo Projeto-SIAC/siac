@@ -26,8 +26,6 @@ namespace SIAC
 
         #endregion byte[]
 
-        // String
-
         #region String
 
         public static byte[] GetBytes(this string str)
@@ -138,8 +136,6 @@ namespace SIAC
 
         #endregion String
 
-        // Int
-
         #region Int
 
         public static string GetIndiceAlternativa(this int i)
@@ -148,16 +144,16 @@ namespace SIAC
             int tipo = Parametro.Obter().NumeracaoAlternativa;
             switch (tipo)
             {
-                case 1:
+                case (int)Parametro.NumeracaoPadrao.INDO_ARABICO:
                     return i.ToString();
 
-                case 2:
+                case (int)Parametro.NumeracaoPadrao.ROMANOS:
                     return paraRomano(i);
 
-                case 3:
+                case (int)Parametro.NumeracaoPadrao.CAIXA_BAIXA:
                     return paraCaixaBaixa(i);
 
-                case 4:
+                case (int)Parametro.NumeracaoPadrao.CAIXA_ALTA:
                     return paraCaixaAlta(i);
 
                 default:
@@ -172,16 +168,16 @@ namespace SIAC
 
             switch (tipo)
             {
-                case 1:
+                case (int)Parametro.NumeracaoPadrao.INDO_ARABICO:
                     return i.ToString();
 
-                case 2:
+                case (int)Parametro.NumeracaoPadrao.ROMANOS:
                     return paraRomano(i);
 
-                case 3:
+                case (int)Parametro.NumeracaoPadrao.CAIXA_BAIXA:
                     return paraCaixaBaixa(i);
 
-                case 4:
+                case (int)Parametro.NumeracaoPadrao.CAIXA_ALTA:
                     return paraCaixaAlta(i);
 
                 default:
@@ -241,8 +237,6 @@ namespace SIAC
         }
 
         #endregion Int
-
-        // DateTime
 
         #region DateTime
 
@@ -347,8 +341,6 @@ namespace SIAC
 
         #endregion DateTime
 
-        // List<AvaliacaoTema>
-
         #region List<AvaliacaoTema>
 
         public static int QteQuestoesPorTipo(this List<AvaliacaoTema> lstAvaliacaoTema, int codDisciplina, int codTipoQuestao)
@@ -395,8 +387,6 @@ namespace SIAC
 
         #endregion List<AvaliacaoTema>
 
-        // Avaliacao
-
         #region Avaliacao
 
         public static int QteQuestoes(this Avaliacao avaliacao)
@@ -428,9 +418,7 @@ namespace SIAC
 
         #endregion Avaliacao
 
-        // Questao
-
-        #region Questao
+        #region Questao/AviQuestao
 
         public static bool TemUmaCorreta(this Questao questao)
         {
@@ -548,15 +536,15 @@ namespace SIAC
             return json;
         }
 
-        #endregion Questao
-
-        //Double
+        #endregion Questao/AviQuestao
 
         #region Double
 
         public static string ToValueHtml(this double value) => value.ToString().Replace(',', '.');
 
         #endregion Double
+
+        #region HttpContext
 
         public static string RecuperarIp(this HttpContext contexto)
         {
@@ -569,5 +557,7 @@ namespace SIAC
             }
             return contexto.Request.ServerVariables["REMOTE_ADDR"];
         }
+
+        #endregion HttpContext
     }
 }

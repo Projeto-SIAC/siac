@@ -541,6 +541,9 @@ namespace SIAC.Controllers
                         if (prova.CodProfessor.HasValue && !Professor.ProfessorLeciona((int)prova.CodProfessor, prova.CodDisciplina))
                             prova.CodProfessor = null;
 
+                        if (prova.CodProfessor.HasValue)
+                            PessoaFisica.AdicionarOcupacao(Professor.ListarPorCodigo((int)prova.CodProfessor).Usuario.CodPessoaFisica, Ocupacao.COLABORADOR_SIMULADO);
+
                         List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, prova.QteQuestoes);
 
                         prova.SimProvaQuestao.Clear();
@@ -613,6 +616,9 @@ namespace SIAC.Controllers
 
                         if (prova.CodProfessor.HasValue && !Professor.ProfessorLeciona((int)prova.CodProfessor, prova.CodDisciplina))
                             prova.CodProfessor = null;
+
+                        if (prova.CodProfessor.HasValue)
+                            PessoaFisica.AdicionarOcupacao(Professor.ListarPorCodigo((int)prova.CodProfessor).Usuario.CodPessoaFisica, Ocupacao.COLABORADOR_SIMULADO);
 
                         List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, prova.QteQuestoes);
 

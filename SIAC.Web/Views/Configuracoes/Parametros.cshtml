@@ -33,19 +33,19 @@
         <div class="field required">
             <label>Tipo de Numeração das Questões</label>
             <select name="ddlNumeracaoQuestao" class="ui dropdown" required>
-                <option value="1" @(@Model.Parametro.NumeracaoQuestao == (int)Parametro.NumeracaoPadrao.INDO_ARABICO ? "selected" : "")>Algarismos indo-arábicos</option>
-                <option value="2" @(@Model.Parametro.NumeracaoQuestao == (int)Parametro.NumeracaoPadrao.ROMANOS ? "selected" : "")>Algarismos romanos</option>
-                <option value="3" @(@Model.Parametro.NumeracaoQuestao == (int)Parametro.NumeracaoPadrao.CAIXA_BAIXA ? "selected" : "")>Letras em caixa baixa</option>
-                <option value="4" @(@Model.Parametro.NumeracaoQuestao == (int)Parametro.NumeracaoPadrao.CAIXA_ALTA ? "selected" : "")>Letras em caixa alta</option>
+                <option value="@((int)Parametro.NumeracaoPadrao.INDO_ARABICO)" @(Model.Parametro.NumeracaoQuestao == (int)Parametro.NumeracaoPadrao.INDO_ARABICO ? "selected" : "")>Algarismos indo-arábicos</option>
+                <option value="@((int)Parametro.NumeracaoPadrao.ROMANOS)" @(Model.Parametro.NumeracaoQuestao == (int)Parametro.NumeracaoPadrao.ROMANOS ? "selected" : "")>Algarismos romanos</option>
+                <option value="@((int)Parametro.NumeracaoPadrao.CAIXA_BAIXA)" @(Model.Parametro.NumeracaoQuestao == (int)Parametro.NumeracaoPadrao.CAIXA_BAIXA ? "selected" : "")>Letras em caixa baixa</option>
+                <option value="@((int)Parametro.NumeracaoPadrao.CAIXA_ALTA)" @(Model.Parametro.NumeracaoQuestao == (int)Parametro.NumeracaoPadrao.CAIXA_ALTA ? "selected" : "")>Letras em caixa alta</option>
             </select>
         </div>
         <div class="field required">
             <label>Tipo de Numeração das Alternativas</label>
             <select name="ddlNumeracaoAlternativa" class="ui dropdown" required>
-                <option value="1" @(@Model.Parametro.NumeracaoAlternativa == (int)Parametro.NumeracaoPadrao.INDO_ARABICO ? "selected" : "")>Algarismos indo-arábicos</option>
-                <option value="2" @(@Model.Parametro.NumeracaoAlternativa == (int)Parametro.NumeracaoPadrao.ROMANOS ? "selected" : "")>Algarismos romanos</option>
-                <option value="3" @(@Model.Parametro.NumeracaoAlternativa == (int)Parametro.NumeracaoPadrao.CAIXA_BAIXA ? "selected" : "")>Letras em caixa baixa</option>
-                <option value="4" @(@Model.Parametro.NumeracaoAlternativa == (int)Parametro.NumeracaoPadrao.CAIXA_ALTA ? "selected" : "")>Letras em caixa alta</option>
+                <option value="@((int)Parametro.NumeracaoPadrao.INDO_ARABICO)" @(Model.Parametro.NumeracaoAlternativa == (int)Parametro.NumeracaoPadrao.INDO_ARABICO ? "selected" : "")>Algarismos indo-arábicos</option>
+                <option value="@((int)Parametro.NumeracaoPadrao.ROMANOS)" @(Model.Parametro.NumeracaoAlternativa == (int)Parametro.NumeracaoPadrao.ROMANOS ? "selected" : "")>Algarismos romanos</option>
+                <option value="@((int)Parametro.NumeracaoPadrao.CAIXA_BAIXA)" @(Model.Parametro.NumeracaoAlternativa == (int)Parametro.NumeracaoPadrao.CAIXA_BAIXA ? "selected" : "")>Letras em caixa baixa</option>
+                <option value="@((int)Parametro.NumeracaoPadrao.CAIXA_ALTA)" @(Model.Parametro.NumeracaoAlternativa == (int)Parametro.NumeracaoPadrao.CAIXA_ALTA ? "selected" : "")>Letras em caixa alta</option>
             </select>
         </div>
         <div class="field required">

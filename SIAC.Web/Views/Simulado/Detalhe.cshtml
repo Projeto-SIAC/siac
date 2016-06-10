@@ -444,13 +444,13 @@
                                 <td>@prova.Titulo <div class="ui small label">@prova.QteQuestoes Questões</div></td>
                                 <td>@prova.Disciplina.Descricao</td>
                                 @if (prova.Professor != null)
-                                    {
-                                    <td>provas[i].Professor.Usuario.PessoaFisica.PrimeiroNome</td>
-                                    }
-                                    else
-                                    {
-                                    <td>Nâo Definido</td>
-                                    }
+                                {
+                                <td>@prova.Professor.Usuario.PessoaFisica.PrimeiroNome (@prova.Professor.MatrProfessor)</td>
+                                }
+                                else
+                                {
+                                <td>Nâo Definido</td>
+                                }
                             </tr>
                             }
                     </tbody>

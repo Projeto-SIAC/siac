@@ -1137,12 +1137,14 @@ siac.Questao.Gerar = (function () {
     }
 
     function gerar() {
-        $('div.ui.form').parent().addClass('loading');
-        strQte = $('#txtQuantidade').val();
+        qte = $('#txtQuantidade').val();
         $.ajax({
             type: 'GET',
             url: '/Principal/Questao/Gerar',
-            data: { "strQte": strQte },
+            data: { "qte": qte },
+            beforeSend: function () {
+                $('div.ui.form').parent().addClass('loading');
+            },
             success: function (data) {
                 $questoes = $('div.questoes');
                 $questoes.html('');

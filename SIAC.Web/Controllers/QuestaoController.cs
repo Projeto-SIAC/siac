@@ -334,11 +334,10 @@ namespace SIAC.Controllers
         #region Desenvolvedor
 
         [HttpGet]
-        public ActionResult Gerar(string strQte)
+        public ActionResult Gerar(int qte = 0)
         {
-            if (!String.IsNullOrWhiteSpace(strQte))
+            if (qte > 0)
             {
-                int qte = int.Parse(strQte);
                 List<Questao> lstQuestao = Helpers.DevGerarQuestao.GerarQuestao(qte);
                 TempData["lstQuestao"] = lstQuestao;
                 return Json(lstQuestao
@@ -357,10 +356,7 @@ namespace SIAC.Controllers
                         Comentario = q.Comentario
                     }), JsonRequestBehavior.AllowGet);
             }
-            else
-            {
-                return View();
-            }
+            return View();
         }
 
         [HttpPost]

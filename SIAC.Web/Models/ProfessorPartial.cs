@@ -18,6 +18,8 @@ namespace SIAC.Models
 
         public static Professor ListarPorMatricula(string matricula) => contexto.Professor.FirstOrDefault(p => p.MatrProfessor == matricula);
 
+        public static Professor ListarPorCodigo(int codProfessor) => contexto.Professor.Find(codProfessor);
+
         public static void Inserir(Professor professor)
         {
             contexto.Professor.Add(professor);
@@ -25,7 +27,7 @@ namespace SIAC.Models
         }
 
         public static bool ProfessorLeciona(int codProfessor, int codDisciplina) =>
-            (bool)contexto.Professor.FirstOrDefault(p => p.CodProfessor == codProfessor)?.Leciona(codDisciplina);
+            (bool)contexto.Professor.Find(codProfessor)?.Leciona(codDisciplina);
 
         public static List<Disciplina> ObterDisciplinas(int codProfessor) => contexto.Professor.FirstOrDefault(p => p.CodProfessor == codProfessor)?.Disciplina.OrderBy(d => d.Descricao).ToList();
 

@@ -32,28 +32,28 @@ namespace SIAC.Models
             return parametro;
         }
 
-        public static void Atualizar(Parametro parametro)
+        public static void Atualizar(Parametro p)
         {
             Parametro temp = contexto.Parametro.FirstOrDefault();
 
-            temp.TempoInatividade = parametro.TempoInatividade;
-            temp.NumeracaoQuestao = parametro.NumeracaoQuestao;
-            temp.NumeracaoAlternativa = parametro.NumeracaoAlternativa;
-            temp.QteSemestres = parametro.QteSemestres;
-            temp.TermoResponsabilidade = parametro.TermoResponsabilidade.Trim();
-            temp.ValorNotaMedia = parametro.ValorNotaMedia;
-            temp.NotaUsoAcademica = parametro.NotaUsoAcademica.Trim();
-            temp.NotaUsoCertificacao = parametro.NotaUsoCertificacao.Trim();
-            temp.NotaUsoInstitucional = parametro.NotaUsoInstitucional.Trim();
-            temp.NotaUsoReposicao = parametro.NotaUsoReposicao.Trim();
-            temp.NotaUsoSimulado = parametro.NotaUsoSimulado.Trim();
+            temp.TempoInatividade = p.TempoInatividade;
+            temp.NumeracaoQuestao = p.NumeracaoQuestao;
+            temp.NumeracaoAlternativa = p.NumeracaoAlternativa;
+            temp.QteSemestres = p.QteSemestres;
+            temp.TermoResponsabilidade = p.TermoResponsabilidade.Trim();
+            temp.ValorNotaMedia = p.ValorNotaMedia;
+            temp.NotaUsoAcademica = p.NotaUsoAcademica.Trim();
+            temp.NotaUsoCertificacao = p.NotaUsoCertificacao.Trim();
+            temp.NotaUsoInstitucional = p.NotaUsoInstitucional.Trim();
+            temp.NotaUsoReposicao = p.NotaUsoReposicao.Trim();
+            temp.NotaUsoSimulado = p.NotaUsoSimulado.Trim();
 
             /* CONFIGURAÇÃO SMTP */
-            temp.SmtpEnderecoHost = parametro.SmtpEnderecoHost;
-            temp.SmtpPorta = parametro.SmtpPorta;
-            temp.SmtpFlagSSL = parametro.SmtpFlagSSL;
-            temp.SmtpUsuario = parametro.SmtpUsuario;
-            temp.SmtpSenha = parametro.SmtpSenha;
+            temp.SmtpEnderecoHost = p.SmtpEnderecoHost;
+            temp.SmtpPorta = p.SmtpPorta;
+            temp.SmtpFlagSSL = p.SmtpFlagSSL;
+            temp.SmtpUsuario = p.SmtpUsuario;
+            temp.SmtpSenha = p.SmtpSenha;
 
             contexto.SaveChanges();
             parametro = contexto.Parametro.FirstOrDefault();
