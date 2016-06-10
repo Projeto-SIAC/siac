@@ -70,24 +70,15 @@ namespace SIAC.Models
                 if (usuario != null)
                 {
                     var acesso = new UsuarioAcesso();
-                    var acessos = contexto.UsuarioAcesso.Where(a => a.Matricula == matricula);
-                    int codOrdem = acessos.Count() > 0 ? acessos.Max(a => a.CodOrdem) : 0;
+                    int codOrdem = usuario.UsuarioAcesso.Count > 0 ? usuario.UsuarioAcesso.Max(a => a.CodOrdem) : 0;
                     acesso.CodOrdem = codOrdem + 1;
                     acesso.Usuario = usuario;
                     acesso.DtAcesso = DateTime.Now;
                     acesso.IpAcesso = HttpContext.Current.RecuperarIp();
                     contexto.UsuarioAcesso.Add(acesso);
                     contexto.SaveChanges();
-                    //if (Sistema.UsuarioAtivo.ContainsKey(matricula))
-                    //{
-                    //    Sistema.UsuarioAtivo[matricula] = acesso;
-                    //}
-                    //else
-                    //{
-                    //    Sistema.UsuarioAtivo.Add(matricula, acesso);
-                    //}
-                    Sistema.UsuarioAtivo[matricula] = acesso;
-                    Sistema.Notificacoes[matricula] = new List<Dictionary<string, string>>();
+                    Sistema.UsuarioAtivo[usuario.Matricula] = acesso;
+                    Sistema.Notificacoes[usuario.Matricula] = new List<Dictionary<string, string>>();
                 }
             }
         }

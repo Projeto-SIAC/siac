@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Imprimir Provas e Gabaritos";
+    var responsavel = Model.Colaborador.MatrColaborador == Sessao.UsuarioMatricula;
 }
 
 <h2>
@@ -46,7 +47,10 @@
                 <td>
                     <a only-browser="chrome" data-url="@Url.Action("ImprimirProva", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small disabled button"><i class="file text icon"></i> Caderno</a>
                     <a only-browser="chrome" data-url="@Url.Action("ImprimirCartaoResposta", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small disabled button"><i class="file text outline icon"></i> Cartão-Resposta</a>
-                    <a only-browser="chrome" data-url="@Url.Action("ImprimirGabarito", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small disabled button"><i class="grid layout icon"></i> Gabarito</a>
+                    @if (responsavel)
+                    {
+                        <a only-browser="chrome" data-url="@Url.Action("ImprimirGabarito", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small disabled button"><i class="grid layout icon"></i> Gabarito</a>
+                    }
                 </td>
             </tr>
             }

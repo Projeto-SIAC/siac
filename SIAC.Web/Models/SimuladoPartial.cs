@@ -51,8 +51,22 @@ namespace SIAC.Models
         public SimDiaRealizacao UltimoDiaRealizacao =>
             this.SimDiaRealizacao.OrderBy(d => d.DtRealizacao).LastOrDefault();
 
+        public List<Questao> TodasQuestoesPorDisciplina(int codDisciplina, int eviteCodDia = 0, int eviteCodProva = 0)
+        {
+            var questoes = new List<Questao>();
+            foreach (var dia in this.SimDiaRealizacao)
+            {
+                var provas = dia.SimProva.Where(p => p.CodDisciplina == codDisciplina && !(p.CodProva == eviteCodProva && p.CodDiaRealizacao == eviteCodDia));
+                foreach (var prova in provas)
+                {
+                    questoes.AddRange(prova.SimProvaQuestao.Select(q => q.Questao));
+                }
+            }
+            return questoes;
+        }
+
         public bool CandidatoInscrito(int codCandidato) =>
-           this.SimCandidato.FirstOrDefault(sc => sc.CodCandidato == codCandidato) != null;
+       this.SimCandidato.FirstOrDefault(sc => sc.CodCandidato == codCandidato) != null;
 
         public int ObterNumInscricao()
         {
@@ -125,7 +139,7 @@ namespace SIAC.Models
             return ListarPorInscricoesAbertas().Where(s => s.CadastroCompleto).ToList();
         }
 
-        public static List<int> ObterQuestoesCodigos(int codDisciplina, int quantidadeQuestoes, int codTipo = TipoQuestao.OBJETIVA)
+        public static List<int> ObterQuestoesCodigos(int codDisciplina, int quantidadeQuestoes, int codTipo = TipoQuestao.OBJETIVA, List<int> eviteCodQuestao = null)
         {
             List<int> codigos = new List<int>();
             Random r = new Random();
@@ -138,11 +152,17 @@ namespace SIAC.Models
                                  //&& QuestaoTema.PrazoValido(qt)
                                  select qt.CodQuestao).Distinct().ToList();
 
+                if (eviteCodQuestao != null)
+                {
+                    ids = ids.Except(eviteCodQuestao).ToList();
+                }
+
                 if (ids.Count > quantidadeQuestoes)
                 {
                     for (int i = 0; i < quantidadeQuestoes; i++)
                     {
                         int random = r.Next(0, ids.Count);
+
                         int codQuestao = ids[random];
 
                         codigos.Add(codQuestao);

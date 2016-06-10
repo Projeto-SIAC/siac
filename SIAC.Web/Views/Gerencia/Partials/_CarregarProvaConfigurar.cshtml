@@ -28,12 +28,19 @@
         </div>
     }
 
-    <!-- TODO: mostrar detalhes da prova -->
-
-    <div class="ui basic segment">
+    <div class="ui basic vertical segment">
+        <h3 class="ui dividing header">Sobre</h3>
         <form method="post" action="@Url.Action("RecarregarQuestoesProvaConfigurar", new { simulado = Model.SimDiaRealizacao.Simulado.Codigo, dia = Model.CodDiaRealizacao, prova = Model.CodProva })">
             <input type="submit" class="ui button right floated button" value="Recarregar Questões " />
         </form>
+        <b>Simulado:</b> @Model.SimDiaRealizacao.Simulado.Titulo<br />
+        <b>Dia:</b> @Model.SimDiaRealizacao.DtRealizacao.DiaRealizacaoRepresentacao()<br />
+        <b>Prova:</b> @Model.Titulo<br />
+        <b>Disciplina:</b> @Model.Disciplina.Descricao<br />
+        <b>Quant. de Questões Real:</b> @Model.QteQuestoes
+        <b>Quant. de Questões Atual:</b> @Model.SimProvaQuestao.Count
+    </div>
+    <div class="ui basic vertical segment">
         <h3 class="ui dividing header">Questões</h3>
         <div class="ui one cards">
             @foreach (var item in Model.SimProvaQuestao.Select((simProvaQuestao, i) => new { i, simProvaQuestao.Questao }))
@@ -44,12 +51,6 @@
             }
         </div>
     </div>
-    @*
-        <form method="post" action="@Url.Action("Salvar", new { codigo = Model.SimDiaRealizacao.Simulado.Codigo })">
-             <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Você perderá todos os dados</p><a class='ui small button'>Sim, cancelar</a></div>" class="ui cancelar button">Cancelar</div>
-             <div class="ui button salvar">Salvar</div>
-        </form>
-    *@
 </div>
 <div class="actions">
     <input type="reset" value="Cancelar" class="ui cancel button" />

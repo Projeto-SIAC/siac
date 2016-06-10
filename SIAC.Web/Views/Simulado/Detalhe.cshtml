@@ -3,6 +3,7 @@
     ViewBag.Title = "Detalhe do Simulado";
     int? vagasSimulado = Model.QteVagas;
     int? capacidadeSelecionada = Model.SimSala.Sum(s => s.Sala.Capacidade);
+    var responsavel = Model.Colaborador.MatrColaborador == Sessao.UsuarioMatricula;
 }
 
 <h2>
@@ -46,28 +47,31 @@
             <span class="text">Atalhos para Gerenciamento</span>
             <div class="menu">
                 <div class="header">Administração</div>
-                <div class="editar item">
-                    <i class="edit icon"></i>
-                    Editar Dados
-                </div>
-                <a href="@Url.Action("Datas", new { codigo = Model.Codigo })" class="item">
-                    <i class="wait icon"></i>
-                    Gerenciar Datas
-                </a>
-                <a href="@Url.Action("Salas", new { codigo = Model.Codigo })" class="item">
-                    <i class="marker icon"></i>
-                    Selecionar Salas
-                </a>
-                <a href="@Url.Action("Provas", new { codigo = Model.Codigo })" class="item">
-                    <i class="copy icon"></i>
-                    Gerenciar Provas
-                </a>
-                @if (Model.FlagInscricaoAberta)
+                @if (responsavel)
                 {
-                    <div class="alterar prazo item">
-                        <i class="calendar icon"></i>
-                        Alterar prazo
+                    <div class="editar item">
+                        <i class="edit icon"></i>
+                        Editar Dados
                     </div>
+                    <a href="@Url.Action("Datas", new { codigo = Model.Codigo })" class="item">
+                        <i class="wait icon"></i>
+                        Gerenciar Datas
+                    </a>
+                    <a href="@Url.Action("Salas", new { codigo = Model.Codigo })" class="item">
+                        <i class="marker icon"></i>
+                        Selecionar Salas
+                    </a>
+                    <a href="@Url.Action("Provas", new { codigo = Model.Codigo })" class="item">
+                        <i class="copy icon"></i>
+                        Gerenciar Provas
+                    </a>
+                    if (Model.FlagInscricaoAberta)
+                    {
+                        <div class="alterar prazo item">
+                            <i class="calendar icon"></i>
+                            Alterar prazo
+                        </div>
+                    }
                 }
                 @if (Model.Provas.Count > 0 && !Model.FlagProvaEncerrada)
                 {
@@ -80,10 +84,13 @@
                 {
                     <div class="divider"></div>
                     <div class="header">Candidatos</div>
-                    <div class="email item">
-                        <i class="mail icon"></i>
-                        Enviar Email para Candidatos
-                    </div>
+                    if (responsavel)
+                    {
+                        <div class="email item">
+                            <i class="mail icon"></i>
+                            Enviar Email para Candidatos
+                        </div>
+                    }
                     <div class="candidatos item">
                         <i class="users icon"></i>
                         Listar Candidatos
@@ -94,49 +101,55 @@
                             <i class="edit icon"></i>
                             Inserir Respostas
                         </a>
-                        <div class="calcular resultados item">
-                            <i class="calculator icon"></i>
-                            Calcular Resultados
-                        </div>
+                        if (responsavel)
+                        {
+                            <div class="calcular resultados item">
+                                <i class="calculator icon"></i>
+                                Calcular Resultados
+                            </div>
+                        }
                     }
                 }
-                <div class="divider"></div>
-                <div class="header">Configuração</div>
-                @if (Model.FlagInscricaoEncerrado)
+                @if (responsavel)
                 {
-                    if (Model.DtTerminoInscricao >= DateTime.Now && Model.DtInicioInscricao <= DateTime.Now)
+                    <div class="divider"></div>
+                    <div class="header">Configuração</div>
+                    if (Model.FlagInscricaoEncerrado)
                     {
-                        <div class="liberar item">
-                            <i class="unlock alternate green icon"></i>
-                            Liberar Inscrições
+                        if (Model.DtTerminoInscricao >= DateTime.Now && Model.DtInicioInscricao <= DateTime.Now)
+                        {
+                            <div class="liberar item">
+                                <i class="unlock alternate green icon"></i>
+                                Liberar Inscrições
+                            </div>
+                        }
+                        if (DateTime.Now > Model.DtInicioInscricao && Model.SimCandidato.Count > 0)
+                        {
+                            <div class="mapear item">
+                                <i class="building outline icon"></i>
+                                Mapear Salas
+                            </div>
+                        }
+                    }
+                    else if (Model.DtInicioInscricao < DateTime.Now && Model.DtTerminoInscricao >= DateTime.Now)
+                    {
+                        <div class="bloquear item">
+                            <i class="ban red icon"></i>
+                            Bloquear Inscrições
                         </div>
                     }
-                    if (DateTime.Now > Model.DtInicioInscricao && Model.SimCandidato.Count > 0)
+                    if (!Model.FlagProvaEncerrada && Model.UltimoDiaRealizacao?.DtRealizacao < DateTime.Now)
                     {
-                        <div class="mapear item">
-                            <i class="building outline icon"></i>
-                            Mapear Salas
+                        <div class="finalizar provas item">
+                            <i class="file red icon"></i>
+                            Indicar provas encerradas
                         </div>
                     }
-                }
-                else if (Model.DtInicioInscricao < DateTime.Now && Model.DtTerminoInscricao >= DateTime.Now)
-                {
-                    <div class="bloquear item">
-                        <i class="ban red icon"></i>
-                        Bloquear Inscrições
+                    <div class="encerrar item">
+                        <i class="warning sign red icon"></i>
+                        Encerrar Simulado
                     </div>
                 }
-                @if (!Model.FlagProvaEncerrada && Model.UltimoDiaRealizacao?.DtRealizacao < DateTime.Now)
-                {
-                    <div class="finalizar provas item">
-                        <i class="file red icon"></i>
-                        Indicar provas encerradas
-                    </div>
-                }
-                <div class="encerrar item">
-                    <i class="warning sign red icon"></i>
-                    Encerrar Simulado
-                </div>
             </div>
         </div>
     }
@@ -166,11 +179,11 @@
             <tbody>
                 @foreach (SimCandidato candidato in Model.SimCandidato.OrderBy(c => c.NumInscricao))
                 {
-                <tr>
-                    <td>@candidato.NumInscricaoRepresentacao</td>
-                    <td>@candidato.Candidato.Nome</td>
-                    <td>@Formate.ParaCPF(candidato.Candidato.Cpf)</td>
-                </tr>
+                    <tr>
+                        <td>@candidato.NumInscricaoRepresentacao</td>
+                        <td>@candidato.Candidato.Nome</td>
+                        <td>@Formate.ParaCPF(candidato.Candidato.Cpf)</td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -373,10 +386,10 @@
             </tr>
             @if (!String.IsNullOrWhiteSpace(Model.Descricao))
             {
-            <tr>
-                <td><b>Descrição</b></td>
-                <td>@Model.Descricao</td>
-            </tr>
+                <tr>
+                    <td><b>Descrição</b></td>
+                    <td>@Model.Descricao</td>
+                </tr>
             }
             <tr>
                 <td><b>Coordenador</b></td>
@@ -424,38 +437,38 @@
         <div class="ui fluid accordion">
             @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao.OrderBy(d => d.DtRealizacao))
             {
-            <div class="title">
-                <i class="dropdown icon"></i>
-                <b>@dia.DtRealizacao.DiaRealizacaoRepresentacao()</b>
-            </div>
-            <div class="content">
-                <table class="ui striped table">
-                    <thead>
-                        <tr>
-                            <th>Título</th>
-                            <th>Disciplina</th>
-                            <th>Prof. Responsável</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (SimProva prova in dia.SimProva)
-                            {
+                <div class="title">
+                    <i class="dropdown icon"></i>
+                    <b>@dia.DtRealizacao.DiaRealizacaoRepresentacao()</b>
+                </div>
+                <div class="content">
+                    <table class="ui striped table">
+                        <thead>
                             <tr>
-                                <td>@prova.Titulo <div class="ui small label">@prova.QteQuestoes Questões</div></td>
-                                <td>@prova.Disciplina.Descricao</td>
-                                @if (prova.Professor != null)
-                                {
-                                <td>@prova.Professor.Usuario.PessoaFisica.PrimeiroNome (@prova.Professor.MatrProfessor)</td>
-                                }
-                                else
-                                {
-                                <td>Nâo Definido</td>
-                                }
+                                <th>Título</th>
+                                <th>Disciplina</th>
+                                <th>Prof. Responsável</th>
                             </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (SimProva prova in dia.SimProva)
+                            {
+                                <tr>
+                                    <td>@prova.Titulo <div class="ui small label">@prova.QteQuestoes Questões</div></td>
+                                    <td>@prova.Disciplina.Descricao</td>
+                                    @if (prova.Professor != null)
+                                    {
+                                        <td>@prova.Professor.Usuario.PessoaFisica.PrimeiroNome (@prova.Professor.MatrProfessor)</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Nâo Definido</td>
+                                    }
+                                </tr>
                             }
-                    </tbody>
-                </table>
-            </div>
+                        </tbody>
+                    </table>
+                </div>
             }
         </div>
     </div>
@@ -483,14 +496,14 @@
             <tbody>
                 @foreach (SimSala simSala in Model.SimSala)
                 {
-                <tr>
-                    <td data-content="@simSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia">@simSala.Sala.Bloco.Campus.Sigla</td>
-                    <td data-content="@simSala.Sala.Bloco.Descricao">@simSala.Sala.Bloco.Sigla</td>
-                    <td>@simSala.Sala.Descricao</td>
-                    <td>@simSala.Sala.Sigla</td>
-                    <td>@simSala.Sala.Capacidade</td>
-                    <td><div data-sala="@simSala.CodSala" class="ui icon button"><i class="search icon"></i></div></td>
-                </tr>
+                    <tr>
+                        <td data-content="@simSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia">@simSala.Sala.Bloco.Campus.Sigla</td>
+                        <td data-content="@simSala.Sala.Bloco.Descricao">@simSala.Sala.Bloco.Sigla</td>
+                        <td>@simSala.Sala.Descricao</td>
+                        <td>@simSala.Sala.Sigla</td>
+                        <td>@simSala.Sala.Capacidade</td>
+                        <td><div data-sala="@simSala.CodSala" class="ui icon button"><i class="search icon"></i></div></td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -498,7 +511,6 @@
 }
 
 <a class="ui button" href="@Url.Action("Index", "Gerencia")">Voltar para Gerência de Simulados</a>
-
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/simulado")

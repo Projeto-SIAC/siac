@@ -668,19 +668,26 @@ namespace SIAC.Controllers
                     SimProva simProva = sim.SimDiaRealizacao.FirstOrDefault(d => d.CodDiaRealizacao == dia)?.SimProva.FirstOrDefault(p => p.CodProva == prova);
                     if (simProva != null)
                     {
+                        if (!TempData.Keys.Contains("SimuladoTrocarQuestoes"))
+                        {
+                            TempData["SimuladoTrocarQuestoes"] = sim.TodasQuestoesPorDisciplina(simProva.CodDisciplina).Select(q => q.CodQuestao).ToList();
+                        }
+
+                        var simuladoQuestoes = (List<int>)TempData["SimuladoTrocarQuestoes"];
+
                         Questao questaoTrocada = simProva.SimProvaQuestao.FirstOrDefault(q => q.CodQuestao == questao)?.Questao;
                         if (questaoTrocada != null)
                         {
                             Questao novaQuestao = Questao.RetornarAleatoria(simProva.CodDisciplina, codTipoQuestao: questaoTrocada.CodTipoQuestao);
 
                             int tentativas = 0;
-                            while (novaQuestao.CodQuestao == questao && tentativas < 3)
+                            while (simuladoQuestoes.Contains(novaQuestao.CodQuestao) && tentativas < 3)
                             {
                                 novaQuestao = Questao.RetornarAleatoria(simProva.CodDisciplina, codTipoQuestao: questaoTrocada.CodTipoQuestao);
                                 tentativas++;
                             }
 
-                            if (novaQuestao.CodQuestao != questao)
+                            if (!simuladoQuestoes.Contains(novaQuestao.CodQuestao))
                             {
                                 TempData["SimuladoTrocarQuestaoCodigo"] = questao;
                                 TempData["SimuladoTrocarQuestaoIndice"] = indice;
@@ -742,7 +749,8 @@ namespace SIAC.Controllers
                     SimProva simProva = sim.SimDiaRealizacao.FirstOrDefault(d => d.CodDiaRealizacao == dia)?.SimProva.FirstOrDefault(p => p.CodProva == prova);
                     if (simProva != null)
                     {
-                        List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(simProva.CodDisciplina, simProva.QteQuestoes);
+                        List<int> simuladoQuestoes = sim.TodasQuestoesPorDisciplina(simProva.CodDisciplina, simProva.CodDiaRealizacao, simProva.CodProva).Select(q => q.CodQuestao).ToList();
+                        List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(simProva.CodDisciplina, simProva.QteQuestoes, TipoQuestao.OBJETIVA, simuladoQuestoes);
 
                         simProva.SimProvaQuestao.Clear();
 

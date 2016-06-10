@@ -544,7 +544,8 @@ namespace SIAC.Controllers
                         if (prova.CodProfessor.HasValue)
                             PessoaFisica.AdicionarOcupacao(Professor.ListarPorCodigo((int)prova.CodProfessor).Usuario.CodPessoaFisica, Ocupacao.COLABORADOR_SIMULADO);
 
-                        List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, prova.QteQuestoes);
+                        List<int> simuladoQuestoes = sim.TodasQuestoesPorDisciplina(prova.CodDisciplina).Select(q => q.CodQuestao).ToList();
+                        List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, prova.QteQuestoes, TipoQuestao.OBJETIVA, simuladoQuestoes);
 
                         prova.SimProvaQuestao.Clear();
 
@@ -590,6 +591,8 @@ namespace SIAC.Controllers
 
                 if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
+                    bool alterarQuestoes = false;
+
                     string ddlDisciplina = form["ddlDisciplina"];
                     string txtQteQuestoes = form["txtQteQuestoes"];
                     string ddlProfessor = form["ddlProfessor"];
@@ -598,14 +601,19 @@ namespace SIAC.Controllers
 
                     if (!StringExt.IsNullOrWhiteSpace(ddlDisciplina, txtQteQuestoes, txtTitulo))
                     {
+                        int qteQuestoes = int.Parse(txtQteQuestoes);
+                        int codDisciplina = int.Parse(ddlDisciplina);
+
                         SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
                         SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
 
+                        alterarQuestoes = qteQuestoes != prova.QteQuestoes || codDisciplina != prova.CodDisciplina;
+
                         prova.Titulo = txtTitulo;
                         prova.Descricao = String.IsNullOrWhiteSpace(txtDescricao) ? String.Empty : txtDescricao;
-                        prova.QteQuestoes = int.Parse(txtQteQuestoes);
-                        prova.CodDisciplina = int.Parse(ddlDisciplina);
+                        prova.QteQuestoes = qteQuestoes;
+                        prova.CodDisciplina = codDisciplina;
 
                         if (!String.IsNullOrWhiteSpace(ddlProfessor))
                         {
@@ -620,19 +628,24 @@ namespace SIAC.Controllers
                         if (prova.CodProfessor.HasValue)
                             PessoaFisica.AdicionarOcupacao(Professor.ListarPorCodigo((int)prova.CodProfessor).Usuario.CodPessoaFisica, Ocupacao.COLABORADOR_SIMULADO);
 
-                        List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, prova.QteQuestoes);
-
-                        prova.SimProvaQuestao.Clear();
-
-                        foreach (int codQuestao in questoesCodigos)
+                        if (alterarQuestoes)
                         {
-                            prova.SimProvaQuestao.Add(new SimProvaQuestao()
+                            List<int> simuladoQuestoes = sim.TodasQuestoesPorDisciplina(prova.CodDisciplina, prova.CodDiaRealizacao, prova.CodProva).Select(q => q.CodQuestao).ToList();
+                            List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, prova.QteQuestoes, TipoQuestao.OBJETIVA, simuladoQuestoes);
+
+                            prova.SimProvaQuestao.Clear();
+
+                            foreach (int codQuestao in questoesCodigos)
                             {
-                                CodQuestao = codQuestao
-                            });
+                                prova.SimProvaQuestao.Add(new SimProvaQuestao()
+                                {
+                                    Questao = Questao.ListarPorCodigo(codQuestao)
+                                    //CodQuestao = codQuestao
+                                });
+                            }
                         }
 
-                        if (questoesCodigos.Count >= prova.QteQuestoes)
+                        if (prova.SimProvaQuestao.Count == prova.QteQuestoes)
                         {
                             mensagem = "Prova editada com sucesso neste simulado.";
                             estilo = Lembrete.POSITIVO;

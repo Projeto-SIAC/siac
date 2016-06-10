@@ -19,19 +19,23 @@
             </tr>
         </thead>
         <tbody>
-            @for (int i = 0, length = provas.Count; i < length; i++)
+            @foreach (var item in provas.Select((prova, i) => new { i, prova }))
             {
                 <tr>
-                    <td>@(i + 1)</td>
+                    <td>@(item.i + 1)</td>
                     <td>
-                        @provas[i].Titulo
-                        <div class="ui small label">@provas[i].QteQuestoes Questões</div>
+                        @item.prova.Titulo
+                        <div class="ui small label">
+                            Questões
+                            <div class="detail">@item.prova.QteQuestoes</div>
+                            <div class="detail">@item.prova.SimProvaQuestao.Count</div>
+                        </div>
                     </td>
-                    <td>@provas[i].Disciplina.Descricao</td>
+                    <td>@item.prova.Disciplina.Descricao</td>
                     <td>
-                        @if (provas[i].Professor != null)
+                        @if (item.prova.Professor != null)
                         {
-                            @provas[i].Professor.Usuario.PessoaFisica.PrimeiroNome
+                            @item.prova.Professor.Usuario.PessoaFisica.PrimeiroNome
 
                         }
                         else
@@ -40,10 +44,9 @@
                         }
                     </td>
                     <td>
-                        <a data-prova="@provas[i].CodProva" class="ui editar tiny button"><i class="edit icon"></i>Editar</a>
-                        <a data-prova="@provas[i].CodProva" class="ui remover tiny button"><i class="trash icon"></i>Remover</a>
+                        <a data-prova="@item.prova.CodProva" class="ui editar tiny button"><i class="edit icon"></i>Editar</a>
+                        <a data-prova="@item.prova.CodProva" class="ui remover tiny button"><i class="trash icon"></i>Remover</a>
                     </td>
-
                 </tr>
             }
         </tbody>
