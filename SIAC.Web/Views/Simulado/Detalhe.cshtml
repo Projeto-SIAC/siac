@@ -23,6 +23,10 @@
     {
         <span data-title="Inscrições Não Liberadas" data-content="O prazo de inscrição está em vigor, mas é necessário que você libere as inscrições no Atalho de Gerenciamento" class="ui label"><i class="wait icon"></i>Inscrições Não Liberadas</span>
     }
+    else if ((Model.FlagInscricaoEncerrado || Model.DtTerminoInscricao < DateTime.Now) && Model.SimCandidato.Count <= 0)
+    {
+        <span data-title="Inscrições Encerradas sem candidatos" data-content="Configure um novo para as inscrições dos candidatos" class="ui red label"><i class="calendar outline icon"></i>Inscrições Encerradas sem candidatos</span>
+    }
     else if (Model.FlagInscricaoEncerrado || Model.DtTerminoInscricao < DateTime.Now)
     {
         <span data-title="Inscrições Encerradas" data-content="Aguarde o início do prazo das provas para voltar a gerenciar o simulado" class="ui label"><i class="remove user icon"></i>Inscrições Encerradas</span>

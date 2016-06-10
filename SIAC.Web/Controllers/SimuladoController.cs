@@ -163,7 +163,7 @@ namespace SIAC.Controllers
                     {
                         DateTime inicio = DateTime.Parse(inicioInscricao, new CultureInfo("pt-BR"));
                         DateTime termino = DateTime.Parse($"{terminoInscricao} 23:59:59", new CultureInfo("pt-BR"));
-
+                        
                         if (sim.DtInicioInscricao <= DateTime.Now && !sim.FlagNenhumInscritoAposPrazo)
                         {
                             Lembrete.AdicionarNotificacao("As incrições já foram iniciadas, você não pode mais alterar o início.", Lembrete.NEGATIVO);
@@ -174,6 +174,16 @@ namespace SIAC.Controllers
                         {
                             Lembrete.AdicionarNotificacao("A data de término das inscrições tem que ser antes do primeiro dia de prova.", Lembrete.NEGATIVO);
                             return View(sim);
+                        }
+                        if (sim.PrimeiroDiaRealizacao.DtRealizacao < termino)
+                        {
+                            var dias = Convert.ToInt32((sim.PrimeiroDiaRealizacao.DtRealizacao - sim.DtTerminoInscricao).Value.TotalDays);
+
+                            foreach (SimDiaRealizacao dia in sim.SimDiaRealizacao)
+                            {
+                                dia.DtRealizacao = termino.AddDays(dias);
+                            }
+                            Lembrete.AdicionarNotificacao($"As datas de realização das provas foram adiadas em {dias} dia(s), certifique-se de que o prazo está correto.", Lembrete.INFO, 0);
                         }
 
                         /* Simulado */
