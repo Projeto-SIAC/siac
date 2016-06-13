@@ -7,6 +7,7 @@ namespace SIAC.Models
     {
         public const int IMAGEM = 1;
         public const int CODIGO = 2;
+        public const int TEXTO = 3;
 
         private static Contexto contexto => Repositorio.GetInstance();
 

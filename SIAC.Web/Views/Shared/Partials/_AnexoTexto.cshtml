@@ -1,0 +1,23 @@
+﻿@model QuestaoAnexo
+<a class="ui anexo texto card">
+    <div class="content">
+        @if (!String.IsNullOrWhiteSpace(Model.Legenda))
+        {
+            <div class="header" @Html.Raw((Model.Legenda.Length > 30 ? "data-legenda=\"" + Model.Legenda + "\"" : ""))>
+                @Model.Legenda.ToShortString(30)
+            </div>
+        }
+        <div class="description">
+            @Model.Anexo.GetString().ToShortString(50)
+            <blockquote class="texto" hidden>@Html.Raw(Model.Anexo.GetString().ToHtml("p"))</blockquote>
+        </div>
+    </div>
+    @if (!String.IsNullOrWhiteSpace(Model.Fonte))
+    {
+        <div class="extra content">
+            <div class="description" @Html.Raw((Model.Fonte.Length > 30 ? "data-fonte=\"" + Model.Fonte + "\"" : ""))>
+                @Model.Fonte.ToShortString(30)
+            </div>
+        </div>
+    }
+</a>

@@ -399,6 +399,11 @@ namespace SIAC.Migrations
                 {
                     CodTipoAnexo = TipoAnexo.CODIGO,
                     Descricao = "Código"
+                },
+                new TipoAnexo
+                {
+                    CodTipoAnexo = TipoAnexo.TEXTO,
+                    Descricao = "Texto"
                 }
             );
 

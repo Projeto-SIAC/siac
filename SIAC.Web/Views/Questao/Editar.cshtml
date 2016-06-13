@@ -201,6 +201,27 @@
                             </div>
                         </div>
                         break;
+                    case TipoAnexo.TEXTO:
+                        <div class="title">
+                            <input name="txtAnexoTipo@(ane.CodOrdem + 1)" id="txtAnexoTipo@(ane.CodOrdem + 1)" value="@ane.CodTipoAnexo" hidden />
+                            <i class="dropdown icon"></i>Anexo @(ane.CodOrdem + 1)
+                            <span class="ui label" id="txtAnexoTipoDescricao@(ane.CodOrdem + 1)">@ane.TipoAnexo.Descricao</span>
+                        </div>
+                        <div class="content ui segment">
+                            <div class="field">
+                                <label for="txtAnexoLegenda@(ane.CodOrdem + 1)">Título</label>
+                                <textarea required maxlength="250" id="txtAnexoLegenda@(ane.CodOrdem + 1)" name="txtAnexoLegenda@(ane.CodOrdem + 1)" rows="2" placeholder="Título...">@ane.Legenda</textarea>
+                            </div>
+                            <div class="field required">
+                                <label for="txtAnexo@(ane.CodOrdem + 1)">Texto</label>
+                                <textarea id="txtAnexo@(ane.CodOrdem + 1)" name="txtAnexo@(ane.CodOrdem + 1)">@ane.Anexo.GetString().Trim()</textarea>
+                            </div>
+                            <div class="field">
+                                <label for="txtAnexoFonte@(ane.CodOrdem + 1)">Fonte</label>
+                                <input maxlength="250" type="text" id="txtAnexoFonte@(ane.CodOrdem + 1)" name="txtAnexoFonte@(ane.CodOrdem + 1)" placeholder="Fonte..." value="@ane.Fonte">
+                            </div>
+                        </div>
+                        break;
                     default:
                         break;
                 }

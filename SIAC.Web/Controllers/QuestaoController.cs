@@ -217,6 +217,17 @@ namespace SIAC.Controllers
                             });
                             break;
 
+                        case TipoAnexo.TEXTO:
+                            questao.QuestaoAnexo.Add(new QuestaoAnexo
+                            {
+                                CodOrdem = i,
+                                CodTipoAnexo = tipoAnexo,
+                                Legenda = !String.IsNullOrWhiteSpace(formCollection["txtAnexoLegenda" + (i + 1)]) ? formCollection["txtAnexoLegenda" + (i + 1)].RemoveSpaces() : null,
+                                Fonte = !String.IsNullOrWhiteSpace(formCollection["txtAnexoFonte" + (i + 1)]) ? formCollection["txtAnexoFonte" + (i + 1)].RemoveSpaces() : null,
+                                Anexo = formCollection["txtAnexo" + (i + 1)].ToString().GetBytes()
+                            });
+                            break;
+
                         default:
                             break;
                     }
@@ -278,6 +289,10 @@ namespace SIAC.Controllers
             {
                 for (int i = 0; i < questao.QuestaoAnexo.Count; i++)
                 {
+                    if (questao.QuestaoAnexo.ElementAt(i).CodTipoAnexo == TipoAnexo.TEXTO && !String.IsNullOrWhiteSpace($"txtAnexo{(i + 1)}"))
+                    {
+                        questao.QuestaoAnexo.ElementAt(i).Anexo = formCollection["txtAnexo" + (i + 1)].ToString().GetBytes();
+                    }
                     questao.QuestaoAnexo.ElementAt(i).Legenda = !String.IsNullOrWhiteSpace(formCollection["txtAnexoLegenda" + (i + 1)]) ? formCollection["txtAnexoLegenda" + (i + 1)].RemoveSpaces() : questao.QuestaoAnexo.ElementAt(i).Legenda;
                     questao.QuestaoAnexo.ElementAt(i).Fonte = !String.IsNullOrWhiteSpace(formCollection["txtAnexoFonte" + (i + 1)]) ? formCollection["txtAnexoFonte" + (i + 1)].RemoveSpaces() : String.Empty;
                 }

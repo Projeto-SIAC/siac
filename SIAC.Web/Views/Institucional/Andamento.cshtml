@@ -58,7 +58,8 @@
                     <a href="@Url.Action("Realizar", new { codigo = avi.Avaliacao.CodAvaliacao })" class="ui button">
                         @if (quantidadeRespostas == quantidadeQuestoes)
                         { <text> Alterar Respostas </text> }
-                        else if(quantidadeRespostas > 0) { <text> Continuar </text> }
+                        else if (quantidadeRespostas > 0)
+                        { <text> Continuar </text> }
                         else { <text> Realizar </text>}
                     </a>
                 </div>
@@ -68,7 +69,7 @@
 }
 else
 {
-    <div class="ui grid row centered">
+    <div class="ui grid row centered" style="padding: 5em;">
         <h2 class="ui icon header">
             <i class="icon frown"></i>
             Não existe nenhuma Avaliação Institucional em andamento para o seu usuário.

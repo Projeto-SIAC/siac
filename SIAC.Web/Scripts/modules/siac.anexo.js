@@ -24,6 +24,18 @@
 
             expandirCodigo(codigo, observacao, fonte);
         });
+        $('.card.anexo.texto').off().click(function () {
+            var $this = $(this);
+            var texto = $this.find('blockquote.texto').html();
+
+            $header = $this.find(':not(.extra).content .header');
+            var legenda = $header.data('legenda') ? $header.data('legenda') : $header.text();
+
+            $description = $this.find('.extra.content .description');
+            var fonte = $description.data('fonte') ? $description.data('fonte') : $description.text();
+
+            expandirTexto(texto, legenda, fonte);
+        });
     }
 
     function expandirCodigo(codigo, observacao, fonte) {
@@ -37,6 +49,24 @@
 
         $modal.append($('<div class="ui centered header"></div>').text(observacao));
         $modal.append($('<div class="content"></div>').html($('<pre></pre>').html($('<code></code>').html(codigo))));
+        $modal.append($('<div class="description" style="text-align:center;"></div>').text(fonte));
+
+        $('body').append($modal);
+
+        $modal.modal('show');
+
+        $modal.click(function () {
+            $(this).modal('hide');
+        });
+    }
+
+    function expandirTexto(texto, legenda, fonte) {
+        $('.ui.anexo.modal').remove();
+
+        $modal = $('<div></div>').addClass('ui large anexo basic modal');
+
+        $modal.append($('<div class="ui centered header"></div>').text(legenda));
+        $modal.append($('<div class="content" style="font-family: serif, sans-serif; font-size: 1.5em; text-align: justify"></div>').html(texto));
         $modal.append($('<div class="description" style="text-align:center;"></div>').text(fonte));
 
         $('body').append($modal);

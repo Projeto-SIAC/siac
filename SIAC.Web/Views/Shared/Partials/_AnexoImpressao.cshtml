@@ -45,6 +45,28 @@
             <pre><code class="code">@Model.Anexo.GetString().Trim()</code></pre>
         </div>
         break;
+    case TipoAnexo.TEXTO:
+        <div class="ui segment">
+            @if (!String.IsNullOrWhiteSpace(Model.Legenda))
+            {
+                <h4>
+                    @Model.Legenda
+                </h4>
+            }
+            <blockquote style="text-align: justify">@Html.Raw(Model.Anexo.GetString().ToHtml("p"))</blockquote>
+            @if (!String.IsNullOrWhiteSpace(Model.Fonte))
+            {
+                <div>
+                    @if (!String.IsNullOrWhiteSpace(Model.Fonte))
+                    {
+                        <p>
+                            @Model.Fonte
+                        </p>
+                    }
+                </div>
+            }
+        </div>
+        break;
     default:
         break;
 }

@@ -521,6 +521,40 @@ siac.Questao.Cadastrar = (function () {
                     }
                 });
                 break;
+            case '3':
+                $('.ui.anexos.accordion').append('\
+                        <div class="title">\
+                            <input id="txtAnexoIndex" value="'+ i + '" class="disabled" readonly hidden/>\
+                            <input name="txtAnexoTipo' + i + '" id="txtAnexoTipo' + i + '" value="' + tipoAnexo + '" hidden />\
+                            <i class="dropdown icon"></i>Anexo ' + i + '\
+                            <span class="ui label" id="txtAnexoTipoDescricao">'+ tipoAnexoDescricao + '</span>\
+                        </div>\
+                        <div class="content ui segment">\
+                            <div class="field">\
+                                <label for="txtAnexoLegenda' + i + '">Título</label>\
+                                <textarea maxlength="250" id="txtAnexoLegenda' + i + '" name="txtAnexoLegenda' + i + '" rows="2" placeholder="Título..."></textarea>\
+                            </div>\
+                            <div class="field required">\
+                                <label for="txtAnexo' + i + '">Texto</label>\
+                                <textarea id="txtAnexo' + i + '" name="txtAnexo' + i + '" rows="8" placeholder="Texto..."></textarea>\
+                            </div>\
+                            <div class="field">\
+                                <label for="txtAnexoFonte' + i + '">Fonte</label>\
+                                <input maxlength="250" type="text" id="txtAnexoFonte' + i + '" name="txtAnexoFonte' + i + '" placeholder="Fonte..."></textarea>\
+                            </div>\
+                            <div class="field">\
+                                <div class="ui button">\
+                                    Remover\
+                                </div>\
+                                <div class="ui special popup">\
+                                    <div class="header">Tem certeza?</div>\
+                                    <div class="content"><p>Essa ação não poderá ser desfeita.</p>\
+                                    <div class="ui right aligned remover button tiny">Sim, remover</div>\
+                                </div>\
+                            </div>\
+                        </div>\
+                    </div>');
+                break;
             default:
                 break;
         }
@@ -757,6 +791,25 @@ siac.Questao.Cadastrar = (function () {
                                             </div>\
                                             <div class="description">\
                                             ' + $('#txtAnexoLegenda' + (i + 1)).val() + '\
+                                            </div>\
+                                        </div>\
+                                        <div class="extra content">\
+                                            <div class="description">\
+                                            ' + $('#txtAnexoFonte' + (i + 1)).val() + '\
+                                            </div>\
+                                        </div>\
+                                    </div>'
+                    );
+                }
+                else if (tipoAnexo == 3) {
+                    $('#mdlCardAnexos')
+                        .append('<div class="ui card">\
+                                        <div class="content">\
+                                            <div class="header">\
+                                            ' + $('#txtAnexoLegenda' + (i + 1)).val() + '\
+                                            </div>\
+                                            <div class="description">\
+                                                '+ $('#txtAnexo' + (i + 1)).val().encurtarTextoEm(50) + '\
                                             </div>\
                                         </div>\
                                         <div class="extra content">\
@@ -1057,6 +1110,25 @@ siac.Questao.Editar = (function () {
                                             </div>\
                                             <div class="description">\
                                             ' + $('#txtAnexoLegenda' + (i + 1)).val() + '\
+                                            </div>\
+                                        </div>\
+                                        <div class="extra content">\
+                                            <div class="description">\
+                                            ' + $('#txtAnexoFonte' + (i + 1)).val() + '\
+                                            </div>\
+                                        </div>\
+                                    </div>'
+                    );
+                }
+                else if (tipoAnexo == 3) {
+                    $('#mdlCardAnexos')
+                        .append('<div class="ui card">\
+                                        <div class="content">\
+                                            <div class="header">\
+                                            ' + $('#txtAnexoLegenda' + (i + 1)).val() + '\
+                                            </div>\
+                                            <div class="description">\
+                                                ' + $('#txtAnexo' + (i + 1)).val().encurtarTextoEm(50) + '\
                                             </div>\
                                         </div>\
                                         <div class="extra content">\

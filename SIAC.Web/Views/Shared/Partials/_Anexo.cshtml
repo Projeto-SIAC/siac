@@ -7,6 +7,9 @@
     case TipoAnexo.CODIGO:
         @Html.Partial("_AnexoCodigo", Model)
         break;
+    case TipoAnexo.TEXTO:
+        @Html.Partial("_AnexoTexto", Model)
+        break;
     default:
         break;
 }

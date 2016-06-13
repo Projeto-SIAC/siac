@@ -654,6 +654,7 @@
     <Content Include="Views\Gerencia\Provas.cshtml" />
     <Content Include="Views\Gerencia\Partials\_CarregarProvaConfigurar.cshtml" />
     <Content Include="Views\Gerencia\Permissoes.cshtml" />
+    <Content Include="Views\Shared\Partials\_AnexoTexto.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

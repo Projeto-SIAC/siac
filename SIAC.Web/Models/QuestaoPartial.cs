@@ -56,6 +56,10 @@ namespace SIAC.Models
             {
                 for (int i = 0; i < qTemp.QuestaoAnexo.Count; i++)
                 {
+                    if (questao.QuestaoAnexo.ElementAt(i).CodTipoAnexo == TipoAnexo.TEXTO)
+                    {
+                        qTemp.QuestaoAnexo.ElementAt(i).Anexo = questao.QuestaoAnexo.ElementAt(i).Anexo;
+                    }
                     qTemp.QuestaoAnexo.ElementAt(i).Legenda = questao.QuestaoAnexo.ElementAt(i).Legenda;
                     qTemp.QuestaoAnexo.ElementAt(i).Fonte = questao.QuestaoAnexo.ElementAt(i).Fonte;
                 }
