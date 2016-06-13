@@ -142,15 +142,15 @@ namespace SIAC.Models
         public static List<int> ObterQuestoesCodigos(int codDisciplina, int quantidadeQuestoes, int codTipo = TipoQuestao.OBJETIVA, List<int> eviteCodQuestao = null)
         {
             List<int> codigos = new List<int>();
-            Random r = new Random();
 
             if (quantidadeQuestoes > 0)
             {
-                List<int> ids = (from qt in contexto.QuestaoTema
-                                 where qt.CodDisciplina == codDisciplina
-                                 && qt.Questao.CodTipoQuestao == codTipo
-                                 //&& QuestaoTema.PrazoValido(qt)
-                                 select qt.CodQuestao).Distinct().ToList();
+                List<int> ids =
+                    (from qt in contexto.QuestaoTema
+                     where qt.CodDisciplina == codDisciplina
+                     && qt.Questao.CodTipoQuestao == codTipo
+                     //&& QuestaoTema.PrazoValido(qt)
+                     select qt.CodQuestao).Distinct().ToList();
 
                 if (eviteCodQuestao != null)
                 {
@@ -161,7 +161,7 @@ namespace SIAC.Models
                 {
                     for (int i = 0; i < quantidadeQuestoes; i++)
                     {
-                        int random = r.Next(0, ids.Count);
+                        int random = Sistema.Random.Next(0, ids.Count);
 
                         int codQuestao = ids[random];
 

@@ -7,6 +7,9 @@ namespace SIAC.Models
 {
     public class Sistema
     {
+        private static Random rnd = new Random();
+        public static Random Random => rnd;
+
         public static Dictionary<string, string> CookieUsuario = new Dictionary<string, string>();
         public static Dictionary<string, UsuarioAcesso> UsuarioAtivo = new Dictionary<string, UsuarioAcesso>();
         public static Dictionary<int, int> NumIdentificador = new Dictionary<int, int>();

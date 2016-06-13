@@ -2,7 +2,7 @@
 
 @{
     Layout = null;
-    string background = "background" + new Random().Next(1, 4);
+    string background = "background" + Sistema.Random.Next(1, 4);
 }
 
 <!DOCTYPE html>
@@ -154,7 +154,7 @@
                             <p>Note que ambos os campos diferenciam maiúsculas e minúsculas.</p>
                             @foreach (string mensagem in Model.Mensagens)
                             {
-                            <p>@mensagem</p>
+                                <p>@mensagem</p>
                             }
                         </div>
                     </form>

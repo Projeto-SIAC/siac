@@ -15,10 +15,9 @@ namespace SIAC.Helpers
             string captchaValue = "";
             int[] valuesArray = new int[8];
             int x;
-            Random autoRand = new Random();
             for (x = 0; x < 8; x++)
             {
-                valuesArray[x] = Convert.ToInt32(autoRand.Next(0, 9));
+                valuesArray[x] = Convert.ToInt32(Models.Sistema.Random.Next(0, 9));
                 captchaValue += (valuesArray[x].ToString());
             }
             Sessao.Inserir("Captcha", captchaValue);

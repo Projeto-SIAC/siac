@@ -308,12 +308,12 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Configurar(string codigo)
         {
-            TempData["listaQuestoesAntigas"] = new List<AvalTemaQuestao>();
-            TempData["listaQuestoesNovas"] = new List<AvalTemaQuestao>();
-            TempData["listaQuestoesPossiveisObj"] = new List<QuestaoTema>();
-            TempData["listaQuestoesPossiveisDisc"] = new List<QuestaoTema>();
-            TempData["listaQuestoesIndices"] = new List<int>();
-            TempData["listaQuestoesRecentes"] = new List<int>();
+            TempData[$"listaQuestoesAntigas{codigo.ToUpper()}"] = new List<AvalTemaQuestao>();
+            TempData[$"listaQuestoesNovas{codigo.ToUpper()}"] = new List<AvalTemaQuestao>();
+            TempData[$"listaQuestoesPossiveisObj{codigo.ToUpper()}"] = new List<QuestaoTema>();
+            TempData[$"listaQuestoesPossiveisDisc{codigo.ToUpper()}"] = new List<QuestaoTema>();
+            TempData[$"listaQuestoesIndices{codigo.ToUpper()}"] = new List<int>();
+            TempData[$"listaQuestoesRecentes{codigo.ToUpper()}"] = new List<int>();
 
             if (!String.IsNullOrWhiteSpace(codigo) && !Sistema.AvaliacaoUsuario.ContainsKey(codigo))
             {
@@ -374,15 +374,14 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult TrocarQuestao(string codigoAvaliacao, int tipo, int indice, int codQuestao)
         {
-            List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData["listaQuestoesAntigas"];
-            List<AvalTemaQuestao> novas = (List<AvalTemaQuestao>)TempData["listaQuestoesNovas"];
-            List<QuestaoTema> questoesTrocaObjetiva = (List<QuestaoTema>)TempData["listaQuestoesPossiveisObj"];
-            List<QuestaoTema> questoesTrocaDiscursiva = (List<QuestaoTema>)TempData["listaQuestoesPossiveisDisc"];
-            List<int> indices = (List<int>)TempData["listaQuestoesIndices"];
-            List<int> recentes = (List<int>)TempData["listaQuestoesRecentes"];
+            List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData[$"listaQuestoesAntigas{codigoAvaliacao.ToUpper()}"];
+            List<AvalTemaQuestao> novas = (List<AvalTemaQuestao>)TempData[$"listaQuestoesNovas{codigoAvaliacao.ToUpper()}"];
+            List<QuestaoTema> questoesTrocaObjetiva = (List<QuestaoTema>)TempData[$"listaQuestoesPossiveisObj{codigoAvaliacao.ToUpper()}"];
+            List<QuestaoTema> questoesTrocaDiscursiva = (List<QuestaoTema>)TempData[$"listaQuestoesPossiveisDisc{codigoAvaliacao.ToUpper()}"];
+            List<int> indices = (List<int>)TempData[$"listaQuestoesIndices{codigoAvaliacao.ToUpper()}"];
+            List<int> recentes = (List<int>)TempData[$"listaQuestoesRecentes{codigoAvaliacao.ToUpper()}"];
 
             TempData.Keep();
-            Random r = new Random();
 
             if (!String.IsNullOrWhiteSpace(codigoAvaliacao))
             {
@@ -397,22 +396,22 @@ namespace SIAC.Controllers
                     {
                         if (questoesTrocaObjetiva.Count <= 0)
                         {
-                            TempData["listaQuestoesPossiveisObj"] = Questao.ObterNovasQuestoes(avalQuestTema, tipo);
-                            questoesTrocaObjetiva = (List<QuestaoTema>)TempData["listaQuestoesPossiveisObj"];
+                            TempData[$"listaQuestoesPossiveisObj{codigoAvaliacao.ToUpper()}"] = Questao.ObterNovasQuestoes(avalQuestTema, tipo);
+                            questoesTrocaObjetiva = (List<QuestaoTema>)TempData[$"listaQuestoesPossiveisObj{codigoAvaliacao.ToUpper()}"];
                         }
 
-                        int random = r.Next(0, questoesTrocaObjetiva.Count);
+                        int random = Sistema.Random.Next(0, questoesTrocaObjetiva.Count);
                         questao = questoesTrocaObjetiva.ElementAtOrDefault(random);
                     }
                     else if (tipo == TipoQuestao.DISCURSIVA)
                     {
                         if (questoesTrocaDiscursiva.Count <= 0)
                         {
-                            TempData["listaQuestoesPossiveisDisc"] = Questao.ObterNovasQuestoes(avalQuestTema, tipo);
-                            questoesTrocaDiscursiva = (List<QuestaoTema>)TempData["listaQuestoesPossiveisDisc"];
+                            TempData[$"listaQuestoesPossiveisDisc{codigoAvaliacao.ToUpper()}"] = Questao.ObterNovasQuestoes(avalQuestTema, tipo);
+                            questoesTrocaDiscursiva = (List<QuestaoTema>)TempData[$"listaQuestoesPossiveisDisc{codigoAvaliacao.ToUpper()}"];
                         }
 
-                        int random = r.Next(0, questoesTrocaDiscursiva.Count);
+                        int random = Sistema.Random.Next(0, questoesTrocaDiscursiva.Count);
                         questao = questoesTrocaDiscursiva.ElementAtOrDefault(random);
                     }
 
@@ -420,13 +419,14 @@ namespace SIAC.Controllers
                     {
                         if (!indices.Contains(indice))
                         {
-                            AvalTemaQuestao aqtAntiga = (from atq in Repositorio.GetInstance().AvalTemaQuestao
-                                                         where atq.Ano == acad.Ano
-                                                         && atq.Semestre == acad.Semestre
-                                                         && atq.CodTipoAvaliacao == acad.CodTipoAvaliacao
-                                                         && atq.NumIdentificador == acad.NumIdentificador
-                                                         && atq.CodQuestao == codQuestao
-                                                         select atq).FirstOrDefault();
+                            AvalTemaQuestao aqtAntiga =
+                                (from atq in Repositorio.GetInstance().AvalTemaQuestao
+                                 where atq.Ano == acad.Ano
+                                 && atq.Semestre == acad.Semestre
+                                 && atq.CodTipoAvaliacao == acad.CodTipoAvaliacao
+                                 && atq.NumIdentificador == acad.NumIdentificador
+                                 && atq.CodQuestao == codQuestao
+                                 select atq).FirstOrDefault();
                             antigas.Add(aqtAntiga);
                             indices.Add(indice);
                         }
@@ -466,8 +466,8 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Salvar(string codigo)
         {
-            List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData["listaQuestoesAntigas"];
-            List<AvalTemaQuestao> novas = (List<AvalTemaQuestao>)TempData["listaQuestoesNovas"];
+            List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData[$"listaQuestoesAntigas{codigo.ToUpper()}"];
+            List<AvalTemaQuestao> novas = (List<AvalTemaQuestao>)TempData[$"listaQuestoesNovas{codigo.ToUpper()}"];
 
             if (antigas.Count != 0 && novas.Count != 0)
             {
@@ -489,12 +489,12 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Desfazer(string codigoAvaliacao, int tipoQuestao, int indice, int codQuestao)
         {
-            List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData["listaQuestoesAntigas"];
-            List<AvalTemaQuestao> novas = (List<AvalTemaQuestao>)TempData["listaQuestoesNovas"];
-            List<QuestaoTema> questoesTrocaObj = (List<QuestaoTema>)TempData["listaQuestoesPossiveisObj"];
-            List<QuestaoTema> questoesTrocaDisc = (List<QuestaoTema>)TempData["listaQuestoesPossiveisDisc"];
-            List<int> indices = (List<int>)TempData["listaQuestoesIndices"];
-            List<int> recentes = (List<int>)TempData["listaQuestoesRecentes"];
+            List<AvalTemaQuestao> antigas = (List<AvalTemaQuestao>)TempData[$"listaQuestoesAntigas{codigoAvaliacao.ToUpper()}"];
+            List<AvalTemaQuestao> novas = (List<AvalTemaQuestao>)TempData[$"listaQuestoesNovas{codigoAvaliacao.ToUpper()}"];
+            List<QuestaoTema> questoesTrocaObj = (List<QuestaoTema>)TempData[$"listaQuestoesPossiveisObj{codigoAvaliacao.ToUpper()}"];
+            List<QuestaoTema> questoesTrocaDisc = (List<QuestaoTema>)TempData[$"listaQuestoesPossiveisDisc{codigoAvaliacao.ToUpper()}"];
+            List<int> indices = (List<int>)TempData[$"listaQuestoesIndices{codigoAvaliacao.ToUpper()}"];
+            List<int> recentes = (List<int>)TempData[$"listaQuestoesRecentes{codigoAvaliacao.ToUpper()}"];
 
             TempData.Keep();
 

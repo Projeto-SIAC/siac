@@ -81,7 +81,6 @@ namespace SIAC.Models
             List<QuestaoTema> questoesTotal = new List<QuestaoTema>(); //LISTA DE TODAS AS QUESTÕES DO BANCO
             List<QuestaoTema> questoesAtual = new List<QuestaoTema>(); //LISTA DE QUESTÕES FILTRADAS DE TODAS [QUESTÕES] PARA O RETORNO - MEIO TERMO
 
-            Random r = new Random();
             int temaContador = 0;
             int temaAtual = int.Parse(temas[temaContador]);
 
@@ -90,13 +89,14 @@ namespace SIAC.Models
                 foreach (string tema in temas)
                 {
                     int codTema = int.Parse(tema);
-                    List<QuestaoTema> temp = (from qt in contexto.QuestaoTema
-                                              where qt.Questao.CodTipoQuestao == tipoQuestao
-                                              && qt.Questao.CodDificuldade <= disciplinaDificuldade
-                                              && qt.CodDisciplina == codDisciplina
-                                              && qt.CodTema == codTema
-                                              && !qt.Questao.FlagArquivo
-                                              select qt).ToList();
+                    List<QuestaoTema> temp =
+                        (from qt in contexto.QuestaoTema
+                         where qt.Questao.CodTipoQuestao == tipoQuestao
+                         && qt.Questao.CodDificuldade <= disciplinaDificuldade
+                         && qt.CodDisciplina == codDisciplina
+                         && qt.CodTema == codTema
+                         && !qt.Questao.FlagArquivo
+                         select qt).ToList();
 
                     temp = Models.QuestaoTema.LimparRepeticao(temp, questoesTemas, questoesTotal);
 
@@ -108,7 +108,7 @@ namespace SIAC.Models
 
                             if (lstIdeal.Count != 0)
                             {
-                                int random = r.Next(0, lstIdeal.Count);
+                                int random = Sistema.Random.Next(0, lstIdeal.Count);
 
                                 questoesTemas.Add(lstIdeal.ElementAtOrDefault(random));
                                 temp.Remove(lstIdeal.ElementAtOrDefault(random));
@@ -122,15 +122,16 @@ namespace SIAC.Models
 
                 for (int i = disciplinaDificuldade; i >= 1 && questoesTemas.Count < quantidadeQuestoes; i--)
                 {
-                    questoesAtual = (from qt in questoesTotal
-                                     where qt.Questao.CodDificuldade == i
-                                     select qt).ToList();
+                    questoesAtual =
+                        (from qt in questoesTotal
+                         where qt.Questao.CodDificuldade == i
+                         select qt).ToList();
                     if (questoesAtual.Count != 0)
                     {
                         int random = 0;
                         if (questoesAtual.Count > 1)
                         {
-                            random = r.Next(0, questoesAtual.Count);
+                            random = Sistema.Random.Next(0, questoesAtual.Count);
                             questoesTemas.Add(questoesAtual.ElementAtOrDefault(random));
 
                             temaContador = (temas.Length >= temaContador) ? 0 : temaContador++;
@@ -146,9 +147,10 @@ namespace SIAC.Models
 
                 if (quantidadeQuestoes > questoesTemas.Count)
                 {
-                    questoesAtual = (from qt in questoesTotal
-                                     where qt.Questao.CodDificuldade == disciplinaDificuldade
-                                     select qt).ToList();
+                    questoesAtual =
+                        (from qt in questoesTotal
+                         where qt.Questao.CodDificuldade == disciplinaDificuldade
+                         select qt).ToList();
 
                     if (questoesAtual.Count + questoesTemas.Count >= quantidadeQuestoes)
                     {
@@ -157,7 +159,7 @@ namespace SIAC.Models
                             int random = 0;
                             if (questoesAtual.Count > 1)
                             {
-                                random = r.Next(0, questoesAtual.Count);
+                                random = Sistema.Random.Next(0, questoesAtual.Count);
                                 questoesTemas.Add(questoesAtual.ElementAtOrDefault(random));
                             }
                             else
@@ -181,9 +183,10 @@ namespace SIAC.Models
 
                         for (int i = disciplinaDificuldade - 1; i >= 1; i--)
                         {
-                            questoesAtual = (from qt in questoesTotal
-                                             where qt.Questao.CodDificuldade == i
-                                             select qt).ToList();
+                            questoesAtual =
+                                (from qt in questoesTotal
+                                 where qt.Questao.CodDificuldade == i
+                                 select qt).ToList();
 
                             if (questoesAtual.Count != 0)
                             {
@@ -196,7 +199,7 @@ namespace SIAC.Models
                                             int random = 0;
                                             if (questoesAtual.Count > 1)
                                             {
-                                                random = r.Next(0, questoesAtual.Count);
+                                                random = Sistema.Random.Next(0, questoesAtual.Count);
                                                 questoesTemas.Add(questoesAtual.ElementAtOrDefault(random));
 
                                                 temaContador = (temas.Length >= temaContador) ? 0 : temaContador++;
@@ -280,17 +283,16 @@ namespace SIAC.Models
 
                 List<QuestaoTema> questoes = new List<QuestaoTema>();
 
-                Random r = new Random();
-
                 foreach (int codTema in temas)
                 {
-                    List<QuestaoTema> qstTemp = (from qt in contexto.QuestaoTema
-                                                 where qt.CodDisciplina == codDisciplina
-                                                 && qt.CodTema == codTema
-                                                 && qt.Questao.CodDificuldade <= codDificuldade
-                                                 && qt.Questao.CodTipoQuestao == codTipoQuestao
-                                                 && !qt.Questao.FlagArquivo
-                                                 select qt).ToList();
+                    List<QuestaoTema> qstTemp =
+                        (from qt in contexto.QuestaoTema
+                         where qt.CodDisciplina == codDisciplina
+                         && qt.CodTema == codTema
+                         && qt.Questao.CodDificuldade <= codDificuldade
+                         && qt.Questao.CodTipoQuestao == codTipoQuestao
+                         && !qt.Questao.FlagArquivo
+                         select qt).ToList();
 
                     qstTemp = Models.QuestaoTema.LimparRepeticao(qstTemp, QuestoesOriginais, questoes);
 
@@ -348,21 +350,34 @@ namespace SIAC.Models
             return questoes;
         }
 
-        public static Questao RetornarAleatoria(int codDisciplina, int codDificuldade = 0, int codTipoQuestao = 0)
+        public static int? RetornarCodigoAleatorio(int codDisciplina, int codDificuldade = 0, int codTipoQuestao = 0, int[] evite = null)
         {
-            Random random = new Random();
             IQueryable<Questao> questoes = contexto.Questao.Where(q => q.QuestaoTema.FirstOrDefault(t => t.CodDisciplina == codDisciplina) != null);
+
             if (codDificuldade > 0)
             {
                 questoes = questoes.Where(q => q.CodDificuldade <= codDificuldade);
             }
+
             if (codTipoQuestao > 0)
             {
                 questoes = questoes.Where(q => q.CodTipoQuestao == codTipoQuestao);
             }
-            List<Questao> finalQuestoes = questoes.ToList();
-            int i = random.Next(finalQuestoes.Count);
-            return finalQuestoes.ElementAt(i);
+
+            int[] finalQuestoes = questoes.Select(q => q.CodQuestao).ToArray();
+
+            if (evite != null)
+            {
+                finalQuestoes = finalQuestoes.Except(evite).ToArray();
+            }
+
+            if (finalQuestoes.Length > 0)
+            {
+                int i = Sistema.Random.Next(finalQuestoes.Length);
+                return finalQuestoes[i];
+            }
+
+            return null;
         }
     }
 }

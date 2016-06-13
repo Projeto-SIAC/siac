@@ -668,34 +668,38 @@ namespace SIAC.Controllers
                     SimProva simProva = sim.SimDiaRealizacao.FirstOrDefault(d => d.CodDiaRealizacao == dia)?.SimProva.FirstOrDefault(p => p.CodProva == prova);
                     if (simProva != null)
                     {
-                        if (!TempData.Keys.Contains("SimuladoTrocarQuestoes"))
+                        if (!TempData.Keys.Contains($"SimuladoTrocarQuestoes{sim.Codigo}"))
                         {
-                            TempData["SimuladoTrocarQuestoes"] = sim.TodasQuestoesPorDisciplina(simProva.CodDisciplina).Select(q => q.CodQuestao).ToList();
+                            TempData[$"SimuladoTrocarQuestoes{sim.Codigo}"] = sim.TodasQuestoesPorDisciplina(simProva.CodDisciplina).Select(q => q.CodQuestao).ToList();
                         }
 
-                        var simuladoQuestoes = (List<int>)TempData["SimuladoTrocarQuestoes"];
+                        var simuladoQuestoes = (List<int>)TempData[$"SimuladoTrocarQuestoes{sim.Codigo}"];
 
                         Questao questaoTrocada = simProva.SimProvaQuestao.FirstOrDefault(q => q.CodQuestao == questao)?.Questao;
+
                         if (questaoTrocada != null)
                         {
-                            Questao novaQuestao = Questao.RetornarAleatoria(simProva.CodDisciplina, codTipoQuestao: questaoTrocada.CodTipoQuestao);
-
-                            int tentativas = 0;
-                            while (simuladoQuestoes.Contains(novaQuestao.CodQuestao) && tentativas < 3)
+                            int? novaQuestao = Questao.RetornarCodigoAleatorio(simProva.CodDisciplina, codTipoQuestao: questaoTrocada.CodTipoQuestao, evite: simuladoQuestoes.ToArray());
+                            if (novaQuestao.HasValue && !simuladoQuestoes.Contains(novaQuestao.Value))
                             {
-                                novaQuestao = Questao.RetornarAleatoria(simProva.CodDisciplina, codTipoQuestao: questaoTrocada.CodTipoQuestao);
-                                tentativas++;
-                            }
-
-                            if (!simuladoQuestoes.Contains(novaQuestao.CodQuestao))
-                            {
-                                TempData["SimuladoTrocarQuestaoCodigo"] = questao;
-                                TempData["SimuladoTrocarQuestaoIndice"] = indice;
                                 simProva.RemoverQuestao(questao);
-                                simProva.AdicionarQuestao(novaQuestao.CodQuestao);
+                                simuladoQuestoes.Remove(questao);
+
+                                simProva.AdicionarQuestao(novaQuestao.Value);
+                                simuladoQuestoes.Add(novaQuestao.Value);
+
+                                TempData[$"SimuladoTrocarQuestaoCodigo{sim.Codigo}"] = questao;
+                                TempData[$"SimuladoTrocarQuestaoIndice{sim.Codigo}"] = indice;
+                                TempData[$"SimuladoTrocarQuestoes{sim.Codigo}"] = simuladoQuestoes;
                                 TempData.Keep();
+
                                 ViewData["Index"] = indice;
-                                return PartialView("_QuestaoConfigurar", novaQuestao);
+                                return PartialView("_QuestaoConfigurar", Questao.ListarPorCodigo(novaQuestao.Value));
+                            }
+                            else
+                            {
+                                Lembrete.AdicionarNotificacao("Parece não haver mais questões disponíveis. Professor, cadastre mais algumas.", Lembrete.INFO, 10);
+                                return new HttpStatusCodeResult(HttpStatusCode.Accepted, "Accepted");
                             }
                         }
                     }
@@ -719,14 +723,22 @@ namespace SIAC.Controllers
                         Questao questaoDesfazer = simProva.SimProvaQuestao.FirstOrDefault(q => q.CodQuestao == questao)?.Questao;
                         if (questaoDesfazer != null)
                         {
-                            Questao questaoTrocada = Questao.ListarPorCodigo((int)TempData["SimuladoTrocarQuestaoCodigo"]);
-                            if (questaoTrocada.CodQuestao != questao)
+                            Questao questaoTrocada = Questao.ListarPorCodigo((int)TempData[$"SimuladoTrocarQuestaoCodigo{sim.Codigo}"]);
+                            if (questaoTrocada?.CodQuestao != questao)
                             {
-                                TempData["SimuladoTrocarQuestaoCodigo"] = questao;
-                                TempData["SimuladoTrocarQuestaoIndice"] = indice;
+                                var simuladoQuestoes = (List<int>)TempData[$"SimuladoTrocarQuestoes{sim.Codigo}"];
+
                                 simProva.RemoverQuestao(questao);
+                                simuladoQuestoes.Remove(questao);
+
                                 simProva.AdicionarQuestao(questaoTrocada.CodQuestao);
+                                simuladoQuestoes.Add(questaoTrocada.CodQuestao);
+
+                                TempData[$"SimuladoTrocarQuestaoCodigo{sim.Codigo}"] = questao;
+                                TempData[$"SimuladoTrocarQuestaoIndice{sim.Codigo}"] = indice;
+                                TempData[$"SimuladoTrocarQuestoes{sim.Codigo}"] = simuladoQuestoes;
                                 TempData.Keep();
+
                                 ViewData["Index"] = indice;
                                 return PartialView("_QuestaoConfigurar", questaoTrocada);
                             }
@@ -762,6 +774,9 @@ namespace SIAC.Controllers
                                 //CodQuestao = codQuestao
                             });
                         }
+
+                        TempData[$"SimuladoTrocarQuestoes{sim.Codigo}"] = questoesCodigos;
+                        TempData.Keep();
 
                         if (questoesCodigos.Count < simProva.QteQuestoes)
                         {

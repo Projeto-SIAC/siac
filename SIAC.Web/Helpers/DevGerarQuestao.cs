@@ -12,7 +12,6 @@ namespace SIAC.Helpers
         {
             List<Questao> lstQuestao = new List<Questao>();
             LeroLero leroLero = new LeroLero();
-            Random r = new Random();
             List<Professor> lstProfessor = Professor.ListarOrdenadamente();
             List<TipoQuestao> lstTipoQuestao = TipoQuestao.ListarOrdenadamente();
             List<Dificuldade> lstDificuldade = Dificuldade.ListarOrdenadamente();
@@ -20,11 +19,11 @@ namespace SIAC.Helpers
             {
                 Questao questao = new Questao();
                 questao.DtCadastro = DateTime.Now;
-                questao.Professor = lstProfessor.ElementAt(r.Next(lstProfessor.Count));
-                questao.Dificuldade = lstDificuldade.ElementAt(r.Next(lstDificuldade.Count));
-                questao.TipoQuestao = lstTipoQuestao.ElementAt(r.Next(lstTipoQuestao.Count));
+                questao.Professor = lstProfessor.ElementAt(Sistema.Random.Next(lstProfessor.Count));
+                questao.Dificuldade = lstDificuldade.ElementAt(Sistema.Random.Next(lstDificuldade.Count));
+                questao.TipoQuestao = lstTipoQuestao.ElementAt(Sistema.Random.Next(lstTipoQuestao.Count));
                 questao.Enunciado = leroLero.Paragrafo();
-                if (r.Next(2) == 1)
+                if (Sistema.Random.Next(2) == 1)
                 {
                     questao.Objetivo = leroLero.Paragrafo();
                 }
@@ -34,17 +33,17 @@ namespace SIAC.Helpers
                     qte++;
                     continue;
                 }
-                Disciplina disciplina = lstDisciplina.ElementAt(r.Next(lstDisciplina.Count));
+                Disciplina disciplina = lstDisciplina.ElementAt(Sistema.Random.Next(lstDisciplina.Count));
                 List<Tema> lstTema = Tema.ListarPorDisciplina(disciplina.CodDisciplina);
                 if (lstTema.Count == 0)
                 {
                     qte++;
                     continue;
                 }
-                int qteTema = lstTema.Count > 4 ? r.Next(1, 5) : r.Next(1, lstTema.Count);
+                int qteTema = lstTema.Count > 4 ? Sistema.Random.Next(1, 5) : Sistema.Random.Next(1, lstTema.Count);
                 for (int j = 0; j < qteTema; j++)
                 {
-                    var index = r.Next(lstTema.Count);
+                    var index = Sistema.Random.Next(lstTema.Count);
                     questao.QuestaoTema.Add(
                         new QuestaoTema
                         {
@@ -55,7 +54,7 @@ namespace SIAC.Helpers
                 }
                 if (questao.TipoQuestao.CodTipoQuestao == 1)
                 {
-                    int qteAlternativa = r.Next(3, 6);
+                    int qteAlternativa = Sistema.Random.Next(3, 6);
                     for (int j = 0; j < qteAlternativa; j++)
                     {
                         questao.Alternativa.Add(
@@ -63,16 +62,16 @@ namespace SIAC.Helpers
                             {
                                 CodOrdem = j,
                                 Enunciado = leroLero.Paragrafo(),
-                                Comentario = r.Next(2) == 1 ? leroLero.Paragrafo() : null
+                                Comentario = Sistema.Random.Next(2) == 1 ? leroLero.Paragrafo() : null
                             }
                         );
                     }
-                    questao.Alternativa.ElementAt(r.Next(questao.Alternativa.Count)).FlagGabarito = true;
+                    questao.Alternativa.ElementAt(Sistema.Random.Next(questao.Alternativa.Count)).FlagGabarito = true;
                 }
                 else
                 {
                     questao.ChaveDeResposta = leroLero.Paragrafo();
-                    if (r.Next(2) == 1)
+                    if (Sistema.Random.Next(2) == 1)
                     {
                         questao.Comentario = leroLero.Paragrafo();
                     }

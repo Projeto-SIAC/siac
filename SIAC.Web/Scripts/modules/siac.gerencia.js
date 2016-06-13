@@ -369,6 +369,12 @@ siac.Gerencia.Provas = (function () {
                         inline: true,
                         on: 'click'
                     });
+                    $('[data-content]').popup();
+                    $('#recarregarQuestoes').off('submit').on('submit', function () {
+                        var $this = $(this);
+                        $this.closest('.ui.modal').modal('hide');
+                        $this.find('button[type=submit]').addClass('loading');
+                    });
                 },
                 error: function () {
                     siac.mensagem('Falha ao recuperar o Prova para Configuração. Atualize a página para tentar novamente.');
@@ -379,33 +385,6 @@ siac.Gerencia.Provas = (function () {
                 }
             });
         });
-
-        //$('.recarregar.button').off('click').on('click', function () {
-        //    var $this = $(this),
-        //        simulado = $this.data('simulado'),
-        //        dia = $this.data('dia'),
-        //        prova = $this.data('prova');
-
-        //    $this.addClass('loading');
-
-        //    $.ajax({
-        //        url: '/simulado/gerencia/recarregarquestoesprovaconfigurar',
-        //        method: 'POST',
-        //        data: {
-        //            'simulado': simulado,
-        //            'dia': dia,
-        //            'prova': prova
-        //        },
-        //        error: function () {
-        //            siac.mensagem('Falha ao recarregar as questões. Atualize a página para tentar novamente.');
-        //        },
-        //        complete: function () {
-        //            $this.removeClass('loading');
-        //            $('.modal').modal('hide');
-        //            document.location.reload();
-        //        }
-        //    });
-        //});
     }
 
     function adicionarEventos(simulado, dia, prova) {
@@ -446,9 +425,12 @@ siac.Gerencia.Provas = (function () {
                 if (data) {
                     card.html(data);
                     $('.ui.accordion').accordion({ animateChildren: false });
-                    $('.right.floated.button').popup({ on: 'click' });
+                    $('.right.floated.button').popup({ on: 'click', position: 'left center' });
                     $('.ui.button.disabled').removeClass('disabled');
                     $('#cardQuestao' + indice + ' .ui.desfazer.button').parents('.popup').prev().show();
+                }
+                else {
+                    siac.Lembrete.iniciar();
                 }
                 card.removeClass('ui form loading');
             },
@@ -480,7 +462,7 @@ siac.Gerencia.Provas = (function () {
                 if (data) {
                     card.html(data);
                     $('.ui.accordion').accordion({ animateChildren: false });
-                    $('.right.floated.button').popup({ on: 'click' });
+                    $('.right.floated.button').popup({ on: 'click', position: 'left center' });
                     $('#cardQuestao' + indice + ' .ui.desfazer.button').parents('.popup').prev().hide();
                 }
                 card.removeClass('ui form loading');

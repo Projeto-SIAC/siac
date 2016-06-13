@@ -401,13 +401,12 @@ namespace SIAC
         {
             List<Questao> lstQuestao = new List<Questao>();
             List<Questao> lstQuestaoEmbalharada = new List<Questao>();
-            Random r = new Random();
             foreach (var avalTema in avaliacao.AvaliacaoTema)
                 lstQuestao.AddRange(avalTema.AvalTemaQuestao.Select(a => a.QuestaoTema.Questao).ToList());
 
             while (lstQuestao.Count > 0)
             {
-                int i = r.Next(lstQuestao.Count);
+                int i = Sistema.Random.Next(lstQuestao.Count);
                 Questao qst = lstQuestao.ElementAt(i);
                 lstQuestaoEmbalharada.Add(qst);
                 lstQuestao.Remove(qst);
@@ -444,11 +443,10 @@ namespace SIAC
         {
             List<Alternativa> lstAlternativa = questao.Alternativa.ToList();
             List<Alternativa> lstAlternativaEmbaralhada = new List<Alternativa>();
-            Random r = new Random();
 
             while (lstAlternativaEmbaralhada.Count != questao.Alternativa.Count)
             {
-                int i = r.Next(lstAlternativa.Count);
+                int i = Sistema.Random.Next(lstAlternativa.Count);
                 Alternativa alt = lstAlternativa.ElementAt(i);
                 lstAlternativaEmbaralhada.Add(alt);
                 lstAlternativa.Remove(alt);
@@ -459,13 +457,12 @@ namespace SIAC
 
         public static string ToJsonChart(this Questao questao, List<AvalQuesPessoaResposta> lstResposta)
         {
-            Random random = new Random();
             string json = string.Empty;
             json += "[";
 
             for (int i = 0, length = questao.Alternativa.Count; i < length; i++)
             {
-                string rgba = Helpers.CorDinamica.Rgba(random);
+                string rgba = Helpers.CorDinamica.Rgba();
 
                 json += "{";
 
@@ -499,13 +496,12 @@ namespace SIAC
         public static string ToJsonChart(this AviQuestao questao, List<AviQuestaoPessoaResposta> respostas = null)
         {
             respostas = questao.Respostas;
-            Random random = new Random();
             string json = string.Empty;
             json += "[";
 
             for (int i = 1, length = questao.AviQuestaoAlternativa.Count; i <= length; i++)
             {
-                string rgba = Helpers.CorDinamica.Rgba(random);
+                string rgba = Helpers.CorDinamica.Rgba();
 
                 json += "{";
 
