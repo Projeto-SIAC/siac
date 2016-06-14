@@ -603,6 +603,8 @@ namespace SIAC.Controllers
 
             Parametro.Atualizar(p);
 
+            Lembrete.AdicionarNotificacao("Configurações atualizadas com sucesso.", Lembrete.POSITIVO);
+
             return RedirectToAction("Configuracoes");
         }
 
