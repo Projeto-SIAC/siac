@@ -7,7 +7,7 @@
     </div>
     <div class="content">
         <div class="ui form">
-            <div class="three fields">
+            <div class="two fields">
                 <div class="field required">
                     <label>Disciplina</label>
                     <select name="ddlDisciplina" class="ui fluid search dropdown" required">
@@ -18,10 +18,6 @@
                         }
                     </select>
                 </div>
-                <div class="field required">
-                    <label>Quantidade de Questões</label>
-                    <input type="number" name="txtQteQuestoes" placeholder="Quantidade de Questões" value="@Model.Prova.QteQuestoes" required />
-                </div>
                 <div class="field">
                     <label>Prof. Responsável</label>
                     <select name="ddlProfessor" class="ui fluid search dropdown" required">
@@ -31,6 +27,16 @@
                             <option @(professor.CodProfessor == Model.Prova.CodProfessor ? "selected" : "") value="@professor.CodProfessor">@professor</option>
                         }
                     </select>
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field required">
+                    <label>Quant. de Questões Objetivas</label>
+                    <input type="number" name="txtQteQuestoesObjetivas" min="0" placeholder="Quant. de Questões Objetivas" value="@Model.Prova.QteQuestoesObjetivas" required />
+                </div>
+                <div class="field">
+                    <label>Quant. de Questões Discursivas</label>
+                    <input type="number" name="txtQteQuestoesDiscursivas" min="0" placeholder="Quant. de Questões Discursivas" value="@Model.Prova.QteQuestoesDiscursivas" />
                 </div>
             </div>
             <div class="field required">

@@ -163,7 +163,7 @@ namespace SIAC.Controllers
                     {
                         DateTime inicio = DateTime.Parse(inicioInscricao, new CultureInfo("pt-BR"));
                         DateTime termino = DateTime.Parse($"{terminoInscricao} 23:59:59", new CultureInfo("pt-BR"));
-                        
+
                         if (sim.DtInicioInscricao <= DateTime.Now && !sim.FlagNenhumInscritoAposPrazo)
                         {
                             Lembrete.AdicionarNotificacao("As incrições já foram iniciadas, você não pode mais alterar o início.", Lembrete.NEGATIVO);
@@ -514,12 +514,15 @@ namespace SIAC.Controllers
                 if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     string ddlDisciplina = form["ddlDisciplina"];
-                    string txtQteQuestoes = form["txtQteQuestoes"];
+                    int qteQuestoesObjetivas;
+                    int.TryParse(form["txtQteQuestoesObjetivas"], out qteQuestoesObjetivas);
+                    int qteQuestoesDiscursivas;
+                    int.TryParse(form["txtQteQuestoesDiscursivas"], out qteQuestoesDiscursivas);
                     string ddlProfessor = form["ddlProfessor"];
                     string txtTitulo = form["txtTitulo"];
                     string txtDescricao = form["txtDescricao"];
 
-                    if (!StringExt.IsNullOrWhiteSpace(ddlDisciplina, txtQteQuestoes, txtTitulo))
+                    if (!StringExt.IsNullOrWhiteSpace(ddlDisciplina, txtTitulo) && qteQuestoesDiscursivas + qteQuestoesObjetivas > 0)
                     {
                         SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
@@ -528,7 +531,7 @@ namespace SIAC.Controllers
                         prova.CodProva = diaRealizacao.SimProva.Count > 0 ? diaRealizacao.SimProva.Max(p => p.CodProva) + 1 : 1;
                         prova.Titulo = txtTitulo;
                         prova.Descricao = String.IsNullOrWhiteSpace(txtDescricao) ? String.Empty : txtDescricao;
-                        prova.QteQuestoes = int.Parse(txtQteQuestoes);
+                        prova.QteQuestoes = qteQuestoesDiscursivas + qteQuestoesObjetivas;
                         prova.CodDisciplina = int.Parse(ddlDisciplina);
 
                         if (!String.IsNullOrWhiteSpace(ddlProfessor))
@@ -545,7 +548,9 @@ namespace SIAC.Controllers
                             PessoaFisica.AdicionarOcupacao(Professor.ListarPorCodigo((int)prova.CodProfessor).Usuario.CodPessoaFisica, Ocupacao.COLABORADOR_SIMULADO);
 
                         List<int> simuladoQuestoes = sim.TodasQuestoesPorDisciplina(prova.CodDisciplina).Select(q => q.CodQuestao).ToList();
-                        List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, prova.QteQuestoes, TipoQuestao.OBJETIVA, simuladoQuestoes);
+
+                        List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, qteQuestoesObjetivas, TipoQuestao.OBJETIVA, simuladoQuestoes);
+                        questoesCodigos.AddRange(Simulado.ObterQuestoesCodigos(prova.CodDisciplina, qteQuestoesDiscursivas, TipoQuestao.DISCURSIVA, simuladoQuestoes));
 
                         prova.SimProvaQuestao.Clear();
 
@@ -565,11 +570,16 @@ namespace SIAC.Controllers
                         else
                         {
                             mensagem = "Foi gerada uma quantidade menor de questões para a prova deste simulado.";
-                            estilo = Lembrete.NEGATIVO;
+                            estilo = Lembrete.INFO;
                         }
 
                         diaRealizacao.SimProva.Add(prova);
                         Repositorio.Commit();
+                    }
+                    else
+                    {
+                        mensagem = "Você não inseriu todas as informações necessárias para cadastrar uma nova prova.";
+                        estilo = Lembrete.NEGATIVO;
                     }
                 }
             }
@@ -594,25 +604,27 @@ namespace SIAC.Controllers
                     bool alterarQuestoes = false;
 
                     string ddlDisciplina = form["ddlDisciplina"];
-                    string txtQteQuestoes = form["txtQteQuestoes"];
+                    int qteQuestoesObjetivas;
+                    int.TryParse(form["txtQteQuestoesObjetivas"], out qteQuestoesObjetivas);
+                    int qteQuestoesDiscursivas;
+                    int.TryParse(form["txtQteQuestoesDiscursivas"], out qteQuestoesDiscursivas);
                     string ddlProfessor = form["ddlProfessor"];
                     string txtTitulo = form["txtTitulo"];
                     string txtDescricao = form["txtDescricao"];
 
-                    if (!StringExt.IsNullOrWhiteSpace(ddlDisciplina, txtQteQuestoes, txtTitulo))
+                    if (!StringExt.IsNullOrWhiteSpace(ddlDisciplina, txtTitulo) && qteQuestoesDiscursivas + qteQuestoesObjetivas > 0)
                     {
-                        int qteQuestoes = int.Parse(txtQteQuestoes);
                         int codDisciplina = int.Parse(ddlDisciplina);
 
                         SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
                         SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
 
-                        alterarQuestoes = qteQuestoes != prova.QteQuestoes || codDisciplina != prova.CodDisciplina;
+                        alterarQuestoes = qteQuestoesDiscursivas != prova.QteQuestoesDiscursivas || qteQuestoesObjetivas != prova.QteQuestoesObjetivas || codDisciplina != prova.CodDisciplina;
 
                         prova.Titulo = txtTitulo;
                         prova.Descricao = String.IsNullOrWhiteSpace(txtDescricao) ? String.Empty : txtDescricao;
-                        prova.QteQuestoes = qteQuestoes;
+                        prova.QteQuestoes = qteQuestoesDiscursivas + qteQuestoesObjetivas;
                         prova.CodDisciplina = codDisciplina;
 
                         if (!String.IsNullOrWhiteSpace(ddlProfessor))
@@ -631,7 +643,8 @@ namespace SIAC.Controllers
                         if (alterarQuestoes)
                         {
                             List<int> simuladoQuestoes = sim.TodasQuestoesPorDisciplina(prova.CodDisciplina, prova.CodDiaRealizacao, prova.CodProva).Select(q => q.CodQuestao).ToList();
-                            List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, prova.QteQuestoes, TipoQuestao.OBJETIVA, simuladoQuestoes);
+                            List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, qteQuestoesObjetivas, TipoQuestao.OBJETIVA, simuladoQuestoes);
+                            questoesCodigos.AddRange(Simulado.ObterQuestoesCodigos(prova.CodDisciplina, qteQuestoesDiscursivas, TipoQuestao.DISCURSIVA, simuladoQuestoes));
 
                             prova.SimProvaQuestao.Clear();
 
@@ -653,11 +666,16 @@ namespace SIAC.Controllers
                         else
                         {
                             mensagem = "Foi gerada uma quantidade menor de questões para a prova deste simulado.";
-                            estilo = Lembrete.NEGATIVO;
+                            estilo = Lembrete.INFO;
                         }
 
                         diaRealizacao.SimProva.Add(prova);
                         Repositorio.Commit();
+                    }
+                    else
+                    {
+                        mensagem = "Você não inseriu todas as informações necessárias para editar a prova.";
+                        estilo = Lembrete.NEGATIVO;
                     }
                 }
             }

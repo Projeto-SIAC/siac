@@ -1,10 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace SIAC.Models
 {
     public partial class SimProva
     {
+        [NotMapped]
+        public int QteQuestoesObjetivas =>
+            this.SimProvaQuestao.Count(q => q.Questao.CodTipoQuestao == TipoQuestao.OBJETIVA);
+
+        [NotMapped]
+        public int QteQuestoesDiscursivas =>
+            this.SimProvaQuestao.Count(q => q.Questao.CodTipoQuestao == TipoQuestao.DISCURSIVA);
+
         public void AdicionarQuestao(int codQuestao)
         {
             this.SimProvaQuestao.Add(new SimProvaQuestao()
