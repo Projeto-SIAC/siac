@@ -413,7 +413,7 @@ siac.Gerencia.Provas = (function () {
         $('#cardQuestao' + indice + ' div').popup('hide');
         $.ajax({
             type: "POST",
-            url: '/simulado/gerencia/trocarprovaconfigurar',
+            url: '/simulado/gerencia/provaconfigurartrocar',
             data: {
                 'indice': indice,
                 'questao': questao,
@@ -450,7 +450,7 @@ siac.Gerencia.Provas = (function () {
         $('#cardQuestao' + indice + ' div').popup('hide');
         $.ajax({
             type: 'POST',
-            url: '/simulado/gerencia/desfazerprovaconfigurar',
+            url: '/simulado/gerencia/provaconfigurardesfazer',
             data: {
                 'indice': indice,
                 'questao': questao,

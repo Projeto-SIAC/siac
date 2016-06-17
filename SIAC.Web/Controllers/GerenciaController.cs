@@ -660,7 +660,7 @@ namespace SIAC.Controllers
 
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
-        public ActionResult TrocarProvaConfigurar(string simulado, int dia, int prova, int questao, int indice)
+        public ActionResult ProvaConfigurarTrocar(string simulado, int dia, int prova, int questao, int indice)
         {
             if (!String.IsNullOrWhiteSpace(simulado))
             {
@@ -676,6 +676,7 @@ namespace SIAC.Controllers
                         }
 
                         var simuladoQuestoes = (List<int>)TempData[$"SimuladoTrocarQuestoes{sim.Codigo}"];
+                        TempData.Keep();
 
                         Questao questaoTrocada = simProva.SimProvaQuestao.FirstOrDefault(q => q.CodQuestao == questao)?.Questao;
 
@@ -690,10 +691,8 @@ namespace SIAC.Controllers
                                 simProva.AdicionarQuestao(novaQuestao.Value);
                                 simuladoQuestoes.Add(novaQuestao.Value);
 
-                                TempData[$"SimuladoTrocarQuestaoCodigo{sim.Codigo}"] = questao;
-                                TempData[$"SimuladoTrocarQuestaoIndice{sim.Codigo}"] = indice;
+                                TempData[$"SimuladoTrocarQuestaoCodigo{sim.Codigo}{indice}"] = questao;
                                 TempData[$"SimuladoTrocarQuestoes{sim.Codigo}"] = simuladoQuestoes;
-                                TempData.Keep();
 
                                 ViewData["Index"] = indice;
                                 return PartialView("_QuestaoConfigurar", Questao.ListarPorCodigo(novaQuestao.Value));
@@ -712,7 +711,7 @@ namespace SIAC.Controllers
 
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
-        public ActionResult DesfazerProvaConfigurar(string simulado, int dia, int prova, int questao, int indice)
+        public ActionResult ProvaConfigurarDesfazer(string simulado, int dia, int prova, int questao, int indice)
         {
             if (!String.IsNullOrWhiteSpace(simulado))
             {
@@ -725,24 +724,27 @@ namespace SIAC.Controllers
                         Questao questaoDesfazer = simProva.SimProvaQuestao.FirstOrDefault(q => q.CodQuestao == questao)?.Questao;
                         if (questaoDesfazer != null)
                         {
-                            Questao questaoTrocada = Questao.ListarPorCodigo((int)TempData[$"SimuladoTrocarQuestaoCodigo{sim.Codigo}"]);
+                            Questao questaoTrocada = Questao.ListarPorCodigo((int)TempData[$"SimuladoTrocarQuestaoCodigo{sim.Codigo}{indice}"]);
+                            TempData.Keep();
                             if (questaoTrocada?.CodQuestao != questao)
                             {
                                 var simuladoQuestoes = (List<int>)TempData[$"SimuladoTrocarQuestoes{sim.Codigo}"];
-
-                                simProva.RemoverQuestao(questao);
-                                simuladoQuestoes.Remove(questao);
-
-                                simProva.AdicionarQuestao(questaoTrocada.CodQuestao);
-                                simuladoQuestoes.Add(questaoTrocada.CodQuestao);
-
-                                TempData[$"SimuladoTrocarQuestaoCodigo{sim.Codigo}"] = questao;
-                                TempData[$"SimuladoTrocarQuestaoIndice{sim.Codigo}"] = indice;
-                                TempData[$"SimuladoTrocarQuestoes{sim.Codigo}"] = simuladoQuestoes;
                                 TempData.Keep();
 
-                                ViewData["Index"] = indice;
-                                return PartialView("_QuestaoConfigurar", questaoTrocada);
+                                if (!simuladoQuestoes.Contains(questaoTrocada.CodQuestao))
+                                {
+                                    simProva.RemoverQuestao(questao);
+                                    simuladoQuestoes.Remove(questao);
+
+                                    simProva.AdicionarQuestao(questaoTrocada.CodQuestao);
+                                    simuladoQuestoes.Add(questaoTrocada.CodQuestao);
+
+                                    TempData[$"SimuladoTrocarQuestaoCodigo{sim.Codigo}{indice}"] = questao;
+                                    TempData[$"SimuladoTrocarQuestoes{sim.Codigo}"] = simuladoQuestoes;
+
+                                    ViewData["Index"] = indice;
+                                    return PartialView("_QuestaoConfigurar", questaoTrocada);
+                                }
                             }
                         }
                     }
@@ -753,7 +755,7 @@ namespace SIAC.Controllers
 
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
-        public ActionResult RecarregarQuestoesProvaConfigurar(string simulado, int dia, int prova)
+        public ActionResult ProvaConfigurarRecarregarQuestoes(string simulado, int dia, int prova)
         {
             if (!String.IsNullOrWhiteSpace(simulado))
             {
@@ -764,7 +766,8 @@ namespace SIAC.Controllers
                     if (simProva != null)
                     {
                         List<int> simuladoQuestoes = sim.TodasQuestoesPorDisciplina(simProva.CodDisciplina, simProva.CodDiaRealizacao, simProva.CodProva).Select(q => q.CodQuestao).ToList();
-                        List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(simProva.CodDisciplina, simProva.QteQuestoes, TipoQuestao.OBJETIVA, simuladoQuestoes);
+                        List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(simProva.CodDisciplina, simProva.QteQuestoes - simProva.QteQuestoesDiscursivas, TipoQuestao.OBJETIVA, simuladoQuestoes);
+                        questoesCodigos.AddRange(Simulado.ObterQuestoesCodigos(simProva.CodDisciplina, simProva.QteQuestoesDiscursivas, TipoQuestao.DISCURSIVA, simuladoQuestoes));
 
                         simProva.SimProvaQuestao.Clear();
 
