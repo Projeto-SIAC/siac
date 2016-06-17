@@ -880,10 +880,18 @@ namespace SIAC.Controllers
                 {
                     SimuladoRespostasViewModel model = new SimuladoRespostasViewModel();
                     model.Simulado = sim;
-                    model.Provas = sim.Provas;
+                    model.Provas = sim.Provas.Where(p => p.QteQuestoesObjetivas > 0).ToList();
                     model.Candidatos = sim.SimCandidato.OrderBy(c => c.Candidato.Nome).ToList();
 
-                    return View(model);
+                    if (model.Provas.Count > 0)
+                    {
+                        return View(model);
+                    }
+                    else
+                    {
+                        Lembrete.AdicionarNotificacao($"O simulado {sim.Titulo} não possui provas objetivas para serem corrigidas.", Lembrete.INFO);
+                        return RedirectToAction("Detalhe", new { codigo = codigo });
+                    }
                 }
             }
 
@@ -927,18 +935,18 @@ namespace SIAC.Controllers
                     {
                         SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
                         SimCandidatoProva candidato = contexto.SimCandidatoProva
-                                                        .FirstOrDefault(p => p.Ano == sim.Ano
-                                                        && p.NumIdentificador == sim.NumIdentificador
-                                                        && p.CodProva == codProva
-                                                        && p.CodDiaRealizacao == codDia
-                                                        && p.CodCandidato == codCandidato);
+                            .FirstOrDefault(p => p.Ano == sim.Ano
+                                && p.NumIdentificador == sim.NumIdentificador
+                                && p.CodProva == codProva
+                                && p.CodDiaRealizacao == codDia
+                                && p.CodCandidato == codCandidato);
 
                         SimuladoRespostasCandidatoViewModel model = new SimuladoRespostasCandidatoViewModel();
 
                         model.Simulado = sim;
                         model.Prova = prova;
                         model.Candidato = candidato.SimCandidato.Candidato;
-                        model.Questoes = prova.SimProvaQuestao.OrderBy(q => q.CodQuestao).ToList();
+                        model.Questoes = prova.SimProvaQuestao.Where(q => q.Questao.CodTipoQuestao == TipoQuestao.OBJETIVA).OrderBy(q => q.CodQuestao).ToList();
                         model.Respostas = candidato.SimCandidatoQuestao.OrderBy(q => q.CodQuestao).ToList();
                         model.CandidatoProva = candidato;
 
@@ -1160,8 +1168,15 @@ namespace SIAC.Controllers
                 if (sim != null && !sim.FlagSimuladoEncerrado)
                 {
                     SimSala sala = sim.SimSala.FirstOrDefault(s => s.CodSala == codSala);
-
-                    return PartialView("_SimuladoSalaCandidatos", sala);
+                    if (sala.SimCandidato.Count > 0)
+                    {
+                        return PartialView("_SimuladoSalaCandidatos", sala);
+                    }
+                    else
+                    {
+                        Lembrete.AdicionarNotificacao($"Não há candidados alocados na sala {sala.Sala.Descricao}.", Lembrete.INFO);
+                        return null;
+                    }
                 }
             }
             return null;

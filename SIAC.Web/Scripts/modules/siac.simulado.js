@@ -699,8 +699,10 @@ siac.Simulado.Detalhe = (function () {
                     $button.addClass('loading');
                 },
                 success: function (data) {
-                    $modal.html(data);
-                    $modal.modal('show');
+                    if (data) {
+                        $modal.html(data);
+                        $modal.modal('show');
+                    }
                 },
                 error: function () {
                     siac.mensagem('Ocorreu um erro na operação.');

@@ -15,7 +15,7 @@
             <label>Selecione a prova para inserir as respostas</label>
             <select name="ddlProva" id="ddlProva" class="ui dropdown">
                 <option value="">Selecione a prova</option>
-                @foreach(SimProva prova in Model.Provas)
+                @foreach (SimProva prova in Model.Provas)
                 {
                     <option value="@($"{prova.CodDiaRealizacao}.{prova.CodProva}")">@($"{prova.CodDiaRealizacao}º dia - {prova.Titulo}")</option>
                 }
@@ -33,11 +33,10 @@
         </div>
     </div>
     <div class="ui prova button">Corrigir por Prova</div>
-    <div class="ui right floated candidato button">Corrigir por Candidato</div>
+    <div class="ui candidato button">Corrigir por Candidato</div>
 </div>
 
 <div class="ui basic segment lista respostas">
-
 </div>
 
 <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Os valores preenchidos serão perdidos</p><a href='@Url.Action("Detalhe", new { codigo = Model.Simulado.Codigo })' class='ui mini button'>Confirmar</a></div>" class="ui voltar button">Voltar</div>

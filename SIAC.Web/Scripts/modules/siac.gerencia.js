@@ -429,9 +429,6 @@ siac.Gerencia.Provas = (function () {
                     $('.ui.button.disabled').removeClass('disabled');
                     $('#cardQuestao' + indice + ' .ui.desfazer.button').parents('.popup').prev().show();
                 }
-                else {
-                    siac.Lembrete.iniciar();
-                }
                 card.removeClass('ui form loading');
             },
             error: function () {
