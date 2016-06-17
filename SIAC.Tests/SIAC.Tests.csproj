@@ -111,7 +111,7 @@
     <Compile Include="TemaControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SIAC.Web\SIAC.csproj">
+    <ProjectReference Include="..\SIAC\SIAC.csproj">
       <Project>{4b390e85-f5e9-4f34-8a2f-5b495d6b99a0}</Project>
       <Name>SIAC</Name>
     </ProjectReference>
