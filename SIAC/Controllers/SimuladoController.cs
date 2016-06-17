@@ -1175,7 +1175,6 @@ namespace SIAC.Controllers
                     else
                     {
                         Lembrete.AdicionarNotificacao($"Não há candidados alocados na sala {sala.Sala.Descricao}.", Lembrete.INFO);
-                        return null;
                     }
                 }
             }

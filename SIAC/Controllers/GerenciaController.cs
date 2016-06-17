@@ -579,7 +579,7 @@ namespace SIAC.Controllers
 
         #region Configuracoes
 
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Configuracoes() => View(new GerenciaConfiguracoesViewModel()
         {
             SmtpEnderecoHost = Parametro.Obter().SmtpEnderecoHost,
@@ -590,7 +590,7 @@ namespace SIAC.Controllers
         });
 
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Configuracoes(GerenciaConfiguracoesViewModel model)
         {
             Parametro p = Parametro.Obter();

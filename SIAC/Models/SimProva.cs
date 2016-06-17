@@ -52,6 +52,10 @@ namespace SIAC.Models
 
         public int? Peso { get; set; }
 
+        public bool FlagRedacao { get; set; }
+
+        public int OrdemDesempate { get; set; }
+
         public virtual Disciplina Disciplina { get; set; }
 
         public virtual Professor Professor { get; set; }

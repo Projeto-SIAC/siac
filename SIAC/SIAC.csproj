@@ -280,6 +280,10 @@
     <Compile Include="Migrations\201606071903047_Initial.Designer.cs">
       <DependentUpon>201606071903047_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606172058408_UpdateSimProva.cs" />
+    <Compile Include="Migrations\201606172058408_UpdateSimProva.Designer.cs">
+      <DependentUpon>201606172058408_UpdateSimProva.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Alternativa.cs" />
     <Compile Include="Models\Aluno.cs" />
@@ -672,6 +676,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201606071903047_Initial.resx">
       <DependentUpon>201606071903047_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606172058408_UpdateSimProva.resx">
+      <DependentUpon>201606172058408_UpdateSimProva.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
