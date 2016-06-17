@@ -812,12 +812,13 @@ namespace SIAC.Controllers
             model.Coordenadores = contexto.Ocupacao
                 .Find(Ocupacao.COORDENADOR_SIMULADO)
                 .PessoaFisica
-                .Where(p => p.Usuario.FirstOrDefault(u => u.Matricula == Sessao.UsuarioMatricula) == null)
+                .Where(p => p.Usuario.FirstOrDefault(u => u.Colaborador.Count > 0 && u.Matricula != Sessao.UsuarioMatricula) != null)
                 .ToList();
 
             model.Colaboradores = contexto.Ocupacao
                 .Find(Ocupacao.COLABORADOR_SIMULADO)
                 .PessoaFisica
+                .Where(p => p.Usuario.FirstOrDefault(u => u.Colaborador.Count > 0 && u.Matricula != Sessao.UsuarioMatricula) != null)
                 .ToList();
 
             return View(model);
@@ -845,18 +846,26 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR, Ocupacao.COORDENADOR_SIMULADO })]
         public void AdicionarCoordenador(int codPessoaFisica)
         {
-            PessoaFisica.AdicionarOcupacao(codPessoaFisica, Ocupacao.COORDENADOR_SIMULADO);
+            var pessoa = PessoaFisica.ListarPorCodigo(codPessoaFisica);
+            if (pessoa != null && pessoa.Usuario.FirstOrDefault(u => u.Colaborador.Count > 0) != null)
+            {
+                PessoaFisica.AdicionarOcupacao(codPessoaFisica, Ocupacao.COORDENADOR_SIMULADO);
+            }
         }
 
         [HttpPost]
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR, Ocupacao.COORDENADOR_SIMULADO })]
         public void AdicionarColaborador(int codPessoaFisica)
         {
-            PessoaFisica.AdicionarOcupacao(codPessoaFisica, Ocupacao.COLABORADOR_SIMULADO);
+            var pessoa = PessoaFisica.ListarPorCodigo(codPessoaFisica);
+            if (pessoa != null && pessoa.Usuario.FirstOrDefault(u => u.Colaborador.Count > 0) != null)
+            {
+                PessoaFisica.AdicionarOcupacao(codPessoaFisica, Ocupacao.COLABORADOR_SIMULADO);
+            }
         }
 
         [HttpPost]
-        [Filters.AutenticacaoFilter(SomenteOcupacaoAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR, Ocupacao.COORDENADOR_SIMULADO })]
         public void RemoverCoordenador(int[] codPessoaFisica)
         {
             foreach (int codPessoa in codPessoaFisica)
@@ -866,7 +875,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
-        [Filters.AutenticacaoFilter(SomenteOcupacaoAvi = true)]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR, Ocupacao.COORDENADOR_SIMULADO })]
         public void RemoverColaborador(int[] codPessoaFisica)
         {
             foreach (int codPessoa in codPessoaFisica)
