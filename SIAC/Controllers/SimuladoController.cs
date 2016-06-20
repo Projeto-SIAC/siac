@@ -1292,7 +1292,7 @@ namespace SIAC.Controllers
                         }
                     }
 
-                    int colocacao = 0;
+                    int colocacao = 1;
 
                     foreach (var escore in classificacao.Keys.OrderByDescending(x => x))
                     {
