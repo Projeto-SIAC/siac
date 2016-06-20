@@ -1273,7 +1273,25 @@ namespace SIAC.Controllers
 
                 if (sim != null)
                 {
-                    return PartialView("_SimuladoClassificacao", sim);
+                    var model = new SimuladoClassificacaoViewModel
+                    {
+                        Simulado = sim
+                    };
+                    int contador = 1;
+                    int classificacao = 0;
+                    decimal? ultimo = -1;
+
+                    foreach (SimCandidato candidato in sim.Classificacao)
+                    {
+                        if (ultimo != candidato.EscorePadronizadoFinal)
+                        {
+                            classificacao = contador;
+                        }
+                        model.Classificacao.Add(new KeyValuePair<int, SimCandidato>(classificacao, candidato));
+                        ultimo = candidato.EscorePadronizadoFinal;
+                        contador += 1;
+                    }
+                    return PartialView("_SimuladoClassificacao", model);
                 }
             }
             return null;

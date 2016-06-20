@@ -1,11 +1,8 @@
-﻿@model Simulado
-@{ 
-    int classificacao = 0;
-    decimal? ultimo = -1;
-}
+﻿@model SimuladoClassificacaoViewModel
+
 <i class="close icon"></i>
 <div class="header">
-    Classificação do Simulado @Model.Titulo
+    Classificação do Simulado @Model.Simulado.Titulo
 </div>
 <div class="content">
     <table class="ui striped table">
@@ -20,17 +17,16 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (SimCandidato candidato in Model.Classificacao)
+            @foreach (var classificado in Model.Classificacao)
             {
                 <tr>
-                    <td>@(candidato.EscorePadronizadoFinal == ultimo ? classificacao : ++classificacao)</td>
-                    <td>@candidato.Candidato.Nome</td>
-                    <td>@candidato.NumInscricaoRepresentacao</td>
-                    <td>@Formate.ParaCPF(candidato.Candidato.Cpf)</td>
-                    <td><b>@candidato.EscorePadronizadoFinalString</b></td>
-                    <td><div data-candidato="@candidato.CodCandidato" class="ui icon button"><i class="search icon"></i></div></td>
+                    <td>@classificado.Key</td>
+                    <td>@classificado.Value.Candidato.Nome</td>
+                    <td>@classificado.Value.NumInscricaoRepresentacao</td>
+                    <td>@Formate.ParaCPF(classificado.Value.Candidato.Cpf)</td>
+                    <td><b>@classificado.Value.EscorePadronizadoFinalString</b></td>
+                    <td><div data-candidato="@classificado.Value.CodCandidato" class="ui icon button"><i class="search icon"></i></div></td>
                 </tr>
-                ultimo = candidato.EscorePadronizadoFinal;
             }
         </tbody>
     </table>

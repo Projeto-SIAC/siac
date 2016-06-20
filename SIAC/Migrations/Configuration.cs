@@ -20,7 +20,7 @@ namespace SIAC.Migrations
             const string InstituicaoPortal = "http://portal.ifrn.edu.br";
 
             SemearEstruturas(context);
-            SemearLocalidades(context);
+            // SemearLocalidades(context);
             SemearParametros(context);
 
             if (!(context.Pessoa.Find(1)?.TipoPessoa == Pessoa.FISICA) && !(context.Pessoa.Find(2)?.TipoPessoa == Pessoa.JURIDICA))
