@@ -25,10 +25,15 @@
                     <td>@(item.i + 1)</td>
                     <td>
                         @item.prova.Titulo
+                        @if (item.prova.FlagRedacao)
+                        {
+                            <div class="ui small label">
+                                Redação
+                            </div>
+                        }
                         <div class="ui small label">
                             Questões
                             <div class="detail">@item.prova.QteQuestoes</div>
-                            <div class="detail">@item.prova.SimProvaQuestao.Count</div>
                         </div>
                     </td>
                     <td>@item.prova.Disciplina.Descricao</td>

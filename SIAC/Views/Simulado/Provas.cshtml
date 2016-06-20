@@ -31,17 +31,17 @@
         <tbody>
             @foreach (SimDiaRealizacao dia in Model.Simulado.SimDiaRealizacao.OrderBy(s => s.DtRealizacao).ToList())
             {
-            <tr>
-                <td>@dia.CodDiaRealizacao</td>
-                <td>@dia.DtRealizacao.DiaRealizacaoRepresentacao()</td>
-                <td>@dia.DtRealizacao.ToShortTimeString()</td>
-                <td>@dia.DtRealizacao.AddMinutes(dia.Duracao).ToShortTimeString()</td>
-                <td>
-                    <a data-dia="@dia.CodDiaRealizacao" class="ui provas tiny button"><i class="copy icon"></i>Provas</a>
-                    <a data-dia="@dia.CodDiaRealizacao" class="ui editar tiny button"><i class="edit icon"></i>Editar</a>
-                    <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Esta ação não poderá ser desfeita</p><a data-dia='@(dia.CodDiaRealizacao)' class='ui remover mini button'>Confirmar</a></div>" class="ui tiny button"><i class="trash icon"></i>Remover</div>
-                </td>
-            </tr>
+                <tr>
+                    <td>@dia.CodDiaRealizacao</td>
+                    <td>@dia.DtRealizacao.DiaRealizacaoRepresentacao()</td>
+                    <td>@dia.DtRealizacao.ToShortTimeString()</td>
+                    <td>@dia.DtRealizacao.AddMinutes(dia.Duracao).ToShortTimeString()</td>
+                    <td>
+                        <a data-dia="@dia.CodDiaRealizacao" class="ui provas tiny button"><i class="copy icon"></i>Provas</a>
+                        <a data-dia="@dia.CodDiaRealizacao" class="ui editar tiny button"><i class="edit icon"></i>Editar</a>
+                        <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Esta ação não poderá ser desfeita</p><a data-dia='@(dia.CodDiaRealizacao)' class='ui remover mini button'>Confirmar</a></div>" class="ui tiny button"><i class="trash icon"></i>Remover</div>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
@@ -124,6 +124,14 @@
             <div class="field">
                 <label data-ajuda="Descreva no espaço abaixo uma descrição para este simulado">Insira uma descrição</label>
                 <textarea id="txtDescricao" name="txtDescricao" rows="5" placeholder="Descrição"></textarea>
+            </div>
+            <div class="ui segment">
+                <div class="field">
+                    <div class="ui toggle checkbox">
+                        <input id="chkRedacao" name="chkRedacao" type="checkbox">
+                        <label for="chkRedacao">Esta prova é uma redação/produção textual</label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

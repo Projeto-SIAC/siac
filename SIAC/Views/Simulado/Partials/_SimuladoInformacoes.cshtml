@@ -43,7 +43,15 @@
                                     @foreach (SimProva prova in dia.SimProva)
                                     {
                                         <tr>
-                                            <td>@prova.Titulo</td>
+                                            <td>
+                                                @prova.Titulo
+                                                @if (prova.FlagRedacao)
+                                                {
+                                                    <div class="ui small label">
+                                                        Redação
+                                                    </div>
+                                                }
+                                            </td>
                                             <td>@prova.Disciplina.Descricao</td>
                                             <td>@(prova.Professor != null ? prova.Professor.Usuario.PessoaFisica.PrimeiroNome : "Não Definido")</td>
                                         </tr>

@@ -521,6 +521,7 @@ namespace SIAC.Controllers
                     string ddlProfessor = form["ddlProfessor"];
                     string txtTitulo = form["txtTitulo"];
                     string txtDescricao = form["txtDescricao"];
+                    string chkRedadao = form["chkRedacao"];
 
                     if (!StringExt.IsNullOrWhiteSpace(ddlDisciplina, txtTitulo) && qteQuestoesDiscursivas + qteQuestoesObjetivas > 0)
                     {
@@ -533,6 +534,7 @@ namespace SIAC.Controllers
                         prova.Descricao = String.IsNullOrWhiteSpace(txtDescricao) ? String.Empty : txtDescricao;
                         prova.QteQuestoes = qteQuestoesDiscursivas + qteQuestoesObjetivas;
                         prova.CodDisciplina = int.Parse(ddlDisciplina);
+                        prova.FlagRedacao = !String.IsNullOrWhiteSpace(chkRedadao);
 
                         if (!String.IsNullOrWhiteSpace(ddlProfessor))
                         {
@@ -611,6 +613,7 @@ namespace SIAC.Controllers
                     string ddlProfessor = form["ddlProfessor"];
                     string txtTitulo = form["txtTitulo"];
                     string txtDescricao = form["txtDescricao"];
+                    string chkRedadao = form["chkRedacao"];
 
                     if (!StringExt.IsNullOrWhiteSpace(ddlDisciplina, txtTitulo) && qteQuestoesDiscursivas + qteQuestoesObjetivas > 0)
                     {
@@ -626,6 +629,7 @@ namespace SIAC.Controllers
                         prova.Descricao = String.IsNullOrWhiteSpace(txtDescricao) ? String.Empty : txtDescricao;
                         prova.QteQuestoes = qteQuestoesDiscursivas + qteQuestoesObjetivas;
                         prova.CodDisciplina = codDisciplina;
+                        prova.FlagRedacao = !String.IsNullOrWhiteSpace(chkRedadao);
 
                         if (!String.IsNullOrWhiteSpace(ddlProfessor))
                         {

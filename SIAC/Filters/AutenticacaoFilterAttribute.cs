@@ -23,12 +23,12 @@ namespace SIAC.Filters
 
         private ActionResult Redirecionar(ActionExecutingContext filterContext, string url = null)
         {
+            if (!string.IsNullOrEmpty(Sessao.UsuarioMatricula))
+            {
+                Lembrete.AdicionarNotificacao("Você tentou acessar uma área sem permissão.", Lembrete.INFO);
+            }
             if (filterContext.HttpContext.Request.HttpMethod == "GET")
             {
-                if (!string.IsNullOrEmpty(Sessao.UsuarioMatricula))
-                {
-                    Lembrete.AdicionarNotificacao("Você tentou acessar uma área sem permissão.", Lembrete.INFO);
-                }
                 if (string.IsNullOrEmpty(url))
                 {
                     return new RedirectResult("~/?continuar=" + filterContext.HttpContext.Request.Path);
