@@ -1277,20 +1277,41 @@ namespace SIAC.Controllers
                     {
                         Simulado = sim
                     };
-                    int contador = 1;
-                    int classificacao = 0;
-                    decimal? ultimo = -1;
 
-                    foreach (SimCandidato candidato in sim.Classificacao)
+                    var classificacao = new Dictionary<decimal, List<SimCandidato>>();
+
+                    foreach (var candidato in model.Simulado.Classificacao)
                     {
-                        if (ultimo != candidato.EscorePadronizadoFinal)
+                        if (classificacao.ContainsKey(candidato.EscorePadronizadoFinal.Value))
                         {
-                            classificacao = contador;
+                            classificacao[candidato.EscorePadronizadoFinal.Value].Add(candidato);
                         }
-                        model.Classificacao.Add(new KeyValuePair<int, SimCandidato>(classificacao, candidato));
-                        ultimo = candidato.EscorePadronizadoFinal;
-                        contador += 1;
+                        else
+                        {
+                            classificacao[candidato.EscorePadronizadoFinal.Value] = new List<SimCandidato> { candidato };
+                        }
                     }
+
+                    int colocacao = 0;
+
+                    foreach (var escore in classificacao.Keys.OrderByDescending(x => x))
+                    {
+                        if (classificacao[escore].Count > 1)
+                        {
+                            // TODO: ordenador levando em conta a ordem de desempate
+                            foreach (var candidato in classificacao[escore])
+                            {
+                                model.Classificacao.Add(new KeyValuePair<int, SimCandidato>(colocacao, candidato));
+                                colocacao++;
+                            }
+                        }
+                        else
+                        {
+                            model.Classificacao.Add(new KeyValuePair<int, SimCandidato>(colocacao, classificacao[escore].First()));
+                            colocacao++;
+                        }
+                    }
+
                     return PartialView("_SimuladoClassificacao", model);
                 }
             }
