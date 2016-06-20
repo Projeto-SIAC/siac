@@ -114,6 +114,10 @@
                 {
                     <div class="divider"></div>
                     <div class="header">Configuração</div>
+                    <div class="ordem-desempate item">
+                        <i class="sort numeric ascending icon"></i>
+                        Gerenciar Ordem de Desempate
+                    </div>
                     if (Model.FlagInscricaoEncerrado)
                     {
                         if (Model.DtTerminoInscricao >= DateTime.Now && Model.DtInicioInscricao <= DateTime.Now)
@@ -161,6 +165,34 @@
         </div>
     }
 </h2>
+
+<div class="ui ordem-desempate small modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Gerenciar Ordem de Desempate
+    </div>
+    <div class="content">
+        <div class="ui divided list">
+            @foreach (var item in Model.Provas.OrderBy(p => p.OrdemDesempate))
+            {
+                <div class="item" data-prova="@item.CodComposto">
+                    <div class="right floated content">
+                        <div data-opcao="cima" class="ui icon button"><i class="chevron up icon"></i></div>
+                        <div data-opcao="baixo" class="ui icon button"><i class="chevron down icon"></i></div>
+                    </div>
+                    <div class="middle aligned content">
+                        <b>@item.Titulo</b><br />
+                        @(item.CodDiaRealizacao)º Dia de Realização
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Fechar</div>
+        <div class="ui approve button">Salvar</div>
+    </div>
+</div>
 
 <div class="ui candidatos modal">
     <i class="close icon"></i>

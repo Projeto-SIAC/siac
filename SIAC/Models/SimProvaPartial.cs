@@ -7,6 +7,9 @@ namespace SIAC.Models
     public partial class SimProva
     {
         [NotMapped]
+        public string CodComposto => $"{this.SimDiaRealizacao.Simulado.Codigo}.{this.CodDiaRealizacao}.{this.CodProva}";
+
+        [NotMapped]
         public int QteQuestoesObjetivas =>
             this.SimProvaQuestao.Count(q => q.Questao.CodTipoQuestao == TipoQuestao.OBJETIVA);
 

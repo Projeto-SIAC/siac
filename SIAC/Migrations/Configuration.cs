@@ -28575,38 +28575,41 @@ namespace SIAC.Migrations
 
         private void SemearParametros(Contexto context)
         {
-            context.Parametro.AddOrUpdate(
-                p => p.CodParametro,
-                new Parametro
-                {
-                    CodParametro = 1,
-                    PeriodoLetivoAnoAtual = System.DateTime.Today.Year,
-                    PeriodoLetivoSemestreAtual = System.DateTime.Today.Month <= 6 ? 1 : 2,
-                    QteSemestres = 2,
-                    TempoInatividade = 15, // em dias
-                    NumeracaoQuestao = (int)Parametro.NumeracaoPadrao.INDO_ARABICO,
-                    NumeracaoAlternativa = (int)Parametro.NumeracaoPadrao.CAIXA_BAIXA,
-                    ValorNotaMedia = 6,
-                    TermoResponsabilidade = "Termo de Responsabilidade.\nNão esqueça de atualizar.",
-                    NotaUsoAcademica = "Nota de Uso para Avaliação Acadêmica.\nNão esqueça de atualizar.",
-                    NotaUsoReposicao = "Nota de Uso para Avaliação de Reposição.\nNão esqueça de atualizar.",
-                    NotaUsoCertificacao = "Nota de Uso para Avaliação de Certificação.\nNão esqueça de atualizar.",
-                    NotaUsoInstitucional = "Nota de Uso para Avaliação Institucional.\nNão esqueça de atualizar.",
-                    NotaUsoSimulado = "Nota de Uso para Simulado.\nNão esqueça de atualizar.",
-                    CoordenadorAVI = Newtonsoft.Json.JsonConvert.SerializeObject(new int[] {
+            if (context.Parametro.Find(1) == null)
+            {
+                context.Parametro.AddOrUpdate(
+                    p => p.CodParametro,
+                    new Parametro
+                    {
+                        CodParametro = 1,
+                        PeriodoLetivoAnoAtual = System.DateTime.Today.Year,
+                        PeriodoLetivoSemestreAtual = System.DateTime.Today.Month <= 6 ? 1 : 2,
+                        QteSemestres = 2,
+                        TempoInatividade = 15, // em dias
+                        NumeracaoQuestao = (int)Parametro.NumeracaoPadrao.INDO_ARABICO,
+                        NumeracaoAlternativa = (int)Parametro.NumeracaoPadrao.CAIXA_BAIXA,
+                        ValorNotaMedia = 6,
+                        TermoResponsabilidade = "Termo de Responsabilidade.\nNão esqueça de atualizar.",
+                        NotaUsoAcademica = "Nota de Uso para Avaliação Acadêmica.\nNão esqueça de atualizar.",
+                        NotaUsoReposicao = "Nota de Uso para Avaliação de Reposição.\nNão esqueça de atualizar.",
+                        NotaUsoCertificacao = "Nota de Uso para Avaliação de Certificação.\nNão esqueça de atualizar.",
+                        NotaUsoInstitucional = "Nota de Uso para Avaliação Institucional.\nNão esqueça de atualizar.",
+                        NotaUsoSimulado = "Nota de Uso para Simulado.\nNão esqueça de atualizar.",
+                        CoordenadorAVI = Newtonsoft.Json.JsonConvert.SerializeObject(new int[] {
                         Ocupacao.SUPERUSUARIO,
                         Ocupacao.REITOR,
                         Ocupacao.PRO_REITOR,
                         Ocupacao.DIRETOR_GERAL,
                         Ocupacao.DIRETOR
-                    }),
-                    SmtpEnderecoHost = "nao.esqueca.de.atualizar", // ex.: smpt.live.com
-                    SmtpFlagSSL = false,
-                    SmtpPorta = 25,
-                    SmtpUsuario = Helpers.Criptografia.Base64Encode("usuario"),
-                    SmtpSenha = Helpers.Criptografia.Base64Encode("senha")
-                }
-            );
+                        }),
+                        SmtpEnderecoHost = "nao.esqueca.de.atualizar", // ex.: smpt.live.com
+                        SmtpFlagSSL = false,
+                        SmtpPorta = 25,
+                        SmtpUsuario = Helpers.Criptografia.Base64Encode("usuario"),
+                        SmtpSenha = Helpers.Criptografia.Base64Encode("senha")
+                    }
+                );
+            }
         }
     }
 }

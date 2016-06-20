@@ -535,6 +535,7 @@ namespace SIAC.Controllers
                         prova.QteQuestoes = qteQuestoesDiscursivas + qteQuestoesObjetivas;
                         prova.CodDisciplina = int.Parse(ddlDisciplina);
                         prova.FlagRedacao = !String.IsNullOrWhiteSpace(chkRedadao);
+                        prova.OrdemDesempate = sim.Provas.Count > 0 ? sim.Provas.Max(p => p.OrdemDesempate) + 1 : 1;
 
                         if (!String.IsNullOrWhiteSpace(ddlProfessor))
                         {
@@ -1388,6 +1389,40 @@ namespace SIAC.Controllers
                 }
             }
             return RedirectToAction("Detalhe", new { codigo = codigo });
+        }
+
+        [HttpPost]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
+        public void AtualizarOrdemDesempate(string codigo, string[] provas)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                {
+                    int atualizadas = 0;
+                    for (int i = 0, length = provas.Length; i < length; i++)
+                    {
+                        string[] valores = provas[i].Split('.');
+                        int codDia = int.Parse(valores[1]);
+                        int codProva = int.Parse(valores[2]);
+                        SimProva prova = sim.SimDiaRealizacao
+                            .FirstOrDefault(d => d.CodDiaRealizacao == codDia)?
+                            .SimProva.FirstOrDefault(p => p.CodProva == codProva);
+                        if (prova != null)
+                        {
+                            prova.OrdemDesempate = i + 1;
+                            atualizadas++;
+                        }
+                    }
+                    if (atualizadas == provas.Length)
+                    {
+                        Repositorio.Commit();
+                        Lembrete.AdicionarNotificacao("Ordem de Desempate atualizada com sucesso.", Lembrete.POSITIVO);
+                    }
+                }
+            }
         }
     }
 }

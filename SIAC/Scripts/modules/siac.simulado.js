@@ -778,7 +778,64 @@ siac.Simulado.Detalhe = (function () {
             });
         });
 
+        $('.ordem-desempate.item').click(function () {
+            $('.ordem-desempate.modal').modal({
+                onApprove: function () {
+                    var $modal = $(this);
+                    $.ajax({
+                        type: 'POST',
+                        url: '/simulado/atualizarordemdesempate/' + _codigo,
+                        data: {
+                            provas: retornarOrdemDesempate()
+                        },
+                        beforeSend: function () {
+                            $modal.find('.approve.button').addClass('loading');
+                        },
+                        complete: function () {
+                            $modal.find('.approve.button').removeClass('loading');
+                            $modal.modal('hide');
+                        }
+                    });
+                    return false;
+                }
+            }).modal('show');
+        });
+
+        gerenciarOrdemDesempate();
+
         siac.Simulado.adicionarEventoNoFormulario();
+    }
+
+    function retornarOrdemDesempate() {
+        var $provas = $('.ordem-desempate.modal .content .list .item[data-prova]');
+        var provas = [];
+        for (var i = 0, length = $provas.length; i < length; i++) {
+            provas.push($provas.eq(i).data('prova'));
+        }
+        return provas;
+    }
+
+    function gerenciarOrdemDesempate() {
+        var $lista = $('.ordem-desempate.modal .content .list');
+
+        $('[data-opcao=cima]').click(function () {
+            var $item = $(this).closest('.item');
+            $item.insertBefore($item.prev());
+            atualizar();
+        });
+        $('[data-opcao=baixo]').click(function () {
+            var $item = $(this).closest('.item');
+            $item.insertAfter($item.next());
+            atualizar();
+        });
+
+        function atualizar() {
+            $lista.find('[data-opcao]').removeClass('disabled');
+            $lista.find('.item:first-child [data-opcao=cima]').addClass('disabled');
+            $lista.find('.item:last-child [data-opcao=baixo]').addClass('disabled');
+        }
+
+        atualizar();
     }
 
     function abrirCandidatoDetalhe($button) {
