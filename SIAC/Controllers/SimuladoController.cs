@@ -1298,11 +1298,49 @@ namespace SIAC.Controllers
                     {
                         if (classificacao[escore].Count > 1)
                         {
-                            // TODO: ordenador levando em conta a ordem de desempate
-                            foreach (var candidato in classificacao[escore])
+                            List<SimCandidato> candidados = classificacao[escore];
+                            foreach (var prova in model.Simulado.Provas.OrderBy(p => p.OrdemDesempate))
                             {
-                                model.Classificacao.Add(new KeyValuePair<int, SimCandidato>(colocacao, candidato));
-                                colocacao++;
+                                if (candidados.Count > 0)
+                                {
+                                    decimal maior = 0;
+                                    SimCandidato candidato = null;
+                                    for (int i = 0; i < candidados.Count; i++)
+                                    {
+                                        var candidatoProvaEscore = candidados[i].SimCandidatoProva.FirstOrDefault(p => p.CodDiaRealizacao == prova.CodDiaRealizacao && p.CodProva == prova.CodProva)?.EscorePadronizado;
+                                        if (candidatoProvaEscore.HasValue && candidatoProvaEscore.Value > maior)
+                                        {
+                                            candidato = candidados[i];
+                                        }
+                                    }
+                                    if (candidato != null)
+                                    {
+                                        model.Classificacao.Add(new KeyValuePair<int, SimCandidato>(colocacao, candidato));
+                                        candidados.Remove(candidato);
+                                        colocacao++;
+                                    }
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            if (candidados.Count > 0)
+                            {
+                                DateTime ultimaDtNascimento = DateTime.Now;
+                                foreach (var candidato in candidados.OrderBy(c => c.Candidato.DtNascimento))
+                                {
+                                    if (candidato.Candidato.DtNascimento.Value == ultimaDtNascimento)
+                                    {
+                                        model.Classificacao.Add(new KeyValuePair<int, SimCandidato>(colocacao - 1, candidato));
+                                    }
+                                    else
+                                    {
+                                        model.Classificacao.Add(new KeyValuePair<int, SimCandidato>(colocacao, candidato));
+                                        colocacao++;
+                                    }
+                                    ultimaDtNascimento = candidato.Candidato.DtNascimento.Value;
+                                }
                             }
                         }
                         else
