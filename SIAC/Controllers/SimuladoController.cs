@@ -1311,6 +1311,7 @@ namespace SIAC.Controllers
                                         if (candidatoProvaEscore.HasValue && candidatoProvaEscore.Value > maior)
                                         {
                                             candidato = candidados[i];
+                                            maior = candidatoProvaEscore.Value;
                                         }
                                     }
                                     if (candidato != null)
