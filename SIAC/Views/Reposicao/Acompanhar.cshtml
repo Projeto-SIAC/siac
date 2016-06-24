@@ -105,7 +105,7 @@
 
 <div class="ui basic segment">
     <div class="ui accordion">
-        @foreach (Aluno aluno in Model.Alunos.OrderBy(a => a.Usuario.PessoaFisica.Nome))
+        @foreach (var aluno in Model.Alunos.OrderBy(a => a.Usuario.PessoaFisica.Nome))
         {
             <div id="@aluno.MatrAluno" class="title">
                 <i class="dropdown icon" style="float:right"></i>

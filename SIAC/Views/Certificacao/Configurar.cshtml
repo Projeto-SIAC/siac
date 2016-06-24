@@ -55,7 +55,7 @@
     </div>
     <div class="content">
         <div class="ui three cards">
-            @foreach (Questao questao in Model.Avaliacao.Questao)
+            @foreach (var questao in Model.Avaliacao.Questao)
             {
                 var dtCadastro = questao.DtCadastro.ToElapsedTimeString();
                 <div id="@questao.CodQuestao" class="card">
@@ -118,7 +118,7 @@
             <label data-ajuda="Clique na caixa abaixo para selecionar o(s) tema(s) para a busca">Selecione o(s) Tema(s)</label>
             <select id="ddlTemas" name="ddlTemas" class="ui search dropdown fluid tema" multiple>
                 <option value="">Temas...</option>
-                @foreach (Tema t in Model.Avaliacao.Temas)
+                @foreach (var t in Model.Avaliacao.Temas)
                 {
                     <option value="@t.CodTema">@t.Descricao</option>
                 }
@@ -128,7 +128,7 @@
             <label data-ajuda="Clique na caixa abaixo para definir o índice de dificuldade máximo das questões para a busca">Defina o índice de dificuldade</label>
             <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown fluid dificuldade">
                 <option value="">Índ. de Dificuldade...</option>
-                @foreach (Dificuldade d in Model.Dificuldades)
+                @foreach (var d in Model.Dificuldades)
                 {
                     if (d.CodDificuldade <= Model.Avaliacao.CodDificuldade) 
                     {
@@ -141,7 +141,7 @@
             <label data-ajuda="Clique na caixa abaixo para determinar o tipo das questões para a busca">Determine o tipo</label>
             <select id="ddlTipo" name="ddlTipo" class="ui search dropdown fluid dificuldade">
                 <option value="">Tipo...</option>
-                @foreach (TipoQuestao t in Model.TiposQuestao)
+                @foreach (var t in Model.TiposQuestao)
                 {
                     if (Model.Avaliacao.TipoQuestoes == t.CodTipoQuestao || Model.Avaliacao.TipoQuestoes == 3)
                     {

@@ -64,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (Disciplina disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+                    @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
                     {
                         <tr>
                             <td>
@@ -73,7 +73,7 @@
                             </td>
                             <td class="ui labels">
                                 @* temas *@
-                                @foreach (AvaliacaoTema avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                                @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
                                 {
                                     <div class="ui tag label">@avalTema.Tema.Descricao</div>
                                 }
@@ -135,7 +135,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (Aluno aluno in Model.Alunos.OrderBy(a => a.Usuario.PessoaFisica.Nome))
+                        @foreach (var aluno in Model.Alunos.OrderBy(a => a.Usuario.PessoaFisica.Nome))
                         {
                             <tr>
                                 <td>
@@ -156,7 +156,7 @@
             <div class="title"><i class="dropdown icon"></i>Questões</div>
             <div class="content">
                 <div class="ui one cards" style="max-height: 25em; overflow-y: auto">
-                    @foreach (Questao questao in Model.Avaliacao.Questao)
+                    @foreach (var questao in Model.Avaliacao.Questao)
                     {
                         <div class="card">
                             <div class="content">
@@ -168,7 +168,7 @@
                                 @if (questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
                                 {
                                     <div class="ui very relaxed list">
-                                        @foreach (Alternativa alternativa in questao.Alternativa)
+                                        @foreach (var alternativa in questao.Alternativa)
                                         {
                                             <div class="item" data-html="@(!String.IsNullOrWhiteSpace(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
                                                 <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
@@ -194,7 +194,7 @@
                                     <div class="accordion">
                                         <div class="title"><i class="icon dropdown"></i>Anexos</div>
                                         <div class="content">
-                                            @foreach (QuestaoAnexo anexo in questao.QuestaoAnexo)
+                                            @foreach (var anexo in questao.QuestaoAnexo)
                                             {
                                                 @Html.Partial("_Anexo", anexo)
                                             }

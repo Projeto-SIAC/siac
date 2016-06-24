@@ -152,7 +152,7 @@
                         <div style="text-align:left" class="ui small message error">
                             <div class="header">Credenciais inválidas</div>
                             <p>Note que ambos os campos diferenciam maiúsculas e minúsculas.</p>
-                            @foreach (string mensagem in Model.Mensagens)
+                            @foreach (var mensagem in Model.Mensagens)
                             {
                                 <p>@mensagem</p>
                             }

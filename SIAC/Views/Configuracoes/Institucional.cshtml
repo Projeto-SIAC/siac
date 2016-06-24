@@ -14,7 +14,7 @@
         </div>
         <div class="ui form">
             <div class="grouped fields">
-                @foreach (Ocupacao ocupacao in Model.Ocupacoes)
+                @foreach (var ocupacao in Model.Ocupacoes)
                 {
                     <div class="@(flagProfessorCoordAvi ? "disabled" : "") field">
                         <div class="ui toggle checkbox">
@@ -35,7 +35,7 @@
         </div>
         <div class="ui form">
             <div class="grouped fields">
-                @foreach (PessoaFisica coordenador in Model.Coordenadores)
+                @foreach (var coordenador in Model.Coordenadores)
                 {
                     <div class="field">
                         <div class="ui checkbox">

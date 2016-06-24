@@ -78,7 +78,7 @@
             <label data-ajuda="Clique na caixa abaixo para selecionar o aluno" for="ddlAluno">Selecione o aluno</label>
             <select id="ddlAluno" name="ddlAluno" class="ui search dropdown" tabindex="0">
                 <option value="">Selecione o aluno</option>
-                @foreach (Aluno aluno in Model.AlunoSemJustificacao.OrderBy(a => a.Usuario.PessoaFisica.Nome))
+                @foreach (var aluno in Model.AlunoSemJustificacao.OrderBy(a => a.Usuario.PessoaFisica.Nome))
                 {
                     <option value="@aluno.MatrAluno">@aluno.Usuario.PessoaFisica.Nome</option>
                 }
@@ -108,7 +108,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (Justificacao justificacao in Model.Justificacoes.OrderBy(j => j.AvalPessoaResultado.PessoaFisica.Nome))
+            @foreach (var justificacao in Model.Justificacoes.OrderBy(j => j.AvalPessoaResultado.PessoaFisica.Nome))
             {
                 <tr id="@justificacao.CodJustificacao">
                     <td>

@@ -53,14 +53,14 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (Disciplina disciplina in Model.Autoavaliacao.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+                @foreach (var disciplina in Model.Autoavaliacao.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
                 {
                     <tr>
                         <td>
                             <b>@disciplina.Descricao</b>
                         </td>
                         <td class="ui labels">
-                            @foreach (AvaliacaoTema avalTema in Model.Autoavaliacao.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disciplina.CodDisciplina))
+                            @foreach (var avalTema in Model.Autoavaliacao.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disciplina.CodDisciplina))
                             {
                                 <div class="ui tag label">@avalTema.Tema.Descricao</div>
                             }
@@ -138,7 +138,7 @@
             <i class="sidebar icon"></i>
             <span class="text">Disciplina</span>
             <div class="menu">
-                @foreach (string disciplina in Model.DicionarioDisciplinaQuestao.Keys)
+                @foreach (var disciplina in Model.DicionarioDisciplinaQuestao.Keys)
                 {
                     <div class="item" data-alvo="@disciplina.ReplaceChars(" ", "-")">@disciplina</div>
                 }
@@ -167,7 +167,7 @@
 
 <form class="ui form" action="@Url.Action("Resultado", new { codigo = Model.Avaliacao.CodAvaliacao })" method="post">
     <div class="ui basic segment">
-        @foreach (string disciplina in Model.DicionarioDisciplinaQuestao.Keys)
+        @foreach (var disciplina in Model.DicionarioDisciplinaQuestao.Keys)
         {
             <h3 class="visibility" id="@disciplina.ReplaceChars(" ", "-")">@disciplina</h3>
             List<Questao> lstQuestao = Model.DicionarioDisciplinaQuestao[disciplina];
@@ -207,7 +207,7 @@
                         {
                             <div class="title"><i class="icon dropdown"></i>Anexos</div>
                             <div class="content">
-                                @foreach (QuestaoAnexo anexo in lstQuestao[i].QuestaoAnexo)
+                                @foreach (var anexo in lstQuestao[i].QuestaoAnexo)
                                 {
                                     @Html.Partial("_Anexo", anexo)
                                 }

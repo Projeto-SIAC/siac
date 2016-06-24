@@ -12,7 +12,7 @@ namespace SIAC.Helpers
         {
             get
             {
-                foreach (string avaliacao in Sistema.AvaliacaoUsuario.Keys)
+                foreach (var avaliacao in Sistema.AvaliacaoUsuario.Keys)
                     if (Sistema.AvaliacaoUsuario[avaliacao].Contains(UsuarioMatricula))
                         return true;
                 return false;

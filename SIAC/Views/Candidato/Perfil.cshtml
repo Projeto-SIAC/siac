@@ -110,7 +110,7 @@
             <label>País</label>
             <select name="Pais" id="ddlPais" class="ui search dropdown">
                 <option value="">Selecione</option>
-                @foreach (Pais pais in Model.Paises)
+                @foreach (var pais in Model.Paises)
                 {
                     <option @(Model.Candidato.CodPais == pais.CodPais ? "selected" : "") value="@pais.CodPais">@pais.Descricao</option>
                 }
@@ -122,7 +122,7 @@
                 <option value="">Selecione</option>
                 @if (Model.Candidato.Municipio != null)
                 {
-                    foreach (Estado estado in Model.Candidato.Municipio?.Estado.Pais.Estado)
+                    foreach (var estado in Model.Candidato.Municipio?.Estado.Pais.Estado)
                     {
                         <option @(Model.Candidato.CodEstado == estado.CodEstado ? "selected" : "") value="@estado.CodEstado">@estado.Descricao</option>
                     }
@@ -135,7 +135,7 @@
                 <option value="">Selecione</option>
                 @if (Model.Candidato.Municipio != null)
                 {
-                    foreach (Municipio municipio in Model.Candidato.Municipio?.Estado.Municipio)
+                    foreach (var municipio in Model.Candidato.Municipio?.Estado.Municipio)
                     {
                         <option @(Model.Candidato.CodMunicipio == municipio.CodMunicipio ? "selected" : "") value="@municipio.CodMunicipio">@municipio.Descricao</option>
                     }

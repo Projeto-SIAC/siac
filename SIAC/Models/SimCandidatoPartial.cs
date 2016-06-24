@@ -24,7 +24,7 @@ namespace SIAC.Models
 
                 if (listagem.FirstOrDefault(a => a.CodCandidato == this.CodCandidato) != null)
                 {
-                    foreach (SimCandidato sc in listagem)
+                    foreach (var sc in listagem)
                     {
                         if (ultimoEscore != sc.EscorePadronizadoFinal)
                         {

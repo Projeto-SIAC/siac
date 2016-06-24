@@ -29,7 +29,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (SimDiaRealizacao dia in Model.Simulado.SimDiaRealizacao.OrderBy(s => s.DtRealizacao).ToList())
+            @foreach (var dia in Model.Simulado.SimDiaRealizacao.OrderBy(s => s.DtRealizacao).ToList())
             {
                 <tr>
                     <td>@dia.CodDiaRealizacao</td>
@@ -94,7 +94,7 @@
                     <label>Disciplina</label>
                     <select name="ddlDisciplina" class="ui fluid search dropdown" required">
                         <option value="">Disciplina</option>
-                        @foreach (Disciplina d in Model.Disciplinas)
+                        @foreach (var d in Model.Disciplinas)
                         {
                             <option value="@d.CodDisciplina">@d.Descricao</option>
                         }

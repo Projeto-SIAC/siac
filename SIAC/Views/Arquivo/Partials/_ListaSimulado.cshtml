@@ -1,6 +1,6 @@
 ﻿@model List<Simulado>
 
-@foreach (Simulado simulado in Model)
+@foreach (var simulado in Model)
 {
     string dtCadastro = simulado.DtCadastro.ToElapsedTimeString();
     <div class="card">

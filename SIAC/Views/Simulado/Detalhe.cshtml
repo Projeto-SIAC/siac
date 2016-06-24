@@ -209,7 +209,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (SimCandidato candidato in Model.SimCandidato.OrderBy(c => c.NumInscricao))
+                @foreach (var candidato in Model.SimCandidato.OrderBy(c => c.NumInscricao))
                 {
                     <tr>
                         <td>@candidato.NumInscricaoRepresentacao</td>
@@ -467,7 +467,7 @@
             Dias e Provas
         </div>
         <div class="ui fluid accordion">
-            @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao.OrderBy(d => d.DtRealizacao))
+            @foreach (var dia in Model.SimDiaRealizacao.OrderBy(d => d.DtRealizacao))
             {
                 <div class="title">
                     <i class="dropdown icon"></i>
@@ -483,7 +483,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (SimProva prova in dia.SimProva)
+                            @foreach (var prova in dia.SimProva)
                             {
                                 <tr>
                                     <td>
@@ -537,7 +537,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (SimSala simSala in Model.SimSala)
+                @foreach (var simSala in Model.SimSala)
                 {
                     <tr>
                         <td data-content="@simSala.Sala.Bloco.Campus.PessoaJuridica.NomeFantasia">@simSala.Sala.Bloco.Campus.Sigla</td>

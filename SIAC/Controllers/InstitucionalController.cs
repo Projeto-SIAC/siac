@@ -36,7 +36,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, SomenteOcupacaoAvi = true)]
         public ActionResult Configuracao()
         {
-            InstitucionalGerarQuestaoViewModel model = new InstitucionalGerarQuestaoViewModel();
+            var model = new InstitucionalGerarQuestaoViewModel();
             model.Modulos = AviModulo.ListarOrdenadamente();
             model.Categorias = AviCategoria.ListarOrdenadamente();
             model.Indicadores = AviIndicador.ListarOrdenadamente();
@@ -110,7 +110,7 @@ namespace SIAC.Controllers
         {
             if (!StringExt.IsNullOrWhiteSpace(form["txtTitulo"], form["txtObjetivo"]))
             {
-                AviModulo modulo = new AviModulo();
+                var modulo = new AviModulo();
                 modulo.Descricao = form["txtTitulo"];
                 modulo.Objetivo = form["txtObjetivo"];
                 modulo.Observacao = String.IsNullOrWhiteSpace(form["txtObservacao"]) ? null : form["txtObservacao"];
@@ -127,7 +127,7 @@ namespace SIAC.Controllers
         {
             if (!String.IsNullOrWhiteSpace(form["txtTitulo"]))
             {
-                AviCategoria categoria = new AviCategoria();
+                var categoria = new AviCategoria();
                 categoria.Descricao = form["txtTitulo"];
                 categoria.Observacao = String.IsNullOrWhiteSpace(form["txtObservacao"]) ? null : form["txtObservacao"];
                 AviCategoria.Inserir(categoria);
@@ -143,7 +143,7 @@ namespace SIAC.Controllers
         {
             if (!String.IsNullOrWhiteSpace(form["txtTitulo"]))
             {
-                AviIndicador indicador = new AviIndicador();
+                var indicador = new AviIndicador();
                 indicador.Descricao = form["txtTitulo"];
                 indicador.Observacao = form["txtObservacao"];
                 AviIndicador.Inserir(indicador);
@@ -163,7 +163,7 @@ namespace SIAC.Controllers
         {
             if (!StringExt.IsNullOrWhiteSpace(form["txtTitulo"], form["txtObjetivo"]))
             {
-                AvalAvi avi = new AvalAvi();
+                var avi = new AvalAvi();
                 /* Chave */
                 avi.Avaliacao = new Avaliacao();
                 DateTime hoje = DateTime.Now;
@@ -238,7 +238,7 @@ namespace SIAC.Controllers
             AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
             if (avi != null && form.HasKeys())
             {
-                AviQuestao questao = new AviQuestao();
+                var questao = new AviQuestao();
 
                 /* Chave */
                 questao.AvalAvi = avi;
@@ -297,7 +297,7 @@ namespace SIAC.Controllers
             AvalAvi avi = AvalAvi.ListarPorCodigoAvaliacao(codigo);
             if (avi != null)
             {
-                AviQuestao questao = new AviQuestao();
+                var questao = new AviQuestao();
 
                 /* Chave */
                 questao.Ano = avi.Ano;
@@ -405,7 +405,7 @@ namespace SIAC.Controllers
                 {
                     if (avi.FlagQuestionario)
                     {
-                        InstitucionalPublicoViewModel viewModel = new InstitucionalPublicoViewModel();
+                        var viewModel = new InstitucionalPublicoViewModel();
                         viewModel.Avi = avi;
                         viewModel.TiposPublico = AviTipoPublico.ListarOrdenadamente();
                         return View(viewModel);
@@ -586,7 +586,7 @@ namespace SIAC.Controllers
                     PessoaFisica pessoa = PessoaFisica.ListarPorMatricula(Sessao.UsuarioMatricula);
                     if (avi.Pessoas.Contains(pessoa))
                     {
-                        InstitucionalRealizarViewModel viewModel = new InstitucionalRealizarViewModel();
+                        var viewModel = new InstitucionalRealizarViewModel();
                         viewModel.Avi = avi;
                         viewModel.Respostas = AviQuestaoPessoaResposta.ObterRespostasPessoa(avi, pessoa);
                         return View(viewModel);

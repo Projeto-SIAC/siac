@@ -18,7 +18,7 @@ namespace SIAC.Controllers
         {
             if (!String.IsNullOrWhiteSpace(codigo))
             {
-                ImpressaoAvaliacaoViewModel model = new ImpressaoAvaliacaoViewModel();
+                var model = new ImpressaoAvaliacaoViewModel();
                 model.Avaliacao = Models.Avaliacao.ListarPorCodigoAvaliacao(codigo);
                 if (model.Avaliacao.CodTipoAvaliacao == TipoAvaliacao.AUTOAVALIACAO)
                 {
@@ -43,7 +43,7 @@ namespace SIAC.Controllers
         {
             if (!String.IsNullOrWhiteSpace(codigo))
             {
-                ImpressaoAvaliacaoViewModel model = new ImpressaoAvaliacaoViewModel();
+                var model = new ImpressaoAvaliacaoViewModel();
                 model.Avaliacao = Models.Avaliacao.ListarPorCodigoAvaliacao(codigo);
                 if (model.Avaliacao != null && !StringExt.IsNullOrWhiteSpace(form["txtTitulo"], form["txtInstituicao"], form["txtProfessor"]) && model.Avaliacao.FlagPendente)
                 {

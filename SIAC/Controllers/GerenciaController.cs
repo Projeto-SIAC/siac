@@ -25,7 +25,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult Blocos()
         {
-            GerenciaBlocosViewModel viewModel = new GerenciaBlocosViewModel();
+            var viewModel = new GerenciaBlocosViewModel();
             viewModel.Campi = Campus.ListarOrdenadamente();
             viewModel.Blocos = Bloco.ListarOrdenadamente();
 
@@ -49,7 +49,7 @@ namespace SIAC.Controllers
                 string observacao = form["txtObservacao"].Trim();
                 if (!StringExt.IsNullOrWhiteSpace(campusCodComposto, descricao, sigla))
                 {
-                    Bloco bloco = new Bloco();
+                    var bloco = new Bloco();
                     bloco.Campus = Campus.ListarPorCodigo(campusCodComposto);
                     bloco.Descricao = descricao;
                     bloco.Sigla = String.IsNullOrWhiteSpace(sigla) ? null : sigla;
@@ -76,7 +76,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult CarregarBloco(int bloco)
         {
-            GerenciaEditarBlocoViewModel viewModel = new GerenciaEditarBlocoViewModel();
+            var viewModel = new GerenciaEditarBlocoViewModel();
             viewModel.Campi = Campus.ListarOrdenadamente();
             viewModel.Bloco = Bloco.ListarPorCodigo(bloco);
 
@@ -162,7 +162,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult Salas()
         {
-            GerenciaSalasViewModel viewModel = new GerenciaSalasViewModel();
+            var viewModel = new GerenciaSalasViewModel();
             viewModel.Campi = Campus.ListarOrdenadamente();
             viewModel.Blocos = Bloco.ListarOrdenadamente();
             viewModel.Salas = Sala.ListarOrdenadamente();
@@ -188,7 +188,7 @@ namespace SIAC.Controllers
                 string observacao = form["txtObservacao"].Trim();
                 if (!StringExt.IsNullOrWhiteSpace(bloco, descricao, sigla, capacidade))
                 {
-                    Sala sala = new Sala();
+                    var sala = new Sala();
                     sala.Bloco = Bloco.ListarPorCodigo(int.Parse(bloco));
                     sala.Descricao = descricao;
                     sala.Sigla = sigla;
@@ -216,7 +216,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult CarregarSala(int sala)
         {
-            GerenciaEditarSalaViewModel viewModel = new GerenciaEditarSalaViewModel();
+            var viewModel = new GerenciaEditarSalaViewModel();
             viewModel.Campi = Campus.ListarOrdenadamente();
             viewModel.Blocos = Bloco.ListarOrdenadamente();
             viewModel.Sala = Sala.ListarPorCodigo(sala);
@@ -313,7 +313,7 @@ namespace SIAC.Controllers
                 string sigla = form["txtSigla"].Trim();
                 if (!StringExt.IsNullOrWhiteSpace(descricao, sigla))
                 {
-                    Disciplina disciplina = new Disciplina()
+                    var disciplina = new Disciplina()
                     {
                         Descricao = descricao,
                         Sigla = sigla,
@@ -444,14 +444,14 @@ namespace SIAC.Controllers
                     {
                         int codPessoa = Pessoa.Inserir(new Pessoa() { TipoPessoa = Pessoa.FISICA });
 
-                        PessoaFisica pf = new PessoaFisica();
+                        var pf = new PessoaFisica();
                         pf.CodPessoa = codPessoa;
                         pf.Nome = nome;
                         pf.Categoria.Add(Categoria.ListarPorCodigo(Categoria.PROFESSOR));
 
                         int codPessoaFisica = PessoaFisica.Inserir(pf);
 
-                        Usuario usuario = new Usuario();
+                        var usuario = new Usuario();
                         usuario.Matricula = matricula;
                         usuario.CodPessoaFisica = codPessoaFisica;
                         usuario.CodCategoria = Categoria.PROFESSOR;
@@ -459,10 +459,10 @@ namespace SIAC.Controllers
 
                         int codUsuario = Usuario.Inserir(usuario);
 
-                        Professor professor = new Professor();
+                        var professor = new Professor();
                         professor.MatrProfessor = usuario.Matricula;
 
-                        foreach (string disciplina in disciplinas)
+                        foreach (var disciplina in disciplinas)
                         {
                             professor.Disciplina.Add(Disciplina.ListarPorCodigo(int.Parse(disciplina)));
                         }
@@ -522,7 +522,7 @@ namespace SIAC.Controllers
 
                     professor.Disciplina.Clear();
 
-                    foreach (string disciplina in disciplinas)
+                    foreach (var disciplina in disciplinas)
                     {
                         professor.Disciplina.Add(Disciplina.ListarPorCodigo(int.Parse(disciplina)));
                     }
@@ -616,11 +616,11 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Provas()
         {
-            GerenciaProvasViewModel model = new GerenciaProvasViewModel();
+            var model = new GerenciaProvasViewModel();
 
             List<SimProva> provas = SimProva.ListarPorProfessor(Sessao.UsuarioMatricula);
 
-            foreach (SimProva prova in provas)
+            foreach (var prova in provas)
             {
                 Simulado sim = prova.SimDiaRealizacao.Simulado;
                 if (!sim.FlagSimuladoEncerrado && !sim.FlagProvaEncerrada && prova.SimDiaRealizacao.DtRealizacao > DateTime.Now)
@@ -771,7 +771,7 @@ namespace SIAC.Controllers
 
                         simProva.SimProvaQuestao.Clear();
 
-                        foreach (int codQuestao in questoesCodigos)
+                        foreach (var codQuestao in questoesCodigos)
                         {
                             simProva.SimProvaQuestao.Add(new SimProvaQuestao()
                             {
@@ -868,7 +868,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR, Ocupacao.COORDENADOR_SIMULADO })]
         public void RemoverCoordenador(int[] codPessoaFisica)
         {
-            foreach (int codPessoa in codPessoaFisica)
+            foreach (var codPessoa in codPessoaFisica)
             {
                 PessoaFisica.RemoverOcupacao(codPessoa, Ocupacao.COORDENADOR_SIMULADO);
             }
@@ -878,7 +878,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR, Ocupacao.COORDENADOR_SIMULADO })]
         public void RemoverColaborador(int[] codPessoaFisica)
         {
-            foreach (int codPessoa in codPessoaFisica)
+            foreach (var codPessoa in codPessoaFisica)
             {
                 PessoaFisica.RemoverOcupacao(codPessoa, Ocupacao.COLABORADOR_SIMULADO);
             }

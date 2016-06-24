@@ -191,7 +191,7 @@ namespace SIAC.Hubs
             {
                 try
                 {
-                    LembreteHub hub = new LembreteHub();
+                    var hub = new LembreteHub();
                     hub.RecuperarNotificacoes(matricula);
                     hub.RecuperarMenu(matricula);
                     hub.RecuperarContadoresPrincipal(matricula);

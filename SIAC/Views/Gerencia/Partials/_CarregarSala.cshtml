@@ -11,7 +11,7 @@
             <label data-ajuda="">Selecione o Campus</label>
             <select name="ddlCampus" class="ui fluid search dropdown" required">
                 <option value="">Campus</option>
-                @foreach (Campus c in Model.Campi)
+                @foreach (var c in Model.Campi)
                 {
                     <option value="@c.CodComposto" @(Model.Sala.Bloco.Campus.CodComposto == c.CodComposto ? "selected" : "")>@c.PessoaJuridica.NomeFantasia</option>
                 }
@@ -21,7 +21,7 @@
             <label data-ajuda="">Selecione o Bloco</label>
             <select name="ddlBloco" class="ui fluid search dropdown" required">
                 <option value="">Bloco</option>
-                @foreach (Bloco b in Model.Sala.Bloco.Campus.Bloco)
+                @foreach (var b in Model.Sala.Bloco.Campus.Bloco)
                 {
                     <option value="@b.CodBloco" @(Model.Sala.Bloco.CodBloco == b.CodBloco ? "selected" : "")>@b.Descricao</option>
                 }

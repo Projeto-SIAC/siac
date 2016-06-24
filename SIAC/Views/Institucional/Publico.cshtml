@@ -41,7 +41,7 @@
                 <label data-ajuda="Clique na caixa abaixo para selecionar o filtro da pesquisa.">Selecione o filtro</label>
                 <select id="ddlFiltro" name="ddlFiltro" class="ui dropdown">
                     <option value="">Filtro</option>
-                    @foreach (AviTipoPublico publico in Model.TiposPublico)
+                    @foreach (var publico in Model.TiposPublico)
                     {
                         <option value="@publico.CodAviTipoPublico">@publico.Descricao</option>
                     }
@@ -78,7 +78,7 @@
             @*@{
                 if (Model.Avi.AviPublico.Count > 0)
                 {
-                    foreach (AviPublico publico in Model.Avi.AviPublico)
+                    foreach (var publico in Model.Avi.AviPublico)
                     {
                         <tr data-selecionado="@publico.CodPublico" data-filtro="@publico.CodAviTipoPublico">
                             <td>@publico.Descricao</td>

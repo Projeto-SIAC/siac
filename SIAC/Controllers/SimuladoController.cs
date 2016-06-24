@@ -31,7 +31,7 @@ namespace SIAC.Controllers
             {
                 int qteVagas = int.Parse(strQteVagas);
 
-                Simulado sim = new Simulado();
+                var sim = new Simulado();
                 DateTime hoje = DateTime.Now;
                 /* Chave */
                 sim.Ano = hoje.Year;
@@ -179,7 +179,7 @@ namespace SIAC.Controllers
                         {
                             var dias = Convert.ToInt32((sim.PrimeiroDiaRealizacao.DtRealizacao - sim.DtTerminoInscricao).Value.TotalDays);
 
-                            foreach (SimDiaRealizacao dia in sim.SimDiaRealizacao)
+                            foreach (var dia in sim.SimDiaRealizacao)
                             {
                                 dia.DtRealizacao = termino.AddDays(dias);
                             }
@@ -211,7 +211,7 @@ namespace SIAC.Controllers
 
                 if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
-                    SimuladoSalasViewModel model = new SimuladoSalasViewModel();
+                    var model = new SimuladoSalasViewModel();
                     model.Simulado = sim;
                     model.Campi = Campus.ListarOrdenadamente();
                     model.Blocos = Bloco.ListarOrdenadamente();
@@ -325,7 +325,7 @@ namespace SIAC.Controllers
 
                     if (!StringExt.IsNullOrWhiteSpace(strDataRealizacao, strHorarioInicio, strHorarioTermino))
                     {
-                        CultureInfo cultureBr = new CultureInfo("pt-BR");
+                        var cultureBr = new CultureInfo("pt-BR");
                         /* Simulado */
                         DateTime dataRealizacao = DateTime.Parse($"{strDataRealizacao} {strHorarioInicio}", cultureBr);
                         TimeSpan inicio = TimeSpan.Parse(strHorarioInicio, cultureBr);
@@ -385,7 +385,7 @@ namespace SIAC.Controllers
 
                     if (!StringExt.IsNullOrWhiteSpace(strDataRealizacao, strHorarioInicio, strHorarioTermino))
                     {
-                        CultureInfo cultureBr = new CultureInfo("pt-BR");
+                        var cultureBr = new CultureInfo("pt-BR");
                         /* Simulado */
                         DateTime dataRealizacao = DateTime.Parse($"{strDataRealizacao} {strHorarioInicio}", cultureBr);
                         TimeSpan inicio = TimeSpan.Parse(strHorarioInicio, cultureBr);
@@ -527,7 +527,7 @@ namespace SIAC.Controllers
                     {
                         SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
-                        SimProva prova = new SimProva();
+                        var prova = new SimProva();
 
                         prova.CodProva = diaRealizacao.SimProva.Count > 0 ? diaRealizacao.SimProva.Max(p => p.CodProva) + 1 : 1;
                         prova.Titulo = txtTitulo;
@@ -557,7 +557,7 @@ namespace SIAC.Controllers
 
                         prova.SimProvaQuestao.Clear();
 
-                        foreach (int codQuestao in questoesCodigos)
+                        foreach (var codQuestao in questoesCodigos)
                         {
                             prova.SimProvaQuestao.Add(new SimProvaQuestao()
                             {
@@ -653,7 +653,7 @@ namespace SIAC.Controllers
 
                             prova.SimProvaQuestao.Clear();
 
-                            foreach (int codQuestao in questoesCodigos)
+                            foreach (var codQuestao in questoesCodigos)
                             {
                                 prova.SimProvaQuestao.Add(new SimProvaQuestao()
                                 {
@@ -787,7 +787,7 @@ namespace SIAC.Controllers
                                 if (sim.QteVagas <= sim.SimSala.Sum(s => s.Sala.Capacidade))
                                 {
                                     bool valido = true;
-                                    foreach (SimProva prova in sim.Provas)
+                                    foreach (var prova in sim.Provas)
                                     {
                                         if (prova.QteQuestoes != prova.SimProvaQuestao.Count)
                                         {
@@ -883,7 +883,7 @@ namespace SIAC.Controllers
 
                 if (sim != null && !sim.FlagSimuladoEncerrado)
                 {
-                    SimuladoRespostasViewModel model = new SimuladoRespostasViewModel();
+                    var model = new SimuladoRespostasViewModel();
                     model.Simulado = sim;
                     model.Provas = sim.Provas.Where(p => p.QteQuestoesObjetivas > 0).ToList();
                     model.Candidatos = sim.SimCandidato.OrderBy(c => c.Candidato.Nome).ToList();
@@ -946,7 +946,7 @@ namespace SIAC.Controllers
                                 && p.CodDiaRealizacao == codDia
                                 && p.CodCandidato == codCandidato);
 
-                        SimuladoRespostasCandidatoViewModel model = new SimuladoRespostasCandidatoViewModel();
+                        var model = new SimuladoRespostasCandidatoViewModel();
 
                         model.Simulado = sim;
                         model.Prova = prova;
@@ -980,7 +980,7 @@ namespace SIAC.Controllers
                     {
                         SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
 
-                        foreach (SimCandidatoProva candidato in prova.SimCandidatoProva)
+                        foreach (var candidato in prova.SimCandidatoProva)
                         {
                             string flagAusente = form[candidato.CodCandidato + "ausente"];
 
@@ -1053,7 +1053,7 @@ namespace SIAC.Controllers
                         }
                         else
                         {
-                            foreach (SimProvaQuestao questao in prova.SimProvaQuestao)
+                            foreach (var questao in prova.SimProvaQuestao)
                             {
                                 string strQuestao = "questao" + questao.CodQuestao;
 
@@ -1105,7 +1105,7 @@ namespace SIAC.Controllers
                     int salaIndex = 0;
                     SimSala sala = salas[salaIndex];
 
-                    foreach (SimCandidato candidato in candidatos)
+                    foreach (var candidato in candidatos)
                     {
                         if (indice > sala.Sala.Capacidade)
                         {
@@ -1224,7 +1224,7 @@ namespace SIAC.Controllers
 
                 if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
                 {
-                    foreach (SimProva prova in sim.Provas)
+                    foreach (var prova in sim.Provas)
                     {
                         List<SimCandidatoProva> candidatos = prova.SimCandidatoProva.Where(c => c.FlagPresente.HasValue && c.FlagPresente.Value).ToList();
 
@@ -1236,13 +1236,13 @@ namespace SIAC.Controllers
                         prova.MediaAritmeticaAcerto = Convert.ToDecimal(maap);
                         prova.DesvioPadraoAcerto = Convert.ToDecimal(dpap);
 
-                        foreach (SimCandidatoProva candidato in candidatos)
+                        foreach (var candidato in candidatos)
                         {
                             candidato.EscorePadronizado = Convert.ToDecimal(((candidato.QteAcertos - maap) / dpap) * 100.0 + 500.0);
                         }
                     }
 
-                    foreach (SimCandidato candidato in sim.SimCandidato)
+                    foreach (var candidato in sim.SimCandidato)
                     {
                         if ((bool)candidato.SimCandidatoProva.First().FlagPresente)
                         {

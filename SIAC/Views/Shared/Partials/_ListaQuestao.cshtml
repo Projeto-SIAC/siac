@@ -1,6 +1,6 @@
 ﻿@model List<Questao>
 
-@foreach (Questao questao in Model)
+@foreach (var questao in Model)
 {
     var dtCadastro = questao.DtCadastro.ToElapsedTimeString();
     <a class="card hidden" style="display:none!important" href="@Url.Action("Detalhe", new { codigo = questao.CodQuestao })">

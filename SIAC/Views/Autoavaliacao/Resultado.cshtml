@@ -27,7 +27,7 @@
             <div class="ui label">Quantidade de Acerto<div class="detail">@avalPessoaResultado.QteAcertoObj</div></div>
         </div>
         <div class="ui statistics">
-            @foreach (string chave in Model.Desempenho.Keys)
+            @foreach (var chave in Model.Desempenho.Keys)
             {
                 <div class="statistic @(Model.Desempenho[chave] > 50 ? "green" : "red")">
                     <div class="value">
@@ -44,7 +44,7 @@
     <div class="ui dividing header">
         Resultado
     </div>
-    @foreach (string disciplina in Model.Avaliacao.AvalAuto.DicionarioDisciplinaQuestao.Keys)
+    @foreach (var disciplina in Model.Avaliacao.AvalAuto.DicionarioDisciplinaQuestao.Keys)
     {
         List<Questao> lstQuestao = Model.Avaliacao.AvalAuto.DicionarioDisciplinaQuestao[disciplina];
         <h3>@disciplina</h3>
@@ -73,7 +73,7 @@
                     @if (lstQuestao[i].CodTipoQuestao == TipoQuestao.OBJETIVA)
                     {
                         <div class="ui list">
-                            @foreach (Alternativa alternativa in lstQuestao[i].Alternativa)
+                            @foreach (var alternativa in lstQuestao[i].Alternativa)
                             {
                                 <div class="item">
                                     <div class="middle aligned content">
@@ -103,7 +103,7 @@
                         <div class="accordion">
                             <div class="title"><i class="icon dropdown"></i>Anexos</div>
                             <div class="content">
-                                @foreach (QuestaoAnexo anexo in lstQuestao[i].QuestaoAnexo)
+                                @foreach (var anexo in lstQuestao[i].QuestaoAnexo)
                                 {
                                     @Html.Partial("_Anexo", anexo)
                                 }

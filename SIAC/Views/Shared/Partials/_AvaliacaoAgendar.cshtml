@@ -42,7 +42,7 @@
             <label data-ajuda="Clique na caixa abaixo para selecionar a turma em que será aplicada a avaliação. Obs.: Serão listadas as turmas cadastradas no sistema acadêmico no período letivo corrente.">Selecione a turma</label>
             <select id="ddlTurma" name="ddlTurma" class="ui search dropdown" required>
                 <option value="">Turma</option>
-                @foreach (Turma turma in Model.Turmas)
+                @foreach (var turma in Model.Turmas)
                 {
                     var cod = @turma.CodTurma;
                     <option @(Model.Avaliacao.AvalAcademica.NumTurma.HasValue ? Model.Avaliacao.AvalAcademica.Turma.CodTurma == cod ? "selected" : "" : "") value="@cod">@turma.Curso.Descricao (@cod)</option>
@@ -68,7 +68,7 @@
         <label data-ajuda="Clique na caixa abaixo para escolher a sala na qual será aplicada a avaliação.">Escolha a sala</label>
         <select id="ddlSala" name="ddlSala" class="ui search dropdown" required>
             <option value="">Sala</option>
-            @foreach (Sala sala in Model.Salas)
+            @foreach (var sala in Model.Salas)
             {
                 <option @(codSala.HasValue && codSala.Value == sala.CodSala ? "selected" : "") value="@sala.CodSala" title="@sala.RefLocal">@sala.Descricao</option>
             }

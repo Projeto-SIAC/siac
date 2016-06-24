@@ -23,7 +23,7 @@
                         {
                             case TipoAvaliacao.AUTOAVALIACAO:
                                 <tbody>
-                                    @foreach (Disciplina disc in Model.AvalAuto.Disciplina)
+                                    @foreach (var disc in Model.AvalAuto.Disciplina)
                                     {
                                         <tr>
                                             <td>
@@ -32,7 +32,7 @@
                                             </td>
                                             <td class="ui labels">
                                                 @* temas *@
-                                                @foreach (AvaliacaoTema avalTema in Model.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                                                @foreach (var avalTema in Model.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
                                                 {
                                                     <div class="ui tag label">@avalTema.Tema.Descricao</div>
                                                 }
@@ -59,7 +59,7 @@
                                         </td>
                                         <td class="ui labels">
                                             @* Temas *@
-                                            @foreach (AvaliacaoTema avalTema in Model.AvaliacaoTema)
+                                            @foreach (var avalTema in Model.AvaliacaoTema)
                                             {
                                                 <div class="ui tag label">@avalTema.Tema.Descricao</div>
                                             }
@@ -85,7 +85,7 @@
                                         </td>
                                         <td class="ui labels">
                                             @* Temas *@
-                                            @foreach (AvaliacaoTema avalTema in Model.AvaliacaoTema)
+                                            @foreach (var avalTema in Model.AvaliacaoTema)
                                             {
                                                 <div class="ui tag label">@avalTema.Tema.Descricao</div>
                                             }
@@ -111,7 +111,7 @@
                                         </td>
                                         <td class="ui labels">
                                             @* Temas *@
-                                            @foreach (AvaliacaoTema avalTema in Model.AvaliacaoTema)
+                                            @foreach (var avalTema in Model.AvaliacaoTema)
                                             {
                                                 <div class="ui tag label">@avalTema.Tema.Descricao</div>
                                             }
@@ -222,7 +222,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (Aluno aluno in Model.AvalAcadReposicao.Alunos.OrderBy(a=>a.Usuario.PessoaFisica.Nome))
+                                @foreach (var aluno in Model.AvalAcadReposicao.Alunos.OrderBy(a=>a.Usuario.PessoaFisica.Nome))
                                 {
                                     <tr>
                                         <td>@aluno.Usuario.PessoaFisica.Nome</td>
@@ -245,7 +245,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (PessoaFisica pessoaFisica in Model.AvalCertificacao.PessoaFisica.OrderBy(pf => pf.Nome))
+                                @foreach (var pessoaFisica in Model.AvalCertificacao.PessoaFisica.OrderBy(pf => pf.Nome))
                                 {
                                     <tr>
                                         <td>@pessoaFisica.Nome</td>
@@ -273,7 +273,7 @@
                 {
                     case TipoAvaliacao.AUTOAVALIACAO:
                         <tbody>
-                            @foreach (Disciplina disc in Model.AvalAuto.Disciplina)
+                            @foreach (var disc in Model.AvalAuto.Disciplina)
                             {
                                 <tr>
                                     <td>
@@ -282,7 +282,7 @@
                                     </td>
                                     <td class="ui labels">
                                         @* temas *@
-                                        @foreach (AvaliacaoTema avalTema in Model.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                                        @foreach (var avalTema in Model.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
                                         {
                                             <div class="ui tag label">@avalTema.Tema.Descricao</div>
                                         }
@@ -309,7 +309,7 @@
                                 </td>
                                 <td class="ui labels">
                                     @* Temas *@
-                                    @foreach (AvaliacaoTema avalTema in Model.AvaliacaoTema)
+                                    @foreach (var avalTema in Model.AvaliacaoTema)
                                     {
                                         <div class="ui tag label">@avalTema.Tema.Descricao</div>
                                     }
@@ -335,7 +335,7 @@
                                 </td>
                                 <td class="ui labels">
                                     @* Temas *@
-                                    @foreach (AvaliacaoTema avalTema in Model.AvaliacaoTema)
+                                    @foreach (var avalTema in Model.AvaliacaoTema)
                                     {
                                         <div class="ui tag label">@avalTema.Tema.Descricao</div>
                                     }
@@ -361,7 +361,7 @@
                                 </td>
                                 <td class="ui labels">
                                     @* Temas *@
-                                    @foreach (AvaliacaoTema avalTema in Model.AvaliacaoTema)
+                                    @foreach (var avalTema in Model.AvaliacaoTema)
                                     {
                                         <div class="ui tag label">@avalTema.Tema.Descricao</div>
                                     }

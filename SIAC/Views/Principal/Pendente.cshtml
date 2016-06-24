@@ -7,7 +7,7 @@
 <h2>@ViewBag.Title</h2>
 <div class="ui basic segment">
     <div class="ui two stackable cards">
-        @foreach (Avaliacao avaliacao in Model)
+        @foreach (var avaliacao in Model)
         {
             var dtCadastro = avaliacao.DtCadastro.ToElapsedTimeString();
             switch (avaliacao.CodTipoAvaliacao)

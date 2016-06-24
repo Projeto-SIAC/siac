@@ -120,7 +120,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (AviPublico publico in Model.AviPublico.OrderBy(p=>p.CodAviTipoPublico))
+                @foreach (var publico in Model.AviPublico.OrderBy(p=>p.CodAviTipoPublico))
                 {
                     <tr>
                         <td>@publico.Descricao</td>

@@ -31,7 +31,7 @@ namespace SIAC.Models
             get
             {
                 List<SimProva> provas = new List<SimProva>();
-                foreach (SimDiaRealizacao dia in this.SimDiaRealizacao)
+                foreach (var dia in this.SimDiaRealizacao)
                 {
                     provas.AddRange(dia.SimProva);
                 }
@@ -79,7 +79,7 @@ namespace SIAC.Models
 
         public SimSala ObterSalaDisponivel()
         {
-            foreach (SimSala sala in this.SimSala)
+            foreach (var sala in this.SimSala)
             {
                 if (sala.Sala.Capacidade > sala.SimCandidato.Count)
                 {

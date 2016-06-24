@@ -27,14 +27,14 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (Disciplina disciplina in Model.Disciplina)
+            @foreach (var disciplina in Model.Disciplina)
             {
                 <tr>
                     <td> @* disciplina *@
                         <b>@disciplina.Descricao</b>
                     </td>
                     <td class="ui labels"> @* temas *@
-                        @foreach (AvaliacaoTema avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disciplina.CodDisciplina))
+                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disciplina.CodDisciplina))
                         {
                             <div class="ui tag label">@avalTema.Tema.Descricao</div>
                         }

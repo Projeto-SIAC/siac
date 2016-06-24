@@ -31,7 +31,7 @@ namespace SIAC.Models
         public static void RemoverCookie(string matricula)
         {
             string cookie = string.Empty;
-            foreach (string chave in CookieUsuario.Keys)
+            foreach (var chave in CookieUsuario.Keys)
             {
                 if (CookieUsuario[chave] == matricula)
                 {

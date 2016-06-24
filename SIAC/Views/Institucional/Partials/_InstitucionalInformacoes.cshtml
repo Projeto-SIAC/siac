@@ -68,17 +68,17 @@
                 <div class="title"><i class="dropdown icon"></i>Questionário</div>
                 <div class="content">
                     <div class="accordion">
-                        @foreach (MapAviModulo modulo in Model.MapQuestoes)
+                        @foreach (var modulo in Model.MapQuestoes)
                         {
                         <div class="title"><i class="dropdown icon"></i>@indMod. @modulo.Modulo.Descricao</div>
                         <div class="content">
                             <div class="accordion">
-                                @foreach (MapAviCategoria categoria in modulo.Categorias)
+                                @foreach (var categoria in modulo.Categorias)
                                     {
                                     <div class="title"><i class="dropdown icon"></i>@indMod.@indCat. @categoria.Categoria.Descricao</div>
                                     <div class="content">
                                         <div class="ui list">
-                                            @foreach (MapAviIndicador indicador in categoria.Indicadores)
+                                            @foreach (var indicador in categoria.Indicadores)
                                             {
                                                 <div class="item"><b>@indMod.@indCat.@indInd.</b> @indicador.Indicador.Descricao <div class="ui label">@indicador.Questoes.Count quest@(indicador.Questoes.Count > 1 ? "ões" : "ão")</div></div>
                                                 indInd++;
@@ -105,7 +105,7 @@
                     <div class="ui basic segment">
                         <table class="ui selecionados table">
                             <tbody>
-                                @foreach (AviPublico publico in Model.AviPublico)
+                                @foreach (var publico in Model.AviPublico)
                                 {
                                 <tr>
                                     <td>@publico.Descricao</td>

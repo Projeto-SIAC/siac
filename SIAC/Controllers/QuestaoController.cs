@@ -18,7 +18,7 @@ namespace SIAC.Controllers
         {
             if (Request.Url.ToString().ToLower().Contains("principal"))
                 return Redirect("~/historico/questao");
-            QuestaoIndexViewModel model = new QuestaoIndexViewModel();
+            var model = new QuestaoIndexViewModel();
             List<Questao> questoes = Questoes;
             model.Disciplinas = questoes.Select(q => q.Disciplina).Distinct().ToList();
             model.Dificuldades = questoes.Select(q => q.Dificuldade).Distinct().ToList();
@@ -105,7 +105,7 @@ namespace SIAC.Controllers
         // GET: principal/questao/cadastrar
         public ActionResult Cadastrar()
         {
-            QuestaoCadastrarViewModel model = new QuestaoCadastrarViewModel();
+            var model = new QuestaoCadastrarViewModel();
             model.Captcha = Captcha.Novo();
             model.Termo = Parametro.Obter().TermoResponsabilidade;
             model.Disciplinas = Professor.ObterDisciplinas(Sessao.UsuarioMatricula);
@@ -134,7 +134,7 @@ namespace SIAC.Controllers
             if (!formCollection.HasKeys())
                 return RedirectToAction("Index");
 
-            Questao questao = new Questao();
+            var questao = new Questao();
             questao.Professor = Professor.ListarPorMatricula(Sessao.UsuarioMatricula);
             questao.CodProfessor = questao.Professor.CodProfessor;
 
@@ -146,7 +146,7 @@ namespace SIAC.Controllers
 
             int codDisciplina = int.Parse(formCollection["ddlDisciplina"]);
             string[] codTemas = formCollection["ddlTema"].Split(',');
-            foreach (string strCodTema in codTemas)
+            foreach (var strCodTema in codTemas)
             {
                 int codTema = int.Parse(strCodTema);
                 questao.QuestaoTema.Add(new QuestaoTema

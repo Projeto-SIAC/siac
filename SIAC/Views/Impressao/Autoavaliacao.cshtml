@@ -91,14 +91,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                @foreach (Disciplina disciplina in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+                @foreach (var disciplina in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
                 {
                     <tr>
                         <td>
                             <b>@disciplina.Descricao</b>
                         </td>
                         <td class="ui labels">
-                            @foreach (AvaliacaoTema avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disciplina.CodDisciplina))
+                            @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disciplina.CodDisciplina))
                             {
                                 <div class="ui tag label">@avalTema.Tema.Descricao</div>
                             }
@@ -156,7 +156,7 @@
                         {
                         <div class="field">
                             <label>Anexos</label>
-                            @foreach (QuestaoAnexo anexo in lstQuestao[i].QuestaoAnexo)
+                            @foreach (var anexo in lstQuestao[i].QuestaoAnexo)
                             {
                                @Html.Partial("_AnexoImpressao", anexo);
                             }

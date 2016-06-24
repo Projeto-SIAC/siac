@@ -27,7 +27,7 @@
             {
                 <div class="title"><i class="dropdown icon"></i>Dias e Provas</div>
                 <div class="content">
-                    @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao)
+                    @foreach (var dia in Model.SimDiaRealizacao)
                     {
                         <div class="ui basic segment">
                             <h4 class="ui dividing header">@dia.DtRealizacao.DiaRealizacaoRepresentacao()</h4>
@@ -40,7 +40,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (SimProva prova in dia.SimProva)
+                                    @foreach (var prova in dia.SimProva)
                                     {
                                         <tr>
                                             <td>
@@ -103,7 +103,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (SimSala simSala in Model.SimSala)
+                            @foreach (var simSala in Model.SimSala)
                             {
                                 <tr>
                                     <td>@simSala.Sala.Bloco.Campus.Sigla</td>

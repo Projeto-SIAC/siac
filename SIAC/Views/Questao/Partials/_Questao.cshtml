@@ -13,7 +13,7 @@
             @Model.Dificuldade.Descricao
         </div>
     </div>
-    @foreach (QuestaoTema questaoTema in Model.QuestaoTema)
+    @foreach (var questaoTema in Model.QuestaoTema)
     {
         <div class="ui tag label" data-html="@( !String.IsNullOrWhiteSpace(questaoTema.Tema.Comentario) ? "<b>Comentário</b>: "+questaoTema.Tema.Comentario : "" )">@questaoTema.Tema.Descricao</div>
     }
@@ -24,7 +24,7 @@
 @if (Model.CodTipoQuestao == TipoQuestao.OBJETIVA)
 {
     <div class="ui very relaxed list">
-        @foreach (Alternativa alternativa in Model.Alternativa)
+        @foreach (var alternativa in Model.Alternativa)
         {
             <div class="item" data-html="@(!String.IsNullOrWhiteSpace(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
                 <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
@@ -50,7 +50,7 @@ else
         <div class="title"><i class="icon dropdown"></i>Anexos</div>
         <div class="content">
             <div class="ui cards">
-                @foreach (QuestaoAnexo anexo in Model.QuestaoAnexo)
+                @foreach (var anexo in Model.QuestaoAnexo)
                 {
                     @Html.Partial("_Anexo", anexo)
                 }

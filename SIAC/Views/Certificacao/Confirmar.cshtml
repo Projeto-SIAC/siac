@@ -52,7 +52,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (Disciplina disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+            @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
             {
                 <tr>
                     <td>
@@ -61,7 +61,7 @@
                     </td>
                     <td class="ui labels">
                         @* temas *@
-                        @foreach (AvaliacaoTema avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
                         {
                             <div class="ui tag label">@avalTema.Tema.Descricao</div>
                         }

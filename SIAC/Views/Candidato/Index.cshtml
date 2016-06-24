@@ -12,7 +12,7 @@
 {
 
 <div class="ui three cards">
-    @foreach (Simulado simulado in Model.Inscritos)
+    @foreach (var simulado in Model.Inscritos)
     {
         var dtAberto = simulado.DtInicioInscricao?.ToElapsedTimeString() ?? "";
         <div class="card">
@@ -54,7 +54,7 @@ else
 @if (Model.Passados.Count > 0)
 {
     <div class="ui relaxed divided items">
-        @foreach (Simulado simulado in Model.Passados.OrderByDescending(d => d.UltimoDiaRealizacao?.DtRealizacao).Take(5))
+        @foreach (var simulado in Model.Passados.OrderByDescending(d => d.UltimoDiaRealizacao?.DtRealizacao).Take(5))
         {
             <div class="item">
                 <div class="content">

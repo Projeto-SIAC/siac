@@ -93,7 +93,7 @@ namespace SIAC.Controllers
 
             while (inicio < termino)
             {
-                foreach (TurmaDiscProfHorario hor in lstHorarios.Where(h => h.CodDia - 1 == (int)inicio.DayOfWeek))
+                foreach (var hor in lstHorarios.Where(h => h.CodDia - 1 == (int)inicio.DayOfWeek))
                 {
                     retorno.Add(new Evento
                     {

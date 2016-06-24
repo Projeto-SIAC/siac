@@ -37,7 +37,7 @@
         {
             <div class="title"><i class="icon dropdown"></i>Anexos</div>
             <div class="content">
-                @foreach (QuestaoAnexo anexo in Model.QuestaoAnexo)
+                @foreach (var anexo in Model.QuestaoAnexo)
                 {
                     @Html.Partial("_Anexo", anexo)
                 }

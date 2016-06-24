@@ -73,7 +73,7 @@
         <div class="field required">
             <label>Tema</label>
             <select multiple class="ui multiple dropdown disabled" readonly disabled>
-                @foreach (QuestaoTema queTma in Model.QuestaoTema)
+                @foreach (var queTma in Model.QuestaoTema)
                 {
                     <option selected value="@queTma.CodTema">@queTma.Tema.Descricao</option>
                 }
@@ -125,7 +125,7 @@
     @* Alternativas da Questão *@
     <div class="ui bottom attached tab segment questao objetiva" data-tab="alternativas">
         <div class="ui alternativas fluid accordion">
-            @foreach (Alternativa alt in Model.Alternativa)
+            @foreach (var alt in Model.Alternativa)
             {
                 <div class="title">
                     <i class="dropdown icon"></i>Alternativa @(alt.CodOrdem + 1)
@@ -153,7 +153,7 @@
     <div class="ui bottom attached tab segment anexos" data-tab="anexos">
         @* Anexos *@
         <div class="ui anexos fluid accordion">
-            @foreach (QuestaoAnexo ane in Model.QuestaoAnexo)
+            @foreach (var ane in Model.QuestaoAnexo)
             {
                 switch (ane.CodTipoAnexo)
                 {

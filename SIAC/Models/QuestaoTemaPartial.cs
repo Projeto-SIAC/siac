@@ -20,7 +20,7 @@ namespace SIAC.Models
 
             List<QuestaoTema> ret = new List<QuestaoTema>();
 
-            foreach (QuestaoTema item in retorno)
+            foreach (var item in retorno)
             {
                 if (!codigos1.Contains(item.CodQuestao))
                 {

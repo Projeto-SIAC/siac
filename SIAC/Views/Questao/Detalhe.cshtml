@@ -30,7 +30,7 @@
         </div>
         @* Expor comentários dos usuários que já responderam essa questão *@
         <div class="ui comments" style="max-height: 15em; overflow-y:auto">
-            @foreach (AvalQuesPessoaResposta resp in lstResposta)
+            @foreach (var resp in lstResposta)
             {
                 <div class="comment">
                     <div class="content">

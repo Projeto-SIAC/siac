@@ -36,7 +36,7 @@ namespace SIAC.Models
 
                 int[] codDisciplinas = this.Disciplina.OrderBy(d => d.Descricao).Select(d => d.CodDisciplina).ToArray();
 
-                foreach (int codDisciplina in codDisciplinas)
+                foreach (var codDisciplina in codDisciplinas)
                 {
                     List<Questao> questoes = this.Avaliacao.QuestaoTema
                         .Where(qt => qt.CodDisciplina == codDisciplina)

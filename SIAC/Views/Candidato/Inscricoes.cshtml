@@ -81,9 +81,9 @@
             </div>
         </div>
     </div>
-    @foreach (SimDiaRealizacao dia in Model.Simulado.SimDiaRealizacao)
+    @foreach (var dia in Model.Simulado.SimDiaRealizacao)
     {
-        foreach (SimProva prova in dia.SimProva)
+        foreach (var prova in dia.SimProva)
         {
             <div class="event">
                 <div class="label">
@@ -121,13 +121,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (SimDiaRealizacao dia in Model.Simulado.SimDiaRealizacao.OrderBy(d => d.DtRealizacao))
+                    @foreach (var dia in Model.Simulado.SimDiaRealizacao.OrderBy(d => d.DtRealizacao))
                     {
                         <tr>
                             <td>@dia.DtRealizacao.DiaRealizacaoRepresentacao()</td>
                             <td>@dia.Duracao.ParaRepresentarDuracao()</td>
                             <td>
-                                @foreach (SimProva prova in dia.SimProva)
+                                @foreach (var prova in dia.SimProva)
                                 {
                                     <div class="ui label">@prova.Disciplina.Descricao <div class="detail">@prova.QteQuestoes</div></div>
                                 }
@@ -201,7 +201,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (SimCandidatoProva prova in Model.SimCandidatoProva.OrderBy(c => c.CodDiaRealizacao).ThenBy(c => c.CodProva))
+                    @foreach (var prova in Model.SimCandidatoProva.OrderBy(c => c.CodDiaRealizacao).ThenBy(c => c.CodProva))
                     {
                         <tr>
                             <td>@(prova.CodDiaRealizacao)º</td>

@@ -72,7 +72,7 @@ namespace SIAC.Controllers
                         {
                             if (model.Cpf.Length == 11 && Valida.CPF(model.Cpf))
                             {
-                                Candidato c = new Candidato()
+                                var c = new Candidato()
                                 {
                                     Nome = model.Nome,
                                     Cpf = model.Cpf,
@@ -261,7 +261,7 @@ namespace SIAC.Controllers
             }
             else
             {
-                CandidatoInscricoesViewModel model = new CandidatoInscricoesViewModel();
+                var model = new CandidatoInscricoesViewModel();
                 int pagina = String.IsNullOrEmpty(codigo) ? 1 : 0;
                 int qtePorPagina = CandidatoInscricoesViewModel.QtePorPagina;
                 if (pagina == 0)

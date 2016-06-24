@@ -73,7 +73,7 @@ namespace SIAC.Controllers
                         string numeroMascara = new HashidsNet.Hashids(s.Codigo, 6)
                             .Encode(s.Ano, s.NumIdentificador, Sessao.Candidato.CodCandidato);
 
-                        SimCandidato candidato = new SimCandidato()
+                        var candidato = new SimCandidato()
                         {
                             NumInscricao = s.ObterNumInscricao(),
                             Candidato = Sessao.Candidato,
@@ -83,7 +83,7 @@ namespace SIAC.Controllers
 
                         s.SimCandidato.Add(candidato);
 
-                        foreach (SimProva prova in s.Provas)
+                        foreach (var prova in s.Provas)
                         {
                             prova.SimCandidatoProva.Add(new SimCandidatoProva()
                             {

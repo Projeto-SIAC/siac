@@ -1,6 +1,6 @@
 ﻿@model List<AvalAuto>
 
-@foreach (AvalAuto autoavaliacao in Model)
+@foreach (var autoavaliacao in Model)
 {
     var dtCadastro = autoavaliacao.Avaliacao.DtCadastro.ToElapsedTimeString();
     <div class="card hidden" style="display:none!important" data-avaliacao="@autoavaliacao.Avaliacao.CodAvaliacao">

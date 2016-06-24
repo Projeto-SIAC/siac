@@ -43,7 +43,7 @@
         <label data-ajuda="Clique na caixa abaixo para escolher a disciplina.">Escolha a disciplina</label>
         <select id="ddlDisciplina" name="ddlDisciplina" class="ui search dropdown" required>
             <option value="">Disciplina</option>
-            @foreach (Disciplina disciplina in Model.Disciplinas)
+            @foreach (var disciplina in Model.Disciplinas)
             {
                 <option value="@disciplina.CodDisciplina">@disciplina.Descricao</option>
             }
@@ -61,7 +61,7 @@
         <label data-ajuda="Clique na caixa abaixo para definir o índice de dificuldade das questões.">Defina o índice de dificuldade das questões</label>
         <select id="ddlDificuldade" name="ddlDificuldade" class="ui search dropdown" required>
             <option value="">Índice de Dificuldade...</option>
-            @foreach (Dificuldade dificuldade in Model.Dificuldades)
+            @foreach (var dificuldade in Model.Dificuldades)
             {
                 <option value="@dificuldade.CodDificuldade">@dificuldade.Descricao</option>
             }

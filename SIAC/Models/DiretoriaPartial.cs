@@ -23,7 +23,7 @@ namespace SIAC.Models
                 pessoas.Add(this.Colaborador.Usuario.PessoaFisica);
 
                 /*Professores e Colaboradores*/
-                foreach (PessoaLocalTrabalho plt in this.PessoaLocalTrabalho)
+                foreach (var plt in this.PessoaLocalTrabalho)
                 {
                     pessoas.Add(plt.PessoaFisica);
                 }

@@ -77,13 +77,13 @@ namespace SIAC
         {
             string html = String.Empty;
             string[] lines = str.Split('\n', '\r');
-            foreach (string line in lines)
+            foreach (var line in lines)
             {
                 if (!String.IsNullOrWhiteSpace(line))
                 {
                     tags = tags.Reverse().ToArray();
                     string text = line;
-                    foreach (string tag in tags)
+                    foreach (var tag in tags)
                         text = $"<{tag}>{text}</{tag}>";
                     html += text;
                 }
@@ -104,7 +104,7 @@ namespace SIAC
             string indice = "";
             string caracterSeparador = ".";
 
-            foreach (int i in indices)
+            foreach (var i in indices)
             {
                 indice += i + caracterSeparador;
             }
@@ -225,7 +225,7 @@ namespace SIAC
 
         public static bool ContainsOne(this int[] i, int[] j)
         {
-            foreach (int k in j)
+            foreach (var k in j)
                 if (i.Contains(k))
                     return true;
             return false;
@@ -347,7 +347,7 @@ namespace SIAC
         {
             int qteQuestoes = 0;
 
-            foreach (AvaliacaoTema avaliacaoTema in lstAvaliacaoTema.Where(a => a.Tema.CodDisciplina == codDisciplina))
+            foreach (var avaliacaoTema in lstAvaliacaoTema.Where(a => a.Tema.CodDisciplina == codDisciplina))
             {
                 List<AvalTemaQuestao> lstAvalTemaQuestao = avaliacaoTema.AvalTemaQuestao.ToList();
                 List<AvalTemaQuestao> lstAvalTemaQuestaoFiltrada = lstAvalTemaQuestao.Where(a => a.QuestaoTema.Questao.CodTipoQuestao == codTipoQuestao).ToList();
@@ -361,7 +361,7 @@ namespace SIAC
         {
             int qteQuestoes = 0;
 
-            foreach (AvaliacaoTema avaliacaoTema in lstAvaliacaoTema)
+            foreach (var avaliacaoTema in lstAvaliacaoTema)
             {
                 List<AvalTemaQuestao> lstAvalTemaQuestao = avaliacaoTema.AvalTemaQuestao.ToList();
                 List<AvalTemaQuestao> lstAvalTemaQuestaoFiltrada = lstAvalTemaQuestao.Where(a => a.QuestaoTema.Questao.CodTipoQuestao == codTipoQuestao).ToList();
@@ -373,9 +373,9 @@ namespace SIAC
 
         public static string MaxDificuldade(this List<AvaliacaoTema> lstAvaliacaoTema, int codDisciplina)
         {
-            Dificuldade dificuldade = new Dificuldade();
+            var dificuldade = new Dificuldade();
 
-            foreach (AvaliacaoTema avaliacaoTema in lstAvaliacaoTema.Where(a => a.Tema.CodDisciplina == codDisciplina))
+            foreach (var avaliacaoTema in lstAvaliacaoTema.Where(a => a.Tema.CodDisciplina == codDisciplina))
             {
                 List<Dificuldade> lstDificuldade = avaliacaoTema.AvalTemaQuestao.Select(a => a.QuestaoTema.Questao.Dificuldade).ToList();
                 if (lstDificuldade.Count > 0 && lstDificuldade.Max(a => a.CodDificuldade) > dificuldade.CodDificuldade)
@@ -392,7 +392,7 @@ namespace SIAC
         public static int QteQuestoes(this Avaliacao avaliacao)
         {
             int qte = 0;
-            foreach (AvaliacaoTema avalTema in avaliacao.AvaliacaoTema)
+            foreach (var avalTema in avaliacao.AvaliacaoTema)
                 qte += avalTema.AvalTemaQuestao.Count;
             return qte;
         }

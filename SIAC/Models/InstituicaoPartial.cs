@@ -16,7 +16,7 @@ namespace SIAC.Models
                 List<PessoaFisica> pessoas = new List<PessoaFisica>();
 
                 /*Alunos*/
-                foreach (Campus campus in this.Campus)
+                foreach (var campus in this.Campus)
                     pessoas.AddRange(PessoaFisica.ListarPorCampus(campus.CodComposto));
 
                 /*Professores e Colaboradores*/

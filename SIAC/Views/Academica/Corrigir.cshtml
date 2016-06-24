@@ -185,7 +185,7 @@
 
 <div class="ui basic segment">
     <div class="ui accordion">
-        @foreach (Aluno aluno in Model.Alunos.OrderBy(a => a.Usuario.PessoaFisica.Nome))
+        @foreach (var aluno in Model.Alunos.OrderBy(a => a.Usuario.PessoaFisica.Nome))
         {
             IEnumerable<AvalQuesPessoaResposta> lstResposta = Model.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == aluno.Usuario.CodPessoaFisica);
 
@@ -213,7 +213,7 @@
                     }
                     
                     <tr>
-                        @foreach (AvalQuesPessoaResposta resp in lstResposta.OrderBy(aqpr => aqpr.CodQuestao))
+                        @foreach (var resp in lstResposta.OrderBy(aqpr => aqpr.CodQuestao))
                         {
                             if (colunaIndice == quantidadeColunas)
                             {

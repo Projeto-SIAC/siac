@@ -11,22 +11,22 @@
 
 <div class="ui basic segment">
     <div class="ui fluid styled accordion form">
-        @foreach (MapAviModulo modulo in Model.MapQuestoes)
+        @foreach (var modulo in Model.MapQuestoes)
         {
             <div class="title"><i class="dropdown icon"></i>@modulo.Modulo.Descricao</div>
             <div class="content" data-modulo="@modulo.Modulo.CodAviModulo">
                 <div class="accordion">
-                    @foreach (MapAviCategoria categoria in modulo.Categorias)
+                    @foreach (var categoria in modulo.Categorias)
                     {
                         <div class="title"><i class="dropdown icon"></i>@categoria.Categoria.Descricao</div>
                         <div class="content" data-categoria="@categoria.Categoria.CodAviCategoria">
                             <div class="accordion">
-                                @foreach (MapAviIndicador indicador in categoria.Indicadores)
+                                @foreach (var indicador in categoria.Indicadores)
                                 {
                                     <div class="title"><i class="dropdown icon"></i>@indicador.Indicador.Descricao</div>
                                     <div class="content" data-indicador="@indicador.Indicador.CodAviIndicador">
                                         <div class="accordion">
-                                            @foreach (AviQuestao questao in indicador.Questoes)
+                                            @foreach (var questao in indicador.Questoes)
                                             {
                                                 <div class="title">
                                                     <i class="dropdown icon"></i>
@@ -42,7 +42,7 @@
                                                                 <h4>Respostas</h4>
                                                                 @if (questao.Respostas.Count > 0)
                                                                 {
-                                                                    foreach (AviQuestaoPessoaResposta resposta in questao.Respostas)
+                                                                    foreach (var resposta in questao.Respostas)
                                                                     {
                                                                        <p><i>"@resposta.RespDiscursiva"</i></p>
                                                                     }
@@ -60,7 +60,7 @@
                                                                 <div class="twelve wide column">
                                                                     <h3 class="ui dividing header" data-content="@questao.Observacao">@questao.Enunciado.Replace(Environment.NewLine, "</br>")</h3>
                                                                     <div class="ui very relaxed list">
-                                                                        @foreach (AviQuestaoAlternativa alternativa in questao.AviQuestaoAlternativa)
+                                                                        @foreach (var alternativa in questao.AviQuestaoAlternativa)
                                                                         {
                                                                             <div class="item">
                                                                                 <b>@((alternativa.CodAlternativa -1).GetIndiceAlternativa()))</b> @alternativa.Enunciado
@@ -72,7 +72,7 @@
                                                                                         <div class="content">
                                                                                             <div style="max-height: 15em; overflow-y:auto">
 
-                                                                                                @foreach (AviQuestaoPessoaResposta resposta in questao.Respostas)
+                                                                                                @foreach (var resposta in questao.Respostas)
                                                                                                 {
                                                                                                     if (!String.IsNullOrEmpty(resposta.RespDiscursiva))
                                                                                                     {

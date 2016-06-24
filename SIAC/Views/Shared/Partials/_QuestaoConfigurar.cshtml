@@ -25,7 +25,7 @@
     @if (Model.CodTipoQuestao == TipoQuestao.OBJETIVA)
     {
         <div class="ui very relaxed list">
-            @foreach (Alternativa alternativa in Model.Alternativa)
+            @foreach (var alternativa in Model.Alternativa)
             {
                 <div class="item" data-html="@(!String.IsNullOrEmpty(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
                     <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
@@ -51,7 +51,7 @@
         <div class="ui styled fluid accordion">
             <div class="title"><i class="icon dropdown"></i>Anexos</div>
             <div class="content">
-                @foreach (QuestaoAnexo anexo in Model.QuestaoAnexo)
+                @foreach (var anexo in Model.QuestaoAnexo)
                 {
                     @Html.Partial("_Anexo", anexo)
                 }

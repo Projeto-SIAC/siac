@@ -39,7 +39,7 @@
                 <label data-ajuda="">Selecione as disciplinas que este professor leciona</label>
                 <select name="ddlDisciplina" class="ui fluid search dropdown" multiple required">
                     <option value="">Disciplina</option>
-                    @foreach (Disciplina d in Model.Disciplinas)
+                    @foreach (var d in Model.Disciplinas)
                     {
                         <option value="@d.CodDisciplina">@d.Descricao</option>
                     }

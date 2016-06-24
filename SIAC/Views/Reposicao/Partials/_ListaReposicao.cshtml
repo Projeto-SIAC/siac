@@ -1,6 +1,6 @@
 ﻿@model List<AvalAcadReposicao>
 
-@foreach (AvalAcadReposicao aval in Model)
+@foreach (var aval in Model)
 {
     var dtCadastro = aval.Avaliacao.DtCadastro.ToElapsedTimeString();
     <div class="card hidden" style="display:none!important">

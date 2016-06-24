@@ -57,7 +57,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.DIRETOR, Ocupacao.COORDENADOR })]
         public ActionResult Parametros()
         {
-            ConfiguracoesParametrosViewModel model = new ConfiguracoesParametrosViewModel();
+            var model = new ConfiguracoesParametrosViewModel();
             model.Parametro = Parametro.Obter();
 
             model.Disciplinas = Disciplina.ListarOrdenadamente();
@@ -87,7 +87,7 @@ namespace SIAC.Controllers
             {
                 return RedirectToAction("Institucional", new { tab = "Coordenadores" });
             }
-            ConfiguracoesInstitucionalViewModel model = new ConfiguracoesInstitucionalViewModel();
+            var model = new ConfiguracoesInstitucionalViewModel();
             model.Ocupacoes = Repositorio.GetInstance()
                 .Ocupacao
                 .Where(o => o.CodOcupacao != Ocupacao.COORDENADOR_AVI
@@ -125,7 +125,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(SomenteOcupacaoAvi = true)]
         public void RemoverOcupacaoCoordenador(int[] codPessoaFisica)
         {
-            foreach (int codPessoa in codPessoaFisica)
+            foreach (var codPessoa in codPessoaFisica)
             {
                 PessoaFisica.RemoverOcupacao(codPessoa, Ocupacao.COORDENADOR_AVI);
             }
@@ -187,14 +187,14 @@ namespace SIAC.Controllers
 
                 int codPessoa = Pessoa.Inserir(new Pessoa() { TipoPessoa = Pessoa.FISICA });
 
-                PessoaFisica pf = new PessoaFisica();
+                var pf = new PessoaFisica();
                 pf.CodPessoa = codPessoa;
                 pf.Nome = professorNome;
                 pf.Categoria.Add(Categoria.ListarPorCodigo(Categoria.PROFESSOR));
 
                 int codPessoaFisica = PessoaFisica.Inserir(pf);
 
-                Usuario usuario = new Usuario();
+                var usuario = new Usuario();
                 usuario.Matricula = professorMatricula;
                 usuario.CodPessoaFisica = codPessoaFisica;
                 usuario.CodCategoria = Categoria.PROFESSOR;
@@ -202,11 +202,11 @@ namespace SIAC.Controllers
 
                 int codUsuario = Usuario.Inserir(usuario);
 
-                Professor professor = new Professor();
+                var professor = new Professor();
                 professor.MatrProfessor = professorMatricula;
 
                 string[] disciplinas = formCollection["ddlProfessorDisciplinas"].Split(',');
-                foreach (string disciplina in disciplinas)
+                foreach (var disciplina in disciplinas)
                 {
                     professor.Disciplina.Add(Disciplina.ListarPorCodigo(int.Parse(disciplina)));
                 }
@@ -223,7 +223,7 @@ namespace SIAC.Controllers
         {
             if (formCollection.HasKeys())
             {
-                Colaborador colaborador = new Colaborador();
+                var colaborador = new Colaborador();
                 colaborador.Usuario = new Usuario();
                 colaborador.Usuario.PessoaFisica = new PessoaFisica();
                 colaborador.Usuario.PessoaFisica.Pessoa = new Pessoa();
@@ -255,7 +255,7 @@ namespace SIAC.Controllers
         {
             if (formCollection.HasKeys())
             {
-                Campus campus = new Campus();
+                var campus = new Campus();
                 campus.PessoaJuridica = new PessoaJuridica();
                 campus.PessoaJuridica.Pessoa = new Pessoa();
 
@@ -285,7 +285,7 @@ namespace SIAC.Controllers
         {
             if (formCollection.HasKeys())
             {
-                Diretoria diretoria = new Diretoria();
+                var diretoria = new Diretoria();
                 diretoria.PessoaJuridica = new PessoaJuridica();
                 diretoria.PessoaJuridica.Pessoa = new Pessoa();
 
@@ -315,7 +315,7 @@ namespace SIAC.Controllers
         {
             if (formCollection.HasKeys())
             {
-                Curso curso = new Curso();
+                var curso = new Curso();
 
                 //Diretoria
                 string codDiretoria = formCollection["ddlCursoDiretoria"];
@@ -343,7 +343,7 @@ namespace SIAC.Controllers
         {
             if (formCollection.HasKeys())
             {
-                Turma turma = new Turma();
+                var turma = new Turma();
 
                 //Turma
                 turma.CodCurso = int.Parse(formCollection["ddlTurmaCurso"]);
@@ -366,7 +366,7 @@ namespace SIAC.Controllers
                 string disciplinaNome = formCollection["txtDisciplina"];
                 string disciplinaSigla = formCollection["txtSigla"];
 
-                Disciplina disciplina = new Disciplina();
+                var disciplina = new Disciplina();
                 disciplina.Descricao = disciplinaNome;
                 disciplina.Sigla = disciplinaSigla;
                 disciplina.FlagEletivaOptativa = (formCollection["chkEletivaOptativa"] != null) ? true : false;
@@ -376,12 +376,12 @@ namespace SIAC.Controllers
 
                 string[] temas = formCollection["txtTema"].Split(';');
                 int i = 1;
-                foreach (string item in temas)
+                foreach (var item in temas)
                 {
                     string tema = item.Trim();
                     if (!String.IsNullOrWhiteSpace(tema))
                     {
-                        Tema t = new Tema();
+                        var t = new Tema();
                         t.CodDisciplina = codDisciplina;
                         t.CodTema = i;
                         t.Descricao = tema;
@@ -409,12 +409,12 @@ namespace SIAC.Controllers
 
                 string[] temas = formCollection["txtTemaDescricao"].Split(';');
                 int i = codTemas != null && codTemas.Count > 0 ? codTemas.Max() + 1 : 1;
-                foreach (string item in temas)
+                foreach (var item in temas)
                 {
                     string tema = item.Trim();
                     if (!String.IsNullOrWhiteSpace(tema))
                     {
-                        Tema t = new Tema();
+                        var t = new Tema();
                         t.CodDisciplina = codDisciplina;
                         t.CodTema = i;
                         t.Descricao = tema;
@@ -433,7 +433,7 @@ namespace SIAC.Controllers
         {
             if (formCollection.HasKeys())
             {
-                Aluno aluno = new Aluno();
+                var aluno = new Aluno();
                 aluno.Usuario = new Usuario();
                 aluno.Usuario.PessoaFisica = new PessoaFisica();
                 aluno.Usuario.PessoaFisica.Pessoa = new Pessoa();
@@ -467,7 +467,7 @@ namespace SIAC.Controllers
         {
             if (formCollection.HasKeys())
             {
-                Sala sala = new Sala();
+                var sala = new Sala();
 
                 //Campus
                 string codCampus = formCollection["ddlSalaCampus"];
@@ -488,7 +488,7 @@ namespace SIAC.Controllers
         {
             if (formCollection.HasKeys())
             {
-                MatrizCurricular matrizCurricular = new MatrizCurricular();
+                var matrizCurricular = new MatrizCurricular();
 
                 int codCurso = int.Parse(formCollection["ddlMatrizCurso"]);
                 matrizCurricular.CodCurso = codCurso;
@@ -527,7 +527,7 @@ namespace SIAC.Controllers
 
                 for (int i = 1; i <= horarioQte; i++)
                 {
-                    Horario h = new Horario();
+                    var h = new Horario();
 
                     h.CodTurno = codTurno;
                     h.CodGrupo = codGrupo;

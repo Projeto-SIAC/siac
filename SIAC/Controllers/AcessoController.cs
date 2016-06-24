@@ -86,7 +86,7 @@ namespace SIAC.Controllers
             }
             else
             {
-                AcessoIndexViewModel model = new AcessoIndexViewModel();
+                var model = new AcessoIndexViewModel();
                 model.Matricula = formCollection.HasKeys() ? formCollection["txtMatricula"] : "";
                 //ViewBag.Acao = "$('.modal').modal('show');";
                 model.Erro = true;

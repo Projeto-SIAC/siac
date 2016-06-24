@@ -1,6 +1,6 @@
 ﻿@model List<AvalCertificacao>
 
-@foreach (AvalCertificacao cert in Model)
+@foreach (var cert in Model)
 {
     var dtCadastro = cert.Avaliacao.DtCadastro.ToElapsedTimeString();
     bool flagProfessor = cert.Professor.MatrProfessor == Sessao.UsuarioMatricula;

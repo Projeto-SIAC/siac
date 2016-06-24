@@ -11,7 +11,7 @@
 {
     <div class="ui basic segment">
         <div class="ui three cards">
-            @foreach (Simulado simulado in Model.Simulados)
+            @foreach (var simulado in Model.Simulados)
             {
                 var dtAberto = simulado.DtInicioInscricao?.ToElapsedTimeString() ?? "";
                 <div class="card">

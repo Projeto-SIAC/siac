@@ -21,17 +21,17 @@
 
 <div class="ui basic segment">
     <form class="ui form">
-        @foreach (MapAviModulo modulo in Model.Avi.MapQuestoes)
+        @foreach (var modulo in Model.Avi.MapQuestoes)
         {
             <h3 class="ui dividing header">@modulo.Modulo.Descricao.Sumarizada(indMod)</h3>
-            foreach (MapAviCategoria categoria in modulo.Categorias)
+            foreach (var categoria in modulo.Categorias)
             {
                 <h4 class="ui header">@categoria.Categoria.Descricao.Sumarizada(indMod,indCat)</h4>
                 <div class="ui secondary segment">
-                    @foreach (MapAviIndicador indicador in categoria.Indicadores)
+                    @foreach (var indicador in categoria.Indicadores)
                     {
                         <h5 class="ui header">@indicador.Indicador.Descricao.Sumarizada(indMod, indCat, indInd)</h5>
-                        foreach (AviQuestao questao in indicador.Questoes)
+                        foreach (var questao in indicador.Questoes)
                         {
                             AviQuestaoPessoaResposta resposta = Model.Respostas.FirstOrDefault(pr => pr.CodOrdem == questao.CodOrdem);
                             <div class="ui segment" data-questao="@questao.CodOrdem">
@@ -46,7 +46,7 @@
                                 {
                                     int marcada = resposta != null ? resposta.RespAlternativa.Value : -1;
                                     <div class="ui very relaxed list">
-                                        @foreach (AviQuestaoAlternativa alternativa in questao.AviQuestaoAlternativa)
+                                        @foreach (var alternativa in questao.AviQuestaoAlternativa)
                                         {
                                             <div class="field">
                                                 <div class="ui radio checkbox">

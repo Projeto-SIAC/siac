@@ -16,7 +16,7 @@ namespace SIAC.Models
                 List<AviQuestaoPessoaResposta> retorno = new List<AviQuestaoPessoaResposta>();
                 if (pessoas.Count > 0)
                 {
-                    foreach (PessoaFisica pessoa in pessoas)
+                    foreach (var pessoa in pessoas)
                     {
                         AviQuestaoPessoaResposta resposta = this.AviQuestaoPessoaResposta
                             .Where(pr => pr.CodOrdem == this.CodOrdem && pr.CodPessoaFisica == pessoa.CodPessoa)

@@ -9,7 +9,7 @@
     <h2>@ViewBag.Title</h2>
     <div class="ui basic segment">
         <div class="ui stackable two cards">
-            @foreach (AvalAvi avi in Model)
+            @foreach (var avi in Model)
             {
                 string dtCadastro = @avi.Avaliacao.DtCadastro.ToElapsedTimeString();
                 int quantidadeQuestoes = avi.QteQuestoes;

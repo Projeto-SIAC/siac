@@ -74,7 +74,7 @@
                         </td>
                     </tr>
                 }
-                @foreach (string campo in Model.Campos)
+                @foreach (var campo in Model.Campos)
                 {
                     if (!String.IsNullOrWhiteSpace(campo))
                     {
@@ -115,7 +115,7 @@
             <div class="ui header dividing">
                 Instruções
             </div>
-            @foreach (string instrucao in Model.Instrucoes)
+            @foreach (var instrucao in Model.Instrucoes)
             {
                 if (!String.IsNullOrWhiteSpace(instrucao))
                 {

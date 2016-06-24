@@ -39,7 +39,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (AviModulo modulo in Model.Modulos)
+                        @foreach (var modulo in Model.Modulos)
                         {
                             <tr>
                                 <td>@modulo.Descricao</td>
@@ -81,7 +81,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (AviCategoria categoria in Model.Categorias)
+                        @foreach (var categoria in Model.Categorias)
                         {
                             <tr>
                                 <td>@categoria.Descricao</td>
@@ -118,7 +118,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (AviIndicador indicador in Model.Indicadores)
+                        @foreach (var indicador in Model.Indicadores)
                         {
                             <tr>
                                 <td>@indicador.Descricao</td>

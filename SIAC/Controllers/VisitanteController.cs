@@ -100,7 +100,7 @@ namespace SIAC.Controllers
                         PessoaFisica.Inserir(pf);
                     }
 
-                    Usuario usuario = new Usuario();
+                    var usuario = new Usuario();
                     usuario.Matricula = matricula;
                     usuario.PessoaFisica = pf;
                     usuario.CodCategoria = Categoria.VISITANTE;

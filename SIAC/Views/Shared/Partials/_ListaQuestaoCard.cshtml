@@ -1,6 +1,6 @@
 ﻿@model List<Questao>
 
-@foreach (Questao questao in Model)
+@foreach (var questao in Model)
 {
     var dtCadastro = questao.DtCadastro.ToElapsedTimeString();
     <div id="@questao.CodQuestao" class="card">

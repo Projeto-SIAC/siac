@@ -63,22 +63,22 @@
     @* Questões da AVI *@
     <div class="ui bottom attached tab segment questoes" data-tab="questoes">
         <div class="ui fluid styled accordion">
-            @foreach (MapAviModulo modulo in Model.Avi.MapQuestoes)
+            @foreach (var modulo in Model.Avi.MapQuestoes)
             {
                 <div class="title"><i class="dropdown icon"></i>@modulo.Modulo.Descricao</div>
                 <div class="content" data-modulo="@modulo.Modulo.CodAviModulo">
                     <div class="accordion">
-                        @foreach (MapAviCategoria categoria in modulo.Categorias)
+                        @foreach (var categoria in modulo.Categorias)
                         {
                             <div class="title"><i class="dropdown icon"></i>@categoria.Categoria.Descricao</div>
                             <div class="content" data-categoria="@categoria.Categoria.CodAviCategoria">
                                 <div class="accordion">
-                                    @foreach (MapAviIndicador indicador in categoria.Indicadores)
+                                    @foreach (var indicador in categoria.Indicadores)
                                     {
                                         <div class="title"><i class="dropdown icon"></i>@indicador.Indicador.Descricao</div>
                                         <div class="content" data-indicador="@indicador.Indicador.CodAviIndicador">
                                             <div class="accordion">
-                                                @foreach (AviQuestao questao in indicador.Questoes)
+                                                @foreach (var questao in indicador.Questoes)
                                                 {
                                                     <div class="title">
                                                         <i class="dropdown icon"></i>
@@ -137,7 +137,7 @@
             <label data-ajuda="Clique na caixa abaixo para escolher o módulo da próxima questão">Escolha o módulo</label>
             <select id="ddlModulo" name="ddlModulo" class="ui search dropdown" required>
                 <option value="">Módulo</option>
-                @foreach (AviModulo modulo in Model.Modulos)
+                @foreach (var modulo in Model.Modulos)
                 {
                     <option value="@modulo.CodAviModulo">@modulo.Descricao</option>
                 }
@@ -147,7 +147,7 @@
             <label data-ajuda="Clique na caixa abaixo para selecionar a categoria da próxima questão">Selecione a categoria</label>
             <select id="ddlCategoria" name="ddlCategoria" class="ui search dropdown" required>
                 <option value="">Categoria</option>
-                @foreach (AviCategoria categoria in Model.Categorias)
+                @foreach (var categoria in Model.Categorias)
                 {
                     <option value="@categoria.CodAviCategoria">@categoria.Descricao</option>
                 }
@@ -157,7 +157,7 @@
             <label data-ajuda="Clique na caixa abaixo para definir o indicador da próxima questão">Defina o indicador</label>
             <select id="ddlIndicador" name="ddlIndicador" class="ui search dropdown" required>
                 <option value="">Indicador</option>
-                @foreach (AviIndicador indicador in Model.Indicadores)
+                @foreach (var indicador in Model.Indicadores)
                 {
                     <option value="@indicador.CodAviIndicador">@indicador.Descricao</option>
                 }
@@ -167,7 +167,7 @@
             <label data-ajuda="Clique na caixa abaixo para determinar o tipo da próxima questão">Determine o tipo</label>
             <select id="ddlTipo" name="ddlTipo" class="ui search dropdown" required>
                 <option value="">Tipo</option>
-                @foreach (TipoQuestao tipo in Model.Tipos)
+                @foreach (var tipo in Model.Tipos)
                 {
                     <option value="@tipo.CodTipoQuestao">@tipo.Descricao</option>
                 }

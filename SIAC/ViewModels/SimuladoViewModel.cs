@@ -17,7 +17,7 @@ namespace SIAC.ViewModels
             get
             {
                 Dictionary<int, IEnumerable> dict = new Dictionary<int, IEnumerable>();
-                foreach (Disciplina disc in this.Disciplinas)
+                foreach (var disc in this.Disciplinas)
                 {
                     dict[disc.CodDisciplina] = disc.Professor.Select(p => new
                     {

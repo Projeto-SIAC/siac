@@ -15,7 +15,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (SimCandidatoProva prova in Model.SimCandidatoProva.OrderBy(c => c.CodDiaRealizacao).ThenBy(c => c.CodProva))
+            @foreach (var prova in Model.SimCandidatoProva.OrderBy(c => c.CodDiaRealizacao).ThenBy(c => c.CodProva))
             {
                 <tr>
                     <td>@(prova.CodDiaRealizacao)º</td>

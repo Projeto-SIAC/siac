@@ -12,7 +12,7 @@
                     <label>Disciplina</label>
                     <select name="ddlDisciplina" class="ui fluid search dropdown" required">
                         <option value="">Disciplina</option>
-                        @foreach (Disciplina d in Model.Disciplinas)
+                        @foreach (var d in Model.Disciplinas)
                         {
                             <option @(Model.Prova.CodDisciplina == d.CodDisciplina ? "selected" : "" ) value="@d.CodDisciplina">@d.Descricao</option>
                         }

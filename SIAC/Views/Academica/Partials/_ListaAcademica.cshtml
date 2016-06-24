@@ -1,6 +1,6 @@
 ﻿@model List<AvalAcademica>
 
-@foreach (AvalAcademica acad in Model)
+@foreach (var acad in Model)
 {
     var dtCadastro = acad.Avaliacao.DtCadastro.ToElapsedTimeString();
     <div class="card hidden" style="display:none!important">

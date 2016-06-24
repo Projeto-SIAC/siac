@@ -44,8 +44,8 @@ namespace SIAC.Models
             get
             {
                 List<Questao> lstQuestao = new List<Questao>();
-                foreach (AvaliacaoTema avaliacaoTema in AvaliacaoTema)
-                    foreach (AvalTemaQuestao avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                foreach (var avaliacaoTema in AvaliacaoTema)
+                    foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
                         lstQuestao.Add(avalTemaQuestao.QuestaoTema.Questao);
                 return lstQuestao;
             }
@@ -57,8 +57,8 @@ namespace SIAC.Models
             get
             {
                 List<QuestaoTema> QuestoesTema = new List<QuestaoTema>();
-                foreach (AvaliacaoTema item in this.AvaliacaoTema)
-                    foreach (AvalTemaQuestao qt in item.AvalTemaQuestao)
+                foreach (var item in this.AvaliacaoTema)
+                    foreach (var qt in item.AvalTemaQuestao)
                         QuestoesTema.Add(qt.QuestaoTema);
                 return QuestoesTema;
             }
@@ -70,8 +70,8 @@ namespace SIAC.Models
             get
             {
                 List<AvalQuesPessoaResposta> lstPessoaResposta = new List<AvalQuesPessoaResposta>();
-                foreach (AvaliacaoTema avaliacaoTema in AvaliacaoTema)
-                    foreach (AvalTemaQuestao avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                foreach (var avaliacaoTema in AvaliacaoTema)
+                    foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
                         lstPessoaResposta.AddRange(avalTemaQuestao.AvalQuesPessoaResposta);
                 return lstPessoaResposta;
             }
@@ -90,14 +90,14 @@ namespace SIAC.Models
             {
                 int tipo = 0;
 
-                foreach (Questao questao in this.Questao)
+                foreach (var questao in this.Questao)
                     if (questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
                     {
                         tipo += 1;
                         break;
                     }
 
-                foreach (Questao questao in this.Questao)
+                foreach (var questao in this.Questao)
                     if (questao.CodTipoQuestao == TipoQuestao.DISCURSIVA)
                     {
                         tipo += 2;
@@ -203,7 +203,7 @@ namespace SIAC.Models
 
             List<QuestaoTema> questoesTema = new List<QuestaoTema>();
 
-            foreach (int questao in questoes)
+            foreach (var questao in questoes)
             {
                 List<QuestaoTema> qtTemp = contexto.QuestaoTema.Where(qt => qt.CodQuestao == questao).ToList();
                 questoesTema.AddRange(qtTemp);
@@ -222,14 +222,14 @@ namespace SIAC.Models
 
                 List<AvalTemaQuestao> questoesAdicionadas = new List<AvalTemaQuestao>();
 
-                foreach (Tema tema in aval.Temas)
+                foreach (var tema in aval.Temas)
                 {
                     List<QuestaoTema> questaoTema = questoesTema.Where(qt => qt.Tema == tema).ToList();
                     AvaliacaoTema avalTema = aval.AvaliacaoTema.FirstOrDefault(at => at.Tema == tema);
 
                     if (questaoTema.Count > 0)
                     {
-                        foreach (QuestaoTema qt in questaoTema)
+                        foreach (var qt in questaoTema)
                         {
                             AvalTemaQuestao proximaQuestao = new AvalTemaQuestao
                             {

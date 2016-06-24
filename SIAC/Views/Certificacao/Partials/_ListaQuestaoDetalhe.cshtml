@@ -1,7 +1,7 @@
 ﻿@model List<Questao>
 @{
     int i = 0;
-    foreach (Questao questao in Model)
+    foreach (var questao in Model)
     {
         <div id="@questao.CodQuestao" class="title">
             <i class="dropdown icon"></i><b>@((i++.GetIndiceQuestao() + ". " + questao.Enunciado).ToShortString(80))</b>
@@ -21,7 +21,7 @@
                             @questao.Dificuldade.Descricao
                         </div>
                     </div>
-                    @foreach (QuestaoTema questaoTema in questao.QuestaoTema)
+                    @foreach (var questaoTema in questao.QuestaoTema)
                     {
                         <div class="ui tag label" data-html="@( !String.IsNullOrWhiteSpace(questaoTema.Tema.Comentario) ? "<b>Comentário</b>: "+questaoTema.Tema.Comentario : "" )">@questaoTema.Tema.Descricao</div>
                     }
@@ -32,7 +32,7 @@
                 @if (questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
                 {
                     <div class="ui very relaxed list">
-                        @foreach (Alternativa alternativa in questao.Alternativa)
+                        @foreach (var alternativa in questao.Alternativa)
                         {
                             <div class="item" data-html="@(!String.IsNullOrWhiteSpace(alternativa.Comentario) ? "<b>Comentário</b>: " + alternativa.Comentario : "")">
                                 <b>@alternativa.CodOrdem.GetIndiceAlternativa()</b>) @alternativa.Enunciado
@@ -57,7 +57,7 @@
                     <div class="ui styled fluid accordion">
                         <div class="title"><i class="icon dropdown"></i>Anexos</div>
                         <div class="content">
-                            @foreach (QuestaoAnexo anexo in questao.QuestaoAnexo)
+                            @foreach (var anexo in questao.QuestaoAnexo)
                             {
                                 @Html.Partial("_Anexo", anexo)
                             }

@@ -69,7 +69,7 @@ namespace SIAC.Models
 
         public static void AtualizarDtUltimoUso(List<Questao> questoes)
         {
-            foreach (Questao questao in questoes)
+            foreach (var questao in questoes)
                 questao.DtUltimoUso = DateTime.Now;
         }
 
@@ -90,7 +90,7 @@ namespace SIAC.Models
 
             if (quantidadeQuestoes > 0)
             {
-                foreach (string tema in temas)
+                foreach (var tema in temas)
                 {
                     int codTema = int.Parse(tema);
                     List<QuestaoTema> temp =
@@ -180,7 +180,7 @@ namespace SIAC.Models
                     else
                     {
                         questoesTemas.AddRange(questoesAtual);
-                        foreach (QuestaoTema qt in questoesAtual)
+                        foreach (var qt in questoesAtual)
                         {
                             questoesTotal.Remove(qt);
                         }
@@ -221,7 +221,7 @@ namespace SIAC.Models
                                 else
                                 {
                                     questoesTemas.AddRange(questoesAtual);
-                                    foreach (QuestaoTema qt in questoesAtual)
+                                    foreach (var qt in questoesAtual)
                                     {
                                         questoesTotal.Remove(qt);
                                     }
@@ -258,10 +258,10 @@ namespace SIAC.Models
             if (tags.Count != 0)
             {
                 int contador = 0;
-                foreach (Questao questao in questoes)
+                foreach (var questao in questoes)
                 {
                     string enunciado = questao.Enunciado.ToLower();
-                    foreach (string palavra in tags)
+                    foreach (var palavra in tags)
                     {
                         if (enunciado.Contains(palavra))
                             contador++;
@@ -287,7 +287,7 @@ namespace SIAC.Models
 
                 List<QuestaoTema> questoes = new List<QuestaoTema>();
 
-                foreach (int codTema in temas)
+                foreach (var codTema in temas)
                 {
                     List<QuestaoTema> qstTemp =
                         (from qt in contexto.QuestaoTema
@@ -318,7 +318,7 @@ namespace SIAC.Models
         {
             List<QuestaoTema> QuestoesTotal = new List<QuestaoTema>();
 
-            foreach (int tema in Temas)
+            foreach (var tema in Temas)
             {
                 List<QuestaoTema> temp = (from qt in contexto.QuestaoTema
                                           where qt.Questao.CodTipoQuestao == tipo
@@ -348,7 +348,7 @@ namespace SIAC.Models
         {
             List<Questao> questoes = new List<Questao>();
 
-            foreach (int codQuestao in codQuestoes)
+            foreach (var codQuestao in codQuestoes)
                 questoes.Add(Questao.ListarPorCodigo(codQuestao));
 
             return questoes;

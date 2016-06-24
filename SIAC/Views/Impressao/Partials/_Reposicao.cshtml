@@ -18,7 +18,7 @@
                         <b>@Model.Avaliacao.AvalAcadReposicao.Disciplina.Descricao</b>
                     </td>
                     <td class="ui labels">
-                        @foreach (AvaliacaoTema avalTema in Model.Avaliacao.AvaliacaoTema)
+                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema)
                         {
                             <div class="ui tag label">@avalTema.Tema.Descricao</div>
                         }

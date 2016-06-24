@@ -18,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (SimCandidatoProva candidato in Model)
+            @foreach (var candidato in Model)
             {
                 bool flagAusente = !candidato.FlagPresente.Value;
 

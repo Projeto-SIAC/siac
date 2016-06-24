@@ -33,7 +33,7 @@ namespace SIAC.Models
             {
                 List<PessoaFisica> pessoas = new List<PessoaFisica>();
 
-                foreach (AviPublico publico in this.Publico)
+                foreach (var publico in this.Publico)
                 {
                     switch (publico.CodAviTipoPublico)
                     {
@@ -87,19 +87,19 @@ namespace SIAC.Models
                 List<AviQuestao> lstQuestao = this.Questoes;
                 List<AviModulo> lstModulo = lstQuestao.Select(a => a.AviModulo).Distinct().ToList();
 
-                foreach (AviModulo m in lstModulo)
+                foreach (var m in lstModulo)
                 {
-                    MapAviModulo modulo = new MapAviModulo();
+                    var modulo = new MapAviModulo();
                     modulo.Modulo = m;
                     List<AviCategoria> categorias = lstQuestao.Where(a => a.CodAviModulo == m.CodAviModulo).Select(a => a.AviCategoria).Distinct().ToList();
-                    foreach (AviCategoria c in categorias)
+                    foreach (var c in categorias)
                     {
-                        MapAviCategoria categoria = new MapAviCategoria();
+                        var categoria = new MapAviCategoria();
                         categoria.Categoria = c;
                         List<AviIndicador> indicadores = lstQuestao.Where(a => a.CodAviModulo == m.CodAviModulo && a.CodAviCategoria == c.CodAviCategoria).Select(a => a.AviIndicador).Distinct().ToList();
-                        foreach (AviIndicador i in indicadores)
+                        foreach (var i in indicadores)
                         {
-                            MapAviIndicador indicador = new MapAviIndicador();
+                            var indicador = new MapAviIndicador();
                             indicador.Indicador = i;
 
                             List<AviQuestao> questoesIndicador = lstQuestao.Where(a => a.CodAviModulo == m.CodAviModulo && a.CodAviCategoria == c.CodAviCategoria && a.CodAviIndicador == i.CodAviIndicador).ToList();
@@ -179,7 +179,7 @@ namespace SIAC.Models
 
                 List<AvalAvi> retorno = new List<AvalAvi>();
 
-                foreach (AvalAvi avi in institucionais)
+                foreach (var avi in institucionais)
                     if (avi.Pessoas.FirstOrDefault(p => p.CodPessoa == pessoa.CodPessoa) != null)
                         retorno.Add(avi);
                 return retorno;
@@ -219,7 +219,7 @@ namespace SIAC.Models
                         questaoNova.CodOrdem = i + 1;
                         if (alternativas.Count > 0)
                         {
-                            foreach (AviQuestaoAlternativa alternativa in alternativas)
+                            foreach (var alternativa in alternativas)
                             {
                                 alternativa.CodOrdem = questaoNova.CodOrdem;
                                 questaoNova.AviQuestaoAlternativa.Add(alternativa);
@@ -240,7 +240,7 @@ namespace SIAC.Models
         public void InserirPublico(List<Selecao> publico)
         {
             int ordem = 1;
-            foreach (Selecao item in publico)
+            foreach (var item in publico)
             {
                 switch (item.category)
                 {

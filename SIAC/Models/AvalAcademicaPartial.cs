@@ -17,7 +17,7 @@ namespace SIAC.Models
             get
             {
                 List<Aluno> retorno = new List<Aluno>();
-                foreach (Aluno aluno in this.Alunos)
+                foreach (var aluno in this.Alunos)
                 {
                     IEnumerable<AvalQuesPessoaResposta> lstRespostas = this.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == aluno.Usuario.CodPessoaFisica);
                     if (lstRespostas.Count() > 0)
@@ -33,7 +33,7 @@ namespace SIAC.Models
             get
             {
                 List<Aluno> retorno = new List<Aluno>();
-                foreach (Aluno aluno in this.Alunos)
+                foreach (var aluno in this.Alunos)
                 {
                     IEnumerable<AvalQuesPessoaResposta> lstRespostas = this.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == aluno.Usuario.CodPessoaFisica);
                     if (lstRespostas.Count() == 0)
@@ -50,7 +50,7 @@ namespace SIAC.Models
             {
                 List<Aluno> retorno = new List<Aluno>();
 
-                foreach (Aluno aluno in this.AlunoAusente)
+                foreach (var aluno in this.AlunoAusente)
                 {
                     if (this.Avaliacao.AvalPessoaResultado.FirstOrDefault(j => j.CodPessoaFisica == aluno.Usuario.CodPessoaFisica) == null)
                     {
@@ -68,7 +68,7 @@ namespace SIAC.Models
             get
             {
                 List<Justificacao> retorno = new List<Justificacao>();
-                foreach (AvalPessoaResultado avalPessoaResultado in this.Avaliacao.AvalPessoaResultado)
+                foreach (var avalPessoaResultado in this.Avaliacao.AvalPessoaResultado)
                 {
                     retorno.AddRange(avalPessoaResultado.Justificacao.Where(j => j.AvalAcadReposicao.Count == 0));
                 }
@@ -83,9 +83,9 @@ namespace SIAC.Models
             {
                 List<AvalAcadReposicao> retorno = new List<AvalAcadReposicao>();
 
-                foreach (AvalPessoaResultado avalPessoaResultado in this.Avaliacao.AvalPessoaResultado)
+                foreach (var avalPessoaResultado in this.Avaliacao.AvalPessoaResultado)
                 {
-                    foreach (Justificacao justificacao in avalPessoaResultado.Justificacao)
+                    foreach (var justificacao in avalPessoaResultado.Justificacao)
                     {
                         retorno.AddRange(justificacao.AvalAcadReposicao.ToList());
                     }
@@ -265,11 +265,11 @@ namespace SIAC.Models
         {
             if (String.IsNullOrEmpty(codigo))
             {
-                foreach (AvalAcademica acad in contexto.AvalAcademica.ToList())
+                foreach (var acad in contexto.AvalAcademica.ToList())
                 {
-                    foreach (AvalPessoaResultado avalPessoaResultado in acad.Avaliacao.AvalPessoaResultado)
+                    foreach (var avalPessoaResultado in acad.Avaliacao.AvalPessoaResultado)
                     {
-                        foreach (AvalQuesPessoaResposta pessoaResposta in acad.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == avalPessoaResultado.CodPessoaFisica).ToList())
+                        foreach (var pessoaResposta in acad.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == avalPessoaResultado.CodPessoaFisica).ToList())
                         {
                             if (pessoaResposta.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
                             {
@@ -292,9 +292,9 @@ namespace SIAC.Models
             else
             {
                 AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                foreach (AvalPessoaResultado avalPessoaResultado in acad.Avaliacao.AvalPessoaResultado)
+                foreach (var avalPessoaResultado in acad.Avaliacao.AvalPessoaResultado)
                 {
-                    foreach (AvalQuesPessoaResposta pessoaResposta in acad.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == avalPessoaResultado.CodPessoaFisica).ToList())
+                    foreach (var pessoaResposta in acad.Avaliacao.PessoaResposta.Where(r => r.CodPessoaFisica == avalPessoaResultado.CodPessoaFisica).ToList())
                     {
                         if (pessoaResposta.AvalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
                         {

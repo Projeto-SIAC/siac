@@ -14,7 +14,7 @@ namespace SIAC.Models
             get
             {
                 List<PessoaFisica> retorno = new List<PessoaFisica>();
-                foreach (PessoaFisica pf in this.PessoaFisica)
+                foreach (var pf in this.PessoaFisica)
                 {
                     var lstRespostas = this.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == pf.CodPessoa);
                     if (lstRespostas.Count() > 0)

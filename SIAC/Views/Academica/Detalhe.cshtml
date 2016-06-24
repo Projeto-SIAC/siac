@@ -45,14 +45,14 @@
     <br />
     @if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
     {
-        foreach (AvalAcadReposicao reposicao in Model.Reposicoes)
+        foreach (var reposicao in Model.Reposicoes)
         {
         <a href="@Url.Action("Detalhe", "Reposicao", new { codigo = reposicao.Avaliacao.CodAvaliacao })" class="ui label">Reposição<span class="detail">@reposicao.Avaliacao.CodAvaliacao</span></a>
         }
     }
     else
     {
-        foreach (AvalAcadReposicao reposicao in Model.Reposicoes.Where(r => r.Alunos.FirstOrDefault(a => a.MatrAluno == Sessao.UsuarioMatricula) != null))
+        foreach (var reposicao in Model.Reposicoes.Where(r => r.Alunos.FirstOrDefault(a => a.MatrAluno == Sessao.UsuarioMatricula) != null))
         {
         <a href="@Url.Action("Detalhe", "Reposicao", new { codigo = reposicao.Avaliacao.CodAvaliacao })" class="ui label">Reposição<span class="detail">@reposicao.Avaliacao.CodAvaliacao</span></a>
         }
@@ -88,7 +88,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (Disciplina disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
+            @foreach (var disc in Model.Avaliacao.AvaliacaoTema.Select(a => a.Tema.Disciplina).Distinct().ToList())
             {
                 <tr>
                     <td>
@@ -97,7 +97,7 @@
                     </td>
                     <td class="ui labels">
                         @* temas *@
-                        @foreach (AvaliacaoTema avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
+                        @foreach (var avalTema in Model.Avaliacao.AvaliacaoTema.Where(a => a.Tema.CodDisciplina == disc.CodDisciplina))
                         {
                             <div class="ui tag label">@avalTema.Tema.Descricao</div>
                         }
@@ -216,7 +216,7 @@ else if (Model.Avaliacao.FlagRealizada)
                             <div class="ui stackable grid">
                                 <div class="twelve wide column">
                                     <div class="ui relaxed list">
-                                        @foreach (Alternativa alternativa in lstQuestao[i].Alternativa)
+                                        @foreach (var alternativa in lstQuestao[i].Alternativa)
                                             {
                                             <div class="item">
                                                 <div class="middle aligned content">
@@ -234,7 +234,7 @@ else if (Model.Avaliacao.FlagRealizada)
                                         <div class="accordion">
                                             <div class="title"><i class="icon dropdown"></i>Anexos</div>
                                             <div class="content">
-                                                @foreach (QuestaoAnexo anexo in lstQuestao[i].QuestaoAnexo)
+                                                @foreach (var anexo in lstQuestao[i].QuestaoAnexo)
                                                     {
                                                         Html.Partial("_Anexo", anexo);
                                                     }
@@ -286,7 +286,7 @@ else if (Model.Avaliacao.FlagRealizada)
                 <label>Aluno</label>
                 <select class="ui search aluno dropdown">
                     <option value="">Selecione</option>
-                    @foreach (Aluno aluno in Model.AlunosRealizaram)
+                    @foreach (var aluno in Model.AlunosRealizaram)
                         {
                         <option value="@aluno.MatrAluno">@aluno.Usuario.PessoaFisica.Nome</option>
                         }
@@ -370,7 +370,7 @@ else if (Model.Avaliacao.FlagRealizada)
                         @if (lstQuestao[i].CodTipoQuestao == TipoQuestao.OBJETIVA)
                                 {
                             <div class="ui list">
-                                @foreach (Alternativa alternativa in lstQuestao[i].Alternativa)
+                                @foreach (var alternativa in lstQuestao[i].Alternativa)
                                         {
                                     <div class="item">
                                         <div class="middle aligned content">
@@ -400,7 +400,7 @@ else if (Model.Avaliacao.FlagRealizada)
                             <div class="accordion">
                                 <div class="title"><i class="icon dropdown"></i>Anexos</div>
                                 <div class="content">
-                                    @foreach (QuestaoAnexo anexo in lstQuestao[i].QuestaoAnexo)
+                                    @foreach (var anexo in lstQuestao[i].QuestaoAnexo)
                                             {
                                         @Html.Partial("_Anexo", anexo)
                                             }

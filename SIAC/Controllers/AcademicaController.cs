@@ -88,7 +88,7 @@ namespace SIAC.Controllers
                 return Redirect("~/historico/avaliacao/academica");
             }
 
-            AvaliacaoIndexViewModel model = new AvaliacaoIndexViewModel();
+            var model = new AvaliacaoIndexViewModel();
             model.Disciplinas = Academicas.Select(a => a.Disciplina).Distinct().ToList();
             return View(model);
         }
@@ -97,7 +97,7 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.PROFESSOR })]
         public ActionResult Gerar()
         {
-            AvaliacaoGerarViewModel model = new AvaliacaoGerarViewModel();
+            var model = new AvaliacaoGerarViewModel();
             model.Disciplinas = Disciplina.ListarPorProfessor(Helpers.Sessao.UsuarioMatricula);
             model.Dificuldades = Dificuldade.ListarOrdenadamente();
             model.Termo = Parametro.Obter().NotaUsoAcademica;
@@ -118,7 +118,7 @@ namespace SIAC.Controllers
                 }
                 else return RedirectToAction("Index", "Principal");
             }
-            AvalAcademica acad = new AvalAcademica();
+            var acad = new AvalAcademica();
             if (formCollection.HasKeys())
             {
                 DateTime hoje = DateTime.Now;
@@ -176,13 +176,13 @@ namespace SIAC.Controllers
                     lstQuestoes.AddRange(Questao.ListarPorDisciplina(codDisciplina, temaCodigos, codDificuldade, TipoQuestao.DISCURSIVA, quantidadeDiscursiva));
                 }
 
-                foreach (string temaCodigo in temaCodigos)
+                foreach (var temaCodigo in temaCodigos)
                 {
-                    AvaliacaoTema avalTema = new AvaliacaoTema();
+                    var avalTema = new AvaliacaoTema();
                     avalTema.Tema = Tema.ListarPorCodigo(codDisciplina, int.Parse(temaCodigo));
-                    foreach (QuestaoTema questaoTema in lstQuestoes.Where(q => q.CodTema == int.Parse(temaCodigo)))
+                    foreach (var questaoTema in lstQuestoes.Where(q => q.CodTema == int.Parse(temaCodigo)))
                     {
-                        AvalTemaQuestao avalTemaQuestao = new AvalTemaQuestao();
+                        var avalTemaQuestao = new AvalTemaQuestao();
                         avalTemaQuestao.QuestaoTema = questaoTema;
                         avalTema.AvalTemaQuestao.Add(avalTemaQuestao);
                     }
@@ -215,7 +215,7 @@ namespace SIAC.Controllers
             Professor professor = Professor.ListarPorMatricula(matricula);
             if (acad.CodProfessor == professor.CodProfessor)
             {
-                AvaliacaoAgendarViewModel model = new AvaliacaoAgendarViewModel();
+                var model = new AvaliacaoAgendarViewModel();
 
                 model.Avaliacao = acad.Avaliacao;
                 model.Turmas = professor.TurmaDiscProfHorario.Select(d => d.Turma).Distinct().OrderBy(t => t.Curso.Descricao).ToList();
@@ -433,7 +433,7 @@ namespace SIAC.Controllers
 
                         int index = indices.IndexOf(indice);
 
-                        AvalTemaQuestao atqNova = new AvalTemaQuestao();
+                        var atqNova = new AvalTemaQuestao();
                         atqNova.Ano = acad.Avaliacao.Ano;
                         atqNova.Semestre = acad.Avaliacao.Semestre;
                         atqNova.CodTipoAvaliacao = acad.Avaliacao.CodTipoAvaliacao;
@@ -647,18 +647,18 @@ namespace SIAC.Controllers
                 AvalAcademica aval = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                 if (aval.Alunos.SingleOrDefault(a => a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null && aval.Avaliacao.AvalPessoaResultado.SingleOrDefault(a => a.CodPessoaFisica == codPessoaFisica) == null)
                 {
-                    AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
+                    var avalPessoaResultado = new AvalPessoaResultado();
                     avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
                     avalPessoaResultado.HoraTermino = DateTime.Now;
                     avalPessoaResultado.QteAcertoObj = 0;
 
                     double quantidadeObjetiva = 0;
 
-                    foreach (AvaliacaoTema avaliacaoTema in aval.Avaliacao.AvaliacaoTema)
+                    foreach (var avaliacaoTema in aval.Avaliacao.AvaliacaoTema)
                     {
-                        foreach (AvalTemaQuestao avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                        foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
                         {
-                            AvalQuesPessoaResposta avalQuesPessoaResposta = new AvalQuesPessoaResposta();
+                            var avalQuesPessoaResposta = new AvalQuesPessoaResposta();
                             avalQuesPessoaResposta.CodPessoaFisica = codPessoaFisica;
                             if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.OBJETIVA)
                             {
@@ -696,7 +696,7 @@ namespace SIAC.Controllers
 
                     Repositorio.Commit();
 
-                    AvaliacaoResultadoViewModel model = new AvaliacaoResultadoViewModel();
+                    var model = new AvaliacaoResultadoViewModel();
                     model.Avaliacao = aval.Avaliacao;
                     model.Porcentagem = (avalPessoaResultado.QteAcertoObj.Value / quantidadeObjetiva) * 100;
 
@@ -720,17 +720,17 @@ namespace SIAC.Controllers
                 AvalAcademica aval = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                 if (aval.Alunos.SingleOrDefault(a => a.MatrAluno == Sessao.UsuarioMatricula) != null && aval.Avaliacao.AvalPessoaResultado.SingleOrDefault(a => a.CodPessoaFisica == codPessoaFisica) == null)
                 {
-                    AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
+                    var avalPessoaResultado = new AvalPessoaResultado();
                     avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
                     avalPessoaResultado.HoraTermino = DateTime.Now;
                     avalPessoaResultado.QteAcertoObj = 0;
                     avalPessoaResultado.Nota = 0;
 
-                    foreach (AvaliacaoTema avaliacaoTema in aval.Avaliacao.AvaliacaoTema)
+                    foreach (var avaliacaoTema in aval.Avaliacao.AvaliacaoTema)
                     {
-                        foreach (AvalTemaQuestao avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                        foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
                         {
-                            AvalQuesPessoaResposta avalQuesPessoaResposta = new AvalQuesPessoaResposta();
+                            var avalQuesPessoaResposta = new AvalQuesPessoaResposta();
                             avalQuesPessoaResposta.CodPessoaFisica = codPessoaFisica;
                             if (avalTemaQuestao.QuestaoTema.Questao.CodTipoQuestao == TipoQuestao.OBJETIVA) avalQuesPessoaResposta.RespAlternativa = -1;
                             avalQuesPessoaResposta.RespNota = 0;

@@ -38,7 +38,7 @@
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a class="categoria item active selected" data-categoria="">Todos</a>
-                    @foreach (Categoria categoria in Model.Categorias)
+                    @foreach (var categoria in Model.Categorias)
                     {
                         <a class="categoria item" data-categoria="@categoria.CodCategoria">
                             @categoria.Descricao

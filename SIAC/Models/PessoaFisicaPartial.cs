@@ -58,7 +58,7 @@ namespace SIAC.Models
             int ano = dtHoje.Year;
             int semestre = dtHoje.SemestreAtual();
             List<PessoaFisica> lstPessoaFisica = new List<PessoaFisica>();
-            foreach (Turma turma in Curso.ListarPorCodigo(codCurso).Turma)
+            foreach (var turma in Curso.ListarPorCodigo(codCurso).Turma)
                 lstPessoaFisica.AddRange(turma.TurmaDiscAluno.Where(a => a.AnoLetivo == ano && a.SemestreLetivo == semestre).Select(a => a.Aluno.Usuario.PessoaFisica).ToList());
             return lstPessoaFisica;
         }
@@ -71,8 +71,8 @@ namespace SIAC.Models
 
             List<PessoaFisica> lstPessoaFisica = new List<PessoaFisica>();
 
-            foreach (Curso curso in Diretoria.ListarPorCodigo(codComposto).Curso)
-                foreach (Turma turma in curso.Turma)
+            foreach (var curso in Diretoria.ListarPorCodigo(codComposto).Curso)
+                foreach (var turma in curso.Turma)
                     lstPessoaFisica.AddRange(turma.TurmaDiscAluno.Where(a => a.AnoLetivo == ano && a.SemestreLetivo == semestre).Select(a => a.Aluno.Usuario.PessoaFisica).ToList());
 
             return lstPessoaFisica;
@@ -86,9 +86,9 @@ namespace SIAC.Models
 
             List<PessoaFisica> lstPessoaFisica = new List<PessoaFisica>();
 
-            foreach (Diretoria diretoria in Campus.ListarPorCodigo(codComposto).Diretoria)
-                foreach (Curso curso in diretoria.Curso)
-                    foreach (Turma turma in curso.Turma)
+            foreach (var diretoria in Campus.ListarPorCodigo(codComposto).Diretoria)
+                foreach (var curso in diretoria.Curso)
+                    foreach (var turma in curso.Turma)
                         lstPessoaFisica.AddRange(turma.TurmaDiscAluno.Where(a => a.AnoLetivo == ano && a.SemestreLetivo == semestre).Select(a => a.Aluno.Usuario.PessoaFisica).ToList());
 
             return lstPessoaFisica;

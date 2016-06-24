@@ -19,10 +19,10 @@ namespace SIAC.Controllers
         {
             if (Request.Url.ToString().ToLower().Contains("principal"))
                 return Redirect("~/historico/autoavaliacao");
-            AvaliacaoIndexViewModel model = new AvaliacaoIndexViewModel();
+            var model = new AvaliacaoIndexViewModel();
             model.Dificuldades = Dificuldade.ListarOrdenadamente();
             List<Disciplina> disciplinas = new List<Disciplina>();
-            foreach (AvalAuto auto in Autoavaliacoes)
+            foreach (var auto in Autoavaliacoes)
                 disciplinas.AddRange(auto.Disciplina);
             model.Disciplinas = disciplinas.Distinct().ToList();
             return View(model);
@@ -85,7 +85,7 @@ namespace SIAC.Controllers
         // GET: principal/autoavaliacao/gerar
         public ActionResult Gerar()
         {
-            AvaliacaoGerarViewModel model = new AvaliacaoGerarViewModel();
+            var model = new AvaliacaoGerarViewModel();
             model.Disciplinas = Disciplina.ListarTemQuestoes();
             model.Dificuldades = Dificuldade.ListarOrdenadamente();
             return View(model);
@@ -101,9 +101,9 @@ namespace SIAC.Controllers
             if (!String.IsNullOrWhiteSpace(formCollection["chkAvalicoesSeparadas"]))
             {
                 string[] disciplinas = formCollection["ddlDisciplinas"].Split(',');
-                foreach (string disciplina in disciplinas)
+                foreach (var disciplina in disciplinas)
                 {
-                    AvalAuto auto = new AvalAuto();
+                    var auto = new AvalAuto();
 
                     DateTime hoje = DateTime.Now;
 
@@ -153,13 +153,13 @@ namespace SIAC.Controllers
                     if (qteDiscursiva > 0)
                         questoes.AddRange(Questao.ListarPorDisciplina(int.Parse(disciplina), temas, codDificuldade, TipoQuestao.DISCURSIVA, qteDiscursiva));
 
-                    foreach (string tema in temas)
+                    foreach (var tema in temas)
                     {
-                        AvaliacaoTema avalTema = new AvaliacaoTema();
+                        var avalTema = new AvaliacaoTema();
                         avalTema.Tema = Tema.ListarPorCodigo(int.Parse(disciplina), int.Parse(tema));
-                        foreach (QuestaoTema questaoTema in questoes.Where(q => q.CodTema == int.Parse(tema)))
+                        foreach (var questaoTema in questoes.Where(q => q.CodTema == int.Parse(tema)))
                         {
-                            AvalTemaQuestao avalTemaQuestao = new AvalTemaQuestao();
+                            var avalTemaQuestao = new AvalTemaQuestao();
                             avalTemaQuestao.QuestaoTema = questaoTema;
                             avalTema.AvalTemaQuestao.Add(avalTemaQuestao);
                         }
@@ -180,7 +180,7 @@ namespace SIAC.Controllers
             }
             else
             {
-                AvalAuto auto = new AvalAuto();
+                var auto = new AvalAuto();
 
                 DateTime hoje = DateTime.Now;
 
@@ -199,7 +199,7 @@ namespace SIAC.Controllers
                 List<int> dificuldades = new List<int>();
                 int quantidadeTotalObjetivas = 0;
                 int quantidadeTotalDiscursivas = 0;
-                foreach (string disciplina in disciplinas)
+                foreach (var disciplina in disciplinas)
                 {
                     /* Dificuldade */
                     int codDificuldade = int.Parse(formCollection["ddlDificuldade" + disciplina]);
@@ -238,13 +238,13 @@ namespace SIAC.Controllers
                     if (qteDiscursiva > 0)
                         questoes.AddRange(Questao.ListarPorDisciplina(int.Parse(disciplina), temas, codDificuldade, TipoQuestao.DISCURSIVA, qteDiscursiva));
 
-                    foreach (string tema in temas)
+                    foreach (var tema in temas)
                     {
-                        AvaliacaoTema avalTema = new AvaliacaoTema();
+                        var avalTema = new AvaliacaoTema();
                         avalTema.Tema = Tema.ListarPorCodigo(int.Parse(disciplina), int.Parse(tema));
-                        foreach (QuestaoTema questaoTema in questoes.Where(q => q.CodTema == int.Parse(tema)))
+                        foreach (var questaoTema in questoes.Where(q => q.CodTema == int.Parse(tema)))
                         {
-                            AvalTemaQuestao avalTemaQuestao = new AvalTemaQuestao();
+                            var avalTemaQuestao = new AvalTemaQuestao();
                             avalTemaQuestao.QuestaoTema = questaoTema;
                             avalTema.AvalTemaQuestao.Add(avalTemaQuestao);
                         }
@@ -276,7 +276,7 @@ namespace SIAC.Controllers
                 {
                     if (auto.CodPessoaFisica == codPessoaFisica)
                     {
-                        AutoavaliacaoDetalheViewModel model = new AutoavaliacaoDetalheViewModel();
+                        var model = new AutoavaliacaoDetalheViewModel();
                         model.Avaliacao = auto.Avaliacao;
 
                         if (auto.Avaliacao.AvalPessoaResultado.Count > 0)
@@ -285,7 +285,7 @@ namespace SIAC.Controllers
                             Dictionary<string, double> qteObjetivaDisciplina = new Dictionary<string, double>();
                             Dictionary<string, double> qteObjetivaAcertoDisciplina = new Dictionary<string, double>();
 
-                            foreach (AvaliacaoTema avaliacaoTema in auto.Avaliacao.AvaliacaoTema)
+                            foreach (var avaliacaoTema in auto.Avaliacao.AvaliacaoTema)
                             {
                                 if (!qteObjetivaDisciplina.ContainsKey(avaliacaoTema.Tema.Disciplina.Descricao))
                                 {
@@ -309,7 +309,7 @@ namespace SIAC.Controllers
                             }
 
                             model.Porcentagem = (auto.Avaliacao.AvalPessoaResultado.First().QteAcertoObj.Value / qteObjetiva) * 100;
-                            foreach (string chave in qteObjetivaDisciplina.Keys)
+                            foreach (var chave in qteObjetivaDisciplina.Keys)
                                 if (qteObjetivaDisciplina[chave] > 0)
                                     model.Desempenho.Add(chave, (qteObjetivaAcertoDisciplina[chave] / qteObjetivaDisciplina[chave]) * 100);
                         }
@@ -336,7 +336,7 @@ namespace SIAC.Controllers
             }
             else
             {
-                AutoavaliacaoNovoViewModel model = new AutoavaliacaoNovoViewModel();
+                var model = new AutoavaliacaoNovoViewModel();
                 model.Geradas = AvalAuto.ListarNaoRealizadaPorPessoa(codPessoaFisica);
                 return View("Novo", model);
             }
@@ -364,7 +364,7 @@ namespace SIAC.Controllers
                 AvalAuto auto = AvalAuto.ListarPorCodigoAvaliacao(codigo);
                 if (auto.Avaliacao.AvalPessoaResultado.Count == 0 && auto.CodPessoaFisica == codPessoaFisica)
                 {
-                    AvalPessoaResultado avalPessoaResultado = new AvalPessoaResultado();
+                    var avalPessoaResultado = new AvalPessoaResultado();
                     avalPessoaResultado.CodPessoaFisica = codPessoaFisica;
                     avalPessoaResultado.HoraTermino = DateTime.Now;
                     avalPessoaResultado.QteAcertoObj = 0;
@@ -373,7 +373,7 @@ namespace SIAC.Controllers
                     Dictionary<string, double> qteObjetivaDisciplina = new Dictionary<string, double>();
                     Dictionary<string, double> qteObjetivaAcertoDisciplina = new Dictionary<string, double>();
 
-                    foreach (AvaliacaoTema avaliacaoTema in auto.Avaliacao.AvaliacaoTema)
+                    foreach (var avaliacaoTema in auto.Avaliacao.AvaliacaoTema)
                     {
                         if (!qteObjetivaDisciplina.ContainsKey(avaliacaoTema.Tema.Disciplina.Descricao))
                         {
@@ -383,7 +383,7 @@ namespace SIAC.Controllers
                         {
                             qteObjetivaAcertoDisciplina.Add(avaliacaoTema.Tema.Disciplina.Descricao, 0);
                         }
-                        foreach (AvalTemaQuestao avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
+                        foreach (var avalTemaQuestao in avaliacaoTema.AvalTemaQuestao)
                         {
                             AvalQuesPessoaResposta avalQuesPessoaResposta = avalTemaQuestao.AvalQuesPessoaResposta.FirstOrDefault(r => r.PessoaFisica.CodPessoa == codPessoaFisica);
                             if (avalQuesPessoaResposta == null)
@@ -421,10 +421,10 @@ namespace SIAC.Controllers
 
                     Repositorio.Commit();
 
-                    AvaliacaoResultadoViewModel model = new AvaliacaoResultadoViewModel();
+                    var model = new AvaliacaoResultadoViewModel();
                     model.Avaliacao = auto.Avaliacao;
                     model.Porcentagem = (avalPessoaResultado.QteAcertoObj.Value / qteObjetiva) * 100;
-                    foreach (string chave in qteObjetivaDisciplina.Keys)
+                    foreach (var chave in qteObjetivaDisciplina.Keys)
                         if (qteObjetivaDisciplina[chave] > 0)
                             model.Desempenho.Add(chave, (qteObjetivaAcertoDisciplina[chave] / qteObjetivaDisciplina[chave]) * 100);
                     Lembrete.AdicionarNotificacao($"Autoavaliação {auto.Avaliacao.CodAvaliacao} realizada. Confira seu resultado!");

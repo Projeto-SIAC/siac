@@ -24,7 +24,7 @@ namespace SIAC.Models
             {
                 IEnumerable<Aluno> alunos = this.Justificacao.FirstOrDefault()?.AvalPessoaResultado.Avaliacao.AvalAcademica.Alunos;
                 List<Aluno> retorno = new List<Aluno>();
-                foreach (Aluno a in alunos)
+                foreach (var a in alunos)
                 {
                     if (this.Justificacao.FirstOrDefault(j => j.CodPessoaFisica == a.Usuario.CodPessoaFisica) != null)
                     {
@@ -41,7 +41,7 @@ namespace SIAC.Models
             get
             {
                 List<Aluno> retorno = new List<Aluno>();
-                foreach (Aluno a in this.Alunos)
+                foreach (var a in this.Alunos)
                 {
                     IEnumerable<AvalQuesPessoaResposta> lstRespostas = this.Avaliacao.PessoaResposta.Where(p => p.CodPessoaFisica == a.Usuario.CodPessoaFisica);
                     if (lstRespostas.Count() > 0)

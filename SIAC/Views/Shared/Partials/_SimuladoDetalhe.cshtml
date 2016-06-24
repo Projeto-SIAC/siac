@@ -41,13 +41,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (SimDiaRealizacao dia in Model.SimDiaRealizacao.OrderBy(d=>d.DtRealizacao))
+                    @foreach (var dia in Model.SimDiaRealizacao.OrderBy(d=>d.DtRealizacao))
                     {
                         <tr>
                             <td>@dia.DtRealizacao.DiaRealizacaoRepresentacao()</td>
                             <td>@dia.Duracao.ParaRepresentarDuracao()</td>
                             <td>
-                                @foreach (SimProva prova in dia.SimProva)
+                                @foreach (var prova in dia.SimProva)
                                 {
                                     <label class="ui label">@prova.Disciplina.Descricao</label>
                                 }

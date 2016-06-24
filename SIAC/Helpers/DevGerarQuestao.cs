@@ -11,13 +11,13 @@ namespace SIAC.Helpers
         public static List<Questao> GerarQuestao(int qte)
         {
             List<Questao> lstQuestao = new List<Questao>();
-            LeroLero leroLero = new LeroLero();
+            var leroLero = new LeroLero();
             List<Professor> lstProfessor = Professor.ListarOrdenadamente();
             List<TipoQuestao> lstTipoQuestao = TipoQuestao.ListarOrdenadamente();
             List<Dificuldade> lstDificuldade = Dificuldade.ListarOrdenadamente();
             for (int i = 0; i < qte; i++)
             {
-                Questao questao = new Questao();
+                var questao = new Questao();
                 questao.DtCadastro = DateTime.Now;
                 questao.Professor = lstProfessor.ElementAt(Sistema.Random.Next(lstProfessor.Count));
                 questao.Dificuldade = lstDificuldade.ElementAt(Sistema.Random.Next(lstDificuldade.Count));
