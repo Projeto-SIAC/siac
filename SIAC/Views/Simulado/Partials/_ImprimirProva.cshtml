@@ -95,15 +95,17 @@
     @Html.Partial("_QuestoesImpressao", questoes)
 
     <script>
-        var focused = false;
-        window.print();
-        focused = true;
-        var interval = setInterval(function () {
-            if (focused === true) {
-                clearInterval(interval);
-                window.close();
-            }
-        }, 300);
+        (function () {
+            var focused = false;
+            window.print();
+            focused = true;
+            var interval = setInterval(function () {
+                if (focused === true && document.readyState === 'complete') {
+                    clearInterval(interval);
+                    window.close();
+                }
+            }, 300);
+        })();
     </script>
 </body>
 </html>

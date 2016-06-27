@@ -43,11 +43,11 @@
         }
 
         .break-page {
-            margin:0;
-            border:0;
-            padding:0;
-            width:0;
-            height:0;
+            margin: 0;
+            border: 0;
+            padding: 0;
+            width: 0;
+            height: 0;
             -webkit-break-before: always;
             break-before: always;
             page-break-before: always;
@@ -91,17 +91,19 @@
             </div>
         </div>
         <div class="break-page"></div>
-    }    
+    }
     <script>
-        var focused = false;
-        window.print();
-        focused = true;
-        var interval = setInterval(function () {
-            if (focused === true) {
-                clearInterval(interval);
-                window.close();
-            }
-        }, 300);
+        (function () {
+            var focused = false;
+            window.print();
+            focused = true;
+            var interval = setInterval(function () {
+                if (focused === true && document.readyState === 'complete') {
+                    clearInterval(interval);
+                    window.close();
+                }
+            }, 300);
+        })();
     </script>
 </body>
 </html>

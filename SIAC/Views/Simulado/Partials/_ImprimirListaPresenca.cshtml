@@ -33,19 +33,19 @@
         }
 
         .break-page {
-            margin:0;
-            border:0;
-            padding:0;
-            width:0;
-            height:0;
+            margin: 0;
+            border: 0;
+            padding: 0;
+            width: 0;
+            height: 0;
             -webkit-break-before: always;
             break-before: always;
             page-break-before: always;
         }
 
         .reduce.text {
-            font-size:10px!important;
-            white-space:normal!important;
+            font-size: 10px !important;
+            white-space: normal !important;
         }
     </style>
 </head>
@@ -74,7 +74,7 @@
                 @foreach (var item in candidados.Select((candidato, i) => new { i, candidato }))
                 {
                     <tr>
-                        <td class="right aligned">@(item.i+1)</td>
+                        <td class="right aligned">@(item.i + 1)</td>
                         <td class="@(item.candidato.Nome.Length > 35 ? "reduce text" : "")">@item.candidato.Nome</td>
                         <td>@Formate.ParaCPF(item.candidato.Cpf)</td>
                         <td></td>
@@ -83,17 +83,19 @@
             </tbody>
         </table>
         <div class="break-page"></div>
-    }    
+    }
     <script>
-        var focused = false;
-        window.print();
-        focused = true;
-        var interval = setInterval(function () {
-            if (focused === true) {
-                clearInterval(interval);
-                window.close();
-            }
-        }, 300);
+        (function () {
+            var focused = false;
+            window.print();
+            focused = true;
+            var interval = setInterval(function () {
+                if (focused === true && document.readyState === 'complete') {
+                    clearInterval(interval);
+                    window.close();
+                }
+            }, 300);
+        })();
     </script>
 </body>
 </html>
