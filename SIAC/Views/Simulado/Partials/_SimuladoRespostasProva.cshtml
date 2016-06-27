@@ -1,5 +1,5 @@
 ﻿@model List<SimCandidatoProva>
-@{ 
+@{
     string codigo = Model.First().SimCandidato.Simulado.Codigo;
     int codDia = Model.First().SimProva.CodDiaRealizacao;
     int codProva = Model.First().SimProva.CodProva;
@@ -12,7 +12,7 @@
             <tr>
                 <th>Nome</th>
                 <th>CPF</th>
-                <th>Quantidade de Questões</th>
+                <th>Quant. de Questões</th>
                 <th>Quantidade de Acertos</th>
                 <th>Ausente?</th>
             </tr>
@@ -20,7 +20,7 @@
         <tbody>
             @foreach (var candidato in Model)
             {
-                bool flagAusente = !candidato.FlagPresente.Value;
+                bool flagAusente = candidato.FlagPresente.HasValue && !candidato.FlagPresente.Value;
 
                 <tr class="@(flagAusente ? "error" : "")">
                     <td>@candidato.SimCandidato.Candidato.Nome</td>
@@ -28,12 +28,12 @@
                     <td>@candidato.SimProva.QteQuestoes</td>
                     <td>
                         <div class="field @(flagAusente ? "disabled" : "")">
-                            <input type="number" @(candidato.FlagPresente.Value ? "required" : "") max="@candidato.SimProva.QteQuestoes" min="0" name="@candidato.CodCandidato" value="@(candidato.QteAcertos.HasValue ? candidato.QteAcertos.ToString() : "" )" placeholder="Informe a quantidade de acertos do candidato" />
+                            <input type="number" @(!flagAusente ? "required" : "") max="@candidato.SimProva.QteQuestoes" min="0" name="@candidato.CodCandidato" value="@(candidato.QteAcertos.HasValue ? candidato.QteAcertos.ToString() : "" )" placeholder="Informe a quantidade de acertos do candidato" />
                         </div>
                     </td>
                     <td>
                         <div class="ui toggle checkbox">
-                            <input type="checkbox" name="@(candidato.CodCandidato)ausente" @(candidato.FlagPresente.Value ? "" : "checked")/>
+                            <input type="checkbox" name="@(candidato.CodCandidato)ausente" @(flagAusente ? "checked" : "") />
                         </div>
                     </td>
                 </tr>
@@ -41,6 +41,6 @@
         </tbody>
     </table>
     <div class="ui actions">
-        <input type="submit" class="ui button" value="Enviar respostas"/>
+        <button type="submit" class="ui button">Enviar respostas</button>
     </div>
 </form>

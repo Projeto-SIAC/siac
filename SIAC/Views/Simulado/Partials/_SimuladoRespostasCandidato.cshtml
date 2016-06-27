@@ -1,13 +1,16 @@
 ﻿@model SimuladoRespostasCandidatoViewModel
 @{
     int questaoIndice = 1;
-    bool flagAusente = !Model.CandidatoProva.FlagPresente.Value;
+    bool flagAusente = Model.CandidatoProva.FlagPresente.HasValue && !Model.CandidatoProva.FlagPresente.Value;
 }
 
 <form method="post" class="ui form" action="@Url.Action("InserirRespostasCandidato", new { codigo = Model.Simulado.Codigo, codDia = Model.Prova.CodDiaRealizacao, codProva = Model.Prova.CodProva, codCandidato = Model.Candidato.CodCandidato})">
-    <h3 class="header">@($"Prova: {Model.Prova.Titulo} || Candidato: {Model.Candidato.Nome}")</h3>
+    <h3 class="header">
+        @($"Prova: {Model.Prova.CodDiaRealizacao}º dia - {Model.Prova.Titulo}") |
+        @($"Candidato: {Model.Candidato.Nome} ({Formate.ParaCPF(Model.Candidato.Cpf)})")
+    </h3>
     <div class="ui basic segment">
-        <div class="ui @(flagAusente ? "active" : "" ) dimmer">
+        <div class="ui dimmer">
             <div class="content">
                 <div class="center">
                     <h2 class="ui inverted icon header">
@@ -29,32 +32,32 @@
                 {
                     SimCandidatoQuestao resposta = Model.Respostas.FirstOrDefault(q => q.CodQuestao == questao.CodQuestao);
 
-                    <tr>
-                        <td>@(questaoIndice++)</td>
-                        <td>
-                            <div class="inline fields">
-                                @foreach (var alternativa in questao.Questao.Alternativa)
+                <tr>
+                    <td>@(questaoIndice++)</td>
+                    <td>
+                        <div class="inline fields">
+                            @foreach (var alternativa in questao.Questao.Alternativa)
                                 {
-                                    <div class="field">
-                                        <div class="ui radio checkbox">
-                                            <input type="radio" name="@($"questao{questao.CodQuestao}")" value="@alternativa.CodOrdem"
-                                                   required @(resposta != null && resposta.RespAlternativa == alternativa.CodOrdem ? "checked" : "")>
-                                            <label>@alternativa.CodOrdem.GetIndiceAlternativa()</label>
-                                        </div>
-                                    </div>
-                                }
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input type="radio" name="@($"questao{questao.CodQuestao}")" value="@alternativa.CodOrdem"
+                                           required @(resposta != null && resposta.RespAlternativa == alternativa.CodOrdem ? "checked" : "")>
+                                    <label>@alternativa.CodOrdem.GetIndiceAlternativa()</label>
+                                </div>
                             </div>
-                        </td>
-                    </tr>
+                                }
+                        </div>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
     </div>
-    <div class="ui actions">
-        <input type="submit" class="ui button" value="Enviar respostas" />
-        <div class="ui floated right toggle checkbox">
-            <label>Candidato Ausente?</label>
+    <div class="ui segment">
+        <div class="ui toggle checkbox">
+            <label>Candidato ausente?</label>
             <input type="checkbox" name="ausente" @(flagAusente ? "checked" : "") />
-        </div> 
+        </div>
     </div>
+    <button type="submit" class="ui button">Enviar respostas</button>
 </form>

@@ -51,26 +51,29 @@
                 {
                     <div class="editar item">
                         <i class="edit icon"></i>
-                        Editar Dados
+                        Atualizar Dados
                     </div>
-                    <a href="@Url.Action("Datas", new { codigo = Model.Codigo })" class="item">
-                        <i class="wait icon"></i>
-                        Gerenciar Datas
-                    </a>
-                    <a href="@Url.Action("Salas", new { codigo = Model.Codigo })" class="item">
-                        <i class="marker icon"></i>
-                        Selecionar Salas
-                    </a>
-                    <a href="@Url.Action("Provas", new { codigo = Model.Codigo })" class="item">
-                        <i class="copy icon"></i>
-                        Gerenciar Provas
-                    </a>
-                    if (Model.FlagInscricaoAberta)
+                    if (!Model.FlagProvaEncerrada)
                     {
-                        <div class="alterar prazo item">
-                            <i class="calendar icon"></i>
-                            Alterar prazo
-                        </div>
+                        <a href="@Url.Action("Datas", new { codigo = Model.Codigo })" class="item">
+                            <i class="wait icon"></i>
+                            Gerenciar Datas
+                        </a>
+                        <a href="@Url.Action("Salas", new { codigo = Model.Codigo })" class="item">
+                            <i class="marker icon"></i>
+                            Selecionar Salas
+                        </a>
+                        <a href="@Url.Action("Provas", new { codigo = Model.Codigo })" class="item">
+                            <i class="copy icon"></i>
+                            Gerenciar Provas
+                        </a>
+                        if (Model.FlagInscricaoAberta)
+                        {
+                            <div class="alterar prazo item">
+                                <i class="calendar icon"></i>
+                                Alterar prazo
+                            </div>
+                        }
                     }
                 }
                 @if (Model.Provas.Count > 0 && !Model.FlagProvaEncerrada)
@@ -127,7 +130,7 @@
                                 Liberar Inscrições
                             </div>
                         }
-                        if (DateTime.Now > Model.DtInicioInscricao && Model.SimCandidato.Count > 0)
+                        if (DateTime.Now > Model.DtInicioInscricao && Model.SimCandidato.Count > 0 && !Model.FlagProvaEncerrada)
                         {
                             <div class="mapear item">
                                 <i class="building outline icon"></i>
@@ -246,7 +249,7 @@
 
 <form action="@Url.Action("Editar", new { codigo = Model.Codigo })" method="post" class="ui editar modal">
     <i class="close icon"></i>
-    <div class="header">Editar dados do simulado</div>
+    <div class="header">Atualizar dados do simulado</div>
     <div class="content">
         <div class="ui form">
             <div class="field required">
@@ -420,7 +423,7 @@
             {
                 <tr>
                     <td><b>Descrição</b></td>
-                    <td>@Model.Descricao</td>
+                    <td>@Html.Raw(Model.Descricao.ToHtml("p"))</td>
                 </tr>
             }
             <tr>

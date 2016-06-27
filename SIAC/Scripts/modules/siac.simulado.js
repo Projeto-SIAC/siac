@@ -911,6 +911,7 @@ siac.Simulado.Respostas = (function () {
                         if (data) {
                             $listaRespostas.html(data);
                             alterarCheckBoxProva();
+                            tratarEnvioFormulario('prova');
                         }
                     },
                     error: function () {
@@ -948,6 +949,7 @@ siac.Simulado.Respostas = (function () {
                             $listaRespostas.html(data);
                             alterarCheckBoxCandidato();
                             sobreporCandidatoEmDimmer();
+                            tratarEnvioFormulario('candidato');
                         }
                     },
                     error: function () {
@@ -977,6 +979,61 @@ siac.Simulado.Respostas = (function () {
                 }
             }).modal('show');
         });
+    }
+
+    function tratarEnvioFormulario(provaOuCandidato) {
+        var formulario = $('.respostas form');
+        var botao = formulario.find('[type=submit]');
+        var provaOuCandidato = provaOuCandidato;
+
+        if (formulario) {
+            formulario.off('submit').on('submit', function () {
+                var dados = formulario.serialize();
+                var url = formulario.attr('action');
+                var metodo = formulario.attr('method');
+                $.ajax({
+                    type: metodo,
+                    url: url,
+                    data: dados,
+                    beforeSend: function () {
+                        botao.addClass('loading');
+                    },
+                    success: function () {
+                        if (provaOuCandidato === 'prova') {
+                            var dropdown = $('#ddlProva');
+                            var atual = dropdown.val();
+                            var proximo = dropdown.find('option[value="' + atual + '"]').next();
+
+                            if (proximo.attr('value')) {
+                                dropdown.dropdown('set selected', proximo.attr('value'));
+                                siac.Lembrete.Notificacoes.exibir('Avançando para prova "' + proximo.text() + '".', 'info');
+                                $('.prova.button').click();
+                            }
+                        }
+                        else if (provaOuCandidato === 'candidato') {
+                            var dropdown = $('#ddlCandidato');
+                            var atual = dropdown.val();
+                            var proximo = dropdown.find('option[value="' + atual + '"]').next();
+
+                            if (proximo.attr('value')) {
+                                dropdown.dropdown('set selected', proximo.attr('value'));
+                                siac.Lembrete.Notificacoes.exibir('Avançando para candidato "' + proximo.text() + '".', 'info');
+                                $('.candidato.button').click();
+                            }
+                        }
+
+                        topo();
+                    },
+                    error: function () {
+                        siac.Lembrete.Notificacoes.exibir('Não foi possível enviar as respostas.', 'negativo');
+                    },
+                    complete: function () {
+                        botao.removeClass('loading');
+                    }
+                });
+                return false;
+            });
+        }
     }
 
     function validarProva() {
@@ -1055,16 +1112,19 @@ siac.Simulado.Respostas = (function () {
         $('input[type=checkbox]').change(function () {
             var $checkbox = $(this),
                 checked = $checkbox.is(':checked'),
-                $content = $checkbox.closest('form').find('.segment');
+                $content = $checkbox.closest('form').find('.segment').eq(0);
 
             if (checked) {
+                $content.find(':input').prop('required', false);
                 $content.dimmer({
                     closable: false
                 }).dimmer('show');
             } else {
+                $content.find(':input').prop('required', true);
                 $content.dimmer('hide');
             }
         });
+        $('input[type=checkbox]').change();
     }
 
     function sobreporCandidatoEmDimmer() {

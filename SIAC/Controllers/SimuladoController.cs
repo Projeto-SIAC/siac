@@ -119,6 +119,11 @@ namespace SIAC.Controllers
                         Disciplinas = Disciplina.ListarOrdenadamente()
                     });
                 }
+                else
+                {
+                    Lembrete.AdicionarNotificacao("Não é possível gerenciar as salas após as provas serem realizadas.", Lembrete.NEGATIVO);
+                    return RedirectToAction("Detalhe", new { codigo = codigo });
+                }
             }
 
             return RedirectToAction("", "Arquivo");
@@ -209,7 +214,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado && !sim.FlagProvaEncerrada)
                 {
                     var model = new SimuladoSalasViewModel();
                     model.Simulado = sim;
@@ -218,6 +223,11 @@ namespace SIAC.Controllers
                     model.Salas = Sala.ListarOrdenadamente();
 
                     return View(model);
+                }
+                else
+                {
+                    Lembrete.AdicionarNotificacao("Não é possível gerenciar as salas após as provas serem realizadas.", Lembrete.NEGATIVO);
+                    return RedirectToAction("Detalhe", new { codigo = codigo });
                 }
             }
 
@@ -881,7 +891,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && !sim.FlagSimuladoEncerrado)
+                if (sim != null && !sim.FlagSimuladoEncerrado && sim.FlagProvaEncerrada)
                 {
                     var model = new SimuladoRespostasViewModel();
                     model.Simulado = sim;
@@ -910,7 +920,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && !sim.FlagSimuladoEncerrado)
+                if (sim != null && !sim.FlagSimuladoEncerrado && sim.FlagProvaEncerrada)
                 {
                     SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
@@ -932,7 +942,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && !sim.FlagSimuladoEncerrado)
+                if (sim != null && !sim.FlagSimuladoEncerrado && sim.FlagProvaEncerrada)
                 {
                     SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
@@ -972,7 +982,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && !sim.FlagSimuladoEncerrado)
+                if (sim != null && !sim.FlagSimuladoEncerrado && sim.FlagProvaEncerrada)
                 {
                     SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
@@ -1222,16 +1232,16 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && sim.FlagProvaEncerrada)
                 {
                     foreach (var prova in sim.Provas)
                     {
                         List<SimCandidatoProva> candidatos = prova.SimCandidatoProva.Where(c => c.FlagPresente.HasValue && c.FlagPresente.Value).ToList();
 
-                        double qcpp = candidatos.Count; //QCPP = Quantidade de Candidatos Presentes à Prova
-                        double maap = candidatos.Sum(c => c.QteAcertos.Value) / qcpp; //MAAP = Média Aritmética dos Acertos da Prova
-                        double Eqac = candidatos.Select(c => Math.Pow(c.QteAcertos.Value, 2.0)).Sum(); //EQAC = Soma da Quantidade de Acertos dos Candidatos da Prova
-                        double dpap = Math.Sqrt((Eqac / qcpp) - Math.Pow(maap, 2.0)); //DPAP = Desvio Padrão dos Acertos da Prova
+                        double qcpp = candidatos.Count; // QCPP = Quantidade de Candidatos Presentes à Prova
+                        double maap = candidatos.Sum(c => c.QteAcertos.Value) / qcpp; // MAAP = Média Aritmética dos Acertos da Prova
+                        double Eqac = candidatos.Select(c => Math.Pow(c.QteAcertos.Value, 2.0)).Sum(); // EQAC = Soma da Quantidade de Acertos dos Candidatos da Prova
+                        double dpap = Math.Sqrt((Eqac / qcpp) - Math.Pow(maap, 2.0)); // DPAP = Desvio Padrão dos Acertos da Prova
 
                         prova.MediaAritmeticaAcerto = Convert.ToDecimal(maap);
                         prova.DesvioPadraoAcerto = Convert.ToDecimal(dpap);
@@ -1247,7 +1257,6 @@ namespace SIAC.Controllers
                         if ((bool)candidato.SimCandidatoProva.First().FlagPresente)
                         {
                             decimal? somaEscoreProvas = candidato.SimCandidatoProva.Sum(p => p.EscorePadronizado);
-
                             candidato.EscorePadronizadoFinal = somaEscoreProvas.Value / candidato.SimCandidatoProva.Count();
                         }
                     }
