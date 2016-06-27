@@ -6,7 +6,7 @@ Sistema Interativo de Avaliação de Conhecimento.
 
 Possibilitar autoavaliações em qualquer assunto ministrado no IFRN por todos que fazem a nossa instituição, além de aplicar as autoavaliações no Colégio Floriano Cavalcanti, após a conclusão e aplicação no IFRN. A ideia é permitir aos professores do IFRN elaborar e criar questões de suas disciplinas. A outra função é o de permitir a administração elaborar, gerar e divulgar resultados das avaliações institucionais de forma contínua.
 
-[Clique aqui](http://siac.apphb.com) para acessar
+[Clique aqui](http://siac-stage.apphb.com) para acessar
 
 ### Principais Funcionalidades
 
@@ -22,6 +22,9 @@ Possibilitar autoavaliações em qualquer assunto ministrado no IFRN por todos q
 * Prof. Reginaldo Falcão (Orientador)
 * [Felipe Pontes](//github.com/felipemfp) (Desenvolvedor)
 * [Francisco Bento](//github.com/chicobentojr) (Desenvolvedor)
-* ~~Deyvison Soares (Analista)~~
-* ~~João Paulo (Designer)~~
-* ~~Bruno Medeiros (Analista)~~
+
+### Contribuidores
+
+* Deyvison Soares
+* João Paulo
+* Bruno Medeiros
