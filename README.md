@@ -19,11 +19,11 @@ Possibilitar autoavaliações em qualquer assunto ministrado no IFRN por todos q
 
 ### Autores
 
-* Prof. Reginaldo Falcão (Orientador)
-* [Felipe Pontes](//github.com/felipemfp) (Desenvolvedor)
-* [Francisco Bento](//github.com/chicobentojr) (Desenvolvedor)
+* [Prof. Reginaldo Falcão](//diatinf.ifrn.edu.br/doku.php?id=pessoal:docente:efetivo:regis)
+* [Felipe Pontes](//github.com/felipemfp)
+* [Francisco Bento](//github.com/chicobentojr)
 
-### Contribuidores
+#### Contribuidores
 
 * Deyvison Soares
 * João Paulo
