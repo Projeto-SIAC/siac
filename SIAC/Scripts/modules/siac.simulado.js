@@ -1161,3 +1161,266 @@ siac.Simulado.Imprimir = (function () {
         iniciar: iniciar
     }
 })();
+
+siac.Simulado.Pontuacoes = (function () {
+    var _codigo = '',
+        $listaRespostas = '';
+
+    function iniciar() {
+        _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+$/)[0];
+        $listaRespostas = $('.lista.respostas');
+        $('.ui.dropdown').dropdown();
+
+        $('.voltar.button').popup({
+            on: 'click'
+        });
+
+        $('.topo.button').click(function () { topo(); });
+
+        //$('.prova.button').click(function () {
+        //    var $provaButton = $(this);
+
+        //    if (validarProva()) {
+        //        var prova = $('#ddlProva').val(),
+        //            codDia = prova.split('.')[0],
+        //            codProva = prova.split('.')[1];
+
+        //        $.ajax({
+        //            type: 'POST',
+        //            url: '/simulado/correcaoporprova/' + _codigo,
+        //            data: {
+        //                codDia: codDia,
+        //                codProva: codProva
+        //            },
+        //            beforeSend: function () {
+        //                $provaButton.addClass('loading');
+        //            },
+        //            success: function (data) {
+        //                if (data) {
+        //                    $listaRespostas.html(data);
+        //                    alterarCheckBoxProva();
+        //                    tratarEnvioFormulario('prova');
+        //                }
+        //            },
+        //            error: function () {
+        //                siac.mensagem('Ocorreu um erro na operação.');
+        //            },
+        //            complete: function () {
+        //                $provaButton.removeClass('loading');
+        //            }
+        //        })
+        //    }
+        //});
+
+        //$('.candidato.button').click(function () {
+        //    var $candidatoButton = $(this);
+
+        //    if (validarCandidato()) {
+        //        var prova = $('#ddlProva').val(),
+        //            codDia = prova.split('.')[0],
+        //            codProva = prova.split('.')[1],
+        //            codCandidato = $('#ddlCandidato').val();
+
+        //        $.ajax({
+        //            type: 'POST',
+        //            url: '/simulado/correcaoporcandidato/' + _codigo,
+        //            data: {
+        //                codDia: codDia,
+        //                codProva: codProva,
+        //                codCandidato: codCandidato
+        //            },
+        //            beforeSend: function () {
+        //                $candidatoButton.addClass('loading');
+        //            },
+        //            success: function (data) {
+        //                if (data) {
+        //                    $listaRespostas.html(data);
+        //                    alterarCheckBoxCandidato();
+        //                    sobreporCandidatoEmDimmer();
+        //                    tratarEnvioFormulario('candidato');
+        //                }
+        //            },
+        //            error: function () {
+        //                siac.mensagem('Ocorreu um erro na operação.');
+        //            },
+        //            complete: function () {
+        //                $candidatoButton.removeClass('loading');
+        //            }
+        //        })
+        //    }
+        //});
+
+        //$('.editar.item').click(function () {
+        //    $('.editar.modal').modal('show');
+        //});
+
+        //$('.encerrar.item').click(function () {
+        //    $('.encerrar.modal').modal({
+        //        onApprove: function () {
+        //            $.ajax({
+        //                type: 'POST',
+        //                url: '/simulado/encerrar/' + _codigo,
+        //                complete: function () {
+        //                    location.reload();
+        //                }
+        //            })
+        //        }
+        //    }).modal('show');
+        //});
+    }
+
+    function tratarEnvioFormulario(provaOuCandidato) {
+        var formulario = $('.respostas form');
+        var botao = formulario.find('[type=submit]');
+        var provaOuCandidato = provaOuCandidato;
+
+        if (formulario) {
+            formulario.off('submit').on('submit', function () {
+                var dados = formulario.serialize();
+                var url = formulario.attr('action');
+                var metodo = formulario.attr('method');
+                $.ajax({
+                    type: metodo,
+                    url: url,
+                    data: dados,
+                    beforeSend: function () {
+                        botao.addClass('loading');
+                    },
+                    success: function () {
+                        if (provaOuCandidato === 'prova') {
+                            var dropdown = $('#ddlProva');
+                            var atual = dropdown.val();
+                            var proximo = dropdown.find('option[value="' + atual + '"]').next();
+
+                            if (proximo.attr('value')) {
+                                dropdown.dropdown('set selected', proximo.attr('value'));
+                                siac.Lembrete.Notificacoes.exibir('Avançando para prova "' + proximo.text() + '".', 'info');
+                                $('.prova.button').click();
+                            }
+                        }
+                        else if (provaOuCandidato === 'candidato') {
+                            var dropdown = $('#ddlCandidato');
+                            var atual = dropdown.val();
+                            var proximo = dropdown.find('option[value="' + atual + '"]').next();
+
+                            if (proximo.attr('value')) {
+                                dropdown.dropdown('set selected', proximo.attr('value'));
+                                siac.Lembrete.Notificacoes.exibir('Avançando para candidato "' + proximo.text() + '".', 'info');
+                                $('.candidato.button').click();
+                            }
+                        }
+
+                        topo();
+                    },
+                    error: function () {
+                        siac.Lembrete.Notificacoes.exibir('Não foi possível enviar as respostas.', 'negativo');
+                    },
+                    complete: function () {
+                        botao.removeClass('loading');
+                    }
+                });
+                return false;
+            });
+        }
+    }
+
+    function validarProva() {
+        var prova = $('#ddlProva').val(),
+            $form = $('.form'),
+            $lstErro = $form.find('.error.message .list');
+
+        $lstErro.html('');
+        $form.removeClass('error');
+
+        if (!prova) {
+            $lstErro.append('<li>Selecione a prova para corrigir</li>');
+            $form.addClass('error');
+            return false;
+        }
+        return true;
+    }
+
+    function validarCandidato() {
+        var prova = $('#ddlProva').val(),
+            candidato = $('#ddlCandidato').val(),
+            $form = $('.form'),
+            $lstErro = $form.find('.error.message .list'),
+            valido = true;
+
+        $lstErro.html('');
+        $form.removeClass('error');
+
+        if (!prova) {
+            $lstErro.append('<li>Selecione a prova para corrigir</li>');
+            $form.addClass('error');
+            valido = false;
+        }
+
+        if (!candidato) {
+            $lstErro.append('<li>Selecione o candidato para corrigir</li>');
+            $form.addClass('error');
+            valido = false;
+        }
+        return valido;
+    }
+
+    function topo() {
+        $("html, body").animate({
+            scrollTop: 0
+        }, 500);
+        return false;
+    }
+
+    function alterarCheckBoxProva() {
+        $('.ui.checkbox').checkbox();
+        $('input[type=checkbox]').change(function () {
+            var $checkbox = $(this),
+                checked = $checkbox.is(':checked'),
+                $tr = $checkbox.closest('tr'),
+                trClass = 'error',
+                inputClass = 'disabled',
+                $input = $tr.find('input[type=number]');
+
+            $input.val('');
+
+            if (checked) {
+                $tr.addClass(trClass);
+                $tr.find('.field').addClass(inputClass);
+                $input.prop('required', false);
+            } else {
+                $tr.removeClass(trClass);
+                $tr.find('.field').removeClass(inputClass);
+                $input.prop('required', true);
+            }
+        });
+    }
+
+    function alterarCheckBoxCandidato() {
+        $('.ui.checkbox').checkbox();
+        $('input[type=checkbox]').change(function () {
+            var $checkbox = $(this),
+                checked = $checkbox.is(':checked'),
+                $content = $checkbox.closest('form').find('.segment').eq(0);
+
+            if (checked) {
+                $content.find(':input').prop('required', false);
+                $content.dimmer({
+                    closable: false
+                }).dimmer('show');
+            } else {
+                $content.find(':input').prop('required', true);
+                $content.dimmer('hide');
+            }
+        });
+        $('input[type=checkbox]').change();
+    }
+
+    function sobreporCandidatoEmDimmer() {
+        var $dimmer = $('.segment.lista.respostas .dimmer');
+        $dimmer.css('z-index', 5);
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();

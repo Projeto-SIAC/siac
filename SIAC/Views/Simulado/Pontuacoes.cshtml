@@ -1,6 +1,6 @@
-﻿@model SimuladoRespostasViewModel
+﻿@model SimuladoPontuacoesViewModel
 @{
-    ViewBag.Title = "Inserir Respostas";
+    ViewBag.Title = "Inserir Pontuacoes";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -27,7 +27,7 @@
                 <option value="">Selecione o candidato</option>
                 @foreach (var candidato in Model.Candidatos)
                 {
-                    <option value="@candidato.CodCandidato">@(candidato.Candidato.Nome) (@Formate.ParaCPF(candidato.Candidato.Cpf))</option>
+                    <option value="@candidato.NumeroMascara">@(candidato.NumeroMascara)</option>
                 }
             </select>
         </div>

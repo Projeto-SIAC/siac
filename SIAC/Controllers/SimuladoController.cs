@@ -1511,5 +1511,39 @@ namespace SIAC.Controllers
                 }
             }
         }
+
+        public ActionResult Pontuacoes(string codigo)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && !sim.FlagSimuladoEncerrado && sim.FlagProvaEncerrada)
+                {
+                    var model = new SimuladoPontuacoesViewModel();
+                    model.Simulado = sim;
+                    model.Provas = sim.Provas.Where(p => p.QteQuestoesDiscursivas > 0).ToList();
+                    model.Candidatos = sim.SimCandidato.OrderBy(c => c.Candidato.Nome).ToList();
+                    var redacao = model.Provas.FirstOrDefault(p => p.FlagRedacao);
+                    if (redacao != null)
+                    {
+                        model.Provas.Remove(redacao);
+                        model.Redacao = redacao;
+                    }
+
+                    if (model.Provas.Count > 0 || redacao != null)
+                    {
+                        return View(model);
+                    }
+                    else
+                    {
+                        Lembrete.AdicionarNotificacao($"O simulado {sim.Titulo} não possui provas discursivas para serem corrigidas.", Lembrete.INFO);
+                        return RedirectToAction("Detalhe", new { codigo = codigo });
+                    }
+                }
+            }
+
+            return RedirectToAction("", "Arquivo");
+        }
     }
 }
