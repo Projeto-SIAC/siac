@@ -166,14 +166,14 @@
     }
     else
     {
-        <div class="ui classificacao right floated button">
+        <div class="ui classificacao right floated button" data-action="@Url.Action("Classificacao", new { codigo = Model.Codigo })">
             <i class="users icon"></i>
             Classificação
         </div>
     }
 </h2>
 
-<div class="ui ordem-desempate small modal">
+<div data-action="@Url.Action("AtualizarOrdemDesempate", new { codigo = Model.Codigo })" class="ui ordem-desempate small modal">
     <i class="close icon"></i>
     <div class="header">
         Gerenciar Ordem de Desempate
@@ -276,7 +276,7 @@
     </div>
 </form>
 
-<div class="ui encerrar small modal">
+<div data-action="@Url.Action("Encerrar", new { codigo = Model.Codigo })" class="ui encerrar small modal">
     <i class="close icon"></i>
     <div class="header">
         Encerrar Simulado?
@@ -292,7 +292,7 @@
     </div>
 </div>
 
-<div class="ui liberar small modal">
+<div data-action="@Url.Action("AlterarPermissaoInscricao", new { codigo = Model.Codigo, acao="Liberar" })" class="ui liberar small modal">
     <i class="close icon"></i>
     <div class="header">
         Liberar Inscrições do Simulado?
@@ -308,7 +308,7 @@
     </div>
 </div>
 
-<div class="ui bloquear small modal">
+<div data-action="@Url.Action("AlterarPermissaoInscricao", new { codigo = Model.Codigo, acao="Bloquear" })" class="ui bloquear small modal">
     <i class="close icon"></i>
     <div class="header">
         Bloquear Inscrições do Simulado?
@@ -353,7 +353,7 @@
     </div>
 </form>
 
-<div class="ui mapear small modal">
+<div data-action="@Url.Action("MapearSalas", new { codigo = Model.Codigo })" class="ui mapear small modal">
     <i class="close icon"></i>
     <div class="header">
         Mapear Salas para os Candidatos?
@@ -373,7 +373,7 @@
     @* Espaço para listagem de candidato por sala *@
 </div>
 
-<div class="ui finalizar provas small modal">
+<div data-action="@Url.Action("FinalizarProvas", new { codigo = Model.Codigo })" class="ui finalizar provas small modal">
     <i class="close icon"></i>
     <div class="header">
         Indicar o encerramento das provas?
@@ -397,7 +397,7 @@
     @* Espaço detalhes do Candidato *@
 </div>
 
-<div class="ui calcular resultados small modal">
+<div data-action="@Url.Action("CalcularResultados", new { codigo = Model.Codigo })" class="ui calcular resultados small modal">
     <i class="close icon"></i>
     <div class="header">
         Calcular resultados finais do simulado?
@@ -552,7 +552,7 @@
                         <td>@simSala.Sala.Descricao</td>
                         <td>@simSala.Sala.Sigla</td>
                         <td>@simSala.Sala.Capacidade</td>
-                        <td><div data-sala="@simSala.CodSala" class="ui icon button"><i class="search icon"></i></div></td>
+                        <td><div data-sala="@simSala.CodSala" data-action="@Url.Action("ListarCandidatoPorSala", new { codigo = Model.Codigo, codSala = simSala.CodSala })" class="ui icon button"><i class="search icon"></i></div></td>
                     </tr>
                 }
             </tbody>
@@ -564,4 +564,9 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/simulado")
+    <script>
+        (function () {
+            siac.Simulado.Detalhe.iniciar();
+        })();
+    </script>
 }

@@ -78,7 +78,7 @@
                     <td sala-sigla>@simSala.Sala.Sigla</td>
                     <td>@simSala.Sala.Capacidade</td>
                     <td>
-                        <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Esta ação não poderá ser desfeita</p><a data-sala='@(simSala.CodSala)' class='ui remover small button'>Confirmar</a></div>" class="ui tiny button"><i class="trash icon"></i>Remover</div>
+                        <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Esta ação não poderá ser desfeita</p><a data-sala='@(simSala.CodSala)' data-action='@Url.Action("RemoverSala", new { codigo=Model.Simulado.Codigo })' class='ui remover small button'>Confirmar</a></div>" class="ui tiny button"><i class="trash icon"></i>Remover</div>
                     </td>
                 </tr>
             }
@@ -91,9 +91,14 @@
 @section Scripts {
     <script id="blocos" type="application/json">
         @Html.Raw(Model.BlocosEmJson)
-</script>
-<script id="salas" type="application/json">
-    @Html.Raw(Model.SalasEmJson)
-</script>
-@Scripts.Render("~/bundles/js/simulado")
+    </script>
+    <script id="salas" type="application/json">
+        @Html.Raw(Model.SalasEmJson)
+    </script>
+    @Scripts.Render("~/bundles/js/simulado")
+    <script>
+        (function () {
+            siac.Simulado.Salas.iniciar();
+        })();
+    </script>
 }

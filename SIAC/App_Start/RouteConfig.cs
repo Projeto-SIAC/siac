@@ -9,6 +9,7 @@ namespace SIAC
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.LowercaseUrls = true;
+            routes.MapMvcAttributeRoutes();
 
             routes.MapRoute(
                 name: "AreaDeSimulados",
@@ -17,11 +18,11 @@ namespace SIAC
                 constraints: new { controller = @"^(Gerencia|Inscricao|Candidato|Arquivo)$" }
             );
 
-            routes.MapRoute(
-                name: "Simulado",
-                url: "Simulado/{action}/{codigo}",
-                defaults: new { controller = "Simulado", action = "Index", codigo = UrlParameter.Optional }
-            );
+            //routes.MapRoute(
+            //    name: "Simulado",
+            //    url: "Simulado/{action}/{codigo}",
+            //    defaults: new { controller = "Simulado", action = "Index", codigo = UrlParameter.Optional }
+            //);
 
             routes.MapRoute(
                 name: "Institucional",

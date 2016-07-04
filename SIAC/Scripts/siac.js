@@ -275,30 +275,6 @@
                     siac.Arquivo.Encerrados.iniciar();
                 }
             }
-            else if (pathname.indexOf('/novo') >= 0) {
-                siac.Simulado.Novo.iniciar();
-            }
-            else if (pathname.indexOf('/provas') >= 0) {
-                siac.Simulado.Provas.iniciar();
-            }
-            else if (pathname.indexOf('/datas') >= 0) {
-                siac.Simulado.Datas.iniciar();
-            }
-            else if (pathname.indexOf('/salas') >= 0) {
-                siac.Simulado.Salas.iniciar();
-            }
-            else if (pathname.indexOf('/detalhe') >= 0) {
-                siac.Simulado.Detalhe.iniciar();
-            }
-            else if (pathname.indexOf('/respostas') >= 0) {
-                siac.Simulado.Respostas.iniciar();
-            }
-            else if (pathname.indexOf('/pontuacoes') >= 0) {
-                siac.Simulado.Pontuacoes.iniciar();
-            }
-            else if (pathname.indexOf('/imprimir') >= 0) {
-                siac.Simulado.Imprimir.iniciar();
-            }
         }
     }
 

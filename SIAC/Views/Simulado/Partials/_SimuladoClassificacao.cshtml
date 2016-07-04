@@ -25,7 +25,7 @@
                     <td>@classificado.Value.NumInscricaoRepresentacao</td>
                     <td>@Formate.ParaCPF(classificado.Value.Candidato.Cpf)</td>
                     <td><b>@classificado.Value.EscorePadronizadoFinalString</b></td>
-                    <td><div data-candidato="@classificado.Value.CodCandidato" class="ui icon button"><i class="search icon"></i></div></td>
+                    <td><div data-candidato="@classificado.Value.CodCandidato" data-action="@Url.Action("ClassificacaoCandidato", new { codigo = Model.Simulado.Codigo, codCandidato = classificado.Value.CodCandidato  })" class="ui icon button"><i class="search icon"></i></div></td>
                 </tr>
             }
         </tbody>

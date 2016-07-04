@@ -76,7 +76,7 @@ siac.Simulado.Provas = (function () {
         _disciplinaProfessores = {};
 
     function iniciar() {
-        _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+$/)[0];
+        _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+/)[0];
         _disciplinaProfessores = JSON.parse($('#disciplinaProfessores').html());
         $('#disciplinaProfessores').remove();
 
@@ -172,7 +172,7 @@ siac.Simulado.Provas = (function () {
 
         $.ajax({
             type: 'POST',
-            url: '/simulado/removerdia/' + _codigo,
+            url: $button.data('action'),
             data: { codDia: codDia },
             complete: function () {
                 location.reload();
@@ -185,7 +185,7 @@ siac.Simulado.Provas = (function () {
 
         $.ajax({
             type: 'POST',
-            url: '/simulado/carregardia/' + _codigo,
+            url: $button.data('action'),
             data: {
                 codDia: codDia
             },
@@ -219,7 +219,7 @@ siac.Simulado.Provas = (function () {
 
         $.ajax({
             type: 'POST',
-            url: '/simulado/carregarprovas/' + _codigo,
+            url: $button.data('action'),
             data: { codDia: codDia },
             beforeSend: function () {
                 $button.addClass('loading');
@@ -266,7 +266,7 @@ siac.Simulado.Provas = (function () {
 
         $.ajax({
             type: 'POST',
-            url: '/simulado/removerprova/' + _codigo,
+            url: $button.data('action'),
             data: {
                 codDia: codDia,
                 codProva: codProva
@@ -293,7 +293,7 @@ siac.Simulado.Provas = (function () {
 
         $.ajax({
             type: 'POST',
-            url: '/simulado/carregarprova/' + _codigo,
+            url: $button.data('action'),
             data: {
                 codDia: codDia,
                 codProva: codProva
@@ -451,7 +451,7 @@ siac.Simulado.Salas = (function () {
         ddlSala = $('[name=ddlSala]');
 
     function iniciar() {
-        _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+$/)[0];
+        _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+/)[0];
         _blocos = JSON.parse($('script#blocos').html());
         _salas = JSON.parse($('script#salas').html());
         $('script#salas').remove();
@@ -567,7 +567,7 @@ siac.Simulado.Salas = (function () {
         $button.addClass('loading');
         $.ajax({
             type: 'POST',
-            url: '/simulado/removersala/' + _codigo,
+            url: $button.data('action'),
             data: { codSala: codSala },
             complete: function () {
                 location.reload();
@@ -584,7 +584,7 @@ siac.Simulado.Detalhe = (function () {
     var _codigo = '';
 
     function iniciar() {
-        _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+$/)[0];
+        _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+/)[0];
         $('.ui.accordion').accordion({
             animateChildren: false
         });
@@ -608,7 +608,7 @@ siac.Simulado.Detalhe = (function () {
                     var $modal = $(this);
                     $.ajax({
                         type: 'POST',
-                        url: '/simulado/encerrar/' + _codigo,
+                        url: $modal.data('action'),
                         beforeSend: function () {
                             $modal.find('.approve.button').addClass('loading');
                         },
@@ -629,12 +629,10 @@ siac.Simulado.Detalhe = (function () {
         $('.liberar.item').click(function () {
             $('.liberar.modal').modal({
                 onApprove: function () {
+                    var $modal = $(this);
                     $.ajax({
                         type: 'POST',
-                        url: '/simulado/alterarpermissaoinscricao/' + _codigo,
-                        data: {
-                            acao: 'Liberar'
-                        },
+                        url: $modal.data('action'),
                         complete: function () {
                             location.reload();
                         }
@@ -646,12 +644,10 @@ siac.Simulado.Detalhe = (function () {
         $('.bloquear.item').click(function () {
             $('.bloquear.modal').modal({
                 onApprove: function () {
+                    var $modal = $(this);
                     $.ajax({
                         type: 'POST',
-                        url: '/simulado/alterarpermissaoinscricao/' + _codigo,
-                        data: {
-                            acao: 'Bloquear'
-                        },
+                        url: $modal.data('action'),
                         complete: function () {
                             location.reload();
                         }
@@ -670,7 +666,7 @@ siac.Simulado.Detalhe = (function () {
                     var $modal = $(this);
                     $.ajax({
                         type: 'POST',
-                        url: '/simulado/mapearsalas/' + _codigo,
+                        url: $modal.data('action'),
                         beforeSend: function () {
                             $modal.find('.approve.button').addClass('loading');
                         },
@@ -684,17 +680,13 @@ siac.Simulado.Detalhe = (function () {
             }).modal('show');
         });
 
-        $('[data-sala]').click(function () {
+        $('.button[data-sala]').click(function () {
             var $button = $(this),
-                codSala = $button.data('sala'),
                 $modal = $('.sala.candidato.modal');
 
             $.ajax({
                 type: 'POST',
-                url: '/simulado/listarcandidatoporsala/' + _codigo,
-                data: {
-                    codSala: codSala
-                },
+                url: $button.data('action'),
                 beforeSend: function () {
                     $button.addClass('loading');
                 },
@@ -719,7 +711,7 @@ siac.Simulado.Detalhe = (function () {
                     var $modal = $(this);
                     $.ajax({
                         type: 'POST',
-                        url: '/simulado/finalizarprovas/' + _codigo,
+                        url: $modal.data('action'),
                         beforeSend: function () {
                             $modal.find('.approve.button').addClass('loading');
                         }, complete: function () {
@@ -738,7 +730,7 @@ siac.Simulado.Detalhe = (function () {
                     var $modal = $(this);
                     $.ajax({
                         type: 'POST',
-                        url: '/simulado/calcularresultados/' + _codigo,
+                        url: $modal.data('action'),
                         beforeSend: function () {
                             $modal.find('.approve.button').addClass('loading');
                         },
@@ -758,7 +750,7 @@ siac.Simulado.Detalhe = (function () {
 
             $.ajax({
                 type: 'POST',
-                url: '/simulado/classificacao/' + _codigo,
+                url: $button.data('action'),
                 beforeSend: function () {
                     $button.addClass('loading');
                 },
@@ -784,7 +776,7 @@ siac.Simulado.Detalhe = (function () {
                     var $modal = $(this);
                     $.ajax({
                         type: 'POST',
-                        url: '/simulado/atualizarordemdesempate/' + _codigo,
+                        url: $modal.data('action'),
                         data: {
                             provas: retornarOrdemDesempate()
                         },
@@ -844,10 +836,7 @@ siac.Simulado.Detalhe = (function () {
 
         $.ajax({
             type: 'POST',
-            url: '/simulado/classificacaocandidato/' + _codigo,
-            data: {
-                codCandidato: codCandidato
-            },
+            url: $button.data('action'),
             beforeSend: function () {
                 $button.addClass('loading');
             },
@@ -879,7 +868,7 @@ siac.Simulado.Respostas = (function () {
         $listaRespostas = '';
 
     function iniciar() {
-        _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+$/)[0];
+        _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+/)[0];
         $listaRespostas = $('.lista.respostas');
         $('.ui.dropdown').dropdown();
 
@@ -899,7 +888,7 @@ siac.Simulado.Respostas = (function () {
 
                 $.ajax({
                     type: 'POST',
-                    url: '/simulado/correcaoporprova/' + _codigo,
+                    url: $provaButton.data('action'),
                     data: {
                         codDia: codDia,
                         codProva: codProva
@@ -935,7 +924,7 @@ siac.Simulado.Respostas = (function () {
 
                 $.ajax({
                     type: 'POST',
-                    url: '/simulado/correcaoporcandidato/' + _codigo,
+                    url: $candidatoButton.data('action'),
                     data: {
                         codDia: codDia,
                         codProva: codProva,
@@ -960,24 +949,6 @@ siac.Simulado.Respostas = (function () {
                     }
                 })
             }
-        });
-
-        $('.editar.item').click(function () {
-            $('.editar.modal').modal('show');
-        });
-
-        $('.encerrar.item').click(function () {
-            $('.encerrar.modal').modal({
-                onApprove: function () {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/simulado/encerrar/' + _codigo,
-                        complete: function () {
-                            location.reload();
-                        }
-                    })
-                }
-            }).modal('show');
         });
     }
 
@@ -1167,7 +1138,7 @@ siac.Simulado.Pontuacoes = (function () {
         $listaRespostas = '';
 
     function iniciar() {
-        _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+$/)[0];
+        _codigo = window.location.pathname.toLowerCase().match(/simul[0-9]+/)[0];
         $listaRespostas = $('.lista.respostas');
         $('.ui.dropdown').dropdown();
 

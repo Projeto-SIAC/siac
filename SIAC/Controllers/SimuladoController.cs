@@ -11,15 +11,18 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
+    [RoutePrefix(@"simulado/{codigo:regex(\w{5}\d{4}\d{5})}")]
     [AutenticacaoFilter(Categorias = new[] { Categoria.COLABORADOR }, SomenteOcupacaoSimulado = true)]
     public class SimuladoController : Controller
     {
         private Contexto contexto => Repositorio.GetInstance();
 
+        [Route("~/simulado/novo")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Novo() => View();
 
         [HttpPost]
+        [Route("~/simulado/novo")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Novo(FormCollection form)
         {
@@ -56,6 +59,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("~/simulado/editar/{codigo}")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Editar(string codigo, FormCollection form)
         {
@@ -104,6 +108,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
+        [Route("provas")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Provas(string codigo)
         {
@@ -129,6 +134,7 @@ namespace SIAC.Controllers
             return RedirectToAction("", "Arquivo");
         }
 
+        [Route("datas")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Datas(string codigo)
         {
@@ -152,6 +158,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("datas")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Datas(string codigo, FormCollection form)
         {
@@ -207,6 +214,7 @@ namespace SIAC.Controllers
             return RedirectToAction("", "Arquivo");
         }
 
+        [Route("salas")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Salas(string codigo)
         {
@@ -235,6 +243,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("salas")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Salas(string codigo, FormCollection form)
         {
@@ -271,6 +280,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("salas/remover")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult RemoverSala(string codigo, int codSala)
         {
@@ -296,6 +306,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("dia/carregar")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult CarregarDia(string codigo, int codDia)
         {
@@ -317,6 +328,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("dia/novo")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult NovoDia(string codigo, FormCollection form)
         {
@@ -377,6 +389,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("dia/editar")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult EditarDia(string codigo, int codDia, FormCollection form)
         {
@@ -435,6 +448,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("dia/remover")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult RemoverDia(string codigo, int codDia)
         {
@@ -462,6 +476,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("provas/carregar")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult CarregarProvas(string codigo, int codDia)
         {
@@ -481,6 +496,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("provas/carregar")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult CarregarProva(string codigo, int codDia, int codProva)
         {
@@ -511,6 +527,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("provas/nova")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult NovaProva(string codigo, int codDia, FormCollection form)
         {
@@ -602,6 +619,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("provas/editar")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult EditarProva(string codigo, int codDia, int codProva, FormCollection form)
         {
@@ -700,6 +718,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("provas/remover")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult RemoverProva(string codigo, int codDia, int codProva)
         {
@@ -731,6 +750,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Provas", new { codigo = codigo });
         }
 
+        [Route("")]
         public ActionResult Detalhe(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -747,6 +767,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("remover")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Encerrar(string codigo)
         {
@@ -771,6 +792,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("inscricoes/{acao}")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult AlterarPermissaoInscricao(string codigo, string acao)
         {
@@ -783,15 +805,15 @@ namespace SIAC.Controllers
 
                 if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
                 {
-                    switch (acao)
+                    switch (acao.ToLower())
                     {
-                        case "Bloquear":
+                        case "bloquear":
                             sim.FlagInscricaoEncerrado = true;
                             mensagem = "As inscrições foram bloqueadas com sucesso.";
                             estilo = Lembrete.NEGATIVO;
                             break;
 
-                        case "Liberar":
+                        case "liberar":
                             if (sim.CadastroCompleto)
                             {
                                 if (sim.QteVagas <= sim.SimSala.Sum(s => s.Sala.Capacidade))
@@ -841,6 +863,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("prazo/alterar")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult AlterarPrazo(string codigo, FormCollection form)
         {
@@ -885,6 +908,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
+        [Route("respostas")]
         public ActionResult Respostas(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -914,6 +938,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("correcao/prova")]
         public ActionResult CorrecaoPorProva(string codigo, int codDia, int codProva)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -936,6 +961,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("correcao/candidato")]
         public ActionResult CorrecaoPorCandidato(string codigo, int codDia, int codProva, int codCandidato)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -973,6 +999,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("respostas/inserir")]
         public ActionResult InserirRespostasProva(string codigo, int codDia, int codProva, FormCollection form)
         {
             string mensagem = "Ocorreu um erro na operação.";
@@ -1027,6 +1054,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("respostas/inserir")]
         public ActionResult InserirRespostasCandidato(string codigo, int codDia, int codProva, int codCandidato, FormCollection form)
         {
             string mensagem = "Ocorreu um erro na operação.";
@@ -1096,6 +1124,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("salas/mapear")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult MapearSalas(string codigo)
         {
@@ -1143,6 +1172,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("email/enviar")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult EnviarEmail(string codigo, string mensagemEmail)
         {
@@ -1174,6 +1204,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("salas/{codSala}/candidatos")]
         public ActionResult ListarCandidatoPorSala(string codigo, int codSala)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -1197,6 +1228,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("provar/finalizar")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult FinalizarProvas(string codigo)
         {
@@ -1222,6 +1254,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("resultados/calcular")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult CalcularResultados(string codigo)
         {
@@ -1274,6 +1307,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("classificacao")]
         public ActionResult Classificacao(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -1367,6 +1401,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("classificacao/{codCandidato}")]
         public ActionResult ClassificacaoCandidato(string codigo, int codCandidato)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -1383,6 +1418,7 @@ namespace SIAC.Controllers
             return null;
         }
 
+        [Route("imprimir")]
         public ActionResult Imprimir(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -1400,6 +1436,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
+        [Route("imprimir/prova")]
         public ActionResult ImprimirProva(string codigo, int dia, int prova)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -1421,6 +1458,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
+        [Route("imprimir/cartaoresposta")]
         public ActionResult ImprimirCartaoResposta(string codigo, int dia, int prova)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -1442,6 +1480,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
+        [Route("imprimir/gabarito")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult ImprimirGabarito(string codigo, int dia, int prova)
         {
@@ -1464,6 +1503,7 @@ namespace SIAC.Controllers
             return RedirectToAction("Detalhe", new { codigo = codigo });
         }
 
+        [Route("imprimir/listapresenca")]
         public ActionResult ImprimirListaPresenca(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))
@@ -1479,6 +1519,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("ordemdesempate/atualizar")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public void AtualizarOrdemDesempate(string codigo, string[] provas)
         {
@@ -1512,6 +1553,7 @@ namespace SIAC.Controllers
             }
         }
 
+        [Route("pontuacoes")]
         public ActionResult Pontuacoes(string codigo)
         {
             if (!String.IsNullOrWhiteSpace(codigo))

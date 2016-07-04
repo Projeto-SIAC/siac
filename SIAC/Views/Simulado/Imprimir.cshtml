@@ -11,7 +11,6 @@
     <div only-browser="chrome" data-url="@Url.Action("ImprimirListaPresenca", new { codigo = Model.Codigo })" class="ui right floated imprimir button"><i class="icon print"></i>Imprimir Lista de Presença</div>
 </h2>
 
-
 <div only-browser-message="chrome" class="ui message">
     <div class="header">
         Seu navegador não permite a impressão
@@ -26,7 +25,7 @@
 @foreach (var item in Model.SimDiaRealizacao.OrderBy(d => d.DtRealizacao).Select((dia, i) => new { i, dia }))
 {
     <div class="ui dividing header">
-        @(item.i+1)º Dia de Realização: @item.dia.DtRealizacao.DiaRealizacaoRepresentacao()
+        @(item.i + 1)º Dia de Realização: @item.dia.DtRealizacao.DiaRealizacaoRepresentacao()
     </div>
     <table class="ui striped table">
         <thead>
@@ -40,19 +39,19 @@
         <tbody>
             @foreach (var prova in item.dia.SimProva)
             {
-            <tr>
-                <td>@prova.Titulo</td>
-                <td>@prova.Disciplina.Descricao</td>
-                <td>@prova.QteQuestoes Questões</td>
-                <td>
-                    <a only-browser="chrome" data-url="@Url.Action("ImprimirProva", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small disabled button"><i class="file text icon"></i> Caderno</a>
-                    <a only-browser="chrome" data-url="@Url.Action("ImprimirCartaoResposta", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small disabled button"><i class="file text outline icon"></i> Cartão-Resposta</a>
-                    @if (responsavel)
+                <tr>
+                    <td>@prova.Titulo</td>
+                    <td>@prova.Disciplina.Descricao</td>
+                    <td>@prova.QteQuestoes Questões</td>
+                    <td>
+                        <a only-browser="chrome" data-url="@Url.Action("ImprimirProva", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small disabled button"><i class="file text icon"></i> Caderno</a>
+                        <a only-browser="chrome" data-url="@Url.Action("ImprimirCartaoResposta", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small disabled button"><i class="file text outline icon"></i> Cartão-Resposta</a>
+                        @if (responsavel)
                     {
-                        <a only-browser="chrome" data-url="@Url.Action("ImprimirGabarito", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small disabled button"><i class="grid layout icon"></i> Gabarito</a>
-                    }
-                </td>
-            </tr>
+                            <a only-browser="chrome" data-url="@Url.Action("ImprimirGabarito", new { codigo = Model.Codigo, dia = item.dia.CodDiaRealizacao, prova = prova.CodProva })" class="ui imprimir icon small disabled button"><i class="grid layout icon"></i> Gabarito</a>
+                        }
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
@@ -62,4 +61,9 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/simulado")
+    <script>
+        (function () {
+            siac.Simulado.Imprimir.iniciar();
+        })();
+    </script>
 }

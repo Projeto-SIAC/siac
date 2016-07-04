@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Novo Simulado";
 }
 
@@ -67,4 +66,9 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/simulado")
+    <script>
+        (function () {
+            siac.Simulado.Novo.iniciar();
+        })();
+    </script>
 }
