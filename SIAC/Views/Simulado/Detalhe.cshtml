@@ -125,6 +125,10 @@
                         <i class="sort numeric ascending icon"></i>
                         Gerenciar Ordem de Desempate
                     </div>
+                    <div class="provas-peso item">
+                        <i class="signal icon"></i>
+                        Gerenciar Pesos das Provas
+                    </div>
                     if (Model.FlagInscricaoEncerrado)
                     {
                         if (Model.DtTerminoInscricao >= DateTime.Now && Model.DtInicioInscricao <= DateTime.Now)
@@ -193,6 +197,45 @@
                     </div>
                 </div>
             }
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Fechar</div>
+        <div class="ui approve button">Salvar</div>
+    </div>
+</div>
+
+<div data-action="@Url.Action("AtualizarProvasPeso", new { codigo = Model.Codigo })" class="ui provas-peso small modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Gerenciar Pesos das Provas
+    </div>
+    <div class="content">
+        <div class="ui divided list">
+            <table class="ui striped table">
+                <thead>
+                    <tr>
+                        <th class="collapsing">Dia</th>
+                        <th>Prova</th>
+                        <th>Peso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Provas.OrderBy(p => p.CodComposto))
+                    {
+
+                        <tr data-prova="@item.CodComposto">
+                            <td>@(item.CodDiaRealizacao)º</td>
+                            <td>@item.Titulo</td>
+                            <td class="ui form">
+                                <div class="field">
+                                    <input type="text" name="@item.CodComposto" value="@item.Peso" data-mask="#0,0" data-mask-reverse="true" />
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
     <div class="actions">

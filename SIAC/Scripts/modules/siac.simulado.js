@@ -793,9 +793,43 @@ siac.Simulado.Detalhe = (function () {
             }).modal('show');
         });
 
+        $('.provas-peso.item').click(function () {
+            $('.provas-peso.modal').modal({
+                onApprove: function () {
+                    var $modal = $(this);
+                    $.ajax({
+                        type: 'POST',
+                        url: $modal.data('action'),
+                        data: {
+                            provas: retornarProvasPeso()
+                        },
+                        beforeSend: function () {
+                            $modal.find('.approve.button').addClass('loading');
+                        },
+                        complete: function () {
+                            $modal.find('.approve.button').removeClass('loading');
+                            $modal.modal('hide');
+                        }
+                    });
+                    return false;
+                }
+            }).modal('show');
+        });
+
         gerenciarOrdemDesempate();
 
         siac.Simulado.adicionarEventoNoFormulario();
+    }
+
+    function retornarProvasPeso() {
+        var $provas = $('.provas-peso.modal .content tr[data-prova]');
+        var provas = {};
+        for (var i = 0, length = $provas.length; i < length; i++) {
+            var prova = $provas.eq(i).data('prova');
+            provas[prova] = $('[name="' + prova + '"]').val();
+        }
+        console.log($provas, provas);
+        return provas;
     }
 
     function retornarOrdemDesempate() {

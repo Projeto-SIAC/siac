@@ -20,6 +20,12 @@ namespace SIAC.Models
             return (Contexto)Helpers.Sessao.Retornar("dbSIACEntities") ?? new Contexto();
         }
 
+        public static void Restart()
+        {
+            Dispose();
+            Helpers.Sessao.Inserir("dbSIACEntities", new Contexto());
+        }
+
         public static void Commit()
         {
             Contexto contexto = Helpers.Sessao.Retornar("dbSIACEntities") as Contexto;

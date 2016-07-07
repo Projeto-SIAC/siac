@@ -563,6 +563,7 @@ namespace SIAC.Controllers
                         prova.CodDisciplina = int.Parse(ddlDisciplina);
                         prova.FlagRedacao = !String.IsNullOrWhiteSpace(chkRedadao);
                         prova.OrdemDesempate = sim.Provas.Count > 0 ? sim.Provas.Max(p => p.OrdemDesempate) + 1 : 1;
+                        prova.Peso = 1;
 
                         if (!String.IsNullOrWhiteSpace(ddlProfessor))
                         {
@@ -1289,8 +1290,8 @@ namespace SIAC.Controllers
                     {
                         if ((bool)candidato.SimCandidatoProva.First().FlagPresente)
                         {
-                            decimal? somaEscoreProvas = candidato.SimCandidatoProva.Sum(p => p.EscorePadronizado);
-                            candidato.EscorePadronizadoFinal = somaEscoreProvas.Value / candidato.SimCandidatoProva.Count();
+                            decimal? somaEscoreProvas = candidato.SimCandidatoProva.Sum(p => p.EscorePadronizado * (decimal)p.SimProva.Peso);
+                            candidato.EscorePadronizadoFinal = somaEscoreProvas.Value / (decimal)candidato.SimCandidatoProva.Sum(p => p.SimProva.Peso);
                         }
                     }
 
@@ -1549,6 +1550,11 @@ namespace SIAC.Controllers
                         Repositorio.Commit();
                         Lembrete.AdicionarNotificacao("Ordem de Desempate atualizada com sucesso.", Lembrete.POSITIVO);
                     }
+                    else
+                    {
+                        Repositorio.Restart();
+                        Lembrete.AdicionarNotificacao("Ocorreu um erro na tentativa de atualizar a ordem de desempate.", Lembrete.NEGATIVO);
+                    }
                 }
             }
         }
@@ -1586,6 +1592,46 @@ namespace SIAC.Controllers
             }
 
             return RedirectToAction("", "Arquivo");
+        }
+
+        [HttpPost]
+        [Route("pesos/atualizar")]
+        [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
+        public void AtualizarProvasPeso(string codigo, Dictionary<string, float> provas)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
+                {
+                    int atualizadas = 0;
+                    foreach (var item in provas)
+                    {
+                        string[] valores = item.Key.Split('.');
+                        int codDia = int.Parse(valores[1]);
+                        int codProva = int.Parse(valores[2]);
+                        SimProva prova = sim.SimDiaRealizacao
+                            .FirstOrDefault(d => d.CodDiaRealizacao == codDia)?
+                            .SimProva.FirstOrDefault(p => p.CodProva == codProva);
+                        if (prova != null)
+                        {
+                            prova.Peso = item.Value;
+                            atualizadas++;
+                        }
+                    }
+                    if (atualizadas == provas.Count)
+                    {
+                        Repositorio.Commit();
+                        Lembrete.AdicionarNotificacao("Os pesos das provas foram atualizados com sucesso.", Lembrete.POSITIVO);
+                    }
+                    else
+                    {
+                        Repositorio.Restart();
+                        Lembrete.AdicionarNotificacao("Ocorreu um erro na tentativa de atualizar os pesos das provas.", Lembrete.NEGATIVO);
+                    }
+                }
+            }
         }
     }
 }

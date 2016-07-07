@@ -284,6 +284,10 @@
     <Compile Include="Migrations\201606172058408_UpdateSimProva.Designer.cs">
       <DependentUpon>201606172058408_UpdateSimProva.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607071440422_UpdateSimProvaPeso.cs" />
+    <Compile Include="Migrations\201607071440422_UpdateSimProvaPeso.Designer.cs">
+      <DependentUpon>201607071440422_UpdateSimProvaPeso.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Alternativa.cs" />
     <Compile Include="Models\Aluno.cs" />
@@ -680,6 +684,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606172058408_UpdateSimProva.resx">
       <DependentUpon>201606172058408_UpdateSimProva.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607071440422_UpdateSimProvaPeso.resx">
+      <DependentUpon>201607071440422_UpdateSimProvaPeso.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

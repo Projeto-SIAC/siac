@@ -50,7 +50,7 @@ namespace SIAC.Models
 
         public decimal? DesvioPadraoAcerto { get; set; }
 
-        public int? Peso { get; set; }
+        public float Peso { get; set; }
 
         public bool FlagRedacao { get; set; }
 
