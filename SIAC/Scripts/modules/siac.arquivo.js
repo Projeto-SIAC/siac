@@ -58,7 +58,7 @@ siac.Arquivo.Abertos = (function () {
         $cards.parent().append('<div class="ui active centered inline text loader">Carregando</div>');
         _controleAjax = $.ajax({
             method: 'POST',
-            url: '/simulado/arquivo/listar',
+            url: $cards.data('action'),
             data: {
                 pagina: pagina,
                 ordenar: ordenar,
@@ -74,11 +74,6 @@ siac.Arquivo.Abertos = (function () {
                         $cards.append(partial);
                     }
                     _controlePartial = partial;
-                    //$('.cards .card.hidden').transition({
-                    //    animation: 'pulse',
-                    //    duration: 500,
-                    //    interval: 200
-                    //});
                 }
             },
             complete: function () {
@@ -159,7 +154,7 @@ siac.Arquivo.Encerrados = (function () {
         $cards.parent().append('<div class="ui active centered inline text loader">Carregando</div>');
         _controleAjax = $.ajax({
             method: 'POST',
-            url: '/simulado/arquivo/listar',
+            url: $cards.data('action'),
             data: {
                 pagina: pagina,
                 ordenar: ordenar,
@@ -175,11 +170,6 @@ siac.Arquivo.Encerrados = (function () {
                         $cards.append(partial);
                     }
                     _controlePartial = partial;
-                    //$('.cards .card.hidden').transition({
-                    //    animation: 'pulse',
-                    //    duration: 500,
-                    //    interval: 200
-                    //});
                 }
             },
             complete: function () {

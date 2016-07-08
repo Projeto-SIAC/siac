@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
+    [RoutePrefix("simulado/arquivo")]
     [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, SomenteOcupacaoSimulado = true)]
     public class ArquivoController : Controller
     {
@@ -15,6 +16,7 @@ namespace SIAC.Controllers
         private List<Simulado> SimEncerrados => Simulado.ListarEncerradoOrdenadamente();
 
         [HttpPost]
+        [Route("listar")]
         public ActionResult Listar(int? pagina, string pesquisa, string ordenar, string categoria)
         {
             int quantidade = 12;
@@ -49,7 +51,7 @@ namespace SIAC.Controllers
             return PartialView("_ListaSimulado", simulados.Skip((quantidade * pagina.Value) - quantidade).Take(quantidade).ToList());
         }
 
-        // GET: simulado/arquivo
+        [Route("")]
         public ActionResult Index() =>
             View(new ArquivoIndexViewModel()
             {
@@ -59,8 +61,10 @@ namespace SIAC.Controllers
                 Encerrados = SimEncerrados.Take(3).ToList()
             });
 
+        [Route("abertos")]
         public ActionResult Abertos() => View();
 
+        [Route("encerrados")]
         public ActionResult Encerrados() => View();
     }
 }

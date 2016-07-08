@@ -15,7 +15,7 @@ namespace SIAC
                 name: "AreaDeSimulados",
                 url: "Simulado/{controller}/{action}/{codigo}",
                 defaults: new { controller = "Gerencia", action = "Index", codigo = UrlParameter.Optional },
-                constraints: new { controller = @"^(Gerencia|Inscricao|Candidato|Arquivo)$" }
+                constraints: new { controller = @"^(Gerencia|Inscricao|Candidato)$" }
             );
 
             //routes.MapRoute(
