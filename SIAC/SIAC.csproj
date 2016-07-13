@@ -664,6 +664,8 @@
     <Content Include="Views\Gerencia\Permissoes.cshtml" />
     <Content Include="Views\Shared\Partials\_AnexoTexto.cshtml" />
     <Content Include="Views\Simulado\Pontuacoes.cshtml" />
+    <Content Include="Views\Simulado\Partials\_SimuladoPontuacoesCandidato.cshtml" />
+    <Content Include="Views\Simulado\Partials\_SimuladoPontuacoesProva.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

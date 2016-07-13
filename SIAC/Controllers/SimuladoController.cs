@@ -1595,6 +1595,199 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
+        [Route("pontuacoes/prova")]
+        public ActionResult PontuacoesPorProva(string codigo, int codDia, int codProva)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && !sim.FlagSimuladoEncerrado && sim.FlagProvaEncerrada)
+                {
+                    SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
+
+                    if (diaRealizacao != null)
+                    {
+                        SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
+
+                        if (prova.QteQuestoesDiscursivas == 1)
+                        {
+                            return PartialView("_SimuladoPontuacoesProva", prova.SimCandidatoProva.OrderBy(p => p.SimCandidato.Candidato.Nome).ToList());
+                        }
+                        else
+                        {
+                            Lembrete.AdicionarNotificacao("Esta prova possue mais de uma questão, logo é necessário preenchê-las individualmente.", Lembrete.INFO, 15);
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Route("pontuacoes/candidato")]
+        public ActionResult PontuacoesPorCandidato(string codigo, int codDia, int codProva, string mascaraCandidato)
+        {
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && !sim.FlagSimuladoEncerrado && sim.FlagProvaEncerrada)
+                {
+                    SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
+
+                    if (diaRealizacao != null)
+                    {
+                        SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
+                        SimCandidatoProva candidato = contexto.SimCandidatoProva
+                            .FirstOrDefault(p => p.Ano == sim.Ano
+                                && p.NumIdentificador == sim.NumIdentificador
+                                && p.CodProva == codProva
+                                && p.CodDiaRealizacao == codDia
+                                && p.SimCandidato.NumeroMascara == mascaraCandidato);
+
+                        var model = new SimuladoPontuacoesCandidatoViewModel();
+
+                        model.Simulado = sim;
+                        model.Prova = prova;
+                        model.Candidato = candidato.SimCandidato.Candidato;
+                        model.Questoes = prova.SimProvaQuestao.Where(q => q.Questao.CodTipoQuestao == TipoQuestao.DISCURSIVA).OrderBy(q => q.CodQuestao).ToList();
+                        model.Respostas = candidato.SimCandidatoQuestao.OrderBy(q => q.CodQuestao).ToList();
+                        model.CandidatoProva = candidato;
+
+                        return PartialView("_SimuladoPontuacoesCandidato", model);
+                    }
+                }
+            }
+            return null;
+        }
+
+        [HttpPost]
+        [Route("pontuacoes/inserir")]
+        public ActionResult InserirPontuacoesProva(string codigo, int codDia, int codProva, FormCollection form)
+        {
+            string mensagem = "Ocorreu um erro na operação.";
+            string estilo = Lembrete.NEGATIVO;
+
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && !sim.FlagSimuladoEncerrado && sim.FlagProvaEncerrada)
+                {
+                    SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
+
+                    if (diaRealizacao != null)
+                    {
+                        SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
+
+                        foreach (var candidato in prova.SimCandidatoProva)
+                        {
+                            string flagAusente = form[candidato.CodCandidato + "ausente"];
+
+                            if (flagAusente != null && flagAusente == "on")
+                            {
+                                candidato.QteAcertos = null;
+                                candidato.FlagPresente = false;
+                            }
+                            else
+                            {
+                                int qteAcerto = -1;
+                                string qteAcertoForm = form[candidato.CodCandidato.ToString()];
+                                if (!String.IsNullOrEmpty(qteAcertoForm) && qteAcertoForm.IsNumber())
+                                {
+                                    int.TryParse(qteAcertoForm, out qteAcerto);
+                                }
+                                if (qteAcerto > -1)
+                                {
+                                    candidato.QteAcertos = qteAcerto;
+                                    candidato.FlagPresente = true;
+                                }
+                            }
+                        }
+
+                        Repositorio.Commit();
+
+                        mensagem = "O preenchimento ocorreu com sucesso.";
+                        estilo = Lembrete.POSITIVO;
+                    }
+                }
+            }
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
+            return RedirectToAction("Respostas", new { codigo = codigo });
+        }
+
+        [HttpPost]
+        [Route("pontuacoes/inserir")]
+        public ActionResult InserirPontuacoesCandidato(string codigo, int codDia, int codProva, int codCandidato, FormCollection form)
+        {
+            string mensagem = "Ocorreu um erro na operação.";
+            string estilo = Lembrete.NEGATIVO;
+
+            if (!String.IsNullOrWhiteSpace(codigo))
+            {
+                Simulado sim = Simulado.ListarPorCodigo(codigo);
+
+                if (sim != null && !sim.FlagSimuladoEncerrado)
+                {
+                    SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
+
+                    if (diaRealizacao != null)
+                    {
+                        SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
+                        SimCandidatoProva candidato = contexto.SimCandidatoProva
+                            .FirstOrDefault(p =>
+                                p.Ano == sim.Ano
+                                && p.NumIdentificador == sim.NumIdentificador
+                                && p.CodProva == codProva
+                                && p.CodDiaRealizacao == codDia
+                                && p.CodCandidato == codCandidato
+                            );
+
+                        candidato.SimCandidatoQuestao.Clear();
+                        int acertos = 0;
+                        string flagAusente = form["ausente"];
+
+                        if (flagAusente != null && flagAusente == "on")
+                        {
+                            candidato.FlagPresente = false;
+                            candidato.QteAcertos = null;
+                        }
+                        else
+                        {
+                            foreach (var questao in prova.SimProvaQuestao)
+                            {
+                                string strQuestao = "questao" + questao.CodQuestao;
+
+                                if (form[strQuestao] != null)
+                                {
+                                    int alternativa = int.Parse(form[strQuestao]);
+
+                                    candidato.SimCandidatoQuestao.Add(new SimCandidatoQuestao()
+                                    {
+                                        SimProvaQuestao = questao,
+                                        RespAlternativa = alternativa
+                                    });
+
+                                    if (questao.Questao.Alternativa.First(a => a.FlagGabarito).CodOrdem == alternativa)
+                                        acertos++;
+                                }
+                            }
+                            candidato.FlagPresente = true;
+                            candidato.QteAcertos = acertos;
+                        }
+                        Repositorio.Commit();
+
+                        mensagem = "O preenchimento ocorreu com sucesso.";
+                        estilo = Lembrete.POSITIVO;
+                    }
+                }
+            }
+            Lembrete.AdicionarNotificacao(mensagem, estilo);
+            return RedirectToAction("Respostas", new { codigo = codigo });
+        }
+
+        [HttpPost]
         [Route("pesos/atualizar")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public void AtualizarProvasPeso(string codigo, Dictionary<string, float> provas)

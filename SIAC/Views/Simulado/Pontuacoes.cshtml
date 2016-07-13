@@ -32,8 +32,8 @@
             </select>
         </div>
     </div>
-    <div class="ui prova button">Corrigir por Prova</div>
-    <div class="ui candidato button">Corrigir por Candidato</div>
+    <div class="ui prova button" data-action="@Url.Action("PontuacoesPorProva", new { codigo = Model.Simulado.Codigo })">Corrigir por Prova</div>
+    <div class="ui candidato button" data-action="@Url.Action("PontuacoesPorCandidato", new { codigo = Model.Simulado.Codigo })">Corrigir por Candidato</div>
 </div>
 
 <div class="ui basic segment lista respostas">

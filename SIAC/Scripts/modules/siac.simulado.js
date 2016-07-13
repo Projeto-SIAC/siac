@@ -1182,96 +1182,96 @@ siac.Simulado.Pontuacoes = (function () {
 
         $('.topo.button').click(function () { topo(); });
 
-        //$('.prova.button').click(function () {
-        //    var $provaButton = $(this);
+        $('.prova.button').click(function () {
+            var $provaButton = $(this);
 
-        //    if (validarProva()) {
-        //        var prova = $('#ddlProva').val(),
-        //            codDia = prova.split('.')[0],
-        //            codProva = prova.split('.')[1];
+            if (validarProva()) {
+                var prova = $('#ddlProva').val(),
+                    codDia = prova.split('.')[0],
+                    codProva = prova.split('.')[1];
 
-        //        $.ajax({
-        //            type: 'POST',
-        //            url: '/simulado/correcaoporprova/' + _codigo,
-        //            data: {
-        //                codDia: codDia,
-        //                codProva: codProva
-        //            },
-        //            beforeSend: function () {
-        //                $provaButton.addClass('loading');
-        //            },
-        //            success: function (data) {
-        //                if (data) {
-        //                    $listaRespostas.html(data);
-        //                    alterarCheckBoxProva();
-        //                    tratarEnvioFormulario('prova');
-        //                }
-        //            },
-        //            error: function () {
-        //                siac.mensagem('Ocorreu um erro na operação.');
-        //            },
-        //            complete: function () {
-        //                $provaButton.removeClass('loading');
-        //            }
-        //        })
-        //    }
-        //});
+                $.ajax({
+                    type: 'POST',
+                    url: $provaButton.data('action'),
+                    data: {
+                        codDia: codDia,
+                        codProva: codProva
+                    },
+                    beforeSend: function () {
+                        $provaButton.addClass('loading');
+                    },
+                    success: function (data) {
+                        if (data) {
+                            $listaRespostas.html(data);
+                            alterarCheckBoxProva();
+                            tratarEnvioFormulario('prova');
+                        }
+                    },
+                    error: function () {
+                        siac.mensagem('Ocorreu um erro na operação.');
+                    },
+                    complete: function () {
+                        $provaButton.removeClass('loading');
+                    }
+                })
+            }
+        });
 
-        //$('.candidato.button').click(function () {
-        //    var $candidatoButton = $(this);
+        $('.candidato.button').click(function () {
+            var $candidatoButton = $(this);
 
-        //    if (validarCandidato()) {
-        //        var prova = $('#ddlProva').val(),
-        //            codDia = prova.split('.')[0],
-        //            codProva = prova.split('.')[1],
-        //            codCandidato = $('#ddlCandidato').val();
+            if (validarCandidato()) {
+                var prova = $('#ddlProva').val(),
+                    codDia = prova.split('.')[0],
+                    codProva = prova.split('.')[1],
+                    mascaraCandidato = $('#ddlCandidato').val();
 
-        //        $.ajax({
-        //            type: 'POST',
-        //            url: '/simulado/correcaoporcandidato/' + _codigo,
-        //            data: {
-        //                codDia: codDia,
-        //                codProva: codProva,
-        //                codCandidato: codCandidato
-        //            },
-        //            beforeSend: function () {
-        //                $candidatoButton.addClass('loading');
-        //            },
-        //            success: function (data) {
-        //                if (data) {
-        //                    $listaRespostas.html(data);
-        //                    alterarCheckBoxCandidato();
-        //                    sobreporCandidatoEmDimmer();
-        //                    tratarEnvioFormulario('candidato');
-        //                }
-        //            },
-        //            error: function () {
-        //                siac.mensagem('Ocorreu um erro na operação.');
-        //            },
-        //            complete: function () {
-        //                $candidatoButton.removeClass('loading');
-        //            }
-        //        })
-        //    }
-        //});
+                $.ajax({
+                    type: 'POST',
+                    url: $candidatoButton.data('action'),
+                    data: {
+                        codDia: codDia,
+                        codProva: codProva,
+                        mascaraCandidato: mascaraCandidato
+                    },
+                    beforeSend: function () {
+                        $candidatoButton.addClass('loading');
+                    },
+                    success: function (data) {
+                        if (data) {
+                            $listaRespostas.html(data);
+                            alterarCheckBoxCandidato();
+                            sobreporCandidatoEmDimmer();
+                            tratarEnvioFormulario('candidato');
+                        }
+                    },
+                    error: function () {
+                        siac.mensagem('Ocorreu um erro na operação.');
+                    },
+                    complete: function () {
+                        $candidatoButton.removeClass('loading');
+                    }
+                })
+            }
+        });
 
-        //$('.editar.item').click(function () {
-        //    $('.editar.modal').modal('show');
-        //});
+        $('.editar.item').click(function () {
+            $('.editar.modal').modal('show');
+        });
 
-        //$('.encerrar.item').click(function () {
-        //    $('.encerrar.modal').modal({
-        //        onApprove: function () {
-        //            $.ajax({
-        //                type: 'POST',
-        //                url: '/simulado/encerrar/' + _codigo,
-        //                complete: function () {
-        //                    location.reload();
-        //                }
-        //            })
-        //        }
-        //    }).modal('show');
-        //});
+        $('.encerrar.item').click(function () {
+            $('.encerrar.modal').modal({
+                onApprove: function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/simulado/encerrar/' + _codigo,
+                        complete: function () {
+                            location.reload();
+                        }
+                    })
+                }
+            }).modal('show');
+        });
     }
 
     function tratarEnvioFormulario(provaOuCandidato) {

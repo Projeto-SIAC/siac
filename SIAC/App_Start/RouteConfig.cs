@@ -18,12 +18,6 @@ namespace SIAC
                 constraints: new { controller = @"^(Gerencia|Inscricao|Candidato)$" }
             );
 
-            //routes.MapRoute(
-            //    name: "Simulado",
-            //    url: "Simulado/{action}/{codigo}",
-            //    defaults: new { controller = "Simulado", action = "Index", codigo = UrlParameter.Optional }
-            //);
-
             routes.MapRoute(
                 name: "Institucional",
                 url: "Institucional/{action}/{codigo}",
