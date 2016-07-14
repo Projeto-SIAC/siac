@@ -31,12 +31,18 @@
             </div>
             <div class="two fields">
                 <div class="field required">
-                    <label>Quant. de Questões Objetivas</label>
-                    <input type="number" name="txtQteQuestoesObjetivas" min="0" placeholder="Quant. de Questões Objetivas" value="@Model.Prova.QteQuestoesObjetivas" required />
+                    <label>Quant. de Questões</label>
+                    <input type="number" name="txtQteQuestoes" min="0" placeholder="Quant. de Questões" value="@Model.Prova.QteQuestoes" required />
                 </div>
                 <div class="field">
-                    <label>Quant. de Questões Discursivas</label>
-                    <input type="number" name="txtQteQuestoesDiscursivas" min="0" placeholder="Quant. de Questões Discursivas" value="@Model.Prova.QteQuestoesDiscursivas" />
+                    <div class="field">
+                        <label>Tipo das Questões</label>
+                        <select name="ddlTipoQuestoes" class="ui fluid search dropdown" required">
+                            <option value="">Tipo das Questões</option>
+                            <option @(Model.Prova.TipoQuestoes == TipoQuestao.OBJETIVA ? "selected" : "") value="@TipoQuestao.OBJETIVA">Objetivas</option>
+                            <option @(Model.Prova.TipoQuestoes == TipoQuestao.DISCURSIVA ? "selected" : "") value="@TipoQuestao.DISCURSIVA">Discursivas</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="field required">

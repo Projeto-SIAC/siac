@@ -182,12 +182,12 @@ namespace SIAC.Controllers
                             return View(sim);
                         }
 
-                        if (sim.DtTerminoInscricao >= sim.SimDiaRealizacao?.FirstOrDefault()?.DtRealizacao)
+                        if (sim.DtTerminoInscricao >= sim.PrimeiroDiaRealizacao?.DtRealizacao)
                         {
                             Lembrete.AdicionarNotificacao("A data de término das inscrições tem que ser antes do primeiro dia de prova.", Lembrete.NEGATIVO);
                             return View(sim);
                         }
-                        if (sim.PrimeiroDiaRealizacao.DtRealizacao < termino)
+                        if (sim.PrimeiroDiaRealizacao?.DtRealizacao < termino)
                         {
                             var dias = Convert.ToInt32((sim.PrimeiroDiaRealizacao.DtRealizacao - sim.DtTerminoInscricao).Value.TotalDays);
 
@@ -476,7 +476,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
-        [Route("provas/carregar")]
+        [Route("dia/provas/carregar")]
         [AutenticacaoFilter(Ocupacoes = new[] { Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult CarregarProvas(string codigo, int codDia)
         {
@@ -541,16 +541,15 @@ namespace SIAC.Controllers
                 if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
                     string ddlDisciplina = form["ddlDisciplina"];
-                    int qteQuestoesObjetivas;
-                    int.TryParse(form["txtQteQuestoesObjetivas"], out qteQuestoesObjetivas);
-                    int qteQuestoesDiscursivas;
-                    int.TryParse(form["txtQteQuestoesDiscursivas"], out qteQuestoesDiscursivas);
+                    int qteQuestoes;
+                    int.TryParse(form["txtQteQuestoes"], out qteQuestoes);
                     string ddlProfessor = form["ddlProfessor"];
+                    string ddlTipoQuestoes = form["ddlTipoQuestoes"];
                     string txtTitulo = form["txtTitulo"];
                     string txtDescricao = form["txtDescricao"];
                     string chkRedadao = form["chkRedacao"];
 
-                    if (!StringExt.IsNullOrWhiteSpace(ddlDisciplina, txtTitulo) && qteQuestoesDiscursivas + qteQuestoesObjetivas > 0)
+                    if (!StringExt.IsNullOrWhiteSpace(ddlDisciplina, ddlTipoQuestoes, txtTitulo) && qteQuestoes > 0)
                     {
                         SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
 
@@ -559,8 +558,11 @@ namespace SIAC.Controllers
                         prova.CodProva = diaRealizacao.SimProva.Count > 0 ? diaRealizacao.SimProva.Max(p => p.CodProva) + 1 : 1;
                         prova.Titulo = txtTitulo;
                         prova.Descricao = String.IsNullOrWhiteSpace(txtDescricao) ? String.Empty : txtDescricao;
-                        prova.QteQuestoes = qteQuestoesDiscursivas + qteQuestoesObjetivas;
+                        prova.QteQuestoes = qteQuestoes;
                         prova.CodDisciplina = int.Parse(ddlDisciplina);
+                        int tipoQuestoes;
+                        int.TryParse(ddlTipoQuestoes, out tipoQuestoes);
+                        prova.TipoQuestoes = tipoQuestoes;
                         prova.FlagRedacao = !String.IsNullOrWhiteSpace(chkRedadao);
                         prova.OrdemDesempate = sim.Provas.Count > 0 ? sim.Provas.Max(p => p.OrdemDesempate) + 1 : 1;
                         prova.Peso = 1;
@@ -580,8 +582,7 @@ namespace SIAC.Controllers
 
                         List<int> simuladoQuestoes = sim.TodasQuestoesPorDisciplina(prova.CodDisciplina).Select(q => q.CodQuestao).ToList();
 
-                        List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, qteQuestoesObjetivas, TipoQuestao.OBJETIVA, simuladoQuestoes);
-                        questoesCodigos.AddRange(Simulado.ObterQuestoesCodigos(prova.CodDisciplina, qteQuestoesDiscursivas, TipoQuestao.DISCURSIVA, simuladoQuestoes));
+                        List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, prova.QteQuestoes, prova.TipoQuestoes, simuladoQuestoes);
 
                         prova.SimProvaQuestao.Clear();
 
@@ -636,16 +637,15 @@ namespace SIAC.Controllers
                     bool alterarQuestoes = false;
 
                     string ddlDisciplina = form["ddlDisciplina"];
-                    int qteQuestoesObjetivas;
-                    int.TryParse(form["txtQteQuestoesObjetivas"], out qteQuestoesObjetivas);
-                    int qteQuestoesDiscursivas;
-                    int.TryParse(form["txtQteQuestoesDiscursivas"], out qteQuestoesDiscursivas);
+                    int qteQuestoes;
+                    int.TryParse(form["txtQteQuestoes"], out qteQuestoes);
+                    string ddlTipoQuestoes = form["ddlTipoQuestoes"];
                     string ddlProfessor = form["ddlProfessor"];
                     string txtTitulo = form["txtTitulo"];
                     string txtDescricao = form["txtDescricao"];
                     string chkRedadao = form["chkRedacao"];
 
-                    if (!StringExt.IsNullOrWhiteSpace(ddlDisciplina, txtTitulo) && qteQuestoesDiscursivas + qteQuestoesObjetivas > 0)
+                    if (!StringExt.IsNullOrWhiteSpace(ddlDisciplina, ddlTipoQuestoes, txtTitulo) && qteQuestoes > 0)
                     {
                         int codDisciplina = int.Parse(ddlDisciplina);
 
@@ -653,11 +653,15 @@ namespace SIAC.Controllers
 
                         SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
 
-                        alterarQuestoes = qteQuestoesDiscursivas != prova.QteQuestoesDiscursivas || qteQuestoesObjetivas != prova.QteQuestoesObjetivas || codDisciplina != prova.CodDisciplina;
+                        int tipoQuestoes;
+                        int.TryParse(ddlTipoQuestoes, out tipoQuestoes);
+
+                        alterarQuestoes = qteQuestoes != prova.QteQuestoes || codDisciplina != prova.CodDisciplina || tipoQuestoes != prova.TipoQuestoes;
 
                         prova.Titulo = txtTitulo;
                         prova.Descricao = String.IsNullOrWhiteSpace(txtDescricao) ? String.Empty : txtDescricao;
-                        prova.QteQuestoes = qteQuestoesDiscursivas + qteQuestoesObjetivas;
+                        prova.QteQuestoes = qteQuestoes;
+                        prova.TipoQuestoes = tipoQuestoes;
                         prova.CodDisciplina = codDisciplina;
                         prova.FlagRedacao = !String.IsNullOrWhiteSpace(chkRedadao);
 
@@ -677,8 +681,7 @@ namespace SIAC.Controllers
                         if (alterarQuestoes)
                         {
                             List<int> simuladoQuestoes = sim.TodasQuestoesPorDisciplina(prova.CodDisciplina, prova.CodDiaRealizacao, prova.CodProva).Select(q => q.CodQuestao).ToList();
-                            List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, qteQuestoesObjetivas, TipoQuestao.OBJETIVA, simuladoQuestoes);
-                            questoesCodigos.AddRange(Simulado.ObterQuestoesCodigos(prova.CodDisciplina, qteQuestoesDiscursivas, TipoQuestao.DISCURSIVA, simuladoQuestoes));
+                            List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(prova.CodDisciplina, qteQuestoes, prova.TipoQuestoes, simuladoQuestoes);
 
                             prova.SimProvaQuestao.Clear();
 

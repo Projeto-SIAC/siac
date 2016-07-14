@@ -109,12 +109,16 @@
             </div>
             <div class="two fields">
                 <div class="field required">
-                    <label>Quant. de Questões Objetivas</label>
-                    <input type="number" name="txtQteQuestoesObjetivas" min="0" placeholder="Quant. de Questões Objetivas" required />
+                    <label>Quant. de Questões</label>
+                    <input type="number" name="txtQteQuestoes" min="0" placeholder="Quant. de Questões" required />
                 </div>
                 <div class="field">
-                    <label>Quant. de Questões Discursivas</label>
-                    <input type="number" name="txtQteQuestoesDiscursivas" min="0" placeholder="Quant. de Questões Discursivas" />
+                    <label>Tipo das Questões</label>
+                    <select name="ddlTipoQuestoes" class="ui fluid search dropdown" required">
+                        <option value="">Tipo das Questões</option>
+                        <option value="@TipoQuestao.OBJETIVA">Objetivas</option>
+                        <option value="@TipoQuestao.DISCURSIVA">Discursivas</option>
+                    </select>
                 </div>
             </div>
             <div class="field required">

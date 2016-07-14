@@ -49,7 +49,7 @@
                         }
                     </td>
                     <td>
-                        <a data-prova="@item.prova.CodProva" data-action="@Url.Action("EditarProva", new { codigo = Model.Simulado.Codigo })" class="ui editar tiny button"><i class="edit icon"></i>Editar</a>
+                        <a data-prova="@item.prova.CodProva" data-action="@Url.Action("CarregarProva", new { codigo = Model.Simulado.Codigo })" class="ui editar tiny button"><i class="edit icon"></i>Editar</a>
                         <a data-prova="@item.prova.CodProva" data-action="@Url.Action("RemoverProva", new { codigo = Model.Simulado.Codigo })" class="ui remover tiny button"><i class="trash icon"></i>Remover</a>
                     </td>
                 </tr>
