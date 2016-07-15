@@ -50,7 +50,7 @@
                     </td>
                     <td>
                         <a data-prova="@item.prova.CodProva" data-action="@Url.Action("CarregarProva", new { codigo = Model.Simulado.Codigo })" class="ui editar tiny button"><i class="edit icon"></i>Editar</a>
-                        <a data-prova="@item.prova.CodProva" data-action="@Url.Action("RemoverProva", new { codigo = Model.Simulado.Codigo })" class="ui remover tiny button"><i class="trash icon"></i>Remover</a>
+                        <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Esta ação não poderá ser desfeita</p><a data-prova='@(item.prova.CodProva)' data-action='@Url.Action("RemoverProva", new { codigo = Model.Simulado.Codigo })' class='ui remover mini button'>Confirmar</a></div>" class="ui tiny button"><i class="trash icon"></i>Remover</div>
                     </td>
                 </tr>
             }

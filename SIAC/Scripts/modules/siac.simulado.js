@@ -229,9 +229,15 @@ siac.Simulado.Provas = (function () {
                 $modalProvas.find('.novo.prova.button').off('click').click(function () {
                     abrirModalNovaProva(codDia);
                 });
-                $modalProvas.find('.remover.button').off('click').click(function () {
-                    removerProva(codDia, $(this));
+                $modalProvas.find('[data-html]').popup({
+                    on: 'click',
+                    onVisible: function () {
+                        $(this).find('.remover.button').off('click').click(function () {
+                            removerProva(codDia, $(this));
+                        });
+                    }
                 });
+                
 
                 $modalProvas.find('.editar.button').off('click').click(function () {
                     editarProva(codDia, $(this));
