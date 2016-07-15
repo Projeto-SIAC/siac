@@ -556,10 +556,13 @@
                                                 Redação
                                             </div>
                                         }
-                                        <div class="ui small label">
-                                            @prova.QteQuestoes Questões
-                                        </div>
+                                        else {
+                                            <div class="ui small label">
+                                                @prova.QteQuestoes questões @(prova.TipoQuestoes == TipoQuestao.OBJETIVA ? "objetivas": "discursivas")
+                                            </div>
+                                        }
                                     </td>
+
                                     <td>@prova.Disciplina.Descricao</td>
                                     @if (prova.Professor != null)
                                     {

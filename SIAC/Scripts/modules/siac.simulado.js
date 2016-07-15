@@ -119,6 +119,10 @@ siac.Simulado.Provas = (function () {
             carregarProvas($(this));
         });
 
+        $('[name=chkRedacao]').off('change').on('change', function () {
+            alternarRedacao($(this));
+        });
+
         siac.Simulado.adicionarEventoNoFormulario();
         listarProfessoresPorDisciplina();
     }
@@ -314,6 +318,10 @@ siac.Simulado.Provas = (function () {
                 $('body').append($(data))
                 $('.editar.prova.modal').modal('show');
                 $('.editar.prova.modal .dropdown').dropdown();
+                // Adiciona evento no checkbox Redacao
+                $('[name=chkRedacao]').off('change').on('change', function () {
+                    alternarRedacao($(this));
+                });
             },
             error: function () {
                 siac.mensagem('Aconteceu um erro na operação! Atualize a página para tentar novamente.')
@@ -322,6 +330,7 @@ siac.Simulado.Provas = (function () {
                 $button.removeClass('loading');
                 siac.Simulado.adicionarEventoNoFormulario();
                 listarProfessoresPorDisciplina();
+                $('[name=chkRedacao]').change();
             }
         })
     }
@@ -344,6 +353,38 @@ siac.Simulado.Provas = (function () {
                 .dropdown('set placeholder text', 'Professor')
                 .dropdown('set value', '');
         });
+    }
+
+    function alternarRedacao($chkRedacao) {
+        var flagRedacao = $chkRedacao.is(':checked');
+        var $formPai = $chkRedacao.closest('.form');
+        var $txtQteQuestoes = $formPai.find('[name=txtQteQuestoes]');
+        var $ddlTipoQuestoes = $formPai.find('[name=ddlTipoQuestoes]');
+        console.info($txtQteQuestoes, $ddlTipoQuestoes);
+        if (flagRedacao === true) {
+            $txtQteQuestoes.attr({
+                'disabled': 'disabled',
+                'readonly': 'readonly'
+            });
+            $txtQteQuestoes.closest('.field').addClass('disabled');
+            $txtQteQuestoes.val('1');
+
+            $ddlTipoQuestoes.attr({
+                'disabled': 'disabled',
+                'readonly': 'readonly'
+            });
+            $ddlTipoQuestoes.closest('.dropdown').addClass('disabled');
+            $ddlTipoQuestoes.closest('.field').addClass('disabled');
+        }
+        else {
+            $txtQteQuestoes.removeAttr('disabled readonly');
+            $txtQteQuestoes.closest('.field').removeClass('disabled');
+
+            $ddlTipoQuestoes.removeAttr('disabled readonly');
+            $ddlTipoQuestoes.closest('.dropdown').removeClass('disabled');
+            $ddlTipoQuestoes.closest('.field').removeClass('disabled');
+        }
+        
     }
 
     return {

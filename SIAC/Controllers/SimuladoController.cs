@@ -549,6 +549,12 @@ namespace SIAC.Controllers
                     string txtDescricao = form["txtDescricao"];
                     string chkRedadao = form["chkRedacao"];
 
+                    if (!String.IsNullOrWhiteSpace(chkRedadao))
+                    {
+                        qteQuestoes = 1;
+                        ddlTipoQuestoes = TipoQuestao.DISCURSIVA.ToString();
+                    }
+
                     if (!StringExt.IsNullOrWhiteSpace(ddlDisciplina, ddlTipoQuestoes, txtTitulo) && qteQuestoes > 0)
                     {
                         SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
@@ -644,6 +650,12 @@ namespace SIAC.Controllers
                     string txtTitulo = form["txtTitulo"];
                     string txtDescricao = form["txtDescricao"];
                     string chkRedadao = form["chkRedacao"];
+
+                    if (!String.IsNullOrWhiteSpace(chkRedadao))
+                    {
+                        qteQuestoes = 1;
+                        ddlTipoQuestoes = TipoQuestao.DISCURSIVA.ToString();
+                    }
 
                     if (!StringExt.IsNullOrWhiteSpace(ddlDisciplina, ddlTipoQuestoes, txtTitulo) && qteQuestoes > 0)
                     {
