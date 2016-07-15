@@ -26,6 +26,9 @@ namespace SIAC.Models
         public bool FlagAguardaPrazoInscricao => this.DtInicioInscricao > DateTime.Now;
 
         [NotMapped]
+        public bool FlagAguardaDefinicaoSalas => this.SimSala.Sum(s => s.Sala.Capacidade) < this.QteVagas;
+
+        [NotMapped]
         public List<SimProva> Provas
         {
             get
