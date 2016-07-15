@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SIAC.Controllers
@@ -935,7 +934,7 @@ namespace SIAC.Controllers
                 {
                     var model = new SimuladoRespostasViewModel();
                     model.Simulado = sim;
-                    model.Provas = sim.Provas.Where(p => p.QteQuestoesObjetivas > 0).ToList();
+                    model.Provas = sim.Provas.Where(p => p.TipoQuestoes == TipoQuestao.OBJETIVA).ToList();
                     model.Candidatos = sim.SimCandidato.OrderBy(c => c.Candidato.Nome).ToList();
 
                     if (model.Provas.Count > 0)
@@ -1070,7 +1069,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
-        [Route("respostas/inserir")]
+        [Route("respostas/inserir/candidato")]
         public ActionResult InserirRespostasCandidato(string codigo, int codDia, int codProva, int codCandidato, FormCollection form)
         {
             string mensagem = "Ocorreu um erro na operação.";
@@ -1585,16 +1584,10 @@ namespace SIAC.Controllers
                 {
                     var model = new SimuladoPontuacoesViewModel();
                     model.Simulado = sim;
-                    model.Provas = sim.Provas.Where(p => p.QteQuestoesDiscursivas > 0).ToList();
+                    model.Provas = sim.Provas.Where(p => p.TipoQuestoes == TipoQuestao.DISCURSIVA).ToList();
                     model.Candidatos = sim.SimCandidato.OrderBy(c => c.Candidato.Nome).ToList();
                     var redacao = model.Provas.FirstOrDefault(p => p.FlagRedacao);
-                    if (redacao != null)
-                    {
-                        model.Provas.Remove(redacao);
-                        model.Redacao = redacao;
-                    }
-
-                    if (model.Provas.Count > 0 || redacao != null)
+                    if (model.Provas.Count > 0)
                     {
                         return View(model);
                     }
@@ -1625,52 +1618,7 @@ namespace SIAC.Controllers
                     {
                         SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
 
-                        if (prova.QteQuestoesDiscursivas == 1)
-                        {
-                            return PartialView("_SimuladoPontuacoesProva", prova.SimCandidatoProva.OrderBy(p => p.SimCandidato.Candidato.Nome).ToList());
-                        }
-                        else
-                        {
-                            Lembrete.AdicionarNotificacao("Esta prova possue mais de uma questão, logo é necessário preenchê-las individualmente.", Lembrete.INFO, 15);
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
-        [HttpPost]
-        [Route("pontuacoes/candidato")]
-        public ActionResult PontuacoesPorCandidato(string codigo, int codDia, int codProva, string mascaraCandidato)
-        {
-            if (!String.IsNullOrWhiteSpace(codigo))
-            {
-                Simulado sim = Simulado.ListarPorCodigo(codigo);
-
-                if (sim != null && !sim.FlagSimuladoEncerrado && sim.FlagProvaEncerrada)
-                {
-                    SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
-
-                    if (diaRealizacao != null)
-                    {
-                        SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
-                        SimCandidatoProva candidato = contexto.SimCandidatoProva
-                            .FirstOrDefault(p => p.Ano == sim.Ano
-                                && p.NumIdentificador == sim.NumIdentificador
-                                && p.CodProva == codProva
-                                && p.CodDiaRealizacao == codDia
-                                && p.SimCandidato.NumeroMascara == mascaraCandidato);
-
-                        var model = new SimuladoPontuacoesCandidatoViewModel();
-
-                        model.Simulado = sim;
-                        model.Prova = prova;
-                        model.Candidato = candidato.SimCandidato.Candidato;
-                        model.Questoes = prova.SimProvaQuestao.Where(q => q.Questao.CodTipoQuestao == TipoQuestao.DISCURSIVA).OrderBy(q => q.CodQuestao).ToList();
-                        model.Respostas = candidato.SimCandidatoQuestao.OrderBy(q => q.CodQuestao).ToList();
-                        model.CandidatoProva = candidato;
-
-                        return PartialView("_SimuladoPontuacoesCandidato", model);
+                        return PartialView("_SimuladoPontuacoesProva", prova.SimCandidatoProva.OrderBy(p => p.SimCandidato.Candidato.Nome).ToList());
                     }
                 }
             }
@@ -1698,7 +1646,7 @@ namespace SIAC.Controllers
 
                         foreach (var candidato in prova.SimCandidatoProva)
                         {
-                            string flagAusente = form[candidato.CodCandidato + "ausente"];
+                            string flagAusente = form[candidato.SimCandidato.NumeroMascara + "ausente"];
 
                             if (flagAusente != null && flagAusente == "on")
                             {
@@ -1707,90 +1655,20 @@ namespace SIAC.Controllers
                             }
                             else
                             {
-                                int qteAcerto = -1;
-                                string qteAcertoForm = form[candidato.CodCandidato.ToString()];
-                                if (!String.IsNullOrEmpty(qteAcertoForm) && qteAcertoForm.IsNumber())
+                                decimal pontuacao = -1;
+                                string formPontuacao = form[candidato.SimCandidato.NumeroMascara];
+                                if (!String.IsNullOrEmpty(formPontuacao) && formPontuacao.IsNumber())
                                 {
-                                    int.TryParse(qteAcertoForm, out qteAcerto);
+                                   pontuacao = decimal.Parse(formPontuacao, new CultureInfo("pt-BR"));
                                 }
-                                if (qteAcerto > -1)
+                                if (pontuacao > -1)
                                 {
-                                    candidato.QteAcertos = qteAcerto;
+                                    candidato.NotaDiscursiva = pontuacao;
                                     candidato.FlagPresente = true;
                                 }
                             }
                         }
 
-                        Repositorio.Commit();
-
-                        mensagem = "O preenchimento ocorreu com sucesso.";
-                        estilo = Lembrete.POSITIVO;
-                    }
-                }
-            }
-            Lembrete.AdicionarNotificacao(mensagem, estilo);
-            return RedirectToAction("Respostas", new { codigo = codigo });
-        }
-
-        [HttpPost]
-        [Route("pontuacoes/inserir")]
-        public ActionResult InserirPontuacoesCandidato(string codigo, int codDia, int codProva, int codCandidato, FormCollection form)
-        {
-            string mensagem = "Ocorreu um erro na operação.";
-            string estilo = Lembrete.NEGATIVO;
-
-            if (!String.IsNullOrWhiteSpace(codigo))
-            {
-                Simulado sim = Simulado.ListarPorCodigo(codigo);
-
-                if (sim != null && !sim.FlagSimuladoEncerrado)
-                {
-                    SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.CodDiaRealizacao == codDia);
-
-                    if (diaRealizacao != null)
-                    {
-                        SimProva prova = diaRealizacao.SimProva.FirstOrDefault(p => p.CodProva == codProva);
-                        SimCandidatoProva candidato = contexto.SimCandidatoProva
-                            .FirstOrDefault(p =>
-                                p.Ano == sim.Ano
-                                && p.NumIdentificador == sim.NumIdentificador
-                                && p.CodProva == codProva
-                                && p.CodDiaRealizacao == codDia
-                                && p.CodCandidato == codCandidato
-                            );
-
-                        candidato.SimCandidatoQuestao.Clear();
-                        int acertos = 0;
-                        string flagAusente = form["ausente"];
-
-                        if (flagAusente != null && flagAusente == "on")
-                        {
-                            candidato.FlagPresente = false;
-                            candidato.QteAcertos = null;
-                        }
-                        else
-                        {
-                            foreach (var questao in prova.SimProvaQuestao)
-                            {
-                                string strQuestao = "questao" + questao.CodQuestao;
-
-                                if (form[strQuestao] != null)
-                                {
-                                    int alternativa = int.Parse(form[strQuestao]);
-
-                                    candidato.SimCandidatoQuestao.Add(new SimCandidatoQuestao()
-                                    {
-                                        SimProvaQuestao = questao,
-                                        RespAlternativa = alternativa
-                                    });
-
-                                    if (questao.Questao.Alternativa.First(a => a.FlagGabarito).CodOrdem == alternativa)
-                                        acertos++;
-                                }
-                            }
-                            candidato.FlagPresente = true;
-                            candidato.QteAcertos = acertos;
-                        }
                         Repositorio.Commit();
 
                         mensagem = "O preenchimento ocorreu com sucesso.";

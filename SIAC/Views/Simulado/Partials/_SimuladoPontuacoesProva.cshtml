@@ -5,7 +5,7 @@
     int codProva = Model.First().SimProva.CodProva;
 }
 
-<form action="@Url.Action("InserirRespostasProva", new { codigo = codigo, codDia = codDia, codProva = codProva })" method="post" class="ui form">
+<form action="@Url.Action("InserirPontuacoesProva", new { codigo = codigo, codDia = codDia, codProva = codProva })" method="post" class="ui form">
     <h3 class="header">Candidatos</h3>
     <table class="ui striped table">
         <thead>
@@ -21,15 +21,15 @@
                 bool flagAusente = candidato.FlagPresente.HasValue && !candidato.FlagPresente.Value;
 
                 <tr class="@(flagAusente ? "error" : "")">
-                    <td>@candidato.SimCandidato.NumeroMascara</td>
+                    <td><code>@candidato.SimCandidato.NumeroMascara</code></td>
                     <td>
                         <div class="field @(flagAusente ? "disabled" : "")">
-                            <input type="number" @(!flagAusente ? "required" : "") max="1000" min="0" name="@candidato.CodCandidato" value="@(candidato.NotaDiscursiva.HasValue ? candidato.NotaDiscursiva.ToString() : "" )" placeholder="Informe a pontuação do candidato" />
+                            <input type="text" @(!flagAusente ? "required" : "") data-mask="0###,000" data-mask-reverse="true" name="@candidato.SimCandidato.NumeroMascara" value="@(candidato.NotaDiscursiva.HasValue ? candidato.NotaDiscursiva.ToString() : "" )" placeholder="Informe a pontuação do candidato" />
                         </div>
                     </td>
                     <td>
                         <div class="ui toggle checkbox">
-                            <input type="checkbox" name="@(candidato.CodCandidato)ausente" @(flagAusente ? "checked" : "") />
+                            <input type="checkbox" name="@(candidato.SimCandidato.NumeroMascara)ausente" @(flagAusente ? "checked" : "") />
                         </div>
                     </td>
                 </tr>

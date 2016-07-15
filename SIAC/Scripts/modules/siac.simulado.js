@@ -1252,6 +1252,7 @@ siac.Simulado.Pontuacoes = (function () {
                             $listaRespostas.html(data);
                             alterarCheckBoxProva();
                             tratarEnvioFormulario('prova');
+                            aplicarMascara();
                         }
                     },
                     error: function () {
@@ -1263,68 +1264,11 @@ siac.Simulado.Pontuacoes = (function () {
                 })
             }
         });
-
-        $('.candidato.button').click(function () {
-            var $candidatoButton = $(this);
-
-            if (validarCandidato()) {
-                var prova = $('#ddlProva').val(),
-                    codDia = prova.split('.')[0],
-                    codProva = prova.split('.')[1],
-                    mascaraCandidato = $('#ddlCandidato').val();
-
-                $.ajax({
-                    type: 'POST',
-                    url: $candidatoButton.data('action'),
-                    data: {
-                        codDia: codDia,
-                        codProva: codProva,
-                        mascaraCandidato: mascaraCandidato
-                    },
-                    beforeSend: function () {
-                        $candidatoButton.addClass('loading');
-                    },
-                    success: function (data) {
-                        if (data) {
-                            $listaRespostas.html(data);
-                            alterarCheckBoxCandidato();
-                            sobreporCandidatoEmDimmer();
-                            tratarEnvioFormulario('candidato');
-                        }
-                    },
-                    error: function () {
-                        siac.mensagem('Ocorreu um erro na operação.');
-                    },
-                    complete: function () {
-                        $candidatoButton.removeClass('loading');
-                    }
-                })
-            }
-        });
-
-        $('.editar.item').click(function () {
-            $('.editar.modal').modal('show');
-        });
-
-        $('.encerrar.item').click(function () {
-            $('.encerrar.modal').modal({
-                onApprove: function () {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/simulado/encerrar/' + _codigo,
-                        complete: function () {
-                            location.reload();
-                        }
-                    })
-                }
-            }).modal('show');
-        });
     }
 
     function tratarEnvioFormulario(provaOuCandidato) {
         var formulario = $('.respostas form');
         var botao = formulario.find('[type=submit]');
-        var provaOuCandidato = provaOuCandidato;
 
         if (formulario) {
             formulario.off('submit').on('submit', function () {
@@ -1339,27 +1283,14 @@ siac.Simulado.Pontuacoes = (function () {
                         botao.addClass('loading');
                     },
                     success: function () {
-                        if (provaOuCandidato === 'prova') {
-                            var dropdown = $('#ddlProva');
-                            var atual = dropdown.val();
-                            var proximo = dropdown.find('option[value="' + atual + '"]').next();
+                        var dropdown = $('#ddlProva');
+                        var atual = dropdown.val();
+                        var proximo = dropdown.find('option[value="' + atual + '"]').next();
 
-                            if (proximo.attr('value')) {
-                                dropdown.dropdown('set selected', proximo.attr('value'));
-                                siac.Lembrete.Notificacoes.exibir('Avançando para prova "' + proximo.text() + '".', 'info');
-                                $('.prova.button').click();
-                            }
-                        }
-                        else if (provaOuCandidato === 'candidato') {
-                            var dropdown = $('#ddlCandidato');
-                            var atual = dropdown.val();
-                            var proximo = dropdown.find('option[value="' + atual + '"]').next();
-
-                            if (proximo.attr('value')) {
-                                dropdown.dropdown('set selected', proximo.attr('value'));
-                                siac.Lembrete.Notificacoes.exibir('Avançando para candidato "' + proximo.text() + '".', 'info');
-                                $('.candidato.button').click();
-                            }
+                        if (proximo.attr('value')) {
+                            dropdown.dropdown('set selected', proximo.attr('value'));
+                            siac.Lembrete.Notificacoes.exibir('Avançando para prova "' + proximo.text() + '".', 'info');
+                            $('.prova.button').click();
                         }
 
                         topo();
@@ -1385,35 +1316,16 @@ siac.Simulado.Pontuacoes = (function () {
         $form.removeClass('error');
 
         if (!prova) {
-            $lstErro.append('<li>Selecione a prova para corrigir</li>');
+            $lstErro.append('<li>Selecione a prova para carregar</li>');
             $form.addClass('error');
             return false;
         }
         return true;
     }
 
-    function validarCandidato() {
-        var prova = $('#ddlProva').val(),
-            candidato = $('#ddlCandidato').val(),
-            $form = $('.form'),
-            $lstErro = $form.find('.error.message .list'),
-            valido = true;
-
-        $lstErro.html('');
-        $form.removeClass('error');
-
-        if (!prova) {
-            $lstErro.append('<li>Selecione a prova para corrigir</li>');
-            $form.addClass('error');
-            valido = false;
-        }
-
-        if (!candidato) {
-            $lstErro.append('<li>Selecione o candidato para corrigir</li>');
-            $form.addClass('error');
-            valido = false;
-        }
-        return valido;
+    function aplicarMascara() {
+        var mascara = $('[data-mask]').eq(0).data('mask');
+        $('[data-mask]').mask(mascara, { reverse: true });
     }
 
     function topo() {
@@ -1431,7 +1343,7 @@ siac.Simulado.Pontuacoes = (function () {
                 $tr = $checkbox.closest('tr'),
                 trClass = 'error',
                 inputClass = 'disabled',
-                $input = $tr.find('input[type=number]');
+                $input = $tr.find('input[type=text]');
 
             $input.val('');
 
@@ -1445,31 +1357,6 @@ siac.Simulado.Pontuacoes = (function () {
                 $input.prop('required', true);
             }
         });
-    }
-
-    function alterarCheckBoxCandidato() {
-        $('.ui.checkbox').checkbox();
-        $('input[type=checkbox]').change(function () {
-            var $checkbox = $(this),
-                checked = $checkbox.is(':checked'),
-                $content = $checkbox.closest('form').find('.segment').eq(0);
-
-            if (checked) {
-                $content.find(':input').prop('required', false);
-                $content.dimmer({
-                    closable: false
-                }).dimmer('show');
-            } else {
-                $content.find(':input').prop('required', true);
-                $content.dimmer('hide');
-            }
-        });
-        $('input[type=checkbox]').change();
-    }
-
-    function sobreporCandidatoEmDimmer() {
-        var $dimmer = $('.segment.lista.respostas .dimmer');
-        $dimmer.css('z-index', 5);
     }
 
     return {
