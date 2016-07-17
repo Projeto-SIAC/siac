@@ -17,23 +17,31 @@ namespace SIAC.Models
         public int QteQuestoesDiscursivas =>
             this.SimProvaQuestao.Count(q => q.Questao.CodTipoQuestao == TipoQuestao.DISCURSIVA);
 
-        public void AdicionarQuestao(int codQuestao)
+        public bool AdicionarQuestao(int codQuestao)
         {
-            this.SimProvaQuestao.Add(new SimProvaQuestao()
+            var questao = Questao.ListarPorCodigo(codQuestao);
+            if (questao.CodTipoQuestao == this.TipoQuestoes)
             {
-                Questao = Questao.ListarPorCodigo(codQuestao),
-            });
-            contexto.SaveChanges();
+                this.SimProvaQuestao.Add(new SimProvaQuestao()
+                {
+                    Questao = questao,
+                });
+                contexto.SaveChanges();
+                return true;
+            }
+            return false;
         }
 
-        public void RemoverQuestao(int codQuestao)
+        public bool RemoverQuestao(int codQuestao)
         {
             SimProvaQuestao simProvaQuestao = this.SimProvaQuestao.FirstOrDefault(q => q.CodQuestao == codQuestao);
             if (simProvaQuestao != null)
             {
                 this.SimProvaQuestao.Remove(simProvaQuestao);
                 contexto.SaveChanges();
+                return true;
             }
+            return false;
         }
 
         private static Contexto contexto => Repositorio.GetInstance();

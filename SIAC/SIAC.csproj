@@ -288,6 +288,10 @@
     <Compile Include="Migrations\201607071440422_UpdateSimProvaPeso.Designer.cs">
       <DependentUpon>201607071440422_UpdateSimProvaPeso.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607141946097_UpdateSimProvaAddTipoQuestoes.cs" />
+    <Compile Include="Migrations\201607141946097_UpdateSimProvaAddTipoQuestoes.Designer.cs">
+      <DependentUpon>201607141946097_UpdateSimProvaAddTipoQuestoes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Alternativa.cs" />
     <Compile Include="Models\Aluno.cs" />
@@ -664,6 +668,7 @@
     <Content Include="Views\Gerencia\Permissoes.cshtml" />
     <Content Include="Views\Shared\Partials\_AnexoTexto.cshtml" />
     <Content Include="Views\Simulado\Pontuacoes.cshtml" />
+    <Content Include="Views\Simulado\Partials\_SimuladoPontuacoesProva.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -687,6 +692,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607071440422_UpdateSimProvaPeso.resx">
       <DependentUpon>201607071440422_UpdateSimProvaPeso.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607141946097_UpdateSimProvaAddTipoQuestoes.resx">
+      <DependentUpon>201607141946097_UpdateSimProvaAddTipoQuestoes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -31,10 +31,11 @@
                                 Redação
                             </div>
                         }
-                        <div class="ui small label">
-                            Questões
-                            <div class="detail">@item.prova.QteQuestoes</div>
-                        </div>
+                        else {
+                            <div class="ui small label">
+                                @item.prova.QteQuestoes questões @(item.prova.TipoQuestoes == TipoQuestao.OBJETIVA ? "obj." : "disc.")
+                            </div>
+                        }
                     </td>
                     <td>@item.prova.Disciplina.Descricao</td>
                     <td>
@@ -49,8 +50,8 @@
                         }
                     </td>
                     <td>
-                        <a data-prova="@item.prova.CodProva" data-action="@Url.Action("EditarProva", new { codigo = Model.Simulado.Codigo })" class="ui editar tiny button"><i class="edit icon"></i>Editar</a>
-                        <a data-prova="@item.prova.CodProva" data-action="@Url.Action("RemoverProva", new { codigo = Model.Simulado.Codigo })" class="ui remover tiny button"><i class="trash icon"></i>Remover</a>
+                        <a data-prova="@item.prova.CodProva" data-action="@Url.Action("CarregarProva", new { codigo = Model.Simulado.Codigo })" class="ui editar icon tiny button"><i class="edit icon"></i>Editar</a>
+                        <div data-html="<div class='header'>Tem certeza?</div><div class='content'><p>Esta ação não poderá ser desfeita</p><a data-prova='@(item.prova.CodProva)' data-action='@Url.Action("RemoverProva", new { codigo = Model.Simulado.Codigo })' class='ui remover mini button'>Confirmar</a></div>" class="ui tiny icon button"><i class="trash icon"></i>Remover</div>
                     </td>
                 </tr>
             }

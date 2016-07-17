@@ -52,6 +52,8 @@ namespace SIAC.Models
 
         public float Peso { get; set; }
 
+        public int TipoQuestoes { get; set; }
+
         public bool FlagRedacao { get; set; }
 
         public int OrdemDesempate { get; set; }

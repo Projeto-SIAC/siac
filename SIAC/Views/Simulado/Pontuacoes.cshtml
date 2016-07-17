@@ -1,6 +1,6 @@
 ﻿@model SimuladoPontuacoesViewModel
 @{
-    ViewBag.Title = "Inserir Pontuacoes";
+    ViewBag.Title = "Inserir Pontuações";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -10,9 +10,8 @@
         <div class="header">Verifique</div>
         <ul class="list"></ul>
     </div>
-    <div class="two fields">
         <div class="field">
-            <label>Selecione a prova para inserir as respostas</label>
+            <label>Selecione a prova para inserir as pontuações</label>
             <select name="ddlProva" id="ddlProva" class="ui dropdown">
                 <option value="">Selecione a prova</option>
                 @foreach (var prova in Model.Provas)
@@ -21,19 +20,8 @@
                 }
             </select>
         </div>
-        <div class="field">
-            <label>Selecione o candidato</label>
-            <select name="ddlCandidato" id="ddlCandidato" class="ui search dropdown">
-                <option value="">Selecione o candidato</option>
-                @foreach (var candidato in Model.Candidatos)
-                {
-                    <option value="@candidato.NumeroMascara">@(candidato.NumeroMascara)</option>
-                }
-            </select>
-        </div>
-    </div>
-    <div class="ui prova button">Corrigir por Prova</div>
-    <div class="ui candidato button">Corrigir por Candidato</div>
+    <div class="ui right floated prova button" data-action="@Url.Action("PontuacoesPorProva", new { codigo = Model.Simulado.Codigo })">Carregar prova</div>
+    <div style="clear:both"></div>
 </div>
 
 <div class="ui basic segment lista respostas">

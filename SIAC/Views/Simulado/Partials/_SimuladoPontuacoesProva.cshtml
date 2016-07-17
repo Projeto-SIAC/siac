@@ -1,0 +1,42 @@
+﻿@model List<SimCandidatoProva>
+@{
+    string codigo = Model.First().SimCandidato.Simulado.Codigo;
+    int codDia = Model.First().SimProva.CodDiaRealizacao;
+    int codProva = Model.First().SimProva.CodProva;
+}
+
+<form action="@Url.Action("InserirPontuacoesProva", new { codigo = codigo, codDia = codDia, codProva = codProva })" method="post" class="ui form">
+    <h3 class="header">Candidatos</h3>
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th>Número Máscara</th>
+                <th>Pontuação</th>
+                <th>Ausente?</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var candidato in Model)
+            {
+                bool flagAusente = candidato.FlagPresente.HasValue && !candidato.FlagPresente.Value;
+
+                <tr class="@(flagAusente ? "error" : "")">
+                    <td><code>@candidato.SimCandidato.NumeroMascara</code></td>
+                    <td>
+                        <div class="field @(flagAusente ? "disabled" : "")">
+                            <input type="text" @(!flagAusente ? "required" : "") data-mask="0###,000" data-mask-reverse="true" name="@candidato.SimCandidato.NumeroMascara" value="@(candidato.NotaDiscursiva.HasValue ? candidato.NotaDiscursiva.ToString() : "" )" placeholder="Informe a pontuação do candidato" />
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ui toggle checkbox">
+                            <input type="checkbox" name="@(candidato.SimCandidato.NumeroMascara)ausente" @(flagAusente ? "checked" : "") />
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="ui actions">
+        <button type="submit" class="ui button">Enviar pontuações</button>
+    </div>
+</form>

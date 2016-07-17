@@ -119,6 +119,10 @@ siac.Simulado.Provas = (function () {
             carregarProvas($(this));
         });
 
+        $('[name=chkRedacao]').off('change').on('change', function () {
+            alternarRedacao($(this));
+        });
+
         siac.Simulado.adicionarEventoNoFormulario();
         listarProfessoresPorDisciplina();
     }
@@ -229,9 +233,15 @@ siac.Simulado.Provas = (function () {
                 $modalProvas.find('.novo.prova.button').off('click').click(function () {
                     abrirModalNovaProva(codDia);
                 });
-                $modalProvas.find('.remover.button').off('click').click(function () {
-                    removerProva(codDia, $(this));
+                $modalProvas.find('[data-html]').popup({
+                    on: 'click',
+                    onVisible: function () {
+                        $(this).find('.remover.button').off('click').click(function () {
+                            removerProva(codDia, $(this));
+                        });
+                    }
                 });
+                
 
                 $modalProvas.find('.editar.button').off('click').click(function () {
                     editarProva(codDia, $(this));
@@ -308,6 +318,10 @@ siac.Simulado.Provas = (function () {
                 $('body').append($(data))
                 $('.editar.prova.modal').modal('show');
                 $('.editar.prova.modal .dropdown').dropdown();
+                // Adiciona evento no checkbox Redacao
+                $('[name=chkRedacao]').off('change').on('change', function () {
+                    alternarRedacao($(this));
+                });
             },
             error: function () {
                 siac.mensagem('Aconteceu um erro na operação! Atualize a página para tentar novamente.')
@@ -316,6 +330,7 @@ siac.Simulado.Provas = (function () {
                 $button.removeClass('loading');
                 siac.Simulado.adicionarEventoNoFormulario();
                 listarProfessoresPorDisciplina();
+                $('[name=chkRedacao]').change();
             }
         })
     }
@@ -338,6 +353,38 @@ siac.Simulado.Provas = (function () {
                 .dropdown('set placeholder text', 'Professor')
                 .dropdown('set value', '');
         });
+    }
+
+    function alternarRedacao($chkRedacao) {
+        var flagRedacao = $chkRedacao.is(':checked');
+        var $formPai = $chkRedacao.closest('.form');
+        var $txtQteQuestoes = $formPai.find('[name=txtQteQuestoes]');
+        var $ddlTipoQuestoes = $formPai.find('[name=ddlTipoQuestoes]');
+        console.info($txtQteQuestoes, $ddlTipoQuestoes);
+        if (flagRedacao === true) {
+            $txtQteQuestoes.attr({
+                'disabled': 'disabled',
+                'readonly': 'readonly'
+            });
+            $txtQteQuestoes.closest('.field').addClass('disabled');
+            $txtQteQuestoes.val('1');
+
+            $ddlTipoQuestoes.attr({
+                'disabled': 'disabled',
+                'readonly': 'readonly'
+            });
+            $ddlTipoQuestoes.closest('.dropdown').addClass('disabled');
+            $ddlTipoQuestoes.closest('.field').addClass('disabled');
+        }
+        else {
+            $txtQteQuestoes.removeAttr('disabled readonly');
+            $txtQteQuestoes.closest('.field').removeClass('disabled');
+
+            $ddlTipoQuestoes.removeAttr('disabled readonly');
+            $ddlTipoQuestoes.closest('.dropdown').removeClass('disabled');
+            $ddlTipoQuestoes.closest('.field').removeClass('disabled');
+        }
+        
     }
 
     return {
@@ -1182,102 +1229,46 @@ siac.Simulado.Pontuacoes = (function () {
 
         $('.topo.button').click(function () { topo(); });
 
-        //$('.prova.button').click(function () {
-        //    var $provaButton = $(this);
+        $('.prova.button').click(function () {
+            var $provaButton = $(this);
 
-        //    if (validarProva()) {
-        //        var prova = $('#ddlProva').val(),
-        //            codDia = prova.split('.')[0],
-        //            codProva = prova.split('.')[1];
+            if (validarProva()) {
+                var prova = $('#ddlProva').val(),
+                    codDia = prova.split('.')[0],
+                    codProva = prova.split('.')[1];
 
-        //        $.ajax({
-        //            type: 'POST',
-        //            url: '/simulado/correcaoporprova/' + _codigo,
-        //            data: {
-        //                codDia: codDia,
-        //                codProva: codProva
-        //            },
-        //            beforeSend: function () {
-        //                $provaButton.addClass('loading');
-        //            },
-        //            success: function (data) {
-        //                if (data) {
-        //                    $listaRespostas.html(data);
-        //                    alterarCheckBoxProva();
-        //                    tratarEnvioFormulario('prova');
-        //                }
-        //            },
-        //            error: function () {
-        //                siac.mensagem('Ocorreu um erro na operação.');
-        //            },
-        //            complete: function () {
-        //                $provaButton.removeClass('loading');
-        //            }
-        //        })
-        //    }
-        //});
-
-        //$('.candidato.button').click(function () {
-        //    var $candidatoButton = $(this);
-
-        //    if (validarCandidato()) {
-        //        var prova = $('#ddlProva').val(),
-        //            codDia = prova.split('.')[0],
-        //            codProva = prova.split('.')[1],
-        //            codCandidato = $('#ddlCandidato').val();
-
-        //        $.ajax({
-        //            type: 'POST',
-        //            url: '/simulado/correcaoporcandidato/' + _codigo,
-        //            data: {
-        //                codDia: codDia,
-        //                codProva: codProva,
-        //                codCandidato: codCandidato
-        //            },
-        //            beforeSend: function () {
-        //                $candidatoButton.addClass('loading');
-        //            },
-        //            success: function (data) {
-        //                if (data) {
-        //                    $listaRespostas.html(data);
-        //                    alterarCheckBoxCandidato();
-        //                    sobreporCandidatoEmDimmer();
-        //                    tratarEnvioFormulario('candidato');
-        //                }
-        //            },
-        //            error: function () {
-        //                siac.mensagem('Ocorreu um erro na operação.');
-        //            },
-        //            complete: function () {
-        //                $candidatoButton.removeClass('loading');
-        //            }
-        //        })
-        //    }
-        //});
-
-        //$('.editar.item').click(function () {
-        //    $('.editar.modal').modal('show');
-        //});
-
-        //$('.encerrar.item').click(function () {
-        //    $('.encerrar.modal').modal({
-        //        onApprove: function () {
-        //            $.ajax({
-        //                type: 'POST',
-        //                url: '/simulado/encerrar/' + _codigo,
-        //                complete: function () {
-        //                    location.reload();
-        //                }
-        //            })
-        //        }
-        //    }).modal('show');
-        //});
+                $.ajax({
+                    type: 'POST',
+                    url: $provaButton.data('action'),
+                    data: {
+                        codDia: codDia,
+                        codProva: codProva
+                    },
+                    beforeSend: function () {
+                        $provaButton.addClass('loading');
+                    },
+                    success: function (data) {
+                        if (data) {
+                            $listaRespostas.html(data);
+                            alterarCheckBoxProva();
+                            tratarEnvioFormulario('prova');
+                            aplicarMascara();
+                        }
+                    },
+                    error: function () {
+                        siac.mensagem('Ocorreu um erro na operação.');
+                    },
+                    complete: function () {
+                        $provaButton.removeClass('loading');
+                    }
+                })
+            }
+        });
     }
 
     function tratarEnvioFormulario(provaOuCandidato) {
         var formulario = $('.respostas form');
         var botao = formulario.find('[type=submit]');
-        var provaOuCandidato = provaOuCandidato;
 
         if (formulario) {
             formulario.off('submit').on('submit', function () {
@@ -1292,27 +1283,14 @@ siac.Simulado.Pontuacoes = (function () {
                         botao.addClass('loading');
                     },
                     success: function () {
-                        if (provaOuCandidato === 'prova') {
-                            var dropdown = $('#ddlProva');
-                            var atual = dropdown.val();
-                            var proximo = dropdown.find('option[value="' + atual + '"]').next();
+                        var dropdown = $('#ddlProva');
+                        var atual = dropdown.val();
+                        var proximo = dropdown.find('option[value="' + atual + '"]').next();
 
-                            if (proximo.attr('value')) {
-                                dropdown.dropdown('set selected', proximo.attr('value'));
-                                siac.Lembrete.Notificacoes.exibir('Avançando para prova "' + proximo.text() + '".', 'info');
-                                $('.prova.button').click();
-                            }
-                        }
-                        else if (provaOuCandidato === 'candidato') {
-                            var dropdown = $('#ddlCandidato');
-                            var atual = dropdown.val();
-                            var proximo = dropdown.find('option[value="' + atual + '"]').next();
-
-                            if (proximo.attr('value')) {
-                                dropdown.dropdown('set selected', proximo.attr('value'));
-                                siac.Lembrete.Notificacoes.exibir('Avançando para candidato "' + proximo.text() + '".', 'info');
-                                $('.candidato.button').click();
-                            }
+                        if (proximo.attr('value')) {
+                            dropdown.dropdown('set selected', proximo.attr('value'));
+                            siac.Lembrete.Notificacoes.exibir('Avançando para prova "' + proximo.text() + '".', 'info');
+                            $('.prova.button').click();
                         }
 
                         topo();
@@ -1338,35 +1316,16 @@ siac.Simulado.Pontuacoes = (function () {
         $form.removeClass('error');
 
         if (!prova) {
-            $lstErro.append('<li>Selecione a prova para corrigir</li>');
+            $lstErro.append('<li>Selecione a prova para carregar</li>');
             $form.addClass('error');
             return false;
         }
         return true;
     }
 
-    function validarCandidato() {
-        var prova = $('#ddlProva').val(),
-            candidato = $('#ddlCandidato').val(),
-            $form = $('.form'),
-            $lstErro = $form.find('.error.message .list'),
-            valido = true;
-
-        $lstErro.html('');
-        $form.removeClass('error');
-
-        if (!prova) {
-            $lstErro.append('<li>Selecione a prova para corrigir</li>');
-            $form.addClass('error');
-            valido = false;
-        }
-
-        if (!candidato) {
-            $lstErro.append('<li>Selecione o candidato para corrigir</li>');
-            $form.addClass('error');
-            valido = false;
-        }
-        return valido;
+    function aplicarMascara() {
+        var mascara = $('[data-mask]').eq(0).data('mask');
+        $('[data-mask]').mask(mascara, { reverse: true });
     }
 
     function topo() {
@@ -1384,7 +1343,7 @@ siac.Simulado.Pontuacoes = (function () {
                 $tr = $checkbox.closest('tr'),
                 trClass = 'error',
                 inputClass = 'disabled',
-                $input = $tr.find('input[type=number]');
+                $input = $tr.find('input[type=text]');
 
             $input.val('');
 
@@ -1398,31 +1357,6 @@ siac.Simulado.Pontuacoes = (function () {
                 $input.prop('required', true);
             }
         });
-    }
-
-    function alterarCheckBoxCandidato() {
-        $('.ui.checkbox').checkbox();
-        $('input[type=checkbox]').change(function () {
-            var $checkbox = $(this),
-                checked = $checkbox.is(':checked'),
-                $content = $checkbox.closest('form').find('.segment').eq(0);
-
-            if (checked) {
-                $content.find(':input').prop('required', false);
-                $content.dimmer({
-                    closable: false
-                }).dimmer('show');
-            } else {
-                $content.find(':input').prop('required', true);
-                $content.dimmer('hide');
-            }
-        });
-        $('input[type=checkbox]').change();
-    }
-
-    function sobreporCandidatoEmDimmer() {
-        var $dimmer = $('.segment.lista.respostas .dimmer');
-        $dimmer.css('z-index', 5);
     }
 
     return {
