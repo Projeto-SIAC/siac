@@ -1340,6 +1340,8 @@ namespace SIAC.Controllers
 
                 if (sim != null)
                 {
+                    var faltoso = (decimal)-1.0;
+
                     var model = new SimuladoClassificacaoViewModel
                     {
                         Simulado = sim
@@ -1349,13 +1351,13 @@ namespace SIAC.Controllers
 
                     foreach (var candidato in model.Simulado.Classificacao)
                     {
-                        if (classificacao.ContainsKey(candidato.EscorePadronizadoFinal.Value))
+                        if (classificacao.ContainsKey(candidato.EscorePadronizadoFinal ?? faltoso))
                         {
-                            classificacao[candidato.EscorePadronizadoFinal.Value].Add(candidato);
+                            classificacao[candidato.EscorePadronizadoFinal ?? faltoso].Add(candidato);
                         }
                         else
                         {
-                            classificacao[candidato.EscorePadronizadoFinal.Value] = new List<SimCandidato> { candidato };
+                            classificacao[candidato.EscorePadronizadoFinal ?? faltoso] = new List<SimCandidato> { candidato };
                         }
                     }
 
@@ -1363,7 +1365,11 @@ namespace SIAC.Controllers
 
                     foreach (var escore in classificacao.Keys.OrderByDescending(x => x))
                     {
-                        if (classificacao[escore].Count > 1)
+                        if (escore == faltoso)
+                        {
+                            model.Faltosos.AddRange(classificacao[faltoso]);
+                        }
+                        else if (classificacao[escore].Count > 1)
                         {
                             List<SimCandidato> candidados = classificacao[escore];
                             foreach (var prova in model.Simulado.Provas.OrderBy(p => p.OrdemDesempate))

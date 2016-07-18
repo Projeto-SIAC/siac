@@ -81,6 +81,7 @@ namespace SIAC.ViewModels
     {
         public Simulado Simulado { get; set; }
         public List<KeyValuePair<int, SimCandidato>> Classificacao { get; set; } = new List<KeyValuePair<int, SimCandidato>>();
+        public List<SimCandidato> Faltosos { get; set; } = new List<SimCandidato>();
     }
 
     public class SimuladoPontuacoesViewModel
