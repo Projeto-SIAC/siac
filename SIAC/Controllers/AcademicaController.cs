@@ -16,14 +16,14 @@ namespace SIAC.Controllers
         {
             get
             {
-                if (Helpers.Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
+                if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
                 {
-                    int codProfessor = Professor.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodProfessor;
+                    int codProfessor = Professor.ListarPorMatricula(Sessao.UsuarioMatricula).CodProfessor;
                     return AvalAcademica.ListarPorProfessor(codProfessor);
                 }
                 else
                 {
-                    int codAluno = Aluno.ListarPorMatricula(Helpers.Sessao.UsuarioMatricula).CodAluno;
+                    int codAluno = Aluno.ListarPorMatricula(Sessao.UsuarioMatricula).CodAluno;
                     return AvalAcademica.ListarPorAluno(codAluno);
                 }
             }
@@ -587,7 +587,7 @@ namespace SIAC.Controllers
         {
             if (!String.IsNullOrWhiteSpace(codigo))
             {
-                if (Helpers.Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
+                if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
                 {
                     AvalAcademica acad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                     if (acad != null && acad.Avaliacao.FlagAgendada && acad.Avaliacao.FlagAgora)
@@ -603,12 +603,12 @@ namespace SIAC.Controllers
         [HttpPost]
         public ActionResult Printar(string codAvaliacao, string imageData)
         {
-            if (Helpers.Sessao.UsuarioCategoriaCodigo == Categoria.ALUNO)
+            if (Sessao.UsuarioCategoriaCodigo == Categoria.ALUNO)
             {
                 Sistema.TempDataUrlImage[codAvaliacao] = imageData;
                 return Json(true);
             }
-            else if (Helpers.Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
+            else if (Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
             {
                 string temp = Sistema.TempDataUrlImage[codAvaliacao];
                 Sistema.TempDataUrlImage[codAvaliacao] = String.Empty;
@@ -621,15 +621,15 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO })]
         public ActionResult Realizar(string codigo)
         {
-            if (Helpers.Sessao.UsuarioCategoriaCodigo == Categoria.ALUNO && !String.IsNullOrWhiteSpace(codigo))
+            if (Sessao.UsuarioCategoriaCodigo == Categoria.ALUNO && !String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAcademica avalAcad = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
                 if (avalAcad.Avaliacao.FlagPendente
                     && avalAcad.Avaliacao.FlagLiberada
                     && avalAcad.Avaliacao.FlagAgora
-                    && avalAcad.Alunos.FirstOrDefault(a => a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null)
+                    && avalAcad.Alunos.FirstOrDefault(a => a.MatrAluno == Sessao.UsuarioMatricula) != null)
                 {
-                    Helpers.Sessao.Inserir("RealizandoAvaliacao", true);
+                    Sessao.Inserir("RealizandoAvaliacao", true);
                     return View(avalAcad);
                 }
             }
@@ -645,7 +645,7 @@ namespace SIAC.Controllers
             if (!String.IsNullOrWhiteSpace(codigo))
             {
                 AvalAcademica aval = AvalAcademica.ListarPorCodigoAvaliacao(codigo);
-                if (aval.Alunos.SingleOrDefault(a => a.MatrAluno == Helpers.Sessao.UsuarioMatricula) != null && aval.Avaliacao.AvalPessoaResultado.SingleOrDefault(a => a.CodPessoaFisica == codPessoaFisica) == null)
+                if (aval.Alunos.SingleOrDefault(a => a.MatrAluno == Sessao.UsuarioMatricula) != null && aval.Avaliacao.AvalPessoaResultado.SingleOrDefault(a => a.CodPessoaFisica == codPessoaFisica) == null)
                 {
                     var avalPessoaResultado = new AvalPessoaResultado();
                     avalPessoaResultado.CodPessoaFisica = codPessoaFisica;

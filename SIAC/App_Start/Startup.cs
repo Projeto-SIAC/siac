@@ -1,6 +1,4 @@
-﻿using Microsoft.Owin;
-using Owin;
-using SIAC;
+﻿using Owin;
 
 namespace SIAC
 {
