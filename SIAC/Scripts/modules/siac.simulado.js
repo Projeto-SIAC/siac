@@ -352,6 +352,8 @@ siac.Simulado.Provas = (function () {
                 .dropdown('refresh')
                 .dropdown('set placeholder text', 'Professor')
                 .dropdown('set value', '');
+            
+            colocarTituloAutomatico($this);
         });
     }
 
@@ -385,6 +387,18 @@ siac.Simulado.Provas = (function () {
             $ddlTipoQuestoes.closest('.field').removeClass('disabled');
         }
         
+    }
+
+    function colocarTituloAutomatico($ddlDisciplina) {
+        var $formPai = $ddlDisciplina.closest('.form');
+        var $txtTitulo = $formPai.find('[name=txtTitulo]');
+        if ($txtTitulo.val() === '' || $txtTitulo.data('tituloAutomatico')) {
+            $txtTitulo.val($ddlDisciplina.find(':selected').text());
+            $txtTitulo.data('tituloAutomatico', true);
+            $txtTitulo.off('change').on('change', function () {
+                $(this).data('tituloAutomatico', false);
+            });
+        }
     }
 
     return {
