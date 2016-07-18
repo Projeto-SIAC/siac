@@ -24,7 +24,7 @@
                     <td><code>@candidato.SimCandidato.NumeroMascara</code></td>
                     <td>
                         <div class="field @(flagAusente ? "disabled" : "")">
-                            <input type="text" @(!flagAusente ? "required" : "") data-mask="0###,000" data-mask-reverse="true" name="@candidato.SimCandidato.NumeroMascara" value="@(candidato.NotaDiscursiva.HasValue ? candidato.NotaDiscursiva.ToString() : "" )" placeholder="Informe a pontuação do candidato" />
+                            <input type="number" @(!flagAusente ? "required" : "") max="1000.000" min="0.000" step="0.001" name="@candidato.SimCandidato.NumeroMascara" value="@(candidato.NotaDiscursiva.HasValue ? candidato.NotaDiscursiva.Value.ToString(".000").Replace(',','.') : "" )" placeholder="Informe a pontuação do candidato" />
                         </div>
                     </td>
                     <td>

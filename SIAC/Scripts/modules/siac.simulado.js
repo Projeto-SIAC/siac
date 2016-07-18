@@ -1252,7 +1252,6 @@ siac.Simulado.Pontuacoes = (function () {
                             $listaRespostas.html(data);
                             alterarCheckBoxProva();
                             tratarEnvioFormulario('prova');
-                            aplicarMascara();
                         }
                     },
                     error: function () {
@@ -1323,11 +1322,6 @@ siac.Simulado.Pontuacoes = (function () {
         return true;
     }
 
-    function aplicarMascara() {
-        var mascara = $('[data-mask]').eq(0).data('mask');
-        $('[data-mask]').mask(mascara, { reverse: true });
-    }
-
     function topo() {
         $("html, body").animate({
             scrollTop: 0
@@ -1343,7 +1337,7 @@ siac.Simulado.Pontuacoes = (function () {
                 $tr = $checkbox.closest('tr'),
                 trClass = 'error',
                 inputClass = 'disabled',
-                $input = $tr.find('input[type=text]');
+                $input = $tr.find('input[type=number]');
 
             $input.val('');
 
