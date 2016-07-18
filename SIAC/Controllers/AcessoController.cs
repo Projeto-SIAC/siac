@@ -19,20 +19,6 @@ namespace SIAC.Controllers
             return View(new AcessoIndexViewModel());
         }
 
-        /*
-        GET: Acesso/Entrar
-        [HttpGet]
-        public ActionResult Entrar()
-        {
-            if (Helpers.Sessao.Autenticado)
-            {
-                return RedirectToAction("Index", "Principal");
-            }
-            ViewBag.Acao = "$('.modal').modal('show')";
-            return View("Index");
-        }
-        */
-
         // POST: /
         [HttpPost]
         public async Task<ActionResult> Index(FormCollection formCollection)
@@ -88,7 +74,6 @@ namespace SIAC.Controllers
             {
                 var model = new AcessoIndexViewModel();
                 model.Matricula = formCollection.HasKeys() ? formCollection["txtMatricula"] : "";
-                //ViewBag.Acao = "$('.modal').modal('show');";
                 model.Erro = true;
                 if (!String.IsNullOrWhiteSpace(model.Matricula) && Sistema.UsuarioAtivo.Keys.Contains(model.Matricula))
                 {

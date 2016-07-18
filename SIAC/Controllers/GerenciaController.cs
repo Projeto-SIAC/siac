@@ -766,8 +766,7 @@ namespace SIAC.Controllers
                     if (simProva != null)
                     {
                         List<int> simuladoQuestoes = sim.TodasQuestoesPorDisciplina(simProva.CodDisciplina, simProva.CodDiaRealizacao, simProva.CodProva).Select(q => q.CodQuestao).ToList();
-                        List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(simProva.CodDisciplina, simProva.QteQuestoes - simProva.QteQuestoesDiscursivas, TipoQuestao.OBJETIVA, simuladoQuestoes);
-                        questoesCodigos.AddRange(Simulado.ObterQuestoesCodigos(simProva.CodDisciplina, simProva.QteQuestoesDiscursivas, TipoQuestao.DISCURSIVA, simuladoQuestoes));
+                        List<int> questoesCodigos = Simulado.ObterQuestoesCodigos(simProva.CodDisciplina, simProva.QteQuestoes, simProva.TipoQuestoes, simuladoQuestoes);
 
                         simProva.SimProvaQuestao.Clear();
 
