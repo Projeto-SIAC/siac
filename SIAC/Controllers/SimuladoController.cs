@@ -1311,7 +1311,7 @@ namespace SIAC.Controllers
 
                     foreach (var candidato in sim.SimCandidato)
                     {
-                        if ((bool)candidato.SimCandidatoProva.First().FlagPresente)
+                        if (candidato.SimCandidatoProva.Where(p => p.FlagPresente.HasValue && p.FlagPresente.Value).Count() == candidato.SimCandidatoProva.Count)
                         {
                             decimal? somaEscoreProvas = candidato.SimCandidatoProva.Sum(p => p.EscorePadronizado * (decimal)p.SimProva.Peso);
                             candidato.EscorePadronizadoFinal = somaEscoreProvas.Value / (decimal)candidato.SimCandidatoProva.Sum(p => p.SimProva.Peso);
