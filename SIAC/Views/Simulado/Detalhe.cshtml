@@ -36,6 +36,10 @@
     {
         <span data-title="Inscrições Não Liberadas" data-content="O prazo de inscrição está em vigor, mas é necessário que você libere as inscrições no Atalho de Gerenciamento" class="ui label"><i class="wait icon"></i>Inscrições Não Liberadas</span>
     }
+    else if (Model.FlagVagasEsgotadas)
+    {
+        <span data-title="Vagas Esgotadas" data-content="As inscrições tão abertas, mas todas as vagas já foram preenchidas." class="ui label"><i class="users icon"></i>Vagas Esgotadas</span>
+    }
     else if ((Model.FlagInscricaoEncerrado || Model.DtTerminoInscricao < DateTime.Now) && Model.SimCandidato.Count <= 0)
     {
         <span data-title="Inscrições Encerradas sem candidatos" data-content="Configure um novo para as inscrições dos candidatos" class="ui red label"><i class="calendar outline icon"></i>Inscrições Encerradas sem candidatos</span>
