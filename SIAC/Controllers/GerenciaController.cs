@@ -579,7 +579,7 @@ namespace SIAC.Controllers
 
         #region Configuracoes
 
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.COORDENADOR_SIMULADO })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Configuracoes() => View(new GerenciaConfiguracoesViewModel()
         {
             SmtpEnderecoHost = Parametro.Obter().SmtpEnderecoHost,
@@ -590,7 +590,7 @@ namespace SIAC.Controllers
         });
 
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.COORDENADOR_SIMULADO })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Configuracoes(GerenciaConfiguracoesViewModel model)
         {
             Parametro p = Parametro.Obter();
@@ -802,7 +802,7 @@ namespace SIAC.Controllers
 
         #region Permissoes
 
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR, Ocupacao.COORDENADOR_SIMULADO })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult Permissoes()
         {
             var model = new GerenciaPermissoesViewModel();
@@ -824,7 +824,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR, Ocupacao.COORDENADOR_SIMULADO })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.COORDENADOR_SIMULADO })]
         public ActionResult ListarPessoas(string pesquisa)
         {
             if (!String.IsNullOrWhiteSpace(pesquisa))
@@ -842,7 +842,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR, Ocupacao.COORDENADOR_SIMULADO })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.COORDENADOR_SIMULADO })]
         public void AdicionarCoordenador(int codPessoaFisica)
         {
             var pessoa = PessoaFisica.ListarPorCodigo(codPessoaFisica);
@@ -853,7 +853,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR, Ocupacao.COORDENADOR_SIMULADO })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.COORDENADOR_SIMULADO })]
         public void AdicionarColaborador(int codPessoaFisica)
         {
             var pessoa = PessoaFisica.ListarPorCodigo(codPessoaFisica);
@@ -864,7 +864,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR, Ocupacao.COORDENADOR_SIMULADO })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.COORDENADOR_SIMULADO })]
         public void RemoverCoordenador(int[] codPessoaFisica)
         {
             foreach (var codPessoa in codPessoaFisica)
@@ -874,7 +874,7 @@ namespace SIAC.Controllers
         }
 
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.PRO_REITOR, Ocupacao.DIRETOR, Ocupacao.COORDENADOR_SIMULADO })]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.COORDENADOR_SIMULADO })]
         public void RemoverColaborador(int[] codPessoaFisica)
         {
             foreach (var codPessoa in codPessoaFisica)

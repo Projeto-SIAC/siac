@@ -15,6 +15,7 @@ namespace SIAC.Filters
         private int[] SimuladoOcupacoesPermitidas = {
             Ocupacao.SUPERUSUARIO,
             Ocupacao.REITOR,
+            Ocupacao.DIRETOR_GERAL,
             Ocupacao.COORDENADOR_SIMULADO,
             Ocupacao.COLABORADOR_SIMULADO
         };
