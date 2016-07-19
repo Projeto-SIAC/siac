@@ -173,7 +173,7 @@
                     {
                         <div class="finalizar provas item">
                             <i class="file red icon"></i>
-                            Indicar provas encerradas
+                            Indicar Provas Encerradas
                         </div>
                     }
                     <div class="encerrar item">
@@ -538,7 +538,7 @@
                 <div class="title">
                     <i class="dropdown icon"></i>
                     <b>@dia.DtRealizacao.DiaRealizacaoRepresentacao()</b>
-                    @if (dia.SimProva.Where(p => p.QteQuestoes > p.SimProvaQuestao.Count).ToList().Count > 0)
+                    @if (dia.SimProva.FirstOrDefault(p => p.QteQuestoes > p.SimProvaQuestao.Count) != null)
                     {
                         <i class="ui warning icon"></i> 
                     }
