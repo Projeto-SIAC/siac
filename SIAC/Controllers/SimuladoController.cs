@@ -1309,18 +1309,26 @@ namespace SIAC.Controllers
                         }
                     }
 
+                    List<Candidato> candidatosPresentes = new List<Candidato>();
+
                     foreach (var candidato in sim.SimCandidato)
                     {
                         if (candidato.SimCandidatoProva.Where(p => p.FlagPresente.HasValue && p.FlagPresente.Value).Count() == candidato.SimCandidatoProva.Count)
                         {
                             decimal? somaEscoreProvas = candidato.SimCandidatoProva.Sum(p => p.EscorePadronizado * (decimal)p.SimProva.Peso);
                             candidato.EscorePadronizadoFinal = somaEscoreProvas.Value / (decimal)candidato.SimCandidatoProva.Sum(p => p.SimProva.Peso);
+                            candidatosPresentes.Add(candidato.Candidato);
                         }
                     }
 
                     sim.FlagSimuladoEncerrado = true;
                     mensagem = "Os escores foram calculados com sucesso e o simulado foi encerrado com sucesso.";
                     estilo = Lembrete.POSITIVO;
+                    
+                    string url = Request.Url.ToString();
+                    string simuladoUrl = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("Inscricoes", "Candidato", new { codigo = sim.Codigo });
+
+                    Helpers.EnviarEmail.SimuladoEncerrado(candidatosPresentes, simuladoUrl, sim.Titulo);
 
                     Repositorio.Commit();
                 }

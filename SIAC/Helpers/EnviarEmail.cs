@@ -102,6 +102,14 @@ namespace SIAC.Helpers
             await Task.Run(() => EnviarParaMuitos(candidatos.Select(c => c.Email).ToArray(), assunto, viewname, model));
         }
 
+        public static async Task SimuladoEncerrado(List<Candidato> candidatos, string simuladoUrl, string simuladoTitulo)
+        {
+            var model = new { SimuladoUrl = simuladoUrl, SimuladoTitulo = simuladoTitulo };
+            var assunto = $"Simulado {simuladoTitulo} foi encerrado no SIAC Simulados";
+            var viewname = "SimuladoEncerrado";
+            await Task.Run(() => EnviarParaMuitos(candidatos.Select(c => c.Email).ToArray(), assunto, viewname, model));
+        }
+
         public static async Task SolicitarSenha(string email, string nome, string url)
         {
             var model = new
