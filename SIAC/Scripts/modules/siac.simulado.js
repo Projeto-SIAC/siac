@@ -798,7 +798,8 @@ siac.Simulado.Detalhe = (function () {
                         complete: function () {
                             $modal.modal('hide');
                             location.reload();
-                        }
+                        },
+                        notificacoes: false
                     });
                     return false;
                 }

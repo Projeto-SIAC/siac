@@ -774,6 +774,12 @@ namespace SIAC.Controllers
 
                 if (sim != null)
                 {
+                    if (!sim.FlagInscricaoEncerrado && sim.DtTerminoInscricao < DateTime.Now)
+                    {
+                        sim.FlagInscricaoEncerrado = true;
+                        Repositorio.Commit();
+                    }
+
                     return View(sim);
                 }
             }

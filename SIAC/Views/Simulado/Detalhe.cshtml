@@ -20,13 +20,13 @@
     {
         <span data-title="Defina a Data de Inscrição" data-content="O prazo de inscrição ainda não foi definido" class="ui label"><i class="wait icon"></i>Defina a Data de Inscrição</span>
     }
-    else if (Model.SimDiaRealizacao.Count <= 0 || Model.PrimeiroDiaRealizacao?.SimProva.Count <= 0)
-    {
-        <span data-title="Aguardando Seleção das Provas" data-content="O prazo de inscrição foi definido, mas é necessário que você defina os dias e as provas" class="ui label"><i class="wait icon"></i>Aguardando Seleção das Provas</span>
-    }
     else if (Model.FlagAguardaDefinicaoSalas)
     {
         <span data-title="Aguardando Escolha das Salas" data-content="O prazo de inscrição foi definido e as provas já foram selecionadas, mas é necessário que você defina as salas que serão utilizadas" class="ui label"><i class="wait icon"></i>Aguardando Escolha das Salas</span>
+    }
+    else if (Model.SimDiaRealizacao.Count <= 0 || Model.PrimeiroDiaRealizacao?.SimProva.Count <= 0)
+    {
+        <span data-title="Aguardando Seleção das Provas" data-content="O prazo de inscrição foi definido, mas é necessário que você defina os dias e as provas" class="ui label"><i class="wait icon"></i>Aguardando Seleção das Provas</span>
     }
     else if (Model.FlagAguardaPrazoInscricao)
     {
