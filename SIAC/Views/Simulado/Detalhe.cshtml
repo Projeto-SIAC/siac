@@ -154,7 +154,7 @@
                                 Liberar Inscrições
                             </div>
                         }
-                        if (DateTime.Now > Model.DtInicioInscricao && Model.SimCandidato.Count > 0 && !Model.FlagProvaEncerrada)
+                        if (Model.SimCandidato.Count > 0 && !Model.FlagProvaEncerrada && (Model.PrimeiroDiaRealizacao?.DtRealizacao < DateTime.Now || !Model.FlagSalaMapeada))
                         {
                             <div class="mapear item">
                                 <i class="building outline icon"></i>

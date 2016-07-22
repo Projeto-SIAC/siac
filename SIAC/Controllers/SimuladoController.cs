@@ -780,6 +780,11 @@ namespace SIAC.Controllers
                         Repositorio.Commit();
                     }
 
+                    if (sim.FlagInscricaoEncerrado && sim.SimCandidato.Count > 0 && !sim.FlagProvaEncerrada && !sim.FlagSalaMapeada)
+                    {
+                        Lembrete.AdicionarNotificacao("As inscrições encerraram e você ainda não mapeou as salas!", Lembrete.NEGATIVO, 0);
+                    }
+
                     return View(sim);
                 }
             }

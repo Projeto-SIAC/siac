@@ -32,6 +32,9 @@ namespace SIAC.Models
         public bool FlagVagasEsgotadas => this.QteVagas == this.SimCandidato.Count;
 
         [NotMapped]
+        public bool FlagSalaMapeada => this.SimCandidato.FirstOrDefault(c => !c.CodSala.HasValue) == null;
+
+        [NotMapped]
         public List<SimProva> Provas
         {
             get
