@@ -774,6 +774,17 @@ namespace SIAC.Controllers
 
                 if (sim != null)
                 {
+                    if (!sim.FlagInscricaoEncerrado && sim.DtTerminoInscricao < DateTime.Now)
+                    {
+                        sim.FlagInscricaoEncerrado = true;
+                        Repositorio.Commit();
+                    }
+
+                    if (sim.FlagInscricaoEncerrado && sim.SimCandidato.Count > 0 && !sim.FlagProvaEncerrada && !sim.FlagSalaMapeada)
+                    {
+                        Lembrete.AdicionarNotificacao("As inscrições encerraram e você ainda não mapeou as salas!", Lembrete.NEGATIVO, 0);
+                    }
+
                     return View(sim);
                 }
             }
@@ -1226,7 +1237,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && !sim.FlagSimuladoEncerrado)
+                if (sim != null)
                 {
                     SimSala sala = sim.SimSala.FirstOrDefault(s => s.CodSala == codSala);
                     if (sala.SimCandidato.Count > 0)
@@ -1285,33 +1296,50 @@ namespace SIAC.Controllers
                     foreach (var prova in sim.Provas)
                     {
                         List<SimCandidatoProva> candidatos = prova.SimCandidatoProva.Where(c => c.FlagPresente.HasValue && c.FlagPresente.Value).ToList();
-
-                        double qcpp = candidatos.Count; // QCPP = Quantidade de Candidatos Presentes à Prova
-                        double maap = candidatos.Sum(c => c.QteAcertos.Value) / qcpp; // MAAP = Média Aritmética dos Acertos da Prova
-                        double Eqac = candidatos.Select(c => Math.Pow(c.QteAcertos.Value, 2.0)).Sum(); // EQAC = Soma da Quantidade de Acertos dos Candidatos da Prova
-                        double dpap = Math.Sqrt((Eqac / qcpp) - Math.Pow(maap, 2.0)); // DPAP = Desvio Padrão dos Acertos da Prova
-
-                        prova.MediaAritmeticaAcerto = Convert.ToDecimal(maap);
-                        prova.DesvioPadraoAcerto = Convert.ToDecimal(dpap);
-
-                        foreach (var candidato in candidatos)
+                        if (prova.TipoQuestoes == TipoQuestao.OBJETIVA)
                         {
-                            candidato.EscorePadronizado = Convert.ToDecimal(((candidato.QteAcertos - maap) / dpap) * 100.0 + 500.0);
+                            double qcpp = candidatos.Count; // QCPP = Quantidade de Candidatos Presentes à Prova
+                            double maap = candidatos.Sum(c => c.QteAcertos.Value) / qcpp; // MAAP = Média Aritmética dos Acertos da Prova
+                            double Eqac = candidatos.Select(c => Math.Pow(c.QteAcertos.Value, 2.0)).Sum(); // EQAC = Soma da Quantidade de Acertos dos Candidatos da Prova
+                            double dpap = Math.Sqrt((Eqac / qcpp) - Math.Pow(maap, 2.0)); // DPAP = Desvio Padrão dos Acertos da Prova
+
+                            prova.MediaAritmeticaAcerto = Convert.ToDecimal(maap);
+                            prova.DesvioPadraoAcerto = Convert.ToDecimal(dpap);
+
+                            foreach (var candidato in candidatos)
+                            {
+                                candidato.EscorePadronizado = Convert.ToDecimal(((candidato.QteAcertos - maap) / dpap) * 100.0 + 500.0);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var candidato in candidatos)
+                            {
+                                candidato.EscorePadronizado = candidato.NotaDiscursiva;
+                            }
                         }
                     }
 
+                    List<Candidato> candidatosPresentes = new List<Candidato>();
+
                     foreach (var candidato in sim.SimCandidato)
                     {
-                        if ((bool)candidato.SimCandidatoProva.First().FlagPresente)
+                        if (candidato.SimCandidatoProva.Where(p => p.FlagPresente.HasValue && p.FlagPresente.Value).Count() == candidato.SimCandidatoProva.Count)
                         {
                             decimal? somaEscoreProvas = candidato.SimCandidatoProva.Sum(p => p.EscorePadronizado * (decimal)p.SimProva.Peso);
                             candidato.EscorePadronizadoFinal = somaEscoreProvas.Value / (decimal)candidato.SimCandidatoProva.Sum(p => p.SimProva.Peso);
+                            candidatosPresentes.Add(candidato.Candidato);
                         }
                     }
 
                     sim.FlagSimuladoEncerrado = true;
                     mensagem = "Os escores foram calculados com sucesso e o simulado foi encerrado com sucesso.";
                     estilo = Lembrete.POSITIVO;
+                    
+                    string url = Request.Url.ToString();
+                    string simuladoUrl = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("Inscricoes", "Candidato", new { codigo = sim.Codigo });
+
+                    Helpers.EnviarEmail.SimuladoEncerrado(candidatosPresentes, simuladoUrl, sim.Titulo);
 
                     Repositorio.Commit();
                 }
@@ -1331,6 +1359,8 @@ namespace SIAC.Controllers
 
                 if (sim != null)
                 {
+                    var faltoso = (decimal)-1.0;
+
                     var model = new SimuladoClassificacaoViewModel
                     {
                         Simulado = sim
@@ -1340,13 +1370,13 @@ namespace SIAC.Controllers
 
                     foreach (var candidato in model.Simulado.Classificacao)
                     {
-                        if (classificacao.ContainsKey(candidato.EscorePadronizadoFinal.Value))
+                        if (classificacao.ContainsKey(candidato.EscorePadronizadoFinal ?? faltoso))
                         {
-                            classificacao[candidato.EscorePadronizadoFinal.Value].Add(candidato);
+                            classificacao[candidato.EscorePadronizadoFinal ?? faltoso].Add(candidato);
                         }
                         else
                         {
-                            classificacao[candidato.EscorePadronizadoFinal.Value] = new List<SimCandidato> { candidato };
+                            classificacao[candidato.EscorePadronizadoFinal ?? faltoso] = new List<SimCandidato> { candidato };
                         }
                     }
 
@@ -1354,7 +1384,11 @@ namespace SIAC.Controllers
 
                     foreach (var escore in classificacao.Keys.OrderByDescending(x => x))
                     {
-                        if (classificacao[escore].Count > 1)
+                        if (escore == faltoso)
+                        {
+                            model.Faltosos.AddRange(classificacao[faltoso]);
+                        }
+                        else if (classificacao[escore].Count > 1)
                         {
                             List<SimCandidato> candidados = classificacao[escore];
                             foreach (var prova in model.Simulado.Provas.OrderBy(p => p.OrdemDesempate))
@@ -1423,7 +1457,7 @@ namespace SIAC.Controllers
             {
                 Simulado sim = Simulado.ListarPorCodigo(codigo);
 
-                if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula)
+                if (sim != null)
                 {
                     SimCandidato candidato = sim.SimCandidato.FirstOrDefault(c => c.CodCandidato == codCandidato);
 
@@ -1659,7 +1693,14 @@ namespace SIAC.Controllers
                                 string formPontuacao = form[candidato.SimCandidato.NumeroMascara];
                                 if (!String.IsNullOrEmpty(formPontuacao) && formPontuacao.IsNumber())
                                 {
-                                   pontuacao = decimal.Parse(formPontuacao, new CultureInfo("pt-BR"));
+                                    if (formPontuacao.Contains(','))
+                                    {
+                                        pontuacao = decimal.Parse(formPontuacao, new CultureInfo("pt-BR"));
+                                    }
+                                    else
+                                    {
+                                        pontuacao = decimal.Parse(formPontuacao, new CultureInfo("en"));
+                                    }
                                 }
                                 if (pontuacao > -1)
                                 {
@@ -1669,10 +1710,20 @@ namespace SIAC.Controllers
                             }
                         }
 
-                        Repositorio.Commit();
+                        try
+                        {
+                            Repositorio.Commit();
 
-                        mensagem = "O preenchimento ocorreu com sucesso.";
-                        estilo = Lembrete.POSITIVO;
+                            mensagem = "O preenchimento ocorreu com sucesso.";
+                            estilo = Lembrete.POSITIVO;
+                        }
+                        catch
+                        {
+                            Repositorio.Restart();
+
+                            mensagem = "Algo deu errado no preenchimento.";
+                            estilo = Lembrete.NEGATIVO;
+                        }
                     }
                 }
             }

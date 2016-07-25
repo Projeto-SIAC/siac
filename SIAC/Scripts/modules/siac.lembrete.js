@@ -64,7 +64,10 @@
                 _hub.server.recuperarContadoresInstitucional(_matricula);
             }
             _hub.server.recuperarLembretes(_matricula);
-            $(document).ajaxComplete(function () {
+            $(document).ajaxComplete(function (event, request, settings) {
+                if (settings.notificacoes === false) {
+                    return;
+                }
                 recuperarNotificacoes();
             });
         });

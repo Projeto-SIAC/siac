@@ -20,13 +20,13 @@
     {
         <span data-title="Defina a Data de Inscrição" data-content="O prazo de inscrição ainda não foi definido" class="ui label"><i class="wait icon"></i>Defina a Data de Inscrição</span>
     }
-    else if (Model.SimDiaRealizacao.Count <= 0 || Model.PrimeiroDiaRealizacao?.SimProva.Count <= 0)
-    {
-        <span data-title="Aguardando Seleção das Provas" data-content="O prazo de inscrição foi definido, mas é necessário que você defina os dias e as provas" class="ui label"><i class="wait icon"></i>Aguardando Seleção das Provas</span>
-    }
     else if (Model.FlagAguardaDefinicaoSalas)
     {
         <span data-title="Aguardando Escolha das Salas" data-content="O prazo de inscrição foi definido e as provas já foram selecionadas, mas é necessário que você defina as salas que serão utilizadas" class="ui label"><i class="wait icon"></i>Aguardando Escolha das Salas</span>
+    }
+    else if (Model.SimDiaRealizacao.Count <= 0 || Model.PrimeiroDiaRealizacao?.SimProva.Count <= 0)
+    {
+        <span data-title="Aguardando Seleção das Provas" data-content="O prazo de inscrição foi definido, mas é necessário que você defina os dias e as provas" class="ui label"><i class="wait icon"></i>Aguardando Seleção das Provas</span>
     }
     else if (Model.FlagAguardaPrazoInscricao)
     {
@@ -35,6 +35,10 @@
     else if (Model.FlagInscricaoNaoLiberada)
     {
         <span data-title="Inscrições Não Liberadas" data-content="O prazo de inscrição está em vigor, mas é necessário que você libere as inscrições no Atalho de Gerenciamento" class="ui label"><i class="wait icon"></i>Inscrições Não Liberadas</span>
+    }
+    else if (Model.FlagVagasEsgotadas)
+    {
+        <span data-title="Vagas Esgotadas" data-content="As inscrições tão abertas, mas todas as vagas já foram preenchidas." class="ui label"><i class="users icon"></i>Vagas Esgotadas</span>
     }
     else if ((Model.FlagInscricaoEncerrado || Model.DtTerminoInscricao < DateTime.Now) && Model.SimCandidato.Count <= 0)
     {
@@ -150,7 +154,7 @@
                                 Liberar Inscrições
                             </div>
                         }
-                        if (DateTime.Now > Model.DtInicioInscricao && Model.SimCandidato.Count > 0 && !Model.FlagProvaEncerrada)
+                        if (Model.SimCandidato.Count > 0 && !Model.FlagProvaEncerrada && (Model.PrimeiroDiaRealizacao?.DtRealizacao < DateTime.Now || !Model.FlagSalaMapeada))
                         {
                             <div class="mapear item">
                                 <i class="building outline icon"></i>
@@ -169,7 +173,7 @@
                     {
                         <div class="finalizar provas item">
                             <i class="file red icon"></i>
-                            Indicar provas encerradas
+                            Indicar Provas Encerradas
                         </div>
                     }
                     <div class="encerrar item">
@@ -317,7 +321,7 @@
             </div>
             <div class="field">
                 <label data-ajuda="Descreva no espaço abaixo uma descrição para este simulado">Insira uma descrição</label>
-                <textarea id="txtDescricao" name="txtDescricao" rows="5" placeholder="Descrição" required>@Model.Descricao</textarea>
+                <textarea id="txtDescricao" name="txtDescricao" rows="5" placeholder="Descrição">@Model.Descricao</textarea>
             </div>
             <div class="field required">
                 <label data-ajuda="Insira a quantidade de vagas para inscrições deste simulado">Insira a quantidade de vagas</label>
@@ -534,6 +538,10 @@
                 <div class="title">
                     <i class="dropdown icon"></i>
                     <b>@dia.DtRealizacao.DiaRealizacaoRepresentacao()</b>
+                    @if (dia.SimProva.FirstOrDefault(p => p.QteQuestoes > p.SimProvaQuestao.Count) != null)
+                    {
+                        <i class="ui warning icon"></i> 
+                    }
                 </div>
                 <div class="content">
                     <table class="ui striped table">
@@ -550,6 +558,14 @@
                                 <tr>
                                     <td>
                                         @prova.Titulo
+                                        @if (prova.QteQuestoes > prova.SimProvaQuestao.Count && prova.CodProfessor.HasValue)
+                                        {
+                                            <i data-content="Prova sem questões suficientes." class="ui warning circular icon"></i>
+                                        }
+                                        else if (prova.QteQuestoes > prova.SimProvaQuestao.Count)
+                                        {
+                                            <i data-content="Prova sem questões suficientes. Designe um professor para atualizar essa prova." class="ui warning circular icon"></i>
+                                        }
                                         @if (prova.FlagRedacao)
                                         {
                                             <div class="ui small label">
@@ -562,7 +578,6 @@
                                             </div>
                                         }
                                     </td>
-
                                     <td>@prova.Disciplina.Descricao</td>
                                     @if (prova.Professor != null)
                                     {

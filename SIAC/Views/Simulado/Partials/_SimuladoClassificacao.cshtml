@@ -28,6 +28,16 @@
                     <td><div data-candidato="@classificado.Value.CodCandidato" data-action="@Url.Action("ClassificacaoCandidato", new { codigo = Model.Simulado.Codigo, codCandidato = classificado.Value.CodCandidato  })" class="ui icon button"><i class="search icon"></i></div></td>
                 </tr>
             }
+            @foreach (var faltoso in Model.Faltosos)
+            {
+                <tr class="error">
+                    <td></td>
+                    <td>@faltoso.Candidato.Nome</td>
+                    <td>@faltoso.NumInscricaoRepresentacao</td>
+                    <td>@Formate.ParaCPF(faltoso.Candidato.Cpf)</td>
+                    <td colspan="2"><small class="ui red label">Faltou</small></td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>

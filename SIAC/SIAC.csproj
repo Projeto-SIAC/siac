@@ -223,6 +223,7 @@
     <Content Include="Resources\videos\background.mp4" />
     <Content Include="Scripts\plugins\jquery.signalR-2.2.0.min.js" />
     <Content Include="Styles\themes\semantic.min.css" />
+    <Content Include="Templates\Email\__SimuladoEncerrado.html" />
     <Content Include="Views\Simulado\Datas.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

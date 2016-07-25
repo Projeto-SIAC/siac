@@ -24,7 +24,7 @@
                 @Html.Partial("_Atalho", new AtalhoViewModel("Novo Simulado", "plus", Url.Action("Novo", "Simulado")))
                 @Html.Partial("_Atalho", new AtalhoViewModel("Arquivo de Simulados", "list", Url.Action("Index", "Arquivo")))
                 @Html.Partial("_Atalho", new AtalhoViewModel("Dados Gerais", "cogs", Url.Action("Dados", "Gerencia")))
-                if (Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.CodOcupacao.ContainsOne(new[] { Ocupacao.COORDENADOR_SIMULADO, Ocupacao.SUPERUSUARIO, Ocupacao.REITOR }))
+                if (Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario.CodOcupacao.ContainsOne(new[] { Ocupacao.COORDENADOR_SIMULADO, Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL }))
                 {
                     @Html.Partial("_Atalho", new AtalhoViewModel("Permissões", "users", Url.Action("Permissoes", "Gerencia")))
                     @Html.Partial("_Atalho", new AtalhoViewModel("Configurações", "configure", Url.Action("Configuracoes", "Gerencia")))

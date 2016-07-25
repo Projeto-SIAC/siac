@@ -32,7 +32,7 @@
         <h3 class="ui dividing header">Sobre</h3>
         <form id="recarregarQuestoes" method="post" action="@Url.Action("ProvaConfigurarRecarregarQuestoes", new { simulado = Model.SimDiaRealizacao.Simulado.Codigo, dia = Model.CodDiaRealizacao, prova = Model.CodProva })">
             <button type="submit" class="ui button right floated button" data-content="Utilize este botão para trocar todas as questões da prova ou carregar as questões cadastradas recentemente.">
-                Resetar Prova
+                Recarregar Questões
             </button>
         </form>
         <b>Simulado:</b> @Model.SimDiaRealizacao.Simulado.Titulo<br />
