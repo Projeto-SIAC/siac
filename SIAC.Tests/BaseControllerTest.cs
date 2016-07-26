@@ -65,8 +65,6 @@ namespace SIAC.Tests
             moqSession.SetupGet(x => x["UsuarioCategoriaCodigo"]).Returns(usuario.CodCategoria);
             moqSession.SetupGet(x => x["UsuarioCategoria"]).Returns(usuario.Categoria.Descricao);
             Sistema.UsuarioAtivo[matricula] = usuario.UsuarioAcesso.Last();
-            moqHttpContext.Setup(x => x.Session).Returns(moqSession.Object);
-            HttpContextManager.SetCurrentContext(moqHttpContext.Object);
         }
     }
 }

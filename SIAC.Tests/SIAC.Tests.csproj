@@ -109,6 +109,10 @@
   <ItemGroup>
     <Compile Include="AcessoControllerTest.cs" />
     <Compile Include="BaseControllerTest.cs" />
+    <Compile Include="CaptchaTest.cs" />
+    <Compile Include="FormateTest.cs" />
+    <Compile Include="CriptografiaTest.cs" />
+    <Compile Include="CorDinamicaTest.cs" />
     <Compile Include="HistoricoControllerTest.cs" />
     <Compile Include="PerfilControllerTest.cs" />
     <Compile Include="PrincipalControllerTest.cs" />
@@ -116,7 +120,10 @@
     <Compile Include="AgendaControllerTest.cs" />
     <Compile Include="ImpressaoControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SessaoTest.cs" />
+    <Compile Include="StringExtTest.cs" />
     <Compile Include="TemaControllerTest.cs" />
+    <Compile Include="ValidaTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SIAC\SIAC.csproj">
