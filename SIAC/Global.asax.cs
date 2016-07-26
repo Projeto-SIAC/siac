@@ -39,7 +39,7 @@ namespace SIAC
             {
                 if (Helpers.Sessao.UsuarioMatricula != null && Models.Sistema.UsuarioAtivo.Keys.Contains(Helpers.Sessao.UsuarioMatricula))
                 {
-                    if (!HttpContext.Current.Request.Path.ToLower().Contains("lembrete"))
+                    if (!HttpContextManager.Current.Request.Path.ToLower().Contains("lembrete"))
                     {
                         var acesso = Models.Sistema.UsuarioAtivo[Helpers.Sessao.UsuarioMatricula];
                         var acessos = acesso.UsuarioAcessoPagina;
@@ -47,10 +47,10 @@ namespace SIAC
                         acesso.UsuarioAcessoPagina.Add(new Models.UsuarioAcessoPagina()
                         {
                             NumIdentificador = numIdentificador + 1,
-                            Pagina = HttpContext.Current.Request.Url.PathAndQuery.ToString(),
+                            Pagina = HttpContextManager.Current.Request.Url.PathAndQuery.ToString(),
                             DtAbertura = DateTime.Now,
-                            PaginaReferencia = HttpContext.Current.Request.UrlReferrer?.PathAndQuery.ToString(),
-                            Dados = HttpContext.Current.Request.Form.HasKeys() ? HttpContext.Current.Request.Form.ToString() : null
+                            PaginaReferencia = HttpContextManager.Current.Request.UrlReferrer?.PathAndQuery.ToString(),
+                            Dados = HttpContextManager.Current.Request.Form.HasKeys() ? HttpContextManager.Current.Request.Form.ToString() : null
                         });
                         Models.Repositorio.GetInstance().SaveChanges(false);
                     }
