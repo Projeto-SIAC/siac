@@ -266,6 +266,7 @@
     <Compile Include="Helpers\DevGerarQuestao.cs" />
     <Compile Include="Helpers\EnviarEmail.cs" />
     <Compile Include="Helpers\Formate.cs" />
+    <Compile Include="Helpers\HttpContextManager.cs" />
     <Compile Include="Helpers\LeroLero.cs" />
     <Compile Include="Helpers\Extensoes.cs" />
     <Compile Include="Helpers\Sessao.cs" />

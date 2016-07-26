@@ -4,14 +4,24 @@ using SIAC.Models;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace SIAC.Tests
 {
     [TestClass]
-    public class PrincipalControllerTest
+    public class PrincipalControllerTest : BaseControllerTest
     {
-        PrincipalController controller = new PrincipalController();
-        
+        private PrincipalController controller;
+
+        [TestInitialize]
+        public override void SetupTest()
+        {
+            base.SetupTest();
+            this.controller = new PrincipalController();
+            var context = new ControllerContext(this.moqHttpContext.Object, new RouteData(), this.controller);
+            this.controller.ControllerContext = context;
+        }
+
         [TestMethod]
         public void TestAvaliacaoRedirect()
         {
@@ -23,7 +33,7 @@ namespace SIAC.Tests
         [TestMethod]
         public void TestPendenteModel()
         {
-            MockHelper.FakeLoginUsuario("20150002", "/principal/pendente");
+            this.Login("101");
 
             List<Avaliacao> esperado = new List<Avaliacao>();
             ViewResult resultado = controller.Pendente() as ViewResult;

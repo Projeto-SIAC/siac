@@ -9,7 +9,7 @@ namespace SIAC.Models
             if (Sistema.AlertarMudanca.Contains(Helpers.Sessao.UsuarioMatricula))
             {
                 Commit();
-                Dispose();
+                Restart();
                 Sistema.AlertarMudanca.Remove(Helpers.Sessao.UsuarioMatricula);
             }
             Contexto contexto = Helpers.Sessao.Retornar("dbSIACEntities") as Contexto;
@@ -41,8 +41,8 @@ namespace SIAC.Models
             if (contexto != null)
             {
                 ((Contexto)Helpers.Sessao.Retornar("dbSIACEntities")).Dispose();
-                HttpContext.Current.Session["dbSIACEntities"] = null;
-                HttpContext.Current.Session.Remove("dbSIACEntities");
+                HttpContextManager.Current.Session["dbSIACEntities"] = null;
+                HttpContextManager.Current.Session.Remove("dbSIACEntities");
             }
         }
     }

@@ -542,16 +542,16 @@ namespace SIAC
 
         #region HttpContext
 
-        public static string RecuperarIp(this HttpContext contexto)
+        public static string RecuperarIp(this HttpContextBase contexto)
         {
-            string ip = contexto.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            string ip = contexto?.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
             if (!string.IsNullOrEmpty(ip))
             {
                 string[] enderecos = ip.Split(',');
                 if (enderecos.Length > 0)
                     return enderecos[0];
             }
-            return contexto.Request.ServerVariables["REMOTE_ADDR"];
+            return contexto?.Request.ServerVariables["REMOTE_ADDR"];
         }
 
         #endregion HttpContext

@@ -4,13 +4,25 @@ using SIAC.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SIAC.ViewModels;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Routing;
 
 namespace SIAC.Tests
 {
     [TestClass]
-    public class AcessoControllerTest
+    public class AcessoControllerTest : BaseControllerTest
     {
-        AcessoController controller = new AcessoController();
+        private AcessoController controller;
+
+        [TestInitialize]
+        public override void SetupTest()
+        {
+            base.SetupTest();
+            this.controller = new AcessoController();
+            var context = new ControllerContext(this.moqHttpContext.Object, new RouteData(), this.controller);
+            this.controller.ControllerContext = context;           
+        }
+
 
         [TestMethod]
         public async Task TestIndexComValoresVazios()
@@ -50,7 +62,7 @@ namespace SIAC.Tests
             AcessoIndexViewModel resultado = (await controller.Index(form) as ViewResult).Model as AcessoIndexViewModel;
             Assert.AreEqual(true, resultado.Erro);
         }
-
+        
         [TestMethod]
         public void TestSairRedirecionamento()
         {

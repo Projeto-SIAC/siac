@@ -19,11 +19,11 @@ namespace SIAC.Models
 
         public static Dictionary<string, List<string>> AvaliacaoUsuario = new Dictionary<string, List<string>>();
 
-        public static bool Autenticado(string matricula) => !String.IsNullOrEmpty(matricula) && UsuarioAtivo.Keys.Contains(matricula) && UsuarioAtivo[matricula].IpAcesso == HttpContext.Current.RecuperarIp();
+        public static bool Autenticado(string matricula) => !String.IsNullOrEmpty(matricula) && UsuarioAtivo.Keys.Contains(matricula) && UsuarioAtivo[matricula].IpAcesso == HttpContextManager.Current.RecuperarIp();
 
         public static void RegistrarCookie(string matricula)
         {
-            var cookie = HttpContext.Current.Request.Cookies["SIAC_Session"];
+            var cookie = HttpContextManager.Current.Request.Cookies["SIAC_Session"];
             if (cookie != null)
                 CookieUsuario[cookie.Value] = matricula;
         }

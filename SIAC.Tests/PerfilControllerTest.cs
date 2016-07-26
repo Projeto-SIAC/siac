@@ -1,25 +1,37 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using SIAC.Controllers;
 using SIAC.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace SIAC.Tests
 {
     [TestClass]
-    public class PerfilControllerTest
+    public class PerfilControllerTest : BaseControllerTest
     {
-        PerfilController controller = new PerfilController();
+        private PerfilController controller;
+
+        [TestInitialize]
+        public override void SetupTest()
+        {
+            base.SetupTest();
+            this.controller = new PerfilController();
+            var context = new ControllerContext(this.moqHttpContext.Object, new RouteData(), this.controller);
+            this.controller.ControllerContext = context;
+        }
 
         [TestMethod]
         public void TestIndexModel()
         {
-            string esperado = "20150002";
-            MockHelper.FakeLoginUsuario(esperado, "/perfil");
+            string esperado = "200";
+            this.Login(esperado);
             Usuario resultado = (controller.Index() as ViewResult).Model as Usuario;
             Assert.AreEqual(esperado, resultado.Matricula);
         }
@@ -27,8 +39,8 @@ namespace SIAC.Tests
         [TestMethod]
         public void TestEstatisticasModel()
         {
-            string esperado = "20150002";
-            MockHelper.FakeLoginUsuario(esperado, "/perfil");
+            string esperado = "200";
+            this.Login(esperado);
             Usuario resultado = (controller.Estatisticas() as PartialViewResult).Model as Usuario;
             Assert.AreEqual(esperado, resultado.Matricula);
         }
@@ -36,8 +48,8 @@ namespace SIAC.Tests
         [TestMethod]
         public void TestEnviarOpiniaoEmpty()
         {
-            string matricula = "20150002";
-            MockHelper.FakeLoginUsuario(matricula, "/perfil/enviaropiniao");
+            string matricula = "200";
+            this.Login(matricula);
             Contexto c = Repositorio.GetInstance();
             Usuario usuario = c.Usuario.Find(matricula);
             int quantidade = usuario.UsuarioOpiniao.Count;
@@ -50,22 +62,20 @@ namespace SIAC.Tests
         [TestMethod]
         public void TestEnviarOpiniao()
         {
-            string matricula = "20150002";
-            MockHelper.FakeLoginUsuario(matricula, "/perfil/enviaropiniao");
-            Contexto c = Repositorio.GetInstance();
-            Usuario usuario = c.Usuario.Find(matricula);
-            int quantidade = usuario.UsuarioOpiniao.Count;
+            var moqUsuario = new Mock<Usuario>();
+            var moqUsuarioAcesso = new Mock<UsuarioAcesso>();
+            var moqUsuarioOpiniao = new Mock<ICollection<UsuarioOpiniao>>();
+
+            moqUsuarioAcesso.Setup(x => x.Usuario).Returns(moqUsuario.Object);
+            moqUsuario.Setup(x => x.UsuarioOpiniao).Returns(moqUsuarioOpiniao.Object);
+
+            string matricula = "200";
+            this.Login(matricula);
+            Sistema.UsuarioAtivo[matricula] = moqUsuarioAcesso.Object;
+
             controller.EnviarOpiniao("Oi, minha opinião.");
-            Usuario novoUsuario = c.Usuario.Find(matricula);
-            int novaQuantidade = novoUsuario.UsuarioOpiniao.Count;
-            bool resultado = novaQuantidade > quantidade;
-            Assert.IsTrue(resultado);
-            if (resultado)
-            {
-                UsuarioOpiniao usuarioOpiniao = novoUsuario.UsuarioOpiniao.Last();
-                c.UsuarioOpiniao.Remove(usuarioOpiniao);
-                c.SaveChanges();
-            }
+
+            moqUsuarioOpiniao.Verify(x => x.Add(It.IsAny<UsuarioOpiniao>()), Times.Once());
         }
     }
 }
