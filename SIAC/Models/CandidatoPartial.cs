@@ -66,26 +66,21 @@ namespace SIAC.Models
             return candidato.CodCandidato;
         }
 
-        public static string GerarTokenParaAlterarSenha(string cpf, string email)
+        public static string GerarTokenParaAlterarSenha(Candidato c)
         {
-            string token = $"{Criptografia.Base64Encode(cpf)}.{Criptografia.Base64Encode(email)}.{Criptografia.Base64Encode(DateTime.Now.AddDays(7).ToUnixTime().ToString())}";
+            string token = new HashidsNet.Hashids((string)Configuracoes.Recuperar("SIAC_SALT"), 10).EncodeLong(new[] { c.CodCandidato, DateTime.Now.AddMinutes(30).ToUnixTime() });
             return token;
         }
 
         public static dynamic LerTokenParaAlterarSenha(string token)
         {
-            string[] valores = token.Split('.');
+            long[] valores = new HashidsNet.Hashids((string)Configuracoes.Recuperar("SIAC_SALT"), 10).DecodeLong(token);
 
-            string cpf = Criptografia.Base64Decode(valores[0]);
-            string email = Criptografia.Base64Decode(valores[1]);
-            string unixTime = Criptografia.Base64Decode(valores[2]);
-            long expiracao = Convert.ToInt64(unixTime);
-            bool expirado = DateTime.Now.ToUnixTime() > expiracao;
-
+            var candidato = contexto.Candidato.Find((int)valores[0]);
+            var expirado = DateTime.Now.ToUnixTime() > valores[1];
             return new
             {
-                Cpf = cpf,
-                Email = email,
+                Candidato = candidato,
                 Expirado = expirado
             };
         }

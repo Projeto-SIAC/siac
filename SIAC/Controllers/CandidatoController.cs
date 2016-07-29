@@ -317,11 +317,11 @@ namespace SIAC.Controllers
 
                 if (c != null && c.Email.ToLower() == model.Email.ToLower())
                 {
-                    string token = Candidato.GerarTokenParaAlterarSenha(c.Cpf, c.Email);
+                    string token = Candidato.GerarTokenParaAlterarSenha(c);
                     string url = Request.Url.ToString();
-                    url = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("AlterarSenha", "Candidato", new { codigo = "" }) + $"/{token}";
+                    url = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("AlterarSenha", "Candidato", new { codigo = "" }) + $"/{Criptografia.Base64Encode(token)}";
                     EnviarEmail.SolicitarSenha(c.Email, c.Nome, url);
-                    TempData["EsqueceuSenhaMensagem"] = $"Um email com instruções foi enviado para {model.Email}.";
+                    TempData["EsqueceuSenhaMensagem"] = $"Um email com instruções foi enviado para {c.Email}.";
                     return RedirectToAction("EsqueceuSenha");
                 }
                 else
@@ -340,15 +340,17 @@ namespace SIAC.Controllers
         public ActionResult AlterarSenha(string codigo)
         {
             string token = Uri.UnescapeDataString(codigo);
-            var valores = Candidato.LerTokenParaAlterarSenha(token);
+            var valores = Candidato.LerTokenParaAlterarSenha(Criptografia.Base64Decode(token));
+
             if (!valores.Expirado)
             {
                 return View(new CandidatoAlterarSenhaViewModel
                 {
-                    Cpf = valores.Cpf,
-                    Email = valores.Email
+                    Cpf = valores.Candidato.Cpf,
+                    Email = valores.Candidato.Email
                 });
             }
+
             return RedirectToAction("Index");
         }
 
