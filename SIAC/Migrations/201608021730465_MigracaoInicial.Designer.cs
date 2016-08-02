@@ -7,13 +7,13 @@ namespace SIAC.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class UpdateSimProvaAddTipoQuestoes : IMigrationMetadata
+    public sealed partial class MigracaoInicial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdateSimProvaAddTipoQuestoes));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(MigracaoInicial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201607141946097_UpdateSimProvaAddTipoQuestoes"; }
+            get { return "201608021730465_MigracaoInicial"; }
         }
         
         string IMigrationMetadata.Source

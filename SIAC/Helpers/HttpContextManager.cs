@@ -15,7 +15,7 @@ namespace SIAC
                     return _context;
 
                 if (HttpContext.Current == null)
-                    throw new InvalidOperationException("HttpContext not available");
+                    return null;
 
                 return new HttpContextWrapper(HttpContext.Current);
             }

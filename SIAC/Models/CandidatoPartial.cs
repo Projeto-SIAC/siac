@@ -68,21 +68,27 @@ namespace SIAC.Models
 
         public static string GerarTokenParaAlterarSenha(Candidato c)
         {
+            var candidato = contexto.Candidato.Find(c.CodCandidato);
             string token = new HashidsNet.Hashids((string)Configuracoes.Recuperar("SIAC_SALT"), 10).EncodeLong(new[] { c.CodCandidato, DateTime.Now.AddMinutes(30).ToUnixTime() });
+            candidato.AlterarSenha = Criptografia.RetornarHash(token);
+            contexto.SaveChanges(false);
             return token;
         }
 
-        public static dynamic LerTokenParaAlterarSenha(string token)
+        public static Candidato LerTokenParaAlterarSenha(string token)
         {
             long[] valores = new HashidsNet.Hashids((string)Configuracoes.Recuperar("SIAC_SALT"), 10).DecodeLong(token);
 
-            var candidato = contexto.Candidato.Find((int)valores[0]);
-            var expirado = DateTime.Now.ToUnixTime() > valores[1];
-            return new
+            if (valores.Length == 2)
             {
-                Candidato = candidato,
-                Expirado = expirado
-            };
+                var candidato = contexto.Candidato.Find((int)valores[0]);
+                var expirado = DateTime.Now.ToUnixTime() > valores[1];
+                if (!expirado && candidato.AlterarSenha == Criptografia.RetornarHash(token))
+                {
+                    return candidato;
+                }
+            }
+            return null;
         }
     }
 }

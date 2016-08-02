@@ -71,6 +71,9 @@ namespace SIAC.Models
         [StringLength(255)]
         public string DescricaoNecessidadeEspecial { get; set; }
 
+        [StringLength(64)]
+        public string AlterarSenha { get; set; }
+
         public virtual Municipio Municipio { get; set; }
 
         public virtual Usuario Usuario { get; set; }

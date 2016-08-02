@@ -247,6 +247,26 @@
     <Compile Include="Controllers\SimuladoController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\VisitanteController.cs" />
+    <Compile Include="Migrations\Goais.cs" />
+    <Compile Include="Migrations\Tocantins.cs" />
+    <Compile Include="Migrations\SaoPaulo.cs" />
+    <Compile Include="Migrations\Sergipe.cs" />
+    <Compile Include="Migrations\SantaCatarina.cs" />
+    <Compile Include="Migrations\RioGrandeDoSul.cs" />
+    <Compile Include="Migrations\Roraima.cs" />
+    <Compile Include="Migrations\Rondonia.cs" />
+    <Compile Include="Migrations\RioGrandeDoNorte.cs" />
+    <Compile Include="Migrations\RioDeJaneiro.cs" />
+    <Compile Include="Migrations\Parana.cs" />
+    <Compile Include="Migrations\Piaui.cs" />
+    <Compile Include="Migrations\Pernambuco.cs" />
+    <Compile Include="Migrations\Paraiba.cs" />
+    <Compile Include="Migrations\Para.cs" />
+    <Compile Include="Migrations\MatoGrosso.cs" />
+    <Compile Include="Migrations\MatoGrossoDoSul.cs" />
+    <Compile Include="Migrations\MinasGerais.cs" />
+    <Compile Include="Migrations\Maranhao.cs" />
+    <Compile Include="Migrations\EspiritoSanto.cs" />
     <Compile Include="Filters\AutenticacaoFilterAttribute.cs" />
     <Compile Include="Controllers\PrincipalController.cs" />
     <Compile Include="Controllers\AcessoController.cs" />
@@ -278,23 +298,18 @@
     <Compile Include="Hubs\AcademicaHub.cs" />
     <Compile Include="Hubs\CertificacaoHub.cs" />
     <Compile Include="Hubs\Models.cs" />
-    <Compile Include="Migrations\201606071903047_Initial.cs" />
-    <Compile Include="Migrations\201606071903047_Initial.Designer.cs">
-      <DependentUpon>201606071903047_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201608021730465_MigracaoInicial.cs" />
+    <Compile Include="Migrations\201608021730465_MigracaoInicial.Designer.cs">
+      <DependentUpon>201608021730465_MigracaoInicial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201606172058408_UpdateSimProva.cs" />
-    <Compile Include="Migrations\201606172058408_UpdateSimProva.Designer.cs">
-      <DependentUpon>201606172058408_UpdateSimProva.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607071440422_UpdateSimProvaPeso.cs" />
-    <Compile Include="Migrations\201607071440422_UpdateSimProvaPeso.Designer.cs">
-      <DependentUpon>201607071440422_UpdateSimProvaPeso.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607141946097_UpdateSimProvaAddTipoQuestoes.cs" />
-    <Compile Include="Migrations\201607141946097_UpdateSimProvaAddTipoQuestoes.Designer.cs">
-      <DependentUpon>201607141946097_UpdateSimProvaAddTipoQuestoes.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Migrations\Acre.cs" />
+    <Compile Include="Migrations\Alagoas.cs" />
+    <Compile Include="Migrations\Amapa.cs" />
+    <Compile Include="Migrations\Amazonas.cs" />
+    <Compile Include="Migrations\Bahia.cs" />
+    <Compile Include="Migrations\Ceara.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\DestritoFederal.cs" />
     <Compile Include="Models\Alternativa.cs" />
     <Compile Include="Models\Aluno.cs" />
     <Compile Include="Models\AlunoPartial.cs" />
@@ -686,17 +701,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606071903047_Initial.resx">
-      <DependentUpon>201606071903047_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606172058408_UpdateSimProva.resx">
-      <DependentUpon>201606172058408_UpdateSimProva.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607071440422_UpdateSimProvaPeso.resx">
-      <DependentUpon>201607071440422_UpdateSimProvaPeso.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607141946097_UpdateSimProvaAddTipoQuestoes.resx">
-      <DependentUpon>201607141946097_UpdateSimProvaAddTipoQuestoes.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201608021730465_MigracaoInicial.resx">
+      <DependentUpon>201608021730465_MigracaoInicial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

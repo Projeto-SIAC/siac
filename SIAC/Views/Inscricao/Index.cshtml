@@ -63,7 +63,14 @@ else
         <h2 class="ui center aligned icon header">
             <i class="icon frown"></i>
             Não há simulados cadastrados
+            @if (Sessao.Candidato != null)
+            {
+                <div class="sub header">Você receberá um e-mail quando algum simulado ficar disponível.</div>
+            }
+            else
+            {
             <div class="sub header">Deseja se cadastrar para ser avisado quando um novo simulado estiver disponível? <a href="@Url.Action("Cadastrar", "Candidato")">Cadastre-se</a></div>
+            }
         </h2>
     </div>
 }
