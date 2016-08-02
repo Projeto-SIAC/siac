@@ -30,14 +30,5 @@ namespace SIAC.Tests
             Assert.AreEqual(esperado, resultado.RouteValues["Action"]);
         }
 
-        [TestMethod]
-        public void TestPendenteModel()
-        {
-            this.Login("101");
-
-            List<Avaliacao> esperado = new List<Avaliacao>();
-            ViewResult resultado = controller.Pendente() as ViewResult;
-            Assert.AreEqual(esperado.GetType(), resultado.Model.GetType());
-        }        
     }
 }

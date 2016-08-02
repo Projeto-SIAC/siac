@@ -30,7 +30,7 @@ namespace SIAC.Tests
         [TestMethod]
         public void TestIndexModel()
         {
-            string esperado = "200";
+            string esperado = "superusuario";
             this.Login(esperado);
             Usuario resultado = (controller.Index() as ViewResult).Model as Usuario;
             Assert.AreEqual(esperado, resultado.Matricula);
@@ -39,7 +39,7 @@ namespace SIAC.Tests
         [TestMethod]
         public void TestEstatisticasModel()
         {
-            string esperado = "200";
+            string esperado = "superusuario";
             this.Login(esperado);
             Usuario resultado = (controller.Estatisticas() as PartialViewResult).Model as Usuario;
             Assert.AreEqual(esperado, resultado.Matricula);
@@ -48,7 +48,7 @@ namespace SIAC.Tests
         [TestMethod]
         public void TestEnviarOpiniaoEmpty()
         {
-            string matricula = "200";
+            string matricula = "superusuario";
             this.Login(matricula);
             Contexto c = Repositorio.GetInstance();
             Usuario usuario = c.Usuario.Find(matricula);
@@ -69,7 +69,7 @@ namespace SIAC.Tests
             moqUsuarioAcesso.Setup(x => x.Usuario).Returns(moqUsuario.Object);
             moqUsuario.Setup(x => x.UsuarioOpiniao).Returns(moqUsuarioOpiniao.Object);
 
-            string matricula = "200";
+            string matricula = "superusuario";
             this.Login(matricula);
             Sistema.UsuarioAtivo[matricula] = moqUsuarioAcesso.Object;
 

@@ -2,6 +2,7 @@ namespace SIAC.Migrations
 {
     using Helpers;
     using Models;
+    using System;
     using System.Data.Entity.Migrations;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Contexto>
@@ -488,39 +489,151 @@ namespace SIAC.Migrations
 
         private void SemearLocalidades(Contexto context)
         {
+            var estados = (Configuracoes.Recuperar("ESTADOS") as string).ToUpper();
+            var nordeste = Convert.ToBoolean(Configuracoes.Recuperar("ESTADOS_NORDESTE"));
+            var norte = Convert.ToBoolean(Configuracoes.Recuperar("ESTADOS_NORTE"));
+            var sul = Convert.ToBoolean(Configuracoes.Recuperar("ESTADOS_SUL"));
+            var sudeste = Convert.ToBoolean(Configuracoes.Recuperar("ESTADOS_SUDESTE"));
+            var centrooeste = Convert.ToBoolean(Configuracoes.Recuperar("ESTADOS_CENTROOESTE"));
+
             context.Pais.AddOrUpdate(
                 p => p.CodPais,
                 new Pais { CodPais = 1, Descricao = "Brasil", Sigla = "BRA" }
             );
 
-            //Acre.Semear(context);
-            //Alagoas.Semear(context);
-            //Amapa.Semear(context);
-            //Amazonas.Semear(context);
-            //Bahia.Semear(context);
-            //Ceara.Semear(context);
-            //DestritoFederal.Semear(context);
-            //EspiritoSanto.Semear(context);
-            //Goias.Semear(context);
-            //Maranhao.Semear(context);
-            //MatoGrosso.Semear(context);
-            //MatoGrossoDoSul.Semear(context);
-            //MinasGerais.Semear(context);
-            //Para.Semear(context);
-            //Paraiba.Semear(context);
-            //Parana.Semear(context);
-            //Pernambuco.Semear(context);
-            //Piaui.Semear(context);
-            //RioDeJaneiro.Semear(context);
-            RioGrandeDoNorte.Semear(context);
-            //RioGrandeDoSul.Semear(context);
-            //Rondonia.Semear(context);
-            //Roraima.Semear(context);
-            //SantaCatarina.Semear(context);
-            //SaoPaulo.Semear(context);
-            //Sergipe.Semear(context);
-            //Tocantins.Semear(context);
+            #region Nordeste
 
+            if (nordeste || estados.Contains("AL"))
+            {
+                Alagoas.Semear(context);
+            }
+            if (nordeste || estados.Contains("BA"))
+            {
+                Bahia.Semear(context);
+            }
+            if (nordeste || estados.Contains("CE"))
+            {
+                Ceara.Semear(context);
+            }
+            if (nordeste || estados.Contains("MA"))
+            {
+                Maranhao.Semear(context);
+            }
+            if (nordeste || estados.Contains("PB"))
+            {
+                Paraiba.Semear(context);
+            }
+            if (nordeste || estados.Contains("PE"))
+            {
+                Pernambuco.Semear(context);
+            }
+            if (nordeste || estados.Contains("PI"))
+            {
+                Piaui.Semear(context);
+            }
+            if (nordeste || estados.Contains("RN"))
+            {
+                RioGrandeDoNorte.Semear(context);
+            }
+            if (nordeste || estados.Contains("SE"))
+            {
+                Sergipe.Semear(context);
+            }
+
+            #endregion Nordeste
+
+            #region Sudeste
+
+            if (sudeste || estados.Contains("MG"))
+            {
+                MinasGerais.Semear(context);
+            }
+            if (sudeste || estados.Contains("ES"))
+            {
+                EspiritoSanto.Semear(context);
+            }
+            if (sudeste || estados.Contains("RJ"))
+            {
+                RioDeJaneiro.Semear(context);
+            }
+            if (sudeste || estados.Contains("SP"))
+            {
+                SaoPaulo.Semear(context);
+            }
+
+            #endregion Sudeste
+
+            #region CentroOeste
+
+            if (centrooeste || estados.Contains("GO"))
+            {
+                Goias.Semear(context);
+            }
+            if (centrooeste || estados.Contains("MT"))
+            {
+                MatoGrosso.Semear(context);
+            }
+            if (centrooeste || estados.Contains("MS"))
+            {
+                MatoGrossoDoSul.Semear(context);
+            }
+
+            #endregion CentroOeste
+
+            #region Norte
+
+            if (norte || estados.Contains("AC"))
+            {
+                Acre.Semear(context);
+            }
+            if (norte || estados.Contains("AP"))
+            {
+                Amapa.Semear(context);
+            }
+            if (norte || estados.Contains("AM"))
+            {
+                Amazonas.Semear(context);
+            }
+            if (norte || estados.Contains("PA"))
+            {
+                Para.Semear(context);
+            }
+            if (norte || estados.Contains("RO"))
+            {
+                Rondonia.Semear(context);
+            }
+            if (norte || estados.Contains("RR"))
+            {
+                Roraima.Semear(context);
+            }
+            if (norte || estados.Contains("TO"))
+            {
+                Tocantins.Semear(context);
+            }
+
+            #endregion Norte
+
+            #region Sul
+
+            if (sul || estados.Contains("RS"))
+            {
+                RioGrandeDoSul.Semear(context);
+            }
+            if (sul || estados.Contains("PR"))
+            {
+                Parana.Semear(context);
+            }
+            if (sul || estados.Contains("SC"))
+            {
+                SantaCatarina.Semear(context);
+            }
+
+            #endregion Sul
+
+            if (estados.Contains("DF"))
+            {
+                DestritoFederal.Semear(context);
+            }
         }
 
         private void SemearParametros(Contexto context)

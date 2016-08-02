@@ -36,7 +36,7 @@ namespace SIAC.Tests
             JsonResult esperado = new JsonResult();
             List<object> resultados = new List<object>();
 
-            this.Login("100");
+            this.Login("superusuario");
 
             resultados.Add(controller.Academicas("2015-02-02T08:55", "2015-02-02T08:55"));
             resultados.Add(controller.Certificacoes("2015-02-02T08:55", "2015-02-02T08:55"));
