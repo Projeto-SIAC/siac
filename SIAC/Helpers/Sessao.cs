@@ -6,7 +6,7 @@ namespace SIAC.Helpers
 {
     public class Sessao
     {
-        private static HttpContext context => HttpContext.Current;
+        private static HttpContextBase context => HttpContextManager.Current;
 
         public static bool RealizandoAvaliacao
         {

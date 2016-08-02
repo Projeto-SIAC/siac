@@ -19,7 +19,7 @@ namespace SIAC.Helpers
 
         public static string DeCPF(string cpf)
         {
-            Regex rgx = new Regex("\\D");
+            Regex rgx = new Regex(@"\D");
             return rgx.Replace(cpf, "");
         }
     }

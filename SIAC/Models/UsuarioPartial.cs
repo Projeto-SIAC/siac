@@ -49,9 +49,9 @@ namespace SIAC.Models
                 if (usuario != null && usuario.Senha == Criptografia.RetornarHash(senha))
                     return usuario;
             }
-            else if (HttpContext.Current.Request.Cookies.AllKeys.Contains("SIAC_Login"))
+            else if (HttpContextManager.Current.Request.Cookies.AllKeys.Contains("SIAC_Login"))
             {
-                if (HttpContext.Current.Request.Cookies["SIAC_Login"].Value == Criptografia.RetornarHash(matricula))
+                if (HttpContextManager.Current.Request.Cookies["SIAC_Login"].Value == Criptografia.RetornarHash(matricula))
                 {
                     Usuario usuario = ListarPorMatricula(matricula);
                     if (usuario != null && usuario.Senha == Criptografia.RetornarHash(senha))
@@ -74,7 +74,7 @@ namespace SIAC.Models
                     acesso.CodOrdem = codOrdem + 1;
                     acesso.Usuario = usuario;
                     acesso.DtAcesso = DateTime.Now;
-                    acesso.IpAcesso = HttpContext.Current.RecuperarIp();
+                    acesso.IpAcesso = HttpContextManager.Current.RecuperarIp();
                     contexto.UsuarioAcesso.Add(acesso);
                     contexto.SaveChanges();
                     Sistema.UsuarioAtivo[usuario.Matricula] = acesso;

@@ -72,7 +72,7 @@ namespace SIAC.ViewModels
         public string RgOrgao { get; set; }
         public DateTime RgDtExpedicao { get; set; }
 
-        public DateTime DtNascimento { get; set; }
+        public DateTime? DtNascimento { get; set; }
         public string Sexo { get; set; }
 
         public string Matricula { get; set; }

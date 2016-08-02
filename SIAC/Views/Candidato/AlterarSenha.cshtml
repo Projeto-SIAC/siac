@@ -12,7 +12,7 @@
 @if (Model.TemMensagem)
 {
     <div class="ui message">
-        <p>@Model.Mensagem</p>
+        <p>@Html.Raw(Model.Mensagem)</p>
     </div>
 }
 

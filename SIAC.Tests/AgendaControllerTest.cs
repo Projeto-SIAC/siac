@@ -5,13 +5,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace SIAC.Tests
 {
     [TestClass]
-    public class AgendaControllerTest
+    public class AgendaControllerTest : BaseControllerTest
     {
-        AgendaController controller = new AgendaController();
+        private AgendaController controller;
+
+        [TestInitialize]
+        public override void SetupTest()
+        {
+            base.SetupTest();
+            this.controller = new AgendaController();
+            var context = new ControllerContext(this.moqHttpContext.Object, new RouteData(), this.controller);
+            this.controller.ControllerContext = context;
+        }
 
         [TestMethod]
         public void TestIndexView()
@@ -26,7 +36,7 @@ namespace SIAC.Tests
             JsonResult esperado = new JsonResult();
             List<object> resultados = new List<object>();
 
-            MockHelper.FakeLoginUsuario("20150002", "/principal/agenda");
+            this.Login("superusuario");
 
             resultados.Add(controller.Academicas("2015-02-02T08:55", "2015-02-02T08:55"));
             resultados.Add(controller.Certificacoes("2015-02-02T08:55", "2015-02-02T08:55"));

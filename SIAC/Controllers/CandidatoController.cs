@@ -139,8 +139,6 @@ namespace SIAC.Controllers
         {
             if (codigo == Sessao.Candidato.Cpf)
             {
-                if (ModelState.IsValid)
-                {
                     Candidato c = Candidato.ListarPorCPF(Sessao.Candidato.Cpf);
 
                     if (!string.IsNullOrWhiteSpace(model.Nome))
@@ -160,9 +158,9 @@ namespace SIAC.Controllers
                         c.RgOrgao = model.RgOrgao;
                     }
 
-                    if (model.DtNascimento != null)
+                    if (model.DtNascimento.HasValue)
                     {
-                        c.DtNascimento = model.DtNascimento;
+                        c.DtNascimento = model.DtNascimento.Value;
                     }
 
                     if (model.Sexo != null)
@@ -176,7 +174,10 @@ namespace SIAC.Controllers
                         c.TelefoneFixo = model.TelefoneFixo;
                     }
 
-                    c.Municipio = Municipio.ListarPorCodigo(model.Pais, model.Estado, model.Municipio);
+                    if (model.Municipio > 0)
+                    {
+                        c.Municipio = Municipio.ListarPorCodigo(model.Pais, model.Estado, model.Municipio);
+                    }
 
                     c.FlagAdventista = model.Adventista;
 
@@ -192,11 +193,6 @@ namespace SIAC.Controllers
                     }
 
                     Repositorio.Commit();
-                }
-                else
-                {
-                    //Lembrete.AdicionarNotificacao("Erro nas informações inseridas", Lembrete.NEGATIVO, 5);
-                }
             }
 
             if (!String.IsNullOrWhiteSpace(Request.QueryString["inscricao"]))
@@ -317,11 +313,11 @@ namespace SIAC.Controllers
 
                 if (c != null && c.Email.ToLower() == model.Email.ToLower())
                 {
-                    string token = Candidato.GerarTokenParaAlterarSenha(c.Cpf, c.Email);
+                    string token = Candidato.GerarTokenParaAlterarSenha(c);
                     string url = Request.Url.ToString();
-                    url = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("AlterarSenha", "Candidato", new { codigo = "" }) + $"/{token}";
+                    url = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("AlterarSenha", "Candidato", new { codigo = "" }) + $"/{Criptografia.Base64Encode(token)}";
                     EnviarEmail.SolicitarSenha(c.Email, c.Nome, url);
-                    TempData["EsqueceuSenhaMensagem"] = $"Um email com instruções foi enviado para {model.Email}.";
+                    TempData["EsqueceuSenhaMensagem"] = $"Um email com instruções foi enviado para {c.Email}.";
                     return RedirectToAction("EsqueceuSenha");
                 }
                 else
@@ -339,17 +335,21 @@ namespace SIAC.Controllers
         // GET: simulado/candidato/alterarsenha/{token}
         public ActionResult AlterarSenha(string codigo)
         {
+            var model = new CandidatoAlterarSenhaViewModel();
             string token = Uri.UnescapeDataString(codigo);
-            var valores = Candidato.LerTokenParaAlterarSenha(token);
-            if (!valores.Expirado)
+            Candidato candidato = Candidato.LerTokenParaAlterarSenha(Criptografia.Base64Decode(token));
+
+            if (candidato != null)
             {
-                return View(new CandidatoAlterarSenhaViewModel
-                {
-                    Cpf = valores.Cpf,
-                    Email = valores.Email
-                });
+                model.Cpf = candidato.Cpf;
+                model.Email = candidato.Email;
+            }        
+            else
+            {
+                model.Mensagem = "Seu acesso está inválido. Solicite novamente em <b>Tenho Cadastro > Esqueci minha senha</b>.";
             }
-            return RedirectToAction("Index");
+
+            return View(model);
         }
 
         // POST: simulado/candidato/alterarsenha/{token}
@@ -357,8 +357,8 @@ namespace SIAC.Controllers
         public ActionResult AlterarSenha(string codigo, CandidatoAlterarSenhaViewModel model)
         {
             string token = Uri.UnescapeDataString(codigo);
-            var valores = Candidato.LerTokenParaAlterarSenha(token);
-            if (!valores.Expirado)
+            Candidato candidado = Candidato.LerTokenParaAlterarSenha(Criptografia.Base64Decode(token));
+            if (candidado != null)
             {
                 if (!StringExt.IsNullOrWhiteSpace(model.Cpf, model.Email, model.Senha, model.Confirmacao)
                     && Valida.CPF(model.Cpf)
@@ -372,9 +372,10 @@ namespace SIAC.Controllers
 
                         if (c != null && c.Email.ToLower() == model.Email.ToLower())
                         {
-                            if (c.Cpf == valores.Cpf && c.Email.ToLower() == valores.Email.ToLower())
+                            if (c.Cpf == candidado.Cpf && c.Email.ToLower() == candidado.Email.ToLower())
                             {
                                 c.Senha = Criptografia.RetornarHash(model.Senha);
+                                c.AlterarSenha = null;
                                 model.Mensagem = "Senha alterada com sucesso.";
                                 model.Ok = true;
                                 contexto.SaveChanges();

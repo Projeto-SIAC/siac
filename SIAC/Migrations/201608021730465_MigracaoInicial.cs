@@ -3,7 +3,7 @@ namespace SIAC.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial : DbMigration
+    public partial class MigracaoInicial : DbMigration
     {
         public override void Up()
         {
@@ -625,7 +625,10 @@ namespace SIAC.Migrations
                         Descricao = c.String(maxLength: 500),
                         MediaAritmeticaAcerto = c.Decimal(precision: 8, scale: 3),
                         DesvioPadraoAcerto = c.Decimal(precision: 8, scale: 3),
-                        Peso = c.Int(),
+                        Peso = c.Single(nullable: false),
+                        TipoQuestoes = c.Int(nullable: false),
+                        FlagRedacao = c.Boolean(nullable: false),
+                        OrdemDesempate = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.Ano, t.NumIdentificador, t.CodDiaRealizacao, t.CodProva })
                 .ForeignKey("dbo.Professor", t => t.CodProfessor)
@@ -686,6 +689,7 @@ namespace SIAC.Migrations
                         FlagAdventista = c.Boolean(),
                         FlagNecessidadeEspecial = c.Boolean(),
                         DescricaoNecessidadeEspecial = c.String(maxLength: 255),
+                        AlterarSenha = c.String(maxLength: 64),
                     })
                 .PrimaryKey(t => t.CodCandidato)
                 .ForeignKey("dbo.Municipio", t => new { t.CodPais, t.CodEstado, t.CodMunicipio })
