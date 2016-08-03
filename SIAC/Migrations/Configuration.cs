@@ -10,7 +10,6 @@ namespace SIAC.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            ContextKey = "SIAC.Models.Contexto";
         }
 
         protected override void Seed(Contexto context)

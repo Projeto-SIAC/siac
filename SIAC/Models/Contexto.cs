@@ -5,9 +5,9 @@ namespace SIAC.Models
 
     public partial class Contexto : DbContext
     {
-        public Contexto()
-            : base((string)Helpers.Configuracoes.Recuperar("SIAC_DB"))
+        public Contexto() : base((string)Helpers.Configuracoes.Recuperar("SIAC_DB"))
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<Contexto, Migrations.Configuration>());
         }
 
         public int SaveChanges(bool alertar = true)
