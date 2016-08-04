@@ -70,7 +70,7 @@ namespace SIAC.Controllers
                 {
                     if (Sessao.Candidato.PerfilCompleto)
                     {
-                        string numeroMascara = new HashidsNet.Hashids(Configuracoes.Recuperar("SIAC_SALT") + s.Codigo, 6)
+                        string numeroMascara = new HashidsNet.Hashids(Configuracoes.Recuperar("SIAC_SECRET") + s.Codigo, 6)
                             .Encode(s.Ano, s.NumIdentificador, Sessao.Candidato.CodCandidato);
 
                         var candidato = new SimCandidato()

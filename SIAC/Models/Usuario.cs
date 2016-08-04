@@ -29,7 +29,7 @@ namespace SIAC.Models
         public int CodCategoria { get; set; }
 
         [Required]
-        [StringLength(64)]
+        [StringLength(60)]
         public string Senha { get; set; }
 
         public DateTime DtCadastro { get; set; }

@@ -1,14 +1,25 @@
 ﻿using System;
 using System.Configuration;
 using System.Text;
+using DevOne.Security.Cryptography.BCrypt;
 
 namespace SIAC.Helpers
 {
     public class Criptografia
     {
+        public static bool ChecarSenha(string senha, string hash)
+        {
+            return BCryptHelper.CheckPassword(senha, hash);
+        }
+
         public static string RetornarHash(string senha)
         {
-            string strSenha = Helpers.Configuracoes.Recuperar("SIAC_SALT") + senha;
+            return BCryptHelper.HashPassword(senha, BCryptHelper.GenerateSalt((int)Configuracoes.Recuperar("SIAC_LOG_ROUNDS", 10)));
+        }
+
+        public static string RetornarHashSHA256(string valor)
+        {
+            string strSenha = Helpers.Configuracoes.Recuperar("SIAC_SECRET") + valor;
             System.Security.Cryptography.SHA256 sha = new System.Security.Cryptography.SHA256CryptoServiceProvider();
             System.Text.StringBuilder sb = new StringBuilder();
             sha.ComputeHash(System.Text.ASCIIEncoding.ASCII.GetBytes(strSenha));

@@ -46,15 +46,15 @@ namespace SIAC.Models
             if (!Sistema.UsuarioAtivo.Keys.Contains(matricula))
             {
                 Usuario usuario = ListarPorMatricula(matricula);
-                if (usuario != null && usuario.Senha == Criptografia.RetornarHash(senha))
+                if (usuario != null && Criptografia.ChecarSenha(senha, usuario.Senha))
                     return usuario;
             }
             else if (HttpContextManager.Current.Request.Cookies.AllKeys.Contains("SIAC_Login"))
             {
-                if (HttpContextManager.Current.Request.Cookies["SIAC_Login"].Value == Criptografia.RetornarHash(matricula))
+                if (Criptografia.Base64Decode(HttpContextManager.Current.Request.Cookies["SIAC_Login"].Value).ToLower() == matricula.ToLower())
                 {
                     Usuario usuario = ListarPorMatricula(matricula);
-                    if (usuario != null && usuario.Senha == Criptografia.RetornarHash(senha))
+                    if (usuario != null && Criptografia.ChecarSenha(senha, usuario.Senha))
                         return usuario;
                 }
             }
@@ -89,12 +89,7 @@ namespace SIAC.Models
 
             if (usuario != null)
             {
-                string strSenha = Criptografia.RetornarHash(senha);
-
-                if (usuario.Senha == strSenha)
-                {
-                    return true;
-                }
+                return Criptografia.ChecarSenha(senha, usuario.Senha);
             }
 
             return false;

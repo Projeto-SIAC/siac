@@ -38,7 +38,7 @@ namespace SIAC.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(64)]
+        [StringLength(60)]
         public string Senha { get; set; }
 
         public DateTime DtCadastro { get; set; }

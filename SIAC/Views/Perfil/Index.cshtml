@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        @if (Model.CodCategoria < Categoria.COLABORADOR)
+        @if (Model.CodCategoria == Categoria.PROFESSOR || Model.CodCategoria == Categoria.ALUNO)
         {
             <h3 class="ui dividing header" data-html="Ano de referência: <b>@(DateTime.Today.Year)</b>.">
                 Informações Acadêmicas
@@ -104,28 +104,35 @@
             </div>
         }
     </div>
-    <div id="estatisticas" class="eight wide column">
-        <div class="ui active centered text loader">Carregando estatísticas...</div>
-    </div>
+    @if (Model.CodCategoria > Categoria.SUPERUSUARIO)
+    {
+        <div id="estatisticas" class="eight wide column">
+            <div class="ui active centered text loader">Carregando estatísticas...</div>
+        </div>
+    }
 </div>
 
-<div class="ui opiniao modal">
-    <i class="close icon"></i>
-    <div class="header">Enviar opinião</div>
-    <div class="content">
-        <p>Este espaço é reservado para você enviar uma opinião sobre o Sistema. Queremos saber suas críticas, sugestões e impressões.</p>
-        <div class="ui form">
-            <div class="field">
-                <label for="txtOpiniao">Forneça abaixo sua opinião</label>
-                <textarea id="txtOpiniao" rows="3" placeholder="Opinião..."></textarea>
+@if (Model.CodCategoria > Categoria.SUPERUSUARIO)
+{
+    <div class="ui opiniao modal">
+        <i class="close icon"></i>
+        <div class="header">Enviar opinião</div>
+        <div class="content">
+            <p>Este espaço é reservado para você enviar uma opinião sobre o Sistema. Queremos saber suas críticas, sugestões e impressões.</p>
+            <div class="ui form">
+                <div class="field">
+                    <label for="txtOpiniao">Forneça abaixo sua opinião</label>
+                    <textarea id="txtOpiniao" rows="3" placeholder="Opinião..."></textarea>
+                </div>
             </div>
         </div>
+        <div class="actions">
+            <div class="ui cancel button">Cancelar</div>
+            <div class="ui approve button">Enviar</div>
+        </div>
     </div>
-    <div class="actions">
-        <div class="ui cancel button">Cancelar</div>
-        <div class="ui approve button">Enviar</div>
-    </div>
-</div>
+}
+
 
 <form action="@Url.Action("AlterarSenha")" method="post" class="ui small senha modal">
     <i class="close icon"></i>
@@ -153,7 +160,10 @@
 </form>
 
 <a href="@Url.Action("Index", "Principal")" class="ui button">Voltar para Principal</a>
-<div class="ui opiniao button">Enviar opinião</div>
+@if (Model.CodCategoria > Categoria.SUPERUSUARIO)
+{
+    <div class="ui opiniao button">Enviar opinião</div>
+}
 <div class="ui right floated senha button"><i class="lock icon"></i> Alterar senha</div>
 
 @section Scripts {

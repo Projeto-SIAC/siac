@@ -63,7 +63,7 @@ namespace SIAC.Controllers
                 Response.Cookies.Add(new System.Web.HttpCookie("SIAC_Login")
                 {
                     Expires = DateTime.Now.AddMinutes(30),
-                    Value = Criptografia.RetornarHash(Sessao.UsuarioMatricula)
+                    Value = Criptografia.Base64Encode(Sessao.UsuarioMatricula)
                 });
                 Lembrete.AdicionarNotificacao("Seu usuário foi autenticado com sucesso.", Lembrete.POSITIVO);
                 if (Request.QueryString["continuar"] != null)

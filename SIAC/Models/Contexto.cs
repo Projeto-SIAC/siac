@@ -840,8 +840,7 @@ namespace SIAC.Models
 
             modelBuilder.Entity<Usuario>()
                 .Property(e => e.Senha)
-                .IsFixedLength()
-                .IsUnicode(false);
+                .IsFixedLength();
 
             modelBuilder.Entity<Usuario>()
                 .HasMany(e => e.Aluno)

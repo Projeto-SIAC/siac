@@ -89,7 +89,7 @@ namespace SIAC.Migrations
                 new Usuario
                 {
                     Matricula = "superusuario",
-                    Senha = Helpers.Criptografia.RetornarHash("senha"),
+                    Senha = Helpers.Criptografia.RetornarHash("superusuario"),
                     CodPessoaFisica = 1,
                     CodCategoria = Categoria.SUPERUSUARIO,
                     DtCadastro = System.DateTime.Now
