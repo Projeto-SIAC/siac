@@ -225,7 +225,8 @@ siac.Academica.Detalhe = (function () {
                 },
                 complete: function () {
                     $_this.removeClass('loading');
-                }
+                },
+                notificacoes: false
             });
         });
 

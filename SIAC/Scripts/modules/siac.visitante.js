@@ -308,7 +308,8 @@ siac.Visitante.Detalhe = (function () {
             },
             error: function () {
                 siac.mensagem('Por favor, recarrega a página e tente novamente.', 'Ocorreu um erro desconhecido');
-            }
+            },
+            notificacoes: false
         });
     }
 
