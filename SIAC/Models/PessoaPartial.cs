@@ -13,5 +13,9 @@
             contexto.SaveChanges();
             return pessoa.CodPessoa;
         }
+        public static Pessoa ListarPorCodigo(int codPessoa)
+        {
+            return contexto.Pessoa.Find(codPessoa);
+        }
     }
 }

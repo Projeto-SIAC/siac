@@ -103,6 +103,25 @@ namespace SIAC.Models
             return usuario.CodPessoaFisica;
         }
 
+        public static void Remover(string matricula)
+        {
+            Usuario usuario = Usuario.ListarPorMatricula(matricula);
+
+            int codPessoa = usuario.CodPessoaFisica;
+
+            foreach (var acesso in usuario.UsuarioAcesso)
+            {
+                acesso.UsuarioAcessoPagina.Clear();
+            }
+            usuario.UsuarioAcesso.Clear();
+            usuario.UsuarioOpiniao.Clear();
+            contexto.Usuario.Remove(usuario);
+            contexto.PessoaFisica.Remove(PessoaFisica.ListarPorCodigo(codPessoa));
+            contexto.Pessoa.Remove(Pessoa.ListarPorCodigo(codPessoa));
+
+            contexto.SaveChanges();
+        }
+
         public static Usuario ListarPorMatricula(string matricula) => contexto.Usuario.Find(matricula);
 
         public static int ObterPessoaFisica(string matricula) => contexto.Usuario.Find(matricula).CodPessoaFisica;

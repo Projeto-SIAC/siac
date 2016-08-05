@@ -437,8 +437,9 @@ namespace SIAC.Controllers
                 string matricula = form["txtMatricula"].Trim();
                 string senha = form["txtSenha"];
                 string senhaConfirmacao = form["txtSenhaConfirmacao"];
-                string[] disciplinas = form["ddlDisciplina"].Split(',');
-                if (!StringExt.IsNullOrWhiteSpace(nome, matricula, senha, senha) && disciplinas.Length > 0)
+
+                string[] disciplinas = form["ddlDisciplina"]?.Split(',');
+                if (!StringExt.IsNullOrWhiteSpace(nome, matricula, senha, senha) && disciplinas?.Length > 0)
                 {
                     if (senha == senhaConfirmacao)
                     {
@@ -699,11 +700,29 @@ namespace SIAC.Controllers
             {
                 try
                 {
-                    Repositorio.GetInstance().Colaborador.Remove(colaborador);
-                    Repositorio.Commit();
-
-                    lembrete = Lembrete.POSITIVO;
-                    mensagem = $"Colaborador(a) \"{colaborador.Usuario.PessoaFisica.Nome}\" excluído(a) com sucesso.";
+                    if (colaborador.AvalAvi.Count > 0)
+                        mensagem = $"Não é possível excluir este(a) colaborador(a), pois ele tem vínculo com Avaliação Institucional.";
+                    else if (colaborador.Diretoria.Count > 0)
+                        mensagem = $"Não é possível excluir este(a) colaborador(a), pois ele tem vínculo com Diretoria.";
+                    else if (colaborador.Campus.Count > 0)
+                        mensagem = $"Não é possível excluir este(a) colaborador(a), pois ele tem vínculo com Campus.";
+                    else if (colaborador.ProReitoria.Count > 0)
+                        mensagem = $"Não é possível excluir este(a) colaborador(a), pois ele tem vínculo com Pró-Reitoria.";
+                    else if (colaborador.Reitoria.Count > 0)
+                        mensagem = $"Não é possível excluir este(a) colaborador(a), pois ele tem vínculo com Reitoria.";
+                    else if (colaborador.Simulado.Count > 0)
+                        mensagem = $"Não é possível excluir este(a) colaborador(a), pois ele tem vínculo com Simulado.";
+                    else if (colaborador.Curso.Count > 0)
+                        mensagem = $"Não é possível excluir este(a) colaborador(a), pois ele tem vínculo com Curso.";
+                    else
+                    {
+                        string nome = colaborador.Usuario.PessoaFisica.Nome;
+                        Colaborador.Remover(colaborador);
+                        Repositorio.Commit();
+   
+                        lembrete = Lembrete.POSITIVO;
+                        mensagem = $"Colaborador(a) \"{nome}\" excluído(a) com sucesso.";
+                    }
                 }
                 catch
                 {
