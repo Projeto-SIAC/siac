@@ -577,6 +577,149 @@ namespace SIAC.Controllers
 
         #endregion Professores
 
+        #region Colaboradores
+
+        // GET: simulado/gerencia/colaboradores
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
+        public ActionResult Colaboradores() => View(new GerenciaColaboradoresViewModel()
+        {
+            Colaboradores = Colaborador.ListarOrdenadamente()
+        });
+
+        // POST: simulado/gerencia/novocolaborador
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
+        public ActionResult NovoColaborador(FormCollection form)
+        {
+            string lembrete = Lembrete.NEGATIVO;
+            string mensagem = "Ocorreu um erro ao tentar cadastrar um(a) novo(a) professor(a).";
+
+            if (form.HasKeys())
+            {
+                string nome = form["txtNome"].Trim();
+                string matricula = form["txtMatricula"].Trim();
+                string senha = form["txtSenha"];
+                string senhaConfirmacao = form["txtSenhaConfirmacao"];
+                if (!StringExt.IsNullOrWhiteSpace(nome, matricula, senha, senha))
+                {
+                    if (senha == senhaConfirmacao)
+                    {
+                        int codPessoa = Pessoa.Inserir(new Pessoa() { TipoPessoa = Pessoa.FISICA });
+
+                        var pf = new PessoaFisica();
+                        pf.CodPessoa = codPessoa;
+                        pf.Nome = nome;
+                        pf.Categoria.Add(Categoria.ListarPorCodigo(Categoria.COLABORADOR));
+
+                        int codPessoaFisica = PessoaFisica.Inserir(pf);
+
+                        var usuario = new Usuario();
+                        usuario.Matricula = matricula;
+                        usuario.CodPessoaFisica = codPessoaFisica;
+                        usuario.CodCategoria = Categoria.COLABORADOR;
+                        usuario.Senha = Criptografia.RetornarHash(senhaConfirmacao);
+
+                        int codUsuario = Usuario.Inserir(usuario);
+
+                        var colaborador = new Colaborador();
+                        colaborador.MatrColaborador = usuario.Matricula;
+                        
+                        Colaborador.Inserir(colaborador);
+
+                        lembrete = Lembrete.POSITIVO;
+                        mensagem = $"Novo(a) colaborador(a) \"{pf.Nome}\" cadastrado(a) com sucesso.";
+                    }
+                    else
+                    {
+                        mensagem = "A Senha informada deve ser igual à Confirmação da Senha.";
+                    }
+                }
+                else
+                {
+                    mensagem = "Todos os campos são necessário para cadastrar um(a) novo(a) colaborador(a).";
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, lembrete);
+            return RedirectToAction("Colaboradores");
+        }
+
+        // POST: gerencia/carregarcolaborador
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
+        public ActionResult CarregarColaborador(string colaborador) => PartialView("_CarregarColaborador", new GerenciaEditarColaboradorViewModel()
+        {
+            Colaborador = Colaborador.ListarPorMatricula(colaborador)
+        });
+
+        // POST: simulado/gerencia/editarcolaborador
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
+        public ActionResult EditarColaborador(string codigo, FormCollection form)
+        {
+            string lembrete = Lembrete.NEGATIVO;
+            string mensagem = "Ocorreu um erro ao tentar editar um(a) colaborador(a).";
+
+            Colaborador colaborador = Colaborador.ListarPorMatricula(codigo);
+
+            if (colaborador != null && form.HasKeys())
+            {
+                string nome = form["txtNome"].Trim();
+
+                if (!StringExt.IsNullOrWhiteSpace(nome))
+                {
+                    colaborador.Usuario.PessoaFisica.Nome = nome;
+                    
+                    Repositorio.Commit();
+
+                    lembrete = Lembrete.POSITIVO;
+                    mensagem = $"Colaborador(a) \"{nome}\" editado(a) com sucesso.";
+                }
+                else
+                {
+                    mensagem = "Todos os campos são necessário para editar um(a) colaborador(a).";
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, lembrete);
+            return RedirectToAction("Colaboradores");
+        }
+
+        // POST: simulado/gerencia/excluircolaborador
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
+        public void ExcluirColaborador(string codigo)
+        {
+            string lembrete = Lembrete.NEGATIVO;
+            string mensagem = "Ocorreu um erro ao tentar excluir um(a) colaborador(a).";
+
+            Colaborador colaborador = Colaborador.ListarPorMatricula(codigo);
+
+            if (colaborador != null)
+            {
+                try
+                {
+                    Repositorio.GetInstance().Colaborador.Remove(colaborador);
+                    Repositorio.Commit();
+
+                    lembrete = Lembrete.POSITIVO;
+                    mensagem = $"Colaborador(a) \"{colaborador.Usuario.PessoaFisica.Nome}\" excluído(a) com sucesso.";
+                }
+                catch
+                {
+                    Repositorio.Dispose();
+                    Repositorio.Commit();
+
+                    lembrete = Lembrete.NEGATIVO;
+                    mensagem = $"Não é possível excluir este(a) colaborador(a).";
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, lembrete);
+        }
+
+        #endregion Colaboradores
+
         #region Configuracoes
 
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR }, Ocupacoes = new[] { Ocupacao.SUPERUSUARIO, Ocupacao.REITOR, Ocupacao.DIRETOR_GERAL, Ocupacao.COORDENADOR_SIMULADO })]

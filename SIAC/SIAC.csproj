@@ -690,6 +690,8 @@
     <Content Include="Views\Shared\Partials\_AnexoTexto.cshtml" />
     <Content Include="Views\Simulado\Pontuacoes.cshtml" />
     <Content Include="Views\Simulado\Partials\_SimuladoPontuacoesProva.cshtml" />
+    <Content Include="Views\Gerencia\Colaboradores.cshtml" />
+    <Content Include="Views\Gerencia\Partials\_CarregarColaborador.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
