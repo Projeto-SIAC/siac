@@ -66,7 +66,8 @@ siac.Gerencia.Blocos = (function () {
                         },
                         complete: function () {
                             location.reload();
-                        }
+                        },
+                        notificacoes: false
                     });
                 }
             }).modal('show');
@@ -143,7 +144,8 @@ siac.Gerencia.Salas = (function () {
                         },
                         complete: function () {
                             location.reload();
-                        }
+                        },
+                        notificacoes: false
                     });
                 }
             }).modal('show');
@@ -233,7 +235,8 @@ siac.Gerencia.Disciplinas = (function () {
                         },
                         complete: function () {
                             location.reload();
-                        }
+                        },
+                        notificacoes: false
                     });
                 }
             }).modal('show');
@@ -326,7 +329,8 @@ siac.Gerencia.Professores = (function () {
                         },
                         complete: function () {
                             location.reload();
-                        }
+                        },
+                        notificacoes: false
                     });
                 }
             }).modal('show');
