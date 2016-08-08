@@ -3,7 +3,8 @@
 }
 
 @section Styles {
-    @Styles.Render("~/bundles/fullcalendar/css")    
+    @Styles.Render("~/bundles/fullcalendar/css") 
+    @Styles.RenderFormat("<link href=\"{0}\" rel=\"stylesheet\" media=\"print\"/>", "~/bundles/fullcalendar/css/print")  
 }
 
 <h2>@ViewBag.Title</h2>

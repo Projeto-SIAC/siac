@@ -181,19 +181,10 @@
     <Content Include="Resources\images\layout\background3.jpg" />
     <Content Include="Resources\images\layout\loader.gif" />
     <Content Include="Resources\images\layout\ogimage.jpg" />
-    <Content Include="Scripts\libs\alertify.min.js" />
-    <Content Include="Scripts\libs\chart.min.js" />
-    <Content Include="Scripts\libs\fullcalendar.min.js" />
-    <Content Include="Scripts\libs\fullcalendar.pt-br.min.js" />
-    <Content Include="Scripts\libs\html2canvas.js" />
-    <Content Include="Scripts\libs\html2canvas.min.js">
-      <DependentUpon>html2canvas.js</DependentUpon>
-    </Content>
     <Content Include="Resources\images\content\acesso\amostra.jpg" />
     <Content Include="Resources\images\layout\background2.jpg" />
     <Content Include="Resources\images\layout\logo-black.png" />
     <Content Include="Resources\images\layout\logo.png" />
-    <Content Include="Scripts\libs\moment.min.js" />
     <Content Include="Scripts\modules\siac.arquivo.js" />
     <Content Include="Scripts\modules\siac.academica.js" />
     <Content Include="Scripts\modules\siac.anexo.js" />
@@ -208,25 +199,14 @@
     <Content Include="Scripts\modules\siac.visitante.js" />
     <Content Include="Scripts\plugins\jquery.address-1.6.min.js" />
     <Content Include="Scripts\plugins\jquery.mask-1.13.4.min.js" />
-    <Content Include="Scripts\libs\jquery.min.js" />
-    <Content Include="Scripts\libs\modernizr.js" />
     <Content Include="Scripts\modules\siac.configuracoes.js" />
     <Content Include="Scripts\modules\siac.questao.js" />
-    <Content Include="Styles\alertify.min.css" />
-    <Content Include="Styles\fullcalendar.css" />
-    <Content Include="Styles\fullcalendar.print.css" />
-    <Content Include="Styles\semantic.min.css" />
-    <Content Include="Scripts\libs\semantic.min.js" />
     <Content Include="Styles\siac.acesso.css" />
     <Content Include="Styles\siac.css" />
     <Content Include="Styles\siac.simulado.css" />
-    <Content Include="Styles\themes\basic\assets\fonts\icons.svg" />
-    <Content Include="Styles\themes\default\assets\fonts\icons.svg" />
-    <Content Include="Styles\themes\default\assets\images\flags.png" />
     <Content Include="Global.asax" />
     <Content Include="Resources\videos\background.mp4" />
     <Content Include="Scripts\plugins\jquery.signalR-2.2.0.min.js" />
-    <Content Include="Styles\themes\semantic.min.css" />
     <Content Include="Templates\Email\__SimuladoEncerrado.html" />
     <Content Include="Views\Simulado\Datas.cshtml" />
     <Content Include="Web.config">
@@ -478,17 +458,11 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
-    <Content Include="Styles\themes\basic\assets\fonts\icons.eot" />
-    <Content Include="Styles\themes\basic\assets\fonts\icons.ttf" />
-    <Content Include="Styles\themes\basic\assets\fonts\icons.woff" />
-    <Content Include="Styles\themes\default\assets\fonts\icons.eot" />
-    <Content Include="Styles\themes\default\assets\fonts\icons.ttf" />
-    <Content Include="Styles\themes\default\assets\fonts\icons.woff" />
-    <Content Include="Styles\themes\default\assets\fonts\icons.woff2" />
     <Content Include="Views\Principal\Index.cshtml" />
     <Content Include="Views\Acesso\Index.cshtml" />
     <Content Include="Resources\videos\background.webm" />
-    <None Include="bundleconfig.json" />
+    <Content Include=".bowerrc" />
+    <Content Include="bower.json" />
     <None Include="MvcSiteMapSchema.xsd">
       <SubType>Designer</SubType>
     </None>

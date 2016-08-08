@@ -6,20 +6,22 @@ namespace SIAC
     {
         public static void RegisterBundles(BundleCollection bundles)
         {
+            #region Scripts
+
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                "~/scripts/libs/modernizr.js"
+                "~/bower_components/modernizr/modernizr.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/js/essentials").Include(
-                "~/scripts/libs/jquery.min.js",
-                "~/scripts/libs/semantic.min.js"
+                "~/bower_components/jquery/dist/jquery.min.js",
+                "~/bower_components/semantic-ui/dist/semantic.min.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
-                "~/scripts/libs/jquery.min.js",
-                "~/scripts/libs/semantic.min.js",
-                "~/scripts/libs/html2canvas.min.js",
-                "~/scripts/libs/alertify.min.js",
+                "~/bower_components/jquery/dist/jquery.min.js",
+                "~/bower_components/semantic-ui/dist/semantic.min.js",
+                "~/bower_components/html2canvas/dist/html2canvas.min.js",
+                "~/bower_components/alertify-js/build/alertify.min.js",
                 "~/scripts/plugins/jquery.mask-1.13.4.min.js",
                 "~/scripts/plugins/jquery.address-1.6.min.js",
                 "~/scripts/siac.js",
@@ -93,19 +95,23 @@ namespace SIAC
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/fullcalendar/js").Include(
-                "~/scripts/libs/moment.min.js",
-                "~/scripts/libs/fullcalendar.min.js",
-                "~/scripts/libs/fullcalendar.pt-br.min.js"
+                "~/bower_components/moment/min/moment.min.js",
+                "~/bower_components/fullcalendar/dist/fullcalendar.min.js",
+                "~/bower_components/fullcalendar/dist/lang/pt-br.js"
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/chart").Include(
-                "~/scripts/libs/chart.min.js"
+                "~/bower_components/chart.js/chart.min.js"
             ));
 
+            #endregion Scripts
+
+            #region Styles
+
             bundles.Add(new StyleBundle("~/bundles/css").Include(
-                "~/styles/semantic.min.css",
-                "~/styles/themes/semantic.min.css",
-                "~/styles/alertify.min.css",
+                "~/bower_components/semantic-ui/dist/semantic.min.css",
+                "~/bower_components/alertify-js/build/css/themes/semantic.min.css",
+                "~/bower_components/alertify-js/build/css/alertify.min.css",
                 "~/styles/siac.css"
             ));
 
@@ -114,14 +120,19 @@ namespace SIAC
             ));
 
             bundles.Add(new StyleBundle("~/bundles/fullcalendar/css").Include(
-                "~/styles/fullcalendar.css",
-                "~/styles/fullcalendar.print.css"
+                "~/bower_components/fullcalendar/dist/fullcalendar.min.css"
+            ));
+
+            bundles.Add(new StyleBundle("~/bundles/fullcalendar/css/print").Include(
+                "~/bower_components/fullcalendar/dist/fullcalendar.print.css"
             ));
 
             bundles.Add(new StyleBundle("~/bundles/css/acesso").Include(
-                "~/styles/semantic.min.css",
+                "~/bower_components/semantic-ui/dist/semantic.min.css",
                 "~/styles/siac.acesso.css"
             ));
+
+            #endregion Styles
         }
     }
 }

@@ -1,0 +1,14 @@
+{
+  "name": "ASP.NET",
+  "private": true,
+  "dependencies": {
+    "jquery": "2.1.4",
+    "semantic-ui": "~2.2.2",
+    "alertify-js": "~1.6.0",
+    "Chart.js": "~1.0.2",
+    "fullcalendar": "~2.9.1",
+    "html2canvas": "~0.4.1",
+    "modernizr": "^3.3.1",
+    "moment": "~2.14.1"
+  }
+}
