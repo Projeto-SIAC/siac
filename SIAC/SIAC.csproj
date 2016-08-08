@@ -597,6 +597,7 @@
     <Content Include="Views\Shared\Partials\_AvaliacaoAgendar.cshtml" />
     <Content Include="Views\Shared\Partials\_AvaliacaoIndex.cshtml" />
     <Content Include="Views\Shared\Partials\_AvaliacaoConfigurar.cshtml" />
+    <Content Include="package.json" />
     <None Include="Properties\PublishProfiles\Felipe.pubxml" />
     <Content Include="Views\Academica\Partials\_PassoAPasso.cshtml" />
     <Content Include="Views\Shared\Partials\_AvaliacaoRealizar.cshtml" />
