@@ -667,7 +667,7 @@ namespace SIAC.Controllers
                         int tipoQuestoes;
                         int.TryParse(ddlTipoQuestoes, out tipoQuestoes);
 
-                        alterarQuestoes = qteQuestoes != prova.QteQuestoes || codDisciplina != prova.CodDisciplina || tipoQuestoes != prova.TipoQuestoes;
+                        alterarQuestoes = qteQuestoes != prova.QteQuestoes || codDisciplina != prova.CodDisciplina || tipoQuestoes != prova.TipoQuestoes || prova.SimProvaQuestao.Count < qteQuestoes;
 
                         prova.Titulo = txtTitulo;
                         prova.Descricao = String.IsNullOrWhiteSpace(txtDescricao) ? String.Empty : txtDescricao;

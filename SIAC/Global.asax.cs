@@ -44,13 +44,21 @@ namespace SIAC
                         var acesso = Models.Sistema.UsuarioAtivo[Helpers.Sessao.UsuarioMatricula];
                         var acessos = acesso.UsuarioAcessoPagina;
                         int numIdentificador = acessos.Count > 0 ? acesso.UsuarioAcessoPagina.Max(a => a.NumIdentificador) : 0;
+                        var dados = new Dictionary<string, string>();
+                        foreach (string chave in HttpContextManager.Current.Request.Form.Keys)
+                        {
+                            if (!chave.ToLower().Contains("senha"))
+                            {
+                                dados.Add(chave, HttpContextManager.Current.Request.Form[chave]);
+                            }
+                        }
                         acesso.UsuarioAcessoPagina.Add(new Models.UsuarioAcessoPagina()
                         {
                             NumIdentificador = numIdentificador + 1,
                             Pagina = HttpContextManager.Current.Request.Url.PathAndQuery.ToString(),
                             DtAbertura = DateTime.Now,
                             PaginaReferencia = HttpContextManager.Current.Request.UrlReferrer?.PathAndQuery.ToString(),
-                            Dados = HttpContextManager.Current.Request.Form.HasKeys() ? HttpContextManager.Current.Request.Form.ToString() : null
+                            Dados = dados.Count > 0 ? Helpers.Criptografia.Base64Encode(JsonConvert.SerializeObject(dados)) : null
                         });
                         Models.Repositorio.GetInstance().SaveChanges(false);
                     }

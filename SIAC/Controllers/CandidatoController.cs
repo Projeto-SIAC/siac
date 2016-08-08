@@ -215,13 +215,11 @@ namespace SIAC.Controllers
             if (!StringExt.IsNullOrWhiteSpace(senhaAtual, senhaNova, senhaConfirmacao))
             {
                 Candidato c = Sessao.Candidato;
-                string hashSenhaAtual = Criptografia.RetornarHash(senhaAtual);
-                if (hashSenhaAtual == c.Senha)
+                if (Criptografia.ChecarSenha(senhaAtual, c.Senha))
                 {
                     if (senhaNova == senhaConfirmacao)
                     {
-                        string hashSenhaNova = Criptografia.RetornarHash(senhaNova);
-                        c.Senha = hashSenhaNova;
+                        c.Senha = Criptografia.RetornarHash(senhaNova);
                         Repositorio.Commit();
                         mensagem = "Senha alterada com sucesso.";
                     }

@@ -66,7 +66,8 @@ siac.Gerencia.Blocos = (function () {
                         },
                         complete: function () {
                             location.reload();
-                        }
+                        },
+                        notificacoes: false
                     });
                 }
             }).modal('show');
@@ -143,7 +144,8 @@ siac.Gerencia.Salas = (function () {
                         },
                         complete: function () {
                             location.reload();
-                        }
+                        },
+                        notificacoes: false
                     });
                 }
             }).modal('show');
@@ -233,7 +235,8 @@ siac.Gerencia.Disciplinas = (function () {
                         },
                         complete: function () {
                             location.reload();
-                        }
+                        },
+                        notificacoes: false
                     });
                 }
             }).modal('show');
@@ -326,7 +329,151 @@ siac.Gerencia.Professores = (function () {
                         },
                         complete: function () {
                             location.reload();
-                        }
+                        },
+                        notificacoes: false
+                    });
+                }
+            }).modal('show');
+        });
+
+        siac.Gerencia.adicionarEventoNoFormulario();
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();
+
+siac.Gerencia.Colaboradores = (function () {
+    function iniciar() {
+        $('.ui.modal').modal();
+
+        $('.ui.dropdown').dropdown();
+
+        $('.novo.button').click(function () { $('.ui.novo.modal').modal('show') });
+
+        $('.editar.button').click(function () {
+            var _this = $(this)
+            _colaborador = _this.data('colaborador');;
+            $.ajax({
+                url: '/simulado/gerencia/carregarcolaborador',
+                method: 'POST',
+                data: {
+                    'colaborador': _colaborador
+                },
+                beforeSend: function () {
+                    _this.addClass('loading');
+                },
+                success: function (data) {
+                    $('form.editar').attr('action', '/simulado/gerencia/editarcolaborador/' + _colaborador)
+                    $('.ui.editar.modal').html(data).modal('show');
+                    $('.ui.editar.modal .ui.dropdown').dropdown();
+                },
+                error: function () {
+                    siac.mensagem('Falha ao recuperar o Colaborador para edição. Atualize a página para tentar novamente.');
+                },
+                complete: function () {
+                    _this.removeClass('loading');
+                    siac.Gerencia.adicionarEventoNoFormulario();
+                }
+            });
+        });
+
+        $('.excluir.button').click(function () {
+            var _this = $(this),
+                $modal = $('.ui.excluir.modal'),
+                colaborador = _this.data('colaborador'),
+                colaboradorNome = _this.closest('tr').find('[colaborador-nome]').text(),
+                colaboradorMatricula = _this.closest('tr').find('[colaborador-matricula]').text();
+
+            $modal.find('[colaborador-nome]').text(colaboradorNome);
+            $modal.find('[colaborador-matricula]').text(colaboradorMatricula);
+
+            $modal.modal({
+                onApprove: function () {
+                    $.ajax({
+                        url: '/simulado/gerencia/excluircolaborador',
+                        method: 'POST',
+                        data: {
+                            'codigo': colaborador
+                        },
+                        complete: function () {
+                            location.reload();
+                        },
+                        notificacoes: false
+                    });
+                }
+            }).modal('show');
+        });
+
+        siac.Gerencia.adicionarEventoNoFormulario();
+    }
+
+    return {
+        iniciar: iniciar
+    }
+})();
+
+siac.Gerencia.Campi = (function () {
+    function iniciar() {
+        $('.ui.modal').modal();
+
+        $('.ui.dropdown').dropdown();
+
+        $('.novo.button').click(function () { $('.ui.novo.modal').modal('show') });
+
+        $('.editar.button').click(function () {
+            var _this = $(this)
+            _campus = _this.data('campus');
+            console.log(_campus);
+            $.ajax({
+                url: '/simulado/gerencia/carregarcampus',
+                method: 'POST',
+                data: {
+                    'campus': _campus
+                },
+                beforeSend: function () {
+                    _this.addClass('loading');
+                },
+                success: function (data) {
+                    $('form.editar').attr('action', '/simulado/gerencia/editarcampus/' + _campus.toString().replace('.','-'))
+                    $('.ui.editar.modal').html(data).modal('show');
+                    $('.ui.editar.modal .ui.dropdown').dropdown();
+                },
+                error: function () {
+                    siac.mensagem('Falha ao recuperar o Campus para edição. Atualize a página para tentar novamente.');
+                },
+                complete: function () {
+                    _this.removeClass('loading');
+                    siac.Gerencia.adicionarEventoNoFormulario();
+                }
+            });
+        });
+
+        $('.excluir.button').click(function () {
+            var _this = $(this),
+                $modal = $('.ui.excluir.modal'),
+                campus = _this.data('campus'),
+                campusNome = _this.closest('tr').find('[campus-nome]').text(),
+                campusSigla = _this.closest('tr').find('[campus-sigla]').text(),
+                campusDiretor = _this.closest('tr').find('[campus-diretor]').text();
+
+            $modal.find('[campus-nome]').text(campusNome);
+            $modal.find('[campus-sigla]').text(campusSigla);
+            $modal.find('[campus-diretor]').text(campusDiretor);
+
+            $modal.modal({
+                onApprove: function () {
+                    $.ajax({
+                        url: '/simulado/gerencia/excluircampus',
+                        method: 'POST',
+                        data: {
+                            'codigo': campus
+                        },
+                        complete: function () {
+                            location.reload();
+                        },
+                        notificacoes: false
                     });
                 }
             }).modal('show');

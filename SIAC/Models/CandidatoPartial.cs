@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using HashidsNet;
 
 namespace SIAC.Models
 {
@@ -53,7 +54,7 @@ namespace SIAC.Models
         public static Candidato Autenticar(string cpf, string senha)
         {
             Candidato candidato = ListarPorCPF(Formate.DeCPF(cpf));
-            if (candidato != null && candidato.Senha == Criptografia.RetornarHash(senha))
+            if (candidato != null && Criptografia.ChecarSenha(senha, candidato.Senha))
                 return candidato;
             return null;
         }
@@ -69,21 +70,21 @@ namespace SIAC.Models
         public static string GerarTokenParaAlterarSenha(Candidato c)
         {
             var candidato = contexto.Candidato.Find(c.CodCandidato);
-            string token = new HashidsNet.Hashids((string)Configuracoes.Recuperar("SIAC_SALT"), 10).EncodeLong(new[] { c.CodCandidato, DateTime.Now.AddMinutes(30).ToUnixTime() });
-            candidato.AlterarSenha = Criptografia.RetornarHash(token);
+            string token = new Hashids((string)Configuracoes.Recuperar("SIAC_SECRET"), 10).EncodeLong(new[] { c.CodCandidato, DateTime.Now.AddMinutes(30).ToUnixTime() });
+            candidato.AlterarSenha = Criptografia.RetornarHashSHA256(token);
             contexto.SaveChanges(false);
             return token;
         }
 
         public static Candidato LerTokenParaAlterarSenha(string token)
         {
-            long[] valores = new HashidsNet.Hashids((string)Configuracoes.Recuperar("SIAC_SALT"), 10).DecodeLong(token);
+            long[] valores = new Hashids((string)Configuracoes.Recuperar("SIAC_SECRET"), 10).DecodeLong(token);
 
             if (valores.Length == 2)
             {
                 var candidato = contexto.Candidato.Find((int)valores[0]);
                 var expirado = DateTime.Now.ToUnixTime() > valores[1];
-                if (!expirado && candidato.AlterarSenha == Criptografia.RetornarHash(token))
+                if (!expirado && candidato.AlterarSenha == Criptografia.RetornarHashSHA256(token))
                 {
                     return candidato;
                 }

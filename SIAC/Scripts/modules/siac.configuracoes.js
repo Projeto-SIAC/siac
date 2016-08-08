@@ -293,7 +293,8 @@ siac.Configuracoes.Institucional = (function () {
                 type: 'post',
                 data: { codPessoaFisica: codPessoa },
                 success: function () { window.location.reload(); },
-                error: function () { siac.mensagem('Ocorreu um erro com sua solicitação. Por favor, tente novamente mais tarde.'); }
+                error: function () { siac.mensagem('Ocorreu um erro com sua solicitação. Por favor, tente novamente mais tarde.'); },
+                notificacoes: false
             });
         }
     }
@@ -349,7 +350,8 @@ siac.Configuracoes.Institucional = (function () {
             data: { codPessoaFisica: arrPessoas },
             success: function () { window.location.reload(); },
             error: function () { siac.mensagem('Ocorreu um erro com sua solicitação. Por favor, tente novamente mais tarde.'); },
-            complete: function () { $btnRemover.removeClass('loading'); }
+            complete: function () { $btnRemover.removeClass('loading'); },
+            notificacoes: false
         });
     }
 

@@ -17,6 +17,18 @@ namespace SIAC.ViewModels
         public List<Professor> Professores { get; set; } = new List<Professor>();
     }
 
+    public class GerenciaColaboradoresViewModel
+    {
+        public List<Colaborador> Colaboradores { get; set; } = new List<Colaborador>();
+    }
+
+    public class GerenciaCampiViewModel
+    {
+        public List<Instituicao> Instituicoes { get; set; } = new List<Instituicao>();
+        public List<Campus> Campi { get; set; } = new List<Campus>();
+        public List<Colaborador> Colaboradores { get; set; } = new List<Colaborador>();
+    }
+
     public class GerenciaEditarSalaViewModel
     {
         public List<Campus> Campi { get; set; } = new List<Campus>();
@@ -28,6 +40,18 @@ namespace SIAC.ViewModels
     {
         public List<Disciplina> Disciplinas { get; set; } = new List<Disciplina>();
         public Professor Professor { get; set; }
+    }
+
+    public class GerenciaEditarColaboradorViewModel
+    {
+        public Colaborador Colaborador { get; set; }
+    }
+
+    public class GerenciaEditarCampusViewModel
+    {
+        public Campus Campus { get; set; }
+        public List<Instituicao> Instituicoes { get; set; } = new List<Instituicao>();
+        public List<Colaborador> Colaboradores { get; set; } = new List<Colaborador>();
     }
 
     public class GerenciaEditarBlocoViewModel

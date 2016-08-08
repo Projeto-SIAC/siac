@@ -81,28 +81,30 @@ namespace SIAC.Controllers
 
         // POST: principal/agenda/horarios?start=2013-12-01&end=2014-01-12
         [HttpPost]
-        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO, Categoria.PROFESSOR })]
         public ActionResult Horarios(string start, string end)
         {
             DateTime inicio = DateTime.Parse(start);
             DateTime termino = DateTime.Parse(end);
-
-            Usuario usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
-            List<TurmaDiscProfHorario> lstHorarios = TurmaDiscProfHorario.ListarPorUsuario(usuario);
             List<Evento> retorno = new List<Evento>();
 
-            while (inicio < termino)
+            if (Sessao.UsuarioCategoriaCodigo == Categoria.ALUNO || Sessao.UsuarioCategoriaCodigo == Categoria.PROFESSOR)
             {
-                foreach (var hor in lstHorarios.Where(h => h.CodDia - 1 == (int)inicio.DayOfWeek))
+                Usuario usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
+                List<TurmaDiscProfHorario> lstHorarios = TurmaDiscProfHorario.ListarPorUsuario(usuario);
+
+                while (inicio < termino)
                 {
-                    retorno.Add(new Evento
+                    foreach (var hor in lstHorarios.Where(h => h.CodDia - 1 == (int)inicio.DayOfWeek))
                     {
-                        title = hor.Turma.CodTurma,
-                        start = inicio.ToString("yyyy'-'MM'-'dd") + hor.Horario.HoraInicio.Value.ToString("'T'HH':'mm':'ss"),
-                        end = inicio.ToString("yyyy'-'MM'-'dd") + hor.Horario.HoraTermino.Value.ToString("'T'HH':'mm':'ss")
-                    });
+                        retorno.Add(new Evento
+                        {
+                            title = hor.Turma.CodTurma,
+                            start = inicio.ToString("yyyy'-'MM'-'dd") + hor.Horario.HoraInicio.Value.ToString("'T'HH':'mm':'ss"),
+                            end = inicio.ToString("yyyy'-'MM'-'dd") + hor.Horario.HoraTermino.Value.ToString("'T'HH':'mm':'ss")
+                        });
+                    }
+                    inicio = inicio.AddDays(1);
                 }
-                inicio = inicio.AddDays(1);
             }
 
             return Json(retorno);

@@ -1,14 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Web;
 
 namespace SIAC.Helpers
 {
     public class Configuracoes
     {
-        public static object Recuperar(string chave) =>
-            Environment.GetEnvironmentVariable(chave) ?? ConfigurationManager.AppSettings[chave];
+        public static object Recuperar(string chave, object padrao = null)
+        {
+            var valor = Environment.GetEnvironmentVariable(chave) ?? ConfigurationManager.AppSettings[chave];
+            if (valor != null)
+            {
+                return valor;
+            }
+            return padrao;
+        }
     }
 }

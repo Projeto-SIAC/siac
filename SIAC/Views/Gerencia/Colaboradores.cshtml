@@ -1,0 +1,105 @@
+﻿@model GerenciaColaboradoresViewModel
+
+@{
+    ViewBag.Title = "Colaboradores";
+}
+
+<h2>
+    @ViewBag.Title
+    <a class="ui novo right floated button"><i class="add icon"></i>Novo</a>
+</h2>
+
+<form action="@Url.Action("NovoColaborador")" method="post" class="ui novo modal">
+    <i class="icon close"></i>
+    <div class="header">
+        Novo Colaborador
+    </div>
+    <div class="content">
+        <div class="ui form">
+            <div class="field required">
+                <label data-ajuda="">Informe o nome completo</label>
+                <input type="text" name="txtNome" placeholder="Nome" maxlength="100" required />
+            </div>
+            <div class="field required">
+                <label data-ajuda="">Digite a matrícula</label>
+                <input type="text" name="txtMatricula" placeholder="Matrícula" maxlength="20" required />
+            </div>
+            <div class="field required">
+                <label data-ajuda="">Insira uma senha</label>
+                <div class="two fields">
+                    <div class="field">
+                        <input type="password" name="txtSenha" placeholder="Senha" required />
+                    </div>
+                    <div class="field">
+                        <input type="password" name="txtSenhaConfirmacao" placeholder="Confirmação" required />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <input type="reset" value="Cancelar" class="ui cancel button" />
+        <button type="submit" class="ui button">Cadastrar</button>
+    </div>
+</form>
+
+<form action="@Url.Action("EditarColaborador")" method="post" class="ui editar modal"></form>
+
+<div class="ui excluir small modal">
+    <i class="icon close"></i>
+    <div class="header">
+        Excluir Colaborador
+    </div>
+    <div class="content">
+        <div class="ui list">
+            <div class="item">
+                <div class="header">Colaborador</div>
+                <div colaborador-nome class="description"></div>
+            </div>
+            <div class="item">
+                <div class="header">Matrícula</div>
+                <div colaborador-matricula class="description"></div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Cancelar</div>
+        <div class="ui approve red button">Excluir</div>
+    </div>
+</div>
+
+<div class="ui disciplinas small modal"></div>
+
+<div class="ui basic segment" style="max-height:30em;overflow-y:auto">
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Colaborador</th>
+                <th>Matrícula</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0, length = Model.Colaboradores.Count; i < length; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td colaborador-nome>@Model.Colaboradores[i].Usuario.PessoaFisica.Nome</td>
+                    <td colaborador-matricula>@Model.Colaboradores[i].MatrColaborador</td>
+                    <td>
+                        <a data-colaborador="@Model.Colaboradores[i].MatrColaborador" class="ui editar tiny button"><i class="write icon"></i>Editar</a>
+                        <a data-colaborador="@Model.Colaboradores[i].MatrColaborador" class="ui excluir tiny button"><i class="trash icon"></i>Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<a class="ui button" href="@Url.Action("Dados", "Gerencia")">Voltar para Dados Gerais</a>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/gerencia")
+}
+

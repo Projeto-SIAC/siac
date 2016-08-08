@@ -180,7 +180,8 @@ siac.Simulado.Provas = (function () {
             data: { codDia: codDia },
             complete: function () {
                 location.reload();
-            }
+            },
+            notificacoes: false
         })
     }
 
@@ -294,7 +295,8 @@ siac.Simulado.Provas = (function () {
             complete: function () {
                 $button.removeClass('loading');
                 siac.Simulado.adicionarEventoNoFormulario();
-            }
+            },
+            notificacoes: false
         })
     }
 
@@ -632,7 +634,8 @@ siac.Simulado.Salas = (function () {
             data: { codSala: codSala },
             complete: function () {
                 location.reload();
-            }
+            },
+            notificacoes: false
         })
     }
 
@@ -676,7 +679,8 @@ siac.Simulado.Detalhe = (function () {
                         complete: function () {
                             $modal.modal('hide');
                             location.reload();
-                        }
+                        },
+                        notificacoes: false
                     });
                     return false;
                 }
@@ -696,7 +700,8 @@ siac.Simulado.Detalhe = (function () {
                         url: $modal.data('action'),
                         complete: function () {
                             location.reload();
-                        }
+                        },
+                        notificacoes: false
                     })
                 }
             }).modal('show');
@@ -711,7 +716,8 @@ siac.Simulado.Detalhe = (function () {
                         url: $modal.data('action'),
                         complete: function () {
                             location.reload();
-                        }
+                        },
+                        notificacoes: false
                     })
                 }
             }).modal('show');
@@ -734,7 +740,8 @@ siac.Simulado.Detalhe = (function () {
                         complete: function () {
                             $modal.modal('hide');
                             location.reload();
-                        }
+                        },
+                        notificacoes: false
                     });
                     return false;
                 }
@@ -778,7 +785,8 @@ siac.Simulado.Detalhe = (function () {
                         }, complete: function () {
                             $modal.modal('hide');
                             location.reload();
-                        }
+                        },
+                        notificacoes: false
                     });
                     return false;
                 }

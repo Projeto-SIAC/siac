@@ -116,7 +116,8 @@ siac.Reposicao.Justificar = (function () {
             },
             error: function () {
                 siac.mensagem('Aconteceu um erro durante a requisição.')
-            }
+            },
+            notificacoes: false
         });
     }
 
@@ -1810,7 +1811,8 @@ siac.Reposicao.Detalhe = (function () {
                 },
                 complete: function () {
                     $_this.removeClass('loading');
-                }
+                },
+                notificacoes: false
             });
         });
 

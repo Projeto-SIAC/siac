@@ -656,7 +656,7 @@ namespace SIAC.Migrations
                         Matricula = c.String(nullable: false, maxLength: 20),
                         CodPessoaFisica = c.Int(nullable: false),
                         CodCategoria = c.Int(nullable: false),
-                        Senha = c.String(nullable: false, maxLength: 64, fixedLength: true, unicode: false),
+                        Senha = c.String(nullable: false, maxLength: 60, fixedLength: true),
                         DtCadastro = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.Matricula)
@@ -676,7 +676,7 @@ namespace SIAC.Migrations
                         RgOrgao = c.String(maxLength: 20),
                         RgDtExpedicao = c.DateTime(storeType: "date"),
                         Email = c.String(nullable: false, maxLength: 200),
-                        Senha = c.String(nullable: false, maxLength: 64, fixedLength: true),
+                        Senha = c.String(nullable: false, maxLength: 60, fixedLength: true),
                         DtCadastro = c.DateTime(nullable: false),
                         DtNascimento = c.DateTime(storeType: "date"),
                         Sexo = c.String(maxLength: 1, fixedLength: true),

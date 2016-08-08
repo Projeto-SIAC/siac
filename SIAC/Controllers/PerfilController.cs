@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
-    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.ALUNO, Categoria.PROFESSOR, Categoria.COLABORADOR })]
+    [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.ALUNO, Categoria.PROFESSOR, Categoria.COLABORADOR })]
     public class PerfilController : Controller
     {
         // GET: perfil
@@ -50,13 +50,11 @@ namespace SIAC.Controllers
             {
                 Usuario usuario = Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario;
 
-                string hashSenhaAtual = Criptografia.RetornarHash(senhaAtual);
-                if (hashSenhaAtual == usuario.Senha)
+                if (Criptografia.ChecarSenha(senhaAtual, usuario.Senha))
                 {
                     if (senhaNova == senhaConfirmacao)
                     {
-                        string hashSenhaNova = Criptografia.RetornarHash(senhaNova);
-                        usuario.Senha = hashSenhaNova;
+                        usuario.Senha = Criptografia.RetornarHash(senhaNova);
                         Repositorio.Commit();
 
                         lembrete = Lembrete.POSITIVO;

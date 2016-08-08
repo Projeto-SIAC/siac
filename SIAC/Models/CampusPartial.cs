@@ -52,5 +52,24 @@ namespace SIAC.Models
 
             return contexto.Campus.FirstOrDefault(c => c.CodInstituicao == codInstituicao && c.CodCampus == codCampus);
         }
+
+        public static void TrocarDiretor(Campus campus, int codDiretorNovo)
+        {
+            Colaborador diretorAnterior = Colaborador.ListarPorCodigo(campus.CodColaboradorDiretor);
+            Colaborador diretorNovo = Colaborador.ListarPorCodigo(codDiretorNovo);
+
+            PessoaFisica.RemoverOcupacao(diretorAnterior.Usuario.CodPessoaFisica, Ocupacao.DIRETOR_GERAL);
+            PessoaFisica.AdicionarOcupacao(diretorNovo.Usuario.CodPessoaFisica, Ocupacao.DIRETOR_GERAL);
+
+            campus.Colaborador = diretorNovo;
+
+            contexto.SaveChanges();
+        }
+
+        public static void Remover(Campus campus)
+        {
+            contexto.Campus.Remove(campus);
+            contexto.SaveChanges();
+        }
     }
 }

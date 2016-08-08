@@ -13,7 +13,7 @@ namespace SIAC.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201608021730465_MigracaoInicial"; }
+            get { return "201608041356524_MigracaoInicial"; }
         }
         
         string IMigrationMetadata.Source
