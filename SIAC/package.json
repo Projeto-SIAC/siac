@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "name": "siac",
+  "private": true,
+  "devDependencies": {
+    "bower": "^1.7.9"
+  },
+  "scripts": {
+    "postinstall": "bower install"
+  }
+}
