@@ -624,7 +624,7 @@ namespace SIAC.Controllers
 
                         var colaborador = new Colaborador();
                         colaborador.MatrColaborador = usuario.Matricula;
-                        
+
                         Colaborador.Inserir(colaborador);
 
                         lembrete = Lembrete.POSITIVO;
@@ -670,7 +670,7 @@ namespace SIAC.Controllers
                 if (!StringExt.IsNullOrWhiteSpace(nome))
                 {
                     colaborador.Usuario.PessoaFisica.Nome = nome;
-                    
+
                     Repositorio.Commit();
 
                     lembrete = Lembrete.POSITIVO;
@@ -719,7 +719,7 @@ namespace SIAC.Controllers
                         string nome = colaborador.Usuario.PessoaFisica.Nome;
                         Colaborador.Remover(colaborador);
                         Repositorio.Commit();
-   
+
                         lembrete = Lembrete.POSITIVO;
                         mensagem = $"Colaborador(a) \"{nome}\" excluído(a) com sucesso.";
                     }
@@ -738,6 +738,185 @@ namespace SIAC.Controllers
         }
 
         #endregion Colaboradores
+
+        #region Campi
+
+        // GET: simulado/gerencia/campi
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
+        public ActionResult Campi() => View(new GerenciaCampiViewModel()
+        {
+            Campi = Campus.ListarOrdenadamente(),
+            Instituicoes = Instituicao.ListarOrdenadamente(),
+            Colaboradores = Colaborador.ListarOrdenadamente()
+        });
+
+        // POST: simulado/gerencia/novocampus
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
+        public ActionResult NovoCampus(FormCollection form)
+        {
+            string lembrete = Lembrete.NEGATIVO;
+            string mensagem = "Ocorreu um erro ao tentar cadastrar um novo campus.";
+
+            if (form.HasKeys())
+            {
+                string razaoSocial = form["txtRazaoSocial"];
+                string nomeFantasia = form["txtNomeFantasia"];
+                string portal = form["txtPortal"];
+                string sigla = form["txtSigla"];
+                string strCodInstituicao = form["ddlInstituicao"];
+                string strCodDiretor = form["ddlDiretor"];
+
+                int codInstituicao = -1;
+                int codDiretor = -1;
+
+                int.TryParse(strCodInstituicao, out codInstituicao);
+                int.TryParse(strCodDiretor, out codDiretor);
+
+                if (!StringExt.IsNullOrWhiteSpace(razaoSocial, nomeFantasia, portal, sigla) && codInstituicao > -1 && codDiretor > -1)
+                {
+                    var campus = new Campus();
+                    campus.PessoaJuridica = new PessoaJuridica();
+                    campus.PessoaJuridica.Pessoa = new Pessoa();
+
+                    //Pessoa
+                    campus.PessoaJuridica.Pessoa.TipoPessoa = Pessoa.JURIDICA;
+
+                    //PessoaJuridica
+                    campus.PessoaJuridica.RazaoSocial = razaoSocial;
+                    campus.PessoaJuridica.NomeFantasia = nomeFantasia;
+                    campus.PessoaJuridica.Portal = portal;
+
+                    //Campus
+                    campus.CodInstituicao = codInstituicao;
+                    campus.Colaborador = Colaborador.ListarPorCodigo(codDiretor);
+                    campus.Sigla = sigla;
+
+                    Campus.Inserir(campus);
+                    PessoaFisica.AdicionarOcupacao(campus.Colaborador.Usuario.CodPessoaFisica, Ocupacao.DIRETOR_GERAL);
+
+                    lembrete = Lembrete.POSITIVO;
+                    mensagem = $"Novo campus \"{nomeFantasia}\" cadastrado com sucesso.";
+                }
+                else
+                {
+                    mensagem = "Todos os campos são necessário para cadastrar um novo campus.";
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, lembrete);
+            return RedirectToAction("Campi");
+        }
+
+        // POST: gerencia/carregarcampus
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
+        public ActionResult CarregarCampus(string campus) => PartialView("_CarregarCampus", new GerenciaEditarCampusViewModel()
+        {
+            Campus = Campus.ListarPorCodigo(campus),
+            Instituicoes = Instituicao.ListarOrdenadamente(),
+            Colaboradores = Colaborador.ListarOrdenadamente()
+        });
+
+        // POST: simulado/gerencia/editarcampus
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
+        public ActionResult EditarCampus(string codigo, FormCollection form)
+        {
+            codigo = codigo.Replace('-', '.');
+            string lembrete = Lembrete.NEGATIVO;
+            string mensagem = "Ocorreu um erro ao tentar editar um campus.";
+
+            Campus campus = Campus.ListarPorCodigo(codigo);
+
+            if (campus != null && form.HasKeys())
+            {
+                string razaoSocial = form["txtRazaoSocial"];
+                string nomeFantasia = form["txtNomeFantasia"];
+                string portal = form["txtPortal"];
+                string sigla = form["txtSigla"];
+                string strCodInstituicao = form["ddlInstituicao"];
+                string strCodDiretor = form["ddlDiretor"];
+
+                int codInstituicao = -1;
+                int codDiretor = -1;
+
+                int.TryParse(strCodInstituicao, out codInstituicao);
+                int.TryParse(strCodDiretor, out codDiretor);
+
+                if (!StringExt.IsNullOrWhiteSpace(razaoSocial, nomeFantasia, portal, sigla) && codInstituicao > -1 && codDiretor > -1)
+                {
+                    //PessoaJuridica
+                    campus.PessoaJuridica.RazaoSocial = razaoSocial;
+                    campus.PessoaJuridica.NomeFantasia = nomeFantasia;
+                    campus.PessoaJuridica.Portal = portal;
+
+                    //Campus
+                    campus.CodInstituicao = codInstituicao;
+                    campus.Sigla = sigla;
+
+                    Campus.TrocarDiretor(campus, codDiretor);
+
+                    Repositorio.Commit();
+
+                    lembrete = Lembrete.POSITIVO;
+                    mensagem = $"Campus \"{nomeFantasia}\" editado com sucesso.";
+                }
+                else
+                {
+                    mensagem = "Todos os campos são necessário para editar um campus.";
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, lembrete);
+            return RedirectToAction("Campi");
+        }
+
+        // POST: simulado/gerencia/excluircampus
+        [HttpPost]
+        [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
+        public void ExcluirCampus(string codigo)
+        {
+            string lembrete = Lembrete.NEGATIVO;
+            string mensagem = "Ocorreu um erro ao tentar excluir um(a) colaborador(a).";
+
+            Colaborador colaborador = Colaborador.ListarPorMatricula(codigo);
+            Campus campus = Campus.ListarPorCodigo(codigo);
+
+            if (campus != null)
+            {
+                try
+                {
+                    if (campus.Bloco.Count > 0)
+                        mensagem = $"Não é possível excluir este campus, pois ele tem vínculo com Bloco.";
+                    else if (campus.Diretoria.Count > 0)
+                        mensagem = $"Não é possível excluir este campus, pois ele tem vínculo com Diretoria.";
+                    else if (campus.Pessoas.Count > 1)
+                        mensagem = $"Não é possível excluir este campus, pois ele tem vínculo com Pessoas.";
+                    else
+                    {
+                        string nome = campus.PessoaJuridica.NomeFantasia;
+                        Campus.Remover(campus);
+                        Repositorio.Commit();
+
+                        lembrete = Lembrete.POSITIVO;
+                        mensagem = $"Campus \"{nome}\" excluído com sucesso.";
+                    }
+                }
+                catch
+                {
+                    Repositorio.Dispose();
+                    Repositorio.Commit();
+
+                    lembrete = Lembrete.NEGATIVO;
+                    mensagem = $"Não é possível excluir este campus.";
+                }
+            }
+
+            Lembrete.AdicionarNotificacao(mensagem, lembrete);
+        }
+
+        #endregion Campi
 
         #region Configuracoes
 

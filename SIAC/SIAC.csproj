@@ -692,6 +692,8 @@
     <Content Include="Views\Simulado\Partials\_SimuladoPontuacoesProva.cshtml" />
     <Content Include="Views\Gerencia\Colaboradores.cshtml" />
     <Content Include="Views\Gerencia\Partials\_CarregarColaborador.cshtml" />
+    <Content Include="Views\Gerencia\Partials\_CarregarCampus.cshtml" />
+    <Content Include="Views\Gerencia\Campi.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

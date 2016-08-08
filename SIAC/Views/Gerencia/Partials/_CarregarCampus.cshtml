@@ -1,0 +1,51 @@
+﻿@model GerenciaEditarCampusViewModel
+
+<i class="icon close"></i>
+<div class="header">
+    Editar Campus "@Model.Campus.PessoaJuridica.NomeFantasia"
+</div>
+<div class="content">
+    <div class="ui form">
+        <div class="field required">
+            <label data-ajuda="">Selecione a Instituição</label>
+            <select name="ddlInstituicao" class="ui fluid search dropdown" required>
+                <option value="">Instituição...</option>
+                @foreach (var inst in Model.Instituicoes)
+                {
+                    <option @(inst.CodInstituicao == Model.Campus.CodInstituicao ? "selected" : "") value="@inst.CodInstituicao">@inst.Sigla</option>
+                }
+            </select>
+        </div>
+        <div class="field required">
+            <label data-ajuda="">Informe a Razão Social</label>
+            <input type="text" name="txtRazaoSocial" placeholder="Razão Social" maxlength="255" required value="@Model.Campus.PessoaJuridica.RazaoSocial" />
+        </div>
+        <div class="field required">
+            <label data-ajuda="">Preencha o Nome Fantasia</label>
+            <input type="text" name="txtNomeFantasia" placeholder="Nome Fantasia" maxlength="100" required value="@Model.Campus.PessoaJuridica.NomeFantasia" />
+        </div>
+        <div class="field required">
+            <label data-ajuda="">Digite a Sigla</label>
+            <input type="text" name="txtSigla" placeholder="Sigla" maxlength="10" required value="@Model.Campus.Sigla" />
+        </div>
+        <div class="field required">
+            <label data-ajuda="">Forneça o Portal</label>
+            <input type="text" name="txtPortal" placeholder="Portal" maxlength="100" required value="@Model.Campus.PessoaJuridica.Portal" />
+        </div>
+        <div class="field required">
+            <label data-ajuda="">Escolha o Diretor</label>
+            <select name="ddlDiretor" class="ui fluid search dropdown" required>
+                <option value="">Diretor</option>
+                @foreach (var col in Model.Colaboradores)
+                {
+                    <option @(col.CodColaborador == Model.Campus.CodColaboradorDiretor ? "selected" : "") value="@col.CodColaborador">@col.Usuario.PessoaFisica.Nome</option>
+                }
+            </select>
+        </div>
+
+    </div>
+</div>
+<div class="actions">
+    <input type="reset" value="Cancelar" class="ui cancel button" />
+    <button type="submit" class="ui button">Salvar</button>
+</div>

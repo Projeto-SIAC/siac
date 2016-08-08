@@ -1,0 +1,129 @@
+﻿@model GerenciaCampiViewModel
+
+@{
+    ViewBag.Title = "Campi";
+}
+
+<h2>
+    @ViewBag.Title
+    <a class="ui novo right floated button"><i class="add icon"></i>Novo</a>
+</h2>
+
+<form action="@Url.Action("NovoCampus")" method="post" class="ui novo modal">
+    <i class="icon close"></i>
+    <div class="header">
+        Novo Campus
+    </div>
+    <div class="content">
+        <div class="ui form">
+            <div class="field required">
+                <label data-ajuda="">Selecione a Instituição</label>
+                <select name="ddlInstituicao" class="ui fluid search dropdown" required>
+                    <option value="">Instituição...</option>
+                    @foreach (var inst in Model.Instituicoes)
+                    {
+                        <option value="@inst.CodInstituicao">@inst.Sigla</option>
+                    }
+                </select>
+            </div>
+            <div class="field required">
+                <label data-ajuda="">Informe a Razão Social</label>
+                <input type="text" name="txtRazaoSocial" placeholder="Razão Social" maxlength="255" required />
+            </div>
+            <div class="field required">
+                <label data-ajuda="">Preencha o Nome Fantasia</label>
+                <input type="text" name="txtNomeFantasia" placeholder="Nome Fantasia" maxlength="100" required />
+            </div>
+            <div class="field required">
+                <label data-ajuda="">Digite a Sigla</label>
+                <input type="text" name="txtSigla" placeholder="Sigla" maxlength="10" required />
+            </div>
+            <div class="field required">
+                <label data-ajuda="">Forneça o Portal</label>
+                <input type="text" name="txtPortal" placeholder="Portal" maxlength="100" required />
+            </div>
+            <div class="field required">
+                <label data-ajuda="">Escolha o Diretor</label>
+                <select name="ddlDiretor" class="ui fluid search dropdown" required>
+                    <option value="">Diretor</option>
+                    @foreach (var col in Model.Colaboradores)
+                    {
+                        <option value="@col.CodColaborador">@col.Usuario.PessoaFisica.Nome</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="actions">
+        <input type="reset" value="Cancelar" class="ui cancel button" />
+        <button type="submit" class="ui button">Cadastrar</button>
+    </div>
+</form>
+
+<form action="@Url.Action("EditarCampus")" method="post" class="ui editar modal"></form>
+
+<div class="ui excluir small modal">
+    <i class="icon close"></i>
+    <div class="header">
+        Excluir Campus
+    </div>
+    <div class="content">
+        <div class="ui list">
+            <div class="item">
+                <div class="header">Campus</div>
+                <div campus-nome class="description"></div>
+            </div>
+            <div class="item">
+                <div class="header">Sigla</div>
+                <div campus-sigla class="description"></div>
+            </div>
+            <div class="item">
+                <div class="header">Diretor</div>
+                <div campus-diretor class="description"></div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <div class="ui cancel button">Cancelar</div>
+        <div class="ui approve red button">Excluir</div>
+    </div>
+</div>
+
+<div class="ui disciplinas small modal"></div>
+
+<div class="ui basic segment" style="max-height:30em;overflow-y:auto">
+    <table class="ui striped table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Campus</th>
+                <th>Sigla</th>
+                <th>Diretor</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0, length = Model.Campi.Count; i < length; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td campus-nome>@Model.Campi[i].PessoaJuridica.NomeFantasia</td>
+                    <td campus-sigla>@Model.Campi[i].Sigla</td>
+                    <td campus-diretor>@Model.Campi[i].Colaborador.Usuario.PessoaFisica.Nome</td>
+                    <td>
+                        <a data-campus="@Model.Campi[i].CodComposto" class="ui editar tiny button"><i class="write icon"></i>Editar</a>
+                        <a data-campus="@Model.Campi[i].CodComposto" class="ui excluir tiny button"><i class="trash icon"></i>Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<a class="ui button" href="@Url.Action("Dados", "Gerencia")">Voltar para Dados Gerais</a>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/js/gerencia")
+}
+
