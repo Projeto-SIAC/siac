@@ -20,6 +20,7 @@ namespace SIAC.ViewModels
     public class GerenciaColaboradoresViewModel
     {
         public List<Colaborador> Colaboradores { get; set; } = new List<Colaborador>();
+        public List<Ocupacao> Ocupacoes { get; set; } = new List<Ocupacao>();
     }
 
     public class GerenciaCampiViewModel

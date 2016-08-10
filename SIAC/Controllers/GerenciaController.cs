@@ -584,7 +584,12 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult Colaboradores() => View(new GerenciaColaboradoresViewModel()
         {
-            Colaboradores = Colaborador.ListarOrdenadamente()
+            Colaboradores = Colaborador.ListarOrdenadamente(),
+            Ocupacoes = new List<Ocupacao>()
+            {
+                Ocupacao.ListarPorCodigo(Ocupacao.COORDENADOR_SIMULADO),
+                Ocupacao.ListarPorCodigo(Ocupacao.COLABORADOR_SIMULADO)
+             }
         });
 
         // POST: simulado/gerencia/novocolaborador
@@ -601,6 +606,12 @@ namespace SIAC.Controllers
                 string matricula = form["txtMatricula"].Trim();
                 string senha = form["txtSenha"];
                 string senhaConfirmacao = form["txtSenhaConfirmacao"];
+                string strOcupacao = form["ddlOcupacao"];
+
+                int ocupacao = -1;
+
+                int.TryParse(strOcupacao, out ocupacao);
+
                 if (!StringExt.IsNullOrWhiteSpace(nome, matricula, senha, senha))
                 {
                     if (senha == senhaConfirmacao)
@@ -626,6 +637,11 @@ namespace SIAC.Controllers
                         colaborador.MatrColaborador = usuario.Matricula;
 
                         Colaborador.Inserir(colaborador);
+
+                        if (ocupacao > -1)
+                        {
+                            PessoaFisica.AdicionarOcupacao(codPessoaFisica, ocupacao);
+                        }
 
                         lembrete = Lembrete.POSITIVO;
                         mensagem = $"Novo(a) colaborador(a) \"{pf.Nome}\" cadastrado(a) com sucesso.";

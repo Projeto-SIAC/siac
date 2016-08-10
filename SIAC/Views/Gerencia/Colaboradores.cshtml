@@ -35,6 +35,16 @@
                     </div>
                 </div>
             </div>
+            <div class="field">
+                <label data-ajuda="">Selecione uma ocupação</label>
+                <select name="ddlOcupacao" class="ui fluid search dropdown">
+                    <option value="">Ocupação</option>
+                    @foreach (var ocu in Model.Ocupacoes)
+                    {
+                        <option value="@ocu.CodOcupacao">@ocu.Descricao</option>
+                    }
+                </select>
+            </div>
         </div>
     </div>
     <div class="actions">
