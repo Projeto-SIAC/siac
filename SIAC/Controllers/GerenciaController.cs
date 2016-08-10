@@ -957,9 +957,7 @@ namespace SIAC.Controllers
             SmtpPorta = Parametro.Obter().SmtpPorta,
             SmptFlagSSL = Parametro.Obter().SmtpFlagSSL,
             SmtpUsuario = Criptografia.Base64Decode(Parametro.Obter().SmtpUsuario),
-            SmtpSenha = Criptografia.Base64Decode(Parametro.Obter().SmtpSenha),
-            NotaUsoSimulado = Parametro.Obter().NotaUsoSimulado,
-            TermoResponsabilidade = Parametro.Obter().TermoResponsabilidade
+            SmtpSenha = Criptografia.Base64Decode(Parametro.Obter().SmtpSenha)
         });
 
         [HttpPost]
@@ -973,8 +971,6 @@ namespace SIAC.Controllers
             p.SmtpFlagSSL = model.SmptFlagSSL;
             p.SmtpUsuario = Criptografia.Base64Encode(model.SmtpUsuario);
             p.SmtpSenha = Criptografia.Base64Encode(model.SmtpSenha);
-            p.NotaUsoSimulado = model.NotaUsoSimulado;
-            p.TermoResponsabilidade = model.TermoResponsabilidade;
 
             Parametro.Atualizar(p);
 
