@@ -11,7 +11,7 @@ namespace SIAC.ViewModels
 
     public class QuestaoCadastrarViewModel
     {
-        public string Captcha { get; set; }
+        public string RecaptchaSiteKey => (string)Helpers.Configuracoes.Recuperar("SIAC_RECAPTCHA_SITE_KEY");
         public string Termo { get; set; }
         public List<Disciplina> Disciplinas { get; set; }
         public List<TipoQuestao> Tipos { get; set; }

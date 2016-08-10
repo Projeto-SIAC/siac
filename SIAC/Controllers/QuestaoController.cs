@@ -1,10 +1,14 @@
-﻿using SIAC.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Web.Mvc;
+using Newtonsoft.Json;
+using SIAC.Helpers;
 using SIAC.Models;
 using SIAC.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
 
 namespace SIAC.Controllers
 {
@@ -106,7 +110,6 @@ namespace SIAC.Controllers
         public ActionResult Cadastrar()
         {
             var model = new QuestaoCadastrarViewModel();
-            model.Captcha = Captcha.Novo();
             model.Termo = Parametro.Obter().TermoResponsabilidade;
             model.Disciplinas = Professor.ObterDisciplinas(Sessao.UsuarioMatricula);
             model.Tipos = TipoQuestao.ListarOrdenadamente();
@@ -117,13 +120,26 @@ namespace SIAC.Controllers
 
         // POST: principal/questao/chequecaptcha
         [HttpPost]
-        public ActionResult ChequeCaptcha(string captcha) => Json(captcha == (string)Sessao.Retornar("Captcha"));
-
-        // POST: principal/questao/novocaptcha
-        [HttpPost]
-        public string NovoCaptcha()
+        public ActionResult ChequeCaptcha(string recaptchaResponse)
         {
-            return Captcha.Novo();
+            var resultado = false;
+            var recaptchaSecretKey = (string)Configuracoes.Recuperar("SIAC_RECAPTCHA_SECRET_KEY");
+            using (WebClient wc = new WebClient())
+            {
+                wc.Encoding = Encoding.UTF8;
+                wc.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+
+                var parametros = new NameValueCollection();
+                parametros.Add("secret", recaptchaSecretKey);
+                parametros.Add("response", recaptchaResponse);
+                var resposta = wc.UploadValues(new Uri("https://www.google.com/recaptcha/api/siteverify"), parametros);
+                dynamic data = JsonConvert.DeserializeObject(Encoding.UTF8.GetString(resposta));
+                if (data != null && data["success"] != null)
+                {
+                    resultado = (bool)data["success"];
+                }
+            }
+            return Json(resultado);
         }
 
         // POST: principal/questao/confirmar
