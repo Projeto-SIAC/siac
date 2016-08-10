@@ -55,14 +55,14 @@
         </div>
         <div class="ui container">
             <div class="ui centered stackable grid">
-                <div class="@(acessarOuCadastrar ? "eight" : "twelve") wide column">
+                <div class="left aligned @(acessarOuCadastrar ? "eight" : "twelve") wide column">
                     <div class="ui segment">
                         @RenderBody()
                     </div>
                 </div>
                 @if (!acessarOuCadastrar && !conectado)
                 {
-                    <div class="four wide column">
+                    <div class="left aligned four wide column">
                         <div class="ui segment">
                             <div class="ui center aligned icon header">
                                 <i class="icon user"></i>
