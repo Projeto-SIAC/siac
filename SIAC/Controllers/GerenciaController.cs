@@ -638,7 +638,7 @@ namespace SIAC.Controllers
 
                         Colaborador.Inserir(colaborador);
 
-                        if (ocupacao > -1)
+                        if (new[] { Ocupacao.COLABORADOR_SIMULADO, Ocupacao.COORDENADOR_SIMULADO }.Contains(ocupacao))
                         {
                             PessoaFisica.AdicionarOcupacao(codPessoaFisica, ocupacao);
                         }
