@@ -236,6 +236,10 @@
     <Compile Include="Migrations\201608041356524_MigracaoInicial.Designer.cs">
       <DependentUpon>201608041356524_MigracaoInicial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608122113243_AtualizaQuestaoEAlternativa.cs" />
+    <Compile Include="Migrations\201608122113243_AtualizaQuestaoEAlternativa.Designer.cs">
+      <DependentUpon>201608122113243_AtualizaQuestaoEAlternativa.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Goais.cs" />
     <Compile Include="Migrations\Tocantins.cs" />
     <Compile Include="Migrations\SaoPaulo.cs" />
@@ -686,6 +690,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201608041356524_MigracaoInicial.resx">
       <DependentUpon>201608041356524_MigracaoInicial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608122113243_AtualizaQuestaoEAlternativa.resx">
+      <DependentUpon>201608122113243_AtualizaQuestaoEAlternativa.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -108,7 +108,7 @@
         </div>
         <div class="field">
             <label data-ajuda="Insira na caixa abaixo o objetivo da questão" for="txtObjetivo">Insira o objetivo</label>
-            <textarea id="txtObjetivo" name="txtObjetivo" rows="2" placeholder="Objetivo...">@Model.Objetivo</textarea>
+            <textarea id="txtObjetivo" name="txtObjetivo" rows="2" placeholder="Objetivo..." maxlength="250">@Model.Objetivo</textarea>
         </div>
         @if (Model.CodTipoQuestao == TipoQuestao.DISCURSIVA)
         {
@@ -118,7 +118,7 @@
             </div>
             <div class="field questao discursiva">
                 <label data-ajuda="Digite na caixa abaixo um comentário sobre esta questão" for="txtComentario">Digite um comentário</label>
-                <textarea id="txtComentario" name="txtComentario" rows="2" placeholder="Comentário...">@Model.Comentario</textarea>
+                <textarea id="txtComentario" name="txtComentario" rows="2" placeholder="Comentário..." maxlength="250">@Model.Comentario</textarea>
             </div>
         }
     </div>

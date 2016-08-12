@@ -27,7 +27,6 @@ namespace SIAC.Models
         public int CodTipoQuestao { get; set; }
 
         [Required]
-        [StringLength(250)]
         public string Enunciado { get; set; }
 
         [StringLength(250)]
@@ -36,7 +35,6 @@ namespace SIAC.Models
         [StringLength(250)]
         public string Comentario { get; set; }
 
-        [Column(TypeName = "text")]
         public string ChaveDeResposta { get; set; }
 
         public DateTime DtCadastro { get; set; }
