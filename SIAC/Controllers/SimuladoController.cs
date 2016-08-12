@@ -415,7 +415,7 @@ namespace SIAC.Controllers
 
                         SimDiaRealizacao diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(s => s.DtRealizacao.Date == dataRealizacao.Date && s.CodDiaRealizacao != codDia);
 
-                        if (dataRealizacao >= sim.DtTerminoInscricao)
+                        if (dataRealizacao <= sim.DtTerminoInscricao)
                         {
                             mensagem = "A data da prova tem que ser superior à data de termino de inscrição do simulado.";
                             estilo = Lembrete.NEGATIVO;
@@ -427,11 +427,9 @@ namespace SIAC.Controllers
                         }
                         else
                         {
-                            int codDiaRealizacao = sim.SimDiaRealizacao.Count > 0 ? sim.SimDiaRealizacao.Max(s => s.CodDiaRealizacao) + 1 : 1;
-
                             diaRealizacao = sim.SimDiaRealizacao.FirstOrDefault(d => d.CodDiaRealizacao == codDia);
                             diaRealizacao.DtRealizacao = dataRealizacao;
-                            diaRealizacao.CodTurno = "V";
+                            diaRealizacao.CodTurno = Turno.ObterCodTurnoPorData(dataRealizacao);
                             diaRealizacao.Duracao = int.Parse((termino - dataRealizacao.TimeOfDay).TotalMinutes.ToString());
 
                             Repositorio.Commit();
