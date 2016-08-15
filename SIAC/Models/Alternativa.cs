@@ -17,7 +17,6 @@ namespace SIAC.Models
         public int CodOrdem { get; set; }
 
         [Required]
-        [StringLength(250)]
         public string Enunciado { get; set; }
 
         [StringLength(250)]

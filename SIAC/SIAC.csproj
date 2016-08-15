@@ -24,6 +24,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <MvcBuildViews>true</MvcBuildViews>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -235,6 +236,10 @@
     <Compile Include="Migrations\201608041356524_MigracaoInicial.Designer.cs">
       <DependentUpon>201608041356524_MigracaoInicial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608122113243_AtualizaQuestaoEAlternativa.cs" />
+    <Compile Include="Migrations\201608122113243_AtualizaQuestaoEAlternativa.Designer.cs">
+      <DependentUpon>201608122113243_AtualizaQuestaoEAlternativa.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Goais.cs" />
     <Compile Include="Migrations\Tocantins.cs" />
     <Compile Include="Migrations\SaoPaulo.cs" />
@@ -267,7 +272,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\Captcha.cs" />
     <Compile Include="Helpers\Configuracoes.cs" />
     <Compile Include="Helpers\CorDinamica.cs" />
     <Compile Include="Helpers\Criptografia.cs" />
@@ -687,6 +691,9 @@
     <EmbeddedResource Include="Migrations\201608041356524_MigracaoInicial.resx">
       <DependentUpon>201608041356524_MigracaoInicial.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608122113243_AtualizaQuestaoEAlternativa.resx">
+      <DependentUpon>201608122113243_AtualizaQuestaoEAlternativa.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -724,6 +731,15 @@
     <Exec Command="git init" />
     <Exec Command="npm install" />
   </Target>
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <ItemGroup>
+      <ExtraWebConfigs Include="$(BaseIntermediateOutputPath)\**\web.config" />
+      <ExtraPackageTmp Include="$([System.IO.Directory]::GetDirectories(&quot;$(BaseIntermediateOutputPath)&quot;, &quot;PackageTmp&quot;, System.IO.SearchOption.AllDirectories))" />
+    </ItemGroup>
+    <Delete Files="@(ExtraWebConfigs)" />
+    <RemoveDir Directories="@(ExtraPackageTmp)" />
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
   <PropertyGroup>
     <PostBuildEvent>
       if not exist "$(WebProjectOutputDir)\bin\Roslyn" md "$(WebProjectOutputDir)\bin\Roslyn"
@@ -732,7 +748,6 @@
       start /MIN xcopy /s /y /R "$(MSBuildProjectDirectory)\bower_components\*.*" "$(WebProjectOutputDir)\bower_components"
     </PostBuildEvent>
   </PropertyGroup>
-
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="AfterBuild">

@@ -94,18 +94,7 @@
             </div>
         </div>
         <div class="ui segment">
-            <div class="ui form">
-                <div class="field required">
-                    <label>Prove que você não é uma máquina <i class="captcha icon blue refresh"></i></label>
-                    <div class="ui small image">
-                        <img id="imgCaptcha" class="image" src="data:image/png;base64,@Model.Captcha" />
-                    </div>
-                    <div class="ui icon input">
-                        <input id="txtCaptcha" type="text" placeholder="Código...">
-                        <i class="remove icon"></i>
-                    </div>
-                </div>
-            </div>
+            <div class="g-recaptcha" data-sitekey="@Model.RecaptchaSiteKey"></div>
         </div>
     </div>
     <div class="actions">
@@ -178,7 +167,7 @@
     <div class="ui bottom attached tab segment" data-tab="detalhes">
         <div class="field required">
             <label data-ajuda="Forneça na caixa abaixo o enunciado da questão" for="txtEnunciado">Forneça o enunciado</label>
-            <textarea id="txtEnunciado" name="txtEnunciado" rows="2" required placeholder="Enunciado..." maxlength="250"></textarea>
+            <textarea id="txtEnunciado" name="txtEnunciado" rows="2" required placeholder="Enunciado..."></textarea>
         </div>
         <div class="field">
             <label data-ajuda="Insira na caixa abaixo o objetivo da questão" for="txtObjetivo">Insira o objetivo</label>
@@ -229,4 +218,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/js/questao")
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 }

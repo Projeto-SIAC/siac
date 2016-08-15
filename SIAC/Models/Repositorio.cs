@@ -6,16 +6,27 @@ namespace SIAC.Models
     {
         public static Contexto GetInstance()
         {
-            if (Sistema.AlertarMudanca.Contains(Helpers.Sessao.UsuarioMatricula))
+            Contexto contexto = null;
+            try
             {
-                Commit();
-                Restart();
-                Sistema.AlertarMudanca.Remove(Helpers.Sessao.UsuarioMatricula);
+                if (Sistema.AlertarMudanca.Contains(Helpers.Sessao.UsuarioMatricula))
+                {
+                    Commit();
+                    Restart();
+                    Sistema.AlertarMudanca.Remove(Helpers.Sessao.UsuarioMatricula);
+                }
+                contexto = Helpers.Sessao.Retornar("dbSIACEntities") as Contexto;
             }
-            Contexto contexto = Helpers.Sessao.Retornar("dbSIACEntities") as Contexto;
-            if (contexto == null)
+            catch
             {
-                Helpers.Sessao.Inserir("dbSIACEntities", new Contexto());
+                Restart();
+            }
+            finally
+            {
+                if (contexto == null)
+                {
+                    Helpers.Sessao.Inserir("dbSIACEntities", new Contexto());
+                }
             }
             return (Contexto)Helpers.Sessao.Retornar("dbSIACEntities") ?? new Contexto();
         }

@@ -441,41 +441,48 @@ namespace SIAC.Controllers
                 string[] disciplinas = form["ddlDisciplina"]?.Split(',');
                 if (!StringExt.IsNullOrWhiteSpace(nome, matricula, senha, senha) && disciplinas?.Length > 0)
                 {
-                    if (senha == senhaConfirmacao)
+                    if (Usuario.ListarPorMatricula(matricula) == null)
                     {
-                        int codPessoa = Pessoa.Inserir(new Pessoa() { TipoPessoa = Pessoa.FISICA });
-
-                        var pf = new PessoaFisica();
-                        pf.CodPessoa = codPessoa;
-                        pf.Nome = nome;
-                        pf.Categoria.Add(Categoria.ListarPorCodigo(Categoria.PROFESSOR));
-
-                        int codPessoaFisica = PessoaFisica.Inserir(pf);
-
-                        var usuario = new Usuario();
-                        usuario.Matricula = matricula;
-                        usuario.CodPessoaFisica = codPessoaFisica;
-                        usuario.CodCategoria = Categoria.PROFESSOR;
-                        usuario.Senha = Criptografia.RetornarHash(senhaConfirmacao);
-
-                        int codUsuario = Usuario.Inserir(usuario);
-
-                        var professor = new Professor();
-                        professor.MatrProfessor = usuario.Matricula;
-
-                        foreach (var disciplina in disciplinas)
+                        if (senha == senhaConfirmacao)
                         {
-                            professor.Disciplina.Add(Disciplina.ListarPorCodigo(int.Parse(disciplina)));
+                            int codPessoa = Pessoa.Inserir(new Pessoa() { TipoPessoa = Pessoa.FISICA });
+
+                            var pf = new PessoaFisica();
+                            pf.CodPessoa = codPessoa;
+                            pf.Nome = nome;
+                            pf.Categoria.Add(Categoria.ListarPorCodigo(Categoria.PROFESSOR));
+
+                            int codPessoaFisica = PessoaFisica.Inserir(pf);
+
+                            var usuario = new Usuario();
+                            usuario.Matricula = matricula;
+                            usuario.CodPessoaFisica = codPessoaFisica;
+                            usuario.CodCategoria = Categoria.PROFESSOR;
+                            usuario.Senha = Criptografia.RetornarHash(senhaConfirmacao);
+
+                            int codUsuario = Usuario.Inserir(usuario);
+
+                            var professor = new Professor();
+                            professor.MatrProfessor = usuario.Matricula;
+
+                            foreach (var disciplina in disciplinas)
+                            {
+                                professor.Disciplina.Add(Disciplina.ListarPorCodigo(int.Parse(disciplina)));
+                            }
+
+                            Professor.Inserir(professor);
+
+                            lembrete = Lembrete.POSITIVO;
+                            mensagem = $"Novo(a) professor(a) \"{pf.Nome}\" cadastrado(a) com sucesso.";
                         }
-
-                        Professor.Inserir(professor);
-
-                        lembrete = Lembrete.POSITIVO;
-                        mensagem = $"Novo(a) professor(a) \"{pf.Nome}\" cadastrado(a) com sucesso.";
+                        else
+                        {
+                            mensagem = "A Senha informada deve ser igual à Confirmação da Senha.";
+                        }
                     }
                     else
                     {
-                        mensagem = "A Senha informada deve ser igual à Confirmação da Senha.";
+                        mensagem = $"Já existe um usuário com a matrícula \"{matricula}\".";
                     }
                 }
                 else
@@ -584,7 +591,12 @@ namespace SIAC.Controllers
         [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.COLABORADOR })]
         public ActionResult Colaboradores() => View(new GerenciaColaboradoresViewModel()
         {
-            Colaboradores = Colaborador.ListarOrdenadamente()
+            Colaboradores = Colaborador.ListarOrdenadamente(),
+            Ocupacoes = new List<Ocupacao>()
+            {
+                Ocupacao.ListarPorCodigo(Ocupacao.COORDENADOR_SIMULADO),
+                Ocupacao.ListarPorCodigo(Ocupacao.COLABORADOR_SIMULADO)
+            }
         });
 
         // POST: simulado/gerencia/novocolaborador
@@ -601,38 +613,56 @@ namespace SIAC.Controllers
                 string matricula = form["txtMatricula"].Trim();
                 string senha = form["txtSenha"];
                 string senhaConfirmacao = form["txtSenhaConfirmacao"];
+                string strOcupacao = form["ddlOcupacao"];
+
+                int ocupacao = -1;
+
+                int.TryParse(strOcupacao, out ocupacao);
+
                 if (!StringExt.IsNullOrWhiteSpace(nome, matricula, senha, senha))
                 {
-                    if (senha == senhaConfirmacao)
+                    if (Usuario.ListarPorMatricula(matricula) == null)
                     {
-                        int codPessoa = Pessoa.Inserir(new Pessoa() { TipoPessoa = Pessoa.FISICA });
+                        if (senha == senhaConfirmacao)
+                        {
+                            int codPessoa = Pessoa.Inserir(new Pessoa() { TipoPessoa = Pessoa.FISICA });
 
-                        var pf = new PessoaFisica();
-                        pf.CodPessoa = codPessoa;
-                        pf.Nome = nome;
-                        pf.Categoria.Add(Categoria.ListarPorCodigo(Categoria.COLABORADOR));
+                            var pf = new PessoaFisica();
+                            pf.CodPessoa = codPessoa;
+                            pf.Nome = nome;
+                            pf.Categoria.Add(Categoria.ListarPorCodigo(Categoria.COLABORADOR));
 
-                        int codPessoaFisica = PessoaFisica.Inserir(pf);
+                            int codPessoaFisica = PessoaFisica.Inserir(pf);
 
-                        var usuario = new Usuario();
-                        usuario.Matricula = matricula;
-                        usuario.CodPessoaFisica = codPessoaFisica;
-                        usuario.CodCategoria = Categoria.COLABORADOR;
-                        usuario.Senha = Criptografia.RetornarHash(senhaConfirmacao);
+                            var usuario = new Usuario();
+                            usuario.Matricula = matricula;
+                            usuario.CodPessoaFisica = codPessoaFisica;
+                            usuario.CodCategoria = Categoria.COLABORADOR;
+                            usuario.Senha = Criptografia.RetornarHash(senhaConfirmacao);
 
-                        int codUsuario = Usuario.Inserir(usuario);
+                            int codUsuario = Usuario.Inserir(usuario);
 
-                        var colaborador = new Colaborador();
-                        colaborador.MatrColaborador = usuario.Matricula;
+                            var colaborador = new Colaborador();
+                            colaborador.MatrColaborador = usuario.Matricula;
 
-                        Colaborador.Inserir(colaborador);
+                            Colaborador.Inserir(colaborador);
 
-                        lembrete = Lembrete.POSITIVO;
-                        mensagem = $"Novo(a) colaborador(a) \"{pf.Nome}\" cadastrado(a) com sucesso.";
+                            if (new[] { Ocupacao.COLABORADOR_SIMULADO, Ocupacao.COORDENADOR_SIMULADO }.Contains(ocupacao))
+                            {
+                                PessoaFisica.AdicionarOcupacao(codPessoaFisica, ocupacao);
+                            }
+
+                            lembrete = Lembrete.POSITIVO;
+                            mensagem = $"Novo(a) colaborador(a) \"{pf.Nome}\" cadastrado(a) com sucesso.";
+                        }
+                        else
+                        {
+                            mensagem = "A Senha informada deve ser igual à Confirmação da Senha.";
+                        }
                     }
                     else
                     {
-                        mensagem = "A Senha informada deve ser igual à Confirmação da Senha.";
+                        mensagem = $"Já existe um usuário com a matrícula \"{matricula}\".";
                     }
                 }
                 else

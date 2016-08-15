@@ -223,10 +223,6 @@ siac.Questao.Cadastrar = (function () {
             allowAdditions: true
         });
 
-        $('.captcha.icon').click(function () {
-            novoCaptcha();
-        });
-
         $('#ddlDisciplina').change(function () {
             recuperarTemasPorCodDisciplina();
         });
@@ -918,44 +914,28 @@ siac.Questao.Cadastrar = (function () {
     function checarCaptcha() {
         $.ajax({
             type: 'POST',
-            data: { captcha: $('#txtCaptcha').val() },
+            data: { recaptchaResponse: grecaptcha.getResponse() },
             url: "/principal/questao/chequecaptcha",
             success: function (response) {
                 if (response === true) {
                     $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
                     $('.ui.confirmar.modal').modal('hide');
-                    $('#txtCaptcha').next().prop('class', 'checkmark green icon');
                     $('#frmQuestao').addClass('loading').submit();
                 }
                 else {
                     $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
                     $('.ui.confirmar.modal').modal('show');
-                    $('#txtCaptcha').next().prop('class', 'remove red icon');
+                    grecaptcha.reset();
                 }
             },
             error: function () {
                 $('.ui.pesquisa.modal .pesquisar').removeClass('loading');
-                $('#txtCaptcha').next().prop('class', 'remove icon');
+                grecaptcha.reset();
                 siac.mensagem("Ocorreu um erro ao verificar o captcha.", "Resultado do Captcha");
             }
         });
     }
-
-    function novoCaptcha() {
-        $.ajax({
-            type: 'POST',
-            url: "/principal/questao/novocaptcha",
-            success: function (strBase64) {
-                if (strBase64) {
-                    $('#imgCaptcha').attr('src', 'data:image/png;base64,' + strBase64);
-                }
-            },
-            error: function () {
-                siac.mensagem("Ocorreu um erro ao atualizar o captcha, tente novamente.", "Erro");
-            }
-        });
-    }
-
+    
     return {
         iniciar: iniciar
     }

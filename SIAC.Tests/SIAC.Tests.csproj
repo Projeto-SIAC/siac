@@ -109,7 +109,6 @@
   <ItemGroup>
     <Compile Include="AcessoControllerTest.cs" />
     <Compile Include="BaseControllerTest.cs" />
-    <Compile Include="CaptchaTest.cs" />
     <Compile Include="ExtensoesTest.cs" />
     <Compile Include="FormateTest.cs" />
     <Compile Include="CriptografiaTest.cs" />
