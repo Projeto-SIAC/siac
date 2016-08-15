@@ -312,8 +312,7 @@ namespace SIAC.Controllers
                 if (c != null && c.Email.ToLower() == model.Email.ToLower())
                 {
                     string token = Candidato.GerarTokenParaAlterarSenha(c);
-                    string url = Request.Url.ToString();
-                    url = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("AlterarSenha", "Candidato", new { codigo = "" }) + $"/{Criptografia.Base64Encode(token)}";
+                    string url = Url.Action("AlterarSenha", "Candidato", new { codigo = Criptografia.Base64Encode(token) }, Request.Url.Scheme);
                     EnviarEmail.SolicitarSenha(c.Email, c.Nome, url);
                     TempData["EsqueceuSenhaMensagem"] = $"Um email com instruções foi enviado para {c.Email}.";
                     return RedirectToAction("EsqueceuSenha");

@@ -857,8 +857,7 @@ namespace SIAC.Controllers
                                         mensagem = "As inscrições foram liberadas com sucesso.";
                                         estilo = Lembrete.POSITIVO;
 
-                                        string url = Request.Url.ToString();
-                                        string simuladoUrl = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("Confirmar", "Inscricao", new { codigo = sim.Codigo });
+                                        string simuladoUrl = Url.Action("Confirmar", "Inscricao", new { codigo = sim.Codigo }, Request.Url.Scheme);
                                         Helpers.EnviarEmail.NovoSimuladoDisponivel(Candidato.Listar(), simuladoUrl, sim.Titulo);
                                     }
                                 }
@@ -1184,9 +1183,7 @@ namespace SIAC.Controllers
                     estilo = Lembrete.POSITIVO;
                     Repositorio.Commit();
 
-                    string url = Request.Url.ToString();
-                    string simuladoUrl = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("Inscricoes", "Candidato", new { codigo = sim.Codigo });
-
+                    string simuladoUrl = Url.Action("Inscricoes", "Candidato", new { codigo = sim.Codigo }, Request.Url.Scheme);
                     Helpers.EnviarEmail.CartaoDeInscricaoDisponivel(candidatos.Select(sc => sc.Candidato).ToList(), simuladoUrl, sim.Titulo);
                 }
             }
@@ -1209,9 +1206,7 @@ namespace SIAC.Controllers
 
                 if (sim != null && sim.Colaborador.MatrColaborador == Sessao.UsuarioMatricula && !sim.FlagSimuladoEncerrado)
                 {
-                    string url = Request.Url.ToString();
-                    string simuladoUrl = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("Inscricoes", "Candidato", new { codigo = sim.Codigo });
-
+                    string simuladoUrl = Url.Action("Inscricoes", "Candidato", new { codigo = sim.Codigo }, Request.Url.Scheme);
                     Helpers.EnviarEmail.MensagemParaCandidatos(sim.SimCandidato.Select(s => s.Candidato).ToList(), mensagemEmail.ToHtml("p"), simuladoUrl, sim.Titulo);
 
                     mensagem = "Mensagem enviada.";
@@ -1333,10 +1328,8 @@ namespace SIAC.Controllers
                     sim.FlagSimuladoEncerrado = true;
                     mensagem = "Os escores foram calculados com sucesso e o simulado foi encerrado com sucesso.";
                     estilo = Lembrete.POSITIVO;
-                    
-                    string url = Request.Url.ToString();
-                    string simuladoUrl = url.Remove(url.IndexOf("/", url.IndexOf("//") + 2)) + Url.Action("Inscricoes", "Candidato", new { codigo = sim.Codigo });
 
+                    string simuladoUrl = Url.Action("Inscricoes", "Candidato", new { codigo = sim.Codigo }, Request.Url.Scheme);
                     Helpers.EnviarEmail.SimuladoEncerrado(candidatosPresentes, simuladoUrl, sim.Titulo);
 
                     Repositorio.Commit();
