@@ -1301,7 +1301,8 @@ namespace SIAC.Controllers
 
                             foreach (var candidato in candidatos)
                             {
-                                candidato.EscorePadronizado = Convert.ToDecimal(((candidato.QteAcertos - maap) / dpap) * 100.0 + 500.0);
+                                double? escore = ((candidato.QteAcertos.Value - maap) / dpap) * 100.0 + 500.0;
+                                candidato.EscorePadronizado = Convert.ToDecimal(escore.HasValue && !double.IsNaN(escore.Value) ? escore : 0);
                             }
                         }
                         else
