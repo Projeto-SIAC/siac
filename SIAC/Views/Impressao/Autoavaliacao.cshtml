@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Autoavaliação " + Model.Avaliacao.CodAvaliacao;
     Layout = null;
-    List<Questao> lstQuestao = Model.Avaliacao.EmbaralharQuestao();
+    List<Questao> lstQuestao = Model.Avaliacao.QuestaoEmbaralhada;
 }
 <html lang="pt-br">
 <head>
@@ -130,7 +130,7 @@
 
                         @if (lstQuestao[i].CodTipoQuestao == TipoQuestao.OBJETIVA)
                         {
-                            List<Alternativa> lstAlternativa = lstQuestao[i].EmbaralharAlternativa();
+                            List<Alternativa> lstAlternativa = lstQuestao[i].AlternativaEmbaralhada;
                             <div class="grouped fields">
                                 <label>Marque a alternativa</label>
                                 @for (int j = 0; j < lstAlternativa.Count; j++)

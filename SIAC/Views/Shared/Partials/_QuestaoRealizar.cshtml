@@ -11,7 +11,7 @@
     <div class="ui ribbon label" style="display:none">Respondida</div>
     @if (Model.CodTipoQuestao == TipoQuestao.OBJETIVA)
     {
-        List<Alternativa> lstAlternativa = Model.EmbaralharAlternativa();
+        List<Alternativa> lstAlternativa = Model.AlternativaEmbaralhada;
         <div class="grouped fields">
             <label>Selecione a alternativa</label>
             @for (int j = 0; j < lstAlternativa.Count; j++)

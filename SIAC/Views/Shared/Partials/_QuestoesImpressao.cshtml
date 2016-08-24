@@ -14,7 +14,7 @@
 
                 @if (Model[i].CodTipoQuestao == TipoQuestao.OBJETIVA)
                 {
-                    List<Alternativa> lstAlternativa = Model[i].EmbaralharAlternativa();
+                    List<Alternativa> lstAlternativa = Model[i].AlternativaEmbaralhada;
                     <div class="grouped fields">
                         <label>Marque a alternativa</label>
                         @for (int j = 0; j < lstAlternativa.Count; j++)

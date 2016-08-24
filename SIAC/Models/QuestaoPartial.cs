@@ -13,40 +13,24 @@ namespace SIAC.Models
         [NotMapped]
         public List<AvalQuesPessoaResposta> Respostas => contexto.AvalQuesPessoaResposta.Where(r => r.CodQuestao == this.CodQuestao).ToList();
 
-        public bool TemUmaCorreta()
+        [NotMapped]
+        public List<Alternativa> AlternativaEmbaralhada
         {
-            bool unica = false;
-
-            foreach (var alt in this.Alternativa)
+            get
             {
-                if (alt.FlagGabarito)
+                List<Alternativa> lstAlternativa = this.Alternativa.ToList();
+                List<Alternativa> lstAlternativaEmbaralhada = new List<Alternativa>();
+
+                while (lstAlternativaEmbaralhada.Count != lstAlternativa.Count)
                 {
-                    if (unica == true)
-                    {
-                        unica = false;
-                        break;
-                    }
-                    unica = true;
+                    int i = Sistema.Random.Next(lstAlternativa.Count);
+                    Alternativa alt = lstAlternativa.ElementAt(i);
+                    lstAlternativaEmbaralhada.Add(alt);
+                    lstAlternativa.Remove(alt);
                 }
+
+                return lstAlternativaEmbaralhada;
             }
-
-            return unica;
-        }
-
-        public List<Alternativa> EmbaralharAlternativa()
-        {
-            List<Alternativa> lstAlternativa = this.Alternativa.ToList();
-            List<Alternativa> lstAlternativaEmbaralhada = new List<Alternativa>();
-
-            while (lstAlternativaEmbaralhada.Count != lstAlternativa.Count)
-            {
-                int i = Sistema.Random.Next(lstAlternativa.Count);
-                Alternativa alt = lstAlternativa.ElementAt(i);
-                lstAlternativaEmbaralhada.Add(alt);
-                lstAlternativa.Remove(alt);
-            }
-
-            return lstAlternativaEmbaralhada;
         }
 
         public string ToJsonChart(List<AvalQuesPessoaResposta> lstResposta)

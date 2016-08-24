@@ -181,7 +181,7 @@
                     <div class="ui ribbon label" style="display:none">Respondida</div>                    
                     @if (lstQuestao[i].CodTipoQuestao == TipoQuestao.OBJETIVA)
                     {
-                        List<Alternativa> lstAlternativa = lstQuestao[i].EmbaralharAlternativa();
+                        List<Alternativa> lstAlternativa = lstQuestao[i].AlternativaEmbaralhada;
                         <div class="grouped fields">
                             <label>Selecione a alternativa</label>
                             @for (int j = 0; j < lstAlternativa.Count; j++)
