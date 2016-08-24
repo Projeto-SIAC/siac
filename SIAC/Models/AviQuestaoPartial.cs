@@ -30,6 +30,38 @@ namespace SIAC.Models
             }
         }
 
+        public string ToJsonChart(List<AviQuestaoPessoaResposta> respostas = null)
+        {
+            respostas = this.Respostas;
+            string json = string.Empty;
+            json += "[";
+
+            for (int i = 1, length = this.AviQuestaoAlternativa.Count; i <= length; i++)
+            {
+                string rgba = Helpers.CorDinamica.Rgba();
+
+                json += "{";
+                json += $"\"value\":\"{respostas.Where(r => r.RespAlternativa == i).Count()}\"";
+                json += ",";
+                json += $"\"label\":\"Alternativa {(i - 1).GetIndiceAlternativa()}\"";
+                json += ",";
+                json += $"\"color\":\"{rgba}\"";
+                json += ",";
+                json += $"\"highlight\":\"{rgba.Replace("1)", "0.8)")}\"";
+                json += "}";
+
+                if (i != length)
+                {
+                    json += ",";
+                }
+            }
+
+            json += "]";
+
+            return json;
+        }
+
+
         private static Contexto contexto => Repositorio.GetInstance();
 
         public static void Inserir(AviQuestao questao)

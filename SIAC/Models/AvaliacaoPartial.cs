@@ -133,6 +133,36 @@ namespace SIAC.Models
         [NotMapped]
         public bool FlagCorrecaoPendente => this.FlagRealizada && this.PessoaResposta.Where(pr => !pr.RespNota.HasValue).Count() > 0;
 
+        [NotMapped]
+        public int QteQuestoes
+        {
+            get
+            {
+                int qte = 0;
+                foreach (var avalTema in this.AvaliacaoTema)
+                    qte += avalTema.AvalTemaQuestao.Count;
+                return qte;
+            }
+        }
+
+        public List<Questao> EmbaralharQuestao()
+        {
+            List<Questao> lstQuestao = new List<Questao>();
+            List<Questao> lstQuestaoEmbalharada = new List<Questao>();
+            foreach (var avalTema in this.AvaliacaoTema)
+                lstQuestao.AddRange(avalTema.AvalTemaQuestao.Select(a => a.QuestaoTema.Questao).ToList());
+
+            while (lstQuestao.Count > 0)
+            {
+                int i = Sistema.Random.Next(lstQuestao.Count);
+                Questao qst = lstQuestao.ElementAt(i);
+                lstQuestaoEmbalharada.Add(qst);
+                lstQuestao.Remove(qst);
+            }
+
+            return lstQuestaoEmbalharada.OrderBy(q => q.CodTipoQuestao).ToList();
+        }
+
         private static Contexto contexto => Repositorio.GetInstance();
 
         public static int ObterNumIdentificador(int codTipoAvaliacao)
