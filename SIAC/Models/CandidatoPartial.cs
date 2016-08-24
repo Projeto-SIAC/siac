@@ -67,10 +67,12 @@ namespace SIAC.Models
             return candidato.CodCandidato;
         }
 
+        private static Hashids HashidInstanciaParaToken => new Hashids((string)Configuracoes.Recuperar("SIAC_SECRET"), 15, "abcdefghijklmnopqrstuvwxyz1234567890");
+
         public static string GerarTokenParaAlterarSenha(Candidato c)
         {
             var candidato = contexto.Candidato.Find(c.CodCandidato);
-            string token = new Hashids((string)Configuracoes.Recuperar("SIAC_SECRET"), 10).EncodeLong(new[] { c.CodCandidato, DateTime.Now.AddMinutes(30).ToUnixTime() });
+            string token = HashidInstanciaParaToken.EncodeLong(new[] { c.CodCandidato, DateTime.UtcNow.AddMinutes(30).ToUnixTime() });
             candidato.AlterarSenha = Criptografia.RetornarHashSHA256(token);
             contexto.SaveChanges(false);
             return token;
@@ -78,12 +80,12 @@ namespace SIAC.Models
 
         public static Candidato LerTokenParaAlterarSenha(string token)
         {
-            long[] valores = new Hashids((string)Configuracoes.Recuperar("SIAC_SECRET"), 10).DecodeLong(token);
+            long[] valores = HashidInstanciaParaToken.DecodeLong(token);
 
             if (valores.Length == 2)
             {
                 var candidato = contexto.Candidato.Find((int)valores[0]);
-                var expirado = DateTime.Now.ToUnixTime() > valores[1];
+                var expirado = DateTime.UtcNow.ToUnixTime() > valores[1];
                 if (!expirado && candidato.AlterarSenha == Criptografia.RetornarHashSHA256(token))
                 {
                     return candidato;

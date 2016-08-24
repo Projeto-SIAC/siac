@@ -13,6 +13,55 @@ namespace SIAC.Models
         [NotMapped]
         public List<AvalQuesPessoaResposta> Respostas => contexto.AvalQuesPessoaResposta.Where(r => r.CodQuestao == this.CodQuestao).ToList();
 
+        [NotMapped]
+        public List<Alternativa> AlternativaEmbaralhada
+        {
+            get
+            {
+                List<Alternativa> lstAlternativa = this.Alternativa.ToList();
+                List<Alternativa> lstAlternativaEmbaralhada = new List<Alternativa>();
+
+                while (lstAlternativaEmbaralhada.Count != lstAlternativa.Count)
+                {
+                    int i = Sistema.Random.Next(lstAlternativa.Count);
+                    Alternativa alt = lstAlternativa.ElementAt(i);
+                    lstAlternativaEmbaralhada.Add(alt);
+                    lstAlternativa.Remove(alt);
+                }
+
+                return lstAlternativaEmbaralhada;
+            }
+        }
+
+        public string ToJsonChart(List<AvalQuesPessoaResposta> lstResposta)
+        {
+            string json = string.Empty;
+
+            json += "[";
+
+            for (int i = 0, length = this.Alternativa.Count; i < length; i++)
+            {
+                string rgba = Helpers.CorDinamica.Rgba();
+                json += "{";
+                json += $"\"value\":\"{lstResposta.Where(r => r.RespAlternativa == i).Count()}\"";
+                json += ",";
+                json += $"\"label\":\"Alternativa {i.GetIndiceAlternativa()}\"";
+                json += ",";
+                json += $"\"color\":\"{rgba}\"";
+                json += ",";
+                json += $"\"highlight\":\"{rgba.Replace("1)", "0.8)")}\"";
+                json += "}";
+                if (i != length - 1)
+                {
+                    json += ",";
+                }
+            }
+
+            json += "]";
+
+            return json;
+        }
+
         private static Contexto contexto => Repositorio.GetInstance();
 
         public static void Inserir(Questao questao)

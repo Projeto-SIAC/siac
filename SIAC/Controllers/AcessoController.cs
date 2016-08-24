@@ -13,7 +13,6 @@ namespace SIAC.Controllers
         // GET: /
         public ActionResult Index()
         {
-            Parametro.ObterAsync();
             if (Sistema.Autenticado(Sessao.UsuarioMatricula))
                 return RedirectToAction("Index", "Principal");
             return View(new AcessoIndexViewModel());
