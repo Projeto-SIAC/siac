@@ -38,7 +38,7 @@ O __VisualStudio__ possui uma guia próprio para ajudar na publicação do siste
 npm install
 ```
 
-Esse comando é responsável por instalar o Bower, caso necessário, e sicronizar as bibliotecas necessárias. Após isso, o sistema está pronto para se utilizado.
+Esse comando é responsável por instalar o Bower, caso necessário, e sicronizar as bibliotecas necessárias. Após isso, o sistema está pronto para ser utilizado.
 
 ### Autores
 
