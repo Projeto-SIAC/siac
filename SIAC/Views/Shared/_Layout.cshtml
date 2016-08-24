@@ -61,37 +61,14 @@
             </div>
         </div>
 
-        @Scripts.Render("~/bundles/js")
+        @Scripts.Render("~/bundles/js/essentials")
         @Scripts.Render("~/bundles/signalR")
         <script src="~/signalr/hubs"></script>
+        @Scripts.Render("~/bundles/js")
         @RenderSection("Scripts", required: false)
         <div class="ui page dimmer">
             <div class="ui large text global loader">Carregando</div>
         </div>
     </div>
-    @if (!Sessao.Apresentacao)
-    {
-        @Html.Partial("_Apresentacao")
-        <script>
-            $(function () {
-                $('.ui.apresentacao.modal').modal({
-                    closable: false,
-                    onApprove: function () {
-                        $.ajax({
-                            type: 'POST',
-                            url: '/acesso/apresentacao',
-                            beforeSend: function () {
-                                $('.ui.apresentacao.modal .approve.button').addClass('loading');
-                            },
-                            complete: function () {
-                                $('.ui.apresentacao.modal').modal('hide');
-                            }
-                        });
-                        return false;
-                    }
-                }).modal('show');
-            });
-        </script>
-    }
 </body>
 </html>

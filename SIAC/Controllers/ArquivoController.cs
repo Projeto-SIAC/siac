@@ -51,7 +51,7 @@ namespace SIAC.Controllers
             return PartialView("_ListaSimulado", simulados.Skip((quantidade * pagina.Value) - quantidade).Take(quantidade).ToList());
         }
 
-        [Route("")]
+        [Route]
         public ActionResult Index() =>
             View(new ArquivoIndexViewModel()
             {

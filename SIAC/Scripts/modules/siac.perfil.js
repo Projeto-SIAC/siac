@@ -1,6 +1,8 @@
 ﻿siac.Perfil = siac.Perfil || (function () {
     function iniciar() {
-        $('#estatisticas').load('/perfil/estatisticas');
+        var $estatisticas = $('#estatisticas');
+        $estatisticas.load($estatisticas.data('action'));
+
         $('.ui.opiniao.modal').modal({
             onApprove: function () {
                 if (verificar()) {
@@ -45,7 +47,7 @@
         var txtOpiniao = $('#txtOpiniao').val().trim();
         if (txtOpiniao) {
             $.ajax({
-                url: '/perfil/enviaropiniao',
+                url: $('.opiniao.modal').data('action'),
                 type: 'POST',
                 data: { opiniao: txtOpiniao },
                 success: function () {

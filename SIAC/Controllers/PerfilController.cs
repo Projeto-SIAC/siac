@@ -7,23 +7,24 @@ using System.Web.Mvc;
 namespace SIAC.Controllers
 {
     [Filters.AutenticacaoFilter(Categorias = new[] { Categoria.SUPERUSUARIO, Categoria.ALUNO, Categoria.PROFESSOR, Categoria.COLABORADOR })]
+    [RoutePrefix("perfil")]
     public class PerfilController : Controller
     {
-        // GET: perfil
+        [Route]
         public ActionResult Index()
         {
             return View(Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario);
         }
 
-        // GET: perfil/estatisticas
+        [Route("estatisticas")]
         [OutputCache(CacheProfile = "PorUsuario")]
         public ActionResult Estatisticas()
         {
             return PartialView("_Estatisticas", Sistema.UsuarioAtivo[Sessao.UsuarioMatricula].Usuario);
         }
 
-        // POST: perfil/enviaropiniao
         [HttpPost]
+        [Route("enviaropiniao")]
         public void EnviarOpiniao(string opiniao)
         {
             if (!String.IsNullOrWhiteSpace(opiniao))
@@ -39,8 +40,8 @@ namespace SIAC.Controllers
             }
         }
 
-        // POST: perfil/alterarsenha
         [HttpPost]
+        [Route("alterarsenha")]
         public ActionResult AlterarSenha(string senhaAtual, string senhaNova, string senhaConfirmacao)
         {
             string lembrete = Lembrete.NEGATIVO;

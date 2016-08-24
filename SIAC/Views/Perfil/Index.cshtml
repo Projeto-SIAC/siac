@@ -106,7 +106,7 @@
     </div>
     @if (Model.CodCategoria > Categoria.SUPERUSUARIO)
     {
-        <div id="estatisticas" class="eight wide column">
+        <div id="estatisticas" data-action="@Url.Action("Estatisticas")" class="eight wide column">
             <div class="ui active centered text loader">Carregando estatísticas...</div>
         </div>
     }
@@ -114,7 +114,7 @@
 
 @if (Model.CodCategoria > Categoria.SUPERUSUARIO)
 {
-    <div class="ui opiniao modal">
+    <div class="ui opiniao modal" data-action="@Url.Action("EnviarOpiniao")">
         <i class="close icon"></i>
         <div class="header">Enviar opinião</div>
         <div class="content">

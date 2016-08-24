@@ -18,8 +18,6 @@ namespace SIAC
             ));
 
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
-                "~/bower_components/jquery/dist/jquery.min.js",
-                "~/bower_components/semantic-ui/dist/semantic.min.js",
                 "~/bower_components/html2canvas/dist/html2canvas.min.js",
                 "~/bower_components/alertify-js/build/alertify.min.js",
                 "~/scripts/plugins/jquery.mask-1.13.4.min.js",
