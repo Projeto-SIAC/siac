@@ -25,7 +25,7 @@ Após instalar as ferramentas anteriores, certifique de ter os comandos __npm__ 
 Clone o repositório localmente através de uma interface gráfica como [GitHub Desktop](//desktop.github.com/), ou através da linha de comando:
 
 ```bash
-git clone https://github.com/chicobentojr/simulado.git
+git clone https://github.com/Projeto-SIAC/siac.git
 ```
 
 Com o __VisualStudio 2015__ aberto, abra o projeto clonado e realize um _build_. Isso acarretará na recuperação das bibliotecas pelo __Bower__ e __NuGet__.
