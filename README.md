@@ -22,9 +22,9 @@ Após instalar as ferramentas anteriores, certifique de ter os comandos __npm__ 
 
 ### Instalando
 
-Clone o repositório localmente através de uma interface gráfica como [GitHub Desktop](//desktop.github.com/), ou através da linha de comando:
+Clone o repositório localmente através de uma interface gráfica como [GitHub Desktop](https://desktop.github.com/), ou através da linha de comando:
 
-```bash
+```sh
 git clone https://github.com/Projeto-SIAC/siac.git
 ```
 
@@ -44,13 +44,16 @@ Esse comando é responsável por instalar o Bower, caso necessário, e sicroniza
 
 ### Autores
 
-* [Prof. Reginaldo Falcão](http://diatinf.ifrn.edu.br/doku.php?id=pessoal:docente:efetivo:regis)
 * [Felipe Pontes](https://github.com/felipemfp)
 * [Francisco Bento](https://github.com/chicobentojr)
 
+### Orientador
+
+* [Prof. Reginaldo Falcão](http://diatinf.ifrn.edu.br/doku.php?id=pessoal:docente:efetivo:regis)
+
 #### Contribuidores
 
-* Deyvison Soares
+* Deyvison Soares 
 * João Paulo
 * Bruno Medeiros
 
