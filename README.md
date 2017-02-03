@@ -14,9 +14,9 @@ Estas instruções são para você conseguir uma cópia do projeto e ajudar no d
 
 Antes de tudo, você precisa instalar estas ferramentas:
 
-- [VisualStudio 2015](//www.visualstudio.com)
-- [Node.js](//nodejs.org)
-- [Git](//git-scm.com)
+- [VisualStudio 2015](https://www.visualstudio.com)
+- [Node.js](https://nodejs.org)
+- [Git](https://git-scm.com)
 
 Após instalar as ferramentas anteriores, certifique de ter os comandos __npm__ e __git__ na sua linha comando, caso não estejam é necessários adicionar os caminhos para os mesmos no _path_ da sua máquina.
 
@@ -44,12 +44,16 @@ Esse comando é responsável por instalar o Bower, caso necessário, e sicroniza
 
 ### Autores
 
-* [Prof. Reginaldo Falcão](//diatinf.ifrn.edu.br/doku.php?id=pessoal:docente:efetivo:regis)
-* [Felipe Pontes](//github.com/felipemfp)
-* [Francisco Bento](//github.com/chicobentojr)
+* [Prof. Reginaldo Falcão](http://diatinf.ifrn.edu.br/doku.php?id=pessoal:docente:efetivo:regis)
+* [Felipe Pontes](https://github.com/felipemfp)
+* [Francisco Bento](https://github.com/chicobentojr)
 
 #### Contribuidores
 
 * Deyvison Soares
 * João Paulo
 * Bruno Medeiros
+
+## Licença
+
+Este projeto é licenciado pela __GNU GENERAL PUBLIC LICENSE__ - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
