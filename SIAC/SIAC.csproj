@@ -673,6 +673,7 @@
     <Content Include="Views\Gerencia\Partials\_CarregarColaborador.cshtml" />
     <Content Include="Views\Gerencia\Partials\_CarregarCampus.cshtml" />
     <Content Include="Views\Gerencia\Campi.cshtml" />
+    <Content Include="SIAC.licenseheader" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
