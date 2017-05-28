@@ -20,7 +20,7 @@ namespace SIAC.Models
 
         public static int ObterCodCurso()
         {
-            int codCurso = contexto.Curso.Max(c => c.CodCurso);
+            int codCurso = contexto.Curso.Count() > 0 ? contexto.Curso.Max(c => c.CodCurso) : 0;
             return codCurso + 1;
         }
     }

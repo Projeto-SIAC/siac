@@ -213,7 +213,7 @@ namespace SIAC.Controllers
 
                 Professor.Inserir(professor);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Parametros");
         }
 
         // POST: configuracoes/cadastrarcolaborador
@@ -245,7 +245,7 @@ namespace SIAC.Controllers
 
                 Colaborador.Inserir(colaborador);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Parametros");
         }
 
         // POST: configuracoes/cadastrarcampus
@@ -275,7 +275,7 @@ namespace SIAC.Controllers
                 Campus.Inserir(campus);
                 PessoaFisica.AdicionarOcupacao(campus.Colaborador.Usuario.CodPessoaFisica, Ocupacao.DIRETOR_GERAL);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Parametros");
         }
 
         // POST: configuracoes/cadastrardiretoria
@@ -305,7 +305,7 @@ namespace SIAC.Controllers
 
                 Diretoria.Inserir(diretoria);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Parametros");
         }
 
         // POST: configuracoes/cadastrarcurso
@@ -333,7 +333,7 @@ namespace SIAC.Controllers
 
                 Curso.Inserir(curso);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Parametros");
         }
 
         // POST: configuracoes/cadastrarturma
@@ -353,7 +353,7 @@ namespace SIAC.Controllers
 
                 Turma.Inserir(turma);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Parametros");
         }
 
         // POST: configuracoes/cadastrardisciplina
@@ -390,7 +390,7 @@ namespace SIAC.Controllers
                     }
                 }
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Parametros");
         }
 
         // POST: configuracoes/cadastrartema
@@ -423,7 +423,7 @@ namespace SIAC.Controllers
                     }
                 }
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Parametros");
         }
 
         // POST: configuracoes/cadastraraluno
@@ -454,10 +454,13 @@ namespace SIAC.Controllers
                 //Curso
                 aluno.CodCurso = int.Parse(formCollection["ddlAlunoCurso"]);
 
+                //Aluno
+                aluno.MatrAluno = aluno.Usuario.Matricula;
+
                 Aluno.Inserir(aluno);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Parametros");
         }
 
         // POST: configuracoes/cadastrarsala
@@ -478,7 +481,7 @@ namespace SIAC.Controllers
                 Sala.Inserir(sala);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Parametros");
         }
 
         // POST: configuracoes/cadastrarmatriz
@@ -509,7 +512,7 @@ namespace SIAC.Controllers
                 MatrizCurricular.Inserir(matrizCurricular);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Parametros");
         }
 
         // POST: configuracoes/cadastrarhorario
@@ -541,7 +544,7 @@ namespace SIAC.Controllers
                 Horario.Inserir(horarios);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Parametros");
         }
     }
 }

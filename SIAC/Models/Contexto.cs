@@ -1,6 +1,8 @@
 namespace SIAC.Models
 {
     using System.Data.Entity;
+    using System.Data.Entity.Validation;
+    using System.Diagnostics;
     using System.Linq;
 
     public partial class Contexto : DbContext
@@ -12,13 +14,33 @@ namespace SIAC.Models
 
         public int SaveChanges(bool alertar = true)
         {
-            if (alertar)
+            int mudancas = 0;
+            try
             {
-                Sistema.AlertarMudanca.AddRange(Sistema.UsuarioAtivo.Keys);
-                Sistema.AlertarMudanca = Sistema.AlertarMudanca.Distinct().ToList();
-                Sistema.AlertarMudanca.Remove(Helpers.Sessao.UsuarioMatricula);
+                if (alertar)
+                {
+                    Sistema.AlertarMudanca.AddRange(Sistema.UsuarioAtivo.Keys);
+                    Sistema.AlertarMudanca = Sistema.AlertarMudanca.Distinct().ToList();
+                    Sistema.AlertarMudanca.Remove(Helpers.Sessao.UsuarioMatricula);
+                }
+
+                mudancas = base.SaveChanges();
             }
-            return base.SaveChanges();
+            catch (DbEntityValidationException e)
+            {
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Debug.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Debug.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+            }
+            
+            return mudancas;
         }
 
         protected override void Dispose(bool disposing)

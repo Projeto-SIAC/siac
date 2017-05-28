@@ -36,6 +36,11 @@ namespace SIAC.Models
 
         public static void Inserir(Diretoria diretoria)
         {
+            if (diretoria.Campus != null)
+            {
+                diretoria.CodCampus = diretoria.Campus.CodCampus;
+                diretoria.CodInstituicao = diretoria.Campus.CodInstituicao;
+            }
             List<Diretoria> diretorias = contexto.Campus.Find(diretoria.CodInstituicao, diretoria.CodCampus).Diretoria.ToList();
             int id = diretorias.Count > 0 ? diretorias.Max(d => d.CodDiretoria) + 1 : 1;
 
