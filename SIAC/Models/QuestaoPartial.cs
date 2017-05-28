@@ -21,7 +21,7 @@ namespace SIAC.Models
                 List<Alternativa> lstAlternativa = this.Alternativa.ToList();
                 List<Alternativa> lstAlternativaEmbaralhada = new List<Alternativa>();
 
-                while (lstAlternativaEmbaralhada.Count != lstAlternativa.Count)
+                while (lstAlternativa.Count != 0)
                 {
                     int i = Sistema.Random.Next(lstAlternativa.Count);
                     Alternativa alt = lstAlternativa.ElementAt(i);
