@@ -23,6 +23,7 @@ namespace SIAC.Migrations
             SemearEstruturas(context);
             SemearLocalidades(context);
             SemearParametros(context);
+            SemearOrganizacao(context);
 
             if (!(context.Pessoa.Find(1)?.TipoPessoa == Pessoa.FISICA) && !(context.Pessoa.Find(2)?.TipoPessoa == Pessoa.JURIDICA))
             {
@@ -95,6 +96,517 @@ namespace SIAC.Migrations
                     DtCadastro = System.DateTime.Now
                 }
             );
+        }
+
+        private void SemearOrganizacao(Contexto context)
+        {
+            context.Pessoa.AddOrUpdate(
+                new Pessoa()
+                {
+                    CodPessoa = 3,
+                    TipoPessoa = Pessoa.JURIDICA
+                }, new Pessoa()
+                {
+                    CodPessoa = 4,
+                    TipoPessoa = Pessoa.JURIDICA
+                }, new Pessoa()
+                {
+                    CodPessoa = 5,
+                    TipoPessoa = Pessoa.FISICA
+                }, new Pessoa()
+                {
+                    CodPessoa = 6,
+                    TipoPessoa = Pessoa.FISICA
+                }, new Pessoa()
+                {
+                    CodPessoa = 7,
+                    TipoPessoa = Pessoa.FISICA
+                }, new Pessoa()
+                {
+                    CodPessoa = 8,
+                    TipoPessoa = Pessoa.FISICA
+                }, new Pessoa()
+                {
+                    CodPessoa = 9,
+                    TipoPessoa = Pessoa.FISICA
+                }, new Pessoa()
+                {
+                    CodPessoa = 10,
+                    TipoPessoa = Pessoa.FISICA
+                }, new Pessoa()
+                {
+                    CodPessoa = 11,
+                    TipoPessoa = Pessoa.FISICA
+                }, new Pessoa()
+                {
+                    CodPessoa = 12,
+                    TipoPessoa = Pessoa.FISICA
+                }, new Pessoa()
+                {
+                    CodPessoa = 13,
+                    TipoPessoa = Pessoa.JURIDICA
+                });
+
+            context.PessoaJuridica.AddOrUpdate(
+                new PessoaJuridica()
+                {
+                    CodPessoa = 3,
+                    RazaoSocial = "Campus Natal Central",
+                    NomeFantasia = "Campus Natal Central"
+                }, new PessoaJuridica()
+                {
+                    CodPessoa = 4,
+                    RazaoSocial = "Diretoria Acadêmica de Informação",
+                    NomeFantasia = "Diretoria Acadêmica de Informação"
+                }, new PessoaJuridica()
+                {
+                    CodPessoa = 13,
+                    RazaoSocial = "Diretoria de Eletrônicos e Afins",
+                    NomeFantasia = "Diretoria de Elentrônicos e Afins"
+                });
+
+            context.PessoaFisica.AddOrUpdate(
+                new PessoaFisica()
+                {
+                    CodPessoa = 5,
+                    Nome = "Ricardo Nascimneto"
+                }, new PessoaFisica()
+                {
+                    CodPessoa = 6,
+                    Nome = "Laura Gouveia"
+                }, new PessoaFisica()
+                {
+                    CodPessoa = 7,
+                    Nome = "José Vieira"
+                }, new PessoaFisica()
+                {
+                    CodPessoa = 8,
+                    Nome = "Ana Moura"
+                }, new PessoaFisica()
+                {
+                    CodPessoa = 9,
+                    Nome = "Pedro Paulo"
+                }, new PessoaFisica()
+                {
+                    CodPessoa = 10,
+                    Nome = "Roberto Bento"
+                }, new PessoaFisica()
+                {
+                    CodPessoa = 11,
+                    Nome = "Beatriz Silva"
+                }, new PessoaFisica()
+                {
+                    CodPessoa = 12,
+                    Nome = "Guilherme Azevedo"
+                });
+
+            context.Usuario.AddOrUpdate(
+                new Usuario()
+                {
+                    CodPessoaFisica = 5,
+                    Matricula = "ricardo",
+                    Senha = Helpers.Criptografia.RetornarHash("senha"),
+                    CodCategoria = Categoria.COLABORADOR,
+                    DtCadastro = System.DateTime.Now
+                }, new Usuario()
+                {
+                    CodPessoaFisica = 6,
+                    Matricula = "laura",
+                    Senha = Helpers.Criptografia.RetornarHash("senha"),
+                    CodCategoria = Categoria.COLABORADOR,
+                    DtCadastro = System.DateTime.Now
+                }, new Usuario()
+                {
+                    CodPessoaFisica = 7,
+                    Matricula = "20172001",
+                    Senha = Helpers.Criptografia.RetornarHash("senha"),
+                    CodCategoria = Categoria.PROFESSOR,
+                    DtCadastro = System.DateTime.Now
+                }, new Usuario()
+                {
+                    CodPessoaFisica = 8,
+                    Matricula = "20172002",
+                    Senha = Helpers.Criptografia.RetornarHash("senha"),
+                    CodCategoria = Categoria.PROFESSOR,
+                    DtCadastro = System.DateTime.Now
+                }, new Usuario()
+                {
+                    CodPessoaFisica = 9,
+                    Matricula = "20171001",
+                    Senha = Helpers.Criptografia.RetornarHash("senha"),
+                    CodCategoria = Categoria.ALUNO,
+                    DtCadastro = System.DateTime.Now
+                }, new Usuario()
+                {
+                    CodPessoaFisica = 10,
+                    Matricula = "20171002",
+                    Senha = Helpers.Criptografia.RetornarHash("senha"),
+                    CodCategoria = Categoria.ALUNO,
+                    DtCadastro = System.DateTime.Now
+                }, new Usuario()
+                {
+                    CodPessoaFisica = 11,
+                    Matricula = "20171003",
+                    Senha = Helpers.Criptografia.RetornarHash("senha"),
+                    CodCategoria = Categoria.ALUNO,
+                    DtCadastro = System.DateTime.Now
+                }, new Usuario()
+                {
+                    CodPessoaFisica = 12,
+                    Matricula = "20171004",
+                    Senha = Helpers.Criptografia.RetornarHash("senha"),
+                    CodCategoria = Categoria.ALUNO,
+                    DtCadastro = System.DateTime.Now
+                });
+
+            context.Colaborador.AddOrUpdate(
+                new Colaborador()
+                {
+                    CodColaborador = 1,
+                    MatrColaborador = "ricardo"
+                }, new Colaborador()
+                {
+                    CodColaborador = 2,
+                    MatrColaborador = "laura"
+                });
+
+            context.Disciplina.AddOrUpdate(
+                new Disciplina()
+                {
+                    CodDisciplina = 1,
+                    Descricao = "Língua Portuguesa",
+                    Sigla = "PORT"
+                }, new Disciplina()
+                {
+                    CodDisciplina = 2,
+                    Descricao = "Matemática",
+                    Sigla = "MAT"
+                }, new Disciplina()
+                {
+                    CodDisciplina = 3,
+                    Descricao = "História",
+                    Sigla = "HIST"
+                });
+
+            context.Professor.AddOrUpdate(
+                new Professor()
+                {
+                    CodProfessor = 1,
+                    MatrProfessor = "20172001"
+                }, new Professor()
+                {
+                    CodProfessor = 2,
+                    MatrProfessor = "20172002"
+                });
+
+            context.Tema.AddOrUpdate(
+                new Tema()
+                {
+                    CodDisciplina = 1,
+                    CodTema = 1,
+                    Descricao = "Sintaxe"
+                }, new Tema()
+                {
+                    CodDisciplina = 1,
+                    CodTema = 2,
+                    Descricao = "Semantica"
+                }, new Tema()
+                {
+                    CodDisciplina = 1,
+                    CodTema = 3,
+                    Descricao = "Classes Gramaticais"
+                }, new Tema()
+                {
+                    CodDisciplina = 2,
+                    CodTema = 1,
+                    Descricao = "Números Complexos"
+                }, new Tema()
+                {
+                    CodDisciplina = 2,
+                    CodTema = 2,
+                    Descricao = "Conjuntos Numéricos"
+                }, new Tema()
+                {
+                    CodDisciplina = 3,
+                    CodTema = 1,
+                    Descricao = "História do Brasil"
+                }, new Tema()
+                {
+                    CodDisciplina = 3,
+                    CodTema = 2,
+                    Descricao = "2° Guerra Mundial"
+                });
+
+            context.Campus.AddOrUpdate(
+                new Campus()
+                {
+                    CodInstituicao = 1,
+                    CodCampus = 1,
+                    CodPessoaJuridica = 3,
+                    CodColaboradorDiretor = 1,
+                    Sigla = "CNAT"
+                });
+
+            context.Diretoria.AddOrUpdate(
+                new Diretoria()
+                {
+                    CodDiretoria = 1,
+                    CodInstituicao = 1,
+                    CodCampus = 1,
+                    CodPessoaJuridica = 4,
+                    CodColaboradorDiretor = 1,
+                    Sigla = "DINF"
+                }, new Diretoria()
+                {
+                    CodDiretoria = 2,
+                    CodInstituicao = 1,
+                    CodCampus = 1,
+                    CodPessoaJuridica = 13,
+                    CodColaboradorDiretor = 2,
+                    Sigla = "DIELE"
+                });
+
+            context.Curso.AddOrUpdate(
+                new Curso()
+                {
+                    CodCurso = 1,
+                    CodColabCoordenador = 1,
+                    CodNivelEnsino = 5,
+                    CodDiretoria = 1,
+                    CodCampus = 1,
+                    CodInstituicao = 1,
+                    Descricao = "Análise e Desenvolvimento de Sistemas",
+                    Sigla = "ADS"
+                }, new Curso()
+                {
+                    CodCurso = 2,
+                    CodColabCoordenador = 2,
+                    CodNivelEnsino = 5,
+                    CodDiretoria = 2,
+                    CodCampus = 1,
+                    CodInstituicao = 1,
+                    Descricao = "Engenhearia Elétrica",
+                    Sigla = "EE"
+                });
+
+            context.Aluno.AddOrUpdate(
+                new Aluno()
+                {
+                    CodAluno = 1,
+                    CodCurso = 1,
+                    MatrAluno = "20171001"
+                }, new Aluno()
+                {
+                    CodAluno = 2,
+                    CodCurso = 1,
+                    MatrAluno = "20171002"
+                }, new Aluno()
+                {
+                    CodAluno = 3,
+                    CodCurso = 2,
+                    MatrAluno = "20171003"
+                }, new Aluno()
+                {
+                    CodAluno = 4,
+                    CodCurso = 2,
+                    MatrAluno = "20171004"
+                });
+
+            context.Turma.AddOrUpdate(
+                new Turma()
+                {
+                    CodCurso = 1,
+                    Periodo = 1,
+                    CodTurno = "M",
+                    NumTurma = 1,
+                    Nome = "404"
+                }, new Turma()
+                {
+                    CodCurso = 2,
+                    Periodo = 1,
+                    CodTurno = "M",
+                    NumTurma = 1,
+                    Nome = "509"
+                });
+
+            context.Horario.AddOrUpdate(
+                new Horario()
+                {
+                    CodGrupo = 1,
+                    CodTurno = "M",
+                    CodHorario = 1,
+                    HoraInicio = new DateTime(2017,1,1,7,0,0),
+                    HoraTermino = new DateTime(2017, 1, 1, 7, 45, 0)
+                }, new Horario()
+                {
+                    CodGrupo = 1,
+                    CodTurno = "M",
+                    CodHorario = 2,
+                    HoraInicio = new DateTime(2017, 1, 1, 7, 45, 0),
+                    HoraTermino = new DateTime(2017, 1, 1, 8, 50, 0)
+                }, new Horario()
+                {
+                    CodGrupo = 1,
+                    CodTurno = "M",
+                    CodHorario = 3,
+                    HoraInicio = new DateTime(2017, 1, 1, 8, 50, 0),
+                    HoraTermino = new DateTime(2017, 1, 1, 9, 35, 0)
+                }, new Horario()
+                {
+                    CodGrupo = 1,
+                    CodTurno = "M",
+                    CodHorario = 4,
+                    HoraInicio = new DateTime(2017, 1, 1, 9, 35, 0),
+                    HoraTermino = new DateTime(2017, 1, 1, 10, 20, 0)
+                }, new Horario()
+                {
+                    CodGrupo = 1,
+                    CodTurno = "M",
+                    CodHorario = 5,
+                    HoraInicio = new DateTime(2017, 1, 1, 10, 30, 0),
+                    HoraTermino = new DateTime(2017, 1, 1, 11, 15, 0)
+                }, new Horario()
+                {
+                    CodGrupo = 1,
+                    CodTurno = "M",
+                    CodHorario = 6,
+                    HoraInicio = new DateTime(2017, 1, 1, 11, 15, 0),
+                    HoraTermino = new DateTime(2017, 1, 1, 12, 0, 0)
+                });
+
+            context.TurmaDiscAluno.AddOrUpdate(
+                new TurmaDiscAluno()
+                {
+                    AnoLetivo = 2017,
+                    SemestreLetivo = 1,
+                    CodCurso = 1,
+                    Periodo = 1,
+                    CodTurno = "M",
+                    NumTurma = 1,
+                    CodDisciplina = 1,
+                    CodAluno = 1,
+                }, new TurmaDiscAluno()
+                {
+                    AnoLetivo = 2017,
+                    SemestreLetivo = 1,
+                    CodCurso = 1,
+                    Periodo = 1,
+                    CodTurno = "M",
+                    NumTurma = 1,
+                    CodDisciplina = 1,
+                    CodAluno = 2,
+                }, new TurmaDiscAluno()
+                {
+                    AnoLetivo = 2017,
+                    SemestreLetivo = 1,
+                    CodCurso = 2,
+                    Periodo = 1,
+                    CodTurno = "M",
+                    NumTurma = 1,
+                    CodDisciplina = 2,
+                    CodAluno = 3,
+                }, new TurmaDiscAluno()
+                {
+                    AnoLetivo = 2017,
+                    SemestreLetivo = 1,
+                    CodCurso = 2,
+                    Periodo = 1,
+                    CodTurno = "M",
+                    NumTurma = 1,
+                    CodDisciplina = 2,
+                    CodAluno = 4,
+                });
+
+            context.Bloco.AddOrUpdate(
+                new Bloco()
+                {
+                    CodBloco = 1,
+                    CodInstituicao = 1,
+                    CodCampus = 1,
+                    Descricao = "Bloco Único",
+                    Sigla = "BU"
+                });
+            context.Sala.AddOrUpdate(
+                new Sala()
+                {
+                    CodBloco = 1,
+                    CodSala = 1,
+                    Descricao = "Sala 1",
+                    Sigla = "S1",
+                    Capacidade = 40
+                }, new Sala()
+                {
+                    CodBloco = 1,
+                    CodSala = 2,
+                    Descricao = "Sala 2",
+                    Sigla = "S2",
+                    Capacidade = 40
+                });
+
+            Professor professor;
+            professor = context.Professor.Find(1);
+            professor.Disciplina.Add(context.Disciplina.Find(1));
+            professor = context.Professor.Find(2);
+            professor.Disciplina.Add(context.Disciplina.Find(2));
+
+            context.TurmaDiscProfHorario.AddOrUpdate(
+                new TurmaDiscProfHorario()
+                {
+                    AnoLetivo = 2017,
+                    SemestreLetivo = 1,
+                    CodCurso = 1,
+                    Periodo = 1,
+                    CodTurno = "M",
+                    NumTurma = 1,
+                    CodDisciplina = 1,
+                    CodProfessor = 1,
+                    CodDia = 2,
+                    CodGrupo = 1,
+                    CodHorario = 1,
+                    CodSala = 1,
+                }, new TurmaDiscProfHorario()
+                {
+                    AnoLetivo = 2017,
+                    SemestreLetivo = 1,
+                    CodCurso = 1,
+                    Periodo = 1,
+                    CodTurno = "M",
+                    NumTurma = 1,
+                    CodDisciplina = 1,
+                    CodProfessor = 1,
+                    CodDia = 2,
+                    CodGrupo = 1,
+                    CodHorario = 2,
+                    CodSala = 1,
+                }, new TurmaDiscProfHorario()
+                {
+                    AnoLetivo = 2017,
+                    SemestreLetivo = 1,
+                    CodCurso = 2,
+                    Periodo = 1,
+                    CodTurno = "M",
+                    NumTurma = 1,
+                    CodDisciplina = 2,
+                    CodProfessor = 2,
+                    CodDia = 2,
+                    CodGrupo = 1,
+                    CodHorario = 1,
+                    CodSala = 1,
+                }, new TurmaDiscProfHorario()
+                {
+                    AnoLetivo = 2017,
+                    SemestreLetivo = 1,
+                    CodCurso = 2,
+                    Periodo = 1,
+                    CodTurno = "M",
+                    NumTurma = 1,
+                    CodDisciplina = 2,
+                    CodProfessor = 2,
+                    CodDia = 2,
+                    CodGrupo = 1,
+                    CodHorario = 2,
+                    CodSala = 1,
+                });
         }
 
         private void SemearEstruturas(Contexto context)

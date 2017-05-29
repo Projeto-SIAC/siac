@@ -24,8 +24,8 @@ namespace SIAC.Controllers
                 return Redirect("~/historico/questao");
             var model = new QuestaoIndexViewModel();
             List<Questao> questoes = Questoes;
-            model.Disciplinas = questoes.Select(q => q.Disciplina).Distinct().ToList();
-            model.Dificuldades = questoes.Select(q => q.Dificuldade).Distinct().ToList();
+            model.Disciplinas = questoes.Select(q => q.Disciplina).Distinct().OrderBy(d=>d.Descricao).ToList();
+            model.Dificuldades = questoes.Select(q => q.Dificuldade).Distinct().OrderBy(q=>q.CodDificuldade).ToList();
             return View(model);
         }
 
