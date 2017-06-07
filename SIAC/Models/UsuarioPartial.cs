@@ -43,7 +43,7 @@ namespace SIAC.Models
 
         public static Usuario Autenticar(string matricula, string senha)
         {
-            if (!Sistema.UsuarioAtivo.Keys.Contains(matricula))
+            if (true/*!Sistema.UsuarioAtivo.Keys.Contains(matricula)*/)
             {
                 Usuario usuario = ListarPorMatricula(matricula);
                 if (usuario != null && Criptografia.ChecarSenha(senha, usuario.Senha))
