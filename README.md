@@ -1,6 +1,6 @@
 # [SIAC](http://siac-stage.apphb.com)
 
-<img align="right" src="https://avatars2.githubusercontent.com/u/20824923" />
+<img align="right" src="https://avatars2.githubusercontent.com/u/20824923?s=150" />
 
 > Sistema Interativo de Avaliação de Conhecimento.
 
